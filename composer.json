@@ -1,0 +1,23 @@
+{
+    "name": "maatwebsite/excel",
+    "description": "Laravel wrapper for PHP Excel",
+    "license": "GPL v2",
+    "keywords": ["laravel", "phpexcel", "excel"],
+    "authors": [
+        {
+            "name": "Maatwebsite.nl",
+            "email": "info@maatwebsite.nl"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0",
+        "illuminate/support": "4.x",
+        "phpoffice/phpexcel": "dev-master"
+    },
+    "autoload": {
+        "psr-0": {
+            "Maatwebsite\\Excel": "src/"
+        }
+    },
+    "minimum-stability": "dev"
+}
