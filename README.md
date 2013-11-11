@@ -1,4 +1,4 @@
-## PHPExcel Wrapper for Laravel 4
+## Laravel 4 Wrapper for PHPExcel
 
     Warning: This package is still in development!
 
