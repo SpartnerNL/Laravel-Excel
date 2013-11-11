@@ -31,7 +31,7 @@ class ExcelServiceProvider extends ServiceProvider {
 	{
 		$this->app['excel'] = $this->app->share(function($app)
         {
-            return new Maatwebsite\Excel\Excel;
+            return new Excel;
         });
 	}
 

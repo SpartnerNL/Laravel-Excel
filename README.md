@@ -12,4 +12,24 @@ After updating composer, add the ServiceProvider to the providers array in app/c
 
 You can optionally use the facade for shorter code. Add this to your facades:
 
-    'Excel' => 'Maatwebsite\Excel\Facade',
+    'Excel' => 'Maatwebsite\Excel\Facades\Excel',
+
+For creating an Excel file use:
+
+    Excel::create('ExcelName')
+            ->sheet('SheetName')
+                ->with(array('data', 'data'))
+            ->export('xls');
+
+Multiple sheets are allowed
+
+    Excel::create('ExcelName')
+            ->sheet('SheetName')
+                ->with(array('data', 'data'))
+            ->sheet('SheetName')
+                ->with(array('data', 'data'))
+            ->export('xls');
+
+Export as CSV by using:
+
+    ->export('csv');
