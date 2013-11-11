@@ -39,6 +39,29 @@ Export as CSV by using:
 ```php
 ->export('csv');
 ```
+
+To import CSV data:
+```php
+Excel::load('file.csv')->toArray();
+```
+
+Optionally you can select columns (these are momentarily based on the first row / heading).
+An empty `select()`, or no select at all, means we will return all columns
+```php
+Excel::load('file.csv')->select(array('column1', 'column4'))->toArray();
+```
+
+The delimiter can be changed before the select chain. The default delimiter is `,`.
+
+```php
+Excel::load('file.csv')->setDelimiter(';')->toArray();
+```
+
+For developping purposes you can choose to dump the returned parsed file to a readable array;
+```php
+Excel::load('file.csv')->dump();
+```
+
 Optional settings can be found in the config file. Use the artisan publish command to publish the config file to your project.
 ```php
 php artisan config:publish Maatwebsite/excel
