@@ -1,7 +1,7 @@
 {
     "name": "maatwebsite/excel",
     "description": "Laravel wrapper for PHP Excel",
-    "license": "GPL v2",
+    "license": "LGPL",
     "keywords": ["laravel", "phpexcel", "excel"],
     "authors": [
         {
