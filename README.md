@@ -57,7 +57,7 @@ An empty `select()`, or no select at all, means we will return all columns
 Excel::load('file.csv')->select(array('column1', 'column4'))->toArray();
 ```
 
-The delimiter can be changed before the select chain. The default delimiter is `,`.
+The delimiter can be changed right after the file load. The default delimiter is `,`.
 
 ```php
 Excel::load('file.csv')->setDelimiter(';')->toArray();
