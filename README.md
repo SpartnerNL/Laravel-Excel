@@ -2,6 +2,8 @@
 
     Warning: This package is still in development!
 
+#Installation
+
 Require this package in your `composer.json` and update composer. This will download the package and PHPExcel of PHPOffice.
 ```php
 "maatwebsite/excel": "dev-master"
@@ -12,10 +14,12 @@ After updating composer, add the ServiceProvider to the providers array in `app/
 'Maatwebsite\Excel\ExcelServiceProvider',
 ```
 
-You can use the facade for shorter code. Add this to your facades:
+You can use the facade for shorter code. Add this to your aliasses:
 ```php
 'Excel' => 'Maatwebsite\Excel\Facades\Excel',
 ```
+
+#Exporting
 
 For creating an Excel file use:
 ```php
@@ -40,6 +44,8 @@ Export as CSV by using:
 ->export('csv');
 ```
 
+#Importing
+
 To import CSV data:
 ```php
 Excel::load('file.csv')->toArray();
@@ -61,6 +67,8 @@ For developping purposes you can choose to dump the returned parsed file to a re
 ```php
 Excel::load('file.csv')->dump();
 ```
+
+#Config
 
 Optional settings can be found in the config file. Use the artisan publish command to publish the config file to your project.
 ```php
