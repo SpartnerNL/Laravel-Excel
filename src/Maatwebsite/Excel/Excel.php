@@ -18,9 +18,6 @@ class Excel extends \PHPExcel
 
         parent::__construct();
 
-        if (PHP_SAPI == 'cli')
-            die('This example should only be run from a Web Browser');
-
         // Init the PHP excel class
         $this->excel = new \PHPExcel();
     }
@@ -33,7 +30,7 @@ class Excel extends \PHPExcel
 
         // Set properties
         $this->excel->getProperties()
-                    ->setCreator(\Config::get('demos.excel.creator'))
+                    ->setCreator(\Config::get('Maatwebsite/excel::creator'))
                     ->setTitle($this->title);
 
         return $this;
@@ -62,13 +59,13 @@ class Excel extends \PHPExcel
 
         // Change sheet settings
         $this->excel->getActiveSheet()
-                    ->setTitle($title)
+                        ->setTitle($title)
                     ->getPageSetup()
-                    ->setOrientation($this->orientation)
-                    ->setPaperSize(\PHPExcel_Worksheet_PageSetup::PAPERSIZE_A4)
-                    ->setFitToPage(true)
-                    ->setFitToWidth(1)
-                    ->setFitToHeight(1);
+                        ->setOrientation($this->orientation)
+                        ->setPaperSize(\PHPExcel_Worksheet_PageSetup::PAPERSIZE_A4)
+                        ->setFitToPage(true)
+                        ->setFitToWidth(1)
+                        ->setFitToHeight(1);
 
         // Count number of sheets
         $this->i++;
@@ -83,7 +80,7 @@ class Excel extends \PHPExcel
         // Send the variables to the excel sheet
         $this->excel
                 ->getActiveSheet()
-                ->fromArray($array);
+                    ->fromArray($array);
 
         return $this;
     }

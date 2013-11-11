@@ -39,3 +39,7 @@ Export as CSV by using:
 ```php
 ->export('csv');
 ```
+Optional settings can be found in the config file. Use the artisan publish command to publish the config file to your project.
+```php
+php artisan config:publish Maatwebsite/excel
+```
