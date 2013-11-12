@@ -2,6 +2,7 @@
 
 namespace Maatwebsite\Excel;
 
+use Maatwebsite\Excel\Readers\HTML_reader;
 
 class Excel extends \PHPExcel
 {
@@ -21,6 +22,7 @@ class Excel extends \PHPExcel
 
         // Init the PHP excel class
         $this->excel = new \PHPExcel();
+
     }
 
     public function create($title)
@@ -44,13 +46,55 @@ class Excel extends \PHPExcel
         $this->ext = \File::extension($this->file);
         $this->format = $this->decodeFormat($this->ext);
 
+        // Create a reader
         $this->reader = \PHPExcel_IOFactory::createReader($this->format);
+
+        // Load the file
         $this->excel = $this->reader->load($this->file);
 
+        // Parse the file
         $this->parseFile();
 
         return $this;
     }
+
+    /**
+     * Load a HTML string
+     *
+     * @param string $string
+     * @return static
+     */
+    public function loadHTML($string){
+
+        // Include the HTML Reader
+        include 'Readers/HTML_reader.php';
+
+        $this->reader = new HTML_reader;
+        $this->excel = $this->reader->load($string);
+
+        return $this;
+
+    }
+
+    /**
+     * Load a View and convert to HTML
+     *
+     * @param string $view
+     * @param array $data
+     * @param array $mergeData
+     * @return static
+     */
+    public function loadView($view, $data = array(), $mergeData = array()){
+
+        // Make the view
+        $html = \View::make($view, $data, $mergeData);
+
+        // Load the html
+        $this->loadHTML($html);
+
+        return $this;
+    }
+
 
     public function setDelimiter($delimiter)
     {
