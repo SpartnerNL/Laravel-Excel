@@ -13,7 +13,9 @@ class Excel extends \PHPExcel
     public $title;
     public $ext;
     public $format;
-    public $delimiter = ';';
+    public $delimiter;
+    public $calculate;
+    public $limit = false;
 
     public function __construct()
     {
@@ -22,6 +24,11 @@ class Excel extends \PHPExcel
 
         // Init the PHP excel class
         $this->excel = new \PHPExcel();
+
+        // Set defaults
+        $this->delimiter = \Config::get('excel::delimiter');
+        $this->calculate = \Config::get('excel::calculate');
+        $this->ignoreEmpty = \Config::get('excel::ignoreEmpty');
 
     }
 
@@ -33,28 +40,33 @@ class Excel extends \PHPExcel
 
         // Set properties
         $this->excel->getProperties()
-                    ->setCreator(\Config::get('Maatwebsite/excel::creator'))
+                    ->setCreator(\Config::get('excel::creator'))
                     ->setTitle($this->title);
 
         return $this;
 
     }
 
-    public function load($file, $firstRowAsIndex = true)
+    public function load($file, $firstRowAsLabel = false)
     {
+
+        // Set defaults
         $this->file = $file;
         $this->ext = \File::extension($this->file);
-        $this->format = $this->decodeFormat($this->ext);
+        $this->title = basename($this->file, '.' . $this->ext);
+        $this->firstRowAsLabel = $firstRowAsLabel;
 
-        // Create a reader
-        $this->reader = \PHPExcel_IOFactory::createReader($this->format);
+        // Identify the format
+        $this->format = \PHPExcel_IOFactory::identify($this->file);
+
+        // Init the reader
+        $this->reader = \PHPExcel_IOFactory::createReader($this->format)
+                                                ->setReadDataOnly(true);
 
         // Load the file
         $this->excel = $this->reader->load($this->file);
 
-        // Parse the file
-        $this->parseFile();
-
+        // Return itself
         return $this;
     }
 
@@ -102,8 +114,23 @@ class Excel extends \PHPExcel
         return $this;
     }
 
+    public function setTitle($title)
+    {
+        $this->title = $title;
+        return $this;
+    }
+
+    public function calculate()
+    {
+        $this->calculate = true;
+        return $this;
+    }
+
     public function select($keys = array())
     {
+
+        // Parse the file
+        $this->parseFile();
 
         // Check if we have selected keys
         if(!empty($keys))
@@ -122,13 +149,13 @@ class Excel extends \PHPExcel
             {
 
                 // Loop throug the cells and keys
-                foreach($row as $key => $cell)
+                foreach($row as $key => $this->cell)
                 {
 
                     // Check if the key is in the array
                     if(in_array($key, $keys))
                     {
-                        $this->parsed[$i][$key] = $cell;
+                        $this->parsed[$i][$key] = $this->cell;
                     }
                 }
                 $i++;
@@ -140,13 +167,28 @@ class Excel extends \PHPExcel
 
     }
 
+    public function limit($amount, $start = 0)
+    {
+
+        $this->limit = array($amount, $start);
+        return $this;
+
+    }
+
     public function toArray()
     {
+
+        // Parse the file
+        $this->parseFile();
+
         return (array) $this->parsed;
     }
 
     public function dump()
     {
+
+        // Parse the file
+        $this->parseFile();
 
         echo '<pre class="container" style="background: #f5f5f5; border: 1px solid #e3e3e3; padding:15px;">';
             print_r($this->parsed);
@@ -205,14 +247,29 @@ class Excel extends \PHPExcel
     public function convert($ext = 'xls')
     {
 
-        // Set the extension
-        $this->ext = $ext;
+        // Parse the file
+        $this->parseFile();
 
-        // Render the XLS
-        $this->render();
+        // Reset the excel object
+        $this->excel = new \PHPExcel();
+
+        if($this->sheetCount > 1)
+        {
+            // Loop through the worksheets
+            foreach($this->parsed as $worksheet => $content)
+            {
+                // Set the sheet with content
+                $this->sheet($worksheet)->with($content);
+            }
+        }
+        else
+        {
+            // Set sheet with content
+            $this->sheet($this->title)->with($this->parsed);
+        }
 
         // Export the file
-        $this->object->save('php://output');
+        $this->export($ext);
 
     }
 
@@ -274,17 +331,58 @@ class Excel extends \PHPExcel
     private function parseFile()
     {
 
-        // Get the current worksheet
-        $this->worksheet = $this->excel->getActiveSheet();
+        // Set i
+        $i = 0;
 
         // Set empty array
-        $this->parsed = array();
+        $parsed = array();
 
-        // Convert to labels
-        $this->labels =  $this->getLabels();
+        // Loop through the worksheets
+        foreach($this->excel->getWorksheetIterator() as $this->worksheet)
+        {
 
-        $this->parsed = $this->parseRows();
+            // Set the active worksheet
+            $this->excel->setActiveSheetIndex($i);
 
+            // Get the worksheet name
+            $title = $this->excel->getActiveSheet()->getTitle();
+
+            // Convert to labels
+            if($this->firstRowAsLabel !== false)
+            {
+                $this->labels =  $this->getLabels();
+            }
+
+            $this->sheetCount = $this->excel->getSheetCount();
+
+            if($this->sheetCount > 1)
+            {
+
+                // Parse the rows of the worksheet
+                $parsed[$title] = $this->parseRows();
+
+            }
+            else
+            {
+                $parsed = $this->parseRows();
+            }
+
+            $i++;
+
+        }
+
+
+        // Limit the result
+        if($this->limit !== false)
+        {
+            $this->parsed = array_slice($parsed, $this->limit[1], $this->limit[0]);
+        }
+        else
+        {
+            $this->parsed = $parsed;
+        }
+
+        // Return itself
         return $this;
     }
 
@@ -294,17 +392,23 @@ class Excel extends \PHPExcel
          // Fetch the first row
         $this->row = $this->worksheet->getRowIterator(1)->current();
 
-        $cellIterator = $this->row->getCellIterator();
+        $this->labels = array();
 
-        foreach ($cellIterator as $cell) {
-            if (!is_null($cell)) {
+        foreach ($this->row->getCellIterator() as $this->cell) {
 
-                $cells = explode($this->delimiter, $cell->getValue());
+            // Check if the cell is not empty
+            if (!empty($this->cell)) {
 
-                $i = 1;
-                foreach($cells as $cell)
+                // Expolode the cell on the delimiter
+                $this->cells = explode($this->delimiter, $this->cell->getValue());
+
+                $i = 0;
+
+                // Loop through the cells
+                foreach($this->cells as $this->cell)
                 {
-                    $this->labels[$i] = strtolower($cell);
+                    // Set the labels
+                    $this->labels[$i] = str_replace(' ', '-',strtolower($this->cell));
                     $i++;
                 }
 
@@ -318,54 +422,107 @@ class Excel extends \PHPExcel
     {
 
         // Set row index to 0
-        $r = 0;
+        $this->r = 0;
+
+        $parsedRow = array();
+
+        if($this->firstRowAsLabel !== false)
+        {
+            $ignore = 1;
+        }
+        else
+        {
+            $ignore = 0;
+        }
 
         // Loop through the rows inside the worksheet
         foreach ($this->worksheet->getRowIterator() as $this->row) {
 
             // Ignore first row
-            if($r >= 1)
+            if($this->r >= $ignore)
             {
-
-                // Set the cell iterator
-                $cellIterator = $this->row->getCellIterator();
-                $cellIterator->setIterateOnlyExistingCells(false);
-
-                // Foreach cells
-                foreach ($cellIterator as $cell) {
-
-                    // Check if not empty
-                    if (!empty($cell)) {
-
-                        // Explode the cell content by the delimiter
-                        $cells = explode($this->delimiter, $cell->getValue());
-
-                        $i = 1;
-
-                        // Loop through the cells
-                        foreach($cells as $newCell)
-                        {
-                            // Set parsed array
-                            $this->parsed[$r][$this->labels[$i]] = $newCell;
-
-                            $i++;
-                        }
-
-                        // Break after the first cell
-                        break;
-
-                    }
-
-                }
-
+                $parsedRow[$this->r - $ignore] = $this->parseCells();
             }
 
-            $r++;
+            $this->r++;
 
         }
 
         // Return the parsed array
-        return $this->parsed;
+        return $parsedRow;
+    }
+
+    private function parseCells()
+    {
+
+        $parsedCells = array();
+
+        // Set the cell iterator
+        $this->cellIterator = $this->row->getCellIterator();
+        $this->cellIterator->setIterateOnlyExistingCells(false);
+
+        // Foreach cells
+        foreach ($this->cellIterator as $this->cell) {
+
+            if($this->format == 'CSV')
+            {
+
+                $parsedCells = $this->parseCSVCell();
+                break;
+
+            }
+            else
+            {
+
+                // Get the cell index
+                $index = \PHPExcel_Cell::columnIndexFromString($this->cell->getColumn());
+
+                // Check if we want calculated values or not
+                if($this->calculate !== false)
+                {
+                    $parsedCells[$index] = $this->cell->getCalculatedValue();
+                }
+                else
+                {
+                    $parsedCells[$index] = $this->cell->getValue();
+                }
+
+            }
+
+        }
+
+        return $parsedCells;
+
+    }
+
+    private function parseCSVCell()
+    {
+        // Explode the cell content by the delimiter
+        $this->cells = explode($this->delimiter, $this->cell->getValue());
+
+        $i = 0;
+
+        // Loop through the cells
+        foreach($this->cells as $newCell)
+        {
+
+            // Check how we need to save the parsed array
+            if($this->firstRowAsLabel !== false)
+            {
+                $index = $this->labels[$i];
+            }
+            else
+            {
+                $index = $i;
+            }
+
+            // Set parsed array
+            $parsedCSV[$index] = $newCell;
+
+            $i++;
+        }
+
+        return $parsedCSV;
     }
 
     private function decodeFormat($ext)

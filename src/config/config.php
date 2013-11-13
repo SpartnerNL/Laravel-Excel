@@ -6,9 +6,9 @@
  *
  * Licensed under the LPGL.
  *
- * @package    Sentry
+ * @package    Laravel-4 PHPExcel
  * @version    0.1.0
- * @author     Cartalyst LLC
+ * @author     Maatwebsite
  * @license    LGPL
  * @copyright  (c) 2013, Maatwebsite
  * @link       http://maatwebsite.nl
@@ -16,6 +16,50 @@
 
 return array(
 
-	'creator' => 'Maatwebsite'
+    /*
+    |--------------------------------------------------------------------------
+    | Creator
+    |--------------------------------------------------------------------------
+    |
+    | The default creator of a new Excel file
+    |
+    */
+
+	'creator' => 'Maatwebsite',
+
+    /*
+    |--------------------------------------------------------------------------
+    | Delimiter
+    |--------------------------------------------------------------------------
+    |
+    | The default delimiter which will be used to read out a CSV file
+    | If you would like to use an other delimiter only one time,
+    | you can also use the `setDelimiter()` chain.
+    |
+    */
+
+    'delimiter' => ',',
+
+     /*
+    |--------------------------------------------------------------------------
+    | Calculate
+    |--------------------------------------------------------------------------
+    |
+    | By default cells with formulas will not be calculated.
+    |
+    */
+
+    'calculate' => false,
+
+     /*
+    |--------------------------------------------------------------------------
+    | Ignore empty cells
+    |--------------------------------------------------------------------------
+    |
+    | By default empty cells are not ignored
+    |
+    */
+
+    'ignoreEmpty' => false,
 
 );

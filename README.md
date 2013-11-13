@@ -52,6 +52,14 @@ Use `loadView()` with a view file and data to be used inside the view.
 Excel::loadView('folder.file', array('data'))->export('xls');
 ```
 
+If you want to give the give the file and worksheet a name chain `setTitle()` and `sheet()` after the `loadView()`
+```php
+Excel::loadView('folder.file', array('data'))
+        ->setTitle('Title')
+        ->sheet('SheetName')
+        ->export('xls');
+```
+
 #Importing
 
 To import CSV data:
@@ -59,21 +67,42 @@ To import CSV data:
 Excel::load('file.csv')->toArray();
 ```
 
-Optionally you can select columns (these are momentarily based on the first row / heading).
+Optionally you can select columns, by there column index.
 An empty `select()`, or no select at all, means we will return all columns
 ```php
-Excel::load('file.csv')->select(array('column1', 'column4'))->toArray();
+Excel::load('file.csv')->select(array(1, 2))->toArray();
 ```
 
-The delimiter can be changed right after the file load. The default delimiter is `,`.
+If the first row is the table heading, you can give the `load()` method an extra parameter. This will make sure the first row is interpreted as heading. These seperate columns values will be used as array indexes. Now you can select columns by their name. Note that the string will be lowercase and spaces will be replaced by `-`.
+```php
+Excel::load('file.csv', true)->select(array('column1', 'column2'))->toArray();
+```
 
+The delimiter can be changed right after the file load with `setDelimiter()`. The default delimiter is `,`, which has been set in the config file
 ```php
 Excel::load('file.csv')->setDelimiter(';')->toArray();
 ```
 
-For developping purposes you can choose to dump the returned parsed file to a readable array;
+By default cells with formulas will not be calculated. If you want to calculate them, use the `calculate()` chain. You can change the default inside the config.
+```php
+Excel::load('file.xls')->calculate()->toArray();
+```
+
+If you want to limit the data which will be parsed, use `limit()`.
+```php
+Excel::load('file.csv')->limit(10)->toArray();
+```
+
+For developping purposes you can choose to dump the returned parsed file to a readable array:
 ```php
 Excel::load('file.csv')->dump();
+```
+
+#Converting
+
+To convert from one filetype to another, use `convert()`:
+```php
+return Excel::load('file.csv')->convert('xls');
 ```
 
 #Config
