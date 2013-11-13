@@ -52,7 +52,7 @@ Use `loadView()` with a view file and data to be used inside the view.
 Excel::loadView('folder.file', array('data'))->export('xls');
 ```
 
-If you want to give the give the file and worksheet a name chain `setTitle()` and `sheet()` after the `loadView()`
+If you want to give the file and worksheet a name chain `setTitle()` and `sheet()` after the `loadView()`
 ```php
 Excel::loadView('folder.file', array('data'))
         ->setTitle('Title')
