@@ -25,6 +25,7 @@ class Excel extends \PHPExcel
     public $calculate;
     public $limit = false;
     protected $ignoreEmpty = false;
+    protected $isParsed = false;
 
     /**
      *
@@ -254,14 +255,14 @@ class Excel extends \PHPExcel
             {
 
                 // Loop throug the cells and keys
-                foreach($row as $key => $this->cell)
+                foreach($row as $key => $cell)
                 {
 
                     // Check if the key is in the array
                     if(in_array($key, $keys))
                     {
                         // Add to the new parsed array
-                        $this->parsed[$i][$key] = $this->cell;
+                        $this->parsed[$i][$key] = $cell;
                     }
                 }
                 $i++;
@@ -531,60 +532,67 @@ class Excel extends \PHPExcel
     private function parseFile()
     {
 
-        // Set worksheet count
-        $i = 0;
-
-        // Set empty array
-        $parsed = array();
-
-        // Loop through the worksheets
-        foreach($this->excel->getWorksheetIterator() as $this->worksheet)
+        if(!$this->isParsed)
         {
 
-            // Set the active worksheet
-            $this->excel->setActiveSheetIndex($i);
+            // Set worksheet count
+            $i = 0;
 
-            // Get the worksheet name
-            $title = $this->excel->getActiveSheet()->getTitle();
+            // Set empty array
+            $parsed = array();
 
-            // Convert to labels
-            if($this->firstRowAsLabel !== false)
+            // Loop through the worksheets
+            foreach($this->excel->getWorksheetIterator() as $this->worksheet)
             {
-                // Fetch the labels
-                $this->labels =  $this->getLabels();
+
+                // Set the active worksheet
+                $this->excel->setActiveSheetIndex($i);
+
+                // Get the worksheet name
+                $title = $this->excel->getActiveSheet()->getTitle();
+
+                // Convert to labels
+                if($this->firstRowAsLabel !== false)
+                {
+                    // Fetch the labels
+                    $this->labels =  $this->getLabels();
+                }
+
+                // Get the sheet count
+                $this->sheetCount = $this->excel->getSheetCount();
+
+                // If we have more than 1 worksheet, seperate them
+                if($this->sheetCount > 1)
+                {
+
+                    // Parse the rows into seperate worksheets
+                    $parsed[$title] = $this->parseRows();
+
+                }
+                else
+                {
+                    // Parse the rows, but neglect the worksheet title
+                    $parsed = $this->parseRows();
+                }
+
+                $i++;
+
             }
 
-            // Get the sheet count
-            $this->sheetCount = $this->excel->getSheetCount();
 
-            // If we have more than 1 worksheet, seperate them
-            if($this->sheetCount > 1)
+            // Limit the result
+            if($this->limit !== false)
             {
-
-                // Parse the rows into seperate worksheets
-                $parsed[$title] = $this->parseRows();
-
+                $this->parsed = array_slice($parsed, $this->limit[1], $this->limit[0]);
             }
             else
             {
-                // Parse the rows, but neglect the worksheet title
-                $parsed = $this->parseRows();
+                $this->parsed = $parsed;
             }
 
-            $i++;
-
         }
 
-
-        // Limit the result
-        if($this->limit !== false)
-        {
-            $this->parsed = array_slice($parsed, $this->limit[1], $this->limit[0]);
-        }
-        else
-        {
-            $this->parsed = $parsed;
-        }
+        $this->isParsed = true;
 
         // Return itself
         return $this;
