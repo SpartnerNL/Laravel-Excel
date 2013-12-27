@@ -26,6 +26,7 @@ class Excel extends \PHPExcel
     public $limit = false;
     protected $ignoreEmpty = false;
     protected $isParsed = false;
+    protected $firstRowAsLabel = false;
 
     /**
      *
@@ -412,6 +413,9 @@ class Excel extends \PHPExcel
         // Render the XLS
         $this->render();
 
+        // Set the headers
+        $this->setHeaders();
+
         // Export the file
         $this->object->save('php://output');
 
@@ -430,12 +434,31 @@ class Excel extends \PHPExcel
 
     public function save($ext = 'xls', $path = false)
     {
+        $this->store($ext, $path);
+    }
+
+    /**
+     *
+     *  Store the excel file to the server without a download popup
+     *
+     *  @param str $ext The file extension
+     *  @param str $path The save path
+     *  @return $this
+     *
+     */
+
+    public function store($ext = 'xls', $path = false)
+    {
 
         // Set the default path
         if($path == false)
         {
             $path = Config::get('excel::path');
         }
+
+        // Trim of slashes, to makes sure we won't add them double.
+        $path = rtrim($path, '/');
+        $path = ltrim($path, '/');
 
         // Set the extension
         $this->ext = $ext;
@@ -444,9 +467,7 @@ class Excel extends \PHPExcel
         $this->render();
 
         // Save the file to specified location
-        $this->object->save($this->title . '.' . $this->ext);
-
-        exit;
+        $this->object->save('/' .$path . '/' . $this->title . '.' . $this->ext);
     }
 
     /**
@@ -506,16 +527,6 @@ class Excel extends \PHPExcel
 
         // Set to first sheet
         $this->excel->setActiveSheetIndex(0);
-
-        // Set the headers
-        header('Content-Type: application/vnd.ms-excel');
-        header('Content-Disposition: attachment;filename="' . $this->title . '.'. $this->ext .'"');
-        header('Cache-Control: max-age=0');
-        header('Cache-Control: max-age=1');
-        header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
-        header('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
-        header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
-        header('Pragma: public'); // HTTP/1.0
 
         // Create the writer
         return $this->object = \PHPExcel_IOFactory::createWriter($this->excel, $this->format);
@@ -803,6 +814,19 @@ class Excel extends \PHPExcel
         }
 
         return $parsedCSV;
+    }
+
+    private function setHeaders()
+    {
+        // Set the headers
+        header('Content-Type: application/vnd.ms-excel');
+        header('Content-Disposition: attachment;filename="' . $this->title . '.'. $this->ext .'"');
+        header('Cache-Control: max-age=0');
+        header('Cache-Control: max-age=1');
+        header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+        header('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
+        header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+        header('Pragma: public'); // HTTP/1.0
     }
 
     /**
