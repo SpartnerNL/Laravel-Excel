@@ -60,6 +60,14 @@ Excel::loadView('folder.file', array('data'))
         ->export('xls');
 ```
 
+To store the file to the server use `store($extension, $path)` The path is optional, when this is empty, the default setting in the config will be used.
+```php
+Excel::loadView('folder.file', array('data'))
+        ->setTitle('Title')
+        ->sheet('SheetName')
+        ->store('xls');
+```
+
 #Importing
 
 To import CSV data:
