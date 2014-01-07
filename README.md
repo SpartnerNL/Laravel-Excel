@@ -1,4 +1,4 @@
-## Laravel 4 Wrapper for PHPExcel v0.1.2
+## Laravel 4 Wrapper for PHPExcel v0.1.3
 
     Warning: This package is still in development!
 
