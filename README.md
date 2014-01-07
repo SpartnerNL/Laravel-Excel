@@ -60,6 +60,11 @@ Excel::loadView('folder.file', array('data'))
         ->export('xls');
 ```
 
+It possible to use some basic styling inside the table.
+HTML tags `<strong>, <i> and <b>` are supported at this moment.
+
+#Store to server
+
 To store the file to the server use `store($extension, $path)` The path is optional, when this is empty, the default setting in the config will be used.
 ```php
 Excel::loadView('folder.file', array('data'))
