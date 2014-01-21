@@ -2,6 +2,7 @@
 
 use Config;
 use Maatwebsite\Excel\Readers\HTML_reader;
+use \PHPExcel_Shared_Date;
 
 /**
  * Laravel wrapper for PHPEXcel
@@ -27,6 +28,10 @@ class Excel extends \PHPExcel
     protected $ignoreEmpty = false;
     protected $isParsed = false;
     protected $firstRowAsLabel = false;
+    protected $formatDates = true;
+    protected $dateFormat = 'Y-m-d';
+    protected $useCarbon = false;
+    protected $carbonMethod = 'toDateTimeString';
 
     /**
      *
@@ -107,13 +112,44 @@ class Excel extends \PHPExcel
         $this->format = \PHPExcel_IOFactory::identify($this->file);
 
         // Init the reader
-        $this->reader = \PHPExcel_IOFactory::createReader($this->format)
-                                                ->setReadDataOnly(true);
+        $this->reader = \PHPExcel_IOFactory::createReader($this->format);
 
         // Load the file
         $this->excel = $this->reader->load($this->file);
 
         // Return itself
+        return $this;
+    }
+
+    /**
+     * Set the date format
+     * @param str $format The date format
+     */
+    public function setDateFormat($format)
+    {
+        $this->dateFormat = $format;
+        return $this;
+    }
+
+    /**
+     * Enable/disable date formating
+     * @param  bool $boolean True/false
+     */
+    public function formatDates($boolean)
+    {
+        $this->formatDates = $boolean;
+        return $this;
+    }
+
+    public function useCarbon($method = false)
+    {
+        $this->useCarbon = true;
+
+        if($method)
+        {
+            $this->carbonMethod = $method;
+        }
+
         return $this;
     }
 
@@ -753,17 +789,37 @@ class Excel extends \PHPExcel
                     $index = $this->labels[$i];
                 }
 
-                // Check if we want calculated values or not
-                if($this->calculate !== false)
+                // If the cell is a date time and we want to parse them
+                if($this->formatDates !== false && PHPExcel_Shared_Date::isDateTime($this->cell))
                 {
+                    // Convert excel time to php date object
+                    $value = PHPExcel_Shared_Date::ExcelToPHPObject($this->cell->getCalculatedValue());
+
+                    // Format the date
+                    $value = $value->format($this->dateFormat);
+
+                    if($this->useCarbon)
+                    {
+                        $value = \Carbon::parse($value)->{$this->carbonMethod}();
+                    }
+                }
+
+                // Check if we want calculated values or not
+                elseif($this->calculate !== false)
+                {
+
                     // Get calculated value
-                    $parsedCells[$index] = $this->cell->getCalculatedValue();
+                    $value = $this->cell->getCalculatedValue();
+
                 }
                 else
                 {
                     // Get real value
-                    $parsedCells[$index] = $this->cell->getValue();
+                    $value = $this->cell->getValue();
                 }
+
+                // Set the value
+                $parsedCells[$index] = $value;
 
             }
 

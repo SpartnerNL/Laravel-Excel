@@ -1,4 +1,4 @@
-## Laravel 4 Wrapper for PHPExcel v0.1.3
+## Laravel 4 Wrapper for PHPExcel v0.1.4
 
     Warning: This package is still in development!
 
@@ -99,6 +99,22 @@ Excel::load('file.csv')->setDelimiter(';')->toArray();
 By default cells with formulas will not be calculated. If you want to calculate them, use the `calculate()` chain. You can change the default inside the config.
 ```php
 Excel::load('file.xls')->calculate()->toArray();
+```
+
+By default cells will date/timestamps will be parsed to a PHP date Object and converted to Y-m-d.
+You can disable this feature by using `formatDates(false)`
+```php
+Excel::load('file.xls')->formatDates(false)->toArray();
+```
+
+The date format can be changed by using `setDateFormat('Y-m-d')`. You can use all PHP Datetime formats;
+```php
+Excel::load('file.xls')->setDateFormat('Y-m-d')->toArray();
+```
+
+Optionally you can use Carbon to format the date. Use `useCarbon($methodName)`
+```php
+Excel::load('file.xls')->useCarbon('diffForHumans')->toArray();
 ```
 
 If you want to limit the data which will be parsed, use `limit()`.
