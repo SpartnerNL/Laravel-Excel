@@ -1063,7 +1063,7 @@ class Excel extends \PHPExcel
      *  Set the cell format of the column
      *
      *  @return $this
-	 *  @param array $delimit An array of cells you want to format columns
+	 *  @param array $formats An array of cells you want to format columns
      *
      *  @author xiehai
      *  @example ->setColumnFormat(array(
