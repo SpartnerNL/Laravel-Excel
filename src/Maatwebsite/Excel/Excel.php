@@ -982,7 +982,7 @@ class Excel extends \PHPExcel
      *
      */
 	
-	public function setBorder($pane = '', $weight = 'thin')
+	public function setBorder($pane = 'A1', $weight = 'thin')
     {
     	/*
 		@ ~ Border styles list ~ @
