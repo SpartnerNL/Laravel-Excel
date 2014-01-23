@@ -915,24 +915,24 @@ class Excel extends \PHPExcel
         }
 
     }
-    
+
     /**
      *
      *  Freeze or lock rows and columns
-     * 
+     *
      *  @param string $pane rows and columns , default freeze the first row
      *  @return $this
-     *  
+     *
      *  @author xiehai
      *  @example ->setFreeze()          Freeze the first row
      *           ->setFreeze('B1')      Freeze the first column (THE A COLUMN)
      *           ->setFreeze('B2')      Freeze the first row and first column
-     * 
+     *
      */
-     
+
     public function setFreeze($pane = 'A2')
     {
-        $this->excel->getActiveSheet()->freezePane($col);
+        $this->excel->getActiveSheet()->freezePane($pane);
         return $this;
     }
 }
