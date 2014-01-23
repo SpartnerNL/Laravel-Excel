@@ -929,10 +929,39 @@ class Excel extends \PHPExcel
      *           ->setFreeze('B2')      Freeze the first row and first column
      *
      */
-
     public function setFreeze($pane = 'A2')
     {
         $this->excel->getActiveSheet()->freezePane($pane);
+        return $this;
+    }
+
+    /**
+     * Freeze the first row
+     * @return  $this
+     */
+    public function freezeFirstRow()
+    {
+        $this->setFreeze('A2');
+        return $this;
+    }
+
+    /**
+     * Freeze the first column
+     * @return  $this
+     */
+    public function freezeFirstColumn()
+    {
+        $this->setFreeze('B1');
+        return $this;
+    }
+
+    /**
+     * Freeze the first row and column
+     * @return  $this
+     */
+    public function freezeFirstRowAndColumn()
+    {
+        $this->setFreeze('B2');
         return $this;
     }
 }

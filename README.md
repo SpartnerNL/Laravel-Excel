@@ -73,6 +73,28 @@ Excel::loadView('folder.file', array('data'))
         ->store('xls');
 ```
 
+
+#Freeze / lock rows and columns
+
+To freeze the first row of the sheet:
+```php
+->freezeFirstRow()
+```
+To freeze the first column of the sheet:
+```php
+->freezeFirstColumn()
+```
+
+To freeze the first row and first column of the sheet:
+```php
+->freezeFirstRowAndColumn()
+```
+
+Freeze based on coordinate
+```php
+->setFreeze('B1')
+```
+
 #Importing
 
 To import CSV data:
