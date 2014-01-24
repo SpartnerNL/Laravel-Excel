@@ -402,6 +402,8 @@ class HTML_reader extends \PHPExcel_Reader_HTML
 //                      echo 'START OF TABLE ' , $this->_tableLevel , ' ROW<br />';
                         $this->_processDomElement($child,$sheet,$row,$column,$cellContent);
 //                      echo 'END OF TABLE ' , $this->_tableLevel , ' ROW<br />';
+//
+//                      Count the rows after the element was parsed
                         ++$row;
                         break;
                     case 'th' :
