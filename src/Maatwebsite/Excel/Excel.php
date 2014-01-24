@@ -934,7 +934,7 @@ class Excel extends \PHPExcel
         $this->excel->getActiveSheet()->freezePane($pane);
         return $this;
     }
-	
+
 
 
 
@@ -968,7 +968,7 @@ class Excel extends \PHPExcel
         $this->setFreeze('B2');
         return $this;
     }
-	
+
 	/**
      *
      *  Set a range of cell borders
@@ -981,12 +981,12 @@ class Excel extends \PHPExcel
      *  @example ->setBorder('A1:F10','thick')
      *
      */
-	
+
 	public function setBorder($pane = 'A1', $weight = 'thin')
     {
     	/*
 		@ ~ Border styles list ~ @
-		
+
 		PHPExcel_Style_Border::BORDER_NONE = 'none'
 		PHPExcel_Style_Border::BORDER_DASHDOT = 'dashDot'
 		PHPExcel_Style_Border::BORDER_DASHDOTDOT = 'dashDotDot'
@@ -1001,19 +1001,20 @@ class Excel extends \PHPExcel
 		PHPExcel_Style_Border::BORDER_SLANTDASHDOT = 'slantDashDot'
 		PHPExcel_Style_Border::BORDER_THICK = 'thick'
 		PHPExcel_Style_Border::BORDER_THIN = 'thin'
-		*/ 
-		
+		*/
+
 		$weight = $pane == 'A1' ? 'none' : $weight;
-		
+
+        // Set all borders
 		$this->excel->getActiveSheet()
 					->getStyle($pane)
 					->getBorders()
 					->getAllBorders()
 					->setBorderStyle($weight);
-		
+
         return $this;
     }
-	
+
 	/**
      *
      *  Set all cell borders
@@ -1025,7 +1026,7 @@ class Excel extends \PHPExcel
      *  @example Excel::create()->setAllBorder()   Must follow the function of create()
      *
      */
-	
+
 	public function setAllBorder($weight = 'thin')
 	{
 		$styleArray = array(
@@ -1035,11 +1036,14 @@ class Excel extends \PHPExcel
 				)
 			)
 		);
-		
-        $this->excel->getDefaultStyle()->applyFromArray($styleArray);
+
+        // Apply the style
+        $this->excel->getDefaultStyle()
+                    ->applyFromArray($styleArray);
+
 		return $this;
 	}
-	
+
 	/**
      *
      *  Set AutoFilter
@@ -1050,14 +1054,15 @@ class Excel extends \PHPExcel
      *  @example ->setAutoFilter()
      *
      */
-     
+
     public function setAutoFilter(){
         $this->excel->getActiveSheet()
-                    ->setAutoFilter($this->excel->getActiveSheet()->calculateWorksheetDimension());
-        
+                    ->setAutoFilter($this->excel->getActiveSheet()
+                    ->calculateWorksheetDimension());
+
         return $this;
     }
-	
+
 	/**
      *
      *  Set the cell format of the column
@@ -1075,12 +1080,12 @@ class Excel extends \PHPExcel
 	 * 		)
 	 *  )
      *  @uses This method can only be used before the with() method
-	 * 
+	 *
      */
-     
+
      /*
 	  * @ ~ The Format list ~ @
-	  * 
+	  *
 	  	PHPExcel_Style_NumberFormat::FORMAT_GENERAL = 'General'
 		PHPExcel_Style_NumberFormat::FORMAT_TEXT = '@'
 		PHPExcel_Style_NumberFormat::FORMAT_NUMBER = '0'
@@ -1115,16 +1120,19 @@ class Excel extends \PHPExcel
 		PHPExcel_Style_NumberFormat::FORMAT_CURRENCY_USD = '$#,##0_-'
 		PHPExcel_Style_NumberFormat::FORMAT_CURRENCY_EUR_SIMPLE = '[$EUR ]#,##0.00_-'
 	  */
-	
+
 	public function setColumnFormat(Array $formats){
-        
+
+        // Loop through the columns
 		foreach ($formats as $column => $format) {
+
+            // Change the format for a specific cell or range
 			$this->excel->getActiveSheet()
         				->getStyle($column)
         				->getNumberFormat()
         				->setFormatCode($format);
 		}
-        
+
         return $this;
     }
 }
