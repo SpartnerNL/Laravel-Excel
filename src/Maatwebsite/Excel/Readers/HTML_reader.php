@@ -397,12 +397,12 @@ class HTML_reader extends \PHPExcel_Reader_HTML
                         $this->_processDomElement($child,$sheet,$row,$column,$cellContent);
                         break;
                     case 'tr' :
-                        ++$row;
                         $column = $this->_getTableStartColumn();
                         $cellContent = '';
 //                      echo 'START OF TABLE ' , $this->_tableLevel , ' ROW<br />';
                         $this->_processDomElement($child,$sheet,$row,$column,$cellContent);
 //                      echo 'END OF TABLE ' , $this->_tableLevel , ' ROW<br />';
+                        ++$row;
                         break;
                     case 'th' :
                     case 'td' :
