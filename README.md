@@ -1,6 +1,6 @@
-## Laravel 4 Wrapper for PHPExcel v0.1.5
+## Laravel 4 Wrapper for PHPExcel v0.1.6
 
-    Warning: This package is still in development!
+WARNING: We changed the PHPExcel branch from develop to master.
 
 #Installation
 
