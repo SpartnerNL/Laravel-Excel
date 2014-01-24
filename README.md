@@ -156,6 +156,39 @@ To convert from one filetype to another, use `convert()`:
 return Excel::load('file.csv')->convert('xls');
 ```
 
+#Cell and range formatting
+
+If you want to format a certain column or range, you can use `setColumnFormat(array())`.
+Use the column coordinate or range as array index and use the format code as array value.
+
+Example to get two leading zeros before the number:
+```php
+->setColumnFormat(array(
+    'A2:K2' => '0000'
+ )
+```
+
+#Auto filter
+
+Setting filters on the heading
+```php
+->setAutoFilter()
+```
+
+#Setting and styling borders
+
+To style and set all borders use:
+```php
+->setAllBorder('thick')
+```
+
+To style the border of a range
+```php
+->setBorder('A1:F10,'thick')
+```
+
+You can use all the PHP Excel border styles.
+
 #Config
 
 Optional settings can be found in the config file. Use the artisan publish command to publish the config file to your project.
