@@ -1135,4 +1135,5 @@ class Excel extends \PHPExcel
 
         return $this;
     }
+
 }
