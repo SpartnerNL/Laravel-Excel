@@ -117,8 +117,8 @@ class Excel extends \PHPExcel
         // Load the file
         $this->excel = $this->reader->load($this->file);
 
-        // Return itself
-        return $this;
+        // Return reader object for chaining methods from PHPExcel
+        return $this->excel;
     }
 
     /**
