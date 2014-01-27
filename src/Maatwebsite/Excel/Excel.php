@@ -16,7 +16,7 @@ class Excel extends \PHPExcel
 {
 
 
-    protected $excel;
+    public $excel;
     protected $object;
     public $i = 0; // the current sheet number
     public $title;
