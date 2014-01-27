@@ -16,7 +16,7 @@ class Excel extends \PHPExcel
 {
 
 
-    protected $excel;
+    public $excel;
     protected $object;
     public $i = 0; // the current sheet number
     public $title;
@@ -117,8 +117,8 @@ class Excel extends \PHPExcel
         // Load the file
         $this->excel = $this->reader->load($this->file);
 
-        // Return reader object for chaining methods from PHPExcel
-        return $this->excel;
+        // Return itself
+        return $this
     }
 
     /**
