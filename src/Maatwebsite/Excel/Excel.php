@@ -16,7 +16,7 @@ class Excel extends \PHPExcel
 {
 
 
-    protected $excel;
+    public $excel;
     protected $object;
     public $i = 0; // the current sheet number
     public $title;
@@ -1133,6 +1133,81 @@ class Excel extends \PHPExcel
         				->setFormatCode($format);
 		}
 
+        return $this;
+    }
+
+	/**
+     *
+     *  Set the cell width of the columns
+     *
+     *  @return $this
+	 *  @param array $pane An array of column widths
+     *
+     *  @author xiehai
+     *  @example ->setColumnWidth(array(
+	 * 			'A' => '10',
+	 * 			'B' => '22',
+	 * 			'F' => '8',
+	 * 			'N' => '13',
+	 * 			......
+	 * 		)
+	 *  )
+	 *
+     */
+
+    public function setColumnWidth(Array $pane)
+    {
+
+		foreach ($pane as $column => $width) {
+			$this->excel->getActiveSheet()->getColumnDimension($column)->setWidth($width);
+		}
+
+        return $this;
+    }
+
+	/**
+     *
+     *  Set the columns you want to merge
+	 *
+	 *  @return $this
+	 *  @param array $mergeColumn An array of columns you want to merge
+	 *
+	 *  @author xiehai
+	 *  @example	$mergeColumn = array(
+	 *		            'columns' => array('A','B','C','D'),
+	 *		            'rows' => array(
+	 *			 			array(2,3),
+	 *			 			array(5,11),
+	 * 						.....
+	 *			 		 )
+	 * 		      );
+     *
+     */
+    public function setMergeColumn(Array $mergeColumn)
+    {
+
+        foreach ($mergeColumn['columns'] as $column) {
+            foreach ($mergeColumn['rows'] as $row) {
+                $this->mergeCells($column.$row[0].":".$column.$row[1]);
+            }
+        }
+
+        return $this;
+    }
+
+	/**
+     *
+     *  Native merged cell method
+	 *
+	 *  @return $this
+	 *  @param array $cells
+	 *
+	 *  @author xiehai
+     *
+     */
+	public function mergeCells($cells)
+	{
+        $this->excel->getActiveSheet()->mergeCells($cells);
         return $this;
     }
 
