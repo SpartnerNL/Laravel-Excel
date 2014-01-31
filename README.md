@@ -1,7 +1,5 @@
 ## Laravel 4 Wrapper for PHPExcel v0.1.6
 
-WARNING: We changed the PHPExcel branch from develop to master.
-
 #Installation
 
 Require this package in your `composer.json` and update composer. This will download the package and PHPExcel of PHPOffice.
