@@ -503,7 +503,7 @@ class Excel extends \PHPExcel
         $this->render();
 
         // Save the file to specified location
-        $this->object->save('/' .$path . '/' . $this->title . '.' . $this->ext);
+        $this->object->save($path . '/' . $this->title . '.' . $this->ext);
     }
 
     /**
