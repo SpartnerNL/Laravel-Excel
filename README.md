@@ -7,6 +7,11 @@ Require this package in your `composer.json` and update composer. This will down
 "maatwebsite/excel": "dev-master"
 ```
 
+Set the minimum stability to dev
+```php
+"minimum-stability": "dev"
+```
+
 After updating composer, add the ServiceProvider to the providers array in `app/config/app.php`
 ```php
 'Maatwebsite\Excel\ExcelServiceProvider',
