@@ -904,6 +904,10 @@ class Excel extends \PHPExcel
                 return 'Excel5';
                 break;
 
+             case 'xlsx':
+                return 'Excel2007';
+            break;
+
             case 'csv':
                 return 'CSV';
                 break;
@@ -934,10 +938,6 @@ class Excel extends \PHPExcel
         $this->excel->getActiveSheet()->freezePane($pane);
         return $this;
     }
-
-
-
-
 
     /**
      * Freeze the first row
