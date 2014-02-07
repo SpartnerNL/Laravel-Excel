@@ -7,7 +7,7 @@ use \PHPExcel_Shared_Date;
 /**
  * Laravel wrapper for PHPEXcel
  *
- * @version 0.1.0
+ * @version 0.1.9
  * @package maatwebsite/excel
  * @author Maatwebsite <info@maatwebsite.nl>
  */

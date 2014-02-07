@@ -1,4 +1,4 @@
-## Laravel 4 Wrapper for PHPExcel v0.1.8
+## Laravel 4 Wrapper for PHPExcel v0.1.9
 
 #Installation
 
@@ -45,6 +45,11 @@ Excel::create('ExcelName')
 Export as CSV by using:
 ```php
 ->export('csv');
+```
+
+Export as Excel2007 by using:
+```php
+->export('xlsx');
 ```
 
 #Export from View file
