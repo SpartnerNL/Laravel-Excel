@@ -196,5 +196,5 @@ You can use all the PHP Excel border styles.
 
 Optional settings can be found in the config file. Use the artisan publish command to publish the config file to your project.
 ```php
-php artisan config:publish Maatwebsite/excel
+php artisan config:publish maatwebsite/excel
 ```
