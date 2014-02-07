@@ -7,7 +7,7 @@ use \PHPExcel_Shared_Date;
 /**
  * Laravel wrapper for PHPEXcel
  *
- * @version 0.1.9
+ * @version 0.2.0
  * @package maatwebsite/excel
  * @author Maatwebsite <info@maatwebsite.nl>
  */
@@ -114,10 +114,19 @@ class Excel extends \PHPExcel
         // Init the reader
         $this->reader = \PHPExcel_IOFactory::createReader($this->format);
 
+        // Set default delimiter
+        $this->reader->setDelimiter($this->delimiter);
+
         // Load the file
         $this->excel = $this->reader->load($this->file);
 
         // Return itself
+        return $this;
+    }
+
+    public function reload()
+    {
+        $this->excel = $this->reader->load($this->file);
         return $this;
     }
 
@@ -208,6 +217,39 @@ class Excel extends \PHPExcel
     public function setDelimiter($delimiter)
     {
         $this->delimiter = $delimiter;
+        $this->reader->setDelimiter($delimiter);
+        $this->reload();
+        return $this;
+    }
+    /**
+     *
+     *  Set the delimiter for CSV
+     *
+     *  @param str $delimiter The delimiter we want to use
+     *  @return $this
+     *
+     */
+
+    public function setEnclosure($enclosure = '')
+    {
+        $this->reader->setEnclosure($enclosure);
+        $this->reload();
+        return $this;
+    }
+
+    /**
+     *
+     *  Set the delimiter for CSV
+     *
+     *  @param str $delimiter The delimiter we want to use
+     *  @return $this
+     *
+     */
+
+    public function setLineEnding($lineEnding = "\r\n")
+    {
+        $this->reader->setLineEnding($lineEnding);
+        $this->reload();
         return $this;
     }
 
@@ -340,7 +382,6 @@ class Excel extends \PHPExcel
     {
         // Parse the file
         $this->parseFile();
-
         return (object) json_decode(json_encode($this->parsed));
     }
 
@@ -665,34 +706,8 @@ class Excel extends \PHPExcel
         // Loop through the cells
         foreach ($this->row->getCellIterator() as $this->cell) {
 
-            // If format is CSV
-            if($this->format == 'CSV')
-            {
-                // Check if the cell is not empty
-                if (!empty($this->cell)) {
-
-                    // Expolode the cell on the delimiter
-                    $this->cells = explode($this->delimiter, $this->cell->getValue());
-
-                    $i = 0;
-
-                    // Loop through the cells
-                    foreach($this->cells as $this->cell)
-                    {
-                        // Set the labels
-                        $this->labels[$i] = str_replace(' ', '-',strtolower($this->cell));
-                        $i++;
-                    }
-
-                    break;
-
-                }
-            }
-            else
-            {
-                // Set labels
-                $this->labels[] = str_replace(' ', '-',strtolower($this->cell->getValue()));
-            }
+            // Set labels
+            $this->labels[] = str_replace(' ', '-',strtolower($this->cell->getValue()));
 
         }
 
@@ -768,60 +783,47 @@ class Excel extends \PHPExcel
         // Foreach cells
         foreach ($this->cellIterator as $this->cell) {
 
-            if($this->format == 'CSV')
-            {
-                // Parse the CSV cell
-                $parsedCells = $this->parseCSVCell();
+            // Get the cell index
+            $index = \PHPExcel_Cell::columnIndexFromString($this->cell->getColumn());
 
-                // break to prevent empty rows and cells
-                break;
+            // Check how we need to save the parsed array
+            if($this->firstRowAsLabel !== false)
+            {
+                // Set label index
+                $index = $this->labels[$i];
+            }
+
+            // If the cell is a date time and we want to parse them
+            if($this->formatDates !== false && PHPExcel_Shared_Date::isDateTime($this->cell))
+            {
+                // Convert excel time to php date object
+                $value = PHPExcel_Shared_Date::ExcelToPHPObject($this->cell->getCalculatedValue());
+
+                // Format the date
+                $value = $value->format($this->dateFormat);
+
+                if($this->useCarbon)
+                {
+                    $value = \Carbon::parse($value)->{$this->carbonMethod}();
+                }
+            }
+
+            // Check if we want calculated values or not
+            elseif($this->calculate !== false)
+            {
+
+                // Get calculated value
+                $value = $this->cell->getCalculatedValue();
+
             }
             else
             {
-
-                // Get the cell index
-                $index = \PHPExcel_Cell::columnIndexFromString($this->cell->getColumn());
-
-                // Check how we need to save the parsed array
-                if($this->firstRowAsLabel !== false)
-                {
-                    // Set label index
-                    $index = $this->labels[$i];
-                }
-
-                // If the cell is a date time and we want to parse them
-                if($this->formatDates !== false && PHPExcel_Shared_Date::isDateTime($this->cell))
-                {
-                    // Convert excel time to php date object
-                    $value = PHPExcel_Shared_Date::ExcelToPHPObject($this->cell->getCalculatedValue());
-
-                    // Format the date
-                    $value = $value->format($this->dateFormat);
-
-                    if($this->useCarbon)
-                    {
-                        $value = \Carbon::parse($value)->{$this->carbonMethod}();
-                    }
-                }
-
-                // Check if we want calculated values or not
-                elseif($this->calculate !== false)
-                {
-
-                    // Get calculated value
-                    $value = $this->cell->getCalculatedValue();
-
-                }
-                else
-                {
-                    // Get real value
-                    $value = $this->cell->getValue();
-                }
-
-                // Set the value
-                $parsedCells[$index] = $value;
-
+                // Get real value
+                $value = $this->cell->getValue();
             }
+
+            // Set the value
+            $parsedCells[$index] = $value;
 
             $i++;
 
@@ -830,46 +832,6 @@ class Excel extends \PHPExcel
         // Return array with parsed cells
         return $parsedCells;
 
-    }
-
-    /**
-     *
-     *  Parse the CSV cell
-     *
-     *  @return $this
-     *
-     */
-
-    private function parseCSVCell()
-    {
-        // Explode the cell content by the delimiter
-        $this->cells = explode($this->delimiter, $this->cell->getValue());
-
-        $i = 0;
-
-        // Loop through the cells
-        foreach($this->cells as $newCell)
-        {
-
-            // Check how we need to save the parsed array
-            if($this->firstRowAsLabel !== false)
-            {
-                // Set label index
-                $index = $this->labels[$i];
-            }
-            else
-            {
-                // Set i as index
-                $index = $i;
-            }
-
-            // Set parsed array
-            $parsedCSV[$index] = $newCell;
-
-            $i++;
-        }
-
-        return $parsedCSV;
     }
 
     private function setHeaders()

@@ -1,4 +1,4 @@
-## Laravel 4 Wrapper for PHPExcel v0.1.9
+## Laravel 4 Wrapper for PHPExcel v0.2.0
 
 #Installation
 
@@ -150,6 +150,11 @@ Excel::load('file.xls')->useCarbon('diffForHumans')->toArray();
 If you want to limit the data which will be parsed, use `limit()`.
 ```php
 Excel::load('file.csv')->limit(10)->toArray();
+```
+
+If you want to output the loaded data to an object, use `toObject()`
+```php
+Excel::load('file.csv')->toObject();
 ```
 
 For developping purposes you can choose to dump the returned parsed file to a readable array:
