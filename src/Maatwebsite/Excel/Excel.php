@@ -535,7 +535,7 @@ class Excel extends \PHPExcel
 
         // Trim of slashes, to makes sure we won't add them double.
         $path = rtrim($path, '/');
-        $path = ltrim($path, '/');
+        //$path = ltrim($path, '/');
 
         // Set the extension
         $this->ext = $ext;
