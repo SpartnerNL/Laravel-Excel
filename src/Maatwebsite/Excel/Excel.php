@@ -115,7 +115,7 @@ class Excel extends \PHPExcel
         $this->reader = \PHPExcel_IOFactory::createReader($this->format);
 
         // Set default delimiter
-        $this->reader->setDelimiter($this->delimiter);
+        //$this->reader->setDelimiter($this->delimiter);
 
         // Load the file
         $this->excel = $this->reader->load($this->file);
