@@ -53,11 +53,13 @@ class Excel extends \PHPExcel
             App::abort('500', "Error initing PHPExcel: ".$e->getMessage());
         }
 
-
         // Set defaults
         $this->delimiter = Config::get('excel::delimiter');
         $this->calculate = Config::get('excel::calculate');
         $this->ignoreEmpty = Config::get('excel::ignoreEmpty');
+
+        // Reset i back to zero
+        $this->i = 0;
 
     }
 
@@ -73,11 +75,14 @@ class Excel extends \PHPExcel
     public function create($title)
     {
 
+        // Reset i back to zero
+        $this->i = 0;
+
         // Set file title
         $this->title = $title;
 
         // Remove the default worksheet
-        $this->excel->removeSheetByIndex(0);
+        $this->excel->disconnectWorksheets();
 
         // Set properties
         $this->excel->getProperties()
