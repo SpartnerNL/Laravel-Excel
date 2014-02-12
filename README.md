@@ -57,12 +57,12 @@ Export as Excel2007 by using:
 It's possible to export a blade view file to xls or csv. The view file must be a table.
 Use `loadView()` with a view file and data to be used inside the view.
 ```php
-Excel::loadView('folder.file', array('data'))->export('xls');
+Excel::loadView('folder.file', array('key' => 'value'))->export('xls');
 ```
 
 If you want to give the file and worksheet a name chain `setTitle()` and `sheet()` after the `loadView()`
 ```php
-Excel::loadView('folder.file', array('data'))
+Excel::loadView('folder.file', array('key' => 'value'))
         ->setTitle('Title')
         ->sheet('SheetName')
         ->export('xls');
