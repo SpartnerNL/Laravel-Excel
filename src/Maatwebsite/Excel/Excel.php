@@ -179,7 +179,7 @@ class Excel extends \PHPExcel
     public function loadHTML($string){
 
         // Include the HTML Reader
-        include 'Readers/HTML_reader.php';
+        include_once('Readers/HTML_reader.php');
 
         $this->reader = new HTML_reader;
         $this->excel = $this->reader->load($string);
