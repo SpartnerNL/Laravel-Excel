@@ -117,7 +117,10 @@ class Excel extends \PHPExcel
         $this->format = \PHPExcel_IOFactory::identify($this->file);
 
         // Init the reader
-        $this->reader = \PHPExcel_IOFactory::createReader($this->format)->setInputEncoding($inputEncoding);
+        $this->reader = \PHPExcel_IOFactory::createReader($this->format);
+
+        if ($this->format === 'CSV')
+            $this->reader->setInputEncoding($inputEncoding);
 
         // Set default delimiter
         //$this->reader->setDelimiter($this->delimiter);
