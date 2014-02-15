@@ -1,4 +1,4 @@
-## Laravel 4 Wrapper for PHPExcel v0.2.3
+## Laravel 4 Wrapper for PHPExcel v0.2.4
 
 #Installation
 
@@ -119,6 +119,11 @@ Excel::load('file.csv')->select(array(1, 2))->toArray();
 If the first row is the table heading, you can give the `load()` method an extra parameter. This will make sure the first row is interpreted as heading. These seperate columns values will be used as array indexes. Now you can select columns by their name. Note that the string will be lowercase and spaces will be replaced by `-`.
 ```php
 Excel::load('file.csv', true)->select(array('column1', 'column2'))->toArray();
+```
+
+To change the input encoding (default is UTF8), use the third parameter of `load()`
+```php
+Excel::load('file.csv', false, 'ISO-8859-1')->toArray();
 ```
 
 The delimiter can be changed right after the file load with `setDelimiter()`. The default delimiter is `,`, which has been set in the config file
