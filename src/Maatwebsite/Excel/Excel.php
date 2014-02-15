@@ -104,7 +104,7 @@ class Excel extends \PHPExcel
      *
      */
 
-    public function load($file, $firstRowAsLabel = false)
+    public function load($file, $firstRowAsLabel = false, $inputEncoding = 'UTF-8')
     {
 
         // Set defaults
@@ -118,6 +118,9 @@ class Excel extends \PHPExcel
 
         // Init the reader
         $this->reader = \PHPExcel_IOFactory::createReader($this->format);
+
+        if ($this->format === 'CSV')
+            $this->reader->setInputEncoding($inputEncoding);
 
         // Set default delimiter
         //$this->reader->setDelimiter($this->delimiter);
