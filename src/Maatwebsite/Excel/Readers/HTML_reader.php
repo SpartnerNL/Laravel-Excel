@@ -187,7 +187,7 @@ class HTML_reader extends \PHPExcel_Reader_HTML
         else
         {
             // Load HTML from string
-            $loaded = $dom->loadHTML(mb_convert_encoding($pFilename, 'HTML-ENTITIES', 'UTF-8'));
+            $loaded = @$dom->loadHTML(mb_convert_encoding($pFilename, 'HTML-ENTITIES', 'UTF-8'));
         }
 
         if ($loaded === FALSE) {
