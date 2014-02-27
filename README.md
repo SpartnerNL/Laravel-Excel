@@ -1,4 +1,4 @@
-## Laravel 4 Wrapper for PHPExcel v0.2.5
+## Laravel 4 Wrapper for PHPExcel v0.2.6
 
 #Installation
 

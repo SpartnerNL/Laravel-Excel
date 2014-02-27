@@ -128,13 +128,13 @@ class HTML_reader extends \PHPExcel_Reader_HTML
      * @return  PHPExcel
      * @throws  PHPExcel_Reader_Exception
      */
-    public function load($pFilename)
+    public function load($pFilename, $isString = false)
     {
         // Create new PHPExcel
         $objPHPExcel = new \PHPExcel();
 
         // Load into this instance
-        return $this->loadIntoExisting($pFilename, $objPHPExcel);
+        return $this->loadIntoExisting($pFilename, $objPHPExcel, $isString);
     }
 
     /**
@@ -145,20 +145,27 @@ class HTML_reader extends \PHPExcel_Reader_HTML
      * @return  PHPExcel
      * @throws  PHPExcel_Reader_Exception
      */
-    public function loadIntoExisting($pFilename, PHPExcel $objPHPExcel)
+    public function loadIntoExisting($pFilename, PHPExcel $objPHPExcel, $isString = false)
     {
+
         $isHtmlFile = FALSE;
-        if(is_file($pFilename)){
-           $isHtmlFile = TRUE;
-           // Open file to validate
-           $this->_openFile($pFilename);
 
-           if (!$this->_isValidFormat()) {
-             fclose ($this->_fileHandle);
-             throw new PHPExcel_Reader_Exception($pFilename . " is an Invalid HTML file.");
-           }
+        // Check if it's a string or file
+        if(!$isString)
+        {
+            // Double check if it's a file
+            if(is_file($pFilename)){
+               $isHtmlFile = TRUE;
+               // Open file to validate
+               $this->_openFile($pFilename);
 
-            fclose ($this->_fileHandle);
+               if (!$this->_isValidFormat()) {
+                 fclose ($this->_fileHandle);
+                 throw new PHPExcel_Reader_Exception($pFilename . " is an Invalid HTML file.");
+               }
+
+                fclose ($this->_fileHandle);
+            }
         }
 
         // Create new PHPExcel
