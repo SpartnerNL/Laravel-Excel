@@ -845,7 +845,21 @@ class Excel extends \PHPExcel
     private function setHeaders()
     {
         // Set the headers
-        header('Content-Type: application/vnd.ms-excel');
+        switch($this->ext)
+        {
+            case 'xlsx':
+                header('Content-type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+                break;
+
+            case 'csv':
+                header('Content-type: application/csv');
+                break;
+
+            default: // xls
+                header('Content-Type: application/vnd.ms-excel');
+                break;
+        }
+
         header('Content-Disposition: attachment;filename="' . $this->title . '.'. $this->ext .'"');
         header('Cache-Control: max-age=0');
         header('Cache-Control: max-age=1');
