@@ -1,4 +1,4 @@
-## Laravel 4 Wrapper for PHPExcel v0.2.7
+## Laravel 4 Wrapper for PHPExcel v0.2.8
 
 #Installation
 
@@ -70,11 +70,13 @@ HTML tags `<strong>, <i> and <b>` are supported at this moment.
 
 To store the file to the server use `store($extension, $path)` The path is optional, when this is empty, the default setting in the config will be used.
 ```php
-Excel::loadView('folder.file', array('data'))
+$file = Excel::loadView('folder.file', array('data'))
         ->setTitle('Title')
         ->sheet('SheetName')
         ->store('xls');
 ```
+
+The `store()` method returns information about the stored file (filename, location, extension, ...);
 
 
 #Freeze / lock rows and columns
