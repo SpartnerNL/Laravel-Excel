@@ -519,7 +519,7 @@ class Excel extends \PHPExcel
 
     public function save($ext = 'xls', $path = false)
     {
-        $this->store($ext, $path);
+        return $this->store($ext, $path);
     }
 
     /**
@@ -551,8 +551,20 @@ class Excel extends \PHPExcel
         // Render the XLS
         $this->render();
 
+        $toStore = $path . '/' . $this->title . '.' . $this->ext;
+
         // Save the file to specified location
-        $this->object->save($path . '/' . $this->title . '.' . $this->ext);
+        $this->object->save($toStore);
+
+        // Send back information about the stored file
+        return array(
+            'full'  => $toStore,
+            'path'  => $path,
+            'file'  => $this->title . '.' . $this->ext,
+            'title' => $this->title,
+            'ext'   => $this->ext
+        );
+
     }
 
     /**
