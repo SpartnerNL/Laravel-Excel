@@ -19,5 +19,6 @@
         "psr-0": {
             "Maatwebsite\\Excel": "src/"
         }
-    }
+    },
+    "minimum-stability": "stable"
 }
