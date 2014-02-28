@@ -1,15 +1,10 @@
-## Laravel 4 Wrapper for PHPExcel v0.2.6
+## Laravel 4 Wrapper for PHPExcel v0.2.7
 
 #Installation
 
 Require this package in your `composer.json` and update composer. This will download the package and PHPExcel of PHPOffice.
 ```php
 "maatwebsite/excel": "dev-master"
-```
-
-Set the minimum stability to dev
-```php
-"minimum-stability": "dev"
 ```
 
 After updating composer, add the ServiceProvider to the providers array in `app/config/app.php`
