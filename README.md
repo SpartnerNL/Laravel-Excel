@@ -1,5 +1,7 @@
 ## Laravel 4 Wrapper for PHPExcel v0.2.8
 
+[![Latest Stable Version](https://poser.pugx.org/maatwebsite/excel/v/stable.png)](https://packagist.org/packages/maatwebsite/excel) [![Total Downloads](https://poser.pugx.org/maatwebsite/excel/downloads.png)](https://packagist.org/packages/maatwebsite/excel) [![Latest Unstable Version](https://poser.pugx.org/maatwebsite/excel/v/unstable.png)](https://packagist.org/packages/maatwebsite/excel) [![License](https://poser.pugx.org/maatwebsite/excel/license.png)](https://packagist.org/packages/maatwebsite/excel)
+
 #Installation
 
 Require this package in your `composer.json` and update composer. This will download the package and PHPExcel of PHPOffice.
