@@ -727,7 +727,7 @@ class Excel extends \PHPExcel
         foreach ($this->row->getCellIterator() as $this->cell) {
 
             // Set labels
-            $this->labels[] = str_replace(' ', '-',strtolower($this->cell->getValue()));
+            $this->labels[] = \Str::slug($this->cell->getValue());
 
         }
 
