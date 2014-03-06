@@ -13,7 +13,7 @@
         "php": ">=5.3.0",
         "illuminate/support": "4.x",
         "illuminate/config": "4.x",
-        "phpoffice/phpexcel": "1.7.*@dev"
+        "phpoffice/phpexcel": "1.8.*@dev"
     },
     "autoload": {
         "psr-0": {
