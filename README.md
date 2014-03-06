@@ -6,6 +6,7 @@
 [x] CSV import fix
 [x] Date formatting fix
 [x] `loadView()` inline styles parsing
+[x] `store()` can return information about the storage or can be followed by `->export()`
 
 #Installation
 
@@ -100,8 +101,16 @@ $file = Excel::loadView('folder.file', array('data'))
         ->store('xls');
 ```
 
-The `store()` method returns information about the stored file (filename, location, extension, ...);
+The `store($ext, $path, true)` method returns information about the stored file (filename, location, extension, ...);
 
+When the third parameter is false, it's possible to chain other methods. This example will store and export the same file:
+```php
+$file = Excel::loadView('folder.file', array('data'))
+        ->setTitle('Title')
+        ->sheet('SheetName')
+        ->store('xls')
+        ->export('xls');
+```
 
 #Freeze / lock rows and columns
 

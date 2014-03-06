@@ -533,7 +533,7 @@ class Excel extends \PHPExcel
      *
      */
 
-    public function store($ext = 'xls', $path = false)
+    public function store($ext = 'xls', $path = false, $returnInfo = false)
     {
 
         // Set the default path
@@ -557,14 +557,22 @@ class Excel extends \PHPExcel
         // Save the file to specified location
         $this->object->save($toStore);
 
-        // Send back information about the stored file
-        return array(
-            'full'  => $toStore,
-            'path'  => $path,
-            'file'  => $this->title . '.' . $this->ext,
-            'title' => $this->title,
-            'ext'   => $this->ext
-        );
+
+        if($returnInfo)
+        {
+
+            // Send back information about the stored file
+            return array(
+                'full'  => $toStore,
+                'path'  => $path,
+                'file'  => $this->title . '.' . $this->ext,
+                'title' => $this->title,
+                'ext'   => $this->ext
+            );
+
+        }
+
+        return $this;
 
     }
 
