@@ -3,10 +3,10 @@
 [![Latest Stable Version](https://poser.pugx.org/maatwebsite/excel/v/stable.png)](https://packagist.org/packages/maatwebsite/excel) [![Total Downloads](https://poser.pugx.org/maatwebsite/excel/downloads.png)](https://packagist.org/packages/maatwebsite/excel) [![Latest Unstable Version](https://poser.pugx.org/maatwebsite/excel/v/unstable.png)](https://packagist.org/packages/maatwebsite/excel) [![License](https://poser.pugx.org/maatwebsite/excel/license.png)](https://packagist.org/packages/maatwebsite/excel)
 
 #New to v0.3.0
-[x] CSV import fix
-[x] Date formatting fix
-[x] `loadView()` inline styles parsing
-[x] `store()` can return information about the storage or can be followed by `->export()`
+- CSV import fix
+- Date formatting fix
+- `loadView()` inline styles parsing
+- `store()` can return information about the storage or can be followed by `->export()`
 
 #Installation
 
