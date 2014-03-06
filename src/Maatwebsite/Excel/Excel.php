@@ -3,6 +3,7 @@
 use Config;
 use Maatwebsite\Excel\Readers\HTML_reader;
 use \PHPExcel_Shared_Date;
+use \PHPExcel_Style_NumberFormat;
 
 /**
  * Laravel wrapper for PHPEXcel
@@ -813,19 +814,40 @@ class Excel extends \PHPExcel
                 $index = $this->labels[$i];
             }
 
-            // If the cell is a date time and we want to parse them
-            if($this->formatDates !== false && PHPExcel_Shared_Date::isDateTime($this->cell))
+            // If the cell is a date time
+            if(PHPExcel_Shared_Date::isDateTime($this->cell))
             {
-                // Convert excel time to php date object
-                $value = PHPExcel_Shared_Date::ExcelToPHPObject($this->cell->getCalculatedValue());
 
-                // Format the date
-                $value = $value->format($this->dateFormat);
-
-                if($this->useCarbon)
+                // Check if we want to parse the dates
+                if ($this->formatDates !== false)
                 {
-                    $value = \Carbon::parse($value)->{$this->carbonMethod}();
+
+                    // Convert excel time to php date object
+                    $value = PHPExcel_Shared_Date::ExcelToPHPObject($this->cell->getCalculatedValue());
+
+                    // Format the date
+                    $value = $value->format($this->dateFormat);
+
+                    // Use carbon to parse the time
+                    if($this->useCarbon)
+                    {
+                        $value = \Carbon::parse($value)->{$this->carbonMethod}();
+                    }
+
                 }
+                else
+                {
+                    // Format the date to a formatted string
+                    $value = (string) PHPExcel_Style_NumberFormat::toFormattedString(
+                        $this->cell->getCalculatedValue(),
+                        $this->cell->getWorksheet()->getParent()
+                            ->getCellXfByIndex($this->cell->getXfIndex())
+                            ->getNumberFormat()
+                            ->getFormatCode()
+                    );
+                }
+
+
             }
 
             // Check if we want calculated values or not
