@@ -8,7 +8,7 @@ use \PHPExcel_Style_NumberFormat;
 /**
  * Laravel wrapper for PHPEXcel
  *
- * @version 0.2.7
+ * @version 0.3.0
  * @package maatwebsite/excel
  * @author Maatwebsite <info@maatwebsite.nl>
  */

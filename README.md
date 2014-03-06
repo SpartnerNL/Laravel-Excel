@@ -1,6 +1,11 @@
-## Laravel 4 Wrapper for PHPExcel v0.2.8
+## Laravel 4 Wrapper for PHPExcel v0.3.0
 
 [![Latest Stable Version](https://poser.pugx.org/maatwebsite/excel/v/stable.png)](https://packagist.org/packages/maatwebsite/excel) [![Total Downloads](https://poser.pugx.org/maatwebsite/excel/downloads.png)](https://packagist.org/packages/maatwebsite/excel) [![Latest Unstable Version](https://poser.pugx.org/maatwebsite/excel/v/unstable.png)](https://packagist.org/packages/maatwebsite/excel) [![License](https://poser.pugx.org/maatwebsite/excel/license.png)](https://packagist.org/packages/maatwebsite/excel)
+
+#New to v0.3.0
+[x] CSV import fix
+[x] Date formatting fix
+[x] `loadView()` inline styles parsing
 
 #Installation
 
@@ -67,6 +72,23 @@ Excel::loadView('folder.file', array('key' => 'value'))
 
 It possible to use some basic styling inside the table.
 HTML tags `<strong>, <i> and <b>` are supported at this moment.
+
+Most of the inline styles are parsed:
+
+| Style tag name       | Value           |
+| ------------- |:-------------:|
+| background      | #000000 |
+| color     | #FFFFFF     |
+| font-weight | bold     |
+| font-style | italic     |
+| font-weight | bold     |
+| font-size | 20px     |
+| font-family | Open Sans     |
+| text-decoration | underline / line-through     |
+| text-align | center/left/right/justify     |
+| vertical-align | top/middle/bottom/justify     |
+| borders | 1px dashed #CCC     |
+| border-* | 1px dashed #CCC     |
 
 #Store to server
 
