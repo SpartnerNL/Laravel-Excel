@@ -234,7 +234,7 @@ To style and set all borders use:
 
 To style the border of a range
 ```php
-->setBorder('A1:F10,'thick')
+->setBorder('A1:F10','thick')
 ```
 
 You can use all the PHP Excel border styles.
