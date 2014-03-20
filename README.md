@@ -142,13 +142,13 @@ To import CSV data:
 Excel::load('file.csv')->toArray();
 ```
 
-Optionally you can select columns, by there column index.
+Optionally you can select columns, by their column index.
 An empty `select()`, or no select at all, means we will return all columns
 ```php
 Excel::load('file.csv')->select(array(1, 2))->toArray();
 ```
 
-If the first row is the table heading, you can give the `load()` method an extra parameter. This will make sure the first row is interpreted as heading. These seperate columns values will be used as array indexes. Now you can select columns by their name. Note that the string will be lowercase and spaces will be replaced by `-`.
+If the first row is the table heading, you can give the `load()` method an extra parameter. This will make sure the first row is interpreted as heading. These seperate columns values will be used as array indices. Now you can select columns by their name. Note that the string will be lowercase and spaces will be replaced by `-`.
 ```php
 Excel::load('file.csv', true)->select(array('column1', 'column2'))->toArray();
 ```
