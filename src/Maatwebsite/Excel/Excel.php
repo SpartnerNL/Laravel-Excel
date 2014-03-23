@@ -11,6 +11,7 @@ use \PHPExcel_Style_NumberFormat;
  * @version 0.3.0
  * @package maatwebsite/excel
  * @author Maatwebsite <info@maatwebsite.nl>
+ * @contributors Maatwebsite, mewben, hicode, lollypopgr, floptwo, jonwhittlestone, BoHolm
  */
 
 class Excel extends \PHPExcel
