@@ -246,6 +246,11 @@ Optional settings can be found in the config file. Use the artisan publish comma
 php artisan config:publish maatwebsite/excel
 ```
 
+#v1.0.0 TODO
+
+* Unit testing
+* Cell caching
+* 
 #License
 
 This package is licensed under LGPL. You are free to use it in personal and non-commercial projects. The code can be forked and modified, but original copyright author should always be included! 
