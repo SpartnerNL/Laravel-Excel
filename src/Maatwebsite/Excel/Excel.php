@@ -91,6 +91,12 @@ class Excel extends PHPExcel
     protected $view;
 
     /**
+     * View rendered
+     * @var boolean
+     */
+    protected $viewRendered = false;
+
+    /**
      * View data
      * @var array
      */
@@ -299,7 +305,6 @@ class Excel extends PHPExcel
     {
         $this->reader = $this->htmlReader;
         $this->excel = $this->reader->load($string, true);
-
         return $this;
     }
 
@@ -408,11 +413,9 @@ class Excel extends PHPExcel
      */
     public function limit($amount, $start = 0)
     {
-
         // Set the limit
         $this->limit = array($amount, $start);
         return $this;
-
     }
 
     /**
@@ -425,7 +428,6 @@ class Excel extends PHPExcel
      */
     public function select($keys = array())
     {
-
         // Parse the file
         $this->parseFile();
 
@@ -522,7 +524,7 @@ class Excel extends PHPExcel
      *  @return $this
      *
      */
-    public function sheet($title, $orientation = 'landscape')
+    public function sheet($title, $orientation = 'landscape', $isNewSheet = true)
     {
 
         // Set page orientation
@@ -759,10 +761,13 @@ class Excel extends PHPExcel
     protected function makeView()
     {
         // Make the view
-        $html = $this->viewFactory->make($this->view, $this->data, $this->mergeData);
+        $html = $this->viewFactory->make($this->view, $this->data, $this->mergeData)->render();
 
         // Load the html
         $this->loadHTML($html);
+
+        // Set to rendered
+        $this->viewRendered = true;
     }
 
     /**
@@ -1365,6 +1370,9 @@ class Excel extends PHPExcel
     {
         // Reset i back to zero
         $this->i = 0;
+
+        // Reset sheet info
+        //$this->sheet = array();
 
         // Reset parsed state
         $this->isParsed = false;

@@ -65,11 +65,18 @@ Use `loadView()` with a view file and data to be used inside the view.
 Excel::loadView('folder.file', array('key' => 'value'))->export('xls');
 ```
 
+Alternatively you can use `with('key', 'value')` or `withKey('value')` as view data setters.
+```php
+Excel::loadView('folder.file')
+    ->with('first', 'value1')
+    ->withSecond('value2')
+    ->export('xls');
+```
+
 If you want to give the file and worksheet a name chain `setTitle()` and `sheet()` after the `loadView()`
 ```php
-Excel::loadView('folder.file', array('key' => 'value'))
+Excel::sheet('SheetName')->loadView('folder.file', array('key' => 'value'))
         ->setTitle('Title')
-        ->sheet('SheetName')
         ->export('xls');
 ```
 
@@ -253,4 +260,4 @@ php artisan config:publish maatwebsite/excel
 
 #License
 
-This package is licensed under LGPL. You are free to use it in personal and non-commercial projects. The code can be forked and modified, but original copyright author should always be included! 
+This package is licensed under LGPL. You are free to use it in personal and non-commercial projects. The code can be forked and modified, but original copyright author should always be included!
