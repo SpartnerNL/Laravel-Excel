@@ -40,6 +40,19 @@ return array(
 
     'delimiter' => ',',
 
+    /*
+    |--------------------------------------------------------------------------
+    | Slug seperator
+    |--------------------------------------------------------------------------
+    |
+    | The default seperator for the Str::slug() method.
+    | If you have problemen with _ being converted to -, you can
+    | change the seperator to _ here.
+    |
+    */
+
+    'seperator' => '-',
+
      /*
     |--------------------------------------------------------------------------
     | Calculate

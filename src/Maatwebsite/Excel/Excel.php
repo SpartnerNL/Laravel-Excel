@@ -79,6 +79,12 @@ class Excel extends PHPExcel
     public $limit = false;
 
     /**
+     * Slug seperator
+     * @var string
+     */
+    public $seperator = '-';
+
+    /**
      * Loaded view
      * @var [type]
      */
@@ -162,6 +168,7 @@ class Excel extends PHPExcel
         $this->calculate = $this->config->get('excel::calculate', $this->calculate);
         $this->ignoreEmpty = $this->config->get('excel::ignoreEmpty', $this->ignoreEmpty);
         $this->dateFormat = $this->config->get('excel::date_format', $this->dateFormat);
+        $this->seperator = $this->config->get('excel::seperator', $this->seperator);
 
         // Reset
         $this->reset();
@@ -854,7 +861,7 @@ class Excel extends PHPExcel
         foreach ($this->row->getCellIterator() as $this->cell) {
 
             // Set labels
-            $this->labels[] = Str::slug($this->cell->getValue());
+            $this->labels[] = Str::slug($this->cell->getValue(), $this->seperator);
 
         }
 
