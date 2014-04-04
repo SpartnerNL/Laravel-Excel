@@ -16,23 +16,118 @@ use \PHPExcel_Style_NumberFormat;
 
 class Excel extends \PHPExcel
 {
-
-
+    /**
+     * PHP Excel object
+     * @var [type]
+     */
     public $excel;
+
+    /**
+     * Writer object
+     * @var [type]
+     */
     protected $object;
-    public $i = 0; // the current sheet number
+
+    /**
+     * Current sheet number
+     * @var integer
+     */
+    public $i = 0;
+
+    /**
+     * File title
+     * @var [type]
+     */
     public $title;
+
+    /**
+     * File extension
+     * @var [type]
+     */
     public $ext;
+
+    /**
+     * Format
+     * @var [type]
+     */
     public $format;
+
+    /**
+     * Delimtier
+     * @var [type]
+     */
     public $delimiter;
+
+    /**
+     * Calculate [true/false]
+     * @var [type]
+     */
     public $calculate;
+
+    /**
+     * Limit data
+     * @var boolean
+     */
     public $limit = false;
+
+    /**
+     * Loaded view
+     * @var [type]
+     */
+    protected $view;
+
+    /**
+     * View data
+     * @var array
+     */
+    protected $data = array();
+
+    /**
+     * View merge Data
+     * @var [type]
+     */
+    protected $mergeData;
+
+    /**
+     * Ignore empty cells
+     * @var boolean
+     */
     protected $ignoreEmpty = false;
+
+    /**
+     * File is parsed
+     * @var boolean
+     */
     protected $isParsed = false;
+
+    /**
+     * Use first row as array indices
+     * @var boolean
+     */
     protected $firstRowAsLabel = false;
+
+    /**
+     * Format dates
+     * @var boolean
+     */
     protected $formatDates = true;
+
+    /**
+     * Default date format
+     * @var string
+     */
     protected $dateFormat = 'Y-m-d';
+
+    /**
+     * Use carbon to format dates
+     * @var boolean
+     */
     protected $useCarbon = false;
+
+    /**
+     * Default carbon method
+     * @var string
+     */
     protected $carbonMethod = 'toDateTimeString';
 
     /**
@@ -124,9 +219,6 @@ class Excel extends \PHPExcel
         if ($this->format === 'CSV')
             $this->reader->setInputEncoding($inputEncoding);
 
-        // Set default delimiter
-        //$this->reader->setDelimiter($this->delimiter);
-
         // Load the file
         $this->excel = $this->reader->load($this->file);
 
@@ -206,12 +298,9 @@ class Excel extends \PHPExcel
 
     public function loadView($view, $data = array(), $mergeData = array()){
 
-        // Make the view
-        $html = \View::make($view, $data, $mergeData);
-
-        // Load the html
-        $this->loadHTML($html);
-
+        $this->view = $view;
+        $this->data = $data;
+        $this->mergeData = $mergeData;
         return $this;
     }
 
@@ -471,14 +560,33 @@ class Excel extends \PHPExcel
      *
      */
 
-    public function with($array)
+    public function with($key, $value = false)
     {
+        // If key is an array, we are assigning data to a new excel file,
+        // create a new active sheet from that array
+        if(is_array($key))
+        {
+            // Send the variables to the excel sheet
+            $this->excel
+                    ->getActiveSheet()
+                        ->fromArray($key);
+        }
+        else
+        {
+            return $this->addVars($key, $value);
+        }
 
-        // Send the variables to the excel sheet
-        $this->excel
-                ->getActiveSheet()
-                    ->fromArray($array);
+        return $this;
+    }
 
+    /**
+     * Add vars to the data array
+     * @param [type]  $key   [description]
+     * @param boolean $value [description]
+     */
+    public function addVars($key, $value = false)
+    {
+        $this->data[$key] = $value;
         return $this;
     }
 
@@ -628,6 +736,9 @@ class Excel extends \PHPExcel
 
     private function render()
     {
+        // If a view was set, make that view
+        if($this->view)
+            $this->makeView();
 
         // Set the render format
         $this->format = $this->decodeFormat($this->ext);
@@ -637,6 +748,19 @@ class Excel extends \PHPExcel
 
         // Create the writer
         return $this->object = \PHPExcel_IOFactory::createWriter($this->excel, $this->format);
+    }
+
+    /**
+     * Make the view and load the html
+     * @return [type] [description]
+     */
+    protected function makeView()
+    {
+        // Make the view
+        $html = \View::make($this->view, $this->data, $this->mergeData);
+
+        // Load the html
+        $this->loadHTML($html);
     }
 
     /**
@@ -1235,6 +1359,24 @@ class Excel extends \PHPExcel
 	public function mergeCells($cells)
 	{
         $this->excel->getActiveSheet()->mergeCells($cells);
+        return $this;
+    }
+
+    /**
+     * Dynamically call methods
+     * @param  [type] $method [description]
+     * @param  [type] $params [description]
+     * @return [type]         [description]
+     */
+    public function __call($method, $params)
+    {
+        // If the dynamic call starts with "with", add the var to the data array
+        if(starts_with($method, 'with'))
+        {
+            $key = lcfirst(str_replace('with', '', $method));
+            $this->addVars($key, reset($params));
+        }
+
         return $this;
     }
 
