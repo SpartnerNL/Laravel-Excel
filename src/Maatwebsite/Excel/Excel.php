@@ -1,9 +1,17 @@
 <?php namespace Maatwebsite\Excel;
 
-use Config;
-use Maatwebsite\Excel\Readers\HTML_reader;
+use \PHPExcel;
+use Carbon\Carbon;
+use \PHPExcel_Cell;
+use \PHPExcel_IOFactory;
 use \PHPExcel_Shared_Date;
+use Illuminate\Support\Str;
 use \PHPExcel_Style_NumberFormat;
+use \PHPExcel_Worksheet_PageSetup;
+use Illuminate\View\Environment as View;
+use Maatwebsite\Excel\Readers\HTML_reader;
+use Illuminate\Config\Repository as Config;
+use Illuminate\Filesystem\Filesystem as File;
 
 /**
  * Laravel wrapper for PHPEXcel
@@ -14,7 +22,7 @@ use \PHPExcel_Style_NumberFormat;
  * @contributors Maatwebsite, mewben, hicode, lollypopgr, floptwo, jonwhittlestone, BoHolm
  */
 
-class Excel extends \PHPExcel
+class Excel extends PHPExcel
 {
     /**
      * PHP Excel object
@@ -138,22 +146,23 @@ class Excel extends \PHPExcel
      *
      */
 
-    public function __construct()
+    public function __construct(PHPExcel $excel, HTML_reader $htmlReader, Config $config, View $view, File $file)
     {
 
         parent::__construct();
 
-        // Init the PHP excel class
-        try {
-            $this->excel = new \PHPExcel();
-        } catch(Exception $e) {
-            App::abort('500', "Error initing PHPExcel: ".$e->getMessage());
-        }
+        // Set dependencies
+        $this->excel = $excel;
+        $this->htmlReader = $htmlReader;
+        $this->config = $config;
+        $this->viewFactory = $view;
+        $this->fileSystem = $file;
 
         // Set defaults
-        $this->delimiter = Config::get('excel::delimiter');
-        $this->calculate = Config::get('excel::calculate');
-        $this->ignoreEmpty = Config::get('excel::ignoreEmpty');
+        $this->delimiter = $this->config->get('excel::delimiter', $this->delimiter);
+        $this->calculate = $this->config->get('excel::calculate', $this->calculate);
+        $this->ignoreEmpty = $this->config->get('excel::ignoreEmpty', $this->ignoreEmpty);
+        $this->dateFormat = $this->config->get('excel::date_format', $this->dateFormat);
 
         // Reset i back to zero
         $this->i = 0;
@@ -168,7 +177,6 @@ class Excel extends \PHPExcel
      *  @return $this
      *
      */
-
     public function create($title)
     {
 
@@ -183,8 +191,8 @@ class Excel extends \PHPExcel
 
         // Set properties
         $this->excel->getProperties()
-                    ->setCreator(Config::get('excel::creator'))
-                    ->setLastModifiedBy(Config::get('excel::creator'))
+                    ->setCreator($this->config->get('excel::creator'))
+                    ->setLastModifiedBy($this->config->get('excel::creator'))
                     ->setTitle($this->title);
 
         return $this;
@@ -200,21 +208,19 @@ class Excel extends \PHPExcel
      *  @return $this
      *
      */
-
     public function load($file, $firstRowAsLabel = false, $inputEncoding = 'UTF-8')
     {
-
         // Set defaults
         $this->file = $file;
-        $this->ext = \File::extension($this->file);
+        $this->ext = $this->fileSystem->extension($this->file);
         $this->title = basename($this->file, '.' . $this->ext);
         $this->firstRowAsLabel = $firstRowAsLabel;
 
         // Identify the format
-        $this->format = \PHPExcel_IOFactory::identify($this->file);
+        $this->format = PHPExcel_IOFactory::identify($this->file);
 
         // Init the reader
-        $this->reader = \PHPExcel_IOFactory::createReader($this->format);
+        $this->reader = PHPExcel_IOFactory::createReader($this->format);
 
         if ($this->format === 'CSV')
             $this->reader->setInputEncoding($inputEncoding);
@@ -226,6 +232,10 @@ class Excel extends \PHPExcel
         return $this;
     }
 
+    /**
+     * Reload the reader
+     * @return [type] [description]
+     */
     public function reload()
     {
         $this->excel = $this->reader->load($this->file);
@@ -252,6 +262,11 @@ class Excel extends \PHPExcel
         return $this;
     }
 
+    /**
+     * Use carbon to format dates
+     * @param  boolean $method [description]
+     * @return [type]          [description]
+     */
     public function useCarbon($method = false)
     {
         $this->useCarbon = true;
@@ -272,13 +287,9 @@ class Excel extends \PHPExcel
      *  @return static
      *
      */
-
     public function loadHTML($string){
 
-        // Include the HTML Reader
-        include_once('Readers/HTML_reader.php');
-
-        $this->reader = new HTML_reader;
+        $this->reader = $this->htmlReader;
         $this->excel = $this->reader->load($string, true);
 
         return $this;
@@ -295,7 +306,6 @@ class Excel extends \PHPExcel
      *  @return static
      *
      */
-
     public function loadView($view, $data = array(), $mergeData = array()){
 
         $this->view = $view;
@@ -312,7 +322,6 @@ class Excel extends \PHPExcel
      *  @return $this
      *
      */
-
     public function setDelimiter($delimiter)
     {
         $this->delimiter = $delimiter;
@@ -328,7 +337,6 @@ class Excel extends \PHPExcel
      *  @return $this
      *
      */
-
     public function setEnclosure($enclosure = '')
     {
         $this->reader->setEnclosure($enclosure);
@@ -344,7 +352,6 @@ class Excel extends \PHPExcel
      *  @return $this
      *
      */
-
     public function setLineEnding($lineEnding = "\r\n")
     {
         $this->reader->setLineEnding($lineEnding);
@@ -360,7 +367,6 @@ class Excel extends \PHPExcel
      *  @return $this
      *
      */
-
     public function setTitle($title)
     {
         $this->title = $title;
@@ -375,7 +381,6 @@ class Excel extends \PHPExcel
      *  @return $this
      *
      */
-
     public function calculate($do = true)
     {
         $this->calculate = $do;
@@ -391,7 +396,6 @@ class Excel extends \PHPExcel
      *  @return $this
      *
      */
-
     public function limit($amount, $start = 0)
     {
 
@@ -409,7 +413,6 @@ class Excel extends \PHPExcel
      *  @return $this
      *
      */
-
     public function select($keys = array())
     {
 
@@ -449,7 +452,6 @@ class Excel extends \PHPExcel
         }
 
         return $this;
-
     }
 
     /**
@@ -459,7 +461,6 @@ class Excel extends \PHPExcel
      *  @return array $this->parsed The parsed array
      *
      */
-
     public function toArray()
     {
 
@@ -476,7 +477,6 @@ class Excel extends \PHPExcel
      *  @return obj $this->parsed The parsed object
      *
      */
-
     public function toObject()
     {
         // Parse the file
@@ -491,7 +491,6 @@ class Excel extends \PHPExcel
      *  @return array $this->parsed The parsed array
      *
      */
-
     public function dump()
     {
 
@@ -513,18 +512,17 @@ class Excel extends \PHPExcel
      *  @return $this
      *
      */
-
     public function sheet($title, $orientation = 'landscape')
     {
 
         // Set page orientation
         switch ($orientation) {
             case 'portrait':
-                $this->orientation = \PHPExcel_Worksheet_PageSetup::ORIENTATION_PORTRAIT;
+                $this->orientation = PHPExcel_Worksheet_PageSetup::ORIENTATION_PORTRAIT;
                 break;
 
             case 'landscape':
-                $this->orientation = \PHPExcel_Worksheet_PageSetup::ORIENTATION_LANDSCAPE;
+                $this->orientation = PHPExcel_Worksheet_PageSetup::ORIENTATION_LANDSCAPE;
                 break;
         }
 
@@ -539,7 +537,7 @@ class Excel extends \PHPExcel
                         ->setTitle($title)
                     ->getPageSetup()
                         ->setOrientation($this->orientation)
-                        ->setPaperSize(\PHPExcel_Worksheet_PageSetup::PAPERSIZE_A4)
+                        ->setPaperSize(PHPExcel_Worksheet_PageSetup::PAPERSIZE_A4)
                         ->setFitToPage(true)
                         ->setFitToWidth(1)
                         ->setFitToHeight(1);
@@ -559,7 +557,6 @@ class Excel extends \PHPExcel
      *  @return $this
      *
      */
-
     public function with($key, $value = false)
     {
         // If key is an array, we are assigning data to a new excel file,
@@ -598,7 +595,6 @@ class Excel extends \PHPExcel
      *  @return $this
      *
      */
-
     public function export($ext = 'xls')
     {
 
@@ -626,7 +622,6 @@ class Excel extends \PHPExcel
      *  @return $this
      *
      */
-
     public function save($ext = 'xls', $path = false)
     {
         return $this->store($ext, $path);
@@ -641,14 +636,13 @@ class Excel extends \PHPExcel
      *  @return $this
      *
      */
-
     public function store($ext = 'xls', $path = false, $returnInfo = false)
     {
 
         // Set the default path
         if($path == false)
         {
-            $path = Config::get('excel::path');
+            $path = $this->config->get('excel::path');
         }
 
         // Trim of slashes, to makes sure we won't add them double.
@@ -693,7 +687,6 @@ class Excel extends \PHPExcel
      *  @return $this
      *
      */
-
     public function convert($ext = 'xls')
     {
 
@@ -701,7 +694,7 @@ class Excel extends \PHPExcel
         $this->parseFile();
 
         // Reset the excel object
-        $this->excel = new \PHPExcel();
+        $this->excel = app('phpexcel');
 
         // Remove the default worksheet
         $this->excel->removeSheetByIndex(0);
@@ -733,7 +726,6 @@ class Excel extends \PHPExcel
      *  @return obj $this->object The writer
      *
      */
-
     private function render()
     {
         // If a view was set, make that view
@@ -747,7 +739,7 @@ class Excel extends \PHPExcel
         $this->excel->setActiveSheetIndex(0);
 
         // Create the writer
-        return $this->object = \PHPExcel_IOFactory::createWriter($this->excel, $this->format);
+        return $this->object = PHPExcel_IOFactory::createWriter($this->excel, $this->format);
     }
 
     /**
@@ -757,7 +749,7 @@ class Excel extends \PHPExcel
     protected function makeView()
     {
         // Make the view
-        $html = \View::make($this->view, $this->data, $this->mergeData);
+        $html = $this->viewFactory->make($this->view, $this->data, $this->mergeData);
 
         // Load the html
         $this->loadHTML($html);
@@ -770,7 +762,6 @@ class Excel extends \PHPExcel
      *  @return $this
      *
      */
-
     private function parseFile()
     {
 
@@ -847,7 +838,6 @@ class Excel extends \PHPExcel
      *  @return $this
      *
      */
-
     private function getLabels()
     {
 
@@ -861,7 +851,7 @@ class Excel extends \PHPExcel
         foreach ($this->row->getCellIterator() as $this->cell) {
 
             // Set labels
-            $this->labels[] = \Str::slug($this->cell->getValue());
+            $this->labels[] = Str::slug($this->cell->getValue());
 
         }
 
@@ -876,7 +866,6 @@ class Excel extends \PHPExcel
      *  @return $this
      *
      */
-
     private function parseRows()
     {
 
@@ -923,7 +912,6 @@ class Excel extends \PHPExcel
      *  @return $this
      *
      */
-
     private function parseCells()
     {
 
@@ -938,7 +926,7 @@ class Excel extends \PHPExcel
         foreach ($this->cellIterator as $this->cell) {
 
             // Get the cell index
-            $index = \PHPExcel_Cell::columnIndexFromString($this->cell->getColumn());
+            $index = PHPExcel_Cell::columnIndexFromString($this->cell->getColumn());
 
             // Check how we need to save the parsed array
             if($this->firstRowAsLabel !== false)
@@ -964,7 +952,7 @@ class Excel extends \PHPExcel
                     // Use carbon to parse the time
                     if($this->useCarbon)
                     {
-                        $value = \Carbon::parse($value)->{$this->carbonMethod}();
+                        $value = Carbon::parse($value)->{$this->carbonMethod}();
                     }
 
                 }
@@ -1009,6 +997,9 @@ class Excel extends \PHPExcel
 
     }
 
+    /**
+     * Set headers
+     */
     private function setHeaders()
     {
         // Set the headers
@@ -1044,7 +1035,6 @@ class Excel extends \PHPExcel
      *  @return str The format;
      *
      */
-
     private function decodeFormat($ext = false)
     {
 
@@ -1132,7 +1122,6 @@ class Excel extends \PHPExcel
      *  @example ->setBorder('A1:F10','thick')
      *
      */
-
 	public function setBorder($pane = 'A1', $weight = 'thin')
     {
     	/*
@@ -1177,7 +1166,6 @@ class Excel extends \PHPExcel
      *  @example Excel::create()->setAllBorder()   Must follow the function of create()
      *
      */
-
 	public function setAllBorder($weight = 'thin')
 	{
 		$styleArray = array(
@@ -1205,7 +1193,6 @@ class Excel extends \PHPExcel
      *  @example ->setAutoFilter()
      *
      */
-
     public function setAutoFilter(){
         $this->excel->getActiveSheet()
                     ->setAutoFilter($this->excel->getActiveSheet()
@@ -1271,7 +1258,6 @@ class Excel extends \PHPExcel
 		PHPExcel_Style_NumberFormat::FORMAT_CURRENCY_USD = '$#,##0_-'
 		PHPExcel_Style_NumberFormat::FORMAT_CURRENCY_EUR_SIMPLE = '[$EUR ]#,##0.00_-'
 	  */
-
 	public function setColumnFormat(Array $formats){
 
         // Loop through the columns
@@ -1305,7 +1291,6 @@ class Excel extends \PHPExcel
 	 *  )
 	 *
      */
-
     public function setColumnWidth(Array $pane)
     {
 

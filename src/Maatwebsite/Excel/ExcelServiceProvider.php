@@ -1,6 +1,8 @@
 <?php namespace Maatwebsite\Excel;
 
+use \PHPExcel;
 use Illuminate\Support\ServiceProvider;
+use Maatwebsite\Excel\Readers\HTML_reader;
 
 class ExcelServiceProvider extends ServiceProvider {
 
@@ -29,9 +31,37 @@ class ExcelServiceProvider extends ServiceProvider {
 	 */
 	public function register()
 	{
+		$this->bindPHPExcelClass();
+		$this->bindExcel();
+	}
+
+	/**
+	 * Bind PHPExcel classes
+	 * @return [type] [description]
+	 */
+	protected function bindPHPExcelClass()
+	{
+		// Bind the PHPExcel class
+		$this->app->bindShared('phpexcel', function($app) {
+			return new PHPExcel();
+		});
+
+		// Bind the PHPExcel class
+		$this->app->bindShared('phpexcel.readers.html', function($app) {
+			return new HTML_reader();
+		});
+	}
+
+	/**
+	 * Bind Excel class
+	 * @return [type] [description]
+	 */
+	protected function bindExcel()
+	{
+		// Bind the Excel class and inject its dependencies
 		$this->app['excel'] = $this->app->share(function($app)
         {
-            return new Excel;
+            return new Excel($app['phpexcel'], $app['phpexcel.readers.html'], $app['config'], $app['view'], $app['files']);
         });
 	}
 
