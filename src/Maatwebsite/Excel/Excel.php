@@ -148,7 +148,6 @@ class Excel extends PHPExcel
 
     public function __construct(PHPExcel $excel, HTML_reader $htmlReader, Config $config, View $view, File $file)
     {
-
         parent::__construct();
 
         // Set dependencies
@@ -164,8 +163,8 @@ class Excel extends PHPExcel
         $this->ignoreEmpty = $this->config->get('excel::ignoreEmpty', $this->ignoreEmpty);
         $this->dateFormat = $this->config->get('excel::date_format', $this->dateFormat);
 
-        // Reset i back to zero
-        $this->i = 0;
+        // Reset
+        $this->reset();
 
     }
 
@@ -179,9 +178,8 @@ class Excel extends PHPExcel
      */
     public function create($title)
     {
-
-        // Reset i back to zero
-        $this->i = 0;
+        // Reset
+        $this->reset();
 
         // Set file title
         $this->title = $title;
@@ -210,6 +208,9 @@ class Excel extends PHPExcel
      */
     public function load($file, $firstRowAsLabel = false, $inputEncoding = 'UTF-8')
     {
+        // Reset
+        $this->reset();
+
         // Set defaults
         $this->file = $file;
         $this->ext = $this->fileSystem->extension($this->file);
@@ -287,13 +288,12 @@ class Excel extends PHPExcel
      *  @return static
      *
      */
-    public function loadHTML($string){
-
+    public function loadHTML($string)
+    {
         $this->reader = $this->htmlReader;
         $this->excel = $this->reader->load($string, true);
 
         return $this;
-
     }
 
     /**
@@ -306,7 +306,10 @@ class Excel extends PHPExcel
      *  @return static
      *
      */
-    public function loadView($view, $data = array(), $mergeData = array()){
+    public function loadView($view, $data = array(), $mergeData = array())
+    {
+        // Reset
+        $this->reset();
 
         $this->view = $view;
         $this->data = $data;
@@ -1344,6 +1347,21 @@ class Excel extends PHPExcel
 	public function mergeCells($cells)
 	{
         $this->excel->getActiveSheet()->mergeCells($cells);
+        return $this;
+    }
+
+    /**
+     * Reset the parsed state
+     * @return [type] [description]
+     */
+    public function reset()
+    {
+        // Reset i back to zero
+        $this->i = 0;
+
+        // Reset parsed state
+        $this->isParsed = false;
+
         return $this;
     }
 
