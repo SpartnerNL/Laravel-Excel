@@ -258,6 +258,10 @@ class HTML_reader extends \PHPExcel_Reader_HTML
 
                         break;
 
+                        case 'colspan':
+                            $this->parseColSpan($sheet, $column, $row, $attribute->value);
+                            break;
+
                     }
 
 
@@ -498,6 +502,19 @@ class HTML_reader extends \PHPExcel_Reader_HTML
     }
 
     /**
+     * Parse colspans
+     * @param  [type] $sheet  [description]
+     * @param  [type] $column [description]
+     * @param  [type] $row    [description]
+     * @param  [type] $tag    [description]
+     * @return [type]         [description]
+     */
+    protected function parseColSpan($sheet, $column, $row, $tag)
+    {
+        dd($tag);
+    }
+
+    /**
      * Parse the inline styles
      * @param  [type] $sheet    [description]
      * @param  [type] $column   [description]
@@ -519,6 +536,11 @@ class HTML_reader extends \PHPExcel_Reader_HTML
 
             switch($name)
             {
+
+                // COLSPAN
+                case 'colspan':
+                    dd($value);
+                    break;
 
                 // BACKGROUND
                 case 'background':

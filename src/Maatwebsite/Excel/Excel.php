@@ -22,7 +22,7 @@ use Illuminate\Filesystem\Filesystem as File;
  * @contributors Maatwebsite, mewben, hicode, lollypopgr, floptwo, jonwhittlestone, BoHolm
  */
 
-class Excel extends PHPExcel
+class Excel
 {
     /**
      * PHP Excel object
@@ -172,8 +172,6 @@ class Excel extends PHPExcel
 
     public function __construct(PHPExcel $excel, HTML_reader $htmlReader, Config $config, View $view, File $file)
     {
-        parent::__construct();
-
         // Set dependencies
         $this->excel = $excel;
         $this->htmlReader = $htmlReader;
@@ -190,7 +188,6 @@ class Excel extends PHPExcel
 
         // Reset
         $this->reset();
-
     }
 
     /**
@@ -1460,11 +1457,19 @@ class Excel extends PHPExcel
      */
     public function __call($method, $params)
     {
+
         // If the dynamic call starts with "with", add the var to the data array
         if(starts_with($method, 'with'))
         {
             $key = lcfirst(str_replace('with', '', $method));
             $this->addVars($key, reset($params));
+        }
+
+        // Call a php excel method
+        elseif(method_exists($this->excel, $method))
+        {
+            // Call the method from the excel object with the given params
+            return call_user_func_array(array($this->excel, $method), $params);
         }
 
         return $this;
