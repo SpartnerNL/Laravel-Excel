@@ -5,12 +5,13 @@
 [![Daily Downloads](https://poser.pugx.org/maatwebsite/excel/d/daily.png)](https://packagist.org/packages/maatwebsite/excel)
 
 #New to v0.3.x
-- seperator config value for label formatting (default is -)
+- Possibility to call **all native PHPExcel methods**
+- seperator config value for label formatting (default is `-`)
 - loadView supports `->thisKey('value')` & `->this('key', 'value')` to set view data
 - Multiple sheets with support for a different view per sheet (or share the view)
 - CSV import fix
 - Date formatting fix
-- `loadView()` inline styles parsing
+- `loadView()` inline styles parsing (including style, rowspan, colspan, align, valign)
 - `store()` can return information about the storage or can be followed by `->export()`
 
 #Installation
@@ -119,7 +120,9 @@ To change the sheet's orientation, use `$sheet->setOrientation('landscape')`
 It possible to use some basic styling inside the table.
 HTML tags `<strong>, <i> and <b>` are supported at this moment.
 
-Most of the inline styles are parsed:
+Table attributes (`align, valign, rowspan & colspan`) will be properly parsed.
+
+Most of the inline styles are parsed (style="background: #000000"):
 
 | Style tag name       | Value           |
 | ------------- |:-------------:|

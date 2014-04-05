@@ -262,6 +262,18 @@ class HTML_reader extends \PHPExcel_Reader_HTML
                             $this->parseColSpan($sheet, $column, $row, $attribute->value);
                             break;
 
+                        case 'rowspan':
+                            $this->parseRowSpan($sheet, $column, $row, $attribute->value);
+                            break;
+
+                        case 'align':
+                            $this->parseAlign($sheet, $column, $row, $attribute->value);
+                            break;
+
+                        case 'valign':
+                            $this->parseValign($sheet, $column, $row, $attribute->value);
+                            break;
+
                     }
 
 
@@ -509,9 +521,119 @@ class HTML_reader extends \PHPExcel_Reader_HTML
      * @param  [type] $tag    [description]
      * @return [type]         [description]
      */
-    protected function parseColSpan($sheet, $column, $row, $tag)
+    protected function parseColSpan($sheet, $column, $row, $spanWidth)
     {
-        dd($tag);
+        $startCell = $column.$row;
+
+        // Find end column letter
+        for($i = 0; $i < ($spanWidth - 1); $i++)
+        {
+            ++$column;
+        }
+
+        // Set endcell
+        $endCell = ($column).$row;
+
+        // Set range
+        $range = $startCell . ':' . $endCell;
+
+        // Merge the cells
+        $sheet->mergeCells($range);
+    }
+
+    /**
+     * Parse colspans
+     * @param  [type] $sheet  [description]
+     * @param  [type] $column [description]
+     * @param  [type] $row    [description]
+     * @param  [type] $tag    [description]
+     * @return [type]         [description]
+     */
+    protected function parseRowSpan($sheet, $column, $row, $spanHeight)
+    {
+        $startCell = $column.$row;
+        $endCell = $column.($row * $spanHeight);
+        $range = $startCell . ':' . $endCell;
+
+        $sheet->mergeCells($range);
+    }
+
+    /**
+     * Parse the align
+     * @param  [type] $sheet  [description]
+     * @param  [type] $column [description]
+     * @param  [type] $row    [description]
+     * @param  [type] $value  [description]
+     * @return [type]         [description]
+     */
+    protected function parseAlign($sheet, $column, $row, $value)
+    {
+
+        $horizontal = false;
+        $cells = $sheet->getStyle($column.$row);
+
+        switch($value)
+        {
+            case 'center':
+                $horizontal = PHPExcel_Style_Alignment::HORIZONTAL_CENTER;
+                break;
+
+            case 'left':
+                $horizontal = PHPExcel_Style_Alignment::HORIZONTAL_LEFT;
+                break;
+
+            case 'right':
+                $horizontal = PHPExcel_Style_Alignment::HORIZONTAL_RIGHT;
+                break;
+
+            case 'justify':
+                $horizontal = PHPExcel_Style_Alignment::HORIZONTAL_JUSTIFY;
+                break;
+        }
+
+        if($horizontal)
+            $cells->getAlignment()->applyFromArray(
+                array('horizontal' => $horizontal)
+            );
+    }
+
+    /**
+     * Parse the valign
+     * @param  [type] $sheet  [description]
+     * @param  [type] $column [description]
+     * @param  [type] $row    [description]
+     * @param  [type] $value  [description]
+     * @return [type]         [description]
+     */
+    protected function parseValign($sheet, $column, $row, $value)
+    {
+
+        $vertical = false;
+        $cells = $sheet->getStyle($column.$row);
+
+        switch($value)
+        {
+            case 'top':
+                $vertical = PHPExcel_Style_Alignment::VERTICAL_TOP;
+                break;
+
+            case 'middle':
+                $vertical = PHPExcel_Style_Alignment::VERTICAL_CENTER;
+                break;
+
+            case 'bottom':
+                $vertical = PHPExcel_Style_Alignment::VERTICAL_BOTTOM;
+                break;
+
+            case 'justify':
+                $vertical = PHPExcel_Style_Alignment::VERTICAL_JUSTIFY;
+                break;
+        }
+
+        if($vertical)
+            $cells->getAlignment()->applyFromArray(
+                array('vertical' => $vertical)
+            );
     }
 
     /**
@@ -603,6 +725,9 @@ class HTML_reader extends \PHPExcel_Reader_HTML
                     break;
 
                 case 'text-align':
+
+                    $horizontal = false;
+
                     switch($value)
                     {
                         case 'center':
@@ -622,36 +747,41 @@ class HTML_reader extends \PHPExcel_Reader_HTML
                             break;
                     }
 
-                    $cells->getAlignment()->applyFromArray(
-                        array('horizontal' => $horizontal)
-                    );
+                    if($horizontal)
+                        $cells->getAlignment()->applyFromArray(
+                            array('horizontal' => $horizontal)
+                        );
 
                     break;
 
                 case 'vertical-align':
+
+                    $vertical = false;
+
                     switch($value)
                     {
                         case 'top':
-                            $horizontal = PHPExcel_Style_Alignment::VERTICAL_TOP;
+                            $vertical = PHPExcel_Style_Alignment::VERTICAL_TOP;
                             break;
 
                         case 'middle':
-                            $horizontal = PHPExcel_Style_Alignment::VERTICAL_CENTER;
+                            $vertical = PHPExcel_Style_Alignment::VERTICAL_CENTER;
                             break;
 
                         case 'bottom':
-                            $horizontal = PHPExcel_Style_Alignment::VERTICAL_BOTTOM;
+                            $vertical = PHPExcel_Style_Alignment::VERTICAL_BOTTOM;
                             break;
 
                         case 'justify':
-                            $horizontal = PHPExcel_Style_Alignment::VERTICAL_JUSTIFY;
+                            $vertical = PHPExcel_Style_Alignment::VERTICAL_JUSTIFY;
                             break;
 
                     }
 
-                    $cells->getAlignment()->applyFromArray(
-                        array('vertical' => $horizontal)
-                    );
+                    if($vertical)
+                        $cells->getAlignment()->applyFromArray(
+                            array('vertical' => $vertical)
+                        );
                     break;
 
                 case 'borders':
