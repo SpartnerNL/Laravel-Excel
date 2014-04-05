@@ -1,10 +1,13 @@
-## Laravel 4 Wrapper for PHPExcel v0.3.2
+## Laravel 4 Wrapper for PHPExcel v0.3.3
 
 [![Latest Stable Version](https://poser.pugx.org/maatwebsite/excel/v/stable.png)](https://packagist.org/packages/maatwebsite/excel) [![Total Downloads](https://poser.pugx.org/maatwebsite/excel/downloads.png)](https://packagist.org/packages/maatwebsite/excel) [![Latest Unstable Version](https://poser.pugx.org/maatwebsite/excel/v/unstable.png)](https://packagist.org/packages/maatwebsite/excel) [![License](https://poser.pugx.org/maatwebsite/excel/license.png)](https://packagist.org/packages/maatwebsite/excel)
 [![Monthly Downloads](https://poser.pugx.org/maatwebsite/excel/d/monthly.png)](https://packagist.org/packages/maatwebsite/excel)
 [![Daily Downloads](https://poser.pugx.org/maatwebsite/excel/d/daily.png)](https://packagist.org/packages/maatwebsite/excel)
 
-#New to v0.3.0
+#New to v0.3.x
+- seperator config value for label formatting (default is -)
+- loadView supports `->thisKey('value')` & `->this('key', 'value')` to set view data
+- Multiple sheets with support for a different view per sheet (or share the view)
 - CSV import fix
 - Date formatting fix
 - `loadView()` inline styles parsing
@@ -73,12 +76,45 @@ Excel::loadView('folder.file')
     ->export('xls');
 ```
 
-If you want to give the file and worksheet a name chain `setTitle()` and `sheet()` after the `loadView()`
+If you want to give the file  a name chain `setTitle()` after the `loadView()`
 ```php
 Excel::sheet('SheetName')->loadView('folder.file', array('key' => 'value'))
         ->setTitle('Title')
         ->export('xls');
 ```
+
+If you want to create multiple cheats and share or use different views for these seperate sheets, you should call the closure
+```php
+Excel::loadView('excel.reports')
+    ->sheet('Daily', function($sheet) use($dailyReports) {
+
+        $sheet->withReports($dailyReports);
+
+    })->sheet('Weekly', function($sheet) use($weeklyReports) {
+
+        $sheet->withReports($weeklyReports);
+
+    })->setTitle('Reports')->export('xls');
+```
+
+Optionally you can change the view inside the closure.
+```php
+Excel::sheet('Daily', function($sheet) use($dailyReports) {
+
+        $sheet->loadView('excel.reports.daily');
+        $sheet->withReports($dailyReports);
+
+    })->sheet('Weekly', function($sheet) use($weeklyReports) {
+
+        $sheet->loadView('excel.reports.weekly');
+        $sheet->withReports($weeklyReports);
+
+    })->setTitle('Reports')->export('xls');
+```
+
+>Closures are only accepted when using a view.
+
+To change the sheet's orientation, use `$sheet->setOrientation('landscape')`
 
 It possible to use some basic styling inside the table.
 HTML tags `<strong>, <i> and <b>` are supported at this moment.

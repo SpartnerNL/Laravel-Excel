@@ -109,6 +109,18 @@ class Excel extends PHPExcel
     protected $mergeData;
 
     /**
+     * Sheet title
+     * @var [type]
+     */
+    protected $sheetTitle;
+
+    /**
+     * Default sheet orientation
+     * @var string
+     */
+    protected $orientation = 'landscape';
+
+    /**
      * Ignore empty cells
      * @var boolean
      */
@@ -304,8 +316,7 @@ class Excel extends PHPExcel
     public function loadHTML($string)
     {
         $this->reader = $this->htmlReader;
-        $this->excel = $this->reader->load($string, true);
-        return $this;
+        return $this->reader->load($string, true);
     }
 
     /**
@@ -475,7 +486,6 @@ class Excel extends PHPExcel
      */
     public function toArray()
     {
-
         // Parse the file
         $this->parseFile();
 
@@ -505,14 +515,12 @@ class Excel extends PHPExcel
      */
     public function dump()
     {
-
         // Parse the file
         $this->parseFile();
 
         echo '<pre class="container" style="background: #f5f5f5; border: 1px solid #e3e3e3; padding:15px;">';
-            print_r($this->parsed);
+            var_dump($this->parsed);
         echo '</pre>';
-
     }
 
     /**
@@ -524,41 +532,99 @@ class Excel extends PHPExcel
      *  @return $this
      *
      */
-    public function sheet($title, $orientation = 'landscape', $isNewSheet = true)
+    public function sheet($title, $orientation = 'landscape')
     {
 
-        // Set page orientation
-        switch ($orientation) {
-            case 'portrait':
-                $this->orientation = PHPExcel_Worksheet_PageSetup::ORIENTATION_PORTRAIT;
-                break;
+        // Set title
+        $this->setSheetTitle($title);
 
-            case 'landscape':
-                $this->orientation = PHPExcel_Worksheet_PageSetup::ORIENTATION_LANDSCAPE;
-                break;
+        if($orientation instanceof \Closure)
+        {
+            // Require a view
+            if(!$this->view)
+                throw new \PHPExcel_Exception('Settings data for sheets inside closures can only be used when a view has been loaded. Use ->loadView(\'filename\')');
+
+            // Add sheet from callback
+            $this->addNewSheet($orientation);
+        }
+        else
+        {
+            // Set orientation
+            $this->setOrientation($orientation);
+
+            // Create a new sheet
+            $this->excel->createSheet();
+            $this->excel->setActiveSheetIndex($this->i);
+            $this->excel->getActiveSheet()->setTitle($this->sheetTitle);
         }
 
-        // Create a new sheet
-        $this->excel->createSheet();
-
-        // Set to current index based on i
-        $this->excel->setActiveSheetIndex($this->i);
-
-        // Change sheet settings
-        $this->excel->getActiveSheet()
-                        ->setTitle($title)
-                    ->getPageSetup()
-                        ->setOrientation($this->orientation)
-                        ->setPaperSize(PHPExcel_Worksheet_PageSetup::PAPERSIZE_A4)
-                        ->setFitToPage(true)
-                        ->setFitToWidth(1)
-                        ->setFitToHeight(1);
+         // Set orientation
+        $this->excel->getActiveSheet()->getPageSetup()
+                ->setOrientation($this->orientation)
+                ->setPaperSize(PHPExcel_Worksheet_PageSetup::PAPERSIZE_A4)
+                ->setFitToPage(true)
+                ->setFitToWidth(1)
+                ->setFitToHeight(1);
 
         // Count number of sheets
         $this->i++;
 
         // Return itself to chain
         return $this;
+    }
+
+    /**
+     * Set sheet title
+     * @param [type] $title [description]
+     */
+    public function setSheetTitle($title)
+    {
+        $this->sheetTitle = e($title);
+        return $this;
+    }
+
+    /**
+     * Set orientation
+     * @param [type] $orientation [description]
+     */
+    public function setOrientation($orientation = 'landscape')
+    {
+        // Set page orientation
+        switch ($orientation) {
+            case 'portrait':
+                $this->orientation = PHPExcel_Worksheet_PageSetup::ORIENTATION_PORTRAIT;
+                break;
+
+            default:
+                $this->orientation = PHPExcel_Worksheet_PageSetup::ORIENTATION_LANDSCAPE;
+                break;
+        }
+    }
+
+    /**
+     * Add a new sheet from a view render
+     * @param [type] $sheet [description]
+     */
+    public function addNewSheet($sheet)
+    {
+        // Remove the first worksheet
+        if($this->i == 0)
+            $this->excel->removeSheetByIndex(0);
+
+        // Not yet
+        $this->viewRendered = false;
+
+        // Do callback
+        call_user_func($sheet, $this);
+
+        // Make the view
+        $view = $this->makeView();
+
+        // Get active sheet
+        $newSheet = $view->getActiveSheet()->setTitle($this->sheetTitle);
+
+        // Add our new sheet to the excel file
+        $this->excel->addExternalSheet($newSheet);
     }
 
     /**
@@ -742,7 +808,7 @@ class Excel extends PHPExcel
     {
         // If a view was set, make that view
         if($this->view)
-            $this->makeView();
+            $this->excel = $this->makeView();
 
         // Set the render format
         $this->format = $this->decodeFormat($this->ext);
@@ -758,16 +824,22 @@ class Excel extends PHPExcel
      * Make the view and load the html
      * @return [type] [description]
      */
-    protected function makeView()
+    protected function makeView($title = false)
     {
-        // Make the view
-        $html = $this->viewFactory->make($this->view, $this->data, $this->mergeData)->render();
+        if($this->view && !$this->viewRendered)
+        {
+            // Make the view
+            $html = $this->viewFactory->make($this->view, $this->data, $this->mergeData)->render();
 
-        // Load the html
-        $this->loadHTML($html);
+            // Load the html
+            $rendered = $this->loadHTML($html);
 
-        // Set to rendered
-        $this->viewRendered = true;
+            // Set to rendered
+            $this->viewRendered = true;
+
+            return $rendered;
+
+        }
     }
 
     /**
