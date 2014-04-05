@@ -117,6 +117,8 @@ Excel::sheet('Daily', function($sheet) use($dailyReports) {
 
 To change the sheet's orientation, use `$sheet->setOrientation('landscape')`
 
+## View styling
+
 It possible to use some basic styling inside the table.
 HTML tags `<strong>, <i> and <b>` are supported at this moment.
 
