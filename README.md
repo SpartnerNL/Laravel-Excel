@@ -7,7 +7,7 @@
 #New to v0.3.x
 - Possibility to call **all native PHPExcel methods**
 - seperator config value for label formatting (default is `-`)
-- loadView supports `->thisKey('value')` & `->this('key', 'value')` to set view data
+- loadView supports `->withKey('value')` & `->with('key', 'value')` to set view data
 - Multiple sheets with support for a different view per sheet (or share the view)
 - CSV import fix
 - Date formatting fix
