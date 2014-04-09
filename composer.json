@@ -14,7 +14,7 @@
         "illuminate/support": "4.x",
         "illuminate/config": "4.x",
         "illuminate/filesystem": "4.x",
-        "phpoffice/phpexcel": "1.8.*@dev"
+        "phpoffice/phpexcel": "1.8.*"
     },
     "autoload": {
         "classmap": [

@@ -42,12 +42,12 @@ class ExcelServiceProvider extends ServiceProvider {
 	protected function bindPHPExcelClass()
 	{
 		// Bind the PHPExcel class
-		$this->app->bindShared('phpexcel', function($app) {
+		$this->app['phpexcel'] = $this->app->share(function($app) {
 			return new PHPExcel();
 		});
 
 		// Bind the PHPExcel class
-		$this->app->bindShared('phpexcel.readers.html', function($app) {
+		$this->app['phpexcel.readers.html'] = $this->app->share(function($app) {
 			return new HTML_reader();
 		});
 	}
