@@ -72,6 +72,12 @@ class HTML_reader extends \PHPExcel_Reader_HTML
                 'size' => 12,
             ),
         ),
+        'th' => array(
+            'font' => array(
+                'bold' => true,
+                'size' => 12,
+            ),
+        ),
         'i' => array(
             'font' => array(
                 'italic' => true,
@@ -449,6 +455,10 @@ class HTML_reader extends \PHPExcel_Reader_HTML
                         ++$row;
                         break;
                     case 'th' :
+                        // Set the styling
+                        if (isset($this->_formats[$child->nodeName])) {
+                            $sheet->getStyle($column.$row)->applyFromArray($this->_formats[$child->nodeName]);
+                        }
                     case 'td' :
 //                      echo 'START OF TABLE ' , $this->_tableLevel , ' CELL<br />';
                         $this->_processDomElement($child,$sheet,$row,$column,$cellContent);
