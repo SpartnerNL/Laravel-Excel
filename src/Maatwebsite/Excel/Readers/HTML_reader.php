@@ -54,12 +54,6 @@ class HTML_reader extends \PHPExcel_Reader_HTML
     private $_sheetIndex    = 0;
 
     private $_formats = array(
-        'h1' => array(
-            'font' => array(
-                'bold' => true,
-                'size' => 24,
-            ),
-        ),
         'strong' => array(
             'font' => array(
                 'bold' => true,
@@ -77,37 +71,43 @@ class HTML_reader extends \PHPExcel_Reader_HTML
                 'italic' => true,
                 'size' => 12,
             ),
+        ),
+        'h1' => array(
+            'font' => array(
+                'bold' => true,
+                'size' => 24,
+            ),
         ),  //  Bold, 24pt
        'h2' => array(
             'font' => array(
                 'bold' => true,
                 'size' => 18,
-                ),
-            ),  //  Bold, 18pt
+            ),
+        ),  //  Bold, 18pt
        'h3' => array(
             'font' => array(
                 'bold' => true,
                 'size' => 13.5,
-                ),
-            ),  //  Bold, 13.5pt
+            ),
+        ),  //  Bold, 13.5pt
        'h4' => array(
             'font' => array(
                 'bold' => true,
                 'size' => 12,
-                ),
-            ),  //  Bold, 12pt
+            ),
+        ),  //  Bold, 12pt
        'h5' => array(
             'font' => array(
                 'bold' => true,
                 'size' => 10,
-                ),
-            ),  //  Bold, 10pt
+            ),
+        ),  //  Bold, 10pt
        'h6' => array(
             'font' => array(
                 'bold' => true,
                 'size' => 7.5,
-                ),
-            ),  //  Bold, 7.5pt
+            ),
+        ),  //  Bold, 7.5pt
        'a'  => array(
             'font' => array(
                 'underline' => true,
