@@ -37,7 +37,10 @@ For creating an Excel file use:
 ```php
 Excel::create('ExcelName')
         ->sheet('SheetName')
-            ->with(array('data', 'data'))
+            ->with(array(
+                array('data1', 'data2'),
+                array('data3', 'data4')
+            ))
         ->export('xls');
 ```
 
