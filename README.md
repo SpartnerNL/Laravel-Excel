@@ -37,7 +37,7 @@ For creating an Excel file use:
 ```php
 Excel::create('ExcelName')
         ->sheet('SheetName')
-            ->with(array('data', 'data'))
+            ->with(array('data', 'data'), array('data', 'data'))
         ->export('xls');
 ```
 
@@ -45,9 +45,9 @@ Multiple sheets are allowed
 ```php
 Excel::create('ExcelName')
         ->sheet('SheetName')
-            ->with(array('data', 'data'))
+            ->with(array('data', 'data'), array('data', 'data'))
         ->sheet('SheetName')
-            ->with(array('data', 'data'))
+            ->with(array('data', 'data'), array('data', 'data'))
         ->export('xls');
 ```
 
