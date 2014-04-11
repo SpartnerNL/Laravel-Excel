@@ -263,14 +263,14 @@ Example to get two leading zeros before the number for one column
 ```php
 ->setColumnFormat(array(
     'A' => '0000'
- )
+ ))
 ```
 
 Example to get two leading zeros before the number with a range:
 ```php
 ->setColumnFormat(array(
     'A2:K2' => '0000'
- )
+ ))
 ```
 
 #Auto filter
