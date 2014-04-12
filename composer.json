@@ -18,7 +18,7 @@
     },
     "autoload": {
         "classmap": [
-            "src/Maatwebsite/Excel/Readers"
+            "src/Maatwebsite/Excel"
         ],
         "psr-0": {
             "Maatwebsite\\Excel": "src/"

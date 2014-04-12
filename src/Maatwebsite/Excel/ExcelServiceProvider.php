@@ -1,8 +1,10 @@
 <?php namespace Maatwebsite\Excel;
 
-use \PHPExcel;
+use Maatwebsite\Excel\Classes\PHPExcel;
 use Illuminate\Support\ServiceProvider;
 use Maatwebsite\Excel\Readers\HTML_reader;
+use Maatwebsite\Excel\Writers\LaravelExcelWriter;
+use Maatwebsite\Excel\Classes\LaravelExcelWorksheet;
 
 class ExcelServiceProvider extends ServiceProvider {
 
@@ -32,6 +34,8 @@ class ExcelServiceProvider extends ServiceProvider {
 	public function register()
 	{
 		$this->bindPHPExcelClass();
+		$this->bindClasses();
+		$this->bindWriters();
 		$this->bindExcel();
 	}
 
@@ -50,6 +54,27 @@ class ExcelServiceProvider extends ServiceProvider {
 		$this->app['phpexcel.readers.html'] = $this->app->share(function($app) {
 			return new HTML_reader();
 		});
+
+	}
+
+	/**
+	 * Bind Classes
+	 * @return [type] [description]
+	 */
+	protected function bindClasses()
+	{
+
+	}
+
+	/**
+	 * Bind writers
+	 * @return [type] [description]
+	 */
+	protected function bindWriters()
+	{
+		$this->app['excel.writer'] = $this->app->share(function($app) {
+			return new LaravelExcelWriter($app->make('Response'));
+		});
 	}
 
 	/**
@@ -61,7 +86,7 @@ class ExcelServiceProvider extends ServiceProvider {
 		// Bind the Excel class and inject its dependencies
 		$this->app['excel'] = $this->app->share(function($app)
         {
-            return new Excel($app['phpexcel'], $app['phpexcel.readers.html'], $app['config'], $app['view'], $app['files']);
+            return new Excel($app['phpexcel'], $app['excel.writer'], $app['phpexcel.readers.html'], $app['config'], $app['view'], $app['files']);
         });
 	}
 
