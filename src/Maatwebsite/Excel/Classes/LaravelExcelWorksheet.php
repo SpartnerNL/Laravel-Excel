@@ -60,6 +60,14 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet
     );
 
     /**
+     * Allowed page setup
+     * @var array
+     */
+    public $allowedStyles = array(
+        'fontFamily', 'fontSize'
+    );
+
+    /**
      * Create a new worksheet
      *
      * @param PHPExcel        $pParent
@@ -171,6 +179,80 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet
             // Call the setter
             return call_user_func_array(array($this->getPageSetup(), $setter), $params);
         }
+
+        // If is a style
+        elseif(in_array($key, $this->allowedStyles) )
+        {
+            $this->setDefaultStyles($setter, $key, $params);
+        }
+    }
+
+    /**
+     * Set default styles
+     * @param [type] $setter [description]
+     * @param [type] $key    [description]
+     * @param [type] $params [description]
+     */
+    protected function setDefaultStyles($setter, $key, $params)
+    {
+        $caller = $this->getDefaultStyle();
+        $params = is_array($params) ? $params : array($params);
+
+        if(str_contains($key, 'font'))
+            return $this->setFontStyle($caller, $setter, $key, $params);
+
+        return call_user_func_array(array($caller, $setter), $params);
+    }
+
+    /**
+     * Set default styles by array
+     * @param [type] $styles [description]
+     */
+    public function setStyle($styles)
+    {
+        $this->getDefaultStyle()->applyFromArray($styles);
+    }
+
+    /**
+     * Set the font
+     * @param  [type] $fonts [description]
+     * @return [type]        [description]
+     */
+    public function setFont($fonts)
+    {
+        foreach($fonts as $key => $value)
+        {
+            $this->setFontStyle($this->getDefaultStyle(), $key, $key, $value);
+        }
+    }
+
+    /**
+     * Set default font styles
+     * @param [type] $caller [description]
+     * @param [type] $setter [description]
+     * @param [type] $key    [description]
+     * @param [type] $params [description]
+     */
+    protected function setFontStyle($caller, $setter, $key, $params)
+    {
+        // Set caller to font
+        $caller = $caller->getFont();
+        $params = is_array($params) ? $params : array($params);
+
+        // Clean the setter name
+        $key = lcfirst(str_replace('font', '', $key));
+
+        // Get setter method
+        list($setter, $key) = $this->_setSetter($key);
+
+        switch($key)
+        {
+            case 'family':
+                $setter = 'setName';
+                break;
+        }
+
+        return call_user_func_array(array($caller, $setter), $params);
     }
 
     /**
@@ -271,6 +353,7 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet
     public function __destruct()
     {
         $this->data = array();
+        $this->_parent->_cellXfCollection = array();
     }
 
 }

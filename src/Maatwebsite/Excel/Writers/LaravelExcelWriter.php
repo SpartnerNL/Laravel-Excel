@@ -50,6 +50,12 @@ class LaravelExcelWriter {
     protected $rendered = false;
 
     /**
+     * Sheet count
+     * @var integer
+     */
+    protected $sheetCount = -1;
+
+    /**
      * Construct new writer
      */
     public function __construct(Response $response)
@@ -78,7 +84,7 @@ class LaravelExcelWriter {
      * @param  [type] $callback [description]
      * @return [type]           [description]
      */
-    public function sheet($title, $callback)
+    public function sheet($title, $callback = false)
     {
         // Clone the active sheet
         $this->sheet = clone $this->excel->getActiveSheet();
@@ -99,6 +105,20 @@ class LaravelExcelWriter {
         // Add the sheet
         $this->excel->addSheet($this->sheet);
 
+        // Count sheets
+        $this->sheetCount++;
+
+        return $this;
+    }
+
+    /**
+     * Add data
+     * @param  [type] $array [description]
+     * @return [type]        [description]
+     */
+    public function with($array)
+    {
+        $this->excel->getSheet($this->sheetCount)->fromArray($array);
         return $this;
     }
 
@@ -185,16 +205,6 @@ class LaravelExcelWriter {
             // Set the properties
             call_user_func_array(array($this->excel->getProperties(), $setter), $params);
         }
-    }
-
-    /**
-     * Parse the data
-     * @return [type] [description]
-     */
-    protected function _parseData()
-    {
-        // Fill the sheet with the array
-        $this->excel->getActiveSheet()->fromArray($this->excel->getActiveSheet()->data);
     }
 
     /**
