@@ -121,7 +121,6 @@ class Excel
      */
     public function create($title)
     {
-
         // Set the default properties
         $this->excel->setDefaultProperties(array(
             'title' => $title
