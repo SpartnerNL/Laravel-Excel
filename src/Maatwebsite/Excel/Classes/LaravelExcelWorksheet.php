@@ -333,6 +333,55 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet
     }
 
     /**
+     *
+     *  Freeze or lock rows and columns
+     *
+     *  @param string $pane rows and columns , default freeze the first row
+     *  @return $this
+     *
+     *  @author xiehai
+     *  @example ->setFreeze()          Freeze the first row
+     *           ->setFreeze('B1')      Freeze the first column (THE A COLUMN)
+     *           ->setFreeze('B2')      Freeze the first row and first column
+     *
+     */
+    public function setFreeze($pane = 'A2')
+    {
+        $this->freezePane($pane);
+        return $this;
+    }
+
+    /**
+     * Freeze the first row
+     * @return  $this
+     */
+    public function freezeFirstRow()
+    {
+        $this->setFreeze('A2');
+        return $this;
+    }
+
+    /**
+     * Freeze the first column
+     * @return  $this
+     */
+    public function freezeFirstColumn()
+    {
+        $this->setFreeze('B1');
+        return $this;
+    }
+
+    /**
+     * Freeze the first row and column
+     * @return  $this
+     */
+    public function freezeFirstRowAndColumn()
+    {
+        $this->setFreeze('B2');
+        return $this;
+    }
+
+    /**
      * Dynamically call methods
      * @param  [type] $method [description]
      * @param  [type] $params [description]
