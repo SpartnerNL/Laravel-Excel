@@ -1,6 +1,7 @@
 <?php namespace Maatwebsite\Excel\Classes;
 
 use \PHPExcel_Worksheet;
+use Maatwebsite\Excel\Parsers\ViewParser;
 
 /**
  * PHPExcel
@@ -46,10 +47,28 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet
     public $_parent;
 
     /**
+     * Parser
+     * @var [type]
+     */
+    protected $parser;
+
+    /**
+     * View
+     * @var [type]
+     */
+    public $view;
+
+    /**
      * Data
      * @var [type]
      */
     public $data = array();
+
+    /**
+     * Merge data
+     * @var array
+     */
+    public $mergeData = array();
 
     /**
      * Allowed page setup
@@ -64,7 +83,7 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet
      * @var array
      */
     public $allowedStyles = array(
-        'fontFamily', 'fontSize'
+        'fontFamily', 'fontSize', 'fontBold'
     );
 
     /**
@@ -100,32 +119,52 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet
         }
     }
 
-    // /**
-    //  * Set the view
-    //  * @param [type] $name      [description]
-    //  * @param array  $data      [description]
-    //  * @param array  $mergeData [description]
-    //  */
-    // public function setView($name, $data = array(), $mergeData = array())
-    // {
-    //     $this->getParent()->view = $name;
-    //     $this->getParent()->data = $data;
-    //     $this->getParent()->mergeData = $mergeData;
-    //     return $this;
-    // }
+    /**
+     *
+     * Load a View and convert to HTML
+     *
+     *  @param string $view
+     *  @param array $data
+     *  @param array $mergeData
+     *  @return static
+     *
+     */
+    public function loadView($view, $data = array(), $mergeData = array())
+    {
 
-    // /**
-    //  * Get the view
-    //  * @return [type] [description]
-    //  */
-    // public function getView()
-    // {
-    //     return array(
-    //         $this->getParent()->view,
-    //         $this->getParent()->data,
-    //         $this->getParent()->mergeData
-    //     );
-    // }
+        // Init the parser
+        if(!$this->parser)
+            $this->parser = app('excel.parsers.view');
+
+        $this->parser->setView($view);
+        $this->parser->setData($data);
+        $this->parser->setMergeData($mergeData);
+
+        return $this;
+    }
+
+    /**
+     * Get the view
+     * @return [type] [description]
+     */
+    public function getView()
+    {
+        return $this->parser;
+    }
+
+     /**
+     * Return parsed sheet
+     * @return [type] [description]
+     */
+    public function parsed()
+    {
+        // If parser is set, use it
+        if($this->parser)
+            return $this->parser->parse($this);
+
+        // Else return the entire sheet
+        return $this;
+    }
 
     /**
      * Set data for the current sheet
@@ -149,8 +188,12 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet
         // Add array of data
         if(is_array($key))
         {
+            // Set the data
             $this->data = array_merge($this->data, $key);
-            $this->fromArray($this->data);
+
+            // Create excel from array without a view
+            if(!$this->parser)
+                $this->fromArray($this->data);
         }
 
         // Add seperate values
@@ -158,6 +201,10 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet
         {
             $this->data[$key] = $value;
         }
+
+        // Set data to parser
+        if($this->parser)
+            $this->parser->setData($this->data);
     }
 
     /**
@@ -379,6 +426,15 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet
     {
         $this->setFreeze('B2');
         return $this;
+    }
+
+    /**
+     * Get the sheet index
+     * @return [type] [description]
+     */
+    public function getSheetIndex()
+    {
+        return $this->_parent->getActiveSheetIndex();
     }
 
     /**

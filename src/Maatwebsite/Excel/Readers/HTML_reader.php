@@ -35,6 +35,7 @@ use \PHPExcel_Style_Border;
 use \PHPExcel_Style_Fill;
 use \PHPExcel_Style_Font;
 use \PHPExcel_Style_Alignment;
+use Maatwebsite\Excel\Classes\LaravelExcelWorksheet;
 
 class HTML_reader extends \PHPExcel_Reader_HTML
 {
@@ -131,24 +132,33 @@ class HTML_reader extends \PHPExcel_Reader_HTML
      * @return  PHPExcel
      * @throws  PHPExcel_Reader_Exception
      */
-    public function load($pFilename, $isString = false, $objPHPExcel = false)
+    public function load($pFilename, $isString = false, $obj = false)
     {
-        // Create new PHPExcel
-        $objPHPExcel = $objPHPExcel ? $objPHPExcel : new \PHPExcel();
 
-        // Load into this instance
+        if($obj instanceof \PHPExcel)
+        {
+            // Load into this instance
+            return $this->loadIntoExisting($pFilename, $obj, $isString);
+        }
+        elseif($obj instanceof LaravelExcelWorksheet)
+        {
+            // Load into this instance
+            return $this->loadIntoExistingSheet($pFilename, $obj, $isString);
+        }
+
+        $objPHPExcel = $obj ? $obj : new \PHPExcel();
         return $this->loadIntoExisting($pFilename, $objPHPExcel, $isString);
     }
 
     /**
-     * Loads PHPExcel from file into PHPExcel instance
+     * Loads HTML from file into sheet instance
      *
      * @param   string      $pFilename
-     * @param   PHPExcel    $objPHPExcel
+     * @param   LaravelExcelWorksheet    $sheet
      * @return  PHPExcel
      * @throws  PHPExcel_Reader_Exception
      */
-    public function loadIntoExisting($pFilename, PHPExcel $objPHPExcel, $isString = false)
+    public function loadIntoExistingSheet($pFilename, LaravelExcelWorksheet $sheet, $isString = false)
     {
 
         $isHtmlFile = FALSE;
@@ -171,21 +181,14 @@ class HTML_reader extends \PHPExcel_Reader_HTML
             }
         }
 
-        // Create new PHPExcel
-        while ($objPHPExcel->getSheetCount() <= $this->_sheetIndex) {
-            $objPHPExcel->createSheet();
-        }
-        $objPHPExcel->setActiveSheetIndex( $this->_sheetIndex );
-
         //  Create a new DOM object
         $dom = new \domDocument;
-        //  Reload the HTML file into the DOM object
 
         // Check if we need to load the file or the HTML
         if($isHtmlFile)
         {
             // Load HTML from file
-            $loaded = $dom->loadHTMLFile($pFilename);
+            $loaded = @$dom->loadHTMLFile($pFilename);
         }
         else
         {
@@ -204,10 +207,10 @@ class HTML_reader extends \PHPExcel_Reader_HTML
         $row = 0;
         $column = 'A';
         $content = '';
-        $this->_processDomElement($dom,$objPHPExcel->getActiveSheet(),$row,$column,$content);
-        $this->autosizeColumn($objPHPExcel);
+        $this->_processDomElement($dom,$sheet,$row,$column,$content);
+        $this->autosizeColumn($sheet);
 
-        return $objPHPExcel;
+        return $sheet;
     }
 
     /**
@@ -215,18 +218,18 @@ class HTML_reader extends \PHPExcel_Reader_HTML
      *
      * @return int
      */
-    public static function autosizeColumn(\PHPExcel $objPHPExcel)
+    public function autosizeColumn($sheet)
     {
-        foreach ($objPHPExcel->getAllSheets() as $sheet) {
-            $toCol = $sheet->getHighestColumn();
+        $toCol = $sheet->getHighestColumn();
 
-            $toCol++;
-            for ($i = 'A'; $i !== $toCol; $i++) {
-                $sheet->getColumnDimension($i)->setAutoSize(true);
-            }
-
-            $sheet->calculateColumnWidths();
+        $toCol++;
+        for ($i = 'A'; $i !== $toCol; $i++) {
+            $sheet->getColumnDimension($i)->setAutoSize(true);
         }
+
+        $sheet->calculateColumnWidths();
+
+        return $sheet;
     }
 
     private function _processDomElement(\DOMNode $element, $sheet, &$row, &$column, &$cellContent){

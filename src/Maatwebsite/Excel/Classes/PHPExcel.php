@@ -1,6 +1,7 @@
 <?php namespace Maatwebsite\Excel\Classes;
 
 use \PHPExcel as PHPOffice_PHPExcel;
+use Maatwebsite\Excel\Parsers\ViewParser;
 
 /**
  * PHPExcel
@@ -80,7 +81,6 @@ class PHPExcel extends PHPOffice_PHPExcel
         parent::__construct();
 
         // Lets inject our custom Worksheet
-
         $this->_workSheetCollection = array();
         $this->_workSheetCollection[] = new LaravelExcelWorksheet($this);
 

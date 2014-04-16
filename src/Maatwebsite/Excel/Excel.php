@@ -13,6 +13,7 @@ use Maatwebsite\Excel\Readers\HTML_reader;
 use Illuminate\Config\Repository as Config;
 use Illuminate\Filesystem\Filesystem as File;
 use Maatwebsite\Excel\Writers\LaravelExcelWriter;
+use Maatwebsite\Excel\Parsers\ViewParser;
 
 /**
  * Laravel wrapper for PHPEXcel
@@ -95,12 +96,12 @@ class Excel
      * @param View        $view       [description]
      * @param File        $file       [description]
      */
-    public function __construct(PHPExcel $excel, LaravelExcelWriter $writer, HTML_reader $htmlReader, Config $config, View $view, File $file)
+    public function __construct(PHPExcel $excel, LaravelExcelWriter $writer, ViewParser $parser, Config $config, View $view, File $file)
     {
         // Set Excel dependencies
         $this->excel = $excel;
         $this->writer = $writer;
-        $this->htmlReader = $htmlReader;
+        $this->parser = $parser;
 
         // Set Laravel classes
         $this->config = $config;

@@ -103,7 +103,7 @@ class LaravelExcelWriter {
              call_user_func($callback, $this->sheet);
 
         // Add the sheet
-        $this->excel->addSheet($this->sheet);
+        $this->excel->addSheet($this->sheet->parsed());
 
         // Count sheets
         $this->sheetCount++;
@@ -177,6 +177,8 @@ class LaravelExcelWriter {
         // There should be enough sheets to continue rendering
         if($this->excel->getSheetCount() < 1)
             throw new LaravelExcelException('[ERROR] Aborting spreadsheet render: no sheets were created.');
+
+       // dd($this->getView());
 
         // Set the format
         $this->_setFormat();
