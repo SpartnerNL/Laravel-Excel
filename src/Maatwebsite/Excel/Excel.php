@@ -8,7 +8,7 @@ use \PHPExcel_Shared_Date;
 use Illuminate\Support\Str;
 use \PHPExcel_Style_NumberFormat;
 use \PHPExcel_Worksheet_PageSetup;
-use Illuminate\View\Environment as View;
+use Illuminate\View\Factory as View;
 use Maatwebsite\Excel\Readers\HTML_reader;
 use Illuminate\Config\Repository as Config;
 use Illuminate\Filesystem\Filesystem as File;
