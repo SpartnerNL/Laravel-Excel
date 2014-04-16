@@ -54,11 +54,15 @@ class HTML_reader extends \PHPExcel_Reader_HTML
      */
     private $_sheetIndex    = 0;
 
+    /**
+     * HTML tags formatting settings
+     * @var array
+     */
     private $_formats = array(
-        'h1' => array(
+        'th' => array(
             'font' => array(
                 'bold' => true,
-                'size' => 24,
+                'size' => 12,
             ),
         ),
         'strong' => array(
@@ -78,37 +82,43 @@ class HTML_reader extends \PHPExcel_Reader_HTML
                 'italic' => true,
                 'size' => 12,
             ),
+        ),
+        'h1' => array(
+            'font' => array(
+                'bold' => true,
+                'size' => 24,
+            ),
         ),  //  Bold, 24pt
        'h2' => array(
             'font' => array(
                 'bold' => true,
                 'size' => 18,
-                ),
-            ),  //  Bold, 18pt
+            ),
+        ),  //  Bold, 18pt
        'h3' => array(
             'font' => array(
                 'bold' => true,
                 'size' => 13.5,
-                ),
-            ),  //  Bold, 13.5pt
+            ),
+        ),  //  Bold, 13.5pt
        'h4' => array(
             'font' => array(
                 'bold' => true,
                 'size' => 12,
-                ),
-            ),  //  Bold, 12pt
+            ),
+        ),  //  Bold, 12pt
        'h5' => array(
             'font' => array(
                 'bold' => true,
                 'size' => 10,
-                ),
-            ),  //  Bold, 10pt
+            ),
+        ),  //  Bold, 10pt
        'h6' => array(
             'font' => array(
                 'bold' => true,
                 'size' => 7.5,
-                ),
-            ),  //  Bold, 7.5pt
+            ),
+        ),  //  Bold, 7.5pt
        'a'  => array(
             'font' => array(
                 'underline' => true,
@@ -452,6 +462,9 @@ class HTML_reader extends \PHPExcel_Reader_HTML
                         ++$row;
                         break;
                     case 'th' :
+                        $this->_processHeadings($child, $sheet, $row, $column, $cellContent);
+                        ++$column;
+                        break;
                     case 'td' :
 //                      echo 'START OF TABLE ' , $this->_tableLevel , ' CELL<br />';
                         $this->_processDomElement($child,$sheet,$row,$column,$cellContent);
@@ -514,6 +527,27 @@ class HTML_reader extends \PHPExcel_Reader_HTML
             $this->_dataArray[$row][$column] = 'RICH TEXT: ' . $cellContent;
         }
         $cellContent = (string) '';
+    }
+
+    /**
+     * Process table headings
+     * @param  [type] $child  [description]
+     * @param  [type] $sheet  [description]
+     * @param  [type] $row    [description]
+     * @param  [type] $column [description]
+     * @return [type]         [description]
+     */
+    protected function _processHeadings($child, $sheet, $row, $column, $cellContent)
+    {
+
+        $this->_processDomElement($child,$sheet,$row,$column,$cellContent);
+        $this->_flushCell($sheet,$column,$row,$cellContent);
+
+        if (isset($this->_formats[$child->nodeName])) {
+            $sheet->getStyle($column.$row)->applyFromArray($this->_formats[$child->nodeName]);
+        }
+
+        return $sheet;
     }
 
     /**
@@ -662,11 +696,6 @@ class HTML_reader extends \PHPExcel_Reader_HTML
             switch($name)
             {
 
-                // COLSPAN
-                case 'colspan':
-                    dd($value);
-                    break;
-
                 // BACKGROUND
                 case 'background':
                     $value = str_replace('#', '', $value);
@@ -679,6 +708,7 @@ class HTML_reader extends \PHPExcel_Reader_HTML
                             )
                         )
                     );
+                    dd($cells);
                     break;
 
                 // TEXT COLOR

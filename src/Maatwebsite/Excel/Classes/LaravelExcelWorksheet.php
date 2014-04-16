@@ -131,7 +131,6 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet
      */
     public function loadView($view, $data = array(), $mergeData = array())
     {
-
         // Init the parser
         if(!$this->parser)
             $this->parser = app('excel.parsers.view');
@@ -435,6 +434,21 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet
     public function getSheetIndex()
     {
         return $this->_parent->getActiveSheetIndex();
+    }
+
+    /**
+     * Get style for cell
+     *
+     * @param string $pCellCoordinate Cell coordinate to get style for
+     * @return PHPExcel_Style
+     * @throws PHPExcel_Exception
+     */
+    public function getStyle($pCellCoordinate = 'A1')
+    {
+        // set cell coordinate as active
+        $this->setSelectedCells($pCellCoordinate);
+
+        return $this->_parent->getCellXfSupervisor();
     }
 
     /**

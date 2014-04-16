@@ -102,7 +102,6 @@ class LaravelExcelWriter {
         if($callback instanceof \Closure)
              call_user_func($callback, $this->sheet);
 
-        // Add the sheet
         $this->excel->addSheet($this->sheet->parsed());
 
         // Count sheets

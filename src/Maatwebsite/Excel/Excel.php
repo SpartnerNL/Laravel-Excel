@@ -14,6 +14,7 @@ use Illuminate\Config\Repository as Config;
 use Illuminate\Filesystem\Filesystem as File;
 use Maatwebsite\Excel\Writers\LaravelExcelWriter;
 use Maatwebsite\Excel\Parsers\ViewParser;
+use Maatwebsite\Excel\Exceptions\LaravelExcelException;
 
 /**
  * Laravel wrapper for PHPEXcel
@@ -137,6 +138,15 @@ class Excel
 
         // Return the writer object
         return $this->writer;
+    }
+
+    /**
+     * Load a view
+     * @return [type] [description]
+     */
+    public function loadView()
+    {
+        throw new LaravelExcelException('[ERROR] Only use the loadView() from inside the sheet closure');
     }
 
     /**
