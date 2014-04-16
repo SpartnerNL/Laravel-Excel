@@ -102,7 +102,7 @@ class PHPExcel extends PHPOffice_PHPExcel
             // get the value
             $value = in_array($prop, array_keys($custom)) ? $custom[$prop] : \Config::get('excel::properties.' . $prop, NULL);
 
-            // set the propertie
+            // set the property
             $properties->{$method}($value);
         }
     }

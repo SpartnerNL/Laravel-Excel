@@ -17,7 +17,7 @@ use Maatwebsite\Excel\Writers\LaravelExcelWriter;
 /**
  * Laravel wrapper for PHPEXcel
  *
- * @version 0.3.0
+ * @version 0.4.0
  * @package maatwebsite/excel
  * @author Maatwebsite <info@maatwebsite.nl>
  * @contributors Maatwebsite, mewben, hicode, lollypopgr, floptwo, jonwhittlestone, BoHolm
@@ -125,6 +125,8 @@ class Excel
         $this->excel->setDefaultProperties(array(
             'title' => $title
         ));
+
+        $this->excel->disconnectWorksheets();
 
         // Inject our excel object
         $this->writer->injectExcel($this->excel);

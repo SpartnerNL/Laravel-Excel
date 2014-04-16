@@ -131,10 +131,10 @@ class HTML_reader extends \PHPExcel_Reader_HTML
      * @return  PHPExcel
      * @throws  PHPExcel_Reader_Exception
      */
-    public function load($pFilename, $isString = false)
+    public function load($pFilename, $isString = false, $objPHPExcel = false)
     {
         // Create new PHPExcel
-        $objPHPExcel = new \PHPExcel();
+        $objPHPExcel = $objPHPExcel ? $objPHPExcel : new \PHPExcel();
 
         // Load into this instance
         return $this->loadIntoExisting($pFilename, $objPHPExcel, $isString);

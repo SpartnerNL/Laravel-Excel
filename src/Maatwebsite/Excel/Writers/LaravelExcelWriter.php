@@ -107,7 +107,6 @@ class LaravelExcelWriter {
 
         // Count sheets
         $this->sheetCount++;
-
         return $this;
     }
 
@@ -118,7 +117,7 @@ class LaravelExcelWriter {
      */
     public function with($array)
     {
-        $this->excel->getSheet($this->sheetCount)->fromArray($array);
+        $this->fromArray($array);
         return $this;
     }
 
@@ -276,11 +275,26 @@ class LaravelExcelWriter {
      */
     public function __call($method, $params)
     {
+        // Call a php excel method
+        if(method_exists($this->excel, $method))
+        {
+            // Call the method from the excel object with the given params
+            return call_user_func_array(array($this->excel, $method), $params);
+        }
+
+        // Call a php excel sheet method
+        elseif(method_exists($this->excel->getSheet($this->sheetCount), $method))
+        {
+            // Call the method from the excel object with the given params
+            return call_user_func_array(array($this->excel->getSheet($this->sheetCount), $method), $params);
+        }
+
         // If the dynamic call starts with "with", add the var to the data array
-        if(starts_with($method, 'set'))
+        elseif(starts_with($method, 'set'))
         {
             $this->_setAttribute($method, $params);
         }
+
 
         return $this;
     }

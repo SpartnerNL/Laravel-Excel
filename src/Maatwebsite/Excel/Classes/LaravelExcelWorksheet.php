@@ -322,6 +322,17 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet
     }
 
     /**
+     * Set the auto filter
+     * @param boolean $value [description]
+     */
+    public function setAutoFilter($value = false)
+    {
+        $value = $value ? $value : $this->calculateWorksheetDimension();
+        parent::setAutoFilter($value);
+        return $this;
+    }
+
+    /**
      * Dynamically call methods
      * @param  [type] $method [description]
      * @param  [type] $params [description]
