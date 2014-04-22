@@ -232,7 +232,7 @@ class HTML_reader extends \PHPExcel_Reader_HTML
     private function _processDomElement(\DOMNode $element, $sheet, &$row, &$column, &$cellContent){
         foreach($element->childNodes as $child){
             if ($child instanceof \DOMText) {
-                $domText = preg_replace('/\s+/',' ',trim($child->nodeValue));
+                $domText = preg_replace('/\s+/u',' ',trim($child->nodeValue));
                 if (is_string($cellContent)) {
                     //  simply append the text if the cell content is a plain text string
                     $cellContent .= $domText;
