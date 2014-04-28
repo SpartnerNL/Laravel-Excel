@@ -313,6 +313,20 @@ class LaravelExcelReader {
     }
 
     /**
+     *
+     *  Set default calculate
+     *
+     *  @param bool $do Calculate yes or no
+     *  @return $this
+     *
+     */
+    public function calculate($do = true)
+    {
+        $this->calculate = $do;
+        return $this;
+    }
+
+    /**
      * Set the write format
      */
     protected function _setFormat()

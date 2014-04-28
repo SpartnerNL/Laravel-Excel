@@ -428,6 +428,201 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet
     }
 
     /**
+     *
+     *  Set a range of cell borders
+     *
+     *  @param string $pane Start and end of the cell (A1:F10)
+     *  @param string $weight Border style (Reference setBorder style list)
+     *  @return $this
+     *  @example ->setBorder('A1:F10','thick')
+     *
+     */
+    public function setBorder($pane = 'A1', $weight = 'thin')
+    {
+        /*
+        @ ~ Border styles list ~ @
+
+        PHPExcel_Style_Border::BORDER_NONE = 'none'
+        PHPExcel_Style_Border::BORDER_DASHDOT = 'dashDot'
+        PHPExcel_Style_Border::BORDER_DASHDOTDOT = 'dashDotDot'
+        PHPExcel_Style_Border::BORDER_DASHED = 'dashed'
+        PHPExcel_Style_Border::BORDER_DOTTED = 'dotted'
+        PHPExcel_Style_Border::BORDER_DOUBLE = 'double'
+        PHPExcel_Style_Border::BORDER_HAIR = 'hair'
+        PHPExcel_Style_Border::BORDER_MEDIUM = 'medium'
+        PHPExcel_Style_Border::BORDER_MEDIUMDASHDOT = 'mediumDashDot'
+        PHPExcel_Style_Border::BORDER_MEDIUMDASHDOTDOT = 'mediumDashDotDot'
+        PHPExcel_Style_Border::BORDER_MEDIUMDASHED = 'mediumDashed'
+        PHPExcel_Style_Border::BORDER_SLANTDASHDOT = 'slantDashDot'
+        PHPExcel_Style_Border::BORDER_THICK = 'thick'
+        PHPExcel_Style_Border::BORDER_THIN = 'thin'
+        */
+
+        $weight = $pane == 'A1' ? 'none' : $weight;
+
+        // Set all borders
+        $this->excel->getStyle($pane)
+                    ->getBorders()
+                    ->getAllBorders()
+                    ->setBorderStyle($weight);
+
+        return $this;
+    }
+
+    /**
+     *
+     *  Set all cell borders
+     *
+     *  @param string $weight Border style (Reference setBorder style list)
+     *  @return $this
+     *  @example Excel::create()->setAllBorder()   Must follow the function of create()
+     *
+     */
+    public function setAllBorder($weight = 'thin')
+    {
+        $styleArray = array(
+            'borders' => array(
+                'allborders' => array(
+                    'style' => $weight
+                )
+            )
+        );
+
+        // Apply the style
+        $this->excel->getDefaultStyle()
+                    ->applyFromArray($styleArray);
+
+        return $this;
+    }
+
+    /**
+     *
+     *  Set the cell format of the column
+     *
+     *  @return $this
+     *  @param array $formats An array of cells you want to format columns
+     *
+     *  @author xiehai
+     *  @example ->setColumnFormat(array(
+     *          'B' => '0',
+     *          'D' => '0.00',
+     *          'F' => '@',
+     *          'F' => 'yyyy-mm-dd',
+     *          ......
+     *      )
+     *  )
+     *  @uses This method can only be used before the with() method
+     *
+     */
+
+     /*
+      * @ ~ The Format list ~ @
+      *
+        PHPExcel_Style_NumberFormat::FORMAT_GENERAL = 'General'
+        PHPExcel_Style_NumberFormat::FORMAT_TEXT = '@'
+        PHPExcel_Style_NumberFormat::FORMAT_NUMBER = '0'
+        PHPExcel_Style_NumberFormat::FORMAT_NUMBER_00 = '0.00'
+        PHPExcel_Style_NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1 = '#,##0.00'
+        PHPExcel_Style_NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2 = '#,##0.00_-'
+        PHPExcel_Style_NumberFormat::FORMAT_PERCENTAGE = '0%'
+        PHPExcel_Style_NumberFormat::FORMAT_PERCENTAGE_00 = '0.00%'
+        PHPExcel_Style_NumberFormat::FORMAT_DATE_YYYYMMDD2 = 'yyyy-mm-dd'
+        PHPExcel_Style_NumberFormat::FORMAT_DATE_YYYYMMDD = 'yy-mm-dd'
+        PHPExcel_Style_NumberFormat::FORMAT_DATE_DDMMYYYY = 'dd/mm/yy'
+        PHPExcel_Style_NumberFormat::FORMAT_DATE_DMYSLASH = 'd/m/y'
+        PHPExcel_Style_NumberFormat::FORMAT_DATE_DMYMINUS = 'd-m-y'
+        PHPExcel_Style_NumberFormat::FORMAT_DATE_DMMINUS = 'd-m'
+        PHPExcel_Style_NumberFormat::FORMAT_DATE_MYMINUS = 'm-y'
+        PHPExcel_Style_NumberFormat::FORMAT_DATE_XLSX14 = 'mm-dd-yy'
+        PHPExcel_Style_NumberFormat::FORMAT_DATE_XLSX15 = 'd-mmm-yy'
+        PHPExcel_Style_NumberFormat::FORMAT_DATE_XLSX16 = 'd-mmm'
+        PHPExcel_Style_NumberFormat::FORMAT_DATE_XLSX17 = 'mmm-yy'
+        PHPExcel_Style_NumberFormat::FORMAT_DATE_XLSX22 = 'm/d/yy h:mm'
+        PHPExcel_Style_NumberFormat::FORMAT_DATE_DATETIME = 'd/m/y h:mm'
+        PHPExcel_Style_NumberFormat::FORMAT_DATE_TIME1 = 'h:mm AM/PM'
+        PHPExcel_Style_NumberFormat::FORMAT_DATE_TIME2 = 'h:mm:ss AM/PM'
+        PHPExcel_Style_NumberFormat::FORMAT_DATE_TIME3 = 'h:mm'
+        PHPExcel_Style_NumberFormat::FORMAT_DATE_TIME4 = 'h:mm:ss'
+        PHPExcel_Style_NumberFormat::FORMAT_DATE_TIME5 = 'mm:ss'
+        PHPExcel_Style_NumberFormat::FORMAT_DATE_TIME6 = 'h:mm:ss'
+        PHPExcel_Style_NumberFormat::FORMAT_DATE_TIME7 = 'i:s.S'
+        PHPExcel_Style_NumberFormat::FORMAT_DATE_TIME8 = 'h:mm:ss;@'
+        PHPExcel_Style_NumberFormat::FORMAT_DATE_YYYYMMDDSLASH = 'yy/mm/dd;@'
+        PHPExcel_Style_NumberFormat::FORMAT_CURRENCY_USD_SIMPLE = '"$"#,##0.00_-'
+        PHPExcel_Style_NumberFormat::FORMAT_CURRENCY_USD = '$#,##0_-'
+        PHPExcel_Style_NumberFormat::FORMAT_CURRENCY_EUR_SIMPLE = '[$EUR ]#,##0.00_-'
+      */
+    public function setColumnFormat(Array $formats){
+
+        // Loop through the columns
+        foreach ($formats as $column => $format) {
+
+            // Change the format for a specific cell or range
+            $this->excel->getStyle($column)
+                        ->getNumberFormat()
+                        ->setFormatCode($format);
+        }
+
+        return $this;
+    }
+
+    /**
+     *
+     *  Set the cell width of the columns
+     *
+     *  @return $this
+     *  @param array $pane An array of column widths
+     *
+     *  @author xiehai
+     *  @example ->setColumnWidth(array(
+     *          'A' => '10',
+     *          'B' => '22',
+     *          'F' => '8',
+     *          'N' => '13',
+     *          ......
+     *      )
+     *  )
+     *
+     */
+    public function setColumnWidth(Array $pane)
+    {
+        foreach ($pane as $column => $width) {
+            $this->excel->getColumnDimension($column)->setWidth($width);
+        }
+
+        return $this;
+    }
+
+    /**
+     *
+     *  Set the columns you want to merge
+     *
+     *  @return $this
+     *  @param array $mergeColumn An array of columns you want to merge
+     *
+     *  @author xiehai
+     *  @example    $mergeColumn = array(
+     *                  'columns' => array('A','B','C','D'),
+     *                  'rows' => array(
+     *                      array(2,3),
+     *                      array(5,11),
+     *                      .....
+     *                   )
+     *            );
+     *
+     */
+    public function setMergeColumn(Array $mergeColumn)
+    {
+        foreach ($mergeColumn['columns'] as $column) {
+            foreach ($mergeColumn['rows'] as $row) {
+                $this->mergeCells($column.$row[0].":".$column.$row[1]);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
      * Get the sheet index
      * @return [type] [description]
      */
