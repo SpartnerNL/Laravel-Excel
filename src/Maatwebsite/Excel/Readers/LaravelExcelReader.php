@@ -140,6 +140,27 @@ class LaravelExcelReader {
     }
 
     /**
+     * Take x rows
+     * @param  [type] $amount [description]
+     * @return [type]         [description]
+     */
+    public function take($amount)
+    {
+        $this->limit = $amount;
+        return $this;
+    }
+
+    /**
+     * Limit the results by x
+     * @param  [type] $amount [description]
+     * @return [type]         [description]
+     */
+    public function limit($amount)
+    {
+        return $this->take($amount);
+    }
+
+    /**
      * Return all sheets/rows
      * @return [type] [description]
      */
@@ -152,9 +173,9 @@ class LaravelExcelReader {
      * Get all sheets/rows
      * @return [type] [description]
      */
-    public function get()
+    public function get($columns = array())
     {
-        $this->_parseFile();
+        $this->_parseFile($columns);
         return $this->parsed;
     }
 
@@ -165,9 +186,9 @@ class LaravelExcelReader {
      *  @return array $this->parsed The parsed array
      *
      */
-    public function toArray()
+    public function toArray($columns = array())
     {
-        return (array) $this->get()->toArray();
+        return (array) $this->get($columns)->toArray();
     }
 
     /**
@@ -177,9 +198,9 @@ class LaravelExcelReader {
      *  @return obj $this->parsed The parsed object
      *
      */
-    public function toObject()
+    public function toObject($columns = array())
     {
-        return $this->get();
+        return $this->get($columns);
     }
 
     /**
@@ -189,10 +210,10 @@ class LaravelExcelReader {
      *  @return array $this->parsed The parsed array
      *
      */
-    public function dump($die = false)
+    public function dump($columns = array(), $die = false)
     {
         echo '<pre class="container" style="background: #f5f5f5; border: 1px solid #e3e3e3; padding:15px;">';
-            $die ? dd($this->get()) : var_dump($this->get());
+            $die ? dd($this->get($columns)) : var_dump($this->get($columns));
         echo '</pre>';
     }
 
@@ -200,9 +221,9 @@ class LaravelExcelReader {
      * Die and dump
      * @return [type] [description]
      */
-    public function dd()
+    public function dd($columns = array())
     {
-        return $this->dump(true);
+        return $this->dump($columns, true);
     }
 
     /**
@@ -295,10 +316,10 @@ class LaravelExcelReader {
      * Parse the file
      * @return [type] [description]
      */
-    protected function _parseFile()
+    protected function _parseFile($columns = array())
     {
         $parser = new ExcelParser($this);
-        $this->parsed = $parser->parseFile();
+        $this->parsed = $parser->parseFile($columns);
     }
 
     /**

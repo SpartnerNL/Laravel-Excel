@@ -60,6 +60,12 @@ class ExcelParser {
     protected $indices;
 
     /**
+     * Columns we want to fetch
+     * @var array
+     */
+    protected $columns = array();
+
+    /**
      * Row counter
      * @var integer
      */
@@ -81,10 +87,13 @@ class ExcelParser {
      *  @return $this
      *
      */
-    public function parseFile()
+    public function parseFile($columns = array())
     {
         // Init new sheet collection
         $workbook = new SheetCollection();
+
+        // Set the columns
+        $this->columns = $columns;
 
         if(!$this->isParsed)
         {
@@ -128,12 +137,6 @@ class ExcelParser {
 
                 $i++;
 
-            }
-
-            // // Limit the result
-            if($this->reader->limit !== false)
-            {
-                $workbook = $workbook->take($this->reader->limit);
             }
         }
 
@@ -187,16 +190,16 @@ class ExcelParser {
         // Loop through the rows inside the worksheet
         foreach ($this->worksheet->getRowIterator() as $this->row) {
 
-            // Ignore first row (this can be 0 or 1)
+            // Limit the results
+            if($this->reader->limit && $this->r == ($this->reader->limit + 1) )
+                break;
+
+            // Ignore first row when needed
             if($this->r >= $ignore)
-            {
-                // Set the array, always starting with 0, and fill it with parsed cells
                 $parsedRows->push($this->parseCells());
-            }
 
             // Count the rows
             $this->r++;
-
         }
 
         // Return the parsed array
@@ -228,57 +231,59 @@ class ExcelParser {
             $index = PHPExcel_Cell::columnIndexFromString($this->cell->getColumn());
 
             // Check how we need to save the parsed array
-            if($this->reader->firstRowAsIndex !== false)
-            {
-                // Set label index
-                $index = $this->indices[$i];
-            }
+            $index = $this->reader->firstRowAsIndex !== false ? $this->indices[$i] : $i;
 
-            // If the cell is a date time
-            if(PHPExcel_Shared_Date::isDateTime($this->cell))
+            // Check if we want to select this column
+            if(empty($this->columns) || (!empty($this->columns) && in_array($index, $this->columns) ) )
             {
-                // Check if we want to parse the dates
-                if ($this->reader->formatDates !== false)
+                // If the cell is a date time
+                if(PHPExcel_Shared_Date::isDateTime($this->cell))
                 {
-                    // Convert excel time to php date object
-                    $value = PHPExcel_Shared_Date::ExcelToPHPObject($this->cell->getCalculatedValue());
-
-                    // Format the date
-                    $value = $value->format($this->reader->dateFormat);
-
-                    // Use carbon to parse the time
-                    if($this->reader->useCarbon)
+                    // Check if we want to parse the dates
+                    if ($this->reader->formatDates !== false)
                     {
-                        $value = Carbon::parse($value)->{$this->reader->carbonMethod}();
+                        // Convert excel time to php date object
+                        $value = PHPExcel_Shared_Date::ExcelToPHPObject($this->cell->getCalculatedValue());
+
+                        // Format the date
+                        $value = $value->format($this->reader->dateFormat);
+
+                        // Use carbon to parse the time
+                        if($this->reader->useCarbon)
+                        {
+                            $value = Carbon::parse($value)->{$this->reader->carbonMethod}();
+                        }
                     }
+                    else
+                    {
+                        // Format the date to a formatted string
+                        $value = (string) PHPExcel_Style_NumberFormat::toFormattedString(
+                            $this->cell->getCalculatedValue(),
+                            $this->cell->getWorksheet()->getParent()
+                                ->getCellXfByIndex($this->cell->getXfIndex())
+                                ->getNumberFormat()
+                                ->getFormatCode()
+                        );
+                    }
+                }
+
+                // Check if we want calculated values or not
+                elseif($this->reader->calculate !== false)
+                {
+                    // Get calculated value
+                    $value = $this->cell->getCalculatedValue();
                 }
                 else
                 {
-                    // Format the date to a formatted string
-                    $value = (string) PHPExcel_Style_NumberFormat::toFormattedString(
-                        $this->cell->getCalculatedValue(),
-                        $this->cell->getWorksheet()->getParent()
-                            ->getCellXfByIndex($this->cell->getXfIndex())
-                            ->getNumberFormat()
-                            ->getFormatCode()
-                    );
+                    // Get real value
+                    $value = $this->cell->getValue();
                 }
+
+                // Set the value
+                $parsedCells[$index] = $value;
+
             }
 
-            // Check if we want calculated values or not
-            elseif($this->reader->calculate !== false)
-            {
-                // Get calculated value
-                $value = $this->cell->getCalculatedValue();
-            }
-            else
-            {
-                // Get real value
-                $value = $this->cell->getValue();
-            }
-
-            // Set the value
-            $parsedCells[$index] = $value;
             $i++;
 
         }
