@@ -239,24 +239,22 @@ class ExcelParser {
                 // If the cell is a date time
                 if(PHPExcel_Shared_Date::isDateTime($this->cell))
                 {
-                    // Check if we want to parse the dates
-                    if ($this->reader->formatDates !== false)
+                    if($this->reader->formatDates !== false)
                     {
                         // Convert excel time to php date object
-                        $value = PHPExcel_Shared_Date::ExcelToPHPObject($this->cell->getCalculatedValue());
+                        $date = PHPExcel_Shared_Date::ExcelToPHPObject($this->cell->getCalculatedValue())->format(false);
 
-                        // Format the date
-                        $value = $value->format($this->reader->dateFormat);
+                        // Parse with carbon
+                        $date = Carbon::parse($date);
 
-                        // Use carbon to parse the time
-                        if($this->reader->useCarbon)
-                        {
-                            $value = Carbon::parse($value)->{$this->reader->carbonMethod}();
-                        }
+                        // Format the date if wanted
+                        if($this->reader->dateFormat)
+                            $value = $date->format($this->reader->dateFormat);
+
                     }
                     else
                     {
-                        // Format the date to a formatted string
+                        //Format the date to a formatted string
                         $value = (string) PHPExcel_Style_NumberFormat::toFormattedString(
                             $this->cell->getCalculatedValue(),
                             $this->cell->getWorksheet()->getParent()
@@ -265,6 +263,7 @@ class ExcelParser {
                                 ->getFormatCode()
                         );
                     }
+
                 }
 
                 // Check if we want calculated values or not

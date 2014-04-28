@@ -78,7 +78,7 @@ class LaravelExcelReader {
      * Slug seperator
      * @var string
      */
-    public $seperator = '-';
+    public $seperator = '_';
 
      /**
      * Ignore empty cells
@@ -96,19 +96,7 @@ class LaravelExcelReader {
      * Default date format
      * @var string
      */
-    public $dateFormat = 'Y-m-d';
-
-    /**
-     * Use carbon to format dates
-     * @var boolean
-     */
-    public $useCarbon = false;
-
-    /**
-     * Default carbon method
-     * @var string
-     */
-    public $carbonMethod = 'toDateTimeString';
+    public $dateFormat = false;
 
     /**
      * Construct new writer
@@ -300,6 +288,27 @@ class LaravelExcelReader {
     {
         // Set first row as label
         $this->firstRowAsIndex = $do;
+        return $this;
+    }
+
+    /**
+     * Set the date format
+     * @param str $format The date format
+     */
+    public function setDateFormat($format)
+    {
+        $this->dateFormat = $format;
+        return $this;
+    }
+
+    /**
+     * Enable/disable date formating
+     * @param  bool $boolean True/false
+     */
+    public function formatDates($boolean, $format = false)
+    {
+        $this->formatDates = $boolean;
+        $this->setDateFormat($format);
         return $this;
     }
 
