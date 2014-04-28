@@ -38,6 +38,12 @@ class LaravelExcelWriter {
     public $ext = 'xls';
 
     /**
+     * Path the file will be stored to
+     * @var [type]
+     */
+    public $storagePath = 'app/storage/uploads';
+
+    /**
      * Header Content-type
      * @var [type]
      */
@@ -137,6 +143,48 @@ class LaravelExcelWriter {
     }
 
     /**
+     * Store the excel file to the server
+     * @param  string  $ext        [description]
+     * @param  boolean $path       [description]
+     * @param  boolean $returnInfo [description]
+     * @return [type]              [description]
+     */
+    public function store($ext = 'xls', $path = false, $returnInfo = false)
+    {
+        // Set the storage path
+        $this->_setStoragePath($path);
+
+        // Set the extension
+        $this->ext = $ext;
+
+        // Render the XLS
+        $this->render();
+
+        // Set the storage path and file
+        $toStore = $this->storagePath . '/' . $this->title . '.' . $this->ext;
+
+        // Save the file to specified location
+        $this->writer->save($toStore);
+
+        // Return file info
+        if($returnInfo)
+        {
+            // Send back information about the stored file
+            return array(
+                'full'  => $toStore,
+                'path'  => $this->storagePath,
+                'file'  => $this->title . '.' . $this->ext,
+                'title' => $this->title,
+                'ext'   => $this->ext
+            );
+
+        }
+
+        // Return itself
+        return $this;
+    }
+
+    /**
      * Download a file
      * @return [type] [description]
      */
@@ -146,7 +194,7 @@ class LaravelExcelWriter {
         $this->_setHeaders(array(
 
             'Content-Type'          => $this->contentType,
-            'Content-Disposition'  => 'attachment; filename="' . $this->title . '.' . $this->ext . '"',
+            'Content-Disposition'   => 'attachment; filename="' . $this->title . '.' . $this->ext . '"',
             'Cache-Control'         => 'max-age=0',
             'Cache-Control'         => 'max-age=1',
             'Expires'               => 'Mon, 26 Jul 1997 05:00:00 GMT', // Date in the past
@@ -176,8 +224,6 @@ class LaravelExcelWriter {
         // There should be enough sheets to continue rendering
         if($this->excel->getSheetCount() < 1)
             throw new LaravelExcelException('[ERROR] Aborting spreadsheet render: no sheets were created.');
-
-       // dd($this->getView());
 
         // Set the format
         $this->_setFormat();
@@ -257,6 +303,23 @@ class LaravelExcelWriter {
         {
             header($header . ': ' . $value);
         }
+    }
+
+    /**
+     * Set the storage path
+     * @var [type]
+     */
+    protected function _setStoragePath($path = false)
+    {
+        // Get the default path
+        $path = $path ? $path : \Config::get('excel::path', base_path($this->storagePath));
+
+         // Trim of slashes, to makes sure we won't add them double
+        $this->storagePath = rtrim($path, '/');
+
+        // Make sure the storage path exists
+        if(!file_exists($this->storagePath))
+            mkdir($this->storagePath, 0777);
     }
 
     /**

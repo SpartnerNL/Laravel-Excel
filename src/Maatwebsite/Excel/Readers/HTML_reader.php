@@ -708,7 +708,6 @@ class HTML_reader extends \PHPExcel_Reader_HTML
                             )
                         )
                     );
-                    dd($cells);
                     break;
 
                 // TEXT COLOR

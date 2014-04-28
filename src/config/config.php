@@ -151,6 +151,6 @@ return array(
     |
     */
 
-    'path' => base_path(),
+    'path' => base_path('app/storage/uploads'),
 
 );
