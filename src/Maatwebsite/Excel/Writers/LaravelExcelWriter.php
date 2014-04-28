@@ -2,6 +2,7 @@
 
 use \Response;
 use Carbon\Carbon;
+use Illuminate\Filesystem\Filesystem;
 use Maatwebsite\Excel\Exceptions\LaravelExcelException;
 use Maatwebsite\Excel\Classes\LaravelExcelWorksheet;
 
@@ -63,10 +64,13 @@ class LaravelExcelWriter {
 
     /**
      * Construct new writer
+     * @param Response   $response [description]
+     * @param FileSystem $files    [description]
      */
-    public function __construct(Response $response)
+    public function __construct(Response $response, FileSystem $filesystem)
     {
         $this->response = $response;
+        $this->filesystem = $filesystem;
     }
 
     public function injectExcel($excel)
@@ -136,52 +140,10 @@ class LaravelExcelWriter {
         $this->ext = $ext;
 
         // Render the file
-        $this->render();
+        $this->_render();
 
         // Download the file
         $this->download();
-    }
-
-    /**
-     * Store the excel file to the server
-     * @param  string  $ext        [description]
-     * @param  boolean $path       [description]
-     * @param  boolean $returnInfo [description]
-     * @return [type]              [description]
-     */
-    public function store($ext = 'xls', $path = false, $returnInfo = false)
-    {
-        // Set the storage path
-        $this->_setStoragePath($path);
-
-        // Set the extension
-        $this->ext = $ext;
-
-        // Render the XLS
-        $this->render();
-
-        // Set the storage path and file
-        $toStore = $this->storagePath . '/' . $this->title . '.' . $this->ext;
-
-        // Save the file to specified location
-        $this->writer->save($toStore);
-
-        // Return file info
-        if($returnInfo)
-        {
-            // Send back information about the stored file
-            return array(
-                'full'  => $toStore,
-                'path'  => $this->storagePath,
-                'file'  => $this->title . '.' . $this->ext,
-                'title' => $this->title,
-                'ext'   => $this->ext
-            );
-
-        }
-
-        // Return itself
-        return $this;
     }
 
     /**
@@ -216,10 +178,63 @@ class LaravelExcelWriter {
     }
 
     /**
+     * Store the excel file to the server
+     * @param  string  $ext        [description]
+     * @param  boolean $path       [description]
+     * @param  boolean $returnInfo [description]
+     * @return [type]              [description]
+     */
+    public function store($ext = 'xls', $path = false, $returnInfo = false)
+    {
+        // Set the storage path
+        $this->_setStoragePath($path);
+
+        // Set the extension
+        $this->ext = $ext;
+
+        // Render the XLS
+        $this->_render();
+
+        // Set the storage path and file
+        $toStore = $this->storagePath . '/' . $this->title . '.' . $this->ext;
+
+        // Save the file to specified location
+        $this->writer->save($toStore);
+
+        // Return file info
+        if($returnInfo)
+        {
+            // Send back information about the stored file
+            return array(
+                'full'  => $toStore,
+                'path'  => $this->storagePath,
+                'file'  => $this->title . '.' . $this->ext,
+                'title' => $this->title,
+                'ext'   => $this->ext
+            );
+
+        }
+
+        // Return itself
+        return $this;
+    }
+
+    /**
+     *  Store the excel file to the server
+     *  @param str $ext The file extension
+     *  @param str $path The save path
+     *  @return $this
+     */
+    public function save($ext = 'xls', $path = false, $returnInfo = false)
+    {
+        return $this->store($ext, $path, $returnInfo);
+    }
+
+    /**
      * Start render of a new spreadsheet
      * @return [type] [description]
      */
-    public function render()
+    protected function _render()
     {
         // There should be enough sheets to continue rendering
         if($this->excel->getSheetCount() < 1)
@@ -318,8 +333,8 @@ class LaravelExcelWriter {
         $this->storagePath = rtrim($path, '/');
 
         // Make sure the storage path exists
-        if(!file_exists($this->storagePath))
-            mkdir($this->storagePath, 0777);
+        if(!$this->filesystem->isWritable($this->storagePath))
+            $this->filesystem->makeDirectory($this->storagePath, 0777, true);
     }
 
     /**
@@ -357,10 +372,11 @@ class LaravelExcelWriter {
         elseif(starts_with($method, 'set'))
         {
             $this->_setAttribute($method, $params);
+            return $this;
         }
 
+        throw new LaravelExcelException('[ERROR] Writer method ['. $method .'] does not exist.');
 
-        return $this;
     }
 
     public function __destruct()

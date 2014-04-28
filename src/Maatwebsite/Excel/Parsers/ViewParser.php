@@ -1,6 +1,6 @@
 <?php namespace Maatwebsite\Excel\Parsers;
 
-use Maatwebsite\Excel\Readers\HTML_reader;
+use Maatwebsite\Excel\Readers\Html;
 
 class ViewParser {
 
@@ -26,7 +26,7 @@ class ViewParser {
      * Construct the view parser
      * @param HTML_Reader $reader [description]
      */
-    public function __construct(HTML_Reader $reader)
+    public function __construct(Html $reader)
     {
         $this->reader = $reader;
     }

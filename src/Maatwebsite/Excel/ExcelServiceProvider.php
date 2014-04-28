@@ -2,7 +2,7 @@
 
 use Maatwebsite\Excel\Classes\PHPExcel;
 use Illuminate\Support\ServiceProvider;
-use Maatwebsite\Excel\Readers\HTML_reader;
+use Maatwebsite\Excel\Readers\Html;
 use Maatwebsite\Excel\Writers\LaravelExcelWriter;
 use Maatwebsite\Excel\Classes\LaravelExcelWorksheet;
 use Maatwebsite\Excel\Parsers\ViewParser;
@@ -71,7 +71,7 @@ class ExcelServiceProvider extends ServiceProvider {
 	{
 		// Bind the PHPExcel class
 		$this->app['phpexcel.readers.html'] = $this->app->share(function($app) {
-			return new HTML_reader();
+			return new Html();
 		});
 	}
 
@@ -93,7 +93,7 @@ class ExcelServiceProvider extends ServiceProvider {
 	protected function bindWriters()
 	{
 		$this->app['excel.writer'] = $this->app->share(function($app) {
-			return new LaravelExcelWriter($app->make('Response'));
+			return new LaravelExcelWriter($app->make('Response'), $app['files']);
 		});
 	}
 

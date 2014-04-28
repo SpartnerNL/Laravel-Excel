@@ -37,7 +37,7 @@ use \PHPExcel_Style_Font;
 use \PHPExcel_Style_Alignment;
 use Maatwebsite\Excel\Classes\LaravelExcelWorksheet;
 
-class HTML_reader extends \PHPExcel_Reader_HTML
+class Html extends \PHPExcel_Reader_HTML
 {
 
     /**

@@ -8,6 +8,7 @@ use \PHPExcel_Shared_Date;
 use Illuminate\Support\Str;
 use \PHPExcel_Style_NumberFormat;
 use \PHPExcel_Worksheet_PageSetup;
+use Maatwebsite\Excel\Readers\Batch;
 use Illuminate\View\Environment as View;
 use Maatwebsite\Excel\Readers\HTML_reader;
 use Illuminate\Config\Repository as Config;
@@ -33,6 +34,12 @@ class Excel
      * @var [type]
      */
     public $excel;
+
+    /**
+     * Batch object
+     * @var [type]
+     */
+    public $batch;
 
     /**
      * Html reader
@@ -111,9 +118,6 @@ class Excel
 
         // Set defaults
         $this->_setDefaults();
-
-        // Reset
-        $this->reset();
     }
 
     /**
@@ -141,11 +145,27 @@ class Excel
     }
 
     /**
+     * Batch import
+     * @return [type] [description]
+     */
+    public function batch($files, $callback)
+    {
+        $this->batch = new Batch($files);
+
+        // Do the ballback
+        if($callback instanceof \Closure)
+            call_user_func($callback, $this, $this->batch->getFiles());
+
+        return $this;
+    }
+
+    /**
      * Load a view
      * @return [type] [description]
      */
     public function loadView()
     {
+        // Deprecated
         throw new LaravelExcelException('[ERROR] Only use the loadView() from inside the sheet closure');
     }
 
@@ -155,11 +175,11 @@ class Excel
     protected function _setDefaults()
     {
         // Set defaults
-        $this->delimiter = $this->config->get('excel::delimiter', $this->delimiter);
-        $this->calculate = $this->config->get('excel::calculate', $this->calculate);
-        $this->ignoreEmpty = $this->config->get('excel::ignoreEmpty', $this->ignoreEmpty);
-        $this->dateFormat = $this->config->get('excel::date_format', $this->dateFormat);
-        $this->seperator = $this->config->get('excel::seperator', $this->seperator);
+        $this->delimiter    = $this->config->get('excel::delimiter', $this->delimiter);
+        $this->calculate    = $this->config->get('excel::calculate', $this->calculate);
+        $this->ignoreEmpty  = $this->config->get('excel::ignoreEmpty', $this->ignoreEmpty);
+        $this->dateFormat   = $this->config->get('excel::date_format', $this->dateFormat);
+        $this->seperator    = $this->config->get('excel::seperator', $this->seperator);
     }
 
     /**
@@ -176,6 +196,7 @@ class Excel
         {
             $key = lcfirst(str_replace('with', '', $method));
             $this->addVars($key, reset($params));
+            return $this;
         }
 
         // Call a php excel method
@@ -185,7 +206,7 @@ class Excel
             return call_user_func_array(array($this->excel, $method), $params);
         }
 
-        return $this;
+        throw new LaravelExcelException('Laravel Excel method ['. $method .'] does not exist');
     }
 
 }
