@@ -10,6 +10,10 @@ use \PHPExcel_Worksheet_PageSetup;
 use Illuminate\Filesystem\Filesystem;
 use Maatwebsite\Excel\Parsers\ExcelParser;
 use Maatwebsite\Excel\Exceptions\LaravelExcelException;
+use Illuminate\Support\Collection;
+use Maatwebsite\Excel\Collections\SheetCollection;
+use Maatwebsite\Excel\Collections\RowCollection;
+use Maatwebsite\Excel\Collections\CellCollection;
 
 class ExcelParser {
 
@@ -79,13 +83,13 @@ class ExcelParser {
      */
     public function parseFile()
     {
+        // Init new sheet collection
+        $workbook = new SheetCollection();
+
         if(!$this->isParsed)
         {
             // Set worksheet count
             $i = 0;
-
-            // Set empty array
-            $parsed = array();
 
             // Loop through the worksheets
             foreach($this->excel->getWorksheetIterator() as $this->worksheet)
@@ -103,36 +107,40 @@ class ExcelParser {
                     $this->indices =  $this->getIndices();
                 }
 
+                // Parse the rows
+                $worksheet = $this->parseRows();
+
                 // Get the sheet count
                 $this->sheetCount = $this->excel->getSheetCount();
 
-                // If we have more than 1 worksheet, seperate them
+                // If multiple sheets
                 if($this->sheetCount > 1)
                 {
-                    // Parse the rows into seperate worksheets
-                    $parsed[$title] = $this->parseRows();
+                    // Push every sheet
+                    $workbook->push($worksheet);
                 }
                 else
                 {
-                    // Parse the rows, but neglect the worksheet title
-                    $parsed = $this->parseRows();
+                    // Ignore the sheet collection
+                    $workbook = $worksheet;
+                    break;
                 }
 
                 $i++;
 
             }
 
-            // Limit the result
+            // // Limit the result
             if($this->reader->limit !== false)
             {
-                $parsed = array_slice($parsed, $this->reader->limit[1], $this->reader->limit[0]);
+                $workbook = $workbook->take($this->reader->limit);
             }
         }
 
         $this->isParsed = true;
 
         // Return itself
-        return $parsed;
+        return $workbook;
     }
 
     /**
@@ -171,7 +179,7 @@ class ExcelParser {
     protected function parseRows()
     {
         // Set empty parsedRow array
-        $parsedRow = array();
+        $parsedRows = new RowCollection();
 
         // If the first row is the label, ignore the first row
         $ignore = $this->reader->firstRowAsIndex !== false ? 1 : 0;
@@ -183,7 +191,7 @@ class ExcelParser {
             if($this->r >= $ignore)
             {
                 // Set the array, always starting with 0, and fill it with parsed cells
-                $parsedRow[$this->r - $ignore] = $this->parseCells();
+                $parsedRows->push($this->parseCells());
             }
 
             // Count the rows
@@ -192,7 +200,7 @@ class ExcelParser {
         }
 
         // Return the parsed array
-        return $parsedRow;
+        return $parsedRows;
     }
 
      /**
@@ -276,7 +284,7 @@ class ExcelParser {
         }
 
         // Return array with parsed cells
-        return $parsedCells;
+        return CellCollection::make($parsedCells);
 
     }
 

@@ -4,6 +4,7 @@ use \PHPExcel_IOFactory;
 use Illuminate\Filesystem\Filesystem;
 use Maatwebsite\Excel\Parsers\ExcelParser;
 use Maatwebsite\Excel\Exceptions\LaravelExcelException;
+use Illuminate\Support\Collection;
 
 class LaravelExcelReader {
 
@@ -139,6 +140,25 @@ class LaravelExcelReader {
     }
 
     /**
+     * Return all sheets/rows
+     * @return [type] [description]
+     */
+    public function all()
+    {
+        return $this->get();
+    }
+
+    /**
+     * Get all sheets/rows
+     * @return [type] [description]
+     */
+    public function get()
+    {
+        $this->_parseFile();
+        return $this->parsed;
+    }
+
+    /**
      *
      *  Parse the file to an array.
      *
@@ -147,10 +167,7 @@ class LaravelExcelReader {
      */
     public function toArray()
     {
-        // Parse the file
-        $this->_parseFile();
-
-        return (array) $this->parsed;
+        return (array) $this->get()->toArray();
     }
 
     /**
@@ -162,7 +179,7 @@ class LaravelExcelReader {
      */
     public function toObject()
     {
-        return (object) json_decode(json_encode($this->toArray()));
+        return $this->get();
     }
 
     /**
@@ -175,7 +192,7 @@ class LaravelExcelReader {
     public function dump($die = false)
     {
         echo '<pre class="container" style="background: #f5f5f5; border: 1px solid #e3e3e3; padding:15px;">';
-            $die ? dd($this->toArray()) : var_dump($this->toArray());
+            $die ? dd($this->get()) : var_dump($this->get());
         echo '</pre>';
     }
 
