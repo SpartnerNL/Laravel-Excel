@@ -65,6 +65,8 @@ class PHPExcel extends PHPOffice_PHPExcel
      */
     public $mergeData;
 
+    public $_workSheetCollection = array();
+
     /**
      * Allowed autofill properties
      * @var array
@@ -73,17 +75,18 @@ class PHPExcel extends PHPOffice_PHPExcel
         'creator', 'lastModifiedBy', 'title', 'description', 'subject', 'keywords', 'category', 'manager', 'company'
     );
 
-     /**
-     * Create a new PHPExcel with one Worksheet
+    /**
+     * Create sheet and add it to this workbook
+     *
+     * @param  int|null $iSheetIndex Index where sheet should go (0,1,..., or null for last)
+     * @return PHPExcel_Worksheet
+     * @throws PHPExcel_Exception
      */
-    public function __construct()
+    public function createSheet($iSheetIndex = NULL, $title = false)
     {
-        parent::__construct();
-
-        // Lets inject our custom Worksheet
-        $this->_workSheetCollection = array();
-        $this->_workSheetCollection[] = new LaravelExcelWorksheet($this);
-
+        $newSheet = new LaravelExcelWorksheet($this, $title);
+        $this->addSheet($newSheet, $iSheetIndex);
+        return $newSheet;
     }
 
     /**
@@ -105,16 +108,6 @@ class PHPExcel extends PHPOffice_PHPExcel
             // set the property
             $properties->{$method}($value);
         }
-    }
-
-    /**
-     * Get active sheet
-     *
-     * @return PHPExcel_Worksheet
-     */
-    public function getActiveSheet()
-    {
-        return $this->_workSheetCollection[$this->_activeSheetIndex];
     }
 
 }

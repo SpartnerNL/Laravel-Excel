@@ -97,7 +97,7 @@ class LaravelExcelWriter {
     public function sheet($title, $callback = false)
     {
         // Clone the active sheet
-        $this->sheet = clone $this->excel->getActiveSheet();
+        $this->sheet = $this->excel->createSheet(null, $title);
 
         // Set the sheet title
         $this->sheet->setTitle($title);
@@ -110,12 +110,13 @@ class LaravelExcelWriter {
 
         // Do the ballback
         if($callback instanceof \Closure)
-             call_user_func($callback, $this->sheet);
+            call_user_func($callback, $this->sheet);
 
-        $this->excel->addSheet($this->sheet->parsed());
+        $this->sheet->parsed();
 
         // Count sheets
         $this->sheetCount++;
+
         return $this;
     }
 
@@ -237,7 +238,7 @@ class LaravelExcelWriter {
     protected function _render()
     {
         // There should be enough sheets to continue rendering
-        if($this->excel->getSheetCount() < 1)
+        if($this->excel->getSheetCount() < 0)
             throw new LaravelExcelException('[ERROR] Aborting spreadsheet render: no sheets were created.');
 
         // Set the format
@@ -365,10 +366,10 @@ class LaravelExcelWriter {
         }
 
         // Call a php excel sheet method
-        elseif(method_exists($this->excel->getSheet($this->sheetCount), $method))
+        elseif(method_exists($this->excel->getActiveSheet(), $method))
         {
             // Call the method from the excel object with the given params
-            return call_user_func_array(array($this->excel->getSheet($this->sheetCount), $method), $params);
+            return call_user_func_array(array($this->excel->getActiveSheet(), $method), $params);
         }
 
         // If the dynamic call starts with "with", add the var to the data array

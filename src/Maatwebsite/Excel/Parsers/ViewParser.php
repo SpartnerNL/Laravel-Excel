@@ -50,7 +50,7 @@ class ViewParser {
      */
     protected function _loadHTML($sheet, $html)
     {
-        return $this->reader->load($html, true, $sheet)->getActiveSheet();
+        return $this->reader->load($html, true, $sheet);
     }
 
     /**

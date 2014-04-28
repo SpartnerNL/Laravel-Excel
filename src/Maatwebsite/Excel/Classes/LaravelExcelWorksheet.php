@@ -2,6 +2,7 @@
 
 use \PHPExcel_Worksheet;
 use Maatwebsite\Excel\Parsers\ViewParser;
+use Maatwebsite\Excel\Exceptions\LaravelExcelException;
 
 /**
  * PHPExcel
@@ -458,13 +459,11 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet
         PHPExcel_Style_Border::BORDER_THIN = 'thin'
         */
 
-        $weight = $pane == 'A1' ? 'none' : $weight;
-
         // Set all borders
-        $this->excel->getStyle($pane)
-                    ->getBorders()
-                    ->getAllBorders()
-                    ->setBorderStyle($weight);
+        $this->getStyle($pane)
+                ->getBorders()
+                ->getAllBorders()
+                ->setBorderStyle($weight);
 
         return $this;
     }
@@ -478,7 +477,7 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet
      *  @example Excel::create()->setAllBorder()   Must follow the function of create()
      *
      */
-    public function setAllBorder($weight = 'thin')
+    public function setAllBorders($weight = 'thin')
     {
         $styleArray = array(
             'borders' => array(
@@ -489,8 +488,8 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet
         );
 
         // Apply the style
-        $this->excel->getDefaultStyle()
-                    ->applyFromArray($styleArray);
+        $this->getDefaultStyle()
+            ->applyFromArray($styleArray);
 
         return $this;
     }
@@ -558,9 +557,9 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet
         foreach ($formats as $column => $format) {
 
             // Change the format for a specific cell or range
-            $this->excel->getStyle($column)
-                        ->getNumberFormat()
-                        ->setFormatCode($format);
+            $this->getStyle($column)
+                ->getNumberFormat()
+                ->setFormatCode($format);
         }
 
         return $this;
@@ -587,7 +586,7 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet
     public function setColumnWidth(Array $pane)
     {
         foreach ($pane as $column => $width) {
-            $this->excel->getColumnDimension($column)->setWidth($width);
+            $this->getColumnDimension($column)->setWidth($width);
         }
 
         return $this;
@@ -623,28 +622,19 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet
     }
 
     /**
-     * Get the sheet index
-     * @return [type] [description]
-     */
-    public function getSheetIndex()
-    {
-        return $this->_parent->getActiveSheetIndex();
-    }
-
-    /**
      * Get style for cell
      *
      * @param string $pCellCoordinate Cell coordinate to get style for
      * @return PHPExcel_Style
      * @throws PHPExcel_Exception
      */
-    public function getStyle($pCellCoordinate = 'A1')
-    {
-        // set cell coordinate as active
-        $this->setSelectedCells($pCellCoordinate);
+    // public function getStyle($pCellCoordinate = 'A1')
+    // {
+    //     // set cell coordinate as active
+    //     $this->setSelectedCells($pCellCoordinate);
 
-        return $this->_parent->getCellXfSupervisor();
-    }
+    //     return $this->_parent->getCellXfSupervisor();
+    // }
 
     /**
      * Dynamically call methods
@@ -660,6 +650,7 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet
         {
             $key = lcfirst(str_replace('with', '', $method));
             $this->_addVars($key, reset($params));
+            return $this;
         }
 
         // If it's a stter
@@ -667,18 +658,11 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet
         {
             // set the attribute
             $this->_setAttributes($method, $params);
+            return $this;
         }
 
-        return $this;
+        throw new LaravelExcelException('[ERROR] Laravel Worksheet method ['. $method .'] does not exist.');
     }
 
-    /**
-     * Reset data on class destruct
-     */
-    public function __destruct()
-    {
-        $this->data = array();
-        $this->_parent->_cellXfCollection = array();
-    }
 
 }
