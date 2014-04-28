@@ -3,6 +3,7 @@
 use Maatwebsite\Excel\Classes\PHPExcel;
 use Illuminate\Support\ServiceProvider;
 use Maatwebsite\Excel\Readers\Html;
+use Maatwebsite\Excel\Readers\LaravelExcelReader;
 use Maatwebsite\Excel\Writers\LaravelExcelWriter;
 use Maatwebsite\Excel\Classes\LaravelExcelWorksheet;
 use Maatwebsite\Excel\Parsers\ViewParser;
@@ -69,8 +70,14 @@ class ExcelServiceProvider extends ServiceProvider {
 	 */
 	protected function bindReaders()
 	{
-		// Bind the PHPExcel class
-		$this->app['phpexcel.readers.html'] = $this->app->share(function($app) {
+
+		// Bind the laravel excel reader
+		$this->app['excel.reader'] = $this->app->share(function($app) {
+			return new LaravelExcelReader($app['files']);
+		});
+
+		// Bind the html reader class
+		$this->app['excel.readers.html'] = $this->app->share(function($app) {
 			return new Html();
 		});
 	}
@@ -82,7 +89,7 @@ class ExcelServiceProvider extends ServiceProvider {
 	protected function bindParsers()
 	{
 		$this->app['excel.parsers.view'] = $this->app->share(function($app) {
-			return new ViewParser($app['phpexcel.readers.html']);
+			return new ViewParser($app['excel.readers.html']);
 		});
 	}
 
@@ -106,7 +113,7 @@ class ExcelServiceProvider extends ServiceProvider {
 		// Bind the Excel class and inject its dependencies
 		$this->app['excel'] = $this->app->share(function($app)
         {
-            return new Excel($app['phpexcel'], $app['excel.writer'], $app['excel.parsers.view'], $app['config'], $app['view'], $app['files']);
+            return new Excel($app['phpexcel'], $app['excel.reader'], $app['excel.writer'], $app['excel.parsers.view'], $app['config'], $app['view'], $app['files']);
         });
 	}
 

@@ -13,6 +13,7 @@ use Illuminate\View\Environment as View;
 use Maatwebsite\Excel\Readers\HTML_reader;
 use Illuminate\Config\Repository as Config;
 use Illuminate\Filesystem\Filesystem as File;
+use Maatwebsite\Excel\Readers\LaravelExcelReader;
 use Maatwebsite\Excel\Writers\LaravelExcelWriter;
 use Maatwebsite\Excel\Parsers\ViewParser;
 use Maatwebsite\Excel\Exceptions\LaravelExcelException;
@@ -104,10 +105,11 @@ class Excel
      * @param View        $view       [description]
      * @param File        $file       [description]
      */
-    public function __construct(PHPExcel $excel, LaravelExcelWriter $writer, ViewParser $parser, Config $config, View $view, File $file)
+    public function __construct(PHPExcel $excel, LaravelExcelReader $reader, LaravelExcelWriter $writer, ViewParser $parser, Config $config, View $view, File $file)
     {
         // Set Excel dependencies
         $this->excel = $excel;
+        $this->reader = $reader;
         $this->writer = $writer;
         $this->parser = $parser;
 
@@ -145,6 +147,27 @@ class Excel
     }
 
     /**
+     *
+     *  Load an existing file
+     *
+     *  @param str $file The file we want to load
+     *  @param bool $firstRowAsIndex Do we want to interpret de first row as labels?
+     *  @return $this
+     *
+     */
+    public function load($file, $firstRowAsIndex = false, $inputEncoding = 'UTF-8')
+    {
+        // Inject excel object
+        $this->reader->injectExcel($this->excel);
+
+        // Start loading
+        $this->reader->load($file, $firstRowAsIndex, $inputEncoding);
+
+        // Return the reader object
+        return $this->reader;
+    }
+
+    /**
      * Batch import
      * @return [type] [description]
      */
@@ -152,7 +175,7 @@ class Excel
     {
         $this->batch = new Batch($files);
 
-        // Do the ballback
+        // Do the callback
         if($callback instanceof \Closure)
             call_user_func($callback, $this, $this->batch->getFiles());
 
@@ -166,7 +189,8 @@ class Excel
     public function loadView()
     {
         // Deprecated
-        throw new LaravelExcelException('[ERROR] Only use the loadView() from inside the sheet closure');
+        // TODO: make a shareView() method which replaces the old functionality
+        throw new LaravelExcelException('[Deprecated] Only use the loadView() from inside the sheet closure');
     }
 
     /**
@@ -175,11 +199,11 @@ class Excel
     protected function _setDefaults()
     {
         // Set defaults
-        $this->delimiter    = $this->config->get('excel::delimiter', $this->delimiter);
-        $this->calculate    = $this->config->get('excel::calculate', $this->calculate);
-        $this->ignoreEmpty  = $this->config->get('excel::ignoreEmpty', $this->ignoreEmpty);
-        $this->dateFormat   = $this->config->get('excel::date_format', $this->dateFormat);
-        $this->seperator    = $this->config->get('excel::seperator', $this->seperator);
+        $this->delimiter    = $this->config->get('excel::delimiter',    $this->delimiter   );
+        $this->calculate    = $this->config->get('excel::calculate',    $this->calculate   );
+        $this->ignoreEmpty  = $this->config->get('excel::ignoreEmpty',  $this->ignoreEmpty );
+        $this->dateFormat   = $this->config->get('excel::date_format',  $this->dateFormat  );
+        $this->seperator    = $this->config->get('excel::seperator',    $this->seperator   );
     }
 
     /**

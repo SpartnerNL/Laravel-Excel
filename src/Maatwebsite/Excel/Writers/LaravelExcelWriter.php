@@ -329,6 +329,9 @@ class LaravelExcelWriter {
         // Get the default path
         $path = $path ? $path : \Config::get('excel::path', base_path($this->storagePath));
 
+        if(!realpath($path))
+            $path = base_path($path);
+
          // Trim of slashes, to makes sure we won't add them double
         $this->storagePath = rtrim($path, '/');
 
