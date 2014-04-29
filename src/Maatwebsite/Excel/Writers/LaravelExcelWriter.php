@@ -33,6 +33,12 @@ class LaravelExcelWriter {
     public $writer;
 
     /**
+     * Parser
+     * @var [type]
+     */
+    public $parser;
+
+    /**
      * Default extension
      * @var string
      */
@@ -63,6 +69,24 @@ class LaravelExcelWriter {
     protected $sheetCount = -1;
 
     /**
+     * View
+     * @var [type]
+     */
+    protected $view;
+
+    /**
+     * Data
+     * @var [type]
+     */
+    protected $data = array();
+
+    /**
+     * Merge data
+     * @var array
+     */
+    protected $mergeData = array();
+
+    /**
      * Construct new writer
      * @param Response   $response [description]
      * @param FileSystem $files    [description]
@@ -89,6 +113,32 @@ class LaravelExcelWriter {
     }
 
     /**
+     * Share a view with all sheets
+     * @return [type] [description]
+     */
+    public function shareView($view, $data = array(), $mergeData = array())
+    {
+        // Init the parser
+        if(!$this->parser)
+            $this->parser = app('excel.parsers.view');
+
+        $this->parser->setView($view);
+        $this->parser->setData($data);
+        $this->parser->setMergeData($mergeData);
+
+        return $this;
+    }
+
+    /**
+     * Load the view
+     * @return [type] [description]
+     */
+    public function loadView($view, $data = array(), $mergeData = array())
+    {
+        return $this->shareView($view, $data, $mergeData);
+    }
+
+    /**
      * Create a new sheet
      * @param  [type] $title    [description]
      * @param  [type] $callback [description]
@@ -98,6 +148,10 @@ class LaravelExcelWriter {
     {
         // Clone the active sheet
         $this->sheet = $this->excel->createSheet(null, $title);
+
+        // If a parser was set, inject it
+        if($this->parser)
+            $this->sheet->setParser($this->parser);
 
         // Set the sheet title
         $this->sheet->setTitle($title);
@@ -112,6 +166,7 @@ class LaravelExcelWriter {
         if($callback instanceof \Closure)
             call_user_func($callback, $this->sheet);
 
+        // Parse the sheet
         $this->sheet->parsed();
 
         // Count sheets
@@ -121,14 +176,15 @@ class LaravelExcelWriter {
     }
 
     /**
-     * Add data
-     * @param  [type] $array [description]
-     * @return [type]        [description]
+     * Set data for the current sheet
+     * @param  [type]  $keys  [description]
+     * @param  boolean $value [description]
+     * @return [type]         [description]
      */
     public function with($array)
     {
+        // Add the vars
         $this->fromArray($array);
-        return $this;
     }
 
     /**
@@ -358,6 +414,7 @@ class LaravelExcelWriter {
      */
     public function __call($method, $params)
     {
+
         // Call a php excel method
         if(method_exists($this->excel, $method))
         {

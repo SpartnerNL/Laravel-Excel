@@ -57,9 +57,10 @@ class ViewParser {
      * Set the view
      * @param [type] $view [description]
      */
-    public function setView($view)
+    public function setView($view = false)
     {
-        $this->view = $view;
+        if($view)
+            $this->view = $view;
     }
 
     /**
@@ -68,7 +69,8 @@ class ViewParser {
      */
     public function setData($data = array())
     {
-        $this->data = array_merge($this->data, $data);
+        if(!empty($data))
+            $this->data = array_merge($this->data, $data);
     }
 
     /**
@@ -77,7 +79,8 @@ class ViewParser {
      */
     public function setMergeData($mergeData = array())
     {
-        $this->mergeData = array_merge($this->mergeData, $mergeData);
+        if(!empty($mergeData))
+            $this->mergeData = array_merge($this->mergeData, $mergeData);
     }
 
 }

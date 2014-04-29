@@ -177,14 +177,23 @@ class Excel
     }
 
     /**
-     * Load a view
+     * Create a new file and share a view
+     * [NOT RECOMMENDED TO USE; ONLY FOR BACKWARDS COMPATABILITY]
      * @return [type] [description]
      */
-    public function loadView()
+    public function shareView($view, $data = array(), $mergeData = array())
     {
-        // Deprecated
-        // TODO: make a shareView() method which replaces the old functionality
-        throw new LaravelExcelException('[Deprecated] Only use the loadView() from inside the sheet closure');
+        return $this->create('New file')->shareView($view, $data, $mergeData);
+    }
+
+    /**
+     * Create a new file and load a view
+     * [NOT RECOMMENDED TO USE; ONLY FOR BACKWARDS COMPATABILITY]
+     * @return [type] [description]
+     */
+    public function loadView($view, $data = array(), $mergeData = array())
+    {
+        return $this->shareView($view, $data, $mergeData);
     }
 
     /**

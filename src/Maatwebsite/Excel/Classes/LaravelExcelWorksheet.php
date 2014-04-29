@@ -134,13 +134,21 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet
     {
         // Init the parser
         if(!$this->parser)
-            $this->parser = app('excel.parsers.view');
+            $this->setParser();
 
         $this->parser->setView($view);
         $this->parser->setData($data);
         $this->parser->setMergeData($mergeData);
 
         return $this;
+    }
+
+    /**
+     * Set the parser
+     */
+    public function setParser($parser = false)
+    {
+        return $this->parser = $parser ? $parser : app('excel.parsers.view');
     }
 
     /**
@@ -176,6 +184,7 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet
     {
         // Add the vars
         $this->_addVars($key, $value);
+        return $this;
     }
 
     /**
@@ -193,7 +202,7 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet
 
             // Create excel from array without a view
             if(!$this->parser)
-                $this->fromArray($this->data);
+                return $this->fromArray($this->data);
         }
 
         // Add seperate values
