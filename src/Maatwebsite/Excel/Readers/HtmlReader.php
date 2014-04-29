@@ -35,6 +35,7 @@ use \PHPExcel_Style_Border;
 use \PHPExcel_Style_Fill;
 use \PHPExcel_Style_Font;
 use \PHPExcel_Style_Alignment;
+use Maatwebsite\Excel\Parsers\CssParser;
 use Maatwebsite\Excel\Classes\LaravelExcelWorksheet;
 
 class Html extends \PHPExcel_Reader_HTML
@@ -210,9 +211,11 @@ class Html extends \PHPExcel_Reader_HTML
             throw new \PHPExcel_Reader_Exception('Failed to load ',$pFilename,' as a DOM Document');
         }
 
+        // Parse css
+        $this->css = new CssParser($dom);
+
         //  Discard white space
         $dom->preserveWhiteSpace = true;
-
 
         $row = 0;
         $column = 'A';
@@ -243,6 +246,7 @@ class Html extends \PHPExcel_Reader_HTML
     }
 
     private function _processDomElement(\DOMNode $element, $sheet, &$row, &$column, &$cellContent){
+
         foreach($element->childNodes as $child){
             if ($child instanceof \DOMText) {
                 $domText = preg_replace('/\s+/',' ',trim($child->nodeValue));
@@ -285,6 +289,14 @@ class Html extends \PHPExcel_Reader_HTML
 
                         case 'valign':
                             $this->parseValign($sheet, $column, $row, $attribute->value);
+                            break;
+
+                        case 'class':
+                            $this->styleByClass($sheet, $column, $row, $attribute->value);
+                            break;
+
+                        case 'id':
+                            $this->styleById($sheet, $column, $row, $attribute->value);
                             break;
 
                     }
@@ -551,6 +563,55 @@ class Html extends \PHPExcel_Reader_HTML
     }
 
     /**
+     * Style the element by class
+     * @param  [type] $sheet  [description]
+     * @param  [type] $column [description]
+     * @param  [type] $row    [description]
+     * @param  [type] $class  [description]
+     * @return [type]         [description]
+     */
+    protected function styleByClass($sheet, $column, $row, $class)
+    {
+        // If the class has a whitespace
+        // break into multiple classes
+        if(str_contains($class, ' '))
+        {
+            $classes = explode(' ', $class);
+            foreach($classes as $class)
+            {
+                return $this->styleByClass($sheet, $column, $row, $class);
+            }
+        }
+
+        // Lookup the css
+        $styles = $this->css->lookup('class', $class);
+
+        // Loop through the styles
+        foreach($styles as $name => $value)
+        {
+            $this->parseCssProperties($sheet, $column, $row, $name, $value);
+        }
+    }
+
+    /**
+     * Style the element by class
+     * @param  [type] $sheet  [description]
+     * @param  [type] $column [description]
+     * @param  [type] $row    [description]
+     * @param  [type] $class  [description]
+     * @return [type]         [description]
+     */
+    protected function styleById($sheet, $column, $row, $class)
+    {
+        $styles = $this->css->lookup('id', $class);
+
+        foreach($styles as $name => $value)
+        {
+            $this->parseCssProperties($sheet, $column, $row, $name, $value);
+        }
+    }
+
+    /**
      * Parse colspans
      * @param  [type] $sheet  [description]
      * @param  [type] $column [description]
@@ -685,202 +746,245 @@ class Html extends \PHPExcel_Reader_HTML
     {
         // Seperate the different styles
         $styles = explode(';', $styleTag);
+
+        $this->parseCssAttributes($sheet, $column, $row, $styles);
+    }
+
+    /**
+     * Parse the styles
+     * @param  [type] $sheet  [description]
+     * @param  [type] $column [description]
+     * @param  [type] $row    [description]
+     * @param  [type] $styles [description]
+     * @return [type]         [description]
+     */
+    protected function parseCssAttributes($sheet, $column, $row, $styles = array())
+    {
         foreach($styles as $tag)
         {
             $style = explode(':', $tag);
             $name = trim(reset($style));
             $value = trim(end($style));
 
-            $cells = $sheet->getStyle($column.$row);
+            $this->parseCssProperties($sheet, $column, $row, $name, $value);
+        }
+    }
 
-            switch($name)
-            {
+    /**
+     * Parse CSS
+     * @param  [type] $sheet  [description]
+     * @param  [type] $column [description]
+     * @param  [type] $row    [description]
+     * @param  [type] $name   [description]
+     * @param  [type] $value  [description]
+     * @return [type]         [description]
+     */
+    protected function parseCssProperties($sheet, $column, $row, $name, $value)
+    {
+        $cells = $sheet->getStyle($column.$row);
+        switch($name)
+        {
 
-                // BACKGROUND
-                case 'background':
-                    $value = str_replace('#', '', $value);
+            // BACKGROUND
+            case 'background':
+                $value = $this->getColor($value);
 
-                    $cells->applyFromArray(
-                        array(
-                            'fill' => array(
-                                'type' => PHPExcel_Style_Fill::FILL_SOLID,
-                                'color' => array ('rgb' => $value)
-                            )
+                $cells->applyFromArray(
+                    array(
+                        'fill' => array(
+                            'type' => PHPExcel_Style_Fill::FILL_SOLID,
+                            'color' => array ('rgb' => $value)
                         )
+                    )
+                );
+                break;
+
+            // TEXT COLOR
+            case 'color':
+                $value = $this->getColor($value);
+                $cells->getFont()->getColor()->applyFromArray(
+                    array('rgb' => $value)
+                );
+                break;
+
+            // FONT SIZE
+            case 'font-size':
+                $cells->getFont()->setSize($value);
+                break;
+
+            // FONT WEIGHT
+            case 'font-weight':
+                if($value == 'bold' || $value >= 500)
+                    $cells->getFont()->setBold(true);
+                break;
+
+            // FONT STYLE
+            case 'font-style':
+                if($value == 'italic')
+                    $cells->getFont()->setItalic(true);
+                break;
+
+            // FONT FACE
+            case 'font-family':
+                $cells->getFont()->applyFromArray(
+                    array('name' => $value)
+                );
+                break;
+
+            // TEXT DECORATION
+            case 'text-decoration':
+                switch($value)
+                {
+                    case 'underline':
+                        $cells->getFont()->setUnderline(PHPExcel_Style_Font::UNDERLINE_SINGLE);
+                        break;
+
+                    case 'line-through':
+                        $cells->getFont()->setStrikethrough(true);
+                        break;
+                }
+                break;
+
+            case 'text-align':
+
+                $horizontal = false;
+
+                switch($value)
+                {
+                    case 'center':
+                        $horizontal = PHPExcel_Style_Alignment::HORIZONTAL_CENTER;
+                        break;
+
+                    case 'left':
+                        $horizontal = PHPExcel_Style_Alignment::HORIZONTAL_LEFT;
+                        break;
+
+                    case 'right':
+                        $horizontal = PHPExcel_Style_Alignment::HORIZONTAL_RIGHT;
+                        break;
+
+                    case 'justify':
+                        $horizontal = PHPExcel_Style_Alignment::HORIZONTAL_JUSTIFY;
+                        break;
+                }
+
+                if($horizontal)
+                    $cells->getAlignment()->applyFromArray(
+                        array('horizontal' => $horizontal)
                     );
-                    break;
 
-                // TEXT COLOR
-                case 'color':
-                    $value = str_replace('#', '', $value);
-                    $cells->getFont()->getColor()->applyFromArray(
-                        array('rgb' => $value)
+                break;
+
+            case 'vertical-align':
+
+                $vertical = false;
+
+                switch($value)
+                {
+                    case 'top':
+                        $vertical = PHPExcel_Style_Alignment::VERTICAL_TOP;
+                        break;
+
+                    case 'middle':
+                        $vertical = PHPExcel_Style_Alignment::VERTICAL_CENTER;
+                        break;
+
+                    case 'bottom':
+                        $vertical = PHPExcel_Style_Alignment::VERTICAL_BOTTOM;
+                        break;
+
+                    case 'justify':
+                        $vertical = PHPExcel_Style_Alignment::VERTICAL_JUSTIFY;
+                        break;
+
+                }
+
+                if($vertical)
+                    $cells->getAlignment()->applyFromArray(
+                        array('vertical' => $vertical)
                     );
-                    break;
+                break;
 
-                // FONT SIZE
-                case 'font-size':
-                    $cells->getFont()->setSize($value);
-                    break;
+            case 'border':
+            case 'borders':
+                $borders = explode(' ', $value);
+                $style = $borders[1];
+                $color = end($borders);
+                $color = $this->getColor($color);
+                $borderStyle = $this->borderStyle($style);
 
-                // FONT WEIGHT
-                case 'font-weight':
-                    if($value == 'bold' || $value >= 500)
-                        $cells->getFont()->setBold(true);
-                    break;
+                $cells->getBorders()->applyFromArray(
+                    array( 'allborders' => array( 'style' => $borderStyle, 'color' => array( 'rgb' => $color ) ) )
+                );
+                break;
 
-                // FONT STYLE
-                case 'font-style':
-                    if($value == 'italic')
-                        $cells->getFont()->setItalic(true);
-                    break;
+            case 'border-top':
+                $borders = explode(' ', $value);
+                $style = $borders[1];
+                $color = end($borders);
+                $color = $this->getColor($color);
 
-                // FONT FACE
-                case 'font-family':
-                    $cells->getFont()->applyFromArray(
-                        array('name' => $value)
-                    );
-                    break;
+                $borderStyle = $this->borderStyle($style);
 
-                // TEXT DECORATION
-                case 'text-decoration':
-                    switch($value)
-                    {
-                        case 'underline':
-                            $cells->getFont()->setUnderline(PHPExcel_Style_Font::UNDERLINE_SINGLE);
-                            break;
+                $cells->getBorders()->getTop()->applyFromArray(
+                    array( 'style' => $borderStyle, 'color' => array( 'rgb' => $color ))
+                );
+                break;
 
-                        case 'line-through':
-                            $cells->getFont()->setStrikethrough(true);
-                            break;
-                    }
-                    break;
+            case 'border-bottom':
+                $borders = explode(' ', $value);
+                $style = $borders[1];
+                $color = end($borders);
+                $color = $this->getColor($color);
+                $borderStyle = $this->borderStyle($style);
 
-                case 'text-align':
+                $cells->getBorders()->getBottom()->applyFromArray(
+                    array( 'style' => $borderStyle, 'color' => array( 'rgb' => $color ))
+                );
+                break;
 
-                    $horizontal = false;
+            case 'border-right':
+                $borders = explode(' ', $value);
+                $style = $borders[1];
+                $color = end($borders);
+                $color = $this->getColor($color);
+                $borderStyle = $this->borderStyle($style);
 
-                    switch($value)
-                    {
-                        case 'center':
-                            $horizontal = PHPExcel_Style_Alignment::HORIZONTAL_CENTER;
-                            break;
+                $cells->getBorders()->getRight()->applyFromArray(
+                    array( 'style' => $borderStyle, 'color' => array( 'rgb' => $color ))
+                );
+                break;
 
-                        case 'left':
-                            $horizontal = PHPExcel_Style_Alignment::HORIZONTAL_LEFT;
-                            break;
+            case 'border-left':
+                $borders = explode(' ', $value);
+                $style = $borders[1];
+                $color = end($borders);
+                $color = $this->getColor($color);
+                $borderStyle = $this->borderStyle($style);
 
-                        case 'right':
-                            $horizontal = PHPExcel_Style_Alignment::HORIZONTAL_RIGHT;
-                            break;
-
-                        case 'justify':
-                            $horizontal = PHPExcel_Style_Alignment::HORIZONTAL_JUSTIFY;
-                            break;
-                    }
-
-                    if($horizontal)
-                        $cells->getAlignment()->applyFromArray(
-                            array('horizontal' => $horizontal)
-                        );
-
-                    break;
-
-                case 'vertical-align':
-
-                    $vertical = false;
-
-                    switch($value)
-                    {
-                        case 'top':
-                            $vertical = PHPExcel_Style_Alignment::VERTICAL_TOP;
-                            break;
-
-                        case 'middle':
-                            $vertical = PHPExcel_Style_Alignment::VERTICAL_CENTER;
-                            break;
-
-                        case 'bottom':
-                            $vertical = PHPExcel_Style_Alignment::VERTICAL_BOTTOM;
-                            break;
-
-                        case 'justify':
-                            $vertical = PHPExcel_Style_Alignment::VERTICAL_JUSTIFY;
-                            break;
-
-                    }
-
-                    if($vertical)
-                        $cells->getAlignment()->applyFromArray(
-                            array('vertical' => $vertical)
-                        );
-                    break;
-
-                case 'borders':
-                    $borders = explode(' ', $value);
-                    $style = $borders[1];
-                    $color = end($borders);
-                    $color = str_replace('#', '', $color);
-                    $borderStyle = $this->borderStyle($style);
-
-                    $cells->getBorders()->applyFromArray(
-                        array( 'allborders' => array( 'style' => $borderStyle, 'color' => array( 'rgb' => $color ) ) )
-                    );
-                    break;
-
-                case 'border-top':
-                    $borders = explode(' ', $value);
-                    $style = $borders[1];
-                    $color = end($borders);
-                    $color = str_replace('#', '', $color);
-
-                    $borderStyle = $this->borderStyle($style);
-
-                    $cells->getBorders()->getTop()->applyFromArray(
-                        array( 'style' => $borderStyle, 'color' => array( 'rgb' => $color ))
-                    );
-                    break;
-
-                case 'border-bottom':
-                    $borders = explode(' ', $value);
-                    $style = $borders[1];
-                    $color = end($borders);
-                    $color = str_replace('#', '', $color);
-                    $borderStyle = $this->borderStyle($style);
-
-                    $cells->getBorders()->getBottom()->applyFromArray(
-                        array( 'style' => $borderStyle, 'color' => array( 'rgb' => $color ))
-                    );
-                    break;
-
-                case 'border-right':
-                    $borders = explode(' ', $value);
-                    $style = $borders[1];
-                    $color = end($borders);
-                    $color = str_replace('#', '', $color);
-                    $borderStyle = $this->borderStyle($style);
-
-                    $cells->getBorders()->getRight()->applyFromArray(
-                        array( 'style' => $borderStyle, 'color' => array( 'rgb' => $color ))
-                    );
-                    break;
-
-                case 'border-left':
-                    $borders = explode(' ', $value);
-                    $style = $borders[1];
-                    $color = end($borders);
-                    $color = str_replace('#', '', $color);
-                    $borderStyle = $this->borderStyle($style);
-
-                    $cells->getBorders()->getLeft()->applyFromArray(
-                        array( 'style' => $borderStyle, 'color' => array( 'rgb' => $color ))
-                    );
-                    break;
-
-            }
-
+                $cells->getBorders()->getLeft()->applyFromArray(
+                    array( 'style' => $borderStyle, 'color' => array( 'rgb' => $color ))
+                );
+                break;
 
         }
+    }
+
+    /**
+     * Get the color
+     * @param  [type] $color [description]
+     * @return [type]        [description]
+     */
+    public function getColor($color)
+    {
+        $color = str_replace('#', '', $color);
+
+        // If color is only 3 chars long, mirror it to 6 chars
+        if(strlen($color) == 3)
+            $color = $color . $color;
+
+        return $color;
+
     }
 
     public function borderStyle($style)
@@ -888,7 +992,7 @@ class Html extends \PHPExcel_Reader_HTML
 
         switch($style) {
             case 'solid';
-                return PHPExcel_Style_Border::BORDER_DASHDOT;
+                return PHPExcel_Style_Border::BORDER_THIN;
                 break;
 
             case 'dashed':
