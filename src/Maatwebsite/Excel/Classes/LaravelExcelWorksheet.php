@@ -144,6 +144,16 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet
     }
 
     /**
+     * Unset the view
+     * @return [type] [description]
+     */
+    public function unsetView()
+    {
+        $this->parser = null;
+        return $this;
+    }
+
+    /**
      * Set the parser
      */
     public function setParser($parser = false)
