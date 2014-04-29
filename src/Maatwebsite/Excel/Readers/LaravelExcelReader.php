@@ -168,6 +168,16 @@ class LaravelExcelReader {
     }
 
     /**
+     * Each
+     * @param  [type] $callback [description]
+     * @return [type]           [description]
+     */
+    public function each($callback)
+    {
+        return $this->get()->each($callback);
+    }
+
+    /**
      *
      *  Parse the file to an array.
      *

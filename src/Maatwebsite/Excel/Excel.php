@@ -1,5 +1,6 @@
 <?php namespace Maatwebsite\Excel;
 
+use \Closure;
 use \PHPExcel;
 use Carbon\Carbon;
 use \PHPExcel_Cell;
@@ -24,7 +25,6 @@ use Maatwebsite\Excel\Exceptions\LaravelExcelException;
  * @version 0.4.0
  * @package maatwebsite/excel
  * @author Maatwebsite <info@maatwebsite.nl>
- * @contributors Maatwebsite, mewben, hicode, lollypopgr, floptwo, jonwhittlestone, BoHolm
  */
 
 class Excel
@@ -155,7 +155,7 @@ class Excel
      *  @return $this
      *
      */
-    public function load($file, $firstRowAsIndex = false, $inputEncoding = 'UTF-8')
+    public function load($file, $firstRowAsIndex = true, $inputEncoding = 'UTF-8')
     {
         // Inject excel object
         $this->reader->injectExcel($this->excel);
@@ -171,15 +171,9 @@ class Excel
      * Batch import
      * @return [type] [description]
      */
-    public function batch($files, $callback)
+    public function batch($files, Closure $callback)
     {
-        $this->batch = new Batch($files);
-
-        // Do the callback
-        if($callback instanceof \Closure)
-            call_user_func($callback, $this, $this->batch->getFiles());
-
-        return $this;
+        return new Batch($this, $files, $callback);
     }
 
     /**

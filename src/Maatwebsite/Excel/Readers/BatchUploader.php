@@ -1,8 +1,16 @@
 <?php namespace Maatwebsite\Excel\Readers;
 
+use \Closure;
+use Maatwebsite\Excel\Excel;
 use Maatwebsite\Excel\Exceptions\LaravelExcelException;
 
 class Batch {
+
+    /**
+     * Excel object
+     * @var [type]
+     */
+    protected $excel;
 
     /**
      * Batch files
@@ -22,10 +30,25 @@ class Batch {
      * Constructor
      * @param [type] $files [description]
      */
-    public function __construct($files)
+    public function __construct(Excel $excel, $files, Closure $callback)
     {
+        // Set excel object
+        $this->excel = $excel;
+
         // Set files
         $this->_setFiles($files);
+
+        // Do the callback
+        if($callback instanceof Closure)
+        {
+            foreach($this->getFiles() as $file)
+            {
+                $excel = $this->excel->load($file);
+                call_user_func($callback, $excel, $file);
+            }
+        }
+
+        return $this->excel;
     }
 
     /**
