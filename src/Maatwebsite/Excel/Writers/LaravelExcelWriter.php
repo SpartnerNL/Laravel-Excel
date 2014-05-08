@@ -162,7 +162,7 @@ class LaravelExcelWriter {
         // Autosize columns
         $this->sheet->setAutosize(\Config::get('excel::sheets.autosize', false));
 
-        // Do the ballback
+        // Do the callback
         if($callback instanceof \Closure)
             call_user_func($callback, $this->sheet);
 

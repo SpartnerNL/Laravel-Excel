@@ -142,7 +142,7 @@ class Excel
         // Set the title
         $this->writer->setTitle($title);
 
-        // Do the ballback
+        // Do the callback
         if($callback instanceof Closure)
             call_user_func($callback, $this->writer);
 
