@@ -127,7 +127,7 @@ class Excel
      * @param  [type] $title [description]
      * @return [type]        [description]
      */
-    public function create($title)
+    public function create($title, $callback = false)
     {
         // Set the default properties
         $this->excel->setDefaultProperties(array(
@@ -141,6 +141,10 @@ class Excel
 
         // Set the title
         $this->writer->setTitle($title);
+
+        // Do the ballback
+        if($callback instanceof Closure)
+            call_user_func($callback, $this->writer);
 
         // Return the writer object
         return $this->writer;
