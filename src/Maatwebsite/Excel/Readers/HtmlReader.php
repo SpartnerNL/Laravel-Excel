@@ -137,6 +137,18 @@ class Html extends \PHPExcel_Reader_HTML
      );
 
     /**
+     * The current colspan
+     * @var integer
+     */
+    protected $spanWidth = 1;
+
+     /**
+     * The current rowspan
+     * @var integer
+     */
+    protected $spanHeight = 1;
+
+    /**
      * Loads PHPExcel from file
      *
      * @param   string      $pFilename
@@ -258,6 +270,10 @@ class Html extends \PHPExcel_Reader_HTML
     private function _processDomElement(\DOMNode $element, $sheet, &$row, &$column, &$cellContent){
 
         foreach($element->childNodes as $child){
+
+            // set the spannend column size
+            //$this->spanWidth = 1;
+
             if ($child instanceof \DOMText) {
                 $domText = preg_replace('/\s+/u',' ',trim($child->nodeValue));
                 if (is_string($cellContent)) {
@@ -481,7 +497,16 @@ class Html extends \PHPExcel_Reader_HTML
 //                      echo 'END OF TABLE ' , $this->_tableLevel , ' ROW<br />';
 //
 //                      Count the rows after the element was parsed
-                        ++$row;
+
+                        // If we have a rowspan, count the right amount of rows, else just 1
+                        for($i = 0; $i < $this->spanHeight; $i++)
+                        {
+                            ++$row;
+                        }
+
+                        // reset the span height after the process
+                        $this->spanHeight = 1;
+
                         break;
                     case 'th' :
                         $this->_processHeadings($child, $sheet, $row, $column, $cellContent);
@@ -492,7 +517,16 @@ class Html extends \PHPExcel_Reader_HTML
                         $this->_processDomElement($child,$sheet,$row,$column,$cellContent);
 //                      echo 'END OF TABLE ' , $this->_tableLevel , ' CELL<br />';
                         $this->_flushCell($sheet,$column,$row,$cellContent);
-                        ++$column;
+
+                        // If we have a colspan, count the right amount of columns, else just 1
+                        for($i = 0; $i < $this->spanWidth; $i++)
+                        {
+                            ++$column;
+                        }
+
+                        // reset the span width after the process
+                        $this->spanWidth = 1;
+
                         break;
                     case 'body' :
                         $row = 1;
@@ -633,6 +667,8 @@ class Html extends \PHPExcel_Reader_HTML
     {
         $startCell = $column.$row;
 
+        $this->spanWidth = $spanWidth;
+
         // Find end column letter
         for($i = 0; $i < ($spanWidth - 1); $i++)
         {
@@ -659,6 +695,9 @@ class Html extends \PHPExcel_Reader_HTML
      */
     protected function parseRowSpan($sheet, $column, $row, $spanHeight)
     {
+        // Set the spanHeight
+        $this->spanHeight = $spanHeight;
+
         $startCell = $column.$row;
         $endCell = $column.($row * $spanHeight);
         $range = $startCell . ':' . $endCell;

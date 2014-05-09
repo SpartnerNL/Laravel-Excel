@@ -11,7 +11,7 @@ return array(
     | an array of columns ( array('A', 'B') )
     |
     */
-    'autosize'  => false,
+    'autosize'  => true,
 
     /*
     |--------------------------------------------------------------------------
