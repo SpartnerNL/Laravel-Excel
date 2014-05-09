@@ -374,6 +374,9 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet
      */
     public function setAutoSize($columns = false)
     {
+        // Set autosize to true
+        $this->autoSize = $columns ? $columns : false;
+
         if(!is_array($columns) && $columns)
         {
             $toCol = $this->getHighestColumn();
@@ -392,7 +395,18 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet
         }
 
         $this->calculateColumnWidths();
+    }
 
+    /**
+     * Get Auto size
+     * @return bool
+     */
+    public function getAutosize()
+    {
+        if(isset($this->autoSize))
+            return $this->autoSize;
+
+        return Config::get('excel::export.autosize', true);
     }
 
     /**

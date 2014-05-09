@@ -233,14 +233,24 @@ class Html extends \PHPExcel_Reader_HTML
      */
     public function autosizeColumn($sheet)
     {
-        $toCol = $sheet->getHighestColumn();
+        if($columns = $sheet->getAutosize())
+        {
+            if(is_array($columns))
+            {
+                $sheet->setAutoSize($columns);
+            }
+            else
+            {
+                $toCol = $sheet->getHighestColumn();
 
-        $toCol++;
-        for ($i = 'A'; $i !== $toCol; $i++) {
-            $sheet->getColumnDimension($i)->setAutoSize(true);
+                $toCol++;
+                for ($i = 'A'; $i !== $toCol; $i++) {
+                    $sheet->getColumnDimension($i)->setAutoSize(true);
+                }
+
+                $sheet->calculateColumnWidths();
+            }
         }
-
-        $sheet->calculateColumnWidths();
 
         return $sheet;
     }

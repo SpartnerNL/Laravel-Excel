@@ -147,9 +147,9 @@ class LaravelExcelWriter {
      * Load the view
      * @return [type] [description]
      */
-    public function loadView($view, $data = array(), $mergeData = array())
+    public function loadView()
     {
-        return $this->shareView($view, $data, $mergeData);
+        return call_user_func_array(array($this, 'shareView'), func_get_args());
     }
 
     /**
@@ -174,7 +174,7 @@ class LaravelExcelWriter {
         $this->sheet->setDefaultPageSetup();
 
         // Autosize columns
-        $this->sheet->setAutosize(Config::get('excel::sheets.autosize', false));
+        $this->sheet->setAutosize(Config::get('excel::export.autosize', false));
 
         // Do the callback
         if($callback instanceof \Closure)
