@@ -73,7 +73,7 @@ class LaravelExcelReader {
      * Slug seperator
      * @var string
      */
-    public $seperator = '_';
+    public $seperator = false;
 
      /**
      * Ignore empty cells
@@ -332,6 +332,24 @@ class LaravelExcelReader {
     }
 
     /**
+     * Set the cell name word seperator
+     * @param [type] $seperator [description]
+     */
+    public function setSeperator($seperator)
+    {
+        $this->seperator = $seperator;
+    }
+
+    /**
+     * Set the delimiter
+     */
+    public function setDelimiter($delimiter)
+    {
+        $this->reader->setDelimiter($delimiter);
+        return $this;
+    }
+
+    /**
      *
      *  Set default calculate
      *
@@ -355,6 +373,18 @@ class LaravelExcelReader {
             return Config::get('excel::import.heading', true);
 
         return $this->noHeading ? false : true;
+    }
+
+    /**
+     * Get the seperator
+     * @return [type] [description]
+     */
+    public function getSeperator()
+    {
+        if($this->seperator)
+            return $this->seperator;
+
+        return Config::get('excel::import.seperator', '_');
     }
 
     /**
@@ -383,7 +413,18 @@ class LaravelExcelReader {
     {
         // Init the reader
         $this->reader = PHPExcel_IOFactory::createReader($this->format);
+        $this->_setReaderDefaults();
         return $this;
+    }
+
+    /**
+     * Set reader defaults
+     */
+    protected function _setReaderDefaults()
+    {
+        // Set CSV delimiter
+        if($this->format == 'CSV')
+            $this->reader->setDelimiter(Config::get('excel::import.delimiter', ','));
     }
 
     /**

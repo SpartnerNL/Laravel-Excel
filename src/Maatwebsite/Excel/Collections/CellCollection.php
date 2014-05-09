@@ -44,7 +44,8 @@ class CellCollection {
      */
     public function setItem($name, $value)
     {
-        $this->{$name} = $value;
+        if($name)
+            $this->{$name} = $value ? $value : null;
     }
 
 }

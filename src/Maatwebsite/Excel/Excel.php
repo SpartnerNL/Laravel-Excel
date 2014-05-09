@@ -66,37 +66,6 @@ class Excel
     protected $fileSystem;
 
     /**
-     * Default CSV delimiter
-     * @var string
-     */
-    protected $delimiter = ',';
-
-    /**
-     * Calculate formulas
-     * @var boolean
-     */
-    protected $calculate = true;
-
-    /**
-     * Ignore empty cells
-     * @var boolean
-     */
-    protected $ignoreEmpty = true;
-
-    /**
-     * Default date format
-     * @var string
-     */
-    protected $dateFormat = 'Y-m-d';
-
-    /**
-     * Sheet heading to indices space replacer
-     * @var string
-     */
-    protected $seperator = '_';
-
-
-    /**
      * Construct Excel
      * @param PHPExcel    $excel      [description]
      * @param HTML_reader $htmlReader [description]
@@ -116,9 +85,6 @@ class Excel
         $this->config = $config;
         $this->viewFactory = $view;
         $this->fileSystem = $file;
-
-        // Set defaults
-        $this->_setDefaults();
     }
 
     /**
@@ -200,19 +166,6 @@ class Excel
     public function loadView($view, $data = array(), $mergeData = array())
     {
         return $this->shareView($view, $data, $mergeData);
-    }
-
-    /**
-     * Set defaults
-     */
-    protected function _setDefaults()
-    {
-        // Set defaults
-        $this->delimiter    = $this->config->get('excel::delimiter',    $this->delimiter   );
-        $this->calculate    = $this->config->get('excel::calculate',    $this->calculate   );
-        $this->ignoreEmpty  = $this->config->get('excel::ignoreEmpty',  $this->ignoreEmpty );
-        $this->dateFormat   = $this->config->get('excel::date_format',  $this->dateFormat  );
-        $this->seperator    = $this->config->get('excel::seperator',    $this->seperator   );
     }
 
     /**

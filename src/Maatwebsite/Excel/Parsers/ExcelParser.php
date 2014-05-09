@@ -161,7 +161,7 @@ class ExcelParser {
         foreach ($this->row->getCellIterator() as $this->cell) {
 
             // Set labels
-            $this->indices[] = Str::slug($this->cell->getValue(), $this->reader->seperator);
+            $this->indices[] = Str::slug($this->cell->getValue(), $this->reader->getSeperator());
         }
 
         // Return the labels
