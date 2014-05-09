@@ -112,6 +112,18 @@ class LaravelExcelReader {
     public $dateFormat;
 
     /**
+     * Whether the results are cached or not
+     * @var boolean
+     */
+    public $remembered = false;
+
+    /**
+     * Amount of minutes the results will remain cached
+     * @var integer
+     */
+    public $cacheMinutes = 10;
+
+    /**
      * Construct new writer
      * @param Response   $response [description]
      * @param FileSystem $files    [description]
@@ -137,6 +149,18 @@ class LaravelExcelReader {
         $this->excel = $this->reader->load($this->file);
 
         // Return itself
+        return $this;
+    }
+
+    /**
+     * Remember the results for x minutes
+     * @param  [type] $minutes [description]
+     * @return [type]          [description]
+     */
+    public function remember($minutes)
+    {
+        $this->remembered = true;
+        $this->cacheMinutes = $minutes;
         return $this;
     }
 
@@ -188,8 +212,20 @@ class LaravelExcelReader {
      */
     public function get($columns = array())
     {
-        $this->_parseFile($columns);
-        return $this->parsed;
+        if($this->remembered)
+        {
+            // Return cached results
+            return \Cache::remember(md5($this->file), $this->cacheMinutes, function() use (&$columns) {
+                $this->_parseFile($columns);
+                return $this->parsed;
+            });
+        }
+        else
+        {
+            // return parsed file
+            $this->_parseFile($columns);
+            return $this->parsed;
+        }
     }
 
     /**
