@@ -122,6 +122,18 @@ class LaravelExcelReader {
     }
 
     /**
+     * Read the file through a config file
+     * @param  [type]  $config   [description]
+     * @param  boolean $callback [description]
+     * @return [type]            [description]
+     */
+    public function byConfig($config, $callback = false)
+    {
+        $config = new ConfigReader($this->excel, $config, $callback);
+        return $config->getSheetCollection();
+    }
+
+    /**
      * Take x rows
      * @param  [type] $amount [description]
      * @return [type]         [description]
