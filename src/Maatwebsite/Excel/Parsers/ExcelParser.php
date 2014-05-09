@@ -218,7 +218,7 @@ class ExcelParser {
         $cellIterator = $this->row->getCellIterator();
 
         // Ignore empty cells
-        $cellIterator->setIterateOnlyExistingCells($this->reader->ignoreEmpty);
+        $cellIterator->setIterateOnlyExistingCells($this->reader->needsIgnoreEmpty());
 
         // Foreach cells
         foreach ($cellIterator as $this->cell) {
@@ -233,9 +233,9 @@ class ExcelParser {
             if(empty($this->columns) || (!empty($this->columns) && in_array($index, $this->columns) ) )
             {
                 // If the cell is a date time
-                if(PHPExcel_Shared_Date::isDateTime($this->cell))
+                if(PHPExcel_Shared_Date::isDateTime($this->cell) || in_array($index, $this->reader->getDateColumns()))
                 {
-                    if($this->reader->formatDates !== false)
+                    if($this->reader->needsDateFormatting())
                     {
                         // Convert excel time to php date object
                         $date = PHPExcel_Shared_Date::ExcelToPHPObject($this->cell->getCalculatedValue())->format(false);
@@ -244,8 +244,7 @@ class ExcelParser {
                         $date = Carbon::parse($date);
 
                         // Format the date if wanted
-                        if($this->reader->dateFormat)
-                            $value = $date->format($this->reader->dateFormat);
+                        $value = $this->reader->getDateFormat() ? $date->format($this->reader->getDateFormat()) : $date;
                     }
                     else
                     {
@@ -262,7 +261,7 @@ class ExcelParser {
                 }
 
                 // Check if we want calculated values or not
-                elseif($this->reader->calculate !== false)
+                elseif($this->reader->needsCalculation())
                 {
                     // Get calculated value
                     $value = $this->cell->getCalculatedValue();

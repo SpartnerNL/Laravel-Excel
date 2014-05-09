@@ -88,6 +88,12 @@ class LaravelExcelReader {
     public $formatDates = true;
 
     /**
+     * The date columns
+     * @var array
+     */
+    public $dateColumns = array();
+
+    /**
      * If the file has a heading or not
      * @var boolean
      */
@@ -97,7 +103,7 @@ class LaravelExcelReader {
      * Default date format
      * @var string
      */
-    public $dateFormat = false;
+    public $dateFormat;
 
     /**
      * Construct new writer
@@ -303,8 +309,9 @@ class LaravelExcelReader {
      * Set the date format
      * @param str $format The date format
      */
-    public function setDateFormat($format)
+    public function setDateFormat($format = false)
     {
+        $this->formatDates = $format ? true : false;
         $this->dateFormat = $format;
         return $this;
     }
@@ -317,6 +324,17 @@ class LaravelExcelReader {
     {
         $this->formatDates = $boolean;
         $this->setDateFormat($format);
+        return $this;
+    }
+
+    /**
+     * Set the date columns
+     */
+    public function setDateColumns()
+    {
+        $this->formatDates = true;
+        $columns = func_get_args();
+        $this->dateColumns = array_merge($this->dateColumns, array_flatten($columns));
         return $this;
     }
 
@@ -338,6 +356,7 @@ class LaravelExcelReader {
     public function setSeperator($seperator)
     {
         $this->seperator = $seperator;
+        return $this;
     }
 
     /**
@@ -353,13 +372,24 @@ class LaravelExcelReader {
      *
      *  Set default calculate
      *
-     *  @param bool $do Calculate yes or no
+     *  @param bool $boolean Calculate yes or no
      *  @return $this
      *
      */
-    public function calculate($do = true)
+    public function calculate($boolean = true)
     {
-        $this->calculate = $do;
+        $this->calculate = $boolean;
+        return $this;
+    }
+
+    /**
+     * Ignore empty cells
+     * @param  boolean $boolean [description]
+     * @return [type]           [description]
+     */
+    public function ignoreEmpty($boolean = true)
+    {
+        $this->ignoreEmpty = $boolean;
         return $this;
     }
 
@@ -385,6 +415,51 @@ class LaravelExcelReader {
             return $this->seperator;
 
         return Config::get('excel::import.seperator', '_');
+    }
+
+    /**
+     * Get the dateFormat
+     * @return [type] [description]
+     */
+    public function getDateFormat()
+    {
+        return $this->dateFormat;
+    }
+
+    /**
+     * Get the date columns
+     * @return [type] [description]
+     */
+    public function getDateColumns()
+    {
+        return $this->dateColumns;
+    }
+
+    /**
+     * Check if we need to calculate the formula inside the cell
+     * @return [type] [description]
+     */
+    public function needsCalculation()
+    {
+        return $this->calculate;
+    }
+
+    /**
+     * Check if we need to ingore the empty cells
+     * @return [type] [description]
+     */
+    public function needsIgnoreEmpty()
+    {
+        return $this->ignoreEmpty;
+    }
+
+    /**
+     * Check if we need to format the dates
+     * @return [type] [description]
+     */
+    public function needsDateFormatting()
+    {
+        return $this->formatDates ? true : false;
     }
 
     /**
@@ -425,6 +500,21 @@ class LaravelExcelReader {
         // Set CSV delimiter
         if($this->format == 'CSV')
             $this->reader->setDelimiter(Config::get('excel::import.delimiter', ','));
+
+        // Set default calculate
+        $this->calculate = Config::get('excel::import.calculate', true);
+
+        // Set default for ignoring empty cells
+        $this->calculate = Config::get('excel::import.ignoreEmpty', true);
+
+        // Set default date format
+        $this->dateFormat = Config::get('excel::import.dates.format', 'Y-m-d');
+
+        // Date formatting disabled/enabled
+        $this->formatDates = Config::get('excel::import.dates.enabled', true);
+
+        // Set default date columns
+        $this->dateColumns = Config::get('excel::import.dates.columns', array());
     }
 
     /**
