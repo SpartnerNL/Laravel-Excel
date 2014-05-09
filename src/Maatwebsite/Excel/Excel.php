@@ -159,13 +159,17 @@ class Excel
      *  @return $this
      *
      */
-    public function load($file, $firstRowAsIndex = true, $inputEncoding = 'UTF-8')
+    public function load($file, $callback = false)
     {
         // Inject excel object
         $this->reader->injectExcel($this->excel);
 
         // Start loading
-        $this->reader->load($file, $firstRowAsIndex, $inputEncoding);
+        $this->reader->load($file);
+
+        // Do the callback
+        if($callback instanceof Closure)
+            call_user_func($callback, $this->reader);
 
         // Return the reader object
         return $this->reader;
@@ -182,7 +186,6 @@ class Excel
 
     /**
      * Create a new file and share a view
-     * [NOT RECOMMENDED TO USE; ONLY FOR BACKWARDS COMPATABILITY]
      * @return [type] [description]
      */
     public function shareView($view, $data = array(), $mergeData = array())

@@ -109,12 +109,8 @@ class ExcelParser {
                 // Get the worksheet name
                 $title = $this->excel->getActiveSheet()->getTitle();
 
-                // Convert to labels
-                if($this->reader->firstRowAsIndex !== false)
-                {
-                    // Fetch the labels
-                    $this->indices =  $this->getIndices();
-                }
+                // Fetch the labels
+                $this->indices =  $this->getIndices();
 
                 // Parse the rows
                 $worksheet = $this->parseRows();
@@ -184,9 +180,6 @@ class ExcelParser {
         // Set empty parsedRow array
         $parsedRows = new RowCollection();
 
-        // If the first row is the label, ignore the first row
-        $ignore = $this->reader->firstRowAsIndex !== false ? 1 : 0;
-
         // Loop through the rows inside the worksheet
         foreach ($this->worksheet->getRowIterator() as $this->row) {
 
@@ -195,7 +188,7 @@ class ExcelParser {
                 break;
 
             // Ignore first row when needed
-            if($this->r >= $ignore)
+            if($this->r >= 1)
                 $parsedRows->push($this->parseCells());
 
             // Count the rows
@@ -231,7 +224,7 @@ class ExcelParser {
             $index = PHPExcel_Cell::columnIndexFromString($this->cell->getColumn());
 
             // Check how we need to save the parsed array
-            $index = $this->reader->firstRowAsIndex !== false ? $this->indices[$i] : $i;
+            $index = $this->indices[$i];
 
             // Check if we want to select this column
             if(empty($this->columns) || (!empty($this->columns) && in_array($index, $this->columns) ) )

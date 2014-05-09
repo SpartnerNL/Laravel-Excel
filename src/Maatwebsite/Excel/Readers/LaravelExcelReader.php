@@ -51,12 +51,6 @@ class LaravelExcelReader {
     public $parsed;
 
     /**
-     * Set first row as indices
-     * @var boolean
-     */
-    public $firstRowAsIndex = false;
-
-    /**
      * Delimtier
      * @var [type]
      */
@@ -115,10 +109,10 @@ class LaravelExcelReader {
      * @param  string  $inputEncoding   [description]
      * @return [type]                   [description]
      */
-    public function load($file, $firstRowAsIndex = false, $inputEncoding = 'UTF-8')
+    public function load($file)
     {
         // init the loading
-        $this->_init($file, $firstRowAsIndex, $inputEncoding);
+        $this->_init($file);
 
         // Load the file
         $this->excel = $this->reader->load($this->file);
@@ -231,19 +225,14 @@ class LaravelExcelReader {
      * @param  [type] $inputEncoding   [description]
      * @return [type]                  [description]
      */
-    protected function _init($file, $firstRowAsIndex, $inputEncoding)
+    protected function _init($file)
     {
         // Set the extension
         $this->_setFile($file)
               ->setExtension()
               ->setTitle()
-              ->setFirstRowAsIndex($firstRowAsIndex)
               ->_setFormat()
               ->_setReader();
-
-        // If csv, set input encoding
-        if ($this->format === 'CSV')
-            $this->setInputEncoding($inputEncoding);
     }
 
     /**
@@ -288,16 +277,6 @@ class LaravelExcelReader {
     public function setExtension($ext = false)
     {
         $this->ext = $ext ? $ext: $this->filesystem->extension($this->file);
-        return $this;
-    }
-
-    /**
-     * Set first row as index
-     */
-    public function setFirstRowAsIndex($do = true)
-    {
-        // Set first row as label
-        $this->firstRowAsIndex = $do;
         return $this;
     }
 
