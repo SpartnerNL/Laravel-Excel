@@ -136,6 +136,14 @@ class LaravelExcelWriter {
     }
 
     /**
+     * Set the view
+     */
+    public function setView()
+    {
+        return call_user_func_array(array($this, 'shareView'), func_get_args());
+    }
+
+    /**
      * Load the view
      * @return [type] [description]
      */

@@ -121,6 +121,14 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet
     }
 
     /**
+     * Set the view
+     */
+    public function setView()
+    {
+        return call_user_func_array(array($this, 'loadView'), func_get_args());
+    }
+
+    /**
      *
      * Load a View and convert to HTML
      *
