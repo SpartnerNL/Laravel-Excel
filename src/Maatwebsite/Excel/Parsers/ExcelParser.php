@@ -1,5 +1,6 @@
 <?php namespace Maatwebsite\Excel\Parsers;
 
+use \Config;
 use Carbon\Carbon;
 use \PHPExcel_Cell;
 use \PHPExcel_IOFactory;
@@ -270,6 +271,7 @@ class ExcelParser {
                 {
                     // Get real value
                     $value = $this->cell->getValue();
+                    $value = iconv(Config::get('excel::import.encoding', 'UTF-8'), 'CP1252', $value);
                 }
 
                 // Set the value

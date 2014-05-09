@@ -40,6 +40,12 @@ class LaravelExcelReader {
     public $ext = 'xls';
 
     /**
+     * Encoding
+     * @var boolean
+     */
+    public $encoding = false;
+
+    /**
      * Default format
      * @var [type]
      */
@@ -499,7 +505,10 @@ class LaravelExcelReader {
     {
         // Set CSV delimiter
         if($this->format == 'CSV')
+        {
             $this->reader->setDelimiter(Config::get('excel::import.delimiter', ','));
+            $this->reader->setInputEncoding(Config::get('excel::import.encoding', 'UTF-8'));
+        }
 
         // Set default calculate
         $this->calculate = Config::get('excel::import.calculate', true);
