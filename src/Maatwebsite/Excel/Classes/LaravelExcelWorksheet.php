@@ -393,6 +393,31 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet
     }
 
     /**
+     * Set the row height
+     * @param [type]  $row   [description]
+     * @param boolean $value [description]
+     */
+    public function setHeight($row, $value = false)
+    {
+        // if is array of columns
+        if(is_array($row))
+        {
+            // Set width for each column
+            foreach($row as $subRow => $subValue)
+            {
+                return $this->setHeight($subRow, $subValue);
+            }
+        }
+        else
+        {
+            // Set column width
+            $this->getRowDimension($row)->setRowHeight($value);
+        }
+
+        return $this;
+    }
+
+    /**
      * Autosize column for document
      *
      * @return int
