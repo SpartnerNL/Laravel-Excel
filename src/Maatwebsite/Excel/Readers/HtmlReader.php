@@ -510,7 +510,16 @@ class Html extends \PHPExcel_Reader_HTML
                         break;
                     case 'th' :
                         $this->_processHeadings($child, $sheet, $row, $column, $cellContent);
-                        ++$column;
+
+                        // If we have a colspan, count the right amount of columns, else just 1
+                        for($i = 0; $i < $this->spanWidth; $i++)
+                        {
+                            ++$column;
+                        }
+
+                        // reset the span width after the process
+                        $this->spanWidth = 1;
+
                         break;
                     case 'td' :
 //                      echo 'START OF TABLE ' , $this->_tableLevel , ' CELL<br />';
