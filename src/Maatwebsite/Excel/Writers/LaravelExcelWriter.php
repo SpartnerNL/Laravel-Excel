@@ -1,5 +1,6 @@
 <?php namespace Maatwebsite\Excel\Writers;
 
+use \Config;
 use \Response;
 use Carbon\Carbon;
 use Illuminate\Filesystem\Filesystem;
@@ -160,7 +161,7 @@ class LaravelExcelWriter {
         $this->sheet->setDefaultPageSetup();
 
         // Autosize columns
-        $this->sheet->setAutosize(\Config::get('excel::sheets.autosize', false));
+        $this->sheet->setAutosize(Config::get('excel::sheets.autosize', false));
 
         // Do the callback
         if($callback instanceof \Closure)
@@ -243,6 +244,9 @@ class LaravelExcelWriter {
      */
     public function store($ext = 'xls', $path = false, $returnInfo = false)
     {
+        // Set default return Info
+        $returnInfo = $returnInfo ? $returnInfo : Config::get('excel::export.store.returnInfo', false);
+
         // Set the storage path
         $this->_setStoragePath($path);
 
@@ -384,7 +388,7 @@ class LaravelExcelWriter {
     protected function _setStoragePath($path = false)
     {
         // Get the default path
-        $path = $path ? $path : \Config::get('excel::path', base_path($this->storagePath));
+        $path = $path ? $path : Config::get('excel::export.store.path', base_path($this->storagePath));
 
         if(!realpath($path))
             $path = base_path($path);

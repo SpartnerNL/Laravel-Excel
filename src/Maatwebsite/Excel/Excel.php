@@ -29,7 +29,6 @@ use Maatwebsite\Excel\Exceptions\LaravelExcelException;
 
 class Excel
 {
-
     /**
      * Excel object
      * @var [type]

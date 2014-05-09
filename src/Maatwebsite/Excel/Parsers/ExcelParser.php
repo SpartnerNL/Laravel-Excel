@@ -243,7 +243,6 @@ class ExcelParser {
                         // Format the date if wanted
                         if($this->reader->dateFormat)
                             $value = $date->format($this->reader->dateFormat);
-
                     }
                     else
                     {
