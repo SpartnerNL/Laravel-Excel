@@ -29,6 +29,7 @@
 namespace Maatwebsite\Excel\Readers;
 
 use \PHPExcel;
+use \PHPExcel_Settings;
 use \PHPExcel_Reader_HTML;
 use \PHPExcel_Style_Color;
 use \PHPExcel_Style_Border;
@@ -211,12 +212,12 @@ class Html extends \PHPExcel_Reader_HTML
         if($isHtmlFile)
         {
             // Load HTML from file
-            $loaded = @$dom->loadHTMLFile($pFilename);
+            $loaded = @$dom->loadHTMLFile($pFilename, PHPExcel_Settings::getLibXmlLoaderOptions());
         }
         else
         {
             // Load HTML from string
-            $loaded = @$dom->loadHTML(mb_convert_encoding($pFilename, 'HTML-ENTITIES', 'UTF-8'));
+            $loaded = @$dom->loadHTML(mb_convert_encoding($pFilename, 'HTML-ENTITIES', 'UTF-8'), PHPExcel_Settings::getLibXmlLoaderOptions());
         }
 
         if ($loaded === FALSE) {
