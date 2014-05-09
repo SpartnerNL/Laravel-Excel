@@ -6,6 +6,10 @@ return array(
     |--------------------------------------------------------------------------
     | Autosize columns
     |--------------------------------------------------------------------------
+    |
+    | Disable/enable column autosize or set the autosizing for
+    | an array of columns ( array('A', 'B') )
+    |
     */
     'autosize'  => false,
 

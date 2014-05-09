@@ -368,6 +368,31 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet
     }
 
     /**
+     * Set the column width
+     * @param [type]  $column [description]
+     * @param boolean $value  [description]
+     */
+    public function setWidth($column, $value = false)
+    {
+        // if is array of columns
+        if(is_array($column))
+        {
+            // Set width for each column
+            foreach($column as $subColumn => $subValue)
+            {
+                return $this->setWidth($subColumn, $subValue);
+            }
+        }
+        else
+        {
+            // Set column width
+            $this->getColumnDimension($column)->setWidth($value);
+        }
+
+        return $this;
+    }
+
+    /**
      * Autosize column for document
      *
      * @return int
