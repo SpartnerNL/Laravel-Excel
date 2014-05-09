@@ -1,5 +1,6 @@
 <?php namespace Maatwebsite\Excel\Readers;
 
+use \Config;
 use \PHPExcel_IOFactory;
 use Illuminate\Filesystem\Filesystem;
 use Maatwebsite\Excel\Parsers\ExcelParser;
@@ -85,6 +86,12 @@ class LaravelExcelReader {
      * @var boolean
      */
     public $formatDates = true;
+
+    /**
+     * If the file has a heading or not
+     * @var boolean
+     */
+    public $noHeading = false;
 
     /**
      * Default date format
@@ -306,10 +313,21 @@ class LaravelExcelReader {
      * Enable/disable date formating
      * @param  bool $boolean True/false
      */
-    public function formatDates($boolean, $format = false)
+    public function formatDates($boolean = true, $format = false)
     {
         $this->formatDates = $boolean;
         $this->setDateFormat($format);
+        return $this;
+    }
+
+    /**
+     * If the file has a table heading or not
+     * @param  [type] $boolean [description]
+     * @return [type]          [description]
+     */
+    public function noHeading($boolean = true)
+    {
+        $this->noHeading = $boolean;
         return $this;
     }
 
@@ -325,6 +343,18 @@ class LaravelExcelReader {
     {
         $this->calculate = $do;
         return $this;
+    }
+
+    /**
+     * Check if the file has een heading
+     * @return boolean [description]
+     */
+    public function hasHeading()
+    {
+        if(!$this->noHeading)
+            return Config::get('excel::import.heading', true);
+
+        return $this->noHeading ? false : true;
     }
 
     /**

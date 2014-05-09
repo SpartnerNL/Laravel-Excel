@@ -98,6 +98,11 @@ class LaravelExcelWriter {
         $this->filesystem = $filesystem;
     }
 
+    /**
+     * Inject the excel object
+     * @param  [type] $excel [description]
+     * @return [type]        [description]
+     */
     public function injectExcel($excel)
     {
         $this->excel = $excel;
