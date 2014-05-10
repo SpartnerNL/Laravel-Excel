@@ -1,5 +1,6 @@
 <?php namespace Maatwebsite\Excel;
 
+use Maatwebsite\Excel\Classes\Cache;
 use Maatwebsite\Excel\Classes\PHPExcel;
 use Illuminate\Support\ServiceProvider;
 use Maatwebsite\Excel\Readers\Html;
@@ -61,6 +62,11 @@ class ExcelServiceProvider extends ServiceProvider {
 	{
 		// Bind the PHPExcel class
 		$this->app['phpexcel'] = $this->app->share(function($app) {
+
+			// Set the caching settings
+			$this->setCacheSettings();
+
+			// Init phpExcel
 			return new PHPExcel();
 		});
 	}
@@ -121,6 +127,14 @@ class ExcelServiceProvider extends ServiceProvider {
         {
             return new Excel($app['phpexcel'], $app['excel.reader'], $app['excel.writer'], $app['excel.parsers.view'], $app['config'], $app['view'], $app['files']);
         });
+	}
+
+	/**
+	 * Set the cache settings
+	 */
+	protected function setCacheSettings()
+	{
+		return new Cache();
 	}
 
 	/**
