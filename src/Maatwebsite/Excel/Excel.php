@@ -141,6 +141,17 @@ class Excel
     }
 
     /**
+     * Set select sheets
+     * @param  [type] $sheets [description]
+     * @return [type]         [description]
+     */
+    public function selectSheets($sheets)
+    {
+        $this->reader->setSelectedSheets(is_array($sheets) ? $sheets : array($sheets));
+        return $this;
+    }
+
+    /**
      * Batch import
      * @return [type] [description]
      */

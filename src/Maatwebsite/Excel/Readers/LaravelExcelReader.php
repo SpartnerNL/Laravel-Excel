@@ -124,6 +124,12 @@ class LaravelExcelReader {
     public $cacheMinutes = 10;
 
     /**
+     * Selected sheets
+     * @var array
+     */
+    public $selectedSheets = array();
+
+    /**
      * Construct new writer
      * @param Response   $response [description]
      * @param FileSystem $files    [description]
@@ -145,11 +151,33 @@ class LaravelExcelReader {
         // init the loading
         $this->_init($file);
 
+        // Only fetch selected sheets if necessary
+        if($this->sheetsSelected())
+            $this->reader->setLoadSheetsOnly($this->selectedSheets);
+
         // Load the file
         $this->excel = $this->reader->load($this->file);
 
         // Return itself
         return $this;
+    }
+
+    /**
+     * set selected sheets
+     * @param [type] $sheets [description]
+     */
+    public function setSelectedSheets($sheets)
+    {
+        $this->selectedSheets = $sheets;
+    }
+
+    /**
+     * Check if sheets were selected
+     * @return [type] [description]
+     */
+    public function sheetsSelected()
+    {
+        return count($this->selectedSheets) > 0;
     }
 
     /**

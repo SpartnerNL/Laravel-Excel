@@ -131,9 +131,7 @@ class ExcelParser {
                     $workbook = $worksheet;
                     break;
                 }
-
                 $i++;
-
             }
         }
 
