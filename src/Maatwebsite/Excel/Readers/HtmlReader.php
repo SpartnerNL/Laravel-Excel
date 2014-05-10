@@ -86,6 +86,13 @@ class Html extends PHPExcel_Reader_HTML
         return $this->loadIntoExisting($pFilename, $objPHPExcel, $isString);
     }
 
+    /**
+     * Set the style formats from our config file
+     */
+    protected function setStyleFormats()
+    {
+        $this->_formats = Config::get('excel::views.styles', array());
+    }
 
     /**
      * Loads HTML from file into sheet instance
