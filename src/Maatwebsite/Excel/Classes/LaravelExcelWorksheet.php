@@ -1,46 +1,23 @@
 <?php namespace Maatwebsite\Excel\Classes;
 
+use \Config;
 use \PHPExcel_Worksheet;
-use Maatwebsite\Excel\Parsers\ViewParser;
 use Maatwebsite\Excel\Exceptions\LaravelExcelException;
 
 /**
- * PHPExcel
  *
- * Copyright (c) 2006 - 2014 PHPExcel
+ * Laravel wrapper for PHPExcel_Worksheet
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
- *
- * @category   PHPExcel
- * @package    PHPExcel_Worksheet
- * @copyright  Copyright (c) 2006 - 2014 PHPExcel (http://www.codeplex.com/PHPExcel)
+ * @category   Laravel Excel
+ * @version    1.0.0
+ * @package    maatwebsite/excel
+ * @copyright  Copyright (c) 2013 - 2014 Maatwebsite (http://www.maatwebsite.nl)
+ * @copyright  Original Copyright (c) 2006 - 2014 PHPExcel (http://www.codeplex.com/PHPExcel)
+ * @author     Maatwebsite <info@maatwebsite.nl>
  * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
- * @version    ##VERSION##, ##DATE##
- */
-
-
-/**
- * PHPExcel_Worksheet
- *
- * @category   PHPExcel
- * @package    PHPExcel_Worksheet
- * @copyright  Copyright (c) 2006 - 2014 PHPExcel (http://www.codeplex.com/PHPExcel)
  */
 class LaravelExcelWorksheet extends PHPExcel_Worksheet
 {
-
     /**
      * Parent
      * @var [type]
@@ -76,7 +53,18 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet
      * @var array
      */
     public $allowedPageSetup = array(
-        'orientation', 'paperSize', 'scale', 'fitToPage', 'fitToHeight', 'fitToWidth', 'columnsToRepeatAtLeft', 'rowsToRepeatAtTop', 'horizontalCentered', 'verticalCentered', 'printArea', 'firstPageNumber'
+        'orientation',
+        'paperSize',
+        'scale',
+        'fitToPage',
+        'fitToHeight',
+        'fitToWidth',
+        'columnsToRepeatAtLeft',
+        'rowsToRepeatAtTop',
+        'horizontalCentered',
+        'verticalCentered',
+        'printArea',
+        'firstPageNumber'
     );
 
     /**
@@ -84,7 +72,9 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet
      * @var array
      */
     public $allowedStyles = array(
-        'fontFamily', 'fontSize', 'fontBold'
+        'fontFamily',
+        'fontSize',
+        'fontBold'
     );
 
     /**
@@ -104,6 +94,7 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet
      */
     public function setDefaultPageSetup()
     {
+        // Get the page setup
         $pageSetup = $this->getPageSetup();
 
         foreach($this->allowedPageSetup as $setup)
@@ -112,16 +103,17 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet
             list($setter, $set) = $this->_setSetter($setup);
 
             // get the value
-            $value = \Config::get('excel::sheets.pageSetup.' . $setup, NULL);
+            $value = Config::get('excel::sheets.pageSetup.' . $setup, NULL);
 
             // Set the page setup value
             if(!is_null($value))
-                $pageSetup->{$setter}($value);
+                call_user_func_array(array($pageSetup, $setter), array($value));
         }
     }
 
     /**
      * Set the view
+     * @return self
      */
     public function setView()
     {
@@ -135,7 +127,7 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet
      *  @param string $view
      *  @param array $data
      *  @param array $mergeData
-     *  @return static
+     *  @return self
      *
      */
     public function loadView($view, $data = array(), $mergeData = array())
@@ -163,6 +155,7 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet
 
     /**
      * Set the parser
+     * @param boolean $parser [description]
      */
     public function setParser($parser = false)
     {
@@ -285,6 +278,7 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet
     public function setStyle($styles)
     {
         $this->getDefaultStyle()->applyFromArray($styles);
+        return $This;
     }
 
     /**
@@ -298,6 +292,7 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet
         {
             $this->setFontStyle($this->getDefaultStyle(), $key, $key, $value);
         }
+        return $this;
     }
 
     /**
@@ -459,15 +454,20 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet
         // Set autosize to true
         $this->autoSize = $columns ? $columns : false;
 
+        // If is not an array
         if(!is_array($columns) && $columns)
         {
+            // Get the highest column
             $toCol = $this->getHighestColumn();
 
+            // Lop through the columns and set the auto size
             $toCol++;
             for ($i = 'A'; $i !== $toCol; $i++) {
                 $this->getColumnDimension($i)->setAutoSize(true);
             }
         }
+
+        // Set autosize for the given columns
         elseif(is_array($columns))
         {
             foreach($columns as $column)
@@ -476,6 +476,7 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet
             }
         }
 
+        // Calculate the column widths
         $this->calculateColumnWidths();
     }
 
@@ -503,17 +504,9 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet
     }
 
     /**
-     *
      *  Freeze or lock rows and columns
-     *
-     *  @param string $pane rows and columns , default freeze the first row
+     *  @param string $pane rows and columns
      *  @return $this
-     *
-     *  @author xiehai
-     *  @example ->setFreeze()          Freeze the first row
-     *           ->setFreeze('B1')      Freeze the first column (THE A COLUMN)
-     *           ->setFreeze('B2')      Freeze the first row and first column
-     *
      */
     public function setFreeze($pane = 'A2')
     {
@@ -552,36 +545,13 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet
     }
 
     /**
-     *
      *  Set a range of cell borders
-     *
      *  @param string $pane Start and end of the cell (A1:F10)
-     *  @param string $weight Border style (Reference setBorder style list)
+     *  @param string $weight Border style
      *  @return $this
-     *  @example ->setBorder('A1:F10','thick')
-     *
      */
     public function setBorder($pane = 'A1', $weight = 'thin')
     {
-        /*
-        @ ~ Border styles list ~ @
-
-        PHPExcel_Style_Border::BORDER_NONE = 'none'
-        PHPExcel_Style_Border::BORDER_DASHDOT = 'dashDot'
-        PHPExcel_Style_Border::BORDER_DASHDOTDOT = 'dashDotDot'
-        PHPExcel_Style_Border::BORDER_DASHED = 'dashed'
-        PHPExcel_Style_Border::BORDER_DOTTED = 'dotted'
-        PHPExcel_Style_Border::BORDER_DOUBLE = 'double'
-        PHPExcel_Style_Border::BORDER_HAIR = 'hair'
-        PHPExcel_Style_Border::BORDER_MEDIUM = 'medium'
-        PHPExcel_Style_Border::BORDER_MEDIUMDASHDOT = 'mediumDashDot'
-        PHPExcel_Style_Border::BORDER_MEDIUMDASHDOTDOT = 'mediumDashDotDot'
-        PHPExcel_Style_Border::BORDER_MEDIUMDASHED = 'mediumDashed'
-        PHPExcel_Style_Border::BORDER_SLANTDASHDOT = 'slantDashDot'
-        PHPExcel_Style_Border::BORDER_THICK = 'thick'
-        PHPExcel_Style_Border::BORDER_THIN = 'thin'
-        */
-
         // Set all borders
         $this->getStyle($pane)
                 ->getBorders()
@@ -592,13 +562,9 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet
     }
 
     /**
-     *
      *  Set all cell borders
-     *
      *  @param string $weight Border style (Reference setBorder style list)
      *  @return $this
-     *  @example Excel::create()->setAllBorder()   Must follow the function of create()
-     *
      */
     public function setAllBorders($weight = 'thin')
     {
@@ -618,62 +584,10 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet
     }
 
     /**
-     *
      *  Set the cell format of the column
-     *
-     *  @return $this
      *  @param array $formats An array of cells you want to format columns
-     *
-     *  @author xiehai
-     *  @example ->setColumnFormat(array(
-     *          'B' => '0',
-     *          'D' => '0.00',
-     *          'F' => '@',
-     *          'F' => 'yyyy-mm-dd',
-     *          ......
-     *      )
-     *  )
-     *  @uses This method can only be used before the with() method
-     *
+     *  @return $this
      */
-
-     /*
-      * @ ~ The Format list ~ @
-      *
-        PHPExcel_Style_NumberFormat::FORMAT_GENERAL = 'General'
-        PHPExcel_Style_NumberFormat::FORMAT_TEXT = '@'
-        PHPExcel_Style_NumberFormat::FORMAT_NUMBER = '0'
-        PHPExcel_Style_NumberFormat::FORMAT_NUMBER_00 = '0.00'
-        PHPExcel_Style_NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1 = '#,##0.00'
-        PHPExcel_Style_NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED2 = '#,##0.00_-'
-        PHPExcel_Style_NumberFormat::FORMAT_PERCENTAGE = '0%'
-        PHPExcel_Style_NumberFormat::FORMAT_PERCENTAGE_00 = '0.00%'
-        PHPExcel_Style_NumberFormat::FORMAT_DATE_YYYYMMDD2 = 'yyyy-mm-dd'
-        PHPExcel_Style_NumberFormat::FORMAT_DATE_YYYYMMDD = 'yy-mm-dd'
-        PHPExcel_Style_NumberFormat::FORMAT_DATE_DDMMYYYY = 'dd/mm/yy'
-        PHPExcel_Style_NumberFormat::FORMAT_DATE_DMYSLASH = 'd/m/y'
-        PHPExcel_Style_NumberFormat::FORMAT_DATE_DMYMINUS = 'd-m-y'
-        PHPExcel_Style_NumberFormat::FORMAT_DATE_DMMINUS = 'd-m'
-        PHPExcel_Style_NumberFormat::FORMAT_DATE_MYMINUS = 'm-y'
-        PHPExcel_Style_NumberFormat::FORMAT_DATE_XLSX14 = 'mm-dd-yy'
-        PHPExcel_Style_NumberFormat::FORMAT_DATE_XLSX15 = 'd-mmm-yy'
-        PHPExcel_Style_NumberFormat::FORMAT_DATE_XLSX16 = 'd-mmm'
-        PHPExcel_Style_NumberFormat::FORMAT_DATE_XLSX17 = 'mmm-yy'
-        PHPExcel_Style_NumberFormat::FORMAT_DATE_XLSX22 = 'm/d/yy h:mm'
-        PHPExcel_Style_NumberFormat::FORMAT_DATE_DATETIME = 'd/m/y h:mm'
-        PHPExcel_Style_NumberFormat::FORMAT_DATE_TIME1 = 'h:mm AM/PM'
-        PHPExcel_Style_NumberFormat::FORMAT_DATE_TIME2 = 'h:mm:ss AM/PM'
-        PHPExcel_Style_NumberFormat::FORMAT_DATE_TIME3 = 'h:mm'
-        PHPExcel_Style_NumberFormat::FORMAT_DATE_TIME4 = 'h:mm:ss'
-        PHPExcel_Style_NumberFormat::FORMAT_DATE_TIME5 = 'mm:ss'
-        PHPExcel_Style_NumberFormat::FORMAT_DATE_TIME6 = 'h:mm:ss'
-        PHPExcel_Style_NumberFormat::FORMAT_DATE_TIME7 = 'i:s.S'
-        PHPExcel_Style_NumberFormat::FORMAT_DATE_TIME8 = 'h:mm:ss;@'
-        PHPExcel_Style_NumberFormat::FORMAT_DATE_YYYYMMDDSLASH = 'yy/mm/dd;@'
-        PHPExcel_Style_NumberFormat::FORMAT_CURRENCY_USD_SIMPLE = '"$"#,##0.00_-'
-        PHPExcel_Style_NumberFormat::FORMAT_CURRENCY_USD = '$#,##0_-'
-        PHPExcel_Style_NumberFormat::FORMAT_CURRENCY_EUR_SIMPLE = '[$EUR ]#,##0.00_-'
-      */
     public function setColumnFormat(Array $formats){
 
         // Loop through the columns
@@ -689,49 +603,9 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet
     }
 
     /**
-     *
-     *  Set the cell width of the columns
-     *
-     *  @return $this
-     *  @param array $pane An array of column widths
-     *
-     *  @author xiehai
-     *  @example ->setColumnWidth(array(
-     *          'A' => '10',
-     *          'B' => '22',
-     *          'F' => '8',
-     *          'N' => '13',
-     *          ......
-     *      )
-     *  )
-     *
-     */
-    public function setColumnWidth(Array $pane)
-    {
-        foreach ($pane as $column => $width) {
-            $this->getColumnDimension($column)->setWidth($width);
-        }
-
-        return $this;
-    }
-
-    /**
-     *
      *  Set the columns you want to merge
-     *
      *  @return $this
      *  @param array $mergeColumn An array of columns you want to merge
-     *
-     *  @author xiehai
-     *  @example    $mergeColumn = array(
-     *                  'columns' => array('A','B','C','D'),
-     *                  'rows' => array(
-     *                      array(2,3),
-     *                      array(5,11),
-     *                      .....
-     *                   )
-     *            );
-     *
      */
     public function setMergeColumn(Array $mergeColumn)
     {
@@ -745,21 +619,6 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet
     }
 
     /**
-     * Get style for cell
-     *
-     * @param string $pCellCoordinate Cell coordinate to get style for
-     * @return PHPExcel_Style
-     * @throws PHPExcel_Exception
-     */
-    // public function getStyle($pCellCoordinate = 'A1')
-    // {
-    //     // set cell coordinate as active
-    //     $this->setSelectedCells($pCellCoordinate);
-
-    //     return $this->_parent->getCellXfSupervisor();
-    // }
-
-    /**
      * Dynamically call methods
      * @param  [type] $method [description]
      * @param  [type] $params [description]
@@ -767,7 +626,6 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet
      */
     public function __call($method, $params)
     {
-
         // If the dynamic call starts with "with", add the var to the data array
         if(starts_with($method, 'with'))
         {
@@ -776,7 +634,7 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet
             return $this;
         }
 
-        // If it's a stter
+        // If it's a setter
         elseif(starts_with($method, 'set') )
         {
             // set the attribute
@@ -786,6 +644,4 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet
 
         throw new LaravelExcelException('[ERROR] Laravel Worksheet method ['. $method .'] does not exist.');
     }
-
-
 }

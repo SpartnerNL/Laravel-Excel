@@ -4,6 +4,17 @@ use \Closure;
 use Maatwebsite\Excel\Excel;
 use Maatwebsite\Excel\Exceptions\LaravelExcelException;
 
+/**
+ *
+ * LaravelExcel Batch Importer
+ *
+ * @category   Laravel Excel
+ * @version    1.0.0
+ * @package    maatwebsite/excel
+ * @copyright  Copyright (c) 2013 - 2014 Maatwebsite (http://www.maatwebsite.nl)
+ * @author     Maatwebsite <info@maatwebsite.nl>
+ * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
+ */
 class Batch {
 
     /**
@@ -23,7 +34,9 @@ class Batch {
      * @var array
      */
     protected $allowedFileExtensions = array(
-        'xls', 'xlsx', 'csv'
+        'xls',
+        'xlsx',
+        'csv'
     );
 
     /**
@@ -43,11 +56,15 @@ class Batch {
         {
             foreach($this->getFiles() as $file)
             {
+                // Load the file
                 $excel = $this->excel->load($file);
+
+                // Do a callback with the loaded file
                 call_user_func($callback, $excel, $file);
             }
         }
 
+        // Return our excel object
         return $this->excel;
     }
 
@@ -64,7 +81,7 @@ class Batch {
      * Set the batch files
      * @param [type] $files [description]
      */
-    public function _setFiles($files)
+    protected function _setFiles($files)
     {
         // If the param is an array, these will be the files for the batch import
         if(is_array($files))
@@ -111,8 +128,10 @@ class Batch {
         // Find path names matching our pattern of excel extensions
         $glob = glob($folder.'/*.{'. implode(',', $this->allowedFileExtensions) .'}', GLOB_BRACE);
 
+        // If no matches, return empty array
         if ($glob === false) return array();
 
+        // Return files
         return array_filter($glob, function($file) {
             return filetype($file) == 'file';
         });

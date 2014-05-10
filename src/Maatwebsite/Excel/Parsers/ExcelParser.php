@@ -3,19 +3,25 @@
 use \Config;
 use Carbon\Carbon;
 use \PHPExcel_Cell;
-use \PHPExcel_IOFactory;
 use \PHPExcel_Shared_Date;
 use Illuminate\Support\Str;
 use \PHPExcel_Style_NumberFormat;
-use \PHPExcel_Worksheet_PageSetup;
-use Illuminate\Filesystem\Filesystem;
-use Maatwebsite\Excel\Parsers\ExcelParser;
-use Maatwebsite\Excel\Exceptions\LaravelExcelException;
-use Illuminate\Support\Collection;
-use Maatwebsite\Excel\Collections\SheetCollection;
 use Maatwebsite\Excel\Collections\RowCollection;
 use Maatwebsite\Excel\Collections\CellCollection;
+use Maatwebsite\Excel\Collections\SheetCollection;
+use Maatwebsite\Excel\Exceptions\LaravelExcelException;
 
+/**
+ *
+ * LaravelExcel Excel Parser
+ *
+ * @category   Laravel Excel
+ * @version    1.0.0
+ * @package    maatwebsite/excel
+ * @copyright  Copyright (c) 2013 - 2014 Maatwebsite (http://www.maatwebsite.nl)
+ * @author     Maatwebsite <info@maatwebsite.nl>
+ * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
+ */
 class ExcelParser {
 
     /**
@@ -93,34 +99,23 @@ class ExcelParser {
         // Init new sheet collection
         $workbook = new SheetCollection();
 
-        // Set the columns
-        $this->columns = $columns;
+        // Set the selected columns
+        $this->setSelectedColumns($columns);
 
+        // If not parsed yet
         if(!$this->isParsed)
         {
             // Set worksheet count
-            $i = 0;
+            $this->w = 0;
 
             // Loop through the worksheets
             foreach($this->excel->getWorksheetIterator() as $this->worksheet)
             {
-                // Set the active worksheet
-                $this->excel->setActiveSheetIndex($i);
-
-                // Get the worksheet name
-                $title = $this->excel->getActiveSheet()->getTitle();
-
-                // Fetch the labels
-                $this->indices = $this->reader->hasHeading() ? $this->getIndices() : array();
-
-                // Parse the rows
-                $worksheet = $this->parseRows();
-
-                // Get the sheet count
-                $this->sheetCount = $this->excel->getSheetCount();
+                // Parse the worksheet
+                $worksheet = $this->parseWorksheet();
 
                 // If multiple sheets
-                if($this->sheetCount > 1)
+                if($this->parseAsMultiple())
                 {
                     // Push every sheet
                     $workbook->push($worksheet);
@@ -131,7 +126,7 @@ class ExcelParser {
                     $workbook = $worksheet;
                     break;
                 }
-                $i++;
+                $this->w++;
             }
         }
 
@@ -139,6 +134,34 @@ class ExcelParser {
 
         // Return itself
         return $workbook;
+    }
+
+    /**
+     * Check if we want to parse it as multiple sheets
+     * @return [type] [description]
+     */
+    protected function parseAsMultiple()
+    {
+        return $this->excel->getSheetCount() > 1 || Config::get('excel::import.force_sheets_collection', false);
+    }
+
+    /**
+     * Parse the worksheet
+     * @return [type] [description]
+     */
+    protected function parseWorksheet()
+    {
+        // Set the active worksheet
+        $this->excel->setActiveSheetIndex($this->w);
+
+        // Get the worksheet name
+        $title = $this->excel->getActiveSheet()->getTitle();
+
+        // Fetch the labels
+        $this->indices = $this->reader->hasHeading() ? $this->getIndices() : array();
+
+        // Parse the rows
+        return $this->parseRows();
     }
 
     /**
@@ -186,11 +209,12 @@ class ExcelParser {
         foreach ($this->worksheet->getRowIterator() as $this->row) {
 
             // Limit the results
-            if($this->reader->limit && $this->r == ($this->reader->limit + 1) )
+            if($this->checkForLimit())
                 break;
 
             // Ignore first row when needed
             if($this->r >= $ignore)
+                // Push the parsed cells inside the parsed rows
                 $parsedRows->push($this->parseCells());
 
             // Count the rows
@@ -201,12 +225,19 @@ class ExcelParser {
         return $parsedRows;
     }
 
-     /**
-     *
-     *  Parse the cells
-     *
-     *  @return $this
-     *
+    /**
+     * Check for the limit
+     * @return [type] [description]
+     */
+    protected function checkForLimit()
+    {
+        // If we have a limit, check if we hit this limit
+        return $this->reader->limit && $this->r == ($this->reader->limit + 1);
+    }
+
+    /**
+     * Parse the cells of the given row
+     * @return [type] [description]
      */
     protected function parseCells()
     {
@@ -216,73 +247,177 @@ class ExcelParser {
         // Set the cell iterator
         $cellIterator = $this->row->getCellIterator();
 
-        // Ignore empty cells
+        // Ignore empty cells if needed
         $cellIterator->setIterateOnlyExistingCells($this->reader->needsIgnoreEmpty());
 
         // Foreach cells
         foreach ($cellIterator as $this->cell) {
 
-            // Get the cell index
-            $index = PHPExcel_Cell::columnIndexFromString($this->cell->getColumn());
-
             // Check how we need to save the parsed array
-            $index = $this->reader->hasHeading() ? $this->indices[$i] : $i;
+            $index = $this->reader->hasHeading() ? $this->indices[$i] : $this->getIndexFromColumn();
 
             // Check if we want to select this column
-            if(empty($this->columns) || (!empty($this->columns) && in_array($index, $this->columns) ) )
+            if($this->cellNeedsParsing($index) )
             {
-                // If the cell is a date time
-                if(PHPExcel_Shared_Date::isDateTime($this->cell) || in_array($index, $this->reader->getDateColumns()))
-                {
-                    if($this->reader->needsDateFormatting())
-                    {
-                        // Convert excel time to php date object
-                        $date = PHPExcel_Shared_Date::ExcelToPHPObject($this->cell->getCalculatedValue())->format(false);
-
-                        // Parse with carbon
-                        $date = Carbon::parse($date);
-
-                        // Format the date if wanted
-                        $value = $this->reader->getDateFormat() ? $date->format($this->reader->getDateFormat()) : $date;
-                    }
-                    else
-                    {
-                        //Format the date to a formatted string
-                        $value = (string) PHPExcel_Style_NumberFormat::toFormattedString(
-                            $this->cell->getCalculatedValue(),
-                            $this->cell->getWorksheet()->getParent()
-                                ->getCellXfByIndex($this->cell->getXfIndex())
-                                ->getNumberFormat()
-                                ->getFormatCode()
-                        );
-                    }
-
-                }
-
-                // Check if we want calculated values or not
-                elseif($this->reader->needsCalculation())
-                {
-                    // Get calculated value
-                    $value = $this->cell->getCalculatedValue();
-                }
-                else
-                {
-                    // Get real value
-                    $value = $this->cell->getValue();
-                    $value = iconv(Config::get('excel::import.encoding', 'UTF-8'), 'CP1252', $value);
-                }
-
                 // Set the value
-                $parsedCells[$index] = $value;
+                $parsedCells[$index] = $this->parseCell($index);
 
             }
 
             $i++;
-
         }
 
         // Return array with parsed cells
         return CellCollection::make($parsedCells);
+    }
+
+    /**
+     * Parse a single cell
+     * @return [type] [description]
+     */
+    protected function parseCell($index)
+    {
+        // If the cell is a date time
+        if($this->cellIsDate($index))
+        {
+            // Parse the date
+            return $this->parseDate();
+        }
+
+        // Check if we want calculated values or not
+        elseif($this->reader->needsCalculation())
+        {
+            // Get calculated value
+            return $this->cell->getCalculatedValue();
+        }
+        else
+        {
+            // Get real value
+            return $this->getCellValue();
+        }
+    }
+
+    /**
+     * Return the cell value
+     * @return [type] [description]
+     */
+    protected function getCellValue()
+    {
+        // get the value
+        $value = $this->cell->getValue();
+
+        // return encoded string
+        return iconv(Config::get('excel::import.encoding', 'UTF-8'), 'CP1252', $value);
+    }
+
+    /**
+     * Parse the date
+     * @return [type] [description]
+     */
+    protected function parseDate()
+    {
+        // If the date needs formatting
+        if($this->reader->needsDateFormatting())
+        {
+            // Parse the date with carbon
+            return $this->parseDateAsCarbon();
+        }
+        else
+        {
+            // Parse the date as a normal string
+            return $this->parseDateAsString();
+        }
+    }
+
+    /**
+     * Parse and return carbon object or formatted time string
+     * @return [type] [description]
+     */
+    protected function parseDateAsCarbon()
+    {
+        // Convert excel time to php date object
+        $date = PHPExcel_Shared_Date::ExcelToPHPObject($this->cell->getCalculatedValue())->format(false);
+
+        // Parse with carbon
+        $date = Carbon::parse($date);
+
+        // Format the date if wanted
+        return $this->reader->getDateFormat() ? $date->format($this->reader->getDateFormat()) : $date;
+    }
+
+    /**
+     * Return date string
+     * @return [type] [description]
+     */
+    protected function parseDateAsString()
+    {
+        //Format the date to a formatted string
+        return (string) PHPExcel_Style_NumberFormat::toFormattedString(
+            $this->cell->getCalculatedValue(),
+            $this->cell->getWorksheet()->getParent()
+                ->getCellXfByIndex($this->cell->getXfIndex())
+                ->getNumberFormat()
+                ->getFormatCode()
+        );
+    }
+
+    /**
+     * Check if cell is a date
+     * @param  [type] $index [description]
+     * @return [type]        [description]
+     */
+    protected function cellIsDate($index)
+    {
+        // if is a date or if is a date column
+        return PHPExcel_Shared_Date::isDateTime($this->cell) || in_array($index, $this->reader->getDateColumns());
+    }
+
+    /**
+     * Check if cells needs parsing
+     * @return [type] [description]
+     */
+    protected function cellNeedsParsing($index)
+    {
+        // if no columns are selected or if the column is selected
+        return !$this->hasSelectedColumns() || ($this->hasSelectedColumns() && in_array($index, $this->getSelectedColumns()));
+    }
+
+    /**
+     * Get the cell index from column
+     * @return [type] [description]
+     */
+    protected function getIndexFromColumn()
+    {
+        return PHPExcel_Cell::columnIndexFromString($this->cell->getColumn());
+    }
+
+    /**
+     * Set selected columns
+     * @param array $columns [description]
+     */
+    protected function setSelectedColumns($columns = array())
+    {
+        // Set the columns
+        $this->columns = $columns;
+    }
+
+    /**
+     * Check if we have selected columns
+     * @return boolean [description]
+     */
+    protected function hasSelectedColumns()
+    {
+        return !empty($this->getSelectedColumns());
+    }
+
+    /**
+     * Set selected columns
+     * @param array $columns [description]
+     */
+    protected function getSelectedColumns()
+    {
+        // Set the columns
+        return $this->columns;
 
     }
 

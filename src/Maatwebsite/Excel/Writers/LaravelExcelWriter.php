@@ -4,9 +4,20 @@ use \Config;
 use \Response;
 use Carbon\Carbon;
 use Illuminate\Filesystem\Filesystem;
-use Maatwebsite\Excel\Exceptions\LaravelExcelException;
 use Maatwebsite\Excel\Classes\LaravelExcelWorksheet;
+use Maatwebsite\Excel\Exceptions\LaravelExcelException;
 
+/**
+ *
+ * LaravelExcel Excel writer
+ *
+ * @category   Laravel Excel
+ * @version    1.0.0
+ * @package    maatwebsite/excel
+ * @copyright  Copyright (c) 2013 - 2014 Maatwebsite (http://www.maatwebsite.nl)
+ * @author     Maatwebsite <info@maatwebsite.nl>
+ * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
+ */
 class LaravelExcelWriter {
 
     /**
@@ -64,30 +75,6 @@ class LaravelExcelWriter {
     protected $rendered = false;
 
     /**
-     * Sheet count
-     * @var integer
-     */
-    protected $sheetCount = -1;
-
-    /**
-     * View
-     * @var [type]
-     */
-    protected $view;
-
-    /**
-     * Data
-     * @var [type]
-     */
-    protected $data = array();
-
-    /**
-     * Merge data
-     * @var array
-     */
-    protected $mergeData = array();
-
-    /**
      * Construct new writer
      * @param Response   $response [description]
      * @param FileSystem $files    [description]
@@ -128,6 +115,7 @@ class LaravelExcelWriter {
         if(!$this->parser)
             $this->parser = app('excel.parsers.view');
 
+        // Set the view inside the parser
         $this->parser->setView($view);
         $this->parser->setData($data);
         $this->parser->setMergeData($mergeData);
@@ -183,9 +171,6 @@ class LaravelExcelWriter {
         // Parse the sheet
         $this->sheet->parsed();
 
-        // Count sheets
-        $this->sheetCount++;
-
         return $this;
     }
 
@@ -195,7 +180,7 @@ class LaravelExcelWriter {
      * @param  boolean $value [description]
      * @return [type]         [description]
      */
-    public function with($array)
+    public function with(Array $array)
     {
         // Add the vars
         $this->fromArray($array);
@@ -457,6 +442,9 @@ class LaravelExcelWriter {
 
     }
 
+    /**
+     * On destruct
+     */
     public function __destruct()
     {
         $this->excel->disconnectWorksheets();

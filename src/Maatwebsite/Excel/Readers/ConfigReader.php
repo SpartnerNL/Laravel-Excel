@@ -1,11 +1,22 @@
 <?php namespace Maatwebsite\Excel\Readers;
 
-use \Closure;
 use \Config;
+use \Closure;
 use Maatwebsite\Excel\Excel;
-use Maatwebsite\Excel\Exceptions\LaravelExcelException;
 use Maatwebsite\Excel\Collections\SheetCollection;
+use Maatwebsite\Excel\Exceptions\LaravelExcelException;
 
+/**
+ *
+ * LaravelExcel ConfigReader
+ *
+ * @category   Laravel Excel
+ * @version    1.0.0
+ * @package    maatwebsite/excel
+ * @copyright  Copyright (c) 2013 - 2014 Maatwebsite (http://www.maatwebsite.nl)
+ * @author     Maatwebsite <info@maatwebsite.nl>
+ * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
+ */
 class ConfigReader {
 
     /**
@@ -100,10 +111,13 @@ class ConfigReader {
      */
     protected function valueByIndex($field)
     {
+        // Convert field name
         $field = snake_case($field);
 
+        // Get coordinate
         if($coordinate = $this->getCoordinateByKey($field))
         {
+            // return cell value by coordinate
             return $this->getCellValueByCoordinate($coordinate);
         }
 
@@ -145,6 +159,11 @@ class ConfigReader {
         return Config::get($this->configName . '.' . $this->sheetName . '.' . $field, false);
     }
 
+    /**
+     * Dynamically get a value by config
+     * @param  [type] $field [description]
+     * @return [type]        [description]
+     */
     public function __get($field)
     {
         return $this->valueByIndex($field);

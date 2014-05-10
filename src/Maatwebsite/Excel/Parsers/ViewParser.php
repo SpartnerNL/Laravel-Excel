@@ -1,7 +1,19 @@
 <?php namespace Maatwebsite\Excel\Parsers;
 
+use \View;
 use Maatwebsite\Excel\Readers\Html;
 
+/**
+ *
+ * LaravelExcel ViewParser
+ *
+ * @category   Laravel Excel
+ * @version    1.0.0
+ * @package    maatwebsite/excel
+ * @copyright  Copyright (c) 2013 - 2014 Maatwebsite (http://www.maatwebsite.nl)
+ * @author     Maatwebsite <info@maatwebsite.nl>
+ * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
+ */
 class ViewParser {
 
     /**
@@ -38,7 +50,7 @@ class ViewParser {
      */
     public function parse($sheet)
     {
-        $html = \View::make($this->view, $this->data, $this->mergeData)->render();
+        $html = View::make($this->view, $this->data, $this->mergeData)->render();
         return $this->_loadHTML($sheet, $html);
     }
 

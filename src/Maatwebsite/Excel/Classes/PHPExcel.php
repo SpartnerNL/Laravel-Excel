@@ -1,78 +1,35 @@
 <?php namespace Maatwebsite\Excel\Classes;
 
 use \PHPExcel as PHPOffice_PHPExcel;
-use Maatwebsite\Excel\Parsers\ViewParser;
 
 /**
- * PHPExcel
  *
- * Copyright (c) 2006 - 2014 PHPExcel
+ * Laravel wrapper for PHPExcel
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
- *
- * @category   PHPExcel
- * @package    PHPExcel
- * @copyright  Copyright (c) 2006 - 2014 PHPExcel (http://www.codeplex.com/PHPExcel)
+ * @category   Laravel Excel
+ * @version    1.0.0
+ * @package    maatwebsite/excel
+ * @copyright  Copyright (c) 2013 - 2014 Maatwebsite (http://www.maatwebsite.nl)
+ * @copyright  Original Copyright (c) 2006 - 2014 PHPExcel (http://www.codeplex.com/PHPExcel)
+ * @author     Maatwebsite <info@maatwebsite.nl>
  * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
- * @version    ##VERSION##, ##DATE##
- */
-
-
-/**
- * PHPExcel
- *
- * @category   PHPExcel
- * @package    PHPExcel
- * @copyright  Copyright (c) 2006 - 2014 PHPExcel (http://www.codeplex.com/PHPExcel)
  */
 class PHPExcel extends PHPOffice_PHPExcel
 {
-
-    /**
-     * Active sheet index
-     *
-     * @var int
-     */
-    private $_activeSheetIndex = 0;
-
-    /**
-     * View file
-     * @var [type]
-     */
-    public $view;
-
-    /**
-     * Data
-     * @var [type]
-     */
-    public $data;
-
-    /**
-     * Merge data
-     * @var [type]
-     */
-    public $mergeData;
-
-    public $_workSheetCollection = array();
-
     /**
      * Allowed autofill properties
      * @var array
      */
     public $allowedProperties = array(
-        'creator', 'lastModifiedBy', 'title', 'description', 'subject', 'keywords', 'category', 'manager', 'company'
+        'creator',
+        'lastModifiedBy',
+        'title',
+        'description',
+        'subject',
+        'keywords',
+        'category',
+        'manager',
+        'company'
     );
 
     /**
@@ -84,16 +41,23 @@ class PHPExcel extends PHPOffice_PHPExcel
      */
     public function createSheet($iSheetIndex = NULL, $title = false)
     {
+        // Init new Laravel Excel worksheet
         $newSheet = new LaravelExcelWorksheet($this, $title);
+
+        // Add the sheet
         $this->addSheet($newSheet, $iSheetIndex);
+
+        // Return the sheet
         return $newSheet;
     }
 
     /**
      * Set default properties
+     * @param [type] $custom [description]
      */
     public function setDefaultProperties($custom)
     {
+        // Get the properties
         $properties = $this->getProperties();
 
         // Get fillable properties
@@ -106,7 +70,7 @@ class PHPExcel extends PHPOffice_PHPExcel
             $value = in_array($prop, array_keys($custom)) ? $custom[$prop] : \Config::get('excel::properties.' . $prop, NULL);
 
             // set the property
-            $properties->{$method}($value);
+            call_user_func_array(array($properties, $method), array($value));
         }
     }
 

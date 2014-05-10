@@ -5,8 +5,18 @@ use \PHPExcel_IOFactory;
 use Illuminate\Filesystem\Filesystem;
 use Maatwebsite\Excel\Parsers\ExcelParser;
 use Maatwebsite\Excel\Exceptions\LaravelExcelException;
-use Illuminate\Support\Collection;
 
+/**
+ *
+ * LaravelExcel Excel reader
+ *
+ * @category   Laravel Excel
+ * @version    1.0.0
+ * @package    maatwebsite/excel
+ * @copyright  Copyright (c) 2013 - 2014 Maatwebsite (http://www.maatwebsite.nl)
+ * @author     Maatwebsite <info@maatwebsite.nl>
+ * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
+ */
 class LaravelExcelReader {
 
     /**
@@ -232,6 +242,15 @@ class LaravelExcelReader {
     public function all()
     {
         return $this->get();
+    }
+
+    /**
+     * Get first row only
+     * @return [type] [description]
+     */
+    public function first()
+    {
+        return $this->take(1)->get()->first();
     }
 
     /**

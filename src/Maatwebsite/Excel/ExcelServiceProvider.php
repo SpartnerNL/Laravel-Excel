@@ -8,6 +8,17 @@ use Maatwebsite\Excel\Writers\LaravelExcelWriter;
 use Maatwebsite\Excel\Classes\LaravelExcelWorksheet;
 use Maatwebsite\Excel\Parsers\ViewParser;
 
+/**
+ *
+ * LaravelExcel Excek ServiceProvider
+ *
+ * @category   Laravel Excel
+ * @version    1.0.0
+ * @package    maatwebsite/excel
+ * @copyright  Copyright (c) 2013 - 2014 Maatwebsite (http://www.maatwebsite.nl)
+ * @author     Maatwebsite <info@maatwebsite.nl>
+ * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
+ */
 class ExcelServiceProvider extends ServiceProvider {
 
 	/**
@@ -38,7 +49,6 @@ class ExcelServiceProvider extends ServiceProvider {
 		$this->bindReaders();
 		$this->bindParsers();
 		$this->bindPHPExcelClass();
-		$this->bindClasses();
 		$this->bindWriters();
 		$this->bindExcel();
 	}
@@ -56,28 +66,20 @@ class ExcelServiceProvider extends ServiceProvider {
 	}
 
 	/**
-	 * Bind Classes
-	 * @return [type] [description]
-	 */
-	protected function bindClasses()
-	{
-
-	}
-
-	/**
 	 * Bind writers
 	 * @return [type] [description]
 	 */
 	protected function bindReaders()
 	{
-
 		// Bind the laravel excel reader
-		$this->app['excel.reader'] = $this->app->share(function($app) {
+		$this->app['excel.reader'] = $this->app->share(function($app)
+		{
 			return new LaravelExcelReader($app['files']);
 		});
 
 		// Bind the html reader class
-		$this->app['excel.readers.html'] = $this->app->share(function($app) {
+		$this->app['excel.readers.html'] = $this->app->share(function($app)
+		{
 			return new Html();
 		});
 	}
@@ -88,7 +90,9 @@ class ExcelServiceProvider extends ServiceProvider {
 	 */
 	protected function bindParsers()
 	{
-		$this->app['excel.parsers.view'] = $this->app->share(function($app) {
+		// Bind the view parser
+		$this->app['excel.parsers.view'] = $this->app->share(function($app)
+		{
 			return new ViewParser($app['excel.readers.html']);
 		});
 	}
@@ -99,7 +103,9 @@ class ExcelServiceProvider extends ServiceProvider {
 	 */
 	protected function bindWriters()
 	{
-		$this->app['excel.writer'] = $this->app->share(function($app) {
+		// Bind the excel writer
+		$this->app['excel.writer'] = $this->app->share(function($app)
+		{
 			return new LaravelExcelWriter($app->make('Response'), $app['files']);
 		});
 	}

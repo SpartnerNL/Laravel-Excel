@@ -1,33 +1,6 @@
-<?php
+<?php namespace Maatwebsite\Excel\Readers;
 
-/**
- * PHPExcel
- *
- * Copyright (c) 2006 - 2013 PHPExcel
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
- *
- * @category   PHPExcel
- * @package    PHPExcel_Reader
- * @copyright  Copyright (c) 2006 - 2013 PHPExcel (http://www.codeplex.com/PHPExcel)
- * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
- * @version    ##VERSION##, ##DATE##
- */
-
-namespace Maatwebsite\Excel\Readers;
-
+use \Config;
 use \PHPExcel;
 use \PHPExcel_Settings;
 use \PHPExcel_Reader_HTML;
@@ -39,7 +12,19 @@ use \PHPExcel_Style_Alignment;
 use Maatwebsite\Excel\Parsers\CssParser;
 use Maatwebsite\Excel\Classes\LaravelExcelWorksheet;
 
-class Html extends \PHPExcel_Reader_HTML
+/**
+ *
+ * LaravelExcel HTML reader
+ *
+ * @category   Laravel Excel
+ * @version    1.0.0
+ * @package    maatwebsite/excel
+ * @copyright  Copyright (c) 2013 - 2014 Maatwebsite (http://www.maatwebsite.nl)
+ * @copyright  Original Copyright (c) 2006 - 2014 PHPExcel (http://www.codeplex.com/PHPExcel)
+ * @author     Maatwebsite <info@maatwebsite.nl>
+ * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
+ */
+class Html extends PHPExcel_Reader_HTML
 {
 
     /**
@@ -60,82 +45,7 @@ class Html extends \PHPExcel_Reader_HTML
      * HTML tags formatting settings
      * @var array
      */
-    private $_formats = array(
-        'th' => array(
-            'font' => array(
-                'bold' => true,
-                'size' => 12,
-            ),
-        ),
-        'strong' => array(
-            'font' => array(
-                'bold' => true,
-                'size' => 12,
-            ),
-        ),
-        'b' => array(
-            'font' => array(
-                'bold' => true,
-                'size' => 12,
-            ),
-        ),
-        'i' => array(
-            'font' => array(
-                'italic' => true,
-                'size' => 12,
-            ),
-        ),
-        'h1' => array(
-            'font' => array(
-                'bold' => true,
-                'size' => 24,
-            ),
-        ),  //  Bold, 24pt
-       'h2' => array(
-            'font' => array(
-                'bold' => true,
-                'size' => 18,
-            ),
-        ),  //  Bold, 18pt
-       'h3' => array(
-            'font' => array(
-                'bold' => true,
-                'size' => 13.5,
-            ),
-        ),  //  Bold, 13.5pt
-       'h4' => array(
-            'font' => array(
-                'bold' => true,
-                'size' => 12,
-            ),
-        ),  //  Bold, 12pt
-       'h5' => array(
-            'font' => array(
-                'bold' => true,
-                'size' => 10,
-            ),
-        ),  //  Bold, 10pt
-       'h6' => array(
-            'font' => array(
-                'bold' => true,
-                'size' => 7.5,
-            ),
-        ),  //  Bold, 7.5pt
-       'a'  => array(
-            'font' => array(
-                'underline' => true,
-                'color' => array( 'argb' => PHPExcel_Style_Color::COLOR_BLUE),
-            ),
-        ),  //  Blue underlined
-       'hr' => array(
-            'borders' => array(
-                'bottom' => array(
-                    'style' => PHPExcel_Style_Border::BORDER_THIN,
-                    'color' => array(PHPExcel_Style_Color::COLOR_BLACK)
-                ),
-            ),
-        ),  //  Bottom border
-     );
+    private $_formats = array();
 
     /**
      * The current colspan
@@ -158,6 +68,8 @@ class Html extends \PHPExcel_Reader_HTML
      */
     public function load($pFilename, $isString = false, $obj = false)
     {
+        // Set the default style formats
+        $this->setStyleFormats();
 
         if($obj instanceof \PHPExcel)
         {
@@ -174,6 +86,7 @@ class Html extends \PHPExcel_Reader_HTML
         return $this->loadIntoExisting($pFilename, $objPHPExcel, $isString);
     }
 
+
     /**
      * Loads HTML from file into sheet instance
      *
@@ -184,7 +97,6 @@ class Html extends \PHPExcel_Reader_HTML
      */
     public function loadIntoExistingSheet($pFilename, LaravelExcelWorksheet $sheet, $isString = false)
     {
-
         $isHtmlFile = FALSE;
 
         // Check if it's a string or file
