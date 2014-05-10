@@ -169,8 +169,6 @@ class LaravelExcelReader {
         // Load the file
         $this->excel = $this->reader->load($this->file);
 
-        dd($this->excel);
-
         // Return itself
         return $this;
     }

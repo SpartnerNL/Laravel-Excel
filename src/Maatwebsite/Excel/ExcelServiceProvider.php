@@ -1,5 +1,7 @@
 <?php namespace Maatwebsite\Excel;
 
+use \Config;
+use \PHPExcel_Settings;
 use Maatwebsite\Excel\Classes\Cache;
 use Maatwebsite\Excel\Classes\PHPExcel;
 use Illuminate\Support\ServiceProvider;
@@ -62,6 +64,9 @@ class ExcelServiceProvider extends ServiceProvider {
 	{
 		// Bind the PHPExcel class
 		$this->app['phpexcel'] = $this->app->share(function($app) {
+
+			// Set locale
+			$this->setLocale();
 
 			// Set the caching settings
 			$this->setCacheSettings();
@@ -135,6 +140,15 @@ class ExcelServiceProvider extends ServiceProvider {
 	protected function setCacheSettings()
 	{
 		return new Cache();
+	}
+
+	/**
+	 * Set locale
+	 */
+	protected function setLocale()
+	{
+		$locale = Config::get('app.locale', 'en_us');
+		PHPExcel_Settings::setLocale($locale);
 	}
 
 	/**
