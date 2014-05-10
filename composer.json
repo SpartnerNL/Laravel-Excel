@@ -21,7 +21,7 @@
             "src/Maatwebsite/Excel"
         ],
         "psr-0": {
-            "Maatwebsite\\Excel": "src/"
+            "Maatwebsite\\Excel\\": "src/"
         }
     },
     "minimum-stability": "stable"
