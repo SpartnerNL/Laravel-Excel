@@ -590,8 +590,10 @@ class LaravelExcelReader {
         // Set CSV delimiter
         if($this->format == 'CSV')
         {
-            $this->reader->setDelimiter(Config::get('excel::import.delimiter', ','));
-            $this->reader->setInputEncoding(Config::get('excel::import.encoding', 'UTF-8'));
+            $this->reader->setDelimiter(Config::get('excel::csv.delimiter', ','));
+            $this->reader->setInputEncoding(Config::get('excel::import.encoding.input', 'UTF-8'));
+            $this->reader->setEnclosure(Config::get('excel::csv.enclosure', ''));
+            $this->reader->setLineEnding(Config::get('excel::csv.line_ending', "\r\n"));
         }
 
         // Set default calculate

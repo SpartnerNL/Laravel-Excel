@@ -366,7 +366,17 @@ class LaravelExcelWriter {
      */
     protected function _setWriter()
     {
-        return $this->writer = \PHPExcel_IOFactory::createWriter($this->excel, $this->format);
+        $this->writer = \PHPExcel_IOFactory::createWriter($this->excel, $this->format);
+
+        // Set CSV delimiter
+        if($this->format == 'CSV')
+        {
+            $this->writer->setDelimiter(Config::get('excel::csv.delimiter', ','));
+            $this->writer->setEnclosure(Config::get('excel::csv.enclosure', ''));
+            $this->writer->setLineEnding(Config::get('excel::csv.line_ending', "\r\n"));
+        }
+
+        return $this->writer;
     }
 
     /**

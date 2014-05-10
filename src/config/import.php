@@ -26,24 +26,16 @@ return array(
 
     /*
     |--------------------------------------------------------------------------
-    | Input encoding
+    | Import encoding
     |--------------------------------------------------------------------------
     */
 
-    'encoding'  => 'UTF-8',
+    'encoding'  => array(
 
-    /*
-    |--------------------------------------------------------------------------
-    | Delimiter
-    |--------------------------------------------------------------------------
-    |
-    | The default delimiter which will be used to read out a CSV file
-    | If you would like to use an other delimiter only one time,
-    | you can also use the `setDelimiter()` chain.
-    |
-    */
+        'input'     =>  'UTF-8',
+        'output'    =>  'UTF-8'
 
-    'delimiter' => ',',
+    ),
 
     /*
     |--------------------------------------------------------------------------

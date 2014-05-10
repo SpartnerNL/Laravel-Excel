@@ -288,7 +288,7 @@ class ExcelParser {
         elseif($this->reader->needsCalculation())
         {
             // Get calculated value
-            return $this->cell->getCalculatedValue();
+            return $this->getCalculatedValue();
         }
         else
         {
@@ -303,11 +303,36 @@ class ExcelParser {
      */
     protected function getCellValue()
     {
-        // get the value
         $value = $this->cell->getValue();
+        return $this->encode($value);
+    }
 
-        // return encoded string
-        return iconv(Config::get('excel::import.encoding', 'UTF-8'), 'CP1252', $value);
+    /**
+     * Get the calculated value
+     * @return [type] [description]
+     */
+    protected function getCalculatedValue()
+    {
+        $value = $this->cell->getCalculatedValue();
+        return $this->encode($value);
+    }
+
+    /**
+     * Encode with iconv
+     * @param  [type] $value [description]
+     * @return [type]        [description]
+     */
+    protected function encode($value)
+    {
+        // Get input and output encoding
+        list($input, $output) = array_values(Config::get('excel::import.encoding', array('UTF-8', 'UTF-8')));
+
+        // If they are the same, return the value
+        if($input == $output)
+            return $value;
+
+        // Encode
+        return iconv($input, $ouput, $value);
     }
 
     /**
