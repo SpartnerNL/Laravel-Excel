@@ -16,6 +16,10 @@
         "illuminate/filesystem": "4.x",
         "phpoffice/phpexcel": "1.8.*"
     },
+    "require-dev": {
+        "mockery/mockery": "0.9.*",
+        "phpunit/phpunit": "4.0.*"
+    },
     "autoload": {
         "classmap": [
             "src/Maatwebsite/Excel"

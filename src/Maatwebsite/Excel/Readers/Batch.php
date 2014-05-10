@@ -40,15 +40,15 @@ class Batch {
     );
 
     /**
-     * Constructor
-     * @param [type] $files [description]
+     * Start the batch
+     * @return [type] [description]
      */
-    public function __construct(Excel $excel, $files, Closure $callback)
+    public function start(Excel $excel, $files, Closure $callback)
     {
         // Set excel object
         $this->excel = $excel;
 
-        // Set files
+         // Set files
         $this->_setFiles($files);
 
         // Do the callback

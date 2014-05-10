@@ -455,13 +455,6 @@ class LaravelExcelWriter {
 
     }
 
-    /**
-     * On destruct
-     */
-    public function __destruct()
-    {
-        $this->excel->disconnectWorksheets();
-        unset($this->excel);
-    }
+
 
 }

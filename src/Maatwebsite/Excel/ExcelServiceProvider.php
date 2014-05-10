@@ -130,7 +130,7 @@ class ExcelServiceProvider extends ServiceProvider {
 		// Bind the Excel class and inject its dependencies
 		$this->app['excel'] = $this->app->share(function($app)
         {
-            return new Excel($app['phpexcel'], $app['excel.reader'], $app['excel.writer'], $app['excel.parsers.view'], $app['config'], $app['view'], $app['files']);
+            return new Excel($app['phpexcel'], $app['excel.reader'], $app['excel.writer'], $app['excel.parsers.view']);
         });
 	}
 

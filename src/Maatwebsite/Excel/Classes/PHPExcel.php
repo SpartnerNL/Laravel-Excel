@@ -1,5 +1,6 @@
 <?php namespace Maatwebsite\Excel\Classes;
 
+use Illuminate\Support\Facades\Config;
 use \PHPExcel as PHPOffice_PHPExcel;
 
 /**
@@ -67,7 +68,7 @@ class PHPExcel extends PHPOffice_PHPExcel
             $method = 'set' . ucfirst($prop);
 
             // get the value
-            $value = in_array($prop, array_keys($custom)) ? $custom[$prop] : \Config::get('excel::properties.' . $prop, NULL);
+            $value = in_array($prop, array_keys($custom)) ? $custom[$prop] : Config::get('excel::properties.' . $prop, NULL);
 
             // set the property
             call_user_func_array(array($properties, $method), array($value));
