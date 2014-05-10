@@ -20,7 +20,7 @@ return array(
     | memory|gzip|serialized|igbinary|discISAM|apc|memcache|temp|wincache|sqlite|sqlite3
     |
     */
-    'driver'    =>     'memory',
+    'driver'    =>     'discISAM',
 
     /*
     |--------------------------------------------------------------------------
@@ -44,6 +44,14 @@ return array(
         'host'    =>  'localhost',
         'port'      =>  11211,
 
-    )
+    ),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Cache dir (for discISAM)
+    |--------------------------------------------------------------------------
+    */
+
+    'dir' => storage_path('cache')
 
 );

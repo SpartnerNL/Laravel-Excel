@@ -101,6 +101,15 @@ class Cache {
                 ));
 
                 break;
+
+            case 'discISAM':
+
+                // Add dir
+                $this->settings = array_merge($this->settings, array(
+                    'dir'    => Config::get($this->configName . '.dir', storage_path('cache')),
+                ));
+
+                break;
         }
     }
 
