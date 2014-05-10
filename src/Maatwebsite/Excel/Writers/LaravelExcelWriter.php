@@ -242,9 +242,6 @@ class LaravelExcelWriter {
      */
     public function store($ext = 'xls', $path = false, $returnInfo = false)
     {
-        // Set default return Info
-        $returnInfo = $returnInfo ? $returnInfo : Config::get('excel::export.store.returnInfo', false);
-
         // Set the storage path
         $this->_setStoragePath($path);
 
@@ -261,7 +258,7 @@ class LaravelExcelWriter {
         $this->writer->save($toStore);
 
         // Return file info
-        if($returnInfo)
+        if($this->returnInfo($returnInfo))
         {
             // Send back information about the stored file
             return array(
@@ -276,6 +273,12 @@ class LaravelExcelWriter {
 
         // Return itself
         return $this;
+    }
+
+    // Check if we want to return info or itself
+    public function returnInfo($returnInfo = false)
+    {
+        return $returnInfo ? $returnInfo : Config::get('excel::export.store.returnInfo', false);
     }
 
     /**

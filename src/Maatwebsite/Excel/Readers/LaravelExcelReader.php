@@ -1,5 +1,6 @@
 <?php namespace Maatwebsite\Excel\Readers;
 
+use \Cache;
 use \Config;
 use \PHPExcel_IOFactory;
 use Illuminate\Filesystem\Filesystem;
@@ -262,7 +263,7 @@ class LaravelExcelReader {
         if($this->remembered)
         {
             // Return cached results
-            return \Cache::remember(md5($this->file), $this->cacheMinutes, function() use (&$columns) {
+            return Cache::remember(md5($this->file), $this->cacheMinutes, function() use (&$columns) {
                 $this->_parseFile($columns);
                 return $this->parsed;
             });
@@ -597,7 +598,7 @@ class LaravelExcelReader {
         $this->calculate = Config::get('excel::import.calculate', true);
 
         // Set default for ignoring empty cells
-        $this->calculate = Config::get('excel::import.ignoreEmpty', true);
+        $this->ignoreEmpty = Config::get('excel::import.ignoreEmpty', true);
 
         // Set default date format
         $this->dateFormat = Config::get('excel::import.dates.format', 'Y-m-d');
