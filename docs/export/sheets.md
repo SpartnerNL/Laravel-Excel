@@ -17,7 +17,7 @@ To create a new sheet inside our newly created file, use `->sheets('Sheetname')`
 
 ### Creating multiple sheets
 
-    You can set as many sheets as you like inside the file:
+You can set as many sheets as you like inside the file:
 
     Excel::create('Filename', function($excel) {
 
@@ -47,4 +47,4 @@ There are a couple of properties we can change inside the closure. Most of them 
 
     })->export('xls');
 
-Go to the reference guide to see a list of available properties.
+> Go to the reference guide to see a list of available properties.

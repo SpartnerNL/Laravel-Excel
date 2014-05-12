@@ -199,14 +199,24 @@ class LaravelExcelWriter {
         $this->_render();
 
         // Download the file
-        $this->download();
+        $this->_download();
+    }
+
+    /**
+     * Export and download the spreadsheet
+     * @param  string $ext [description]
+     * @return [type]      [description]
+     */
+    public function download($ext = 'xls')
+    {
+        return $this->export($ext);
     }
 
     /**
      * Download a file
      * @return [type] [description]
      */
-    public function download()
+    protected function _download()
     {
         // Set the headers
         $this->_setHeaders(array(

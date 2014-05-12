@@ -4,7 +4,7 @@
 
 A new file can be created using the `create` method with the filename as first paramater.
 
-    Excel::create('Filename')
+    Excel::create('Filename');
 
 To manipulate the creation of the file you can use the callback
 
@@ -20,14 +20,16 @@ There are a couple of properties we can change inside the closure. Most of them 
 
     Excel::create('Filename', function($excel) {
 
+        // Set the title
+        $excel->setTitle('Our new awesome title');
+
         // Chain the setters
         $excel->setCreator('Maatwebsite')
-             ->setCompany('Maatwebsite')
+              ->setCompany('Maatwebsite');
 
         // Call them seperatly
         $excel->setDescription('A demonstration to change the file properties');
 
     });
 
-Go to the reference guide to see a list of available properties.
-
+> Go to the reference guide to see a list of available properties.

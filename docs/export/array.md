@@ -1,4 +1,4 @@
-# Creating a file from an array
+# Creating a sheet from an array
 
 To create a new file from an array use `->fromArray()` inside the sheet closure:
 
@@ -14,3 +14,10 @@ To create a new file from an array use `->fromArray()` inside the sheet closure:
         });
 
     })->export('xls');
+
+Alternativly you can use `->with()`
+
+    $sheet->with(array(
+        array('data1', 'data2'),
+        array('data3', 'data4')
+    ));
