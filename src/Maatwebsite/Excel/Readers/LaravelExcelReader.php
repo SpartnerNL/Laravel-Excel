@@ -257,18 +257,18 @@ class LaravelExcelReader {
      * Return all sheets/rows
      * @return [type] [description]
      */
-    public function all()
+    public function all($columns = array())
     {
-        return $this->get();
+        return $this->get($columns);
     }
 
     /**
      * Get first row/sheet only
      * @return [type] [description]
      */
-    public function first()
+    public function first($columns = array())
     {
-        return $this->take(1)->get()->first();
+        return $this->take(1)->get($columns)->first();
     }
 
     /**
@@ -468,6 +468,7 @@ class LaravelExcelReader {
 
     /**
      * Set the delimiter
+     * Calling this after the ->load() will have no effect
      */
     public function setDelimiter($delimiter)
     {

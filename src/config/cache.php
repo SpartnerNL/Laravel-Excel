@@ -20,7 +20,7 @@ return array(
     | memory|gzip|serialized|igbinary|discISAM|apc|memcache|temp|wincache|sqlite|sqlite3
     |
     */
-    'driver'    =>     'discISAM',
+    'driver'    =>     'memory',
 
     /*
     |--------------------------------------------------------------------------
