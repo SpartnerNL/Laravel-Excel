@@ -39,6 +39,12 @@ class LaravelExcelReader {
     public $file;
 
     /**
+     * Selected columns
+     * @var array
+     */
+    public $columns = array();
+
+    /**
      * Spreadsheet title
      * @var [type]
      */
@@ -237,6 +243,17 @@ class LaravelExcelReader {
     }
 
     /**
+     * Select certain columns
+     * @param  array  $columns [description]
+     * @return [type]          [description]
+     */
+    public function select($columns = array())
+    {
+        $this->columns = array_merge($this->columns, $columns);
+        return $this;
+    }
+
+    /**
      * Return all sheets/rows
      * @return [type] [description]
      */
@@ -246,7 +263,7 @@ class LaravelExcelReader {
     }
 
     /**
-     * Get first row only
+     * Get first row/sheet only
      * @return [type] [description]
      */
     public function first()
@@ -567,6 +584,10 @@ class LaravelExcelReader {
      */
     protected function _parseFile($columns = array())
     {
+        // Merge the selected columns
+        $columns = array_merge($this->columns, $columns);
+
+        // Parse the file
         $parser = new ExcelParser($this);
         $this->parsed = $parser->parseFile($columns);
     }

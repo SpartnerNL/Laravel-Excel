@@ -102,7 +102,7 @@ class Excel
 
         // Do the callback
         if($callback instanceof Closure)
-            call_user_func($callback, $this->reader);
+            call_user_func($callback, $this->reader;
 
         // Return the reader object
         return $this->reader;
