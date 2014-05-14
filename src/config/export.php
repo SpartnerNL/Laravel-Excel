@@ -30,7 +30,7 @@ return array(
         |
         */
 
-        'path' => base_path('app/storage/exports'),
+        'path' => storage_path('exports'),
 
         /*
         |--------------------------------------------------------------------------

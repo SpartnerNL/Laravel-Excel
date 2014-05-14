@@ -60,7 +60,7 @@ class LaravelExcelWriter {
      * Path the file will be stored to
      * @var [type]
      */
-    public $storagePath = 'app/storage/uploads';
+    public $storagePath = 'exports';
 
     /**
      * Header Content-type
@@ -103,6 +103,7 @@ class LaravelExcelWriter {
     public function setTitle($title)
     {
         $this->title = $title;
+        return $this;
     }
 
     /**
@@ -409,12 +410,9 @@ class LaravelExcelWriter {
     protected function _setStoragePath($path = false)
     {
         // Get the default path
-        $path = $path ? $path : Config::get('excel::export.store.path', base_path($this->storagePath));
+        $path = $path ? $path : Config::get('excel::export.store.path', storage_path($this->storagePath));
 
-        if(!realpath($path))
-            $path = base_path($path);
-
-         // Trim of slashes, to makes sure we won't add them double
+        // Trim of slashes, to makes sure we won't add them double
         $this->storagePath = rtrim($path, '/');
 
         // Make sure the storage path exists
@@ -444,14 +442,16 @@ class LaravelExcelWriter {
         if(method_exists($this->excel, $method))
         {
             // Call the method from the excel object with the given params
-            return call_user_func_array(array($this->excel, $method), $params);
+            call_user_func_array(array($this->excel, $method), $params);
+            return $this;
         }
 
         // Call a php excel sheet method
         elseif(method_exists($this->excel->getActiveSheet(), $method))
         {
             // Call the method from the excel object with the given params
-            return call_user_func_array(array($this->excel->getActiveSheet(), $method), $params);
+            call_user_func_array(array($this->excel->getActiveSheet(), $method), $params);
+            return $this;
         }
 
         // If the dynamic call starts with "with", add the var to the data array
