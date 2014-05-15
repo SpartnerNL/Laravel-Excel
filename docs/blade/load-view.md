@@ -16,6 +16,22 @@ We can load a view for every sheet we create with `->loadView()`.
 
     });
 
+# Using different views for different sheets
+
+    Excel::create('New file', function($excel) {
+
+        $excel->sheet('First sheet', function($sheet) {
+
+            $sheet->loadView('view_first');
+        });
+
+        $excel->sheet('Second sheet', function($sheet) {
+
+            $sheet->loadView('view_second');
+        });
+
+    });
+
 # Sharing a view for all sheets
 
 We can share a view for all sheets with `shareView()`
