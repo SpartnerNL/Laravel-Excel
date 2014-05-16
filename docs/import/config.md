@@ -1,7 +1,7 @@
 # Import by Config
 
-When using advanced Excel files (e.g. without any heading columns), it can be complicated to import those.
-`->byConfig()` will help you handle with this problem.
+When using advanced Excel files (e.g. without any heading columns), it can be complicated to import these.
+`->byConfig()` will help you handle this problem.
 
 Inside `excel::import.sheets` config you can find an example.
 

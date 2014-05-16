@@ -2,7 +2,7 @@
 
 ### Import a folder
 
-To import an entire folder (only xls, xlsx and csv files will be used), set the folder as first parameter.
+To import an entire folder (only xls, xlsx and csv files will be imported), set the folder as the first parameter.
 
     Excel::batch('app/storage/uploads', function($rows, $file) {
 
