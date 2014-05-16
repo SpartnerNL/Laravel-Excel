@@ -1,6 +1,6 @@
 #Config
 
-Laravel Excel includes several config settings for import-, export-, view-, CSV-specific settings,
+Laravel Excel includes several config settings for import-, export-, view- and CSV-specific settings.
 Use the artisan publish command to publish the config file to your project.
 
     php artisan config:publish maatwebsite/excel
