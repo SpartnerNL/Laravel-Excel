@@ -2,13 +2,13 @@
 
 ### As parameter
 
-We can pass variable to the view by using the second parameter inside the `loadView()` method.
+We can pass variables to the view by using the second parameter inside the `loadView()` method.
 
 	$sheet->loadView('view', array('key' => 'value'));
 
 ### With with()
 
-Alternativly you can use the `with()` method which works the same as with Laravel views.
+Alternatively you can use the `with()` method which works the same as with Laravel views.
 
 	// Using normal with()
 	$sheet->loadView('view')

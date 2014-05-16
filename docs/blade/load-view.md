@@ -34,12 +34,12 @@ We can load a view for every sheet we create with `->loadView()`.
 
 # Sharing a view for all sheets
 
-We can share a view for all sheets with `shareView()`
+We can share a view for all sheets with `shareView()`.
 
     Excel::shareView('folder.view')->create();
 
 # Unsetting a view for a sheet
 
-When we are using a the share view, but we don't want to use a view for the current sheet, we can use `->unsetView()`
+When we are using a shared view, but we don't want to use a view for the current sheet, we can use `->unsetView()`.
 
     $sheet->unsetView();
