@@ -2,12 +2,7 @@
 
 [<img src="http://www.maatwebsite.nl/img/excel_banner.jpg"/>](http://www.maatwebsite.nl/laravel-excel/docs)
 
-[![Build Status](https://travis-ci.org/Maatwebsite/laravel4-PHPExcel.svg?branch=develop)](https://travis-ci.org/Maatwebsite/laravel4-PHPExcel)
-[![Latest Stable Version](https://poser.pugx.org/maatwebsite/excel/v/stable.png)](https://packagist.org/packages/maatwebsite/excel) [![Total Downloads](https://poser.pugx.org/maatwebsite/excel/downloads.png)](https://packagist.org/packages/maatwebsite/excel)  [![License](https://poser.pugx.org/maatwebsite/excel/license.png)](https://packagist.org/packages/maatwebsite/excel)
-[![Monthly Downloads](https://poser.pugx.org/maatwebsite/excel/d/monthly.png)](https://packagist.org/packages/maatwebsite/excel)
-[![Daily Downloads](https://poser.pugx.org/maatwebsite/excel/d/daily.png)](https://packagist.org/packages/maatwebsite/excel)
-
-#### Laravel Excel brings the power of PHPOffice's PHPExcel to Laravel 4 with a touch of the Laravel Magic: 
+#### Laravel Excel brings the power of PHPExcel to Laravel 4 with a touch of the Laravel Magic: 
 
 - Import into Laravel **Collections**
 - Export **Blade views** to Excel and CSV
@@ -29,6 +24,13 @@ Excel::create('Laravel Excel', function($excel) {
   
 })->export('xls');
 ```
+
+---
+
+[![Build Status](https://travis-ci.org/Maatwebsite/laravel4-PHPExcel.svg?branch=develop)](https://travis-ci.org/Maatwebsite/laravel4-PHPExcel)
+[![Latest Stable Version](https://poser.pugx.org/maatwebsite/excel/v/stable.png)](https://packagist.org/packages/maatwebsite/excel) [![Total Downloads](https://poser.pugx.org/maatwebsite/excel/downloads.png)](https://packagist.org/packages/maatwebsite/excel)  [![License](https://poser.pugx.org/maatwebsite/excel/license.png)](https://packagist.org/packages/maatwebsite/excel)
+[![Monthly Downloads](https://poser.pugx.org/maatwebsite/excel/d/monthly.png)](https://packagist.org/packages/maatwebsite/excel)
+[![Daily Downloads](https://poser.pugx.org/maatwebsite/excel/d/daily.png)](https://packagist.org/packages/maatwebsite/excel)
 
 #Installation
 
