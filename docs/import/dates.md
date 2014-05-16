@@ -1,8 +1,8 @@
 # Dates
 
-By default the dates will be parsed as a **Carbon object**. You can disable date formatting completly insides `import.php` inside `dates.enabled`.
+By default the dates will be parsed as a **[Carbon object](https://github.com/briannesbitt/Carbon)**. You can disable date formatting completly inside `import.php` by setting `dates.enabled` to `false`.
 
-To enable/disable date formatting per import, use `->formatDates($booleaan, $format)`
+To enable/disable date formatting for a single import, use `->formatDates($boolean, $format)`
 
     // Format the dates
     $reader->formatDates(true);
@@ -15,7 +15,7 @@ To enable/disable date formatting per import, use `->formatDates($booleaan, $for
 
 ### Format dates
 
-By default the dates are **not formatted**, but a Carbon object. There are a couple of options to format them.
+By default the dates are **not formatted**, but returned as a Carbon object. There are a couple of options to format them.
 
 #### Formatting results after ->get()
 
