@@ -10,14 +10,12 @@
 Laravel Excel brings the power of PHPOffice's PHPExcel to Laravel 4 with a touch of the Laravel Magic: import files to collections, export views to Excel, ...
 
 ```php
-  Excel::create('Laravel Excel', function($excel) {
-
-    $excel->sheet('Excel sheet', function($sheet) {
-
-            $sheet->setOrientation('landscape');
-
-        });
-
+  Excel::create('Laravel Excel', function($excel)
+  {
+      $excel->sheet('Excel sheet', function($sheet)
+      {
+          $sheet->setOrientation('landscape');
+      });
     })->export('xls');
 ```
 
@@ -53,10 +51,12 @@ The complete documentation can be found at: [http://www.maatwebsite.nl/laravel-e
 
 # Features
 
-- Import into Laravel Collections
-- Export Blade views to Excel and CSV
-- Batch imports
-- Advanced import by config files
+- Import into Laravel **Collections**
+- Export **Blade views** to Excel and CSV
+- **Batch** imports
+- A lot of optional **config settings**
+- Easy **cell caching**
+- **Advanced import** by config files
 - and many more...
 
 
