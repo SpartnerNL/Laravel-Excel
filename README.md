@@ -1,4 +1,4 @@
-## Laravel 4 Wrapper for PHPExcel v0.4.0 - DEV
+## Laravel 4 Wrapper for PHPExcel v1.0.0-RC
 
 [![Build Status](https://travis-ci.org/Maatwebsite/laravel4-PHPExcel.svg?branch=develop)](https://travis-ci.org/Maatwebsite/laravel4-PHPExcel)
 [![Latest Stable Version](https://poser.pugx.org/maatwebsite/excel/v/stable.png)](https://packagist.org/packages/maatwebsite/excel) [![Total Downloads](https://poser.pugx.org/maatwebsite/excel/downloads.png)](https://packagist.org/packages/maatwebsite/excel)  [![License](https://poser.pugx.org/maatwebsite/excel/license.png)](https://packagist.org/packages/maatwebsite/excel)
