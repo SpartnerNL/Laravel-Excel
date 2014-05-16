@@ -7,7 +7,7 @@
 [![Monthly Downloads](https://poser.pugx.org/maatwebsite/excel/d/monthly.png)](https://packagist.org/packages/maatwebsite/excel)
 [![Daily Downloads](https://poser.pugx.org/maatwebsite/excel/d/daily.png)](https://packagist.org/packages/maatwebsite/excel)
 
-##### Laravel Excel brings the power of PHPOffice's PHPExcel to Laravel 4 with a touch of the Laravel Magic: 
+#### Laravel Excel brings the power of PHPOffice's PHPExcel to Laravel 4 with a touch of the Laravel Magic: 
 
 - Import into Laravel **Collections**
 - Export **Blade views** to Excel and CSV
@@ -21,9 +21,12 @@
 ```php
 Excel::create('Laravel Excel', function($excel) {
 
-  $excel->sheet('Excel sheet', function($sheet) {
-    $sheet->setOrientation('landscape');
-  });
+    $excel->sheet('Excel sheet', function($sheet) {
+  
+        $sheet->setOrientation('landscape');
+    
+    });
+  
 })->export('xls');
 ```
 
