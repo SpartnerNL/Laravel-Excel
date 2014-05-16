@@ -1,6 +1,6 @@
 # Creating a sheet from an array
 
-To create a new file from an array use `->fromArray()` inside the sheet closure:
+To create a new file from an array use `->fromArray()` inside the sheet closure.
 
     Excel::create('Filename', function($excel) {
 
@@ -15,7 +15,7 @@ To create a new file from an array use `->fromArray()` inside the sheet closure:
 
     })->export('xls');
 
-Alternativly you can use `->with()`
+Alternatively you can use `->with()`.
 
     $sheet->with(array(
         array('data1', 'data2'),

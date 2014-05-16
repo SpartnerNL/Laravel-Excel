@@ -1,4 +1,4 @@
-# Calling PHPExcel native methods
+# Calling PHPExcel's native methods
 
 It's possible to call all native PHPExcel methods on the `$excel` and `$sheet` objects.
 

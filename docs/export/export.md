@@ -1,6 +1,6 @@
 # Exporting
 
-To download the created file, use `->export($ext)` or `->download($ext)`
+To download the created file, use `->export($ext)` or `->download($ext)`.
 
 #### Export to Excel5 (xls)
 

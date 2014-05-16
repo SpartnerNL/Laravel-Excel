@@ -10,7 +10,7 @@ To change the font for the current sheet use `->setFont($array)`:
         'bold'       => true
     ));
 
-#### Seperate setters
+#### Separate setters
 
     // Font family
     $sheet->setFontFamily('Comic Sans MS');
