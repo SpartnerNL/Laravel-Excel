@@ -2,7 +2,7 @@
 
 [<img src="http://www.maatwebsite.nl/img/excel_banner.jpg"/>](http://www.maatwebsite.nl/laravel-excel/docs)
 
-#### Laravel Excel brings the power of PHPExcel to Laravel 4 with a touch of the Laravel Magic: 
+#### LaravelExcel brings the power of PHPExcel to Laravel with a touch of the Laravel Magic: 
 
 - Import into Laravel **Collections**
 - Export **Blade views** to Excel and CSV
