@@ -2,7 +2,7 @@
 
 [<img src="http://www.maatwebsite.nl/img/excel_banner.jpg"/>](http://www.maatwebsite.nl/laravel-excel/docs)
 
-#### Maatwebsite's Laravel Excel brings the power of PHPOffice's PHPExcel to Laravel 4.* with a touch of the Laravel Magic. 
+Laravel Excel brings the power of PHPOffice's PHPExcel to Laravel 4.* with a touch of the Laravel Magic, to import Excel and CSV to collections, to export models, array's and views to Excel, to import batches of files and to import a file by a config file.
 
 - Import into Laravel **Collections**
 - Export **Blade views** to Excel and CSV
