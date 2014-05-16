@@ -1,8 +1,8 @@
 # Handling imported results
 
-### Getting als sheets and rows
+### Getting all sheets and rows
 
-After you have loaded a file, you can `->get()` the results:
+After you have loaded a file, you can `->get()` the results like so:
 
     Excel::load('file.xls', function($reader) {
 
@@ -20,7 +20,7 @@ or
 
     });
 
-> The `->get()` and `->all()` method will return a sheet- or row collection, depending on the amount of sheets the file has. You can disable this feature inside `import.php` config by settings `'force_sheets_collection'` to `true`. When set to true it will always return a sheet collection.
+> The `->get()` and `->all()` methods will return a sheet or row collection, depending on the amount of sheets the file has. You can disable this feature inside the `import.php` config by setting `'force_sheets_collection'` to `true`. When set to true it will always return a sheet collection.
 
 ### Collections
 
@@ -53,13 +53,13 @@ When you want to get an array instead of an object, you can use `->toArray()`.
 
     $reader->toArray();
 
-When you want an object, you can alternativly (instead of get() or all()) use `->toObject()`
+When you want an object, you can alternativly (instead of get() or all()) use `->toObject()`.
 
     $reader->toObject();
 
 ### Displaying results
 
-You can dump the results to a readable output by using `->dump()` or `->dd()`
+You can dump the results to a readable output by using `->dump()` or `->dd()`.
 
     // Dump the results
     $reader->dump();
@@ -69,7 +69,7 @@ You can dump the results to a readable output by using `->dump()` or `->dd()`
 
 ### Iterating the results
 
-You can iterate the results by using `->each()`
+You can iterate the results by using `->each()`.
 
     // Loop through all sheets
     $reader->each(function($sheet) {
@@ -81,4 +81,4 @@ You can iterate the results by using `->each()`
 
     });
 
-> A simple foreach will work as well of course
+> Alternatively you can also `foreach` the results.
