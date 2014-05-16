@@ -4,6 +4,8 @@
 [![Monthly Downloads](https://poser.pugx.org/maatwebsite/excel/d/monthly.png)](https://packagist.org/packages/maatwebsite/excel)
 [![Daily Downloads](https://poser.pugx.org/maatwebsite/excel/d/daily.png)](https://packagist.org/packages/maatwebsite/excel)
 
+> Laravel Excel **1.0.0** is coming this weekend!
+
 #New to v0.3.x
 - Possibility to call **all native PHPExcel methods**
 - seperator config value for label formatting (default is `-`)
