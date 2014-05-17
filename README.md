@@ -46,13 +46,13 @@ After updating composer, add the ServiceProvider to the providers array in `app/
 'Maatwebsite\Excel\ExcelServiceProvider',
 ```
 
-You can use the facade for shorter code. Add this to your aliasses:
+You can use the facade for shorter code. Add this to your aliases:
 
 ```php
 'Excel' => 'Maatwebsite\Excel\Facades\Excel',
 ```
 
-The class is binded to the ioC as `excel`
+The class is bound to the ioC as `excel`
 
 ```php
 $excel = App::make('excel');
