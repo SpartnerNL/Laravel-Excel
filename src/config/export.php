@@ -37,7 +37,7 @@ return array(
         | Return info
         |--------------------------------------------------------------------------
         |
-        | Wether we want to return information about the stored file or not
+        | Whether we want to return information about the stored file or not
         |
         */
 

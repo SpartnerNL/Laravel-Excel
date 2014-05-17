@@ -75,7 +75,7 @@ class LaravelExcelReader {
     public $parsed;
 
     /**
-     * Delimtier
+     * Delimiter
      * @var [type]
      */
     public $delimiter;
@@ -555,7 +555,7 @@ class LaravelExcelReader {
     }
 
     /**
-     * Check if we need to ingore the empty cells
+     * Check if we need to ignore the empty cells
      * @return [type] [description]
      */
     public function needsIgnoreEmpty()
