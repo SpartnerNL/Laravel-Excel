@@ -97,7 +97,7 @@ class Cache {
                 // Add extra memcache settings
                 $this->settings = array_merge($this->settings, array(
                     'memcacheServer'    => Config::get($this->configName . '.memcache.host', 'localhost'),
-                    'memcachePort'    => Config::get($this->configName . '.memcache.port', 11211)
+                    'memcachePort'      => Config::get($this->configName . '.memcache.port', 11211)
                 ));
 
                 break;

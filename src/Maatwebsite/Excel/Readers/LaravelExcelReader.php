@@ -242,6 +242,8 @@ class LaravelExcelReader {
         return $this->take($amount);
     }
 
+    // TODO: make a ->skip() method
+
     /**
      * Select certain columns
      * @param  array  $columns [description]

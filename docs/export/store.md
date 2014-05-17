@@ -28,13 +28,12 @@ If you want to return storage information, set the third paramter to true or cha
 
     ->store('xls', false, true);
 
-    // Will return
-    return array(
-        'full',
-        'path',
-        'file',
-        'title',
-        'ext'
-    );
+|Key|Explanation|
+|---|-----------|
+|**full**| Full path with filename
+|**path**| Path without filename
+|**file**| Filename
+|**title**| File title
+|**ext**| File extension
 
 > Make sure your storage folder is **writable**!

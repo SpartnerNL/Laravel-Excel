@@ -3,6 +3,7 @@
 use \Config;
 use \Response;
 use Carbon\Carbon;
+use \PHPExcel_IOFactory;
 use Illuminate\Filesystem\Filesystem;
 use Maatwebsite\Excel\Classes\LaravelExcelWorksheet;
 use Maatwebsite\Excel\Exceptions\LaravelExcelException;
@@ -377,7 +378,7 @@ class LaravelExcelWriter {
      */
     protected function _setWriter()
     {
-        $this->writer = \PHPExcel_IOFactory::createWriter($this->excel, $this->format);
+        $this->writer = PHPExcel_IOFactory::createWriter($this->excel, $this->format);
 
         // Set CSV delimiter
         if($this->format == 'CSV')
@@ -437,7 +438,6 @@ class LaravelExcelWriter {
      */
     public function __call($method, $params)
     {
-
         // Call a php excel method
         if(method_exists($this->excel, $method))
         {
@@ -462,9 +462,5 @@ class LaravelExcelWriter {
         }
 
         throw new LaravelExcelException('[ERROR] Writer method ['. $method .'] does not exist.');
-
     }
-
-
-
 }
