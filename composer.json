@@ -1,12 +1,12 @@
 {
     "name": "maatwebsite/excel",
-    "description": "Laravel wrapper for PHP Excel",
+    "description": "An eloquent way of importing and exporting CSV in Laravel 4 with the power of PHPExcel",
     "license": "LGPL",
-    "keywords": ["laravel", "phpexcel", "excel"],
+    "keywords": ["laravel", "phpexcel", "excel", "csv", "export", "import", "batch"],
     "authors": [
         {
             "name": "Maatwebsite.nl",
-            "email": "info@maatwebsite.nl"
+            "email": "patrick@maatwebsite.nl"
         }
     ],
     "require": {
@@ -16,12 +16,16 @@
         "illuminate/filesystem": "4.x",
         "phpoffice/phpexcel": "1.8.*"
     },
+    "require-dev": {
+        "mockery/mockery": "0.9.*",
+        "phpunit/phpunit": "4.0.*"
+    },
     "autoload": {
         "classmap": [
-            "src/Maatwebsite/Excel/Readers"
+            "src/Maatwebsite/Excel"
         ],
         "psr-0": {
-            "Maatwebsite\\Excel": "src/"
+            "Maatwebsite\\Excel\\": "src/"
         }
     },
     "minimum-stability": "stable"

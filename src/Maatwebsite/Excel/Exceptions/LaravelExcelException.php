@@ -1,10 +1,10 @@
-<?php namespace Maatwebsite\Excel\Facades;
+<?php namespace Maatwebsite\Excel\Exceptions;
 
-use Illuminate\Support\Facades\Facade;
+use \PHPExcel_Exception;
 
 /**
  *
- * LaravelExcel Facade
+ * LaravelExcel Exception
  *
  * @category   Laravel Excel
  * @version    1.0.0
@@ -13,15 +13,4 @@ use Illuminate\Support\Facades\Facade;
  * @author     Maatwebsite <info@maatwebsite.nl>
  * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
  */
-class Excel extends Facade {
-
-    /**
-     * Return facade accessor
-     * @return [type] [description]
-     */
-	protected static function getFacadeAccessor()
-	{
-		return 'excel';
-	}
-
-}
+class LaravelExcelException extends PHPExcel_Exception {}

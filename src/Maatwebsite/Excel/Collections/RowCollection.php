@@ -1,10 +1,8 @@
-<?php namespace Maatwebsite\Excel\Facades;
-
-use Illuminate\Support\Facades\Facade;
+<?php namespace Maatwebsite\Excel\Collections;
 
 /**
  *
- * LaravelExcel Facade
+ * LaravelExcel RowCollection
  *
  * @category   Laravel Excel
  * @version    1.0.0
@@ -13,15 +11,4 @@ use Illuminate\Support\Facades\Facade;
  * @author     Maatwebsite <info@maatwebsite.nl>
  * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
  */
-class Excel extends Facade {
-
-    /**
-     * Return facade accessor
-     * @return [type] [description]
-     */
-	protected static function getFacadeAccessor()
-	{
-		return 'excel';
-	}
-
-}
+class RowCollection extends ExcelCollection {}
