@@ -901,6 +901,7 @@ class Html extends PHPExcel_Reader_HTML
 
             // BACKGROUND
             case 'background':
+            case 'background-color':
                 $value = $this->getColor($value);
 
                 $cells->applyFromArray(

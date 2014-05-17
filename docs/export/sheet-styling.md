@@ -1,5 +1,18 @@
 # Sheet styling
 
+### General styling
+
+If you want to change the general styling of your sheet (not cell or range specific), you can use the `->setStyle()` method.
+
+    // Set font with ->setStyle()`
+    $sheet->setStyle(array(
+        'font' => array(
+            'name'      =>  'Calibri',
+            'size'      =>  15,
+            'bold'      =>  true
+        )
+    ));
+
 ### Fonts
 
 To change the font for the current sheet use `->setFont($array)`:
@@ -20,8 +33,6 @@ To change the font for the current sheet use `->setFont($array)`:
 
     // Font bold
     $sheet->setFontBold(true);
-
-> Go to the reference guide to see a list of available font stylings.
 
 ### Borders
 

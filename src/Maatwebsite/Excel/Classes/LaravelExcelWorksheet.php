@@ -278,7 +278,7 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet
     public function setStyle($styles)
     {
         $this->getDefaultStyle()->applyFromArray($styles);
-        return $This;
+        return $this;
     }
 
     /**
