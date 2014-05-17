@@ -13,7 +13,7 @@ use Maatwebsite\Excel\Parsers\ViewParser;
 
 /**
  *
- * LaravelExcel Excek ServiceProvider
+ * LaravelExcel Excel ServiceProvider
  *
  * @category   Laravel Excel
  * @version    1.0.0

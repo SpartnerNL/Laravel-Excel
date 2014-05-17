@@ -66,7 +66,7 @@ class Excel
             'title' => $title
         ));
 
-        // Disconnect worksheets to prevent unnecessary onces
+        // Disconnect worksheets to prevent unnecessary ones
         $this->excel->disconnectWorksheets();
 
         // Inject our excel object

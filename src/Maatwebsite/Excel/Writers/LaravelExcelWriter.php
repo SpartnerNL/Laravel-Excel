@@ -225,8 +225,6 @@ class LaravelExcelWriter {
 
             'Content-Type'          => $this->contentType,
             'Content-Disposition'   => 'attachment; filename="' . $this->title . '.' . $this->ext . '"',
-            'Cache-Control'         => 'max-age=0',
-            'Cache-Control'         => 'max-age=1',
             'Expires'               => 'Mon, 26 Jul 1997 05:00:00 GMT', // Date in the past
             'Last-Modified'         =>  Carbon::now()->format('D, d M Y H:i:s'),
             'Cache-Control'         => 'cache, must-revalidate',

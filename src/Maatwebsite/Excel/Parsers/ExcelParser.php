@@ -332,7 +332,7 @@ class ExcelParser {
             return $value;
 
         // Encode
-        return iconv($input, $ouput, $value);
+        return iconv($input, $output, $value);
     }
 
     /**
@@ -432,7 +432,7 @@ class ExcelParser {
      */
     protected function hasSelectedColumns()
     {
-        return !empty($this->getSelectedColumns());
+        return !empty($this->columns);
     }
 
     /**
