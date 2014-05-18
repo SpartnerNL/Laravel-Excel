@@ -375,13 +375,13 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet
             // Set width for each column
             foreach($column as $subColumn => $subValue)
             {
-                return $this->setWidth($subColumn, $subValue);
+                $this->setWidth($subColumn, $subValue);
             }
         }
         else
         {
-            // Set column width
-            $this->getColumnDimension($column)->setWidth($value);
+            // Disable the autosize and set column width
+            $this->getColumnDimension($column)->setAutoSize(false)->setWidth($value);
         }
 
         return $this;
@@ -392,7 +392,7 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet
      * @param [type]  $row   [description]
      * @param boolean $value [description]
      */
-    public function setHeight($row, $value = false)
+    public function setHeight($row, $valu§e = false)
     {
         // if is array of columns
         if(is_array($row))
@@ -400,7 +400,7 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet
             // Set width for each column
             foreach($row as $subRow => $subValue)
             {
-                return $this->setHeight($subRow, $subValue);
+                $this->setHeight($subRow, $subValue);
             }
         }
         else
@@ -425,7 +425,7 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet
             // Set width for each column
             foreach($cell as $subCell => $sizes)
             {
-                return $this->setSize($subCell, reset($sizes), end($sizes));
+                $this->setSize($subCell, reset($sizes), end($sizes));
             }
         }
         else
