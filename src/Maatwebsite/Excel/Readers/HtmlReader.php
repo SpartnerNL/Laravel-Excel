@@ -194,7 +194,7 @@ class Html extends PHPExcel_Reader_HTML
     }
 
     /**
-     * Proccess the dom element
+     * Process the dom element
      * @param  DOMNode $element     [description]
      * @param  [type]  $sheet       [description]
      * @param  [type]  $row         [description]
@@ -600,7 +600,7 @@ class Html extends PHPExcel_Reader_HTML
     }
 
     /**
-     * Get the table start clumn
+     * Get the table start column
      * @return [type] [description]
      */
     private function _getTableStartColumn()
