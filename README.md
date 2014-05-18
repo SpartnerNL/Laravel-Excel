@@ -1,4 +1,4 @@
-## Laravel Excel v1.0.0
+## Laravel Excel v1.0.1
 
 [<img src="http://www.maatwebsite.nl/img/excel_banner.jpg"/>](http://www.maatwebsite.nl/laravel-excel/docs)
 
@@ -17,11 +17,11 @@ Laravel Excel brings the power of PHPOffice's PHPExcel to Laravel 4.* with a tou
 Excel::create('Laravel Excel', function($excel) {
 
     $excel->sheet('Excel sheet', function($sheet) {
-  
+
         $sheet->setOrientation('landscape');
-    
+
     });
-  
+
 })->export('xls');
 ```
 
