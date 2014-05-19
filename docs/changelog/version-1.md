@@ -1,5 +1,10 @@
 # Version 1
 
+### 1.0.2.1
+
+- Composer.json enhancements
+- Documentation fixes
+
 ### 1.0.2
 
 - Cell Collection fixes
