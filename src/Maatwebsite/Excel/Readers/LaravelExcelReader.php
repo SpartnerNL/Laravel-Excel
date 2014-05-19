@@ -163,10 +163,10 @@ class LaravelExcelReader {
      * @param  string  $inputEncoding   [description]
      * @return [type]                   [description]
      */
-    public function load($file)
+    public function load($file, $encoding = false)
     {
         // init the loading
-        $this->_init($file);
+        $this->_init($file, $encoding);
 
         // Only fetch selected sheets if necessary
         if($this->sheetsSelected())
@@ -359,14 +359,15 @@ class LaravelExcelReader {
      * @param  [type] $inputEncoding   [description]
      * @return [type]                  [description]
      */
-    protected function _init($file)
+    protected function _init($file, $encoding = false)
     {
         // Set the extension
         $this->_setFile($file)
               ->setExtension()
               ->setTitle()
               ->_setFormat()
-              ->_setReader();
+              ->_setReader()
+              ->_setInputEncoding($encoding);
     }
 
     /**
@@ -607,6 +608,22 @@ class LaravelExcelReader {
     }
 
     /**
+     * Set the input encoding
+     * @param boolean $encoding [description]
+     */
+    protected function _setInputEncoding($encoding = false)
+    {
+        if($this->format == 'CSV')
+        {
+            // If no encoding was given, use the config value
+            $encoding = $encoding ? $encoding : Config::get('excel::import.encoding.input', 'UTF-8');
+            $this->reader->setInputEncoding($encoding);
+        }
+
+        return $this;
+    }
+
+    /**
      * Set reader defaults
      */
     protected function _setReaderDefaults()
@@ -615,7 +632,6 @@ class LaravelExcelReader {
         if($this->format == 'CSV')
         {
             $this->reader->setDelimiter(Config::get('excel::csv.delimiter', ','));
-            $this->reader->setInputEncoding(Config::get('excel::import.encoding.input', 'UTF-8'));
             $this->reader->setEnclosure(Config::get('excel::csv.enclosure', ''));
             $this->reader->setLineEnding(Config::get('excel::csv.line_ending', "\r\n"));
         }

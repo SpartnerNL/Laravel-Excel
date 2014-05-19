@@ -92,13 +92,16 @@ class Excel
      *  @return $this
      *
      */
-    public function load($file, $callback = false)
+    public function load($file, $callback = false, $encoding = false)
     {
         // Inject excel object
         $this->reader->injectExcel($this->excel);
 
+        // Set the encoding
+        $encoding = is_string($callback) ? $callback : $encoding;
+
         // Start loading
-        $this->reader->load($file);
+        $this->reader->load($file, $encoding);
 
         // Do the callback
         if($callback instanceof Closure)
