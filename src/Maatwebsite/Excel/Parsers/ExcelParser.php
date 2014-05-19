@@ -254,7 +254,7 @@ class ExcelParser {
         foreach ($cellIterator as $this->cell) {
 
             // Check how we need to save the parsed array
-            $index = ($this->reader->hasHeading() && $this->indices[$i]) ? $this->indices[$i] : $this->getIndexFromColumn();
+            $index = ($this->reader->hasHeading() && isset($this->indices[$i])) ? $this->indices[$i] : $this->getIndexFromColumn();
 
             // Check if we want to select this column
             if($this->cellNeedsParsing($index) )
