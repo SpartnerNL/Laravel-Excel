@@ -32,7 +32,7 @@ Inside the `import.php` config you can change the input encoding. In most cases 
 Optionally you can pass the input encoding inside the `->load()` method.
 
     // When utilising a closure, you can pass the input encoding as third parameter.
-    Excel::load('filename.csv', function($reader), {
+    Excel::load('filename.csv', function($reader) {
 
     }, 'UTF-8');
 

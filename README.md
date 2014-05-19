@@ -1,4 +1,4 @@
-## Laravel Excel v1.0.2
+## Laravel Excel v1.0.2.1
 
 [<img src="http://www.maatwebsite.nl/img/excel_banner.jpg"/>](http://www.maatwebsite.nl/laravel-excel/docs)
 
@@ -63,6 +63,11 @@ $excel = App::make('excel');
 
 The complete documentation can be found at: [http://www.maatwebsite.nl/laravel-excel/docs](http://www.maatwebsite.nl/laravel-excel/docs)
 
+# Contributing
+
+**ALL** bug fixes should be made to the `dev-develop` branch. Bug fixes should never be sent to the `master` branch.
+
+More about contributing can be found at: [http://www.maatwebsite.nl/laravel-excel/docs/getting-started#contributing](http://www.maatwebsite.nl/laravel-excel/docs/getting-started#contributing)
 
 # License
 
