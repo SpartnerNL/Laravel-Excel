@@ -11,14 +11,14 @@
     ],
     "require": {
         "php": ">=5.3.0",
-        "illuminate/support": "4.x",
-        "illuminate/config": "4.x",
-        "illuminate/filesystem": "4.x",
-        "phpoffice/phpexcel": "1.8.*"
+        "illuminate/support": "~4.0",
+        "illuminate/config": "~4.0",
+        "illuminate/filesystem": "~4.0",
+        "phpoffice/phpexcel": "~1.8.0"
     },
     "require-dev": {
-        "mockery/mockery": "0.9.*",
-        "phpunit/phpunit": "4.0.*"
+        "mockery/mockery": "~0.9.1",
+        "phpunit/phpunit": "~4.0"
     },
     "autoload": {
         "classmap": [
@@ -27,6 +27,5 @@
         "psr-0": {
             "Maatwebsite\\Excel\\": "src/"
         }
-    },
-    "minimum-stability": "stable"
+    }
 }
