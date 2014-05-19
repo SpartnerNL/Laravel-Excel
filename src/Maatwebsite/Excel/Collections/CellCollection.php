@@ -44,19 +44,20 @@ class CellCollection extends ExcelCollection {
     {
         foreach($items as $name => $value)
         {
-            $this->setItem($name, $value);
+            if($name)
+                $this->put($name, $value ? $value : null);
         }
     }
 
     /**
-     * Set the item
-     * @param [type] $name  [description]
-     * @param [type] $value [description]
+     * Dynamically get values
+     * @param  [type] $key [description]
+     * @return [type]      [description]
      */
-    public function setItem($name, $value)
+    public function __get($key)
     {
-        if($name)
-            $this->{$name} = $value ? $value : null;
+        if($this->has($key))
+            return $this->get($key);
     }
 
 }
