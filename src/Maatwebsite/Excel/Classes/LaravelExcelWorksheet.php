@@ -78,6 +78,18 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet
     );
 
     /**
+     * Dynamically autosized
+     * @var boolean
+     */
+    public $autoSize = false;
+
+    /**
+     * Check if the file was autosized
+     * @var boolean
+     */
+    public $wasAutoSized = false;
+
+    /**
      * Create a new worksheet
      *
      * @param PHPExcel        $pParent
@@ -451,6 +463,9 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet
      */
     public function setAutoSize($columns = false)
     {
+        // Remember that the sheet was autosized
+        $this->wasAutoSized = true;
+
         // Set autosize to true
         $this->autoSize = $columns ? $columns : false;
 
@@ -486,10 +501,19 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet
      */
     public function getAutosize()
     {
-        if(isset($this->autoSize))
+        if($this->autoSize)
             return $this->autoSize;
 
         return Config::get('excel::export.autosize', true);
+    }
+
+    /**
+     * Check if the sheet was auto sized dynamically
+     * @return [type] [description]
+     */
+    public function wasAutoSized()
+    {
+        return $this->wasAutoSized ? true : false;
     }
 
     /**
