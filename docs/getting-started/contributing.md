@@ -2,7 +2,7 @@
 
 ### Bug fixes
 
-**ALL** bug fixes should be made to the `dev-develop` branch where they belong. Bug fixes should never be sent to the `master` branch.
+**ALL** bug fixes should be made to the `dev-develop` branch. Bug fixes should never be sent to the `master` branch.
 
 ### Pull Requests
 
