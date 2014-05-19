@@ -1,5 +1,11 @@
 # Version 1
 
+### 1.0.2
+
+- Cell Collection fixes
+- Default autosizing bugfixes
+- Documentation fixes
+
 ### 1.0.1
 
 - Column width and row height bugfix
