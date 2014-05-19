@@ -3,6 +3,9 @@
 ### 1.1.0
 
 - Skiping / limiting results
+- Manipluate cells and cells ranges with `$sheet->cells()`
+- Set cell background color
+- Set cell font (color, ...)
 
 ### 1.0.3
 

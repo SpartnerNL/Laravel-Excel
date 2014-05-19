@@ -1,7 +1,9 @@
 <?php namespace Maatwebsite\Excel\Classes;
 
+use \Closure;
 use \Config;
 use \PHPExcel_Worksheet;
+use Maatwebsite\Excel\Writers\CellWriter;
 use Maatwebsite\Excel\Exceptions\LaravelExcelException;
 
 /**
@@ -121,6 +123,22 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet
             if(!is_null($value))
                 call_user_func_array(array($pageSetup, $setter), array($value));
         }
+    }
+
+    /**
+     * Init the cells
+     * @return [type] [description]
+     */
+    public function cells($cells, $callback = false)
+    {
+        // Init the cell writer
+        $cells = new CellWriter($cells, $this);
+
+        // Do the callback
+        if($callback instanceof Closure)
+            call_user_func($callback, $cells);
+
+        return $cells;
     }
 
     /**
