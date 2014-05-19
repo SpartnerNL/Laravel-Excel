@@ -29,6 +29,16 @@ To change the default behaviour, you can change `'ignoreEmpty`' inside `import.p
 
 Inside the `import.php` config you can change the input encoding. In most cases **UTF-8** will be the best solution. Hower if you dump your results make sure your HTML page has this exact same meta charset!
 
+Optionally you can pass the input encoding inside the `->load()` method.
+
+    // When utilising a closure, you can pass the input encoding as third parameter.
+    Excel::load('filename.csv', function($reader), {
+
+    }, 'UTF-8');
+
+    // or without a closure, you can use it as second parameter.
+    Excel::load('filename.csv', 'UTF-8');
+
 ### CSV Settings
 
 Inside the `csv.php` config you can change the default settings, like the `delimiter`, the `enclosure` and the `line_ending`.

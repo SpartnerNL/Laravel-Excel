@@ -4,6 +4,7 @@
 
 - Cell Collection fixes
 - Default autosizing bugfixes
+- ->load() accepts input encoding parameter
 - Documentation fixes
 
 ### 1.0.1
