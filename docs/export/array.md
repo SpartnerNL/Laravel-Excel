@@ -21,3 +21,20 @@ Alternatively you can use `->with()`.
         array('data1', 'data2'),
         array('data3', 'data4')
     ));
+
+If you want to pass variables inside the closure, use `use($data)`
+
+    $data = array(
+        array('data1', 'data2'),
+        array('data3', 'data4')
+    );
+
+    Excel::create('Filename', function($excel) use($data) {
+
+        $excel->sheet('Sheetname', function($sheet) use($data) {
+
+            $sheet->fromArray($data);
+
+        });
+
+    })->export('xls');
