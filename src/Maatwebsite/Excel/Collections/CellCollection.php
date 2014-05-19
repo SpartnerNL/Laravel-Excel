@@ -11,7 +11,7 @@
  * @author     Maatwebsite <info@maatwebsite.nl>
  * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
  */
-class CellCollection {
+class CellCollection extends ExcelCollection {
 
     /**
      * Create a new collection.
