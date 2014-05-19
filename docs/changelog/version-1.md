@@ -1,5 +1,9 @@
 # Version 1
 
+### 1.1.0
+
+- Skiping / limiting results
+
 ### 1.0.3
 
 - Table headings to attribute names undefined offset fix

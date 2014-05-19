@@ -90,7 +90,13 @@ class LaravelExcelReader {
      * Limit data
      * @var boolean
      */
-    public $limit = false;
+    protected $limit = false;
+
+    /**
+     * Amount of rows to skip
+     * @var integer
+     */
+    protected $skip = 0;
 
     /**
      * Slug seperator
@@ -228,21 +234,39 @@ class LaravelExcelReader {
      */
     public function take($amount)
     {
+        // Set limit
         $this->limit = $amount;
         return $this;
     }
 
     /**
-     * Limit the results by x
+     * Skip x rows
      * @param  [type] $amount [description]
      * @return [type]         [description]
      */
-    public function limit($amount)
+    public function skip($amount)
     {
-        return $this->take($amount);
+        // Set skip amount
+        $this->skip = $amount;
+        return $this;
     }
 
-    // TODO: make a ->skip() method
+    /**
+     * Limit the results by x
+     * @param  [type] $take [description]
+     * @param  [type] $skip [description]
+     * @return [type]         [description]
+     */
+    public function limit($take, $skip = 0)
+    {
+        // Skip x records
+        $this->skip($skip);
+
+        // Take x records
+        $this->take($take);
+
+        return $this;
+    }
 
     /**
      * Select certain columns
@@ -571,6 +595,24 @@ class LaravelExcelReader {
     public function needsDateFormatting()
     {
         return $this->formatDates ? true : false;
+    }
+
+    /**
+     * Return the amount of rows to skip
+     * @return [type] [description]
+     */
+    public function getSkip()
+    {
+        return $this->skip;
+    }
+
+    /**
+     * Return the amount of rows to take
+     * @return [type] [description]
+     */
+    public function getLimit()
+    {
+        return $this->limit;
     }
 
     /**

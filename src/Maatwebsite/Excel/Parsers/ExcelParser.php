@@ -76,7 +76,13 @@ class ExcelParser {
      * Row counter
      * @var integer
      */
-    protected $r = 0;
+    protected $currentRow = 1;
+
+    /**
+     * Default startrow
+     * @var integer
+     */
+    protected $defaultStartRow = 1;
 
     /**
      * Construct excel parser
@@ -202,23 +208,21 @@ class ExcelParser {
         // Set empty parsedRow array
         $parsedRows = new RowCollection();
 
-        // Set if we have to ignore rows
-        $ignore = $this->reader->hasHeading() ? 1 : 0;
+        // Get the startrow
+        $startRow = $this->getStartRow();
 
         // Loop through the rows inside the worksheet
-        foreach ($this->worksheet->getRowIterator() as $this->row) {
+        foreach ($this->worksheet->getRowIterator($startRow) as $this->row) {
 
-            // Limit the results
-            if($this->checkForLimit())
+            // Limit the results when needed
+            if($this->hasReachedLimit())
                 break;
 
-            // Ignore first row when needed
-            if($this->r >= $ignore)
-                // Push the parsed cells inside the parsed rows
-                $parsedRows->push($this->parseCells());
+            // Push the parsed cells inside the parsed rows
+            $parsedRows->push($this->parseCells());
 
             // Count the rows
-            $this->r++;
+            $this->currentRow++;
         }
 
         // Return the parsed array
@@ -226,13 +230,40 @@ class ExcelParser {
     }
 
     /**
+     * Get the startrow
+     * @return [type] [description]
+     */
+    protected function getStartRow()
+    {
+        // Set default start row
+        $startRow = $this->defaultStartRow;
+
+        // If the reader has a heading, skip the first row
+        if($this->reader->hasHeading())
+            $startRow++;
+
+        // Get the amount of rows to skip
+        $skip = $this->reader->getSkip();
+
+        // If we want to skip rows, add the amount of rows
+        if($skip > 0)
+            $startRow = $startRow + $skip;
+
+        // Return the startrow
+        return $startRow;
+    }
+
+    /**
      * Check for the limit
      * @return [type] [description]
      */
-    protected function checkForLimit()
+    protected function hasReachedLimit()
     {
+        // Get skip
+        $limit = $this->reader->getLimit();
+
         // If we have a limit, check if we hit this limit
-        return $this->reader->limit && $this->r == ($this->reader->limit + 1);
+        return $limit && $this->currentRow > $limit ? true : false;
     }
 
     /**

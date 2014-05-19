@@ -39,6 +39,8 @@ To get the first sheet or row, you can utilise `->first()`.
 
 ### Limiting the results
 
+##### Taking rows
+
 When you only want to return the first x rows of a sheet, you can use `->take()` or `->limit()`.
 
     // You can either use ->take()
@@ -46,6 +48,22 @@ When you only want to return the first x rows of a sheet, you can use `->take()`
 
     // Or ->limit()
     $reader->limit(10);
+
+##### Skipping rows
+
+When you want to skip a certain amount of rows you can use `->skip()` or `->limit(false, 10)`
+
+    // Skip 10 results
+    $reader->skip(10);
+
+    // Skip 10 results with limit, but return all other rows
+    $reader->limit(false, 10);
+
+    // Skip and take
+    $reader->skip(10)->take(10);
+
+    // Limit with skip and take
+    $reader->($skip, $take);
 
 ### Result mutators
 
