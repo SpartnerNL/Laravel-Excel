@@ -1,7 +1,8 @@
 # Version 1
 
-### 1.0.2.1
+### 1.0.3
 
+- Table headings to attribute names undefined offset fix
 - Composer.json enhancements
 - Documentation fixes
 
