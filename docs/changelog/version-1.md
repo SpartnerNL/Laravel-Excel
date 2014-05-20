@@ -1,12 +1,8 @@
 # Version 1
 
-### 1.1.0
+### 1.0.5
 
-- Skiping / limiting results
-- Manipluate cells and cells ranges with `$sheet->cells()`
-- Set cell background color
-- Set cell font (color, ...)
-- Calling writer methods when reading a file
+- Date parsing fix
 
 ### 1.0.4
 
