@@ -1,5 +1,9 @@
 # Version 1
 
+### 1.0.5
+
+- Date parsing fix
+
 ### 1.0.4
 
 - Fix calling $this in  anonymous function to set locale and cache
