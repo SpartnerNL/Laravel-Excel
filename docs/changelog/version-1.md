@@ -1,5 +1,13 @@
 # Version 1
 
+### 1.1.0
+
+- Skiping / limiting results
+- Manipluate cells and cells ranges with `$sheet->cells()`
+- Set cell background color
+- Set cell font (color, ...)
+- Calling writer methods when reading a file
+
 ### 1.0.4
 
 - Fix calling $this in  anonymous function to set locale and cache
