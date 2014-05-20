@@ -141,7 +141,7 @@ class ExcelServiceProvider extends ServiceProvider {
 	/**
 	 * Set the cache settings
 	 */
-	protected function setCacheSettings()
+	public function setCacheSettings()
 	{
 		return new Cache();
 	}
@@ -149,7 +149,7 @@ class ExcelServiceProvider extends ServiceProvider {
 	/**
 	 * Set locale
 	 */
-	protected function setLocale()
+	public function setLocale()
 	{
 		$locale = Config::get('app.locale', 'en_us');
 		PHPExcel_Settings::setLocale($locale);
