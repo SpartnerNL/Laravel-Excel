@@ -1,5 +1,9 @@
 # Version 1
 
+### 1.0.4
+
+- Fix calling $this in  anonymous function to set locale and cache
+
 ### 1.0.3
 
 - Table headings to attribute names undefined offset fix
