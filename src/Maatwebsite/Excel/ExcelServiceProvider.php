@@ -62,14 +62,18 @@ class ExcelServiceProvider extends ServiceProvider {
 	 */
 	protected function bindPHPExcelClass()
 	{
+
+		// Set object
+		$me = $this;
+
 		// Bind the PHPExcel class
-		$this->app['phpexcel'] = $this->app->share(function($app) {
+		$this->app['phpexcel'] = $this->app->share(function($app) use($me) {
 
 			// Set locale
-			$this->setLocale();
+			$me->setLocale();
 
 			// Set the caching settings
-			$this->setCacheSettings();
+			$me->setCacheSettings();
 
 			// Init phpExcel
 			return new PHPExcel();
