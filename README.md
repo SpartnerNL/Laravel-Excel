@@ -12,6 +12,7 @@ Laravel Excel brings the power of PHPOffice's PHPExcel to Laravel 4.* with a tou
 - **Advanced import** by config files
 - and many more...
 
+---
 
 ```php
 Excel::create('Laravel Excel', function($excel) {
