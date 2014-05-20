@@ -6,6 +6,8 @@
 - Manipluate cells and cells ranges with `$sheet->cells()`
 - Set cell background color
 - Set cell font (color, ...)
+- Fix calling $this in  anonymous function to set locale and cache
+- Calling writer methods when reading a file
 
 ### 1.0.3
 
