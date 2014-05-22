@@ -1,5 +1,9 @@
 # Version 1
 
+### 1.0.6
+
+- BatchReader fix
+
 ### 1.0.5
 
 - Date parsing fix
