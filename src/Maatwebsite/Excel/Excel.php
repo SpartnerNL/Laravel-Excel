@@ -128,7 +128,8 @@ class Excel
      */
     public function batch($files, Closure $callback)
     {
-        return new Batch($this, $files, $callback);
+        $batch = new Batch;
+        return $batch->start($this, $files, $callback);
     }
 
     /**
