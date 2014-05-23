@@ -15,6 +15,17 @@ return array(
 
     /*
     |--------------------------------------------------------------------------
+    | Auto generate table heading
+    |--------------------------------------------------------------------------
+    |
+    | If set to true, the array indices (or model attribute names)
+    | will automatically be used as first row (table heading)
+    |
+    */
+    'generate_heading_by_indices'  => true,
+
+    /*
+    |--------------------------------------------------------------------------
     | Store settings
     |--------------------------------------------------------------------------
     */

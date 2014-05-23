@@ -3,6 +3,7 @@
 use \Closure;
 use \Config;
 use \PHPExcel_Worksheet;
+use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Writers\CellWriter;
 use Maatwebsite\Excel\Exceptions\LaravelExcelException;
 
@@ -284,6 +285,20 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet
     }
 
     /**
+     * From array
+     * @param  [type] $key [description]
+     * @return [type]      [description]
+     */
+    public function fromModel($source = NULL, $nullValue = NULL, $startCell = 'A1', $strictNullComparison = false)
+    {
+        // Add the vars
+        $this->_addVars($source);
+
+        // create from array
+        return parent::fromArray($this->data, $nullValue, $startCell, $strictNullComparison);
+    }
+
+    /**
      * Add vars to the data array
      * @param [type]  $key   [description]
      * @param boolean $value [description]
@@ -291,10 +306,10 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet
     protected function _addVars($key, $value = false)
     {
         // Add array of data
-        if(is_array($key))
+        if(is_array($key) || $key instanceof Collection)
         {
             // Set the data
-            $this->data = array_merge($this->data, $key);
+            $this->data = $this->addData($key);
 
             // Create excel from array without a view
             if(!$this->parser)
@@ -310,6 +325,70 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet
         // Set data to parser
         if($this->parser)
             $this->parser->setData($this->data);
+    }
+
+    /**
+     * Array
+     * @param [type] $array [description]
+     */
+    protected function addData($array)
+    {
+        // If a parser was set
+        if($this->parser)
+        {
+            // Don't change anything
+            $data = $array;
+        }
+        else
+        {
+            // Transform model/collection to array
+            if($array instanceof Collection)
+                $array = $array->toArray();
+
+            // Get the firstRow
+            $firstRow = reset($array);
+
+            // Check if the array has array values
+            if(count($firstRow) != count($firstRow, 1))
+            {
+                // Loop through the data to remove arrays
+                $data = array();
+                $r = 0;
+                foreach($array as $row)
+                {
+                    $data[$r] = array();
+                    foreach($row as $key => $cell)
+                    {
+                        if(!is_array($cell))
+                        {
+                            $data[$r][$key] = $cell;
+                        }
+                    }
+                    $r++;
+                }
+            }
+            else
+            {
+                $data = $array;
+            }
+
+            // Check if we should auto add the first row based on the indices
+            if(Config::get('excel::export.generate_heading_by_indices', false))
+            {
+                // Get the first row
+                $firstRow = reset($data);
+
+                // Get the array keys
+                $tableHeading = array_keys($firstRow);
+
+                // Add table headings as first row
+                array_unshift($data, $tableHeading);
+            }
+
+        }
+
+        // return data
+        return array_merge($this->data, $data);
     }
 
     /**
