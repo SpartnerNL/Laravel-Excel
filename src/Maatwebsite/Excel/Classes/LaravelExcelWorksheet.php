@@ -126,6 +126,42 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet
     }
 
     /**
+     * Manipulate a single row
+     * @param  [type]  $rowNumber [description]
+     * @param  boolean $callback  [description]
+     * @return [type]             [description]
+     */
+    public function row($rowNumber, $callback = false)
+    {
+        // If a callback is given, handle it with the cell writer
+        //if($callback instanceof Closure)
+            //return $this->rows($rowNumber, $callback);
+
+        // Else if the 2nd param was set, we will use it as a cell value
+        if(is_array($callback))
+        {
+            // Interpret the callback as cell values
+            $values = $callback;
+
+            // Set start column
+            $column = 'A';
+
+            foreach($values as $rowValue)
+            {
+                // Set cell coordinate
+                $cell = $column . $rowNumber;
+
+                // Set the cell value
+                $this->setCellValue($cell, $rowValue);
+                $column++;
+            }
+
+        }
+
+        return $this;
+    }
+
+    /**
      * Manipulate a single cell
      * @param  [type]  $cell     [description]
      * @param  boolean $callback [description]
