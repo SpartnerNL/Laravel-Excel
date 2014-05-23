@@ -39,6 +39,21 @@ class CellWriter {
     }
 
     /**
+     * Set cell value
+     * @param [type] $value [description]
+     */
+    public function setValue($value)
+    {
+        // Only set cell value for single cells
+        if(!str_contains($this->cells, ':'))
+        {
+            $this->sheet->setCellValue($this->cells, $value);
+        }
+
+        return $this;
+    }
+
+    /**
      * Set the background
      * @param [type] $color     [description]
      * @param string $type      [description]
@@ -46,8 +61,7 @@ class CellWriter {
      */
     public function setBackground($color, $type = 'solid', $colorType = 'rgb')
     {
-        $this->setStyle('fill', $color, $type, $colorType);
-        return $this;
+        return $this->setColorStyle('fill', $color, $type, $colorType);
     }
 
     /**
@@ -57,32 +71,124 @@ class CellWriter {
      */
     public function setFontColor($color, $colorType = 'rgb')
     {
-        $this->setStyle('font', $color, false, $colorType);
-        return $this;
+        return $this->setColorStyle('font', $color, false, $colorType);
     }
 
     /**
-     * Set the style
+     * Set the font
+     * @param [type] $right [description]
+     */
+    public function setFont($styles)
+    {
+        return $this->setStyle('font', $styles);
+    }
+
+    /**
+     * Set font family
+     * @param [type] $family [description]
+     */
+    public function setFontFamily($family)
+    {
+        return $this->setStyle('font', array(
+            'name'  => $family
+        ));
+    }
+
+    /**
+     * Set font size
+     */
+    public function setFontSize($size)
+    {
+        return $this->setStyle('font', array(
+            'size'  => $size
+        ));
+    }
+
+    /**
+     * Set border
+     * @param [type]  $top    [description]
+     * @param boolean $right  [description]
+     * @param boolean $bottom [description]
+     * @param boolean $left   [description]
+     */
+    public function setBorder($top = 'none', $right = 'none', $bottom = 'none', $left = 'none')
+    {
+        // Set the border styles
+        $styles = is_array($top) ? $top : array(
+            'borders' => array(
+                'top'   => array(
+                    'style' => $top
+                ),
+                'left' => array(
+                    'style' => $left,
+                ),
+                'right' => array(
+                    'style' => $right,
+                ),
+                'bottom' => array(
+                    'style' => $bottom,
+                )
+            )
+        );
+
+        return $this->setStyle('borders', $styles);
+    }
+
+    /**
+     * Set the alignment
+     * @param [type] $alignment [description]
+     */
+    public function setAlignment($alignment)
+    {
+        return $this->setStyle('alignment', array(
+            'horizontal'    => $alignment
+        ));
+    }
+
+    /**
+     * Set vertical alignment
+     * @param [type] $alignment [description]
+     */
+    public function setValignment($alignment)
+    {
+        return $this->setStyle('alignment', array(
+            'vertical'    => $alignment
+        ));
+    }
+
+    /**
+     * Set the color style
      * @param [type]  $style     [description]
      * @param [type]  $color     [description]
      * @param boolean $type      [description]
      * @param string  $colorType [description]
      */
-    protected function setStyle($styleType, $color, $type = false, $colorType = 'rgb')
+    protected function setColorStyle($styleType, $color, $type = false, $colorType = 'rgb')
     {
-        // Get the cell style
-        $style = $this->getCellStyle();
-
         // Set the styles
         $styles = is_array($color) ? $color : array(
             'type' => $type,
             'color' => array($colorType => str_replace('#', '', $color))
         );
 
+        return $this->setStyle($styleType, $styles);
+    }
+
+    /**
+     * Set style
+     * @param [type] $styles [description]
+     */
+    protected function setStyle($styleType, $styles)
+    {
+        // Get the cell style
+        $style = $this->getCellStyle();
+
         // Apply style from array
         $style->applyFromArray(array(
             $styleType => $styles
         ));
+
+        return $this;
     }
 
     /**

@@ -126,7 +126,26 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet
     }
 
     /**
-     * Init the cells
+     * Manipulate a single cell
+     * @param  [type]  $cell     [description]
+     * @param  boolean $callback [description]
+     * @return [type]            [description]
+     */
+    public function cell($cell, $callback = false)
+    {
+        // If a callback is given, handle it with the cell writer
+        if($callback instanceof Closure)
+            return $this->cells($cell, $callback);
+
+        // Else if the 2nd param was set, we will use it as a cell value
+        if($callback)
+            $this->sheet->setCellValue($cell, $callback);
+
+        return $this;
+    }
+
+    /**
+     * Manipulate a cell or a range of cells
      * @return [type] [description]
      */
     public function cells($cells, $callback = false)
@@ -138,7 +157,7 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet
         if($callback instanceof Closure)
             call_user_func($callback, $cells);
 
-        return $cells;
+        return $this;
     }
 
     /**
