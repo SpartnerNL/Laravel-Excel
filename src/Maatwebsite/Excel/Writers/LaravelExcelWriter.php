@@ -334,7 +334,7 @@ class LaravelExcelWriter {
         $key = lcfirst(str_replace('set', '', $setter));
 
         // If is an allowed property
-        if(in_array($key, $this->excel->allowedProperties))
+        if($this->excel->isChangeableProperty($setter))
         {
             // Set the properties
             call_user_func_array(array($this->excel->getProperties(), $setter), $params);
@@ -437,8 +437,15 @@ class LaravelExcelWriter {
      */
     public function __call($method, $params)
     {
+        // If the dynamic call starts with "set"
+        if(starts_with($method, 'set') && $this->excel->isChangeableProperty($method))
+        {
+            $this->_setAttribute($method, $params);
+            return $this;
+        }
+
         // Call a php excel method
-        if(method_exists($this->excel, $method))
+        elseif(method_exists($this->excel, $method))
         {
             // Call the method from the excel object with the given params
             call_user_func_array(array($this->excel, $method), $params);
@@ -450,13 +457,6 @@ class LaravelExcelWriter {
         {
             // Call the method from the excel object with the given params
             call_user_func_array(array($this->excel->getActiveSheet(), $method), $params);
-            return $this;
-        }
-
-        // If the dynamic call starts with "with", add the var to the data array
-        elseif(starts_with($method, 'set'))
-        {
-            $this->_setAttribute($method, $params);
             return $this;
         }
 
