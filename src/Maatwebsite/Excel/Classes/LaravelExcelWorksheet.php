@@ -93,6 +93,12 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet
     public $wasAutoSized = false;
 
     /**
+     * Auto generate table heading
+     * @var [type]
+     */
+    protected $autoGenerateHeading = true;
+
+    /**
      * Create a new worksheet
      *
      * @param PHPExcel        $pParent
@@ -277,8 +283,11 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet
      * @param  boolean $value [description]
      * @return [type]         [description]
      */
-    public function with($key, $value = false)
+    public function with($key, $value = false, $headingGeneration = true)
     {
+        // Set the heading generation setting
+        $this->setAutoHeadingGeneration($headingGeneration);
+
         // Add the vars
         $this->_addVars($key, $value);
         return $this;
@@ -289,13 +298,16 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet
      * @param  [type] $key [description]
      * @return [type]      [description]
      */
-    public function fromModel($source = NULL, $nullValue = NULL, $startCell = 'A1', $strictNullComparison = false)
+    public function fromModel($source = NULL, $headingGeneration = true)
     {
+        // Set the heading generation setting
+        $this->setAutoHeadingGeneration($headingGeneration);
+
         // Add the vars
         $this->_addVars($source);
 
         // create from array
-        return parent::fromArray($this->data, $nullValue, $startCell, $strictNullComparison);
+        return parent::fromArray($this->data);
     }
 
     /**
@@ -373,7 +385,7 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet
             }
 
             // Check if we should auto add the first row based on the indices
-            if(Config::get('excel::export.generate_heading_by_indices', false))
+            if($this->generateHeadingByIndices())
             {
                 // Get the first row
                 $firstRow = reset($data);
@@ -389,6 +401,39 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet
 
         // return data
         return array_merge($this->data, $data);
+    }
+
+    /**
+     * Set the auto heading generation setting
+     * @param [type] $boolean [description]
+     */
+    public function setAutoHeadingGeneration($boolean)
+    {
+        $this->autoGenerateHeading = $boolean;
+        return $this;
+    }
+
+    /**
+     * Disable the heading generation
+     * @param  boolean $boolean [description]
+     * @return [type]           [description]
+     */
+    public function disableHeadingGeneration($boolean = false)
+    {
+        $this->setAutoHeadingGeneration($boolean);
+        return $this;
+    }
+
+    /**
+     * Check if we should auto generate the table heading
+     * @return [type] [description]
+     */
+    protected function generateHeadingByIndices()
+    {
+        if(!$this->autoGenerateHeading)
+            return false;
+
+        return Config::get('excel::export.generate_heading_by_indices', false);
     }
 
     /**
