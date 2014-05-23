@@ -1,6 +1,6 @@
 {
     "name": "maatwebsite/excel",
-    "description": "An eloquent way of importing and exporting CSV in Laravel 4 with the power of PHPExcel",
+    "description": "An eloquent way of importing and exporting Excel and CSV in Laravel 4 with the power of PHPExcel",
     "license": "LGPL",
     "keywords": ["laravel", "phpexcel", "excel", "csv", "export", "import", "batch"],
     "authors": [
@@ -11,21 +11,26 @@
     ],
     "require": {
         "php": ">=5.3.0",
-        "illuminate/support": "~4.0",
-        "illuminate/config": "~4.0",
-        "illuminate/filesystem": "~4.0",
         "phpoffice/phpexcel": "~1.8.0"
     },
     "require-dev": {
-        "mockery/mockery": "~0.9.1",
-        "phpunit/phpunit": "~4.0"
+        "phpunit/phpunit": "~4.0",
+        "mockery/mockery": "~0.9",
+        "orchestra/testbench": "~2.1.1"
     },
     "autoload": {
         "classmap": [
-            "src/Maatwebsite/Excel"
+            "src/Maatwebsite/Excel",
+            "tests/TestCase.php"
         ],
         "psr-0": {
             "Maatwebsite\\Excel\\": "src/"
         }
-    }
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "git://github.com/orchestral/phpseclib.git"
+        }
+    ]
 }

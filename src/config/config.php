@@ -7,7 +7,7 @@
  * Licensed under the LPGL.
  *
  * @package    Laravel-4 PHPExcel
- * @version    0.1.0
+ * @version    1.*
  * @author     Maatwebsite
  * @license    LGPL
  * @copyright  (c) 2013, Maatwebsite
