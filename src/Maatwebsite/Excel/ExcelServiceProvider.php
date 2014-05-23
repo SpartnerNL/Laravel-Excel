@@ -162,7 +162,14 @@ class ExcelServiceProvider extends ServiceProvider {
 	 */
 	public function provides()
 	{
-		return array('excel');
+		return array(
+			'excel',
+			'phpexcel',
+			'excel.reader',
+			'excel.readers.html',
+			'excel.parsers.view',
+			'excel.writer'
+		);
 	}
 
 }
