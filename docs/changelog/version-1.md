@@ -1,5 +1,10 @@
 # Version 1
 
+### 1.0.7
+
+- Set workbook properties fix
+- Extra units tests
+
 ### 1.0.6
 
 - BatchReader fix
