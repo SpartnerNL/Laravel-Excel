@@ -46,6 +46,12 @@ class LaravelExcelWriter {
     public $writer;
 
     /**
+     * Excel sheet
+     * @var [type]
+     */
+    protected $sheet;
+
+    /**
      * Parser
      * @var [type]
      */
@@ -104,7 +110,17 @@ class LaravelExcelWriter {
     public function setTitle($title)
     {
         $this->title = $title;
+        $this->getProperties()->setTitle($title);
         return $this;
+    }
+
+    /**
+     * Get the title
+     * @return [type] [description]
+     */
+    public function getTitle()
+    {
+        return $this->title;
     }
 
     /**
@@ -113,9 +129,8 @@ class LaravelExcelWriter {
      */
     public function shareView($view, $data = array(), $mergeData = array())
     {
-        // Init the parser
-        if(!$this->parser)
-            $this->parser = app('excel.parsers.view');
+        // Get the parser
+        $this->getParser();
 
         // Set the view inside the parser
         $this->parser->setView($view);
@@ -187,6 +202,7 @@ class LaravelExcelWriter {
     {
         // Add the vars
         $this->fromArray($array);
+        return $this;
     }
 
     /**
@@ -324,6 +340,37 @@ class LaravelExcelWriter {
     }
 
     /**
+     * Get the view parser
+     * @return [type] [description]
+     */
+    public function getExcel()
+    {
+        return $this->excel;
+    }
+
+    /**
+     * Get the view parser
+     * @return [type] [description]
+     */
+    public function getParser()
+    {
+        // Init the parser
+        if(!$this->parser)
+            $this->parser = app('excel.parsers.view');
+
+        return $this->parser;
+    }
+
+    /**
+     * Get the sheet
+     * @return [type] [description]
+     */
+    public function getSheet()
+    {
+        return $this->sheet;
+    }
+
+    /**
      * Set attributes
      * @param [type] $setter [description]
      * @param [type] $params [description]
@@ -448,16 +495,16 @@ class LaravelExcelWriter {
         elseif(method_exists($this->excel, $method))
         {
             // Call the method from the excel object with the given params
-            call_user_func_array(array($this->excel, $method), $params);
-            return $this;
+            $return = call_user_func_array(array($this->excel, $method), $params);
+            return $return ? $return : $this;
         }
 
         // Call a php excel sheet method
         elseif(method_exists($this->excel->getActiveSheet(), $method))
         {
             // Call the method from the excel object with the given params
-            call_user_func_array(array($this->excel->getActiveSheet(), $method), $params);
-            return $this;
+            $return =  call_user_func_array(array($this->excel->getActiveSheet(), $method), $params);
+            return $return ? $return : $this;
         }
 
         throw new LaravelExcelException('[ERROR] Writer method ['. $method .'] does not exist.');

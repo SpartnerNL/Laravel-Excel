@@ -50,7 +50,7 @@ class ViewParser {
      */
     public function parse($sheet)
     {
-        $html = View::make($this->view, $this->data, $this->mergeData)->render();
+        $html = View::make($this->getView(), $this->getData(), $this->getMergeData())->render();
         return $this->_loadHTML($sheet, $html);
     }
 
@@ -63,6 +63,33 @@ class ViewParser {
     protected function _loadHTML($sheet, $html)
     {
         return $this->reader->load($html, true, $sheet);
+    }
+
+    /**
+     * Get the view
+     * @return [type] [description]
+     */
+    public function getView()
+    {
+        return $this->view;
+    }
+
+    /**
+     * Get data
+     * @return [type] [description]
+     */
+    public function getData()
+    {
+        return $this->data;
+    }
+
+    /**
+     * Get merge data
+     * @return [type] [description]
+     */
+    public function getMergeData()
+    {
+        return $this->mergeData;
     }
 
     /**
