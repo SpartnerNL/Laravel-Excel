@@ -97,10 +97,12 @@ class LaravelExcelWriter {
      * @param  [type] $excel [description]
      * @return [type]        [description]
      */
-    public function injectExcel($excel)
+    public function injectExcel($excel, $reset = true)
     {
         $this->excel = $excel;
-        $this->_reset();
+
+        if($reset)
+            $this->_reset();
     }
 
     /**

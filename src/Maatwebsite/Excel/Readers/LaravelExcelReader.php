@@ -704,6 +704,15 @@ class LaravelExcelReader {
     }
 
     /**
+     * Get excel object
+     * @return [type] [description]
+     */
+    public function getExcel()
+    {
+        return $this->excel;
+    }
+
+    /**
      * Dynamically call methods
      * @param  [type] $method [description]
      * @param  [type] $params [description]

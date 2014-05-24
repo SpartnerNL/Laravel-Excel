@@ -237,7 +237,16 @@ class Html extends PHPExcel_Reader_HTML
                         // Inline css styles
                         case 'style':
                             $this->parseInlineStyles($sheet, $column, $row, $attribute->value);
-                        break;
+                            break;
+
+                        // Colspan
+                        case 'width':
+                            $this->parseWidth($sheet, $column, $row, $attribute->value);
+                            break;
+
+                        case 'height':
+                            $this->parseHeight($sheet, $column, $row, $attribute->value);
+                            break;
 
                         // Colspan
                         case 'colspan':
@@ -721,6 +730,32 @@ class Html extends PHPExcel_Reader_HTML
     }
 
     /**
+     * Set column width
+     * @param  [type] $sheet  [description]
+     * @param  [type] $column [description]
+     * @param  [type] $row    [description]
+     * @param  [type] $width  [description]
+     * @return [type]         [description]
+     */
+    protected function parseWidth($sheet, $column, $row, $width)
+    {
+        $sheet->setWidth($column, $width);
+    }
+
+    /**
+     * Set row height
+     * @param  [type] $sheet  [description]
+     * @param  [type] $column [description]
+     * @param  [type] $row    [description]
+     * @param  [type] $height [description]
+     * @return [type]         [description]
+     */
+    protected function parseHeight($sheet, $column, $row, $height)
+    {
+        $sheet->setHeight($row, $height);
+    }
+
+    /**
      * Parse colspans
      * @param  [type] $sheet  [description]
      * @param  [type] $column [description]
@@ -898,6 +933,15 @@ class Html extends PHPExcel_Reader_HTML
         $cells = $sheet->getStyle($column.$row);
         switch($name)
         {
+            // Cell width
+            case 'width':
+                $this->parseWidth($sheet, $column, $row, $value);
+                break;
+
+            // Row height
+            case 'height':
+                $this->parseHeight($sheet, $column, $row, $value);
+                break;
 
             // BACKGROUND
             case 'background':
