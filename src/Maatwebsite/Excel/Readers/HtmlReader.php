@@ -15,7 +15,7 @@ use \PHPExcel_Style_Font;
 use \PHPExcel_Style_Alignment;
 use Maatwebsite\Excel\Parsers\CssParser;
 use Maatwebsite\Excel\Classes\LaravelExcelWorksheet;
-use \PHPExcel_Worksheet_MemoryDrawing;
+use \PHPExcel_Worksheet_Drawing;
 
 /**
  *
@@ -743,30 +743,30 @@ class Html extends PHPExcel_Reader_HTML
     {
         // Get attributes
         $src    = $attributes->getAttribute('src');
-        $width  = $attributes->getAttribute('width');
-        $height = $attributes->getAttribute('height');
+        $width  = (float) $attributes->getAttribute('width');
+        $height = (float) $attributes->getAttribute('height');
         $alt    = $attributes->getAttribute('alt');
 
-        // Create image from src value
-        $image = imagecreatefrompng($src);
-
         // init drawing
-        $drawing = new PHPExcel_Worksheet_MemoryDrawing();
+        $drawing = new PHPExcel_Worksheet_Drawing();
 
         // Set image
-        $drawing->setImageResource($image);
-        $drawing->setRenderingFunction(PHPExcel_Worksheet_MemoryDrawing::RENDERING_JPEG);
-        $drawing->setMimeType(PHPExcel_Worksheet_MemoryDrawing::MIMETYPE_DEFAULT);
-
-        // Set name
+        $drawing->setPath($src);
         $drawing->setName($alt);
-
-        // Set location information
         $drawing->setWorksheet($sheet);
         $drawing->setCoordinates($column . $row);
+        $drawing->setResizeProportional();
 
         // Set height and width
-        $drawing->setWidthAndHeight($width, $height);
+        if($width > 0)
+            $drawing->setWidth($width);
+
+        if($height > 0)
+            $drawing->setHeight($height);
+
+        // Set cell width based on image
+        $this->parseWidth($sheet, $column, $row, $drawing->getWidth());
+        $this->parseHeight($sheet, $column, $row, $drawing->getHeight());
     }
 
     /**
