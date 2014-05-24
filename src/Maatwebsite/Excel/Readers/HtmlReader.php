@@ -15,6 +15,7 @@ use \PHPExcel_Style_Font;
 use \PHPExcel_Style_Alignment;
 use Maatwebsite\Excel\Parsers\CssParser;
 use Maatwebsite\Excel\Classes\LaravelExcelWorksheet;
+use \PHPExcel_Worksheet_MemoryDrawing;
 
 /**
  *
@@ -277,10 +278,7 @@ class Html extends PHPExcel_Reader_HTML
                         case 'id':
                             $this->styleById($sheet, $column, $row, $attribute->value);
                             break;
-
                     }
-
-
                 }
 
                 // nodeName
@@ -515,6 +513,10 @@ class Html extends PHPExcel_Reader_HTML
                         $this->_processDomElement($child,$sheet,$row,$column,$cellContent);
                         break;
 
+                    case 'img':
+                        $this->insertImageBySrc($sheet, $column, $row, $child);
+                        break;
+
                     // Table rows
                     case 'tr' :
 
@@ -727,6 +729,44 @@ class Html extends PHPExcel_Reader_HTML
         {
             $this->parseCssProperties($sheet, $column, $row, $name, $value);
         }
+    }
+
+    /**
+     * Insert a image inside the sheet
+     * @param  [type] $sheet  [description]
+     * @param  [type] $column [description]
+     * @param  [type] $row    [description]
+     * @param  [type] $src    [description]
+     * @return [type]         [description]
+     */
+    protected function insertImageBySrc($sheet, $column, $row, $attributes)
+    {
+        // Get attributes
+        $src    = $attributes->getAttribute('src');
+        $width  = $attributes->getAttribute('width');
+        $height = $attributes->getAttribute('height');
+        $alt    = $attributes->getAttribute('alt');
+
+        // Create image from src value
+        $image = imagecreatefrompng($src);
+
+        // init drawing
+        $drawing = new PHPExcel_Worksheet_MemoryDrawing();
+
+        // Set image
+        $drawing->setImageResource($image);
+        $drawing->setRenderingFunction(PHPExcel_Worksheet_MemoryDrawing::RENDERING_JPEG);
+        $drawing->setMimeType(PHPExcel_Worksheet_MemoryDrawing::MIMETYPE_DEFAULT);
+
+        // Set name
+        $drawing->setName($alt);
+
+        // Set location information
+        $drawing->setWorksheet($sheet);
+        $drawing->setCoordinates($column . $row);
+
+        // Set height and width
+        $drawing->setWidthAndHeight($width, $height);
     }
 
     /**
