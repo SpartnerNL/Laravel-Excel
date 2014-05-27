@@ -384,11 +384,14 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet
                 // Get the first row
                 $firstRow = reset($data);
 
-                // Get the array keys
-                $tableHeading = array_keys($firstRow);
+                if(is_array($firstRow))
+                {
+                    // Get the array keys
+                    $tableHeading = array_keys($firstRow);
 
-                // Add table headings as first row
-                array_unshift($data, $tableHeading);
+                    // Add table headings as first row
+                    array_unshift($data, $tableHeading);
+                }
             }
 
         }
