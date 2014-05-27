@@ -620,8 +620,62 @@ class LaravelExcelReader {
      */
     protected function _setFormat()
     {
-        $this->format = PHPExcel_IOFactory::identify($this->file);
+        $this->format = $this->identify($this->file);
         return $this;
+    }
+
+    /**
+     * Identify file format
+     * @return [type] [description]
+     */
+    protected function identify($file)
+    {
+        switch ($this->getExtension($file)) {
+            case 'xlsx':
+            case 'xlsm':
+            case 'xltx':
+            case 'xltm':
+                return 'Excel2007';
+                break;
+            case 'xls':
+            case 'xlt':
+                return 'Excel5';
+                break;
+            case 'ods':
+            case 'ots':
+                return 'OOCalc';
+                break;
+            case 'slk':
+                return 'SYLK';
+                break;
+            case 'xml':
+                return 'Excel2003XML';
+                break;
+            case 'gnumeric':
+                return 'Gnumeric';
+                break;
+            case 'htm':
+            case 'html':
+                return 'HTML';
+                break;
+            case 'csv':
+            case 'txt':
+                return 'CSV';
+                break;
+        }
+
+        throw new LaravelExcelException('[ERROR] Reader could not identify file format for file ['. $file .'].');
+
+    }
+
+    /**
+     * Get the file extension
+     * @param  [type] $file [description]
+     * @return [type]       [description]
+     */
+    protected function getExtension($file)
+    {
+        return strtolower($this->filesystem->extension($file));
     }
 
     /**
