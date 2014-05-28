@@ -1,10 +1,11 @@
 <?php namespace Maatwebsite\Excel\Writers;
 
-use \Config;
-use \Response;
+use Config;
+use Response;
 use Carbon\Carbon;
-use \PHPExcel_IOFactory;
+use PHPExcel_IOFactory;
 use Illuminate\Filesystem\Filesystem;
+use Maatwebsite\Excel\Classes\FormatIdentifier;
 use Maatwebsite\Excel\Classes\LaravelExcelWorksheet;
 use Maatwebsite\Excel\Exceptions\LaravelExcelException;
 
@@ -80,10 +81,11 @@ class LaravelExcelWriter {
      * @param Response   $response [description]
      * @param FileSystem $files    [description]
      */
-    public function __construct(Response $response, FileSystem $filesystem)
+    public function __construct(Response $response, FileSystem $filesystem, FormatIdentifier $identifier)
     {
         $this->response = $response;
         $this->filesystem = $filesystem;
+         $this->identifier = $identifier;
     }
 
     /**
@@ -346,30 +348,14 @@ class LaravelExcelWriter {
      */
     protected function _setFormat()
     {
+        // Get extension
         $this->ext  = strtolower($this->ext);
 
-        switch($this->ext)
-        {
-            case 'xls':
-                $this->format = 'Excel5';
-                $this->contentType = 'application/vnd.ms-excel; charset=UTF-8';
-                break;
+        // get the file format
+        $this->format = $this->identifier->getFormatByExtension($this->ext);
 
-            case 'xlsx':
-                $this->format = 'Excel2007';
-                $this->contentType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet; charset=UTF-8';
-                break;
-
-            case 'csv':
-                $this->format = 'CSV';
-                $this->contentType = 'application/csv; charset=UTF-8';
-                break;
-
-            default:
-                $this->format = 'Excel5';
-                $this->contentType = 'application/vnd.ms-excel; charset=UTF-8';
-                break;
-        }
+        // Get content type
+        $this->contentType = $this->identifier->getContentTypeByFormat($this->format);
     }
 
     /**
