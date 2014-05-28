@@ -1,5 +1,9 @@
 # Version 1
 
+### 1.0.8
+
+- File format identifier enhancements
+
 ### 1.0.7
 
 - Set workbook properties fix
