@@ -60,6 +60,7 @@ class PHPExcel extends PHPOffice_PHPExcel
     {
         $name = lcfirst(str_replace('set', '', $method));
         return in_array($name, $this->getAllowedProperties()) ? true : false;
+
     }
 
     /**

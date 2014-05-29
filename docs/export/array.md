@@ -38,3 +38,12 @@ If you want to pass variables inside the closure, use `use($data)`
         });
 
     })->export('xls');
+
+### Null comparision
+
+By default 0 is shown as an empty cell. If you want to change this behaviour, you can pass true as 4 parameter:
+
+    // Will show 0 as 0
+    $sheet->fromArray($data, null, 'A1', true);
+
+>> To change the default behaviour, you can use `excel::export.sheets.strictNullComparison` config setting.

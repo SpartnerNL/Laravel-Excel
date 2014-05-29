@@ -19,6 +19,7 @@ class ExcelWriterTest extends TestCase {
         // Set writer class
         $this->writer   = App::make('excel.writer');
         $this->writer->injectExcel($this->excel);
+
     }
 
     /**
