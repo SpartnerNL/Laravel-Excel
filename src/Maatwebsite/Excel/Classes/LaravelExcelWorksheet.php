@@ -366,6 +366,26 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet
     }
 
     /**
+     * Fill worksheet from values in array
+     *
+     * @param array $source Source array
+     * @param mixed $nullValue Value in source array that stands for blank cell
+     * @param string $startCell Insert array starting from this cell address as the top left coordinate
+     * @param boolean $strictNullComparison Apply strict comparison when testing for null values in the array
+     * @throws PHPExcel_Exception
+     * @return PHPExcel_Worksheet
+     */
+    public function fromArray($source = null, $nullValue = null, $startCell = false, $strictNullComparison = false)
+    {
+        // Set defaults
+        $nullValue = !is_null($nullValue) ? $nullValue : $this->getDefaultNullValue();
+        $startCell = $startCell ? $startCell : $this->getDefaultStartCell();
+        $strictNullComparison = $strictNullComparison ? $strictNullComparison : $this->getDefaultStrictNullComparison();
+
+        return parent::fromArray($source, $nullValue, $startCell, $strictNullComparison);
+    }
+
+    /**
      * Add vars to the data array
      * @param [type]  $key   [description]
      * @param boolean $value [description]
@@ -907,6 +927,34 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet
             return 1;
 
         return $this->getHighestRow() + 1;
+    }
+
+    /**
+     * Return default null value
+     * @return string/integer/null
+     */
+    protected function getDefaultNullValue()
+    {
+        return Config::get('excel::export.sheets.nullValue', null);
+    }
+
+    /**
+     * Return default null value
+     * @return string/integer/null
+     */
+    protected function getDefaultStartCell()
+    {
+        return Config::get('excel::export.sheets.startCell', 'A1');
+    }
+
+
+    /**
+     * Return default strict null comparison
+     * @return boolean
+     */
+    protected function getDefaultStrictNullComparison()
+    {
+        return Config::get('excel::export.sheets.strictNullComparison', false);
     }
 
     /**
