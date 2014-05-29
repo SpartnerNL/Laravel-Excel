@@ -163,6 +163,26 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet
     }
 
     /**
+     * Add multiple rows
+     * @param  array  $rows [description]
+     * @return [type]       [description]
+     */
+    public function rows($rows = array())
+    {
+        // Get the start row
+        $startRow = $this->getStartRow();
+
+        // Add rows
+        foreach($rows as $row)
+        {
+            $this->row($startRow, $row);
+            $startRow++;
+        }
+
+        return $this;
+    }
+
+    /**
      * Prepend a row
      * @param  integer $rowNumber
      * @param  array|closure  $callback
@@ -196,7 +216,7 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet
         if(is_null($callback))
         {
             $callback = $rowNumber;
-            $rowNumber = $this->getHighestRow() + 1;
+            $rowNumber = $this->getStartRow();
         }
 
         // Add the row
@@ -875,6 +895,18 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet
         }
 
         return $this;
+    }
+
+    /**
+     * Return the start row
+     * @return [type] [description]
+     */
+    protected function getStartRow()
+    {
+        if($this->getHighestRow() == 1)
+            return 1;
+
+        return $this->getHighestRow() + 1;
     }
 
     /**
