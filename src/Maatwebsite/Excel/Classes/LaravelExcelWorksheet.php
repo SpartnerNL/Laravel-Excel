@@ -163,6 +163,47 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet
     }
 
     /**
+     * Prepend a row
+     * @param  integer $rowNumber
+     * @param  array|closure  $callback
+     * @return object $this
+     */
+    public function prependRow($rowNumber = 1, $callback = null)
+    {
+        // If only one param was given, prepend it before the first row
+        if(is_null($callback))
+        {
+            $callback = $rowNumber;
+            $rowNumber = 1;
+        }
+
+        // Create new row
+        $this->insertNewRowBefore($rowNumber);
+
+        // Add data to row
+        return $this->row($rowNumber, $callback);
+    }
+
+    /**
+     * Append a row
+     * @param  integer $rowNumber
+     * @param  array|closure  $callback
+     * @return object $this
+     */
+    public function appendRow($rowNumber = 1, $callback = null)
+    {
+        // If only one param was given, add it as very last
+        if(is_null($callback))
+        {
+            $callback = $rowNumber;
+            $rowNumber = $this->getHighestRow() + 1;
+        }
+
+        // Add the row
+        return $this->row($rowNumber, $callback);
+    }
+
+    /**
      * Manipulate a single cell
      * @param  [type]  $cell     [description]
      * @param  boolean $callback [description]
