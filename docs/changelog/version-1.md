@@ -1,5 +1,9 @@
 # Version 1
 
+### 1.0.9
+
+- Blade to Excel export fix for PHP5.3
+
 ### 1.0.8
 
 - File format identifier enhancements
