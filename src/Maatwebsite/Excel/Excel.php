@@ -89,7 +89,7 @@ class Excel
      *  @param  string $file The file we want to load
      *  @param  callback|null $callback
      *  @param  string|null $encoding
-     *  @return $this
+     *  @return LaravelExcelReader
      *
      */
     public function load($file, $callback = null, $encoding = null)
@@ -114,7 +114,7 @@ class Excel
     /**
      * Set select sheets
      * @param  $sheets
-     * @return $this
+     * @return LaravelExcelReader
      */
     public function selectSheets($sheets)
     {
@@ -126,7 +126,7 @@ class Excel
      * Batch import
      * @param  $files
      * @param  callback $callback
-     * @return $this
+     * @return PHPExcel
      */
     public function batch($files, Closure $callback)
     {

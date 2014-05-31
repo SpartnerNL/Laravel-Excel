@@ -25,7 +25,7 @@ class FormatIdentifier {
 
     /**
      * Construct new format identifier
-     * @param FileSystem $files    [description]
+     * @param FileSystem $files
      */
     public function __construct(Filesystem $filesystem)
     {
@@ -152,7 +152,7 @@ class FormatIdentifier {
 
     /**
      * Get the content type by file format
-     * @param  string $format [description]
+     * @param  string $format
      * @return string $contentType
      */
     public function getContentTypeByFormat($format)
