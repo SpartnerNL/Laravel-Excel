@@ -1,21 +1,21 @@
 <?php namespace Maatwebsite\Excel\Readers;
 
-use \Config;
-use \PHPExcel;
-use \domDocument;
-use \DOMNode;
-use \DOMText;
-use \DOMElement;
-use \PHPExcel_Settings;
-use \PHPExcel_Reader_HTML;
-use \PHPExcel_Style_Color;
-use \PHPExcel_Style_Border;
-use \PHPExcel_Style_Fill;
-use \PHPExcel_Style_Font;
-use \PHPExcel_Style_Alignment;
+use Config;
+use PHPExcel;
+use domDocument;
+use DOMNode;
+use DOMText;
+use DOMElement;
+use PHPExcel_Settings;
+use PHPExcel_Reader_HTML;
+use PHPExcel_Style_Color;
+use PHPExcel_Style_Border;
+use PHPExcel_Style_Fill;
+use PHPExcel_Style_Font;
+use PHPExcel_Style_Alignment;
 use Maatwebsite\Excel\Parsers\CssParser;
 use Maatwebsite\Excel\Classes\LaravelExcelWorksheet;
-use \PHPExcel_Worksheet_Drawing;
+use PHPExcel_Worksheet_Drawing;
 
 /**
  *
@@ -34,14 +34,12 @@ class Html extends PHPExcel_Reader_HTML
 
     /**
      * Input encoding
-     *
      * @var string
      */
     private $_inputEncoding = 'ANSI';
 
     /**
      * Sheet index to read
-     *
      * @var int
      */
     private $_sheetIndex    = 0;
@@ -68,7 +66,9 @@ class Html extends PHPExcel_Reader_HTML
      * Loads PHPExcel from file
      *
      * @param   string      $pFilename
-     * @return  PHPExcel
+     * @param   boolean $isString
+     * @param   PHPExcel|LaravelExcelWorksheet|null $obj
+     * @return  LaravelExcelWorksheet
      * @throws  PHPExcel_Reader_Exception
      */
     public function load($pFilename, $isString = false, $obj = false)
@@ -93,6 +93,7 @@ class Html extends PHPExcel_Reader_HTML
 
     /**
      * Set the style formats from our config file
+     * @return  array
      */
     protected function setStyleFormats()
     {
@@ -104,7 +105,8 @@ class Html extends PHPExcel_Reader_HTML
      *
      * @param   string      $pFilename
      * @param   LaravelExcelWorksheet    $sheet
-     * @return  PHPExcel
+     * @param   boolean   $isString
+     * @return  LaravelExcelWorksheet
      * @throws  PHPExcel_Reader_Exception
      */
     public function loadIntoExistingSheet($pFilename, LaravelExcelWorksheet $sheet, $isString = false)
@@ -168,8 +170,8 @@ class Html extends PHPExcel_Reader_HTML
 
     /**
      * Autosize column for document
-     *
-     * @return int
+     * @param  LaravelExcelWorksheet $sheet
+     * @return LaravelExcelWorksheet
      */
     public function autosizeColumn($sheet)
     {
@@ -196,12 +198,12 @@ class Html extends PHPExcel_Reader_HTML
 
     /**
      * Process the dom element
-     * @param  DOMNode $element     [description]
-     * @param  [type]  $sheet       [description]
-     * @param  [type]  $row         [description]
-     * @param  [type]  $column      [description]
-     * @param  [type]  $cellContent [description]
-     * @return [type]               [description]
+     * @param  DOMNode $element
+     * @param  LaravelExcelWorksheet  $sheet
+     * @param  string  $row
+     * @param  integer  $column
+     * @param  string  $cellContent
+     * @return void
      */
     private function _processDomElement(DOMNode $element, $sheet, &$row, &$column, &$cellContent){
 
@@ -593,11 +595,11 @@ class Html extends PHPExcel_Reader_HTML
 
     /**
      * Set the start column
-     * @param [type] $column [description]
+     * @param   string $column
+     * @return  string
      */
     private function _setTableStartColumn($column)
     {
-
         // Set to a
         if ($this->_tableLevel == 0)
             $column = 'A';
@@ -612,7 +614,7 @@ class Html extends PHPExcel_Reader_HTML
 
     /**
      * Get the table start column
-     * @return [type] [description]
+     * @return string
      */
     private function _getTableStartColumn()
     {
@@ -621,7 +623,7 @@ class Html extends PHPExcel_Reader_HTML
 
     /**
      * Release the table start column
-     * @return [type] [description]
+     * @return array
      */
     private function _releaseTableStartColumn()
     {
@@ -631,11 +633,11 @@ class Html extends PHPExcel_Reader_HTML
 
     /**
      * Flush the cells
-     * @param  [type] $sheet       [description]
-     * @param  [type] $column      [description]
-     * @param  [type] $row         [description]
-     * @param  [type] $cellContent [description]
-     * @return [type]              [description]
+     * @param  LaravelExcelWorksheet $sheet
+     * @param  string $column
+     * @param  integer $row
+     * @param  string $cellContent
+     * @return void
      */
     private function _flushCell($sheet,$column,$row,&$cellContent)
     {
@@ -663,11 +665,11 @@ class Html extends PHPExcel_Reader_HTML
 
     /**
      * Process table headings
-     * @param  [type] $child  [description]
-     * @param  [type] $sheet  [description]
-     * @param  [type] $row    [description]
-     * @param  [type] $column [description]
-     * @return [type]         [description]
+     * @param  string $child
+     * @param  LaravelExcelWorksheet $sheet
+     * @param  string $row
+     * @param  integer $column
+     * @return LaravelExcelWorksheet
      */
     protected function _processHeadings($child, $sheet, $row, $column, $cellContent)
     {
@@ -684,11 +686,11 @@ class Html extends PHPExcel_Reader_HTML
 
     /**
      * Style the element by class
-     * @param  [type] $sheet  [description]
-     * @param  [type] $column [description]
-     * @param  [type] $row    [description]
-     * @param  [type] $class  [description]
-     * @return [type]         [description]
+     * @param  LaravelExcelWorksheet $sheet
+     * @param  string $column
+     * @param  integer $row
+     * @param  string $class
+     * @return void
      */
     protected function styleByClass($sheet, $column, $row, $class)
     {
@@ -715,11 +717,11 @@ class Html extends PHPExcel_Reader_HTML
 
     /**
      * Style the element by class
-     * @param  [type] $sheet  [description]
-     * @param  [type] $column [description]
-     * @param  [type] $row    [description]
-     * @param  [type] $class  [description]
-     * @return [type]         [description]
+     * @param  LaravelExcelWorksheet $sheet
+     * @param  string $column
+     * @param  integer $row
+     * @param  string $class
+     * @return void
      */
     protected function styleById($sheet, $column, $row, $class)
     {
@@ -733,11 +735,11 @@ class Html extends PHPExcel_Reader_HTML
 
     /**
      * Insert a image inside the sheet
-     * @param  [type] $sheet  [description]
-     * @param  [type] $column [description]
-     * @param  [type] $row    [description]
-     * @param  [type] $src    [description]
-     * @return [type]         [description]
+     * @param  LaravelExcelWorksheet $sheet
+     * @param  string   $column
+     * @param  integer  $row
+     * @param  string   $attributes
+     * @return void
      */
     protected function insertImageBySrc($sheet, $column, $row, $attributes)
     {
@@ -771,11 +773,11 @@ class Html extends PHPExcel_Reader_HTML
 
     /**
      * Set column width
-     * @param  [type] $sheet  [description]
-     * @param  [type] $column [description]
-     * @param  [type] $row    [description]
-     * @param  [type] $width  [description]
-     * @return [type]         [description]
+     * @param  LaravelExcelWorksheet $sheet
+     * @param  string   $column
+     * @param  integer  $row
+     * @param  integer   $width
+     * @return void
      */
     protected function parseWidth($sheet, $column, $row, $width)
     {
@@ -784,11 +786,11 @@ class Html extends PHPExcel_Reader_HTML
 
     /**
      * Set row height
-     * @param  [type] $sheet  [description]
-     * @param  [type] $column [description]
-     * @param  [type] $row    [description]
-     * @param  [type] $height [description]
-     * @return [type]         [description]
+     * @param  LaravelExcelWorksheet $sheet
+     * @param  string $column
+     * @param  integer $row
+     * @param  integer $height
+     * @return void
      */
     protected function parseHeight($sheet, $column, $row, $height)
     {
@@ -797,11 +799,11 @@ class Html extends PHPExcel_Reader_HTML
 
     /**
      * Parse colspans
-     * @param  [type] $sheet  [description]
-     * @param  [type] $column [description]
-     * @param  [type] $row    [description]
-     * @param  [type] $tag    [description]
-     * @return [type]         [description]
+     * @param  LaravelExcelWorksheet $sheet
+     * @param  string $column
+     * @param  integer $row
+     * @param  integer $spanWidth
+     * @return void
      */
     protected function parseColSpan($sheet, $column, $row, $spanWidth)
     {
@@ -827,11 +829,11 @@ class Html extends PHPExcel_Reader_HTML
 
     /**
      * Parse colspans
-     * @param  [type] $sheet  [description]
-     * @param  [type] $column [description]
-     * @param  [type] $row    [description]
-     * @param  [type] $tag    [description]
-     * @return [type]         [description]
+     * @param  LaravelExcelWorksheet $sheet
+     * @param  string $column
+     * @param  integer $row
+     * @param  integer $spanHeight
+     * @return void
      */
     protected function parseRowSpan($sheet, $column, $row, $spanHeight)
     {
@@ -847,11 +849,11 @@ class Html extends PHPExcel_Reader_HTML
 
     /**
      * Parse the align
-     * @param  [type] $sheet  [description]
-     * @param  [type] $column [description]
-     * @param  [type] $row    [description]
-     * @param  [type] $value  [description]
-     * @return [type]         [description]
+     * @param  LaravelExcelWorksheet $sheet
+     * @param  string $column
+     * @param  integer $row
+     * @param  string $value
+     * @return void
      */
     protected function parseAlign($sheet, $column, $row, $value)
     {
@@ -886,11 +888,11 @@ class Html extends PHPExcel_Reader_HTML
 
     /**
      * Parse the valign
-     * @param  [type] $sheet  [description]
-     * @param  [type] $column [description]
-     * @param  [type] $row    [description]
-     * @param  [type] $value  [description]
-     * @return [type]         [description]
+     * @param  LaravelExcelWorksheet $sheet
+     * @param  string $column
+     * @param  integer $row
+     * @param  string $value
+     * @return void
      */
     protected function parseValign($sheet, $column, $row, $value)
     {
@@ -925,11 +927,11 @@ class Html extends PHPExcel_Reader_HTML
 
     /**
      * Parse the inline styles
-     * @param  [type] $sheet    [description]
-     * @param  [type] $column   [description]
-     * @param  [type] $row      [description]
-     * @param  [type] $styleTag [description]
-     * @return [type]           [description]
+     * @param  LaravelExcelWorksheet $sheet
+     * @param  string $column
+     * @param  integer $row
+     * @param  string $styleTag
+     * @return void
      */
     protected function parseInlineStyles($sheet, $column, $row, $styleTag)
     {
@@ -941,11 +943,11 @@ class Html extends PHPExcel_Reader_HTML
 
     /**
      * Parse the styles
-     * @param  [type] $sheet  [description]
-     * @param  [type] $column [description]
-     * @param  [type] $row    [description]
-     * @param  [type] $styles [description]
-     * @return [type]         [description]
+     * @param  LaravelExcelWorksheet $sheet
+     * @param  string $column
+     * @param  integer $row
+     * @param  array @styles
+     * @return void
      */
     protected function parseCssAttributes($sheet, $column, $row, $styles = array())
     {
@@ -961,12 +963,12 @@ class Html extends PHPExcel_Reader_HTML
 
     /**
      * Parse CSS
-     * @param  [type] $sheet  [description]
-     * @param  [type] $column [description]
-     * @param  [type] $row    [description]
-     * @param  [type] $name   [description]
-     * @param  [type] $value  [description]
-     * @return [type]         [description]
+     * @param  LaravelExcelWorksheet $sheet
+     * @param  string $column
+     * @param  integer $row
+     * @param  string $name
+     * @param  string $value
+     * @return void
      */
     protected function parseCssProperties($sheet, $column, $row, $name, $value)
     {
@@ -1178,8 +1180,8 @@ class Html extends PHPExcel_Reader_HTML
 
     /**
      * Get the color
-     * @param  [type] $color [description]
-     * @return [type]        [description]
+     * @param  string $color
+     * @return string
      */
     public function getColor($color)
     {
@@ -1190,13 +1192,12 @@ class Html extends PHPExcel_Reader_HTML
             $color = $color . $color;
 
         return $color;
-
     }
 
     /**
      * Get the border style
-     * @param  [type] $style [description]
-     * @return [type]        [description]
+     * @param  string $style
+     * @return string
      */
     public function borderStyle($style)
     {

@@ -1,7 +1,7 @@
 <?php namespace Maatwebsite\Excel\Classes;
 
 use Illuminate\Support\Facades\Config;
-use \PHPExcel as PHPOffice_PHPExcel;
+use PHPExcel as PHPOffice_PHPExcel;
 
 /**
  *
@@ -36,7 +36,8 @@ class PHPExcel extends PHPOffice_PHPExcel
      * Create sheet and add it to this workbook
      *
      * @param  int|null $iSheetIndex Index where sheet should go (0,1,..., or null for last)
-     * @return PHPExcel_Worksheet
+     * @param string $title
+     * @return LaravelExcelWorksheet
      * @throws PHPExcel_Exception
      */
     public function createSheet($iSheetIndex = NULL, $title = false)
@@ -53,8 +54,8 @@ class PHPExcel extends PHPOffice_PHPExcel
 
     /**
      * Check if the user change change the workbook property
-     * @param  [type]  $method [description]
-     * @return boolean         [description]
+     * @param  string  $method
+     * @return boolean
      */
     public function isChangeableProperty($method)
     {
@@ -65,7 +66,8 @@ class PHPExcel extends PHPOffice_PHPExcel
 
     /**
      * Set default properties
-     * @param [type] $custom [description]
+     * @param string $custom
+     * @return  void
      */
     public function setDefaultProperties($custom)
     {
@@ -88,7 +90,7 @@ class PHPExcel extends PHPOffice_PHPExcel
 
     /**
      * Return all allowed properties
-     * @return [type] [description]
+     * @return array
      */
     public function getAllowedProperties()
     {

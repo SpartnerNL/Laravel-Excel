@@ -160,6 +160,7 @@ class Excel
 
     /**
      * Dynamically call methods
+     * @throws LaravelExcelException
      */
     public function __call($method, $params)
     {

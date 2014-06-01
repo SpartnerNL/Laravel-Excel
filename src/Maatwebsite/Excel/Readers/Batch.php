@@ -1,6 +1,6 @@
 <?php namespace Maatwebsite\Excel\Readers;
 
-use \Closure;
+use Closure;
 use Maatwebsite\Excel\Excel;
 use Maatwebsite\Excel\Exceptions\LaravelExcelException;
 
@@ -19,13 +19,13 @@ class Batch {
 
     /**
      * Excel object
-     * @var [type]
+     * @var Excel
      */
     protected $excel;
 
     /**
      * Batch files
-     * @var [type]
+     * @var array
      */
     public $files = array();
 
@@ -40,8 +40,11 @@ class Batch {
     );
 
     /**
-     * Start the batch
-     * @return [type] [description]
+     * Start the Batach
+     * @param  Excel   $excel
+     * @param  array  $files
+     * @param  Closure $callback
+     * @return Excel
      */
     public function start(Excel $excel, $files, Closure $callback)
     {
@@ -70,7 +73,7 @@ class Batch {
 
     /**
      * Get the files
-     * @return [type] [description]
+     * @return array
      */
     public function getFiles()
     {
@@ -79,7 +82,9 @@ class Batch {
 
     /**
      * Set the batch files
-     * @param [type] $files [description]
+     * @param array|string $files
+     * @throws LaravelExcelException
+     * @return void
      */
     protected function _setFiles($files)
     {
@@ -102,8 +107,8 @@ class Batch {
 
     /**
      * Set files by array
-     * @param  [type] $array [description]
-     * @return [type]        [description]
+     * @param  array $array
+     * @return void
      */
     protected function _getFilesByArray($array)
     {
@@ -116,8 +121,8 @@ class Batch {
 
     /**
      * Get all files inside a folder
-     * @param  [type] $folder [description]
-     * @return [type]         [description]
+     * @param  string $folder
+     * @return array
      */
     protected function _getFilesByFolder($folder)
     {

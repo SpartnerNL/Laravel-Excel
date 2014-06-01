@@ -17,20 +17,20 @@ class CellWriter {
 
     /**
      * Current $sheet
-     * @var [type]
+     * @var LaravelExcelWorksheet
      */
     public $sheet;
 
     /**
      * Selected cells
-     * @var [type]
+     * @var array
      */
     public $cells;
 
     /**
      * Constructor
-     * @param [type]                $cells [description]
-     * @param LaravelExcelWorksheet $sheet [description]
+     * @param [type]                $cells
+     * @param LaravelExcelWorksheet $sheet
      */
     public function __construct($cells, LaravelExcelWorksheet $sheet)
     {
@@ -40,7 +40,8 @@ class CellWriter {
 
     /**
      * Set cell value
-     * @param [type] $value [description]
+     * @param [type] $value
+     * @return  CellWriter
      */
     public function setValue($value)
     {
@@ -55,9 +56,10 @@ class CellWriter {
 
     /**
      * Set the background
-     * @param [type] $color     [description]
-     * @param string $type      [description]
-     * @param string $colorType [description]
+     * @param string $color
+     * @param string $type
+     * @param string $colorType
+     * @return  CellWriter
      */
     public function setBackground($color, $type = 'solid', $colorType = 'rgb')
     {
@@ -66,8 +68,9 @@ class CellWriter {
 
     /**
      * Set the font color
-     * @param [type] $color     [description]
-     * @param string $colorType [description]
+     * @param string $color
+     * @param string $colorType
+     * @return  CellWriter
      */
     public function setFontColor($color, $colorType = 'rgb')
     {
@@ -76,7 +79,8 @@ class CellWriter {
 
     /**
      * Set the font
-     * @param [type] $right [description]
+     * @param array $right
+     * @return  CellWriter
      */
     public function setFont($styles)
     {
@@ -85,7 +89,8 @@ class CellWriter {
 
     /**
      * Set font family
-     * @param [type] $family [description]
+     * @param string $family
+     * @return  CellWriter
      */
     public function setFontFamily($family)
     {
@@ -96,6 +101,8 @@ class CellWriter {
 
     /**
      * Set font size
+     * @param  string $size
+     * @return  CellWriter
      */
     public function setFontSize($size)
     {
@@ -106,10 +113,11 @@ class CellWriter {
 
     /**
      * Set border
-     * @param [type]  $top    [description]
-     * @param boolean $right  [description]
-     * @param boolean $bottom [description]
-     * @param boolean $left   [description]
+     * @param string  $top
+     * @param boolean $right
+     * @param boolean $bottom
+     * @param boolean $left
+     * @return  CellWriter
      */
     public function setBorder($top = 'none', $right = 'none', $bottom = 'none', $left = 'none')
     {
@@ -136,7 +144,8 @@ class CellWriter {
 
     /**
      * Set the alignment
-     * @param [type] $alignment [description]
+     * @param string $alignment
+     * @return  CellWriter
      */
     public function setAlignment($alignment)
     {
@@ -147,7 +156,8 @@ class CellWriter {
 
     /**
      * Set vertical alignment
-     * @param [type] $alignment [description]
+     * @param string $alignment
+     * @return  CellWriter
      */
     public function setValignment($alignment)
     {
@@ -158,10 +168,11 @@ class CellWriter {
 
     /**
      * Set the color style
-     * @param [type]  $style     [description]
-     * @param [type]  $color     [description]
-     * @param boolean $type      [description]
-     * @param string  $colorType [description]
+     * @param string  $style
+     * @param string  $color
+     * @param boolean $type
+     * @param string  $colorType
+     * @return  CellWriter
      */
     protected function setColorStyle($styleType, $color, $type = false, $colorType = 'rgb')
     {
@@ -176,7 +187,9 @@ class CellWriter {
 
     /**
      * Set style
-     * @param [type] $styles [description]
+     * @param string $styles
+     * @param  array $styles
+     * @return  CellWriter
      */
     protected function setStyle($styleType, $styles)
     {
@@ -193,7 +206,7 @@ class CellWriter {
 
     /**
      * Get the cell style
-     * @return [type] [description]
+     * @return PHPExcel_Style
      */
     protected function getCellStyle()
     {

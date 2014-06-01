@@ -1,6 +1,6 @@
 <?php namespace Maatwebsite\Excel\Exceptions;
 
-use \PHPExcel_Exception;
+use PHPExcel_Exception;
 
 /**
  *
