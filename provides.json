@@ -1,0 +1,11 @@
+{
+  "providers": [
+    "Maatwebsite\Excel\ExcelServiceProvider"
+  ],
+  "aliases": [
+    {
+      "alias": "Excel",
+      "facade": "Maatwebsite\Excel\Facades\Excel"
+    }
+  ]
+}
