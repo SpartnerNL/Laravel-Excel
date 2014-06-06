@@ -431,7 +431,7 @@ class LaravelExcelWriter {
         if($this->format == 'CSV')
         {
             $this->writer->setDelimiter(Config::get('excel::csv.delimiter', ','));
-            $this->writer->setEnclosure(Config::get('excel::csv.enclosure', ''));
+            $this->writer->setEnclosure(Config::get('excel::csv.enclosure', '"'));
             $this->writer->setLineEnding(Config::get('excel::csv.line_ending', "\r\n"));
         }
 
