@@ -683,7 +683,7 @@ class LaravelExcelReader {
         if($this->format == 'CSV')
         {
             $this->reader->setDelimiter(Config::get('excel::csv.delimiter', ','));
-            $this->reader->setEnclosure(Config::get('excel::csv.enclosure', ''));
+            $this->reader->setEnclosure(Config::get('excel::csv.enclosure', '"'));
             $this->reader->setLineEnding(Config::get('excel::csv.line_ending', "\r\n"));
         }
 
