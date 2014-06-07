@@ -23,6 +23,15 @@ class ExcelWriterTest extends TestCase {
     }
 
     /**
+     * Test the excel injection
+     * @return [type] [description]
+     */
+    public function testExcelInjection()
+    {
+        $this->assertEquals($this->excel, $this->writer->getExcel());
+    }
+
+    /**
      * Test setTitle()
      * @return [type] [description]
      */
