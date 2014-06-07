@@ -48,3 +48,18 @@ There are a couple of properties we can change inside the closure. Most of them 
     })->export('xls');
 
 > Go to the reference guide to see a list of available properties.
+
+### Default page margin
+
+It's possible to set the default page margin insde the config file `excel::export.sheets`.
+It accepts boolean, single value or array.
+
+To manually set the page margin you can use: `->setPageMargin()`
+
+    // Set top, right, bottom, left
+    $sheet->setPageMargin(array(
+        0.25, 0.30, 0.25, 0.30
+    ));
+
+    // Set all margins
+    $sheet->setPageMargin(0.25);
