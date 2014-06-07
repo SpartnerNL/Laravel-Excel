@@ -359,16 +359,9 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet
      * @param boolean $headingGeneration
      * @return LaravelExcelWorksheet
      */
-    public function fromModel($source = NULL, $headingGeneration = true)
+    public function fromModel($source = NULL, $nullValue = null, $startCell = false, $strictNullComparison = false, $headingGeneration = true)
     {
-        // Set the heading generation setting
-        $this->setAutoHeadingGeneration($headingGeneration);
-
-        // Add the vars
-        $this->_addVars($source);
-
-        // create from array
-        return parent::fromArray($this->data);
+        return $this->fromArray($source, $nullValue, $startCell, $strictNullComparison, $headingGeneration);
     }
 
     /**
@@ -381,14 +374,20 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet
      * @throws PHPExcel_Exception
      * @return LaravelExcelWorksheet
      */
-    public function fromArray($source = null, $nullValue = null, $startCell = false, $strictNullComparison = false)
+    public function fromArray($source = null, $nullValue = null, $startCell = false, $strictNullComparison = false, $headingGeneration = true)
     {
         // Set defaults
-        $nullValue = !is_null($nullValue) ? $nullValue : $this->getDefaultNullValue();
-        $startCell = $startCell ? $startCell : $this->getDefaultStartCell();
+        $nullValue            = !is_null($nullValue) ? $nullValue : $this->getDefaultNullValue();
+        $startCell            = $startCell ? $startCell : $this->getDefaultStartCell();
         $strictNullComparison = $strictNullComparison ? $strictNullComparison : $this->getDefaultStrictNullComparison();
 
-        return parent::fromArray($source, $nullValue, $startCell, $strictNullComparison);
+        // Set the heading generation setting
+        $this->setAutoHeadingGeneration($headingGeneration);
+
+        // Add the vars
+        $this->_addVars($source);
+
+        return parent::fromArray($this->data, $nullValue, $startCell, $strictNullComparison);
     }
 
     /**
@@ -407,7 +406,12 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet
 
             // Create excel from array without a view
             if(!$this->parser)
-                return $this->fromArray($this->data);
+            {
+                $nullValue            = $this->getDefaultNullValue();
+                $startCell            = $this->getDefaultStartCell();
+                $strictNullComparison = $this->getDefaultStrictNullComparison();
+                return parent::fromArray($this->data, $nullValue, $startCell, $strictNullComparison);
+            }
         }
 
         // Add seperate values
@@ -485,8 +489,12 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet
 
         }
 
+        // Add results
+        if(!empty($data))
+            $this->data = !empty($this->data) ? array_merge($this->data, $data) : $data;
+
         // return data
-        return array_merge($this->data, $data);
+        return $this->data;
     }
 
     /**
