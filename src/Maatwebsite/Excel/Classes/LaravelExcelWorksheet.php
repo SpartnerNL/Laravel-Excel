@@ -125,6 +125,40 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet
             if(!is_null($value))
                 call_user_func_array(array($pageSetup, $setter), array($value));
         }
+
+        // Set default page margins
+        $this->setPageMargin(Config::get('excel::export.sheets.page_margin', false));
+    }
+
+    /**
+     * Set the page margin
+     * @param array $margin [description]
+     */
+    public function setPageMargin($margin = false)
+    {
+        if(!is_array($margin))
+        {
+            $marginArray = array($margin, $margin, $margin, $margin);
+        }
+        else
+        {
+            $marginArray = $margin;
+        }
+
+        // Get margin
+        $pageMargin = $this->getPageMargins();
+
+        if(isset($marginArray[0]))
+            $pageMargin->setTop($marginArray[0]);
+
+        if(isset($marginArray[1]))
+            $pageMargin->setRight($marginArray[1]);
+
+        if(isset($marginArray[2]))
+            $pageMargin->setBottom($marginArray[2]);
+
+        if(isset($marginArray[3]))
+            $pageMargin->setLeft($marginArray[3]);
     }
 
     /**

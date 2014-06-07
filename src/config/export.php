@@ -24,7 +24,6 @@ return array(
     */
     'generate_heading_by_indices'  => true,
 
-
     /*
     |--------------------------------------------------------------------------
     | Auto set aligment on merged cells
@@ -38,6 +37,20 @@ return array(
     |--------------------------------------------------------------------------
     */
     'sheets'    => array(
+
+        /*
+        |--------------------------------------------------------------------------
+        | Default page margin
+        |--------------------------------------------------------------------------
+        |
+        | 1) When set to false, default margins will be used
+        | 2) It's possible to enter a single margin which will
+        |    be used for all margins.
+        | 3) Alternativly you can pass an array with 4 margins
+        |    Default order: array(top, right, bottom, left)
+        |
+        */
+        'page_margin'           => false,
 
         /*
         |--------------------------------------------------------------------------
