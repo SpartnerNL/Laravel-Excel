@@ -1,7 +1,7 @@
 <?php namespace Maatwebsite\Excel;
 
-use \Closure;
-use \PHPExcel;
+use Closure;
+use PHPExcel;
 use Maatwebsite\Excel\Readers\Batch;
 use Maatwebsite\Excel\Readers\LaravelExcelReader;
 use Maatwebsite\Excel\Writers\LaravelExcelWriter;
@@ -22,29 +22,27 @@ class Excel
 {
     /**
      * Excel object
-     * @var [type]
+     * @var PHPExcel
      */
     protected $excel;
 
     /**
      * Reader object
-     * @var [type]
+     * @var LaravelExcelReader
      */
     protected $reader;
 
     /**
      * Writer object
-     * @var [type]
+     * @var LaravelExcelWriter
      */
     protected $writer;
 
     /**
      * Construct Excel
-     * @param PHPExcel    $excel      [description]
-     * @param HTML_reader $htmlReader [description]
-     * @param Config      $config     [description]
-     * @param View        $view       [description]
-     * @param File        $file       [description]
+     * @param  PHPExcel $excel
+     * @param  LaravelExcelReader $reader
+     * @param  LaravelExcelWriter $writer
      */
     public function __construct(PHPExcel $excel, LaravelExcelReader $reader, LaravelExcelWriter $writer)
     {
@@ -56,10 +54,11 @@ class Excel
 
     /**
      * Create a new file
-     * @param  [type] $title [description]
-     * @return [type]        [description]
+     * @param  string $title
+     * @param  callable|null $callback
+     * @return LaravelExcelWriter
      */
-    public function create($title, $callback = false)
+    public function create($title, $callback = null)
     {
         // Set the default properties
         $this->excel->setDefaultProperties(array(
@@ -87,12 +86,13 @@ class Excel
      *
      *  Load an existing file
      *
-     *  @param str $file The file we want to load
-     *  @param closure A callback
-     *  @return $this
+     *  @param  string $file The file we want to load
+     *  @param  callback|null $callback
+     *  @param  string|null $encoding
+     *  @return LaravelExcelReader
      *
      */
-    public function load($file, $callback = false, $encoding = false)
+    public function load($file, $callback = null, $encoding = null)
     {
         // Inject excel object
         $this->reader->injectExcel($this->excel);
@@ -113,8 +113,8 @@ class Excel
 
     /**
      * Set select sheets
-     * @param  [type] $sheets [description]
-     * @return [type]         [description]
+     * @param  $sheets
+     * @return LaravelExcelReader
      */
     public function selectSheets($sheets)
     {
@@ -124,7 +124,9 @@ class Excel
 
     /**
      * Batch import
-     * @return [type] [description]
+     * @param  $files
+     * @param  callback $callback
+     * @return PHPExcel
      */
     public function batch($files, Closure $callback)
     {
@@ -134,7 +136,10 @@ class Excel
 
     /**
      * Create a new file and share a view
-     * @return [type] [description]
+     * @param  string $view
+     * @param  array  $data
+     * @param  array  $mergeData
+     * @return LaravelExcelWriter
      */
     public function shareView($view, $data = array(), $mergeData = array())
     {
@@ -143,7 +148,10 @@ class Excel
 
     /**
      * Create a new file and load a view
-     * @return [type] [description]
+     * @param  string $view
+     * @param  array  $data
+     * @param  array  $mergeData
+     * @return LaravelExcelWriter
      */
     public function loadView($view, $data = array(), $mergeData = array())
     {
@@ -152,9 +160,7 @@ class Excel
 
     /**
      * Dynamically call methods
-     * @param  [type] $method [description]
-     * @param  [type] $params [description]
-     * @return [type]         [description]
+     * @throws LaravelExcelException
      */
     public function __call($method, $params)
     {

@@ -1,5 +1,24 @@
 # Version 1
 
+### 1.1.0
+
+- `Limit()`, `skip()` and `take()` support for fetching results
+- Set default page margins
+- Export Eloquent models directly (`fromModel()`)
+- Auto generate the first row (table heading) from the array keys
+- Manipulate cells and cell ranges inside a closure
+- Set cell backgrounds/fonts/values, ...
+- Create/append/prepend new row/rows
+- Manipulate row cells (background, fonts, ...)
+- Config value default alignment on merge cells
+- DocBlock updates to support better use of IDE autocomplete features
+- Parse width and height inside views
+- Parse images in views
+- Optional to ASCII conversion of imported header columns (array indices)
+- Config values for default null comparision and start cells for exports
+- Changed default CSV enclosure to `"`
+- Support for Laravel package installer
+
 ### 1.0.9
 
 - Blade to Excel export fix for PHP5.3

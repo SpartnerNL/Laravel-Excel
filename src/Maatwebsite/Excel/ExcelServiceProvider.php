@@ -141,7 +141,7 @@ class ExcelServiceProvider extends ServiceProvider {
 
 	/**
 	 * Bind other classes
-	 * @return [type] [description]
+	 * @return void
 	 */
 	protected function bindClasses()
 	{

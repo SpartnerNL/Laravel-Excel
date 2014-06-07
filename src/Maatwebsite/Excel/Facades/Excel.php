@@ -17,7 +17,7 @@ class Excel extends Facade {
 
     /**
      * Return facade accessor
-     * @return [type] [description]
+     * @return string
      */
 	protected static function getFacadeAccessor()
 	{

@@ -1,8 +1,8 @@
 <?php namespace Maatwebsite\Excel\Classes;
 
-use \Config;
-use \PHPExcel_Settings;
-use \PHPExcel_CachedObjectStorageFactory;
+use Config;
+use PHPExcel_Settings;
+use PHPExcel_CachedObjectStorageFactory;
 
 class Cache {
 
@@ -52,7 +52,7 @@ class Cache {
 
     /**
      * Init the cache
-     * @return [type] [description]
+     * @return void
      */
     public function init()
     {
@@ -65,6 +65,7 @@ class Cache {
 
     /**
      * Set the right driver
+     * @return void
      */
     public function findDriver()
     {
@@ -74,7 +75,7 @@ class Cache {
 
     /**
      * Detect the caching driver
-     * @return [type] [description]
+     * @return string $driver
      */
     protected function detect()
     {
@@ -87,6 +88,7 @@ class Cache {
 
     /**
      * Add additional settings for the current driver
+     * @return  void
      */
     protected function addAdditionalSettings()
     {
@@ -115,7 +117,7 @@ class Cache {
 
     /**
      * Check if caching is enabled
-     * @return boolean [description]
+     * @return boolean
      */
     public function isEnabled()
     {

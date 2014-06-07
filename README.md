@@ -1,4 +1,4 @@
-## Laravel Excel v1.0.9
+## Laravel Excel v1.1.0
 
 [<img src="http://www.maatwebsite.nl/img/excel_banner.jpg"/>](http://www.maatwebsite.nl/laravel-excel/docs)
 

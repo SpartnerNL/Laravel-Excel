@@ -39,7 +39,7 @@ To change the font for the current sheet use `->setFont($array)`:
 You can set borders for the sheet, by using:
 
     // Sets all borders
-    $sheet->setAllBorder('thin');
+    $sheet->setAllBorders('thin');
 
     // Set border for cells
     $sheet->setBorder('A1', 'thin');

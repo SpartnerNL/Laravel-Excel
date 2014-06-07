@@ -1,6 +1,6 @@
 <?php namespace Maatwebsite\Excel\Parsers;
 
-use \URL;
+use URL;
 
 /**
  *
@@ -29,13 +29,13 @@ class CssParser {
 
     /**
      * Document DOM
-     * @var [type]
+     * @var domDocument
      */
     public $dom;
 
     /**
      * DOM xml
-     * @var [type]
+     * @var SimpleXMLElement
      */
     protected $xml;
 
@@ -47,13 +47,14 @@ class CssParser {
 
     /**
      * Url scheme
-     * @var [type]
+     * @var string
      */
     protected $scheme;
 
     /**
      * Construct the view parser
-     * @param HTML_Reader $reader [description]
+     * @param domDocument $dom
+     * @return  void
      */
     public function __construct($dom)
     {
@@ -63,9 +64,9 @@ class CssParser {
 
     /**
      * Lookup the class or id
-     * @param  [type] $type [description]
-     * @param  [type] $name [description]
-     * @return [type]       [description]
+     * @param  string $type
+     * @param  string $name
+     * @return array
      */
     public function lookup($type, $name)
     {
@@ -92,7 +93,7 @@ class CssParser {
 
     /**
      * Return array with CSS attributes
-     * @return [type] [description]
+     * @return array
      */
     public function toArray()
     {
@@ -101,7 +102,7 @@ class CssParser {
 
     /**
      * Find the stylesheets inside the view
-     * @return [type] [description]
+     * @return CssParser
      */
     protected function findStyleSheets()
     {
@@ -124,7 +125,7 @@ class CssParser {
 
     /**
      * Parse the links to css
-     * @return [type] [description]
+     * @return void
      */
     protected function parse()
     {
@@ -137,8 +138,8 @@ class CssParser {
 
     /**
      * Break CSS into a PHP array
-     * @param  [type] $css [description]
-     * @return [type]      [description]
+     * @param  string $css
+     * @return void
      */
     protected function breakCSSToPHP($css)
     {
@@ -155,7 +156,9 @@ class CssParser {
 
     /**
      * Break css into attributes
-     * @return [type] [description]
+     * @param  integer $i
+     * @param  array $mathces
+     * @return void
      */
     protected function breakIntoAttributes($i, $matches)
     {
@@ -171,7 +174,10 @@ class CssParser {
 
     /**
      * Break into css properties
-     * @return [type] [description]
+     * @param string $attribute
+     * @param integer $i
+     * @param array $matches
+     * @return void
      */
     protected function breakIntoProperties($attribute, $i, $matches)
     {
@@ -185,8 +191,8 @@ class CssParser {
 
     /**
      * Return a clean value
-     * @param  [type] $value [description]
-     * @return [type]        [description]
+     * @param  string $value
+     * @return string
      */
     protected function cleanValue($value)
     {
@@ -197,7 +203,7 @@ class CssParser {
 
     /**
      * Import the dom
-     * @return [type] [description]
+     * @return SimpleXMLElement
      */
     protected function importDom()
     {
@@ -206,7 +212,7 @@ class CssParser {
 
     /**
      * Get all stylesheet tags
-     * @return [type] [description]
+     * @return array
      */
     protected function getStyleSheetTags()
     {
@@ -215,8 +221,8 @@ class CssParser {
 
     /**
      * Get the clean link to the stylesheet
-     * @param  [type] $node [description]
-     * @return [type]       [description]
+     * @param  string $node
+     * @return string
      */
     protected function getCleanStyleSheetLink($node)
     {
@@ -237,7 +243,7 @@ class CssParser {
 
     /**
      * Get the URL scheme
-     * @return [type] [description]
+     * @return string
      */
     protected function getUrlScheme()
     {
@@ -249,8 +255,8 @@ class CssParser {
 
     /**
      * Get css from link
-     * @param  [type] $link [description]
-     * @return [type]       [description]
+     * @param  string $link
+     * @return string|boolean
      */
     protected function getCssFromLink($link)
     {

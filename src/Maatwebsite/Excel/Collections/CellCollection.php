@@ -38,7 +38,8 @@ class CellCollection extends ExcelCollection {
 
     /**
      * Set the items
-     * @param [type] $items [description]
+     * @param array $items
+     * @return void
      */
     public function setItems($items)
     {
@@ -51,8 +52,8 @@ class CellCollection extends ExcelCollection {
 
     /**
      * Dynamically get values
-     * @param  [type] $key [description]
-     * @return [type]      [description]
+     * @param  string $key
+     * @return string
      */
     public function __get($key)
     {

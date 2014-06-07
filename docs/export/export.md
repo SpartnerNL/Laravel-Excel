@@ -24,3 +24,5 @@ To download the created file, use `->export($ext)` or `->download($ext)`.
 
     // or
     ->download('csv');
+
+> You can set the default enclosure and delimiter inside the config

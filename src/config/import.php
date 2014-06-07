@@ -7,7 +7,7 @@ return array(
     | Has heading
     |--------------------------------------------------------------------------
     |
-    | The sheet has a heading row which we can use as attribute names
+    | The sheet has a heading (first) row which we can use as attribute names
     |
     */
 
@@ -23,6 +23,17 @@ return array(
     */
 
     'seperator' => '_',
+
+    /*
+    |--------------------------------------------------------------------------
+    | Sheet heading conversion
+    |--------------------------------------------------------------------------
+    |
+    | Convert headings to ASCII
+    |
+    */
+
+    'to_ascii'  =>  true,
 
     /*
     |--------------------------------------------------------------------------

@@ -1,11 +1,11 @@
 <?php namespace Maatwebsite\Excel\Parsers;
 
-use \Config;
+use Config;
 use Carbon\Carbon;
-use \PHPExcel_Cell;
-use \PHPExcel_Shared_Date;
+use PHPExcel_Cell;
+use PHPExcel_Shared_Date;
 use Illuminate\Support\Str;
-use \PHPExcel_Style_NumberFormat;
+use PHPExcel_Style_NumberFormat;
 use Maatwebsite\Excel\Collections\RowCollection;
 use Maatwebsite\Excel\Collections\CellCollection;
 use Maatwebsite\Excel\Collections\SheetCollection;
@@ -32,37 +32,37 @@ class ExcelParser {
 
     /**
      * Reader object
-     * @var [type]
+     * @var LaravelExcelReader
      */
     protected $reader;
 
     /**
      * Excel object
-     * @var [type]
+     * @var PHPExcel
      */
     protected $excel;
 
     /**
      * Worksheet object
-     * @var [type]
+     * @var LaravelExcelWorksheet
      */
     protected $worksheet;
 
     /**
      * Row object
-     * @var [type]
+     * @var PHPExcel_Worksheet_Row
      */
     protected $row;
 
     /**
      * Cell object
-     * @var [type]
+     * @var PHPExcel_Cell
      */
     protected $cell;
 
     /**
      * Indices
-     * @var [type]
+     * @var array
      */
     protected $indices;
 
@@ -76,10 +76,18 @@ class ExcelParser {
      * Row counter
      * @var integer
      */
-    protected $r = 0;
+    protected $currentRow = 1;
+
+    /**
+     * Default startrow
+     * @var integer
+     */
+    protected $defaultStartRow = 1;
 
     /**
      * Construct excel parser
+     * @param LaravelExcelReader $reader
+     * @return  void
      */
     public function  __construct($reader)
     {
@@ -88,11 +96,9 @@ class ExcelParser {
     }
 
     /**
-     *
      *  Parse the file
-     *
-     *  @return $this
-     *
+     *  @param array $columns
+     *  @return SheetCollection
      */
     public function parseFile($columns = array())
     {
@@ -138,7 +144,7 @@ class ExcelParser {
 
     /**
      * Check if we want to parse it as multiple sheets
-     * @return [type] [description]
+     * @return boolean
      */
     protected function parseAsMultiple()
     {
@@ -147,7 +153,7 @@ class ExcelParser {
 
     /**
      * Parse the worksheet
-     * @return [type] [description]
+     * @return RowCollection
      */
     protected function parseWorksheet()
     {
@@ -165,11 +171,8 @@ class ExcelParser {
     }
 
     /**
-     *
-     *  Get the labels
-     *
-     *  @return $this
-     *
+     *  Get the indices
+     *  @return array
      */
     protected function getIndices()
     {
@@ -180,10 +183,17 @@ class ExcelParser {
         $this->indices = array();
 
         // Loop through the cells
-        foreach ($this->row->getCellIterator() as $this->cell) {
-
+        foreach ($this->row->getCellIterator() as $this->cell)
+        {
             // Set labels
-            $this->indices[] = Str::slug($this->cell->getValue(), $this->reader->getSeperator());
+            if(Config::get('excel::import.to_ascii', true))
+            {
+                $this->indices[] = Str::slug($this->cell->getValue(), $this->reader->getSeperator());
+            }
+            else
+            {
+                $this->indices[] = strtolower(str_replace(array(' '), $this->reader->getSeperator(), $this->cell->getValue()));
+            }
         }
 
         // Return the labels
@@ -191,34 +201,29 @@ class ExcelParser {
     }
 
     /**
-     *
      *  Parse the rows
-     *
-     *  @return $this
-     *
+     *  @return RowCollection
      */
     protected function parseRows()
     {
         // Set empty parsedRow array
         $parsedRows = new RowCollection();
 
-        // Set if we have to ignore rows
-        $ignore = $this->reader->hasHeading() ? 1 : 0;
+        // Get the startrow
+        $startRow = $this->getStartRow();
 
         // Loop through the rows inside the worksheet
-        foreach ($this->worksheet->getRowIterator() as $this->row) {
-
-            // Limit the results
-            if($this->checkForLimit())
+        foreach ($this->worksheet->getRowIterator($startRow) as $this->row)
+        {
+            // Limit the results when needed
+            if($this->hasReachedLimit())
                 break;
 
-            // Ignore first row when needed
-            if($this->r >= $ignore)
-                // Push the parsed cells inside the parsed rows
-                $parsedRows->push($this->parseCells());
+            // Push the parsed cells inside the parsed rows
+            $parsedRows->push($this->parseCells());
 
             // Count the rows
-            $this->r++;
+            $this->currentRow++;
         }
 
         // Return the parsed array
@@ -226,18 +231,45 @@ class ExcelParser {
     }
 
     /**
-     * Check for the limit
-     * @return [type] [description]
+     * Get the startrow
+     * @return integer
      */
-    protected function checkForLimit()
+    protected function getStartRow()
     {
+        // Set default start row
+        $startRow = $this->defaultStartRow;
+
+        // If the reader has a heading, skip the first row
+        if($this->reader->hasHeading())
+            $startRow++;
+
+        // Get the amount of rows to skip
+        $skip = $this->reader->getSkip();
+
+        // If we want to skip rows, add the amount of rows
+        if($skip > 0)
+            $startRow = $startRow + $skip;
+
+        // Return the startrow
+        return $startRow;
+    }
+
+    /**
+     * Check for the limit
+     * @return boolean
+     */
+    protected function hasReachedLimit()
+    {
+        // Get skip
+        $limit = $this->reader->getLimit();
+
         // If we have a limit, check if we hit this limit
-        return $this->reader->limit && $this->r == ($this->reader->limit + 1);
+        return $limit && $this->currentRow > $limit ? true : false;
     }
 
     /**
      * Parse the cells of the given row
-     * @return [type] [description]
+     * @return CellCollection
      */
     protected function parseCells()
     {
@@ -273,7 +305,8 @@ class ExcelParser {
 
     /**
      * Parse a single cell
-     * @return [type] [description]
+     * @param  integer $index
+     * @return string
      */
     protected function parseCell($index)
     {
@@ -299,7 +332,7 @@ class ExcelParser {
 
     /**
      * Return the cell value
-     * @return [type] [description]
+     * @return string
      */
     protected function getCellValue()
     {
@@ -309,7 +342,7 @@ class ExcelParser {
 
     /**
      * Get the calculated value
-     * @return [type] [description]
+     * @return string
      */
     protected function getCalculatedValue()
     {
@@ -319,8 +352,8 @@ class ExcelParser {
 
     /**
      * Encode with iconv
-     * @param  [type] $value [description]
-     * @return [type]        [description]
+     * @param  string $value
+     * @return string
      */
     protected function encode($value)
     {
@@ -337,7 +370,7 @@ class ExcelParser {
 
     /**
      * Parse the date
-     * @return [type] [description]
+     * @return Carbon\Carbon|string
      */
     protected function parseDate()
     {
@@ -356,7 +389,7 @@ class ExcelParser {
 
     /**
      * Parse and return carbon object or formatted time string
-     * @return [type] [description]
+     * @return Carbon\Carbon
      */
     protected function parseDateAsCarbon()
     {
@@ -372,7 +405,7 @@ class ExcelParser {
 
     /**
      * Return date string
-     * @return [type] [description]
+     * @return string
      */
     protected function parseDateAsString()
     {
@@ -388,8 +421,8 @@ class ExcelParser {
 
     /**
      * Check if cell is a date
-     * @param  [type] $index [description]
-     * @return [type]        [description]
+     * @param  integer $index
+     * @return boolean
      */
     protected function cellIsDate($index)
     {
@@ -399,7 +432,7 @@ class ExcelParser {
 
     /**
      * Check if cells needs parsing
-     * @return [type] [description]
+     * @return array
      */
     protected function cellNeedsParsing($index)
     {
@@ -409,7 +442,7 @@ class ExcelParser {
 
     /**
      * Get the cell index from column
-     * @return [type] [description]
+     * @return integer
      */
     protected function getIndexFromColumn()
     {
@@ -418,7 +451,7 @@ class ExcelParser {
 
     /**
      * Set selected columns
-     * @param array $columns [description]
+     * @param array $columns
      */
     protected function setSelectedColumns($columns = array())
     {
@@ -428,7 +461,7 @@ class ExcelParser {
 
     /**
      * Check if we have selected columns
-     * @return boolean [description]
+     * @return boolean
      */
     protected function hasSelectedColumns()
     {
@@ -437,7 +470,7 @@ class ExcelParser {
 
     /**
      * Set selected columns
-     * @param array $columns [description]
+     * @param array $columns
      */
     protected function getSelectedColumns()
     {

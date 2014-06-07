@@ -44,6 +44,8 @@ Most of the HTML tags are supported.
         <!-- Italic -->
         <td><i>Italic cell</i></td>
 
+        <!-- Images -->
+        <td><img src="img.jpg" /></td>
 
     </html>
 
@@ -67,6 +69,11 @@ Some of the basic styling can be done with HTML attributes.
         <!-- Colspan -->
         <td colspan="6">Italic cell</td>
 
+        <!-- Width -->
+        <td width="100">Cell with width of 100</td>
+
+        <!-- Height -->
+        <td height="100">Cell with height of 100</td>
 
     </html>
 

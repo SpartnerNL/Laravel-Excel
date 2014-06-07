@@ -1,7 +1,7 @@
 <?php namespace Maatwebsite\Excel\Classes;
 
 use Illuminate\Support\Facades\Config;
-use \PHPExcel as PHPOffice_PHPExcel;
+use PHPExcel as PHPOffice_PHPExcel;
 
 /**
  *
@@ -24,7 +24,6 @@ class PHPExcel extends PHPOffice_PHPExcel
     public $allowedProperties = array(
         'creator',
         'lastModifiedBy',
-        'title',
         'description',
         'subject',
         'keywords',
@@ -37,7 +36,8 @@ class PHPExcel extends PHPOffice_PHPExcel
      * Create sheet and add it to this workbook
      *
      * @param  int|null $iSheetIndex Index where sheet should go (0,1,..., or null for last)
-     * @return PHPExcel_Worksheet
+     * @param string $title
+     * @return LaravelExcelWorksheet
      * @throws PHPExcel_Exception
      */
     public function createSheet($iSheetIndex = NULL, $title = false)
@@ -54,18 +54,20 @@ class PHPExcel extends PHPOffice_PHPExcel
 
     /**
      * Check if the user change change the workbook property
-     * @param  [type]  $method [description]
-     * @return boolean         [description]
+     * @param  string  $method
+     * @return boolean
      */
     public function isChangeableProperty($method)
     {
         $name = lcfirst(str_replace('set', '', $method));
-        return in_array($name, $this->allowedProperties) ? true : false;
+        return in_array($name, $this->getAllowedProperties()) ? true : false;
+
     }
 
     /**
      * Set default properties
-     * @param [type] $custom [description]
+     * @param string $custom
+     * @return  void
      */
     public function setDefaultProperties($custom)
     {
@@ -73,7 +75,7 @@ class PHPExcel extends PHPOffice_PHPExcel
         $properties = $this->getProperties();
 
         // Get fillable properties
-        foreach($this->allowedProperties as $prop)
+        foreach($this->getAllowedProperties() as $prop)
         {
             // Get the method
             $method = 'set' . ucfirst($prop);
@@ -84,6 +86,15 @@ class PHPExcel extends PHPOffice_PHPExcel
             // set the property
             call_user_func_array(array($properties, $method), array($value));
         }
+    }
+
+    /**
+     * Return all allowed properties
+     * @return array
+     */
+    public function getAllowedProperties()
+    {
+        return $this->allowedProperties;
     }
 
 }

@@ -1,6 +1,7 @@
 <?php namespace Maatwebsite\Excel\Writers;
 
 use Config;
+use Closure;
 use Response;
 use Carbon\Carbon;
 use PHPExcel_IOFactory;
@@ -24,31 +25,37 @@ class LaravelExcelWriter {
 
     /**
      * Spreadsheet title
-     * @var [type]
+     * @var stirng
      */
     public $title;
 
     /**
      * Excel object
-     * @var [type]
+     * @var PHPExcel
      */
     public $excel;
 
     /**
      * Laravel response
-     * @var [type]
+     * @var Response
      */
     protected $response;
 
     /**
      * Spreadsheet writer
-     * @var [type]
+     * @var object
      */
     public $writer;
 
     /**
+     * Excel sheet
+     * @var LaravelExcelWorksheet
+     */
+    protected $sheet;
+
+    /**
      * Parser
-     * @var [type]
+     * @var ViewParser
      */
     public $parser;
 
@@ -60,13 +67,13 @@ class LaravelExcelWriter {
 
     /**
      * Path the file will be stored to
-     * @var [type]
+     * @var string
      */
     public $storagePath = 'exports';
 
     /**
      * Header Content-type
-     * @var [type]
+     * @var string
      */
     protected $contentType;
 
@@ -77,47 +84,63 @@ class LaravelExcelWriter {
     protected $rendered = false;
 
     /**
-     * Construct new writer
-     * @param Response   $response [description]
-     * @param FileSystem $files    [description]
+     * Construct writer
+     * @param Response         $response
+     * @param FileSystem       $filesystem
+     * @param FormatIdentifier $identifier
      */
     public function __construct(Response $response, FileSystem $filesystem, FormatIdentifier $identifier)
     {
         $this->response = $response;
         $this->filesystem = $filesystem;
-         $this->identifier = $identifier;
+        $this->identifier = $identifier;
     }
 
     /**
      * Inject the excel object
-     * @param  [type] $excel [description]
-     * @return [type]        [description]
+     * @param  PHPExcel $excel
+     * @return void
      */
-    public function injectExcel($excel)
+    public function injectExcel($excel, $reset = true)
     {
         $this->excel = $excel;
-        $this->_reset();
+
+        if($reset)
+            $this->_reset();
     }
 
     /**
      * Set the spreadsheet title
-     * @param [type] $title [description]
+     * @param string $title
+     * @return  LaravelExcelWriter
      */
     public function setTitle($title)
     {
         $this->title = $title;
+        $this->getProperties()->setTitle($title);
         return $this;
     }
 
     /**
-     * Share a view with all sheets
-     * @return [type] [description]
+     * Get the title
+     * @return string
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    /**
+     * Share view with all sheets
+     * @param  string $view
+     * @param  array  $data
+     * @param  array  $mergeData
+     * @return  LaravelExcelWriter
      */
     public function shareView($view, $data = array(), $mergeData = array())
     {
-        // Init the parser
-        if(!$this->parser)
-            $this->parser = app('excel.parsers.view');
+        // Get the parser
+        $this->getParser();
 
         // Set the view inside the parser
         $this->parser->setView($view);
@@ -129,6 +152,7 @@ class LaravelExcelWriter {
 
     /**
      * Set the view
+     * @return  LaravelExcelWriter
      */
     public function setView()
     {
@@ -137,7 +161,7 @@ class LaravelExcelWriter {
 
     /**
      * Load the view
-     * @return [type] [description]
+     * @return  LaravelExcelWriter
      */
     public function loadView()
     {
@@ -146,11 +170,11 @@ class LaravelExcelWriter {
 
     /**
      * Create a new sheet
-     * @param  [type] $title    [description]
-     * @param  [type] $callback [description]
-     * @return [type]           [description]
+     * @param  string $title
+     * @param  callback|null $callback
+     * @return  LaravelExcelWriter
      */
-    public function sheet($title, $callback = false)
+    public function sheet($title, $callback = null)
     {
         // Clone the active sheet
         $this->sheet = $this->excel->createSheet(null, $title);
@@ -166,11 +190,11 @@ class LaravelExcelWriter {
         $this->sheet->setDefaultPageSetup();
 
         // Do the callback
-        if($callback instanceof \Closure)
+        if($callback instanceof Closure)
             call_user_func($callback, $this->sheet);
 
-        // Autosize columns when it hasn't been done yet
-        if(!$this->sheet->wasAutoSized())
+        // Autosize columns when no user didn't change anything about column sizing
+        if(!$this->sheet->hasFixedSizeColumns())
             $this->sheet->setAutosize(Config::get('excel::export.autosize', false));
 
         // Parse the sheet
@@ -181,19 +205,20 @@ class LaravelExcelWriter {
 
     /**
      * Set data for the current sheet
-     * @param  [type]  $keys  [description]
-     * @param  boolean $value [description]
-     * @return [type]         [description]
+     * @param  array  $array
+     * @return  LaravelExcelWriter
      */
     public function with(Array $array)
     {
         // Add the vars
         $this->fromArray($array);
+        return $this;
     }
 
     /**
      * Export the spreadsheet
-     * @return [type] [description]
+     * @param string $ext
+     * @return void
      */
     public function export($ext = 'xls')
     {
@@ -209,8 +234,8 @@ class LaravelExcelWriter {
 
     /**
      * Export and download the spreadsheet
-     * @param  string $ext [description]
-     * @return [type]      [description]
+     * @param  string $ext
+     * @return void
      */
     public function download($ext = 'xls')
     {
@@ -219,7 +244,7 @@ class LaravelExcelWriter {
 
     /**
      * Download a file
-     * @return [type] [description]
+     * @return void
      */
     protected function _download()
     {
@@ -248,10 +273,10 @@ class LaravelExcelWriter {
 
     /**
      * Store the excel file to the server
-     * @param  string  $ext        [description]
-     * @param  boolean $path       [description]
-     * @param  boolean $returnInfo [description]
-     * @return [type]              [description]
+     * @param  string  $ext
+     * @param  boolean $path
+     * @param  boolean $returnInfo
+     * @return LaravelExcelWriter
      */
     public function store($ext = 'xls', $path = false, $returnInfo = false)
     {
@@ -288,7 +313,11 @@ class LaravelExcelWriter {
         return $this;
     }
 
-    // Check if we want to return info or itself
+    /**
+     * Check if we want to return info or itself
+     * @param  boolean $returnInfo
+     * @return boolean
+     */
     public function returnInfo($returnInfo = false)
     {
         return $returnInfo ? $returnInfo : Config::get('excel::export.store.returnInfo', false);
@@ -298,7 +327,7 @@ class LaravelExcelWriter {
      *  Store the excel file to the server
      *  @param str $ext The file extension
      *  @param str $path The save path
-     *  @return $this
+     *  @return LaravelExcelWriter
      */
     public function save($ext = 'xls', $path = false, $returnInfo = false)
     {
@@ -307,7 +336,7 @@ class LaravelExcelWriter {
 
     /**
      * Start render of a new spreadsheet
-     * @return [type] [description]
+     * @return void
      */
     protected function _render()
     {
@@ -326,9 +355,40 @@ class LaravelExcelWriter {
     }
 
     /**
+     * Get the view parser
+     * @return PHPExcel
+     */
+    public function getExcel()
+    {
+        return $this->excel;
+    }
+
+    /**
+     * Get the view parser
+     * @return ViewParser
+     */
+    public function getParser()
+    {
+        // Init the parser
+        if(!$this->parser)
+            $this->parser = app('excel.parsers.view');
+
+        return $this->parser;
+    }
+
+    /**
+     * Get the sheet
+     * @return LaravelExcelWorksheet
+     */
+    public function getSheet()
+    {
+        return $this->sheet;
+    }
+
+    /**
      * Set attributes
-     * @param [type] $setter [description]
-     * @param [type] $params [description]
+     * @param string $setter
+     * @param array $params
      */
     protected function _setAttribute($setter, $params)
     {
@@ -345,6 +405,7 @@ class LaravelExcelWriter {
 
     /**
      * Set the write format
+     * @return  void
      */
     protected function _setFormat()
     {
@@ -360,6 +421,7 @@ class LaravelExcelWriter {
 
     /**
      * Set the writer
+     * @return PHPExcel_***_Writer
      */
     protected function _setWriter()
     {
@@ -369,7 +431,7 @@ class LaravelExcelWriter {
         if($this->format == 'CSV')
         {
             $this->writer->setDelimiter(Config::get('excel::csv.delimiter', ','));
-            $this->writer->setEnclosure(Config::get('excel::csv.enclosure', ''));
+            $this->writer->setEnclosure(Config::get('excel::csv.enclosure', '"'));
             $this->writer->setLineEnding(Config::get('excel::csv.line_ending', "\r\n"));
         }
 
@@ -391,7 +453,7 @@ class LaravelExcelWriter {
 
     /**
      * Set the storage path
-     * @var [type]
+     * @return  void
      */
     protected function _setStoragePath($path = false)
     {
@@ -408,7 +470,7 @@ class LaravelExcelWriter {
 
     /**
      * Reset the writer
-     * @return [type] [description]
+     * @return void
      */
     protected function _reset()
     {
@@ -417,9 +479,9 @@ class LaravelExcelWriter {
 
     /**
      * Dynamically call methods
-     * @param  [type] $method [description]
-     * @param  [type] $params [description]
-     * @return [type]         [description]
+     * @param  string $method
+     * @param  array $params
+     * @return LaravelExcelWriter
      */
     public function __call($method, $params)
     {
@@ -434,16 +496,16 @@ class LaravelExcelWriter {
         elseif(method_exists($this->excel, $method))
         {
             // Call the method from the excel object with the given params
-            call_user_func_array(array($this->excel, $method), $params);
-            return $this;
+            $return = call_user_func_array(array($this->excel, $method), $params);
+            return $return ? $return : $this;
         }
 
         // Call a php excel sheet method
         elseif(method_exists($this->excel->getActiveSheet(), $method))
         {
             // Call the method from the excel object with the given params
-            call_user_func_array(array($this->excel->getActiveSheet(), $method), $params);
-            return $this;
+            $return =  call_user_func_array(array($this->excel->getActiveSheet(), $method), $params);
+            return $return ? $return : $this;
         }
 
         throw new LaravelExcelException('[ERROR] Writer method ['. $method .'] does not exist.');

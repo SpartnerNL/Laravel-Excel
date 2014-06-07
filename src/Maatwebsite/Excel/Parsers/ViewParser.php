@@ -1,6 +1,6 @@
 <?php namespace Maatwebsite\Excel\Parsers;
 
-use \View;
+use View;
 use Maatwebsite\Excel\Readers\Html;
 
 /**
@@ -18,7 +18,7 @@ class ViewParser {
 
     /**
      * View file
-     * @var [type]
+     * @var string
      */
     public $view;
 
@@ -36,7 +36,8 @@ class ViewParser {
 
     /**
      * Construct the view parser
-     * @param HTML_Reader $reader [description]
+     * @param Html $reader
+     * @return  void
      */
     public function __construct(Html $reader)
     {
@@ -45,20 +46,20 @@ class ViewParser {
 
     /**
      * Parse the view
-     * @param  [type] $sheet [description]
-     * @return [type]        [description]
+     * @param  LaravelExcelWorksheet $sheet
+     * @return LaravelExcelWorksheet
      */
     public function parse($sheet)
     {
-        $html = View::make($this->view, $this->data, $this->mergeData)->render();
+        $html = View::make($this->getView(), $this->getData(), $this->getMergeData())->render();
         return $this->_loadHTML($sheet, $html);
     }
 
     /**
      * Load the HTML
-     * @param  [type] $sheet [description]
-     * @param  [type] $html  [description]
-     * @return [type]        [description]
+     * @param  LaravelExcelWorksheet $sheet
+     * @param  string $html
+     * @return LaravelExcelWorksheet
      */
     protected function _loadHTML($sheet, $html)
     {
@@ -66,8 +67,35 @@ class ViewParser {
     }
 
     /**
+     * Get the view
+     * @return string
+     */
+    public function getView()
+    {
+        return $this->view;
+    }
+
+    /**
+     * Get data
+     * @return array
+     */
+    public function getData()
+    {
+        return $this->data;
+    }
+
+    /**
+     * Get merge data
+     * @return array
+     */
+    public function getMergeData()
+    {
+        return $this->mergeData;
+    }
+
+    /**
      * Set the view
-     * @param [type] $view [description]
+     * @param string $view
      */
     public function setView($view = false)
     {
@@ -77,7 +105,7 @@ class ViewParser {
 
     /**
      * Set the data
-     * @param array $data [description]
+     * @param array $data
      */
     public function setData($data = array())
     {
@@ -87,7 +115,7 @@ class ViewParser {
 
     /**
      * Set the merge data
-     * @param array $mergeData [description]
+     * @param array $mergeData
      */
     public function setMergeData($mergeData = array())
     {
