@@ -170,8 +170,11 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet
     public function row($rowNumber, $callback = null)
     {
         // If a callback is given, handle it with the cell writer
-        //if($callback instanceof Closure)
-            //return $this->rows($rowNumber, $callback);
+        if($callback instanceof Closure)
+        {
+            $range = $this->rowToRange($rowNumber);
+            return $this->cells($range, $callback);
+        }
 
         // Else if the 2nd param was set, we will use it as a cell value
         if(is_array($callback))
@@ -1014,6 +1017,15 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet
             return 1;
 
         return $this->getHighestRow() + 1;
+    }
+
+    /**
+     * Return range from row
+     * @return [type] [description]
+     */
+    protected function rowToRange($rowNumber)
+    {
+        return 'A' . $rowNumber . ':' . $this->getHighestColumn() . $rowNumber;
     }
 
     /**
