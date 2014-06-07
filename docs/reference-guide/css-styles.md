@@ -15,3 +15,5 @@ Styles that can be used inside an external CSS file or as inline CSS.
 | text-align | center    |
 | vertical-align | middle     |
 | border(-*) | 1px dashed #CCC     |
+| width | 100(px)    |
+| height | 1100(px) |
