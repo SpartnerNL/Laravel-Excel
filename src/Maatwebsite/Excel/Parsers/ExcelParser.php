@@ -183,10 +183,17 @@ class ExcelParser {
         $this->indices = array();
 
         // Loop through the cells
-        foreach ($this->row->getCellIterator() as $this->cell) {
-
+        foreach ($this->row->getCellIterator() as $this->cell)
+        {
             // Set labels
-            $this->indices[] = Str::slug($this->cell->getValue(), $this->reader->getSeperator());
+            if(Config::get('excel::import.to_ascii', true))
+            {
+                $this->indices[] = Str::slug($this->cell->getValue(), $this->reader->getSeperator());
+            }
+            else
+            {
+                $this->indices[] = strtolower(str_replace(array(' '), $this->reader->getSeperator(), $this->cell->getValue()));
+            }
         }
 
         // Return the labels
@@ -206,8 +213,8 @@ class ExcelParser {
         $startRow = $this->getStartRow();
 
         // Loop through the rows inside the worksheet
-        foreach ($this->worksheet->getRowIterator($startRow) as $this->row) {
-
+        foreach ($this->worksheet->getRowIterator($startRow) as $this->row)
+        {
             // Limit the results when needed
             if($this->hasReachedLimit())
                 break;
