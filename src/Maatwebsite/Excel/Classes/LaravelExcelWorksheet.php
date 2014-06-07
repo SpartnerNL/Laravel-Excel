@@ -84,7 +84,7 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet
      * Check if the file was autosized
      * @var boolean
      */
-    public $wasAutoSized = false;
+    public $hasFixedSizeColumns = false;
 
     /**
      * Auto generate table heading
@@ -683,7 +683,12 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet
         else
         {
             // Disable the autosize and set column width
-            $this->getColumnDimension($column)->setAutoSize(false)->setWidth($value);
+            $this->getColumnDimension($column)
+                 ->setAutoSize(false)
+                 ->setWidth($value);
+
+            // Set autosized to true
+            $this->hasFixedSizeColumns = true;
         }
 
         return $this;
@@ -757,7 +762,7 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet
     public function setAutoSize($columns = false)
     {
         // Remember that the sheet was autosized
-        $this->wasAutoSized = true;
+        $this->hasFixedSizeColumns = true;
 
         // Set autosize to true
         $this->autoSize = $columns ? $columns : false;
@@ -804,9 +809,9 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet
      * Check if the sheet was auto sized dynamically
      * @return boolean
      */
-    public function wasAutoSized()
+    public function hasFixedSizeColumns()
     {
-        return $this->wasAutoSized ? true : false;
+        return $this->hasFixedSizeColumns ? true : false;
     }
 
     /**

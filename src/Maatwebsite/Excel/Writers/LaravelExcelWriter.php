@@ -193,8 +193,8 @@ class LaravelExcelWriter {
         if($callback instanceof Closure)
             call_user_func($callback, $this->sheet);
 
-        // Autosize columns when it hasn't been done yet
-        if(!$this->sheet->wasAutoSized())
+        // Autosize columns when no user didn't change anything about column sizing
+        if(!$this->sheet->hasFixedSizeColumns())
             $this->sheet->setAutosize(Config::get('excel::export.autosize', false));
 
         // Parse the sheet

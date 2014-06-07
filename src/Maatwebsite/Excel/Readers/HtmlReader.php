@@ -163,7 +163,9 @@ class Html extends PHPExcel_Reader_HTML
         $column = 'A';
         $content = '';
         $this->_processDomElement($dom,$sheet,$row,$column,$content);
-        $this->autosizeColumn($sheet);
+
+        if(!$sheet->hasFixedSizeColumns())
+            $this->autosizeColumn($sheet);
 
         return $sheet;
     }
