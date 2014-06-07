@@ -132,7 +132,7 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet
 
     /**
      * Set the page margin
-     * @param array $margin [description]
+     * @param array|boolean|integer|float $margin
      */
     public function setPageMargin($margin = false)
     {
@@ -974,8 +974,8 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet
 
     /**
      * Merge cells
-     * @param  string $pRange [description]
-     * @return [type]         [description]
+     * @param  string $pRange
+     * @return LaravelExcelWorksheet
      */
     public function mergeCells($pRange = 'A1:A1', $alignment = false)
     {
@@ -1021,7 +1021,8 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet
 
     /**
      * Return range from row
-     * @return [type] [description]
+     * @param  integer  $rowNumber
+     * @return string $range
      */
     protected function rowToRange($rowNumber)
     {
