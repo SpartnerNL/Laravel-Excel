@@ -936,15 +936,34 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet
     }
 
     /**
+     * Merge cells
+     * @param  string $pRange [description]
+     * @return [type]         [description]
+     */
+    public function mergeCells($pRange = 'A1:A1', $alignment = false)
+    {
+        // Merge the cells
+        parent::mergeCells($pRange);
+
+        // Set center alignment on merge cells
+        $this->cells($pRange, function($cell) use ($alignment) {
+            $aligment = is_string($alignment) ? $alignment : Config::get('excel::export.merged_cell_alignment', 'left');
+            $cell->setAlignment($aligment);
+        });
+
+        return $this;
+    }
+
+    /**
      *  Set the columns you want to merge
      *  @return LaravelExcelWorksheet
      *  @param array $mergeColumn An array of columns you want to merge
      */
-    public function setMergeColumn(Array $mergeColumn)
+    public function setMergeColumn(Array $mergeColumn, $alignment = false)
     {
         foreach ($mergeColumn['columns'] as $column) {
             foreach ($mergeColumn['rows'] as $row) {
-                $this->mergeCells($column.$row[0].":".$column.$row[1]);
+                $this->mergeCells($column.$row[0].":".$column.$row[1], $alignment);
             }
         }
 
