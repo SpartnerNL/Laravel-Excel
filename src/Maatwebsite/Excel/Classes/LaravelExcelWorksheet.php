@@ -549,6 +549,8 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet
         {
             $this->setDefaultStyles($setter, $key, $params);
         }
+
+        throw new LaravelExcelException('[ERROR] Laravel Worksheet method ['. $setter .'] does not exist.');
     }
 
     /**
