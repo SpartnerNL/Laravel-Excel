@@ -1,5 +1,9 @@
 # Version 1
 
+### 1.1.1
+
+- Retrieve workbook and sheet title during import (`->getTitle()`)
+
 ### 1.1.0
 
 - `Limit()`, `skip()` and `take()` support for fetching results

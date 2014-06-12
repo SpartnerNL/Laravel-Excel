@@ -37,6 +37,19 @@ To get the first sheet or row, you can utilise `->first()`.
 
 > **Note:** depending on the config `'force_sheets_collection'` it will return the first row or sheet.
 
+### Workbook and sheet title
+
+It's possible to retrieve the workbook and sheet title with `->getTitle()`.
+
+    // Get workbook title
+    $workbookTitle = $reader->getTitle();
+
+    foreach($reader as $sheet)
+    {
+        // get sheet title
+        $sheetTitle = $sheet->getTitle();
+    }
+
 ### Limiting the results
 
 ##### Taking rows
