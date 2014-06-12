@@ -125,6 +125,7 @@ class ExcelParser {
                 {
                     // Push every sheet
                     $workbook->push($worksheet);
+                    $workbook->setTitle($this->excel->getProperties()->getTitle());
                 }
                 else
                 {
@@ -159,9 +160,6 @@ class ExcelParser {
     {
         // Set the active worksheet
         $this->excel->setActiveSheetIndex($this->w);
-
-        // Get the worksheet name
-        $title = $this->excel->getActiveSheet()->getTitle();
 
         // Fetch the labels
         $this->indices = $this->reader->hasHeading() ? $this->getIndices() : array();
@@ -208,6 +206,9 @@ class ExcelParser {
     {
         // Set empty parsedRow array
         $parsedRows = new RowCollection();
+
+        // set sheet title
+        $parsedRows->setTitle($this->excel->getActiveSheet()->getTitle());
 
         // Get the startrow
         $startRow = $this->getStartRow();
