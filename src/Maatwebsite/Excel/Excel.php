@@ -1,8 +1,8 @@
 <?php namespace Maatwebsite\Excel;
 
 use Closure;
-use PHPExcel;
 use Maatwebsite\Excel\Readers\Batch;
+use Maatwebsite\Excel\Classes\PHPExcel;
 use Maatwebsite\Excel\Readers\LaravelExcelReader;
 use Maatwebsite\Excel\Writers\LaravelExcelWriter;
 use Maatwebsite\Excel\Exceptions\LaravelExcelException;
