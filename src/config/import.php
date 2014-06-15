@@ -9,9 +9,11 @@ return array(
     |
     | The sheet has a heading (first) row which we can use as attribute names
     |
+    | Options: true|false|slugged|ascii|numeric|hashed|trans|original
+    |
     */
 
-    'heading'   => true,
+    'heading'   => 'slugged',
 
     /*
     |--------------------------------------------------------------------------
@@ -19,6 +21,7 @@ return array(
     |--------------------------------------------------------------------------
     |
     | The default seperator which is used for the cell names
+    | Note: only applies to 'heading' settings 'true' && 'slugged'
     |
     */
 
@@ -30,6 +33,7 @@ return array(
     |--------------------------------------------------------------------------
     |
     | Convert headings to ASCII
+    | Note: only applies to 'heading' settings 'true' && 'slugged'
     |
     */
 

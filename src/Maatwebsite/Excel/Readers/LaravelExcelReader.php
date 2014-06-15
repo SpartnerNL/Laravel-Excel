@@ -539,7 +539,10 @@ class LaravelExcelReader {
     public function hasHeading()
     {
         if(!$this->noHeading)
-            return Config::get('excel::import.heading', true);
+        {
+            $config = Config::get('excel::import.heading', true);
+            return $config !== false && $config !== 'numeric';
+        }
 
         return $this->noHeading ? false : true;
     }

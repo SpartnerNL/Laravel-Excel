@@ -93,6 +93,9 @@ class ExcelParser {
     {
         $this->reader = $reader;
         $this->excel = $reader->excel;
+
+        // Reset
+        $this->reset();
     }
 
     /**
@@ -183,19 +186,117 @@ class ExcelParser {
         // Loop through the cells
         foreach ($this->row->getCellIterator() as $this->cell)
         {
-            // Set labels
-            if(Config::get('excel::import.to_ascii', true))
-            {
-                $this->indices[] = Str::slug($this->cell->getValue(), $this->reader->getSeperator());
-            }
-            else
-            {
-                $this->indices[] = strtolower(str_replace(array(' '), $this->reader->getSeperator(), $this->cell->getValue()));
-            }
+            var_dump($this->getIndex($this->cell));
+            $this->indices[] = $this->getIndex($this->cell);
         }
 
         // Return the labels
         return $this->indices;
+    }
+
+    /**
+     * Get index
+     * @param  $cell
+     * @return string
+     */
+    protected function getIndex($cell)
+    {
+        // Get heading type
+        $config = Config::get('excel::import.heading', true);
+        $config = $config === true ? 'slugged' : $config;
+
+        // Get value
+        $value  = $this->getOriginalIndex($cell);
+
+        switch($config)
+        {
+            case 'slugged':
+                return $this->getSluggedIndex($value, Config::get('excel::import.to_ascii', true));
+                break;
+
+            case 'ascii':
+                return $this->getAsciiIndex($value);
+                break;
+
+            case 'hashed':
+                return $this->getHashedIndex($value);
+                break;
+
+            case 'trans':
+                return $this->getTranslatedIndex($value);
+                break;
+
+            case 'original':
+                return $value;
+                break;
+        }
+    }
+
+    /**
+     * Get slugged index
+     * @param  string $value
+     * @return string
+     */
+    protected function getSluggedIndex($value, $ascii = false)
+    {
+        // Get original
+        $separator  = $this->reader->getSeperator();
+
+        // Convert to ascii when needed
+        if($ascii)
+            $value = $this->getAsciiIndex($value);
+
+        // Convert all dashes/underscores into separator
+        $flip = $separator == '-' ? '_' : '-';
+        $value = preg_replace('!['.preg_quote($flip).']+!u', $separator, $value);
+
+        // Remove all characters that are not the separator, letters, numbers, or whitespace.
+        $value = preg_replace('![^'.preg_quote($separator).'\pL\pN\s]+!u', '', mb_strtolower($value));
+
+        // Replace all separator characters and whitespace by a single separator
+        $value = preg_replace('!['.preg_quote($separator).'\s]+!u', $separator, $value);
+
+        return trim($value, $separator);
+    }
+
+    /**
+     * Get ASCII index
+     * @param  string $value
+     * @return string
+     */
+    protected function getAsciiIndex($value)
+    {
+        return Str::ascii($value);
+    }
+
+    /**
+     * Hahsed index
+     * @param  string $value
+     * @return string
+     */
+    protected function getHashedIndex($value)
+    {
+        return md5($value);
+    }
+
+    /**
+     * Get translated index
+     * @param  string $value
+     * @return string
+     */
+    protected function getTranslatedIndex($value)
+    {
+        return trans($value);
+    }
+
+    /**
+     * Get orignal indice
+     * @param  string $value
+     * @return string
+     */
+    protected function getOriginalIndex($cell)
+    {
+        return $cell->getValue();
     }
 
     /**
@@ -478,6 +579,15 @@ class ExcelParser {
         // Set the columns
         return $this->columns;
 
+    }
+
+    /**
+     * Reset
+     * @return [type] [description]
+     */
+    protected function reset()
+    {
+        $this->indices = array();
     }
 
 }
