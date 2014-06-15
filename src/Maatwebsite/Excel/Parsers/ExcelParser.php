@@ -186,7 +186,6 @@ class ExcelParser {
         // Loop through the cells
         foreach ($this->row->getCellIterator() as $this->cell)
         {
-            var_dump($this->getIndex($this->cell));
             $this->indices[] = $this->getIndex($this->cell);
         }
 
@@ -588,6 +587,7 @@ class ExcelParser {
     protected function reset()
     {
         $this->indices = array();
+        $this->isParsed = false;
     }
 
 }
