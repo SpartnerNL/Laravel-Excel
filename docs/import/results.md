@@ -22,6 +22,17 @@ or
 
 > The `->get()` and `->all()` methods will return a sheet or row collection, depending on the amount of sheets the file has. You can disable this feature inside the `import.php` config by setting `'force_sheets_collection'` to `true`. When set to true it will always return a sheet collection.
 
+### Table heading as attributes
+
+By default the first row of the excel file will be used as attributes.
+
+    // Get the firstname
+    $row->firstname;
+
+> **Note**: by default these attributes will be converted to a slug. You can change the default inside the config `excel::import.heading`. Available options are: `true|false|slugged|ascii|numeric|hashed|trans|original`
+
+> True and slugged will be converted to ASCII as well when `excel::import.to_ascii` is set to true. You can change the default separator as well inside the config.
+
 ### Collections
 
 Sheets, rows and cells are collections, this means after doing a `->get()` you can use all default collection methods.

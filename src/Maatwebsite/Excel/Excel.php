@@ -60,6 +60,9 @@ class Excel
      */
     public function create($title, $callback = null)
     {
+        // Writer instance
+        $writer = clone $this->writer;
+
         // Set the default properties
         $this->excel->setDefaultProperties(array(
             'title' => $title
@@ -69,17 +72,17 @@ class Excel
         $this->excel->disconnectWorksheets();
 
         // Inject our excel object
-        $this->writer->injectExcel($this->excel);
+        $writer->injectExcel($this->excel);
 
         // Set the title
-        $this->writer->setTitle($title);
+        $writer->setTitle($title);
 
         // Do the callback
         if($callback instanceof Closure)
-            call_user_func($callback, $this->writer);
+            call_user_func($callback, $writer);
 
         // Return the writer object
-        return $this->writer;
+        return $writer;
     }
 
     /**
@@ -94,21 +97,24 @@ class Excel
      */
     public function load($file, $callback = null, $encoding = null)
     {
+        // Reader instance
+        $reader = clone $this->reader;
+
         // Inject excel object
-        $this->reader->injectExcel($this->excel);
+        $reader->injectExcel($this->excel);
 
         // Set the encoding
         $encoding = is_string($callback) ? $callback : $encoding;
 
         // Start loading
-        $this->reader->load($file, $encoding);
+        $reader->load($file, $encoding);
 
         // Do the callback
         if($callback instanceof Closure)
-            call_user_func($callback, $this->reader);
+            call_user_func($callback, $reader);
 
         // Return the reader object
-        return $this->reader;
+        return $reader;
     }
 
     /**
