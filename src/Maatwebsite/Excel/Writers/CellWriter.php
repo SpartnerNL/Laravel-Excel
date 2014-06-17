@@ -135,19 +135,17 @@ class CellWriter {
     {
         // Set the border styles
         $styles = is_array($top) ? $top : array(
-            'borders' => array(
-                'top'   => array(
-                    'style' => $top
-                ),
-                'left' => array(
-                    'style' => $left,
-                ),
-                'right' => array(
-                    'style' => $right,
-                ),
-                'bottom' => array(
-                    'style' => $bottom,
-                )
+            'top'   => array(
+                'style' => $top
+            ),
+            'left' => array(
+                'style' => $left,
+            ),
+            'right' => array(
+                'style' => $right,
+            ),
+            'bottom' => array(
+                'style' => $bottom,
             )
         );
 
