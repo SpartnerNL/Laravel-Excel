@@ -1,5 +1,9 @@
 # Version 1
 
+### 1.1.3
+
+- Cell writer `->setBorder()` fix
+
 ### 1.1.2
 
 - Fix for multiple imports on one pageload
