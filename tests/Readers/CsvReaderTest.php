@@ -300,7 +300,7 @@ class CsvReaderTest extends TestCase {
     protected function loadCsv()
     {
         // Set test csv file
-        $this->csvFile = __DIR__ . '/' . 'test.csv';
+        $this->csvFile = __DIR__ . '/files/' . 'test.csv';
 
         // Loaded csv
         $this->loadedCsv = $this->reader->load($this->csvFile);
