@@ -344,18 +344,6 @@ trait ImportTrait {
         $this->assertEquals(array('created_at', 'deleted_at'), $set->getDateColumns());
     }
 
-    public function testSetSeparator()
-    {
-        $set = $this->loadedFile->setSeperator('-');
-        $this->assertEquals('-', $set->getSeperator());
-    }
-
-    public function testSetDelimiter()
-    {
-        $set = $this->loadedFile->setDelimiter(';');
-        $this->assertEquals(';', $set->getDelimiter());
-    }
-
     public function testCalculate()
     {
         $set = $this->loadedFile->calculate();

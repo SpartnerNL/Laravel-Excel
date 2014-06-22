@@ -19,4 +19,16 @@ class CsvReaderTest extends TestCase {
      */
     protected $fileName = 'files/test.csv';
 
+    public function testSetSeparator()
+    {
+        $set = $this->loadedFile->setSeperator('-');
+        $this->assertEquals('-', $set->getSeperator());
+    }
+
+    public function testSetDelimiter()
+    {
+        $set = $this->loadedFile->setDelimiter(';');
+        $this->assertEquals(';', $set->getDelimiter());
+    }
+
 }
