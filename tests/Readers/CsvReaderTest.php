@@ -1,5 +1,7 @@
 <?php
 
+require_once('traits/ImportTrait.php');
+
 use Mockery as m;
 use Maatwebsite\Excel\Readers\LaravelExcelReader;
 use Maatwebsite\Excel\Classes;
@@ -15,6 +17,6 @@ class CsvReaderTest extends TestCase {
      * Filename
      * @var string
      */
-    protected $fileName = '/files/' . 'test.csv';
+    protected $fileName = 'files/test.csv';
 
 }
