@@ -25,6 +25,9 @@ class CsvReaderTest extends TestCase {
     {
         parent::setUp();
 
+        // Set default heading
+        Config::set('excel::import.heading', 'slugged');
+
         // Set excel class
         $this->excel    = App::make('phpexcel');
 
@@ -63,7 +66,7 @@ class CsvReaderTest extends TestCase {
      */
     public function testGetWithColumns()
     {
-        $columns = array('heading1', 'heading2');
+        $columns = array('heading_one', 'heading_two');
         $got = $this->loadedCsv->get($columns);
 
         $this->assertInstanceOf('Maatwebsite\Excel\Collections\RowCollection', $got);
@@ -100,7 +103,7 @@ class CsvReaderTest extends TestCase {
      */
     public function testFirstWithColumns()
     {
-        $columns = array('heading1', 'heading2');
+        $columns = array('heading_one', 'heading_two');
         $first = $this->loadedCsv->first($columns);
 
         $this->assertInstanceOf('Maatwebsite\Excel\Collections\CellCollection', $first);
@@ -132,32 +135,108 @@ class CsvReaderTest extends TestCase {
         $this->assertEquals(array(
 
             array(
-                'heading1'  => 'test',
-                'heading2'  => 'test',
-                'heading3'  => 'test',
+                'heading_one'  => 'test',
+                'heading_two'  => 'test',
+                'heading_three'  => 'test',
             ),
             array(
-                'heading1'  => 'test',
-                'heading2'  => 'test',
-                'heading3'  => 'test',
+                'heading_one'  => 'test',
+                'heading_two'  => 'test',
+                'heading_three'  => 'test',
             ),
             array(
-                'heading1'  => 'test',
-                'heading2'  => 'test',
-                'heading3'  => 'test',
+                'heading_one'  => 'test',
+                'heading_two'  => 'test',
+                'heading_three'  => 'test',
             ),
             array(
-                'heading1'  => 'test',
-                'heading2'  => 'test',
-                'heading3'  => 'test',
+                'heading_one'  => 'test',
+                'heading_two'  => 'test',
+                'heading_three'  => 'test',
             ),
             array(
-                'heading1'  => 'test',
-                'heading2'  => 'test',
-                'heading3'  => 'test',
+                'heading_one'  => 'test',
+                'heading_two'  => 'test',
+                'heading_three'  => 'test',
             )
 
         ), $array);
+    }
+
+    /**
+     * Test the imported headings
+     * @return [type] [description]
+     */
+    public function testImportedHeadingsSlugged()
+    {
+        $first = $this->loadedCsv->first()->toArray();
+        $keys  = array_keys($first);
+
+        $this->assertEquals(array(
+            'heading_one',
+            'heading_two',
+            'heading_three'
+        ), $keys);
+    }
+
+    /**
+     * Test the imported headings
+     * @return [type] [description]
+     */
+    public function testImportedHeadingsHashed()
+    {
+        Config::set('excel::import.heading', 'hashed');
+
+        $loaded = $this->reload();
+
+        $first = $loaded->first()->toArray();
+        $keys  = array_keys($first);
+
+        $this->assertEquals(array(
+            md5('heading one'),
+            md5('heading two'),
+            md5('heading three')
+        ), $keys);
+    }
+
+    /**
+     * Test the imported headings
+     * @return [type] [description]
+     */
+    public function testImportedHeadingsNumeric()
+    {
+        Config::set('excel::import.heading', 'numeric');
+
+        $loaded = $this->reload();
+
+        $first = $loaded->first()->toArray();
+        $keys  = array_keys($first);
+
+        $this->assertEquals(array(
+            1,
+            2,
+            3
+        ), $keys);
+    }
+
+    /**
+     * Test the imported headings
+     * @return [type] [description]
+     */
+    public function testImportedHeadingsOriginal()
+    {
+        Config::set('excel::import.heading', 'original');
+
+        $loaded = $this->reload();
+
+        $first = $loaded->first()->toArray();
+        $keys  = array_keys($first);
+
+        $this->assertEquals(array(
+            'heading one',
+            'heading two',
+            'heading three'
+        ), $keys);
     }
 
     /**
@@ -239,7 +318,7 @@ class CsvReaderTest extends TestCase {
      */
     public function testSelect()
     {
-        $columns = array('heading1', 'heading2');
+        $columns = array('heading_one', 'heading_two');
 
         $taken = $this->loadedCsv->select($columns);
         $this->assertEquals($columns, $taken->columns);
@@ -304,6 +383,19 @@ class CsvReaderTest extends TestCase {
 
         // Loaded csv
         $this->loadedCsv = $this->reader->load($this->csvFile);
+    }
+
+    /**
+     * Load a csv file
+     * @return [type] [description]
+     */
+    protected function reload()
+    {
+        // Set test csv file
+        $this->csvFile = __DIR__ . '/files/' . 'test.csv';
+
+        // Loaded csv
+        return $this->reader->load($this->csvFile);
     }
 
 }
