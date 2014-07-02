@@ -47,6 +47,21 @@ class ExcelWriterTest extends TestCase {
     }
 
     /**
+     * Test setTitle()
+     * @return [type] [description]
+     */
+    public function testSetFilename()
+    {
+        $filename       = 'filename';
+        $filenameSet    = $this->writer->setFileName($filename);
+        $this->assertEquals($this->writer, $filenameSet);
+
+        // Test if title was really set
+        $this->assertEquals($this->writer->getFileName(), $filename);
+    }
+
+
+    /**
      * Test the share view
      * @return [type] [description]
      */

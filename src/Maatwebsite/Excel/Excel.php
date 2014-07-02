@@ -58,15 +58,10 @@ class Excel
      * @param  callable|null $callback
      * @return LaravelExcelWriter
      */
-    public function create($title, $callback = null)
+    public function create($filename, $callback = null)
     {
         // Writer instance
         $writer = clone $this->writer;
-
-        // Set the default properties
-        $this->excel->setDefaultProperties(array(
-            'title' => $title
-        ));
 
         // Disconnect worksheets to prevent unnecessary ones
         $this->excel->disconnectWorksheets();
@@ -74,8 +69,9 @@ class Excel
         // Inject our excel object
         $writer->injectExcel($this->excel);
 
-        // Set the title
-        $writer->setTitle($title);
+        // Set the filename and title
+        $writer->setFileName($filename);
+        $writer->setTitle($filename);
 
         // Do the callback
         if($callback instanceof Closure)

@@ -4,6 +4,8 @@
 
 - Select sheets by index with `Excel::selectSheetsByIndex(0,1)->load(...)`
 - Separator typo fix
+- Added `->setFileName()` method
+- Use `->setTitle()` only for workbook title not for setting the filename anymore
 
 ### 1.1.4
 

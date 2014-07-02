@@ -24,6 +24,12 @@ use Maatwebsite\Excel\Exceptions\LaravelExcelException;
 class LaravelExcelWriter {
 
     /**
+     * Spreadsheet filename
+     * @var stirng
+     */
+    public $filename;
+
+    /**
      * Spreadsheet title
      * @var stirng
      */
@@ -122,12 +128,31 @@ class LaravelExcelWriter {
     }
 
     /**
+     * Set the filename
+     * @param [type] $name [description]
+     */
+    public function setFileName($name)
+    {
+        $this->filename = $name;
+        return $this;
+    }
+
+    /**
      * Get the title
      * @return string
      */
     public function getTitle()
     {
         return $this->title;
+    }
+
+    /**
+     * Get the title
+     * @return string
+     */
+    public function getFileName()
+    {
+        return $this->filename;
     }
 
     /**
@@ -252,7 +277,7 @@ class LaravelExcelWriter {
         $this->_setHeaders(array(
 
             'Content-Type'          => $this->contentType,
-            'Content-Disposition'   => 'attachment; filename="' . $this->title . '.' . $this->ext . '"',
+            'Content-Disposition'   => 'attachment; filename="' . $this->filename . '.' . $this->ext . '"',
             'Expires'               => 'Mon, 26 Jul 1997 05:00:00 GMT', // Date in the past
             'Last-Modified'         =>  Carbon::now()->format('D, d M Y H:i:s'),
             'Cache-Control'         => 'cache, must-revalidate',
@@ -290,7 +315,7 @@ class LaravelExcelWriter {
         $this->_render();
 
         // Set the storage path and file
-        $toStore = $this->storagePath . '/' . $this->title . '.' . $this->ext;
+        $toStore = $this->storagePath . '/' . $this->filename . '.' . $this->ext;
 
         // Save the file to specified location
         $this->writer->save($toStore);
@@ -302,8 +327,8 @@ class LaravelExcelWriter {
             return array(
                 'full'  => $toStore,
                 'path'  => $this->storagePath,
-                'file'  => $this->title . '.' . $this->ext,
-                'title' => $this->title,
+                'file'  => $this->filename . '.' . $this->ext,
+                'title' => $this->filename,
                 'ext'   => $this->ext
             );
 
