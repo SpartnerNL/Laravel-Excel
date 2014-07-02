@@ -84,6 +84,7 @@ class ExcelTestCase extends PHPUnit_Framework_TestCase {
         $this->writer = m::mock('Maatwebsite\Excel\Writers\LaravelExcelWriter');
         $this->writer->shouldReceive('injectExcel')->with($this->phpexcel);
         $this->writer->shouldReceive('setTitle');
+        $this->writer->shouldReceive('setFileName');
         $this->writer->shouldReceive('shareView')->andReturn($this->writer);
     }
 
