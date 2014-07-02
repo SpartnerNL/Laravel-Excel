@@ -122,9 +122,22 @@ class Excel
      * @param  $sheets
      * @return LaravelExcelReader
      */
-    public function selectSheets($sheets)
+    public function selectSheets($sheets = array())
     {
-        $this->reader->setSelectedSheets(is_array($sheets) ? $sheets : array($sheets));
+        $sheets = is_array($sheets) ? $sheets : func_get_args();
+        $this->reader->setSelectedSheets($sheets);
+        return $this;
+    }
+
+    /**
+     * Select sheets by index
+     * @param  [type] $sheets [description]
+     * @return [type]         [description]
+     */
+    public function selectSheetsByIndex($sheets = array())
+    {
+        $sheets = is_array($sheets) ? $sheets : func_get_args();
+        $this->reader->setSelectedSheetIndices($sheets);
         return $this;
     }
 

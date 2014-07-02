@@ -154,6 +154,12 @@ class LaravelExcelReader {
     public $selectedSheets = array();
 
     /**
+     * Selected sheet indices
+     * @var array
+     */
+    public $selectedSheetIndices = array();
+
+    /**
      * Construct new reader
      * @param FileSystem $files
      * @param FormatIdentifier $identifier
@@ -202,6 +208,37 @@ class LaravelExcelReader {
     public function sheetsSelected()
     {
         return count($this->selectedSheets) > 0;
+    }
+
+    /**
+     * Check if the file was selected by index
+     * @param  [type]  $index [description]
+     * @return boolean        [description]
+     */
+    public function isSelectedByIndex($index)
+    {
+        $selectedSheets = $this->getSelectedSheetIndices();
+        if(empty($selectedSheets)) return true;
+        return in_array($index, $selectedSheets) ? true : false;
+    }
+
+    /**
+     * Set the selected sheet indices
+     * @param [type] $sheets [description]
+     */
+    public function setSelectedSheetIndices($sheets)
+    {
+        $this->selectedSheetIndices = $sheets;
+        return $this;
+    }
+
+    /**
+     * Return the selected sheets
+     * @return [type] [description]
+     */
+    public function getSelectedSheetIndices()
+    {
+        return $this->selectedSheetIndices;
     }
 
     /**

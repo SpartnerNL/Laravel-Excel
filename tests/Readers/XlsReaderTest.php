@@ -1,6 +1,7 @@
 <?php
 
 require_once('traits/ImportTrait.php');
+require_once('traits/SingleImportTestingTrait.php');
 
 use Mockery as m;
 use Maatwebsite\Excel\Readers\LaravelExcelReader;
@@ -11,7 +12,7 @@ class XlsReaderTest extends TestCase {
     /**
      * Import trait
      */
-    use ImportTrait;
+    use ImportTrait, SingleImportTestingTrait;
 
     /**
      * Filename

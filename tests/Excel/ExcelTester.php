@@ -34,16 +34,15 @@ class ExcelTester extends ExcelTestCase {
         $this->assertEquals($this->excel, $selected);
     }
 
-    // /**
-    //  * Test a batch
-    //  * @return [type] [description]
-    //  */
-    // public function testBatch()
-    // {
-    //     $batch = $this->excel->batch();
-    //     $loaded = $batch->start($this->excel, array('file'), function() {});
-    //     $this->assertInstanceOf('Maatwebsite\Excel\Readers\Batch', $loaded);
-    // }
+    /**
+     * Test select sheets
+     * @return [type] [description]
+     */
+    public function testSelectSheetsByIndex()
+    {
+        $selected = $this->excel->selectSheetsByIndex(array('0'));
+        $this->assertEquals($this->excel, $selected);
+    }
 
     /**
      * Test the share view

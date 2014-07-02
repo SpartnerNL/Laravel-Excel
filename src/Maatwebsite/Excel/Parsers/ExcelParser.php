@@ -117,25 +117,33 @@ class ExcelParser {
             // Set worksheet count
             $this->w = 0;
 
-            // Loop through the worksheets
-            foreach($this->excel->getWorksheetIterator() as $this->worksheet)
-            {
-                // Parse the worksheet
-                $worksheet = $this->parseWorksheet();
+            // Get selected sheets
+            $iterator = $this->excel->getWorksheetIterator();
 
-                // If multiple sheets
-                if($this->parseAsMultiple())
+            // Loop through the worksheets
+            foreach($iterator as $this->worksheet)
+            {
+                // Check if the sheet might have been selected by it's index
+                if($this->reader->isSelectedByIndex($iterator->key() ))
                 {
-                    // Push every sheet
-                    $workbook->push($worksheet);
-                    $workbook->setTitle($this->excel->getProperties()->getTitle());
+                    // Parse the worksheet
+                    $worksheet = $this->parseWorksheet();
+
+                    // If multiple sheets
+                    if($this->parseAsMultiple())
+                    {
+                        // Push every sheet
+                        $workbook->push($worksheet);
+                        $workbook->setTitle($this->excel->getProperties()->getTitle());
+                    }
+                    else
+                    {
+                        // Ignore the sheet collection
+                        $workbook = $worksheet;
+                        break;
+                    }
                 }
-                else
-                {
-                    // Ignore the sheet collection
-                    $workbook = $worksheet;
-                    break;
-                }
+
                 $this->w++;
             }
         }
@@ -152,7 +160,8 @@ class ExcelParser {
      */
     protected function parseAsMultiple()
     {
-        return $this->excel->getSheetCount() > 1 || Config::get('excel::import.force_sheets_collection', false);
+        return ( $this->excel->getSheetCount() > 1 && count($this->reader->getSelectedSheetIndices()) !== 1 )
+            || Config::get('excel::import.force_sheets_collection', false);
     }
 
     /**
