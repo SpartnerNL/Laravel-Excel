@@ -6,6 +6,7 @@
 - Separator typo fix
 - Added `->setFileName()` method
 - Use `->setTitle()` only for workbook title not for setting the filename anymore
+- Made `setAutoSize()` chainable for other sheet methods
 
 ### 1.1.4
 
