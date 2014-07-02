@@ -100,10 +100,10 @@ class LaravelExcelReader {
     protected $skip = 0;
 
     /**
-     * Slug seperator
+     * Slug separator
      * @var string
      */
-    public $seperator = false;
+    public $separator = false;
 
      /**
      * Ignore empty cells
@@ -525,14 +525,23 @@ class LaravelExcelReader {
     }
 
     /**
-     * Set the cell name word seperator
-     * @param string $seperator
+     * Set the cell name word separator
+     * @param string $separator
      * @return LaraveExcelReader
      */
-    public function setSeperator($seperator)
+    public function setSeparator($separator)
     {
-        $this->seperator = $seperator;
+        $this->separator = $separator;
         return $this;
+    }
+
+    /**
+     * Spelling mistake backwards compatibility
+     * @param [type] $separator [description]
+     */
+    public function setSeperator($separator)
+    {
+        return $this->setSeparator($separator);
     }
 
     /**
@@ -585,15 +594,15 @@ class LaravelExcelReader {
     }
 
     /**
-     * Get the seperator
+     * Get the separator
      * @return string
      */
-    public function getSeperator()
+    public function getSeparator()
     {
-        if($this->seperator)
-            return $this->seperator;
+        if($this->separator)
+            return $this->separator;
 
-        return Config::get('excel::import.seperator', '_');
+        return Config::get('excel::import.separator', Config::get('excel::import.seperator', '_'));
     }
 
     /**

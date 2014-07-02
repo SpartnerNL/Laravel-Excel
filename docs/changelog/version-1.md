@@ -3,6 +3,7 @@
 ### 1.1.5
 
 - Select sheets by index with `Excel::selectSheetsByIndex(0,1)->load(...)`
+- Separator typo fix
 
 ### 1.1.4
 

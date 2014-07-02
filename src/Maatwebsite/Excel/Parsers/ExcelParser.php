@@ -248,7 +248,7 @@ class ExcelParser {
     protected function getSluggedIndex($value, $ascii = false)
     {
         // Get original
-        $separator  = $this->reader->getSeperator();
+        $separator  = $this->reader->getSeparator();
 
         // Convert to ascii when needed
         if($ascii)
