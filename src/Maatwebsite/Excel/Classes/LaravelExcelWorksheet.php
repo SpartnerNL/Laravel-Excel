@@ -838,6 +838,8 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet
 
         // Calculate the column widths
         $this->calculateColumnWidths();
+
+        return $this;
     }
 
     /**
