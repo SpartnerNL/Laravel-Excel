@@ -1,5 +1,9 @@
 # Version 1
 
+### 1.1.5
+
+- Select sheets by index with `Excel::selectSheetsByIndex(0,1)->load(...)`
+
 ### 1.1.4
 
 - Fix for importing 0 as null

@@ -8,7 +8,15 @@ If you want to select a single sheet, you can use `->selectSheets($name)`. Only 
 ### Selecting multiple sheets
 If you want to select multiple sheets inside your file, you can pass an array as the parameter;
 
-    Excel::selectSheets(array('sheet1', 'sheet2'))->load();
+    Excel::selectSheets('sheet1', 'sheet2')->load();
+
+### Selecting sheets by index
+
+    // First sheet
+    Excel::selectSheetsByIndex(0)->load();
+
+    // First and second sheet
+    Excel::selectSheetsByIndex(0, 1)->load();
 
 ### Selecting columns
 
