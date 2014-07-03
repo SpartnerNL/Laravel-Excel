@@ -7,6 +7,7 @@
 - Added `->setFileName()` method
 - Use `->setTitle()` only for workbook title not for setting the filename anymore
 - Made `setAutoSize()` chainable for other sheet methods
+- Export config setting to disable pre calculation of formulas during export
 
 ### 1.1.4
 
