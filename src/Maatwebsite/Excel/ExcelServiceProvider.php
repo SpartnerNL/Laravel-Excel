@@ -2,6 +2,7 @@
 
 use Config;
 use PHPExcel_Settings;
+use PHPExcel_Shared_Font;
 use Maatwebsite\Excel\Readers\Html;
 use Maatwebsite\Excel\Classes\Cache;
 use Maatwebsite\Excel\Classes\PHPExcel;
@@ -40,7 +41,11 @@ class ExcelServiceProvider extends ServiceProvider {
 
 	public function boot()
 	{
+		// Boot the package
 		$this->package('maatwebsite/excel');
+
+		// Set the autosizing settings
+		$this->setAutoSizingSettings();
 	}
 
 	/**
@@ -170,6 +175,15 @@ class ExcelServiceProvider extends ServiceProvider {
 	}
 
 	/**
+	 * Set the autosizing settings
+	 */
+	public function setAutoSizingSettings()
+	{
+		$method = Config::get('excel::export.autosize-method', PHPExcel_Shared_Font::AUTOSIZE_METHOD_APPROX);
+		PHPExcel_Shared_Font::setAutoSizeMethod($method);
+	}
+
+	/**
 	 * Get the services provided by the provider.
 	 *
 	 * @return array
@@ -185,5 +199,4 @@ class ExcelServiceProvider extends ServiceProvider {
 			'excel.writer'
 		);
 	}
-
 }

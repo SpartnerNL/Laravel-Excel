@@ -58,15 +58,10 @@ class Excel
      * @param  callable|null $callback
      * @return LaravelExcelWriter
      */
-    public function create($title, $callback = null)
+    public function create($filename, $callback = null)
     {
         // Writer instance
         $writer = clone $this->writer;
-
-        // Set the default properties
-        $this->excel->setDefaultProperties(array(
-            'title' => $title
-        ));
 
         // Disconnect worksheets to prevent unnecessary ones
         $this->excel->disconnectWorksheets();
@@ -74,8 +69,9 @@ class Excel
         // Inject our excel object
         $writer->injectExcel($this->excel);
 
-        // Set the title
-        $writer->setTitle($title);
+        // Set the filename and title
+        $writer->setFileName($filename);
+        $writer->setTitle($filename);
 
         // Do the callback
         if($callback instanceof Closure)
@@ -122,9 +118,22 @@ class Excel
      * @param  $sheets
      * @return LaravelExcelReader
      */
-    public function selectSheets($sheets)
+    public function selectSheets($sheets = array())
     {
-        $this->reader->setSelectedSheets(is_array($sheets) ? $sheets : array($sheets));
+        $sheets = is_array($sheets) ? $sheets : func_get_args();
+        $this->reader->setSelectedSheets($sheets);
+        return $this;
+    }
+
+    /**
+     * Select sheets by index
+     * @param  [type] $sheets [description]
+     * @return [type]         [description]
+     */
+    public function selectSheetsByIndex($sheets = array())
+    {
+        $sheets = is_array($sheets) ? $sheets : func_get_args();
+        $this->reader->setSelectedSheetIndices($sheets);
         return $this;
     }
 

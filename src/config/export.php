@@ -15,6 +15,29 @@ return array(
 
     /*
     |--------------------------------------------------------------------------
+    | Autosize method
+    |--------------------------------------------------------------------------
+    |
+    | --> PHPExcel_Shared_Font::AUTOSIZE_METHOD_APPROX
+    | The default is based on an estimate, which does its calculation based
+    | on the number of characters in the cell value (applying any calculation
+    | and format mask, and allowing for wordwrap and rotation) and with an
+    | "arbitrary" adjustment based on the font (Arial, Calibri or Verdana,
+    | defaulting to Calibri if any other font is used) and a proportional
+    | djustment for the font size.
+    |
+    | --> PHPExcel_Shared_Font::AUTOSIZE_METHOD_EXACT
+    | The second method is more accurate, based on actual style formatting as
+    | well (bold, italic, etc), and is calculated by generating a gd2 imagettf
+    | bounding box and using its dimensions to determine the size; but this
+    | method is significantly slower, and its accuracy is still dependent on
+    | having the appropriate fonts installed.
+    |
+    */
+    'autosize-method' => PHPExcel_Shared_Font::AUTOSIZE_METHOD_APPROX,
+
+    /*
+    |--------------------------------------------------------------------------
     | Auto generate table heading
     |--------------------------------------------------------------------------
     |
@@ -30,6 +53,13 @@ return array(
     |--------------------------------------------------------------------------
     */
     'merged_cell_alignment'       => 'left',
+
+    /*
+    |--------------------------------------------------------------------------
+    | Pre-calculate formulas during export
+    |--------------------------------------------------------------------------
+    */
+    'calculate'                   => false,
 
     /*
     |--------------------------------------------------------------------------
@@ -90,7 +120,6 @@ return array(
         | The path we want to save excel file to
         |
         */
-
         'path' => storage_path('exports'),
 
         /*
@@ -101,9 +130,7 @@ return array(
         | Whether we want to return information about the stored file or not
         |
         */
-
         'returnInfo'    =>  false
 
     )
-
 );

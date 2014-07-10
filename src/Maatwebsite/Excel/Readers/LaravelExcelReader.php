@@ -100,10 +100,10 @@ class LaravelExcelReader {
     protected $skip = 0;
 
     /**
-     * Slug seperator
+     * Slug separator
      * @var string
      */
-    public $seperator = false;
+    public $separator = false;
 
      /**
      * Ignore empty cells
@@ -154,6 +154,12 @@ class LaravelExcelReader {
     public $selectedSheets = array();
 
     /**
+     * Selected sheet indices
+     * @var array
+     */
+    public $selectedSheetIndices = array();
+
+    /**
      * Construct new reader
      * @param FileSystem $files
      * @param FormatIdentifier $identifier
@@ -202,6 +208,37 @@ class LaravelExcelReader {
     public function sheetsSelected()
     {
         return count($this->selectedSheets) > 0;
+    }
+
+    /**
+     * Check if the file was selected by index
+     * @param  [type]  $index [description]
+     * @return boolean        [description]
+     */
+    public function isSelectedByIndex($index)
+    {
+        $selectedSheets = $this->getSelectedSheetIndices();
+        if(empty($selectedSheets)) return true;
+        return in_array($index, $selectedSheets) ? true : false;
+    }
+
+    /**
+     * Set the selected sheet indices
+     * @param [type] $sheets [description]
+     */
+    public function setSelectedSheetIndices($sheets)
+    {
+        $this->selectedSheetIndices = $sheets;
+        return $this;
+    }
+
+    /**
+     * Return the selected sheets
+     * @return [type] [description]
+     */
+    public function getSelectedSheetIndices()
+    {
+        return $this->selectedSheetIndices;
     }
 
     /**
@@ -488,14 +525,23 @@ class LaravelExcelReader {
     }
 
     /**
-     * Set the cell name word seperator
-     * @param string $seperator
+     * Set the cell name word separator
+     * @param string $separator
      * @return LaraveExcelReader
      */
-    public function setSeperator($seperator)
+    public function setSeparator($separator)
     {
-        $this->seperator = $seperator;
+        $this->separator = $separator;
         return $this;
+    }
+
+    /**
+     * Spelling mistake backwards compatibility
+     * @param [type] $separator [description]
+     */
+    public function setSeperator($separator)
+    {
+        return $this->setSeparator($separator);
     }
 
     /**
@@ -548,15 +594,15 @@ class LaravelExcelReader {
     }
 
     /**
-     * Get the seperator
+     * Get the separator
      * @return string
      */
-    public function getSeperator()
+    public function getSeparator()
     {
-        if($this->seperator)
-            return $this->seperator;
+        if($this->separator)
+            return $this->separator;
 
-        return Config::get('excel::import.seperator', '_');
+        return Config::get('excel::import.separator', Config::get('excel::import.seperator', '_'));
     }
 
     /**

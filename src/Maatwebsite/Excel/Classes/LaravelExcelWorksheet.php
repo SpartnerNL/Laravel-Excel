@@ -809,7 +809,7 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet
     public function setAutoSize($columns = false)
     {
         // Remember that the sheet was autosized
-        $this->hasFixedSizeColumns = true;
+        $this->hasFixedSizeColumns = $columns || !empty($columns) ? false : true;
 
         // Set autosize to true
         $this->autoSize = $columns ? $columns : false;
@@ -838,6 +838,8 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet
 
         // Calculate the column widths
         $this->calculateColumnWidths();
+
+        return $this;
     }
 
     /**

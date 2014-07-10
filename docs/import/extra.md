@@ -9,14 +9,14 @@ To disable this for a single import, use `->noHeading()`.
 
     $reader->noHeading();
 
-### Setting the cell name seperator
+### Setting the cell name separator
 By default collection attribute names will be set by looking at the first row columns. Spaces will be translated to `_`.
 
 **E.g. Created at -> created_at**
 
-The default behaviour can be changed inside the `import.php` config by changing `'seperator'`. Or you can use `->setSeperator($seperator)`.
+The default behaviour can be changed inside the `import.php` config by changing `'separator'`. Or you can use `->setSeparator($separator)`.
 
-    $reader->setSeperator('-');
+    $reader->setSeparator('-');
 
 ### Ignoring empty cells
 By default empty cells will not be ignored and presented as null inside the cell collection.

@@ -1,6 +1,7 @@
 <?php
 
 require_once('traits/ImportTrait.php');
+require_once('traits/SingleImportTestingTrait.php');
 
 use Mockery as m;
 use Maatwebsite\Excel\Readers\LaravelExcelReader;
@@ -11,7 +12,7 @@ class CsvReaderTest extends TestCase {
     /**
      * Import trait
      */
-    use ImportTrait;
+    use ImportTrait, SingleImportTestingTrait;
 
     /**
      * Filename
@@ -19,10 +20,15 @@ class CsvReaderTest extends TestCase {
      */
     protected $fileName = 'files/test.csv';
 
+    public function testSeparator()
+    {
+        $this->assertEquals('_', $this->loadedFile->getSeparator());
+    }
+
     public function testSetSeparator()
     {
-        $set = $this->loadedFile->setSeperator('-');
-        $this->assertEquals('-', $set->getSeperator());
+        $set = $this->loadedFile->setSeparator('-');
+        $this->assertEquals('-', $set->getSeparator());
     }
 
     public function testSetDelimiter()
@@ -30,5 +36,4 @@ class CsvReaderTest extends TestCase {
         $set = $this->loadedFile->setDelimiter(';');
         $this->assertEquals(';', $set->getDelimiter());
     }
-
 }

@@ -1,5 +1,16 @@
 # Version 1
 
+### 1.1.5
+
+- Select sheets by index with `Excel::selectSheetsByIndex(0,1)->load(...)`
+- Separator typo fix
+- Added `->setFileName()` method
+- Use `->setTitle()` only for workbook title not for setting the filename anymore
+- Made `setAutoSize()` chainable for other sheet methods
+- Export config setting to disable pre calculation of formulas during export
+- Export config setting to set the autosizing method (approx|exact)
+- Auto sizing export from view fix
+
 ### 1.1.4
 
 - Fix for importing 0 as null

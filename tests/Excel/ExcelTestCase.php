@@ -72,6 +72,7 @@ class ExcelTestCase extends PHPUnit_Framework_TestCase {
         $this->reader->shouldReceive('injectExcel')->with($this->phpexcel);
         $this->reader->shouldReceive('load');
         $this->reader->shouldReceive('setSelectedSheets');
+        $this->reader->shouldReceive('setSelectedSheetIndices');
     }
 
     /**
@@ -83,6 +84,7 @@ class ExcelTestCase extends PHPUnit_Framework_TestCase {
         $this->writer = m::mock('Maatwebsite\Excel\Writers\LaravelExcelWriter');
         $this->writer->shouldReceive('injectExcel')->with($this->phpexcel);
         $this->writer->shouldReceive('setTitle');
+        $this->writer->shouldReceive('setFileName');
         $this->writer->shouldReceive('shareView')->andReturn($this->writer);
     }
 
@@ -106,3 +108,7 @@ class ExcelTestCase extends PHPUnit_Framework_TestCase {
     }
 
 }
+
+
+
+
