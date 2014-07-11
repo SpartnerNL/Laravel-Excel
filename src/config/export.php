@@ -24,7 +24,7 @@ return array(
     | and format mask, and allowing for wordwrap and rotation) and with an
     | "arbitrary" adjustment based on the font (Arial, Calibri or Verdana,
     | defaulting to Calibri if any other font is used) and a proportional
-    | djustment for the font size.
+    | adjustment for the font size.
     |
     | --> PHPExcel_Shared_Font::AUTOSIZE_METHOD_EXACT
     | The second method is more accurate, based on actual style formatting as
