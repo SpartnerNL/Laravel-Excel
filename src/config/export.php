@@ -24,7 +24,7 @@ return array(
     | and format mask, and allowing for wordwrap and rotation) and with an
     | "arbitrary" adjustment based on the font (Arial, Calibri or Verdana,
     | defaulting to Calibri if any other font is used) and a proportional
-    | djustment for the font size.
+    | adjustment for the font size.
     |
     | --> PHPExcel_Shared_Font::AUTOSIZE_METHOD_EXACT
     | The second method is more accurate, based on actual style formatting as
@@ -49,7 +49,7 @@ return array(
 
     /*
     |--------------------------------------------------------------------------
-    | Auto set aligment on merged cells
+    | Auto set alignment on merged cells
     |--------------------------------------------------------------------------
     */
     'merged_cell_alignment'       => 'left',
@@ -76,7 +76,7 @@ return array(
         | 1) When set to false, default margins will be used
         | 2) It's possible to enter a single margin which will
         |    be used for all margins.
-        | 3) Alternativly you can pass an array with 4 margins
+        | 3) Alternatively you can pass an array with 4 margins
         |    Default order: array(top, right, bottom, left)
         |
         */
