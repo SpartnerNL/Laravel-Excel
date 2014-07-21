@@ -46,6 +46,9 @@ class ExcelServiceProvider extends ServiceProvider {
 
 		// Set the autosizing settings
 		$this->setAutoSizingSettings();
+
+		// Register filters
+		$this->registerFilters();
 	}
 
 	/**
@@ -181,6 +184,15 @@ class ExcelServiceProvider extends ServiceProvider {
 	{
 		$method = Config::get('excel::export.autosize-method', PHPExcel_Shared_Font::AUTOSIZE_METHOD_APPROX);
 		PHPExcel_Shared_Font::setAutoSizeMethod($method);
+	}
+
+	/**
+	 * Register filters
+	 * @return [type] [description]
+	 */
+	public function registerFilters()
+	{
+		app('excel')->registerFilters(Config::get('excel::filters', array()));
 	}
 
 	/**
