@@ -18,8 +18,7 @@ use Maatwebsite\Excel\Exceptions\LaravelExcelException;
  * @author     Maatwebsite <info@maatwebsite.nl>
  * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
  */
-class Excel
-{
+class Excel {
 
     /**
      * Filter
@@ -109,6 +108,9 @@ class Excel
         // Inject excel object
         $reader->injectExcel($this->excel);
 
+        // Enable filters
+        $reader->setFilters($this->filters);
+
         // Set the encoding
         $encoding = is_string($callback) ? $callback : $encoding;
 
@@ -185,7 +187,8 @@ class Excel
 
     /**
      * Set filters
-     * @param array $filters [description]
+     * @param   array $filters
+     * @return  Excel
      */
     public function registerFilters($filters = array())
     {

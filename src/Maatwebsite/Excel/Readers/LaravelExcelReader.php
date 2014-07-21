@@ -160,6 +160,18 @@ class LaravelExcelReader {
     public $selectedSheetIndices = array();
 
     /**
+     * Active filter
+     * @var PHPExcel_Reader_IReadFilter
+     */
+    protected $filter;
+
+    /**
+     * Filters
+     * @var array
+     */
+    public $filters = array();
+
+    /**
      * Construct new reader
      * @param FileSystem $files
      * @param FormatIdentifier $identifier
@@ -361,6 +373,48 @@ class LaravelExcelReader {
     }
 
     /**
+     * Parse the file in chunks
+     * @param  [type] $size     [description]
+     * @param  [type] $callback [description]
+     * @return [type]           [description]
+     */
+    public function chunk($size = 10, $callback = null)
+    {
+        // Check if the chunk filter has been enabled
+        if(!in_array('chunk', $this->filters['enabled']))
+            throw new \Exception("The chunk filter is not enabled, do so with ->filter('chunk')");
+
+        // Get total rows
+        $totalRows = $this->getTotalRowsOfFile();
+
+        // Only read
+        $this->reader->setReadDataOnly(true);
+
+        // Start the chunking
+        for ($startRow = 1; $startRow <= $totalRows; $startRow += $size)
+        {
+            // Set the rows for the chunking
+            $this->filter->setRows($startRow, $size);
+
+            // Load file with chunk filter enabled
+            $this->excel = $this->reader->load($this->file);
+
+            // Set start index
+            $startIndex = ($startRow == 1) ? $startRow : $startRow - 1;
+
+            // Slice the results
+            $results = $this->get()->slice($startIndex, $size);
+
+            // Do a callback
+            if(is_callable($callback))
+                call_user_func($callback, $results);
+
+            $this->_reset();
+            unset($this->excel, $results);
+        }
+    }
+
+    /**
      * Each
      * @param  callback $callback
      * @return SheetCollection|RowCollection
@@ -425,6 +479,7 @@ class LaravelExcelReader {
               ->setTitle()
               ->_setFormat()
               ->_setReader()
+              ->_enableFilters()
               ->_setInputEncoding($encoding);
     }
 
@@ -437,6 +492,42 @@ class LaravelExcelReader {
     {
         $this->excel = $excel;
         $this->_reset();
+    }
+
+    /**
+     * Set filters
+     * @param array $filters
+     */
+    public function setFilters($filters = array())
+    {
+        $this->filters = $filters;
+    }
+
+    /**
+     * Enable filters
+     * @return
+     */
+    protected function _enableFilters()
+    {
+        // Loop through the registered filters
+        foreach($this->filters['registered'] as $key => $class)
+        {
+            // Set the filter inside the reader when enabled and the class exists
+            if(in_array($key, $this->filters['enabled']) && class_exists($class))
+            {
+                // init new filter (and overrule the current)
+                $this->filter = new $class;
+
+                // Set default rows
+                if(method_exists($this->filter, 'setRows'))
+                    $this->filter->setRows(0, 1);
+
+                // Set the read filter
+                $this->reader->setReadFilter($this->filter);
+            }
+        }
+
+        return $this;
     }
 
     /**
@@ -669,6 +760,16 @@ class LaravelExcelReader {
     }
 
     /**
+     * Get total rows of file
+     * @return integer
+     */
+    public function getTotalRowsOfFile()
+    {
+        $spreadsheetInfo = $this->reader->listWorksheetInfo($this->file);
+        return $spreadsheetInfo[0]['totalRows'];
+    }
+
+    /**
      * Set the write format
      * @return LaraveExcelReader
      */
@@ -759,6 +860,7 @@ class LaravelExcelReader {
     protected function _reset()
     {
         $this->excel->disconnectWorksheets();
+        unset($this->parsed);
     }
 
     /**
