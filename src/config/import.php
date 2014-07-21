@@ -17,15 +17,15 @@ return array(
 
     /*
     |--------------------------------------------------------------------------
-    | Cell name word seperator
+    | Cell name word separator
     |--------------------------------------------------------------------------
     |
-    | The default seperator which is used for the cell names
+    | The default separator which is used for the cell names
     | Note: only applies to 'heading' settings 'true' && 'slugged'
     |
     */
 
-    'seperator' => '_',
+    'separator' => '_',
 
     /*
     |--------------------------------------------------------------------------
