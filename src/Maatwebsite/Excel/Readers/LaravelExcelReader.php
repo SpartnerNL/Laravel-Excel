@@ -173,8 +173,8 @@ class LaravelExcelReader {
 
     /**
      * Load a file
-     * @param  string $file
-     * @param bool    $encoding
+     * @param  string        $file
+     * @param string|boolean $encoding
      * @return LaravelExcelReader
      */
     public function load($file, $encoding = false)
@@ -427,8 +427,8 @@ class LaravelExcelReader {
 
     /**
      * Init the loading
-     * @param  string $file
-     * @param bool    $encoding
+     * @param  string        $file
+     * @param string|boolean $encoding
      * @return void
      */
     protected function _init($file, $encoding = false)
