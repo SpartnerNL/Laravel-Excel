@@ -95,6 +95,11 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet {
     protected $autoGenerateHeading = true;
 
     /**
+     * @var bool
+     */
+    protected $hasRowsAdded = false;
+
+    /**
      * Create a new worksheet
      *
      * @param PHPExcel $pParent
@@ -198,6 +203,9 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet {
                 $column++;
             }
         }
+
+        // Remember that we have added rows
+        $this->hasRowsAdded = true;
 
         return $this;
     }
@@ -1076,7 +1084,7 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet {
      */
     protected function getStartRow()
     {
-        if ($this->getHighestRow() == 1)
+        if ($this->getHighestRow() == 1 && !$this->hasRowsAdded)
             return 1;
 
         return $this->getHighestRow() + 1;
