@@ -70,7 +70,7 @@ class ExcelParser {
      * Columns we want to fetch
      * @var array
      */
-    protected $columns = array();
+    protected $columns = [];
 
     /**
      * Row counter
@@ -103,7 +103,7 @@ class ExcelParser {
      *  @param array $columns
      *  @return SheetCollection
      */
-    public function parseFile($columns = array())
+    public function parseFile($columns = [])
     {
         // Init new sheet collection
         $workbook = new SheetCollection();
@@ -174,7 +174,7 @@ class ExcelParser {
         $this->excel->setActiveSheetIndex($this->w);
 
         // Fetch the labels
-        $this->indices = $this->reader->hasHeading() ? $this->getIndices() : array();
+        $this->indices = $this->reader->hasHeading() ? $this->getIndices() : [];
 
         // Parse the rows
         return $this->parseRows();
@@ -190,7 +190,7 @@ class ExcelParser {
         $this->row = $this->worksheet->getRowIterator(1)->current();
 
         // Set empty labels array
-        $this->indices = array();
+        $this->indices = [];
 
         // Loop through the cells
         foreach ($this->row->getCellIterator() as $this->cell)
@@ -384,7 +384,7 @@ class ExcelParser {
     protected function parseCells()
     {
         $i = 0;
-        $parsedCells = array();
+        $parsedCells = [];
 
         // Set the cell iterator
         $cellIterator = $this->row->getCellIterator();
@@ -468,7 +468,7 @@ class ExcelParser {
     protected function encode($value)
     {
         // Get input and output encoding
-        list($input, $output) = array_values(Config::get('excel::import.encoding', array('UTF-8', 'UTF-8')));
+        list($input, $output) = array_values(Config::get('excel::import.encoding', ['UTF-8', 'UTF-8']));
 
         // If they are the same, return the value
         if($input == $output)
@@ -503,14 +503,20 @@ class ExcelParser {
      */
     protected function parseDateAsCarbon()
     {
-        // Convert excel time to php date object
-        $date = PHPExcel_Shared_Date::ExcelToPHPObject($this->cell->getCalculatedValue())->format('Y-m-d H:i:s');
+        // If has a date
+        if($cellContent = $this->cell->getCalculatedValue())
+        {
+            // Convert excel time to php date object
+            $date = PHPExcel_Shared_Date::ExcelToPHPObject($this->cell->getCalculatedValue())->format('Y-m-d H:i:s');
 
-        // Parse with carbon
-        $date = Carbon::parse($date);
+            // Parse with carbon
+            $date = Carbon::parse($date);
 
-        // Format the date if wanted
-        return $this->reader->getDateFormat() ? $date->format($this->reader->getDateFormat()) : $date;
+            // Format the date if wanted
+            return $this->reader->getDateFormat() ? $date->format($this->reader->getDateFormat()) : $date;
+        }
+
+        return null;
     }
 
     /**
@@ -563,7 +569,7 @@ class ExcelParser {
      * Set selected columns
      * @param array $columns
      */
-    protected function setSelectedColumns($columns = array())
+    protected function setSelectedColumns($columns = [])
     {
         // Set the columns
         $this->columns = $columns;
@@ -580,22 +586,21 @@ class ExcelParser {
 
     /**
      * Set selected columns
-     * @param array $columns
+     * @return array
      */
     protected function getSelectedColumns()
     {
         // Set the columns
         return $this->columns;
-
     }
 
     /**
      * Reset
-     * @return [type] [description]
+     * @return void
      */
     protected function reset()
     {
-        $this->indices = array();
+        $this->indices = [];
         $this->isParsed = false;
     }
 

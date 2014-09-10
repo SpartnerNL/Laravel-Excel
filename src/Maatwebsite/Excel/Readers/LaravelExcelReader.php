@@ -1,9 +1,9 @@
 <?php namespace Maatwebsite\Excel\Readers;
 
+use Cache;
+use Config;
 use PHPExcel_IOFactory;
 use Illuminate\Filesystem\Filesystem;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Config;
 use Maatwebsite\Excel\Parsers\ExcelParser;
 use Maatwebsite\Excel\Classes\FormatIdentifier;
 use Maatwebsite\Excel\Exceptions\LaravelExcelException;
