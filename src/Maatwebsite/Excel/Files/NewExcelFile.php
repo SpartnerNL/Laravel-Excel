@@ -1,0 +1,59 @@
+<?php namespace Maatwebsite\Excel\Files;
+
+use Maatwebsite\Excel\Excel;
+
+abstract class NewExcelFile {
+
+    /**
+     * Excel instance
+     * @var Excel
+     */
+    protected $excel;
+
+    /**
+     * Loaded file
+     * @var \Maatwebsite\Excel\Readers\LaravelExcelReader
+     */
+    protected $file;
+
+    /**
+     * @param Excel $excel
+     */
+    public function __construct(Excel $excel)
+    {
+        $this->excel = $excel;
+        $this->file = $this->createNewFile();
+    }
+
+    /**
+     * Get file
+     * @return string
+     */
+    abstract public function getFilename();
+
+    /**
+     * Load the file
+     * @return \Maatwebsite\Excel\Readers\LaravelExcelReader
+     */
+    public function createNewFile()
+    {
+        // Load the file
+        $file = $this->excel->create(
+            $this->getFilename()
+        );
+
+        return $file;
+    }
+
+
+    /**
+     * Dynamically call methods
+     * @param  string $method
+     * @param  array  $params
+     * @return mixed
+     */
+    public function __call($method, $params)
+    {
+        return call_user_func_array([$this->file, $method], $params);
+    }
+}
