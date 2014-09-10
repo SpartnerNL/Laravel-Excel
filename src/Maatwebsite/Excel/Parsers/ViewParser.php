@@ -1,7 +1,7 @@
 <?php namespace Maatwebsite\Excel\Parsers;
 
-use View;
 use Maatwebsite\Excel\Readers\Html;
+use Illuminate\Support\Facades\View;
 
 /**
  *

@@ -1,7 +1,7 @@
 <?php namespace Maatwebsite\Excel\Classes;
 
-use Illuminate\Support\Facades\Config;
 use PHPExcel as PHPOffice_PHPExcel;
+use Illuminate\Support\Facades\Config;
 
 /**
  *

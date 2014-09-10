@@ -1,21 +1,21 @@
 <?php namespace Maatwebsite\Excel\Readers;
 
-use Config;
 use PHPExcel;
-use domDocument;
 use DOMNode;
 use DOMText;
 use DOMElement;
+use domDocument;
 use PHPExcel_Settings;
 use PHPExcel_Reader_HTML;
 use PHPExcel_Style_Color;
-use PHPExcel_Style_Border;
 use PHPExcel_Style_Fill;
 use PHPExcel_Style_Font;
+use PHPExcel_Style_Border;
+use PHPExcel_Worksheet_Drawing;
 use PHPExcel_Style_Alignment;
+use Illuminate\Support\Facades\Config;
 use Maatwebsite\Excel\Parsers\CssParser;
 use Maatwebsite\Excel\Classes\LaravelExcelWorksheet;
-use PHPExcel_Worksheet_Drawing;
 
 /**
  *

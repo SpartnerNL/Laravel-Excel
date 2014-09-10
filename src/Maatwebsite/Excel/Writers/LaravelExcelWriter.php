@@ -1,11 +1,11 @@
 <?php namespace Maatwebsite\Excel\Writers;
 
-use Config;
 use Closure;
-use Response;
 use Carbon\Carbon;
 use PHPExcel_IOFactory;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Response;
 use Maatwebsite\Excel\Classes\FormatIdentifier;
 use Maatwebsite\Excel\Classes\LaravelExcelWorksheet;
 use Maatwebsite\Excel\Exceptions\LaravelExcelException;

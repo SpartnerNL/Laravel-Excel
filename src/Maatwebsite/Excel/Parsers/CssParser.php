@@ -1,6 +1,6 @@
 <?php namespace Maatwebsite\Excel\Parsers;
 
-use URL;
+use Illuminate\Support\Facades\URL;
 
 /**
  *

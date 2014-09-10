@@ -1,10 +1,10 @@
 <?php namespace Maatwebsite\Excel;
 
-use Config;
 use PHPExcel_Settings;
 use PHPExcel_Shared_Font;
 use Maatwebsite\Excel\Readers\Html;
 use Maatwebsite\Excel\Classes\Cache;
+use Illuminate\Support\Facades\Config;
 use Maatwebsite\Excel\Classes\PHPExcel;
 use Illuminate\Support\ServiceProvider;
 use Maatwebsite\Excel\Parsers\ViewParser;

@@ -1,7 +1,7 @@
 <?php namespace Maatwebsite\Excel\Classes;
 
-use Config;
 use PHPExcel_Settings;
+use Illuminate\Support\Facades\Config;
 use PHPExcel_CachedObjectStorageFactory;
 
 class Cache {
