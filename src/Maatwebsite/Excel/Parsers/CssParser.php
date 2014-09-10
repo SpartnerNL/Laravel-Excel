@@ -229,28 +229,7 @@ class CssParser {
         // Get the link
         $link = $node->attributes()->href;
 
-        if (substr($link, 0, 4) != 'http')
-        {
-            if (substr($link, 0, 1) == '/') {
-                $link = $this->getUrlScheme() . '://' . $link;
-            } else {
-                $link = $this->getUrlScheme() . '://' . dirname($this->getUrlScheme()) . '/' . $link;
-            }
-        }
-
-        return $link;
-    }
-
-    /**
-     * Get the URL scheme
-     * @return string
-     */
-    protected function getUrlScheme()
-    {
-        if(!$this->scheme)
-            $this->scheme = parse_url(URL::getScheme());
-
-        return $this->scheme;
+        return url($link);
     }
 
     /**
