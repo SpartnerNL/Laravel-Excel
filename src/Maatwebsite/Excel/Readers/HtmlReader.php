@@ -70,11 +70,11 @@ class Html extends PHPExcel_Reader_HTML {
     /**
      * Loads PHPExcel from file
      *
-     * @param   string                              $pFilename
-     * @param   boolean                             $isString
-     * @param   PHPExcel|LaravelExcelWorksheet|null $obj
+     * @param   string                                 $pFilename
+     * @param   boolean                                $isString
+     * @param bool|LaravelExcelWorksheet|null|PHPExcel $obj
+     * @throws \PHPExcel_Reader_Exception
      * @return  LaravelExcelWorksheet
-     * @throws  PHPExcel_Reader_Exception
      */
     public function load($pFilename, $isString = false, $obj = false)
     {
@@ -239,7 +239,7 @@ class Html extends PHPExcel_Reader_HTML {
                 $attributeArray = [];
 
                 // If it's a column, and it's row has a class, style it
-                if(in_array($row, array_keys($this->styleForRows)))
+                if (in_array($row, array_keys($this->styleForRows)))
                     $this->styleByClass($sheet, $column, $row, $this->styleForRows[$row]);
 
                 // Loop through the child's attributes
@@ -290,7 +290,7 @@ class Html extends PHPExcel_Reader_HTML {
                         case 'class':
 
                             // If it's a tr, remember the row number
-                            if($child->nodeName == 'tr')
+                            if ($child->nodeName == 'tr')
                                 $this->styleForRows[$row] = $attribute->value;
 
                             $this->styleByClass($sheet, $column, $row, $attribute->value);
@@ -690,6 +690,8 @@ class Html extends PHPExcel_Reader_HTML {
      * @param  LaravelExcelWorksheet $sheet
      * @param  string                $row
      * @param  integer               $column
+     * @param                        $cellContent
+     * @throws \PHPExcel_Exception
      * @return LaravelExcelWorksheet
      */
     protected function _processHeadings($child, $sheet, $row, $column, $cellContent)
@@ -1203,10 +1205,10 @@ class Html extends PHPExcel_Reader_HTML {
             // wrap-text
             case 'wrap-text':
 
-                if($value == 'true')
+                if ($value == 'true')
                     $wrap = true;
 
-                if(!$value || $value == 'false')
+                if (!$value || $value == 'false')
                     $wrap = false;
 
                 $cells->getAlignment()->setWrapText($wrap);
@@ -1270,6 +1272,8 @@ class Html extends PHPExcel_Reader_HTML {
      * @param $sheet
      * @param $column
      * @param $row
+     * @param $cellContent
+     * @throws \PHPExcel_Exception
      * @return array
      */
     private function processMergedCells($sheet, &$column, $row, $cellContent)
@@ -1295,7 +1299,7 @@ class Html extends PHPExcel_Reader_HTML {
                     $column = $newCol;
 
                     // If it's a column, and it's row has a class, style it
-                    if(in_array($row, array_keys($this->styleForRows)))
+                    if (in_array($row, array_keys($this->styleForRows)))
                         $this->styleByClass($sheet, $column, $row, $this->styleForRows[$row]);
 
                     $this->_flushCell($sheet, $newCol, $row, $cellContent);

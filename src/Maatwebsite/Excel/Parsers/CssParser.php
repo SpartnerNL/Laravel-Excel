@@ -19,7 +19,7 @@ class CssParser {
      * Parsed results
      * @var array
      */
-    protected $results = array();
+    protected $results = [];
 
     /**
      * Preg match stringmake
@@ -29,13 +29,13 @@ class CssParser {
 
     /**
      * Document DOM
-     * @var domDocument
+     * @var \DOMNode
      */
     public $dom;
 
     /**
      * DOM xml
-     * @var SimpleXMLElement
+     * @var \SimpleXMLElement
      */
     protected $xml;
 
@@ -43,7 +43,7 @@ class CssParser {
      * Style sheet links
      * @var array
      */
-    protected $links = array();
+    protected $links = [];
 
     /**
      * Url scheme
@@ -53,8 +53,8 @@ class CssParser {
 
     /**
      * Construct the view parser
-     * @param domDocument $dom
-     * @return  void
+     * @param \domDocument $dom
+     * @return \Maatwebsite\Excel\Parsers\CssParser
      */
     public function __construct($dom)
     {
@@ -70,7 +70,7 @@ class CssParser {
      */
     public function lookup($type, $name)
     {
-        switch($type)
+        switch ($type)
         {
             case 'id':
                 $name = '#' . $name;
@@ -85,10 +85,10 @@ class CssParser {
         $results = $this->toArray();
 
         // Return the css if known
-        if(isset($results[$name]))
+        if (isset($results[$name]))
             return $results[$name];
 
-        return array();
+        return [];
     }
 
     /**
@@ -112,15 +112,15 @@ class CssParser {
         // Get all stylesheet tags
         $tags = $this->getStyleSheetTags();
 
-        foreach($tags as $node)
+        foreach ($tags as $node)
         {
             $this->links[] = $this->getCleanStyleSheetLink($node);
         }
 
         // We don't need duplicate css files
         $this->links = array_unique($this->links);
-        return $this;
 
+        return $this;
     }
 
     /**
@@ -129,9 +129,9 @@ class CssParser {
      */
     protected function parse()
     {
-        foreach($this->links as $link)
+        foreach ($this->links as $link)
         {
-            $css =  $this->getCssFromLink($link);
+            $css = $this->getCssFromLink($link);
             $this->breakCSSToPHP($css);
         }
     }
@@ -143,13 +143,13 @@ class CssParser {
      */
     protected function breakCSSToPHP($css)
     {
-        $results = array();
+        $results = [];
 
         preg_match_all($this->matcher, $css, $matches);
 
-        foreach($matches[0] as $i => $original)
+        foreach ($matches[0] as $i => $original)
         {
-            if(!starts_with($original, '@')) // ignore attributes starting with @ (like @import)
+            if (!starts_with($original, '@')) // ignore attributes starting with @ (like @import)
                 $this->breakIntoAttributes($i, $matches);
         }
     }
@@ -157,7 +157,7 @@ class CssParser {
     /**
      * Break css into attributes
      * @param  integer $i
-     * @param  array $mathces
+     * @param  array   $matches
      * @return void
      */
     protected function breakIntoAttributes($i, $matches)
@@ -165,23 +165,22 @@ class CssParser {
         // Seperate attributes
         $attributes = explode(';', $matches[2][$i]);
 
-        foreach($attributes as $attribute)
+        foreach ($attributes as $attribute)
         {
             $this->breakIntoProperties($attribute, $i, $matches);
         }
-
     }
 
     /**
      * Break into css properties
-     * @param string $attribute
+     * @param string  $attribute
      * @param integer $i
-     * @param array $matches
+     * @param array   $matches
      * @return void
      */
     protected function breakIntoProperties($attribute, $i, $matches)
     {
-        if (strlen(trim($attribute)) > 0 ) // for missing semicolon on last element, which is legal
+        if (strlen(trim($attribute)) > 0) // for missing semicolon on last element, which is legal
         {
             // List properties with name and value
             list($name, $value) = explode(':', $attribute);
@@ -198,6 +197,7 @@ class CssParser {
     {
         $value = trim($value);
         $value = str_replace('!important', '', $value);
+
         return trim($value);
     }
 
@@ -207,7 +207,7 @@ class CssParser {
      */
     protected function importDom()
     {
-        return $this->xml =  simplexml_import_dom($this->dom);
+        return $this->xml = simplexml_import_dom($this->dom);
     }
 
     /**
@@ -241,5 +241,4 @@ class CssParser {
     {
         return file_get_contents($link);
     }
-
 }

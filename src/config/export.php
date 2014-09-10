@@ -1,6 +1,6 @@
 <?php
 
-return array(
+return [
 
     /*
     |--------------------------------------------------------------------------
@@ -11,7 +11,7 @@ return array(
     | an array of columns ( array('A', 'B') )
     |
     */
-    'autosize'  => true,
+    'autosize'                    => true,
 
     /*
     |--------------------------------------------------------------------------
@@ -34,7 +34,7 @@ return array(
     | having the appropriate fonts installed.
     |
     */
-    'autosize-method' => PHPExcel_Shared_Font::AUTOSIZE_METHOD_APPROX,
+    'autosize-method'             => PHPExcel_Shared_Font::AUTOSIZE_METHOD_APPROX,
 
     /*
     |--------------------------------------------------------------------------
@@ -45,7 +45,7 @@ return array(
     | will automatically be used as first row (table heading)
     |
     */
-    'generate_heading_by_indices'  => true,
+    'generate_heading_by_indices' => true,
 
     /*
     |--------------------------------------------------------------------------
@@ -66,7 +66,7 @@ return array(
     | Default sheet settings
     |--------------------------------------------------------------------------
     */
-    'sheets'    => array(
+    'sheets'                      => [
 
         /*
         |--------------------------------------------------------------------------
@@ -80,29 +80,29 @@ return array(
         |    Default order: array(top, right, bottom, left)
         |
         */
-        'page_margin'           => false,
+        'page_margin'          => false,
 
         /*
         |--------------------------------------------------------------------------
         | Value in source array that stands for blank cell
         |--------------------------------------------------------------------------
         */
-        'nullValue'             => null,
+        'nullValue'            => null,
 
         /*
         |--------------------------------------------------------------------------
         | Insert array starting from this cell address as the top left coordinate
         |--------------------------------------------------------------------------
         */
-        'startCell'             => 'A1',
+        'startCell'            => 'A1',
 
         /*
         |--------------------------------------------------------------------------
         | Apply strict comparison when testing for null values in the array
         |--------------------------------------------------------------------------
         */
-        'strictNullComparison'  => false
-    ),
+        'strictNullComparison' => false
+    ],
 
     /*
     |--------------------------------------------------------------------------
@@ -110,7 +110,7 @@ return array(
     |--------------------------------------------------------------------------
     */
 
-    'store' => array(
+    'store'                       => [
 
         /*
         |--------------------------------------------------------------------------
@@ -120,7 +120,7 @@ return array(
         | The path we want to save excel file to
         |
         */
-        'path' => storage_path('exports'),
+        'path'       => storage_path('exports'),
 
         /*
         |--------------------------------------------------------------------------
@@ -130,7 +130,7 @@ return array(
         | Whether we want to return information about the stored file or not
         |
         */
-        'returnInfo'    =>  false
+        'returnInfo' => false
 
-    )
-);
+    ]
+];

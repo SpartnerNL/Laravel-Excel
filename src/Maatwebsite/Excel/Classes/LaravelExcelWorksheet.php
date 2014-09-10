@@ -8,6 +8,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Config;
 use Maatwebsite\Excel\Writers\CellWriter;
 use Maatwebsite\Excel\Exceptions\LaravelExcelException;
+use PHPExcel_Worksheet_PageSetup;
 
 /**
  *
@@ -274,7 +275,7 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet {
     /**
      * Manipulate a single cell
      * @param  array|string $cell
-     * @param  callback     $callback
+     * @param bool|callable $callback $callback
      * @return LaravelExcelWorksheet
      */
     public function cell($cell, $callback = false)
@@ -292,8 +293,8 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet {
 
     /**
      * Manipulate a cell or a range of cells
-     * @param  array   $cells
-     * @param callback $callback
+     * @param  array        $cells
+     * @param bool|callable $callback $callback
      * @return LaravelExcelWorksheet
      */
     public function cells($cells, $callback = false)
@@ -310,9 +311,6 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet {
 
     /**
      *  Load a View and convert to HTML
-     * @param string $view
-     * @param array  $data
-     * @param array  $mergeData
      * @return LaravelExcelWorksheet
      */
     public function setView()
@@ -386,9 +384,9 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet {
 
     /**
      * Set data for the current sheet
-     * @param  string  $keys
-     * @param  string  $value
-     * @param  boolean $headingGeneration
+     * @param              $key
+     * @param  bool|string $value
+     * @param  boolean     $headingGeneration
      * @return LaravelExcelWorksheet
      */
     public function with($key, $value = false, $headingGeneration = true)
@@ -405,7 +403,11 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet {
     /**
      * From array
      * @param  Collection|array $source
+     * @param null              $nullValue
+     * @param bool              $startCell
+     * @param bool              $strictNullComparison
      * @param boolean           $headingGeneration
+     * @throws PHPExcel_Exception
      * @return LaravelExcelWorksheet
      */
     public function fromModel($source = null, $nullValue = null, $startCell = false, $strictNullComparison = false, $headingGeneration = true)
@@ -416,10 +418,11 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet {
     /**
      * Fill worksheet from values in array
      *
-     * @param array   $source               Source array
-     * @param mixed   $nullValue            Value in source array that stands for blank cell
-     * @param string  $startCell            Insert array starting from this cell address as the top left coordinate
-     * @param boolean $strictNullComparison Apply strict comparison when testing for null values in the array
+     * @param array       $source               Source array
+     * @param mixed       $nullValue            Value in source array that stands for blank cell
+     * @param bool|string $startCell            Insert array starting from this cell address as the top left coordinate
+     * @param boolean     $strictNullComparison Apply strict comparison when testing for null values in the array
+     * @param bool        $headingGeneration
      * @throws PHPExcel_Exception
      * @return LaravelExcelWorksheet
      */
@@ -484,8 +487,9 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet {
 
     /**
      * Add vars to the data array
-     * @param string $key
-     * @param string $value
+     * @param string      $key
+     * @param bool|string $value
+     * @throws PHPExcel_Exception
      * @return void
      */
     protected function _addVars($key, $value = false)
@@ -627,8 +631,9 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet {
 
     /**
      * Set attributes
-     * @param string       $key
+     * @param              $setter
      * @param array|string $params
+     * @throws LaravelExcelException
      * @return  void|PHPExcel_Worksheet_PageSetup
      */
     public function _setAttributes($setter, $params)
@@ -660,7 +665,7 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet {
      * @param string       $setter
      * @param string       $key
      * @param array|string $params
-     * @return  PHPExcel_Style
+     * @return PHPExcel_Style
      */
     protected function setDefaultStyles($setter, $key, $params)
     {
@@ -703,12 +708,11 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet {
     /**
      * Set default font styles
      * @param string       $caller
-     * @param string       $setter
      * @param string       $key
      * @param array|string $params
      * @return  PHPExcel_Style
      */
-    protected function setFontStyle($caller, $setter, $key, $params)
+    protected function setFontStyle($caller, $key, $params)
     {
         // Set caller to font
         $caller = $caller->getFont();
@@ -829,8 +833,8 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet {
     /**
      * Set cell size
      * @param array|string $cell
-     * @param integer      $width
-     * @param integer      $height
+     * @param bool         $width
+     * @param bool|int     $height
      * @return  LaravelExcelWorksheet
      */
     public function setSize($cell, $width = false, $height = false)
@@ -1043,6 +1047,8 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet {
     /**
      * Merge cells
      * @param  string $pRange
+     * @param bool    $alignment
+     * @throws PHPExcel_Exception
      * @return LaravelExcelWorksheet
      */
     public function mergeCells($pRange = 'A1:A1', $alignment = false)
@@ -1064,6 +1070,7 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet {
      *  Set the columns you want to merge
      * @return LaravelExcelWorksheet
      * @param array $mergeColumn An array of columns you want to merge
+     * @param bool  $alignment
      */
     public function setMergeColumn(Array $mergeColumn, $alignment = false)
     {

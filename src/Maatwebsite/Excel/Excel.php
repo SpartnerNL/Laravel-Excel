@@ -18,8 +18,8 @@ use Maatwebsite\Excel\Exceptions\LaravelExcelException;
  * @author     Maatwebsite <info@maatwebsite.nl>
  * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
  */
-class Excel
-{
+class Excel {
+
     /**
      * Excel object
      * @var PHPExcel
@@ -40,7 +40,7 @@ class Excel
 
     /**
      * Construct Excel
-     * @param  PHPExcel $excel
+     * @param  PHPExcel           $excel
      * @param  LaravelExcelReader $reader
      * @param  LaravelExcelWriter $writer
      */
@@ -54,7 +54,7 @@ class Excel
 
     /**
      * Create a new file
-     * @param  string $title
+     * @param                $filename
      * @param  callable|null $callback
      * @return LaravelExcelWriter
      */
@@ -74,7 +74,7 @@ class Excel
         $writer->setTitle($filename);
 
         // Do the callback
-        if($callback instanceof Closure)
+        if ($callback instanceof Closure)
             call_user_func($callback, $writer);
 
         // Return the writer object
@@ -85,10 +85,10 @@ class Excel
      *
      *  Load an existing file
      *
-     *  @param  string $file The file we want to load
-     *  @param  callback|null $callback
-     *  @param  string|null $encoding
-     *  @return LaravelExcelReader
+     * @param  string        $file The file we want to load
+     * @param  callback|null $callback
+     * @param  string|null   $encoding
+     * @return LaravelExcelReader
      *
      */
     public function load($file, $callback = null, $encoding = null)
@@ -106,7 +106,7 @@ class Excel
         $reader->load($file, $encoding);
 
         // Do the callback
-        if($callback instanceof Closure)
+        if ($callback instanceof Closure)
             call_user_func($callback, $reader);
 
         // Return the reader object
@@ -118,34 +118,37 @@ class Excel
      * @param  $sheets
      * @return LaravelExcelReader
      */
-    public function selectSheets($sheets = array())
+    public function selectSheets($sheets = [])
     {
         $sheets = is_array($sheets) ? $sheets : func_get_args();
         $this->reader->setSelectedSheets($sheets);
+
         return $this;
     }
 
     /**
      * Select sheets by index
-     * @param  [type] $sheets [description]
-     * @return [type]         [description]
+     * @param array $sheets
+     * @return $this
      */
-    public function selectSheetsByIndex($sheets = array())
+    public function selectSheetsByIndex($sheets = [])
     {
         $sheets = is_array($sheets) ? $sheets : func_get_args();
         $this->reader->setSelectedSheetIndices($sheets);
+
         return $this;
     }
 
     /**
      * Batch import
-     * @param  $files
+     * @param           $files
      * @param  callback $callback
      * @return PHPExcel
      */
     public function batch($files, Closure $callback)
     {
         $batch = new Batch;
+
         return $batch->start($this, $files, $callback);
     }
 
@@ -156,7 +159,7 @@ class Excel
      * @param  array  $mergeData
      * @return LaravelExcelWriter
      */
-    public function shareView($view, $data = array(), $mergeData = array())
+    public function shareView($view, $data = [], $mergeData = [])
     {
         return $this->create($view)->shareView($view, $data, $mergeData);
     }
@@ -168,7 +171,7 @@ class Excel
      * @param  array  $mergeData
      * @return LaravelExcelWriter
      */
-    public function loadView($view, $data = array(), $mergeData = array())
+    public function loadView($view, $data = [], $mergeData = [])
     {
         return $this->shareView($view, $data, $mergeData);
     }
@@ -180,13 +183,12 @@ class Excel
     public function __call($method, $params)
     {
         // If the dynamic call starts with "with", add the var to the data array
-        if(method_exists($this->excel, $method))
+        if (method_exists($this->excel, $method))
         {
             // Call the method from the excel object with the given params
-            return call_user_func_array(array($this->excel, $method), $params);
+            return call_user_func_array([$this->excel, $method], $params);
         }
 
-        throw new LaravelExcelException('Laravel Excel method ['. $method .'] does not exist');
+        throw new LaravelExcelException('Laravel Excel method [' . $method . '] does not exist');
     }
-
 }

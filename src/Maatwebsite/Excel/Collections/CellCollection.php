@@ -29,9 +29,9 @@ class CellCollection extends ExcelCollection {
      */
     public function setItems($items)
     {
-        foreach($items as $name => $value)
+        foreach ($items as $name => $value)
         {
-            if($name)
+            if ($name)
                 $this->put($name, $value || is_numeric($value) ? $value : null);
         }
     }
@@ -43,8 +43,7 @@ class CellCollection extends ExcelCollection {
      */
     public function __get($key)
     {
-        if($this->has($key))
+        if ($this->has($key))
             return $this->get($key);
     }
-
 }
