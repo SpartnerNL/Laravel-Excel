@@ -1185,6 +1185,19 @@ class Html extends PHPExcel_Reader_HTML {
                     ['style' => $borderStyle, 'color' => ['rgb' => $color]]
                 );
                 break;
+
+            // wrap-text
+            case 'wrap-text':
+
+                if($value == 'true')
+                    $wrap = true;
+
+                if(!$value || $value == 'false')
+                    $wrap = false;
+
+                $cells->getAlignment()->setWrapText($wrap);
+
+                break;
         }
     }
 
