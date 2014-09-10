@@ -33,6 +33,11 @@ use Maatwebsite\Excel\Classes\LaravelExcelWorksheet;
 class Html extends PHPExcel_Reader_HTML {
 
     /**
+     * @var array
+     */
+    protected $styleForRows = [];
+
+    /**
      * Input encoding
      * @var string
      */
@@ -233,6 +238,10 @@ class Html extends PHPExcel_Reader_HTML {
             {
                 $attributeArray = [];
 
+                // If it's a column, and it's row has a class, style it
+                if(in_array($row, array_keys($this->styleForRows)))
+                    $this->styleByClass($sheet, $column, $row, $this->styleForRows[$row]);
+
                 // Loop through the child's attributes
                 foreach ($child->attributes as $attribute)
                 {
@@ -279,6 +288,11 @@ class Html extends PHPExcel_Reader_HTML {
 
                         // Classes
                         case 'class':
+
+                            // If it's a tr, remember the row number
+                            if($child->nodeName == 'tr')
+                                $this->styleForRows[$row] = $attribute->value;
+
                             $this->styleByClass($sheet, $column, $row, $attribute->value);
                             break;
 
@@ -1279,6 +1293,11 @@ class Html extends PHPExcel_Reader_HTML {
                         (PHPExcel_Cell::columnIndexFromString($column) + 1) - 1
                     );
                     $column = $newCol;
+
+                    // If it's a column, and it's row has a class, style it
+                    if(in_array($row, array_keys($this->styleForRows)))
+                        $this->styleByClass($sheet, $column, $row, $this->styleForRows[$row]);
+
                     $this->_flushCell($sheet, $newCol, $row, $cellContent);
                 }
             }
