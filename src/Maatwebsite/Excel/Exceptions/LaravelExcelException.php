@@ -13,4 +13,6 @@ use PHPExcel_Exception;
  * @author     Maatwebsite <info@maatwebsite.nl>
  * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
  */
-class LaravelExcelException extends PHPExcel_Exception {}
+class LaravelExcelException extends PHPExcel_Exception {
+
+}

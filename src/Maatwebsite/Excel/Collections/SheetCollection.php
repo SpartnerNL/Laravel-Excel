@@ -11,4 +11,6 @@
  * @author     Maatwebsite <info@maatwebsite.nl>
  * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
  */
-class SheetCollection extends ExcelCollection {}
+class SheetCollection extends ExcelCollection {
+
+}

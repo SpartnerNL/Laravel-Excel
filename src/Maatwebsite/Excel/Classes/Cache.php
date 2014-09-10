@@ -1,7 +1,7 @@
 <?php namespace Maatwebsite\Excel\Classes;
 
-use Config;
 use PHPExcel_Settings;
+use Illuminate\Support\Facades\Config;
 use PHPExcel_CachedObjectStorageFactory;
 
 class Cache {
@@ -16,19 +16,19 @@ class Cache {
      * Available caching drivers
      * @var array
      */
-    protected $available = array(
-        'memory'        => 'cache_in_memory',
-        'gzip'          => 'cache_in_memory_gzip',
-        'serialized'    => 'cache_in_memory_serialized',
-        'igbinary'      => 'cache_igbinary',
-        'discISAM'      => 'cache_to_discISAM',
-        'apc'           => 'cache_to_apc',
-        'memcache'      => 'cache_to_memcache',
-        'temp'          => 'cache_to_phpTemp',
-        'wincache'      => 'cache_to_wincache',
-        'sqlite'        => 'cache_to_sqlite',
-        'sqlite3'       => 'cache_to_sqlite3'
-    );
+    protected $available = [
+        'memory'     => 'cache_in_memory',
+        'gzip'       => 'cache_in_memory_gzip',
+        'serialized' => 'cache_in_memory_serialized',
+        'igbinary'   => 'cache_igbinary',
+        'discISAM'   => 'cache_to_discISAM',
+        'apc'        => 'cache_to_apc',
+        'memcache'   => 'cache_to_memcache',
+        'temp'       => 'cache_to_phpTemp',
+        'wincache'   => 'cache_to_wincache',
+        'sqlite'     => 'cache_to_sqlite',
+        'sqlite3'    => 'cache_to_sqlite3'
+    ];
 
     /**
      * The name of the config file
@@ -42,11 +42,11 @@ class Cache {
     public function __construct()
     {
         // Get driver and settings from the config
-        $this->driver   = Config::get($this->configName . '.driver', 'memory');
-        $this->settings = Config::get($this->configName . '.settings', array());
+        $this->driver = Config::get($this->configName . '.driver', 'memory');
+        $this->settings = Config::get($this->configName . '.settings', []);
 
         // Init if caching is enabled
-        if($this->isEnabled())
+        if ($this->isEnabled())
             $this->init();
     }
 
@@ -69,8 +69,8 @@ class Cache {
      */
     public function findDriver()
     {
-        $property       = $this->detect();
-        $this->method   = constant($this->class.'::'.$property);
+        $property = $this->detect();
+        $this->method = constant($this->class . '::' . $property);
     }
 
     /**
@@ -92,24 +92,24 @@ class Cache {
      */
     protected function addAdditionalSettings()
     {
-        switch($this->driver)
+        switch ($this->driver)
         {
             case 'memcache':
 
                 // Add extra memcache settings
-                $this->settings = array_merge($this->settings, array(
-                    'memcacheServer'    => Config::get($this->configName . '.memcache.host', 'localhost'),
-                    'memcachePort'      => Config::get($this->configName . '.memcache.port', 11211)
-                ));
+                $this->settings = array_merge($this->settings, [
+                    'memcacheServer' => Config::get($this->configName . '.memcache.host', 'localhost'),
+                    'memcachePort'   => Config::get($this->configName . '.memcache.port', 11211)
+                ]);
 
                 break;
 
             case 'discISAM':
 
                 // Add dir
-                $this->settings = array_merge($this->settings, array(
-                    'dir'    => Config::get($this->configName . '.dir', storage_path('cache')),
-                ));
+                $this->settings = array_merge($this->settings, [
+                    'dir' => Config::get($this->configName . '.dir', storage_path('cache')),
+                ]);
 
                 break;
         }
@@ -123,5 +123,4 @@ class Cache {
     {
         return Config::get($this->configName . '.enable', true) ? true : false;
     }
-
 }

@@ -1,5 +1,20 @@
 # Version 1
 
+### 1.1.6
+
+- Provides.json fix
+- DocBlock fixes
+- Define Illuminate dependencies inside composer.json
+- Bettter HTML rowspan handlingin views
+- use new CellCollection() instead of ::make, to support Laravel 4.3
+- Workaround for long integers
+- Add support to `wrap-text` in views
+- Fix empty dates parsing
+- Support local stylesheets in view parsing
+- Push tr classes to td-children in views
+- Support for dynamically appending rows to an empty sheet
+- Fix separator typo in config
+
 ### 1.1.5
 
 - Select sheets by index with `Excel::selectSheetsByIndex(0,1)->load(...)`
