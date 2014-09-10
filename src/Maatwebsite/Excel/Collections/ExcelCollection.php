@@ -23,7 +23,7 @@ class ExcelCollection extends Collection {
 
     /**
      * Get the title
-     * @return [type] [description]
+     * @return string
      */
     public function getTitle()
     {
@@ -32,11 +32,10 @@ class ExcelCollection extends Collection {
 
     /**
      * Set the title
-     * @param [type] $title [description]
+     * @param $title
      */
     public function setTitle($title)
     {
         $this->title = $title;
     }
-
 }

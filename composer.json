@@ -11,12 +11,21 @@
     ],
     "require": {
         "php": ">=5.3.0",
-        "phpoffice/phpexcel": "~1.8.0"
+        "phpoffice/phpexcel": "~1.8.0",
+        "phpseclib/phpseclib": ">=0.3.7",
+        "illuminate/cache": "~4.0",
+        "illuminate/config": "~4.0",
+        "illuminate/filesystem": "~4.0",
+        "illuminate/http": "~4.0",
+        "illuminate/support": "~4.0",
+        "illuminate/routing": "~4.0",
+        "illuminate/view": "~4.0",
+        "nesbot/carbon": "~1.0"
     },
     "require-dev": {
         "phpunit/phpunit": "~4.0",
         "mockery/mockery": "~0.9",
-        "orchestra/testbench": "~2.2.0@dev"
+        "orchestra/testbench": "~2.2.0"
     },
     "autoload": {
         "classmap": [
@@ -26,11 +35,5 @@
         "psr-0": {
             "Maatwebsite\\Excel\\": "src/"
         }
-    },
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "git://github.com/orchestral/phpseclib.git"
-        }
-    ]
+    }
 }
