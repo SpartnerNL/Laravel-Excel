@@ -22,7 +22,7 @@ class CssParser {
     protected $results = array();
 
     /**
-     * Preg match string
+     * Preg match stringmake
      * @var string
      */
     protected $matcher = '/(.+?)\s?\{\s?(.+?)\s?\}/';

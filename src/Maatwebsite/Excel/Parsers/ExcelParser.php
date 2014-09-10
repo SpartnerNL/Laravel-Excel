@@ -410,7 +410,7 @@ class ExcelParser {
         }
 
         // Return array with parsed cells
-        return CellCollection::make($parsedCells);
+        return new CellCollection($parsedCells);
     }
 
     /**
