@@ -38,5 +38,4 @@ class ExcelCollection extends Collection {
     {
         $this->title = $title;
     }
-
 }
