@@ -1,18 +1,27 @@
 # Version 1
 
+### 1.1.7
+- Fix heading generation for export with `->fromArray()`
+- Bugfix for non-Unix kernels
+- Enhanced CSS parser (thanks to `tijsverkoyen/CssToInlineStyles`)
+- Support for nested CSS styles
+- Support for multiple css attributes per class
+- Support for internal and external CSS files
+- Support for inline style blocks (`<style>`)
+
 ### 1.1.6
 
 - Provides.json fix
 - DocBlock fixes
 - Define Illuminate dependencies inside composer.json
-- Bettter HTML rowspan handlingin views
-- use new CellCollection() instead of ::make, to support Laravel 4.3
+- Better HTML rowspan handling views
+- use new CellCollection() instead of ::make, to support upcoming Laravel version
 - Workaround for long integers
 - Add support to `wrap-text` in views
 - Fix empty dates parsing
 - Support local stylesheets in view parsing
 - Push tr classes to td-children in views
-- Support for dynamically appending rows to an empty sheet
+- Support for dynamically appending rows to an empty (new) sheet
 - Fix separator typo in config
 
 ### 1.1.5
