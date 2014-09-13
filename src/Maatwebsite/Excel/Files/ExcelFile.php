@@ -1,6 +1,8 @@
 <?php namespace Maatwebsite\Excel\Files;
 
+use Illuminate\Foundation\Application;
 use Maatwebsite\Excel\Excel;
+use Maatwebsite\Excel\Exceptions\LaravelExcelException;
 
 abstract class ExcelFile {
 
@@ -17,10 +19,17 @@ abstract class ExcelFile {
     protected $file;
 
     /**
-     * @param Excel $excel
+     * @var Application
      */
-    public function __construct(Excel $excel)
+    private $app;
+
+    /**
+     * @param Application $app
+     * @param Excel       $excel
+     */
+    public function __construct(Application $app, Excel $excel)
     {
+        $this->app = $app;
         $this->excel = $excel;
         $this->file = $this->loadFile();
     }
@@ -38,6 +47,18 @@ abstract class ExcelFile {
     public function getFilters()
     {
         return [];
+    }
+
+    /**
+     * Start importing
+     */
+    public function handleImport()
+    {
+        // Get the handler
+        $handler = $this->getHandler();
+
+        // Call the handle method and inject the file
+        return $handler->handle($this);
     }
 
     /**
@@ -66,6 +87,35 @@ abstract class ExcelFile {
         $this->excel->registerFilters(
             $this->getFilters()
         );
+    }
+
+    /**
+     * Get handler
+     * @return mixed
+     */
+    protected function getHandler()
+    {
+        return $this->app->make(
+            $this->getHandlerClassName()
+        );
+    }
+
+    /**
+     * Get the handler class name
+     * @throws LaravelExcelException
+     * @return string
+     */
+    protected function getHandlerClassName()
+    {
+        // Translate the file into a FileHandler
+        $class = get_class($this);
+        $handler = substr_replace($class, 'FileHandler', strrpos($class, 'File'));
+
+        // Check if the handler exists
+        if (!class_exists($handler))
+            throw new LaravelExcelException("File handler [$handler] does not exist.");
+
+        return $handler;
     }
 
     /**
