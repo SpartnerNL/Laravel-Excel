@@ -1,6 +1,8 @@
 <?php namespace Maatwebsite\Excel\Parsers;
 
+use DOMDocument;
 use Illuminate\Support\Facades\URL;
+use TijsVerkoyen\CssToInlineStyles\CssToInlineStyles;
 
 /**
  *
@@ -16,22 +18,9 @@ use Illuminate\Support\Facades\URL;
 class CssParser {
 
     /**
-     * Parsed results
-     * @var array
+     * @var CssToInlineStyles
      */
-    protected $results = [];
-
-    /**
-     * Preg match stringmake
-     * @var string
-     */
-    protected $matcher = '/(.+?)\s?\{\s?(.+?)\s?\}/';
-
-    /**
-     * Document DOM
-     * @var \DOMNode
-     */
-    public $dom;
+    protected $cssInliner;
 
     /**
      * DOM xml
@@ -46,68 +35,47 @@ class CssParser {
     protected $links = [];
 
     /**
-     * Url scheme
-     * @var string
+     * Construct the css parser
+     * @param CssToInlineStyles $cssInliner
      */
-    protected $scheme;
-
-    /**
-     * Construct the view parser
-     * @param \domDocument $dom
-     * @return \Maatwebsite\Excel\Parsers\CssParser
-     */
-    public function __construct($dom)
+    public function __construct(CssToInlineStyles $cssInliner)
     {
-        $this->dom = $dom;
-        $this->findStyleSheets()->parse();
+        $this->cssInliner = $cssInliner;
     }
 
     /**
-     * Lookup the class or id
-     * @param  string $type
-     * @param  string $name
-     * @return array
+     * Transform the found css to inline styles
      */
-    public function lookup($type, $name)
+    public function transformCssToInlineStyles($html)
     {
-        switch ($type)
-        {
-            case 'id':
-                $name = '#' . $name;
-                break;
+        // Clean-up html
+        $this->cssInliner->setCleanup(true);
 
-            case 'class':
-                $name = '.' . $name;
-                break;
+        // Set html
+        $this->cssInliner->setHtml($html);
+
+        // Use inline style blocks
+        $this->cssInliner->setUseInlineStylesBlock(true);
+
+        // Loop through all stylesheets
+        foreach($this->links as $link)
+        {
+            $css = file_get_contents($link);
+            $this->cssInliner->setCSS($css);
         }
 
-        // Get the css
-        $results = $this->toArray();
-
-        // Return the css if known
-        if (isset($results[$name]))
-            return $results[$name];
-
-        return [];
-    }
-
-    /**
-     * Return array with CSS attributes
-     * @return array
-     */
-    public function toArray()
-    {
-        return $this->results;
+        return $this->cssInliner->convert();
     }
 
     /**
      * Find the stylesheets inside the view
+     * @param DOMDocument $dom
      * @return CssParser
      */
-    protected function findStyleSheets()
+    public function findStyleSheets(DOMDocument $dom)
     {
         // Import the dom
-        $this->importDom();
+        $this->importDom($dom);
 
         // Get all stylesheet tags
         $tags = $this->getStyleSheetTags();
@@ -124,90 +92,12 @@ class CssParser {
     }
 
     /**
-     * Parse the links to css
-     * @return void
-     */
-    protected function parse()
-    {
-        foreach ($this->links as $link)
-        {
-            $css = $this->getCssFromLink($link);
-            $this->breakCSSToPHP($css);
-        }
-    }
-
-    /**
-     * Break CSS into a PHP array
-     * @param  string $css
-     * @return void
-     */
-    protected function breakCSSToPHP($css)
-    {
-        $results = [];
-
-        preg_match_all($this->matcher, $css, $matches);
-
-        foreach ($matches[0] as $i => $original)
-        {
-            if (!starts_with($original, '@')) // ignore attributes starting with @ (like @import)
-                $this->breakIntoAttributes($i, $matches);
-        }
-    }
-
-    /**
-     * Break css into attributes
-     * @param  integer $i
-     * @param  array   $matches
-     * @return void
-     */
-    protected function breakIntoAttributes($i, $matches)
-    {
-        // Seperate attributes
-        $attributes = explode(';', $matches[2][$i]);
-
-        foreach ($attributes as $attribute)
-        {
-            $this->breakIntoProperties($attribute, $i, $matches);
-        }
-    }
-
-    /**
-     * Break into css properties
-     * @param string  $attribute
-     * @param integer $i
-     * @param array   $matches
-     * @return void
-     */
-    protected function breakIntoProperties($attribute, $i, $matches)
-    {
-        if (strlen(trim($attribute)) > 0) // for missing semicolon on last element, which is legal
-        {
-            // List properties with name and value
-            list($name, $value) = explode(':', $attribute);
-            $this->results[$matches[1][$i]][trim($name)] = $this->cleanValue($value);
-        }
-    }
-
-    /**
-     * Return a clean value
-     * @param  string $value
-     * @return string
-     */
-    protected function cleanValue($value)
-    {
-        $value = trim($value);
-        $value = str_replace('!important', '', $value);
-
-        return trim($value);
-    }
-
-    /**
      * Import the dom
      * @return SimpleXMLElement
      */
-    protected function importDom()
+    protected function importDom(DOMDocument $dom)
     {
-        return $this->xml = simplexml_import_dom($this->dom);
+        return $this->xml = simplexml_import_dom($dom);
     }
 
     /**

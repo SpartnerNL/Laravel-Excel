@@ -92,8 +92,7 @@ It's possible to use inline styles inside your view files. Most of the general s
 
 ### Styling through external CSS file
 
-**Basic** styling can be done through an external CSS file.
-At this moment nested CSS is **not** supported yet. Only direct class and ID references will work.
+Styling can be done through an external CSS file.
 
 External css file:
 
@@ -105,6 +104,14 @@ External css file:
     .cell {
         background-color: #000000;
         color: #ffffff;
+    }
+
+    tr td {
+        background-color: #ffffff;
+    }
+
+    tr > td {
+        border-bottom: 1px solid #000000;
     }
 
 Table:
@@ -122,3 +129,5 @@ Table:
     </html>
 
 > Inside the reference guide you can find a list of supported styles.
+
+> It's advised to include `<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />` into the view to fix problems with UTF-8 encoding.

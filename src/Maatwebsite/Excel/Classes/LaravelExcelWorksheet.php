@@ -437,8 +437,22 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet {
         $this->setAutoHeadingGeneration($headingGeneration);
 
         // Add the vars
-        $this->_addVars($source);
+        $this->_addVars($source, false, $nullValue, $startCell, $strictNullComparison);
 
+        return $this;
+    }
+
+    /**
+     * Create sheet from array
+     * @param null $source
+     * @param null $nullValue
+     * @param bool $startCell
+     * @param bool $strictNullComparison
+     * @return $this
+     * @throws PHPExcel_Exception
+     */
+    public function createSheetFromArray($source = null, $nullValue = null, $startCell = false, $strictNullComparison = false)
+    {
         if (is_array($source))
         {
             //    Convert a 1-D array to 2-D (for ease of looping)
@@ -489,10 +503,13 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet {
      * Add vars to the data array
      * @param string      $key
      * @param bool|string $value
+     * @param null        $nullValue
+     * @param bool        $startCell
+     * @param bool        $strictNullComparison
      * @throws PHPExcel_Exception
-     * @return void
+     * @return void|$this
      */
-    protected function _addVars($key, $value = false)
+    protected function _addVars($key, $value = false, $nullValue = null, $startCell = false, $strictNullComparison = false)
     {
         // Add array of data
         if (is_array($key) || $key instanceof Collection)
@@ -503,11 +520,7 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet {
             // Create excel from array without a view
             if (!$this->parser)
             {
-                $nullValue = $this->getDefaultNullValue();
-                $startCell = $this->getDefaultStartCell();
-                $strictNullComparison = $this->getDefaultStrictNullComparison();
-
-                return parent::fromArray($this->data, $nullValue, $startCell, $strictNullComparison);
+                return $this->createSheetFromArray($this->data, $nullValue, $startCell, $strictNullComparison);
             }
         }
 
