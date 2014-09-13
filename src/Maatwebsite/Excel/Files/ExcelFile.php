@@ -7,12 +7,6 @@ use Maatwebsite\Excel\Exceptions\LaravelExcelException;
 abstract class ExcelFile extends File {
 
     /**
-     * Loaded file
-     * @var \Maatwebsite\Excel\Readers\LaravelExcelReader
-     */
-    protected $file;
-
-    /**
      * @param Application $app
      * @param Excel       $excel
      */

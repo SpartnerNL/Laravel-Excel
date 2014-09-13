@@ -18,6 +18,13 @@ abstract class File {
     protected $excel;
 
     /**
+     * Loaded file
+     * @var \Maatwebsite\Excel\Readers\LaravelExcelReader
+     */
+    protected $file;
+
+
+    /**
      * @param Application $app
      * @param Excel       $excel
      */
@@ -53,6 +60,15 @@ abstract class File {
         return $this->app->make(
             $this->getHandlerClassName($type)
         );
+    }
+
+    /**
+     * Get the file instance
+     * @return mixed
+     */
+    public function getFileInstance()
+    {
+        return $this->file;
     }
 
     /**

@@ -6,12 +6,6 @@ use Maatwebsite\Excel\Excel;
 abstract class NewExcelFile extends File {
 
     /**
-     * Loaded file
-     * @var \Maatwebsite\Excel\Readers\LaravelExcelReader
-     */
-    protected $file;
-
-    /**
      * @param Application $app
      * @param Excel       $excel
      */
