@@ -73,6 +73,7 @@ class ExcelTestCase extends PHPUnit_Framework_TestCase {
         $this->reader->shouldReceive('load');
         $this->reader->shouldReceive('setSelectedSheets');
         $this->reader->shouldReceive('setSelectedSheetIndices');
+        $this->reader->shouldReceive('setFilters');
     }
 
     /**

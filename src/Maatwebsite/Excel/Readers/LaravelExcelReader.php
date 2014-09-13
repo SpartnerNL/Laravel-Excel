@@ -169,7 +169,9 @@ class LaravelExcelReader {
      * Filters
      * @var array
      */
-    public $filters = [];
+    public $filters = [
+        'registered' => []
+    ];
 
     /**
      * Construct new reader
