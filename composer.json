@@ -1,8 +1,15 @@
 {
-    "name": "pascalschwientek/excel",
-    "description": "An eloquent way of importing and exporting Excel and CSV in Laravel 4 with the power of PHPExcel",
-    "license": "LGPL",
-    "keywords": ["laravel", "phpexcel", "excel", "csv", "export", "import", "batch"],
+    "name": "maatwebsite/excel",
++    "name": "pascalschwientek/excel",
+     "description": "An eloquent way of importing and exporting Excel and CSV in Laravel 4 with the power of PHPExcel",
+     "license": "LGPL",
+     "keywords": ["laravel", "phpexcel", "excel", "csv", "export", "import", "batch"],
+-    "authors": [
+-        {
+-            "name": "Maatwebsite.nl",
+-            "email": "patrick@maatwebsite.nl"
+-        }
+-    ],
     "require": {
         "php": ">=5.4.0",
         "phpoffice/phpexcel": "~1.8.0",
