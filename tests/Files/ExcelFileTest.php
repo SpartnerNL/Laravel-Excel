@@ -24,6 +24,14 @@ class ExcelFileTest extends TestCase {
     }
 
 
+    public function testGetFilters()
+    {
+        $importer = app('TestImport');
+        $this->assertContains('chunk', $importer->getFilters());
+        $this->assertContains('chunk', $importer->getFileInstance()->filters['enabled']);
+    }
+
+
     public function testLoadFile()
     {
         $importer = app('TestImport');
@@ -50,5 +58,6 @@ class ExcelFileTest extends TestCase {
         $this->assertInstanceOf('Maatwebsite\Excel\Collections\RowCollection', $results);
         $this->assertCount(5, $results);
     }
+
 
 }

@@ -62,9 +62,17 @@ abstract class ExcelFile extends File {
      */
     protected function loadFilters()
     {
+        // Register the filters
         $this->excel->registerFilters(
             $this->getFilters()
         );
+
+        // Loop through the filters
+        foreach($this->getFilters() as $filter)
+        {
+            // Enable the filter
+            $this->excel->filter($filter);
+        }
     }
 
     /**

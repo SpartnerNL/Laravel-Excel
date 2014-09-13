@@ -13,4 +13,15 @@ class TestImport extends ExcelFile {
         return __DIR__ . '/../files/test.csv';
     }
 
+    /**
+     * Get filters
+     * @return array
+     */
+    public function getFilters()
+    {
+        return [
+            'chunk'
+        ];
+    }
+
 } 
