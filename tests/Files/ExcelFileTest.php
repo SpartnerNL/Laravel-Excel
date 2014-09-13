@@ -30,7 +30,7 @@ class ExcelFileTest extends TestCase {
         $importer->loadFile();
         $this->assertInstanceOf('Maatwebsite\Excel\Readers\LaravelExcelReader', $importer->getFileInstance());
     }
-    
+
 
     public function testGetResultsDirectly()
     {
@@ -50,16 +50,5 @@ class ExcelFileTest extends TestCase {
         $this->assertInstanceOf('Maatwebsite\Excel\Collections\RowCollection', $results);
         $this->assertCount(5, $results);
     }
-
-
-    public function testHandle()
-    {
-        $importer = app('TestImport');
-        $results = $importer->handle('Import');
-
-        $this->assertInstanceOf('Maatwebsite\Excel\Collections\RowCollection', $results);
-        $this->assertCount(5, $results);
-    }
-
 
 }
