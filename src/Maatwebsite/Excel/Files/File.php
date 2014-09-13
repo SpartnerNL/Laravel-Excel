@@ -7,6 +7,55 @@ use Maatwebsite\Excel\Exceptions\LaravelExcelException;
 abstract class File {
 
     /**
+     * @var Application
+     */
+    protected $app;
+
+    /**
+     * Excel instance
+     * @var Excel
+     */
+    protected $excel;
+
+    /**
+     * @param Application $app
+     * @param Excel       $excel
+     */
+    public function __construct(Application $app, Excel $excel)
+    {
+        $this->app = $app;
+        $this->excel = $excel;
+    }
+
+    /**
+     * Handle the import/export of the file
+     * @param $type
+     * @throws LaravelExcelException
+     * @return mixed
+     */
+    public function handle($type)
+    {
+        // Get the handler
+        $handler = $this->getHandler($type);
+
+        // Call the handle method and inject the file
+        return $handler->handle($this);
+    }
+
+    /**
+     * Get handler
+     * @param $type
+     * @throws LaravelExcelException
+     * @return mixed
+     */
+    protected function getHandler($type)
+    {
+        return $this->app->make(
+            $this->getHandlerClassName($type)
+        );
+    }
+
+    /**
      * Get the handler class name
      * @throws LaravelExcelException
      * @return string

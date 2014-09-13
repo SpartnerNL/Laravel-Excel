@@ -6,17 +6,6 @@ use Maatwebsite\Excel\Excel;
 abstract class NewExcelFile extends File {
 
     /**
-     * @var Application
-     */
-    protected $app;
-
-    /**
-     * Excel instance
-     * @var Excel
-     */
-    protected $excel;
-
-    /**
      * Loaded file
      * @var \Maatwebsite\Excel\Readers\LaravelExcelReader
      */
@@ -28,8 +17,7 @@ abstract class NewExcelFile extends File {
      */
     public function __construct(Application $app, Excel $excel)
     {
-        $this->app = $app;
-        $this->excel = $excel;
+        parent::__construct($app, $excel);
         $this->file = $this->createNewFile();
     }
 
@@ -38,6 +26,15 @@ abstract class NewExcelFile extends File {
      * @return string
      */
     abstract public function getFilename();
+
+    /**
+     * Start importing
+     */
+    public function handleExport()
+    {
+        return $this->handle('Export');
+    }
+
 
     /**
      * Load the file

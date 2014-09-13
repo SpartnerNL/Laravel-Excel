@@ -7,21 +7,10 @@ use Maatwebsite\Excel\Exceptions\LaravelExcelException;
 abstract class ExcelFile extends File {
 
     /**
-     * Excel instance
-     * @var Excel
-     */
-    protected $excel;
-
-    /**
      * Loaded file
      * @var \Maatwebsite\Excel\Readers\LaravelExcelReader
      */
     protected $file;
-
-    /**
-     * @var Application
-     */
-    private $app;
 
     /**
      * @param Application $app
@@ -29,8 +18,7 @@ abstract class ExcelFile extends File {
      */
     public function __construct(Application $app, Excel $excel)
     {
-        $this->app = $app;
-        $this->excel = $excel;
+        parent::__construct($app, $excel);
         $this->file = $this->loadFile();
     }
 
@@ -54,11 +42,7 @@ abstract class ExcelFile extends File {
      */
     public function handleImport()
     {
-        // Get the handler
-        $handler = $this->getHandler();
-
-        // Call the handle method and inject the file
-        return $handler->handle($this);
+        return $this->handle('Import');
     }
 
     /**
@@ -86,17 +70,6 @@ abstract class ExcelFile extends File {
     {
         $this->excel->registerFilters(
             $this->getFilters()
-        );
-    }
-
-    /**
-     * Get handler
-     * @return mixed
-     */
-    protected function getHandler()
-    {
-        return $this->app->make(
-            $this->getHandlerClassName('Import')
         );
     }
 
