@@ -1,8 +1,14 @@
 <?php namespace Maatwebsite\Excel\Files;
 
+use Illuminate\Foundation\Application;
 use Maatwebsite\Excel\Excel;
 
-abstract class NewExcelFile {
+abstract class NewExcelFile extends File {
+
+    /**
+     * @var Application
+     */
+    protected $app;
 
     /**
      * Excel instance
@@ -17,10 +23,12 @@ abstract class NewExcelFile {
     protected $file;
 
     /**
-     * @param Excel $excel
+     * @param Application $app
+     * @param Excel       $excel
      */
-    public function __construct(Excel $excel)
+    public function __construct(Application $app, Excel $excel)
     {
+        $this->app = $app;
         $this->excel = $excel;
         $this->file = $this->createNewFile();
     }
@@ -45,7 +53,6 @@ abstract class NewExcelFile {
         return $file;
     }
 
-
     /**
      * Dynamically call methods
      * @param  string $method
@@ -56,4 +63,5 @@ abstract class NewExcelFile {
     {
         return call_user_func_array([$this->file, $method], $params);
     }
+
 }

@@ -4,7 +4,7 @@ use Illuminate\Foundation\Application;
 use Maatwebsite\Excel\Excel;
 use Maatwebsite\Excel\Exceptions\LaravelExcelException;
 
-abstract class ExcelFile {
+abstract class ExcelFile extends File {
 
     /**
      * Excel instance
@@ -96,26 +96,8 @@ abstract class ExcelFile {
     protected function getHandler()
     {
         return $this->app->make(
-            $this->getHandlerClassName()
+            $this->getHandlerClassName('Import')
         );
-    }
-
-    /**
-     * Get the handler class name
-     * @throws LaravelExcelException
-     * @return string
-     */
-    protected function getHandlerClassName()
-    {
-        // Translate the file into a FileHandler
-        $class = get_class($this);
-        $handler = substr_replace($class, 'FileHandler', strrpos($class, 'File'));
-
-        // Check if the handler exists
-        if (!class_exists($handler))
-            throw new LaravelExcelException("File handler [$handler] does not exist.");
-
-        return $handler;
     }
 
     /**
