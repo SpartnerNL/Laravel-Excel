@@ -4,7 +4,7 @@ use PHPExcel;
 use DOMNode;
 use DOMText;
 use DOMElement;
-use domDocument;
+use DOMDocument;
 use PHPExcel_Cell;
 use PHPExcel_Settings;
 use PHPExcel_Reader_HTML;
@@ -140,13 +140,20 @@ class Html extends PHPExcel_Reader_HTML {
         }
 
         //  Create a new DOM object
-        $dom = new domDocument;
+        $dom = new DOMDocument;
 
         // Check if we need to load the file or the HTML
         if ($isHtmlFile)
         {
             // Load HTML from file
-            $loaded = @$dom->loadHTMLFile($pFilename, PHPExcel_Settings::getLibXmlLoaderOptions());
+            if ((version_compare(PHP_VERSION, '5.4.0') >= 0) && defined(LIBXML_DTDLOAD))
+            {
+                $loaded = @$dom->loadHTMLFile($pFilename, PHPExcel_Settings::getLibXmlLoaderOptions());
+            }
+            else
+            {
+                $loaded = @$dom->loadHTMLFile($pFilename);
+            }
         }
         else
         {
@@ -156,7 +163,7 @@ class Html extends PHPExcel_Reader_HTML {
 
         if ($loaded === false)
         {
-            throw new PHPExcel_Reader_Exception('Failed to load ', $pFilename, ' as a DOM Document');
+            throw new PHPExcel_Reader_Exception('Failed to load ' . $pFilename . ' as a DOM Document');
         }
 
         // Parse css
@@ -369,7 +376,7 @@ class Html extends PHPExcel_Reader_HTML {
                     case 'hr' :
 
                         // Flush the cell
-                        $this->_flushCell($sheet, $column, $row, $cellContent);
+                        $this->flushCell($sheet, $column, $row, $cellContent);
 
                         // count
                         ++$row;
@@ -383,7 +390,7 @@ class Html extends PHPExcel_Reader_HTML {
                         else
                         {
                             $cellContent = '----------';
-                            $this->_flushCell($sheet, $column, $row, $cellContent);
+                            $this->flushCell($sheet, $column, $row, $cellContent);
                         }
 
                         ++$row;
@@ -400,7 +407,7 @@ class Html extends PHPExcel_Reader_HTML {
                         //  Otherwise flush our existing content and move the row cursor on
                         else
                         {
-                            $this->_flushCell($sheet, $column, $row, $cellContent);
+                            $this->flushCell($sheet, $column, $row, $cellContent);
                             ++$row;
                         }
 
@@ -451,7 +458,7 @@ class Html extends PHPExcel_Reader_HTML {
                         {
                             $cellContent .= "\n";
                             $this->_processDomElement($child, $sheet, $row, $column, $cellContent);
-                            $this->_flushCell($sheet, $column, $row, $cellContent);
+                            $this->flushCell($sheet, $column, $row, $cellContent);
 
                             // Set style
                             if (isset($this->_formats[$child->nodeName]))
@@ -463,11 +470,11 @@ class Html extends PHPExcel_Reader_HTML {
                         {
                             if ($cellContent > '')
                             {
-                                $this->_flushCell($sheet, $column, $row, $cellContent);
+                                $this->flushCell($sheet, $column, $row, $cellContent);
                                 $row += 2;
                             }
                             $this->_processDomElement($child, $sheet, $row, $column, $cellContent);
-                            $this->_flushCell($sheet, $column, $row, $cellContent);
+                            $this->flushCell($sheet, $column, $row, $cellContent);
 
                             // Set style
                             if (isset($this->_formats[$child->nodeName]))
@@ -493,13 +500,13 @@ class Html extends PHPExcel_Reader_HTML {
                         {
                             if ($cellContent > '')
                             {
-                                $this->_flushCell($sheet, $column, $row, $cellContent);
+                                $this->flushCell($sheet, $column, $row, $cellContent);
                             }
 
                             ++$row;
 
                             $this->_processDomElement($child, $sheet, $row, $column, $cellContent);
-                            $this->_flushCell($sheet, $column, $row, $cellContent);
+                            $this->flushCell($sheet, $column, $row, $cellContent);
                             $column = 'A';
                         }
                         break;
@@ -508,7 +515,7 @@ class Html extends PHPExcel_Reader_HTML {
                     case 'table' :
 
                         // Flush the cells
-                        $this->_flushCell($sheet, $column, $row, $cellContent);
+                        $this->flushCell($sheet, $column, $row, $cellContent);
 
                         // Set the start column
                         $column = $this->_setTableStartColumn($column);
@@ -582,7 +589,7 @@ class Html extends PHPExcel_Reader_HTML {
                     case 'td' :
 
                         $this->_processDomElement($child, $sheet, $row, $column, $cellContent);
-                        $this->_flushCell($sheet, $column, $row, $cellContent);
+                        $this->flushCell($sheet, $column, $row, $cellContent);
 
                         // If we have a colspan, count the right amount of columns, else just 1
                         for ($w = 0; $w < $this->spanWidth; $w++)
@@ -659,7 +666,7 @@ class Html extends PHPExcel_Reader_HTML {
      * @param  string                $cellContent
      * @return void
      */
-    private function _flushCell($sheet, &$column, $row, &$cellContent)
+    protected function flushCell($sheet, &$column, $row, &$cellContent)
     {
         // Process merged cells
         list($column, $cellContent) = $this->processMergedCells($sheet, $column, $row, $cellContent);
@@ -698,7 +705,7 @@ class Html extends PHPExcel_Reader_HTML {
     {
 
         $this->_processDomElement($child, $sheet, $row, $column, $cellContent);
-        $this->_flushCell($sheet, $column, $row, $cellContent);
+        $this->flushCell($sheet, $column, $row, $cellContent);
 
         if (isset($this->_formats[$child->nodeName]))
         {
@@ -1302,7 +1309,7 @@ class Html extends PHPExcel_Reader_HTML {
                     if (in_array($row, array_keys($this->styleForRows)))
                         $this->styleByClass($sheet, $column, $row, $this->styleForRows[$row]);
 
-                    $this->_flushCell($sheet, $newCol, $row, $cellContent);
+                    $this->flushCell($sheet, $newCol, $row, $cellContent);
                 }
             }
         }
