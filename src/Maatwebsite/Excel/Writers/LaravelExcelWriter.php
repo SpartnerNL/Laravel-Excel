@@ -263,13 +263,22 @@ class LaravelExcelWriter {
     }
 
     /**
+     * Convert and existing file to newly requested extension
+     * @param $ext
+     */
+    public function convert($ext)
+    {
+        $this->export($ext);
+    }
+
+    /**
      * Export and download the spreadsheet
      * @param  string $ext
      * @return void
      */
     public function download($ext = 'xls')
     {
-        return $this->export($ext);
+        $this->export($ext);
     }
 
     /**
