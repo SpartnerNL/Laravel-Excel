@@ -180,6 +180,11 @@ class LaravelExcelReader {
     protected $sheet;
 
     /**
+     * @var LaravelExcelWriter
+     */
+    protected $writer;
+
+    /**
      * Construct new reader
      * @param Filesystem       $filesystem
      * @param FormatIdentifier $identifier
@@ -873,6 +878,54 @@ class LaravelExcelReader {
     }
 
     /**
+     * Get the file title
+     * @return string
+     */
+    public function getTitle()
+    {
+        return $this->excel->getProperties()->getTitle();
+    }
+
+    /**
+     * Get the current filename
+     * @return mixed
+     */
+    public function getFileName()
+    {
+        $filename = $this->file;
+        $segments = explode('/', $filename);
+        $file = end($segments);
+        list($name, $ext) = explode('.', $file);
+
+        return $name;
+    }
+
+    /**
+     * Check if the writer has the called method
+     * @param $method
+     * @return bool
+     */
+    protected function writerHasMethod($method)
+    {
+        $this->initNewWriterWhenNeeded();
+        return method_exists($this->writer, $method) ? true : false;
+    }
+
+    /**
+     * Init a new writer instance when it doesn't exist yet
+     */
+    protected function initNewWriterWhenNeeded()
+    {
+        if(!$this->writer)
+        {
+            $this->writer = app('excel.writer');
+            $this->writer->injectExcel($this->excel, false);
+            $this->writer->setFileName($this->getFileName());
+            $this->writer->setTitle($this->getTitle());
+        }
+    }
+
+    /**
      * Set the write format
      * @return LaraveExcelReader
      */
@@ -999,6 +1052,12 @@ class LaravelExcelReader {
             return call_user_func_array([$this->reader, $method], $params);
         }
 
+        elseif($this->writerHasMethod($method))
+        {
+            return call_user_func_array([$this->writer, $method], $params);
+        }
+
         throw new LaravelExcelException('[ERROR] Reader method [' . $method . '] does not exist.');
     }
+
 }
