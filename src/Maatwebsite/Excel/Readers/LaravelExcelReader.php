@@ -2,6 +2,7 @@
 
 use Cache;
 use Config;
+use Maatwebsite\Excel\Classes\PHPExcel;
 use PHPExcel_IOFactory;
 use Illuminate\Filesystem\Filesystem;
 use Maatwebsite\Excel\Parsers\ExcelParser;
