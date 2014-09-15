@@ -88,6 +88,32 @@ class PHPExcel extends PHPOffice_PHPExcel {
     }
 
     /**
+     * load info from parent obj
+     * @param \PHPExcel $object
+     * @return $this
+     */
+    function cloneParent(\PHPExcel $object)
+    {
+        // Init new reflection object
+        $class = new \ReflectionClass(get_class($object));
+
+        // Loop through all properties
+        foreach($class->getProperties() as $property)
+        {
+            // Make the property public
+            $property->setAccessible(true);
+
+            // Set the found value to this sheet
+            $property->setValue(
+                $this,
+                $property->getValue($object)
+            );
+        }
+
+        return $this;
+    }
+
+    /**
      * Return all allowed properties
      * @return array
      */

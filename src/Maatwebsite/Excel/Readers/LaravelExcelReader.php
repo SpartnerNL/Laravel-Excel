@@ -175,6 +175,11 @@ class LaravelExcelReader {
     ];
 
     /**
+     * @var LaravelExcelWorksheet
+     */
+    protected $sheet;
+
+    /**
      * Construct new reader
      * @param Filesystem       $filesystem
      * @param FormatIdentifier $identifier
@@ -206,6 +211,42 @@ class LaravelExcelReader {
 
         // Return itself
         return $this;
+    }
+
+    /**
+     * @param integer|callable|string $sheetID
+     * @param null $callback
+     * @return $this
+     * @throws \PHPExcel_Exception
+     */
+    public function sheet($sheetID, $callback = null)
+    {
+        // Default
+        $isCallable = false;
+
+        // Copy the callback when needed
+        if(is_callable($sheetID))
+        {
+            $callback = $sheetID;
+            $isCallable = true;
+        }
+
+        // Clone the loaded excel instance
+        $clone = clone $this->excel;
+        $sheet = $this->getSheetByIdOrName($sheetID, $isCallable);
+
+        // Init a new PHPExcel instance without any worksheets
+        $this->initClonedExcelObject($clone);
+
+        // Create a new cloned sheet
+        $this->sheet = $this->excel->createSheet()->cloneParent($sheet);
+
+        // Do the callback
+        if ($isCallable)
+            $return = call_user_func($callback, $this->sheet);
+
+        // Return the sheet
+        return $this->sheet;
     }
 
     /**
@@ -798,6 +839,37 @@ class LaravelExcelReader {
     {
         $spreadsheetInfo = $this->reader->listWorksheetInfo($this->file);
         return $spreadsheetInfo[0]['totalRows'];
+    }
+
+    /**
+     * @param $clone
+     */
+    protected function initClonedExcelObject($clone)
+    {
+        $this->excel = new PHPExcel();
+        $this->excel->cloneParent($clone);
+        $this->excel->disconnectWorksheets();
+    }
+
+    /**
+     * Get the sheet by id or name, else get the active sheet
+     * @param callable|integer|string $sheetID
+     * @param  boolean                $isCallable
+     * @throws \PHPExcel_Exception
+     * @return \PHPExcel_Worksheet
+     */
+    protected function getSheetByIdOrName($sheetID, $isCallable = false)
+    {
+        // If is callback, return the active sheet
+        if($isCallable)
+            return $this->excel->getActiveSheet();
+
+        // If is a string, return the sheet by name
+        if(is_string($sheetID))
+            return $this->excel->getSheetByName($sheetID);
+
+        // Else it should be the sheet index
+        return $this->excel->getSheet($sheetID);
     }
 
     /**
