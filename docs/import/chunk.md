@@ -13,7 +13,7 @@ To import it into chunks you can use `chunk($size, $callback)` instead of the no
 
 When working with ExcelFile injections (instead the constructor or as method injection), you can enable the chunk filter inside the ExcelFile class
 
-ExcelFile class example:
+## ExcelFile class example:
 
     class UserListImport extends \Maatwebsite\Excel\Files\ExcelFile {
 
