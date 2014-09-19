@@ -1146,6 +1146,35 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet {
     }
 
     /**
+     * load info from parent obj
+     * @param \PHPExcel_Worksheet $sheet
+     * @return $this
+     */
+    function cloneParent(PHPExcel_Worksheet $sheet)
+    {
+        // Init new reflection object
+        $class = new \ReflectionClass(get_class($sheet));
+
+        // Loop through all properties
+        foreach($class->getProperties() as $property)
+        {
+            // Make the property public
+            $property->setAccessible(true);
+
+            // Get value from original sheet
+            $value = $property->getValue($sheet);
+
+            // Set the found value to this sheet
+            $property->setValue(
+                $this,
+                $value
+            );
+        }
+
+        return $this;
+    }
+
+    /**
      * Dynamically call methods
      * @param  string $method
      * @param  array  $params

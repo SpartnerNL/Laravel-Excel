@@ -21,6 +21,15 @@ use Maatwebsite\Excel\Exceptions\LaravelExcelException;
 class Excel {
 
     /**
+     * Filter
+     * @var array
+     */
+    protected $filters = [
+        'registered' =>  [],
+        'enabled'    =>  []
+    ];
+
+    /**
      * Excel object
      * @var PHPExcel
      */
@@ -99,6 +108,9 @@ class Excel {
         // Inject excel object
         $reader->injectExcel($this->excel);
 
+        // Enable filters
+        $reader->setFilters($this->filters);
+
         // Set the encoding
         $encoding = is_string($callback) ? $callback : $encoding;
 
@@ -174,6 +186,71 @@ class Excel {
     public function loadView($view, $data = array(), $mergeData = array())
     {
         return $this->shareView($view, $data, $mergeData);
+    }
+
+    /**
+     * Set filters
+     * @param   array $filters
+     * @return  Excel
+     */
+    public function registerFilters($filters = [])
+    {
+        // If enabled array key exists
+        if(array_key_exists('enabled', $filters))
+        {
+            // Set registered array
+            $registered = $filters['registered'];
+
+            // Filter on enabled
+            $this->filter($filters['enabled']);
+        }
+        else
+        {
+            $registered = $filters;
+        }
+
+        // Register the filters
+        $this->filters['registered'] = !empty($this->filters['registered']) ? array_merge($this->filters['registered'], $registered) : $registered;
+        return $this;
+    }
+
+    /**
+     * Enable certain filters
+     * @param  string|array     $filter
+     * @param bool|false|string $class
+     * @return Excel
+     */
+    public function filter($filter, $class = false)
+    {
+        // Add multiple filters
+        if(is_array($filter))
+        {
+            $this->filters['enabled'] = !empty($this->filters['enabled']) ? array_merge($this->filters['enabled'], $filter) : $filter;
+        }
+        else
+        {
+            // Add single filter
+            $this->filters['enabled'][] = $filter;
+
+            // Overrule filter class for this request
+            if($class)
+                $this->filters['registered'][$filter] = $class;
+        }
+
+        // Remove duplicates
+        $this->filters['enabled'] = array_unique($this->filters['enabled']);
+
+        return $this;
+    }
+
+    /**
+     * Get register, enabled (or both) filters
+     * @param  string|boolean $key [description]
+     * @return array
+     */
+    public function getFilters($key = false)
+    {
+        return $key ? $this->filters[$key] : $this->filters;
     }
 
     /**
