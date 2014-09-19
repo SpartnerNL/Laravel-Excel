@@ -23,10 +23,10 @@ You can inject these NewExcelFiles inside the __constructor or inside the method
         public function exportUserList(UserListExport $export)
         {
             // work on the export
-            $export->sheet('sheetName', function($sheet)
+            return $export->sheet('sheetName', function($sheet)
             {
 
-            });
+            })->export('xls');
         }
 
     }
@@ -52,10 +52,10 @@ The `handleExport()` method will dynamically call a handler class which is your 
         public function handle(UserListExport $export)
         {
             // work on the export
-            $export->sheet('sheetName', function($sheet)
+            return $export->sheet('sheetName', function($sheet)
             {
 
-            });
+            })->export('xls');
         }
 
     }
