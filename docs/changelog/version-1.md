@@ -1,5 +1,9 @@
 # Version 1
 
+### 1.1.8
+- PHP 5.3 support
+- fromArray bugfix
+
 ### 1.1.7
 - Fix heading generation for export with `->fromArray()`
 - Bugfix for non-Unix kernels
