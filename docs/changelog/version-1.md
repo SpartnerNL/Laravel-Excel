@@ -1,5 +1,14 @@
 # Version 1
 
+### 1.2.0
+- Filters
+- Chunk filter (with chunked importer)
+- ExcelFile (method) injections
+- NewExcelFile (method) injections
+- Edit existing worksheets
+- Converting existing worksheet
+- Laravel 4.* + 5.0 support
+
 ### 1.1.8
 - PHP 5.3 support
 - fromArray bugfix
