@@ -1,6 +1,6 @@
 # Chunk importer
 
-When dealing with big files, it's better to import the data in big chunks. You can enable this with `filter('chunk');
+When dealing with big files, it's better to import the data in big chunks. You can enable this with `filter('chunk')`;
 To import it into chunks you can use `chunk($size, $callback)` instead of the normal `get()`. The first parameter is the size of the chunk. The second parameter is a closure which will return the results.
 
     Excel::filter('chunk')->load('file.csv')->chunk(250, function($results)
