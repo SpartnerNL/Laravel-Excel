@@ -4,7 +4,7 @@ Following the Laravel 5.0 philosophy with its new awesome FormRequest injections
 
 ## NewExcelFile class
 
-    This NewExcelFile is a wrapper for a new Excel file. Inside the `getFilename()` you can declare the wanted filename.
+This NewExcelFile is a wrapper for a new Excel file. Inside the `getFilename()` you can declare the wanted filename.
 
     class UserListExport extends \Maatwebsite\Excel\Files\NewExcelFile {
 
