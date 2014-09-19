@@ -10,7 +10,7 @@
         }
     ],
     "require": {
-        "php": ">=5.4.0",
+        "php": ">=5.3.0",
         "phpoffice/phpexcel": "~1.8.0",
         "phpseclib/phpseclib": ">=0.3.7",
         "illuminate/cache": "~4.0",

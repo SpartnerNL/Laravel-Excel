@@ -410,7 +410,7 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet {
      * @throws PHPExcel_Exception
      * @return LaravelExcelWorksheet
      */
-    public function fromModel($source = null, $nullValue = null, $startCell = false, $strictNullComparison = false, $headingGeneration = true)
+    public function fromModel($source = null, $nullValue = null, $startCell = 'A1', $strictNullComparison = false, $headingGeneration = true)
     {
         return $this->fromArray($source, $nullValue, $startCell, $strictNullComparison, $headingGeneration);
     }
@@ -426,7 +426,7 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet {
      * @throws PHPExcel_Exception
      * @return LaravelExcelWorksheet
      */
-    public function fromArray($source = null, $nullValue = null, $startCell = false, $strictNullComparison = false, $headingGeneration = true)
+    public function fromArray($source = null, $nullValue = null, $startCell = 'A1', $strictNullComparison = false, $headingGeneration = true)
     {
         // Set defaults
         $nullValue = !is_null($nullValue) ? $nullValue : $this->getDefaultNullValue();
@@ -451,7 +451,7 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet {
      * @return $this
      * @throws PHPExcel_Exception
      */
-    public function createSheetFromArray($source = null, $nullValue = null, $startCell = false, $strictNullComparison = false)
+    public function createSheetFromArray($source = null, $nullValue = null, $startCell = 'A1', $strictNullComparison = false)
     {
         if (is_array($source))
         {
