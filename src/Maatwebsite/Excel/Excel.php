@@ -118,7 +118,7 @@ class Excel {
      * @param  $sheets
      * @return LaravelExcelReader
      */
-    public function selectSheets($sheets = [])
+    public function selectSheets($sheets = array())
     {
         $sheets = is_array($sheets) ? $sheets : func_get_args();
         $this->reader->setSelectedSheets($sheets);
@@ -131,7 +131,7 @@ class Excel {
      * @param array $sheets
      * @return $this
      */
-    public function selectSheetsByIndex($sheets = [])
+    public function selectSheetsByIndex($sheets = array())
     {
         $sheets = is_array($sheets) ? $sheets : func_get_args();
         $this->reader->setSelectedSheetIndices($sheets);
@@ -159,7 +159,7 @@ class Excel {
      * @param  array  $mergeData
      * @return LaravelExcelWriter
      */
-    public function shareView($view, $data = [], $mergeData = [])
+    public function shareView($view, $data = array(), $mergeData = array())
     {
         return $this->create($view)->shareView($view, $data, $mergeData);
     }
@@ -171,7 +171,7 @@ class Excel {
      * @param  array  $mergeData
      * @return LaravelExcelWriter
      */
-    public function loadView($view, $data = [], $mergeData = [])
+    public function loadView($view, $data = array(), $mergeData = array())
     {
         return $this->shareView($view, $data, $mergeData);
     }
