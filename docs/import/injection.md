@@ -4,7 +4,7 @@ Following the Laravel 5.0 philosophy with its new awesome FormRequest injections
 
 ## ExcelFile class
 
-    This class is a wrapper for a file on your server. Inside the `getFile()` method you return the filename and it's location. Inside the `getFilters()` method you can enable filters, like the chunk filter.
+This class is a wrapper for a file on your server. Inside the `getFile()` method you return the filename and it's location. Inside the `getFilters()` method you can enable filters, like the chunk filter.
 
     class UserListImport extends \Maatwebsite\Excel\Files\ExcelFile {
 
