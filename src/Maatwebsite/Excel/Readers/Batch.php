@@ -27,17 +27,17 @@ class Batch {
      * Batch files
      * @var array
      */
-    public $files = [];
+    public $files = array();
 
     /**
      * Set allowed file extensions
      * @var array
      */
-    protected $allowedFileExtensions = [
+    protected $allowedFileExtensions = array(
         'xls',
         'xlsx',
         'csv'
-    ];
+    );
 
     /**
      * Start the Batach
@@ -112,7 +112,7 @@ class Batch {
      */
     protected function _getFilesByArray($array)
     {
-        $files = [];
+        $files = array();
         // Make sure we have real paths
         foreach ($array as $i => $file)
         {
@@ -137,7 +137,7 @@ class Batch {
         $glob = glob($folder . '/*.{' . implode(',', $this->allowedFileExtensions) . '}', GLOB_BRACE);
 
         // If no matches, return empty array
-        if ($glob === false) return [];
+        if ($glob === false) return array();
 
         // Return files
         return array_filter($glob, function ($file)

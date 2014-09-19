@@ -166,7 +166,7 @@ class LaravelExcelWriter {
      * @param  array  $mergeData
      * @return  LaravelExcelWriter
      */
-    public function shareView($view, $data = [], $mergeData = [])
+    public function shareView($view, $data = array(), $mergeData = array())
     {
         // Get the parser
         $this->getParser();
@@ -185,7 +185,7 @@ class LaravelExcelWriter {
      */
     public function setView()
     {
-        return call_user_func_array([$this, 'shareView'], func_get_args());
+        return call_user_func_array(array($this, 'shareView'), func_get_args());
     }
 
     /**
@@ -194,7 +194,7 @@ class LaravelExcelWriter {
      */
     public function loadView()
     {
-        return call_user_func_array([$this, 'shareView'], func_get_args());
+        return call_user_func_array(array($this, 'shareView'), func_get_args());
     }
 
     /**
@@ -289,7 +289,7 @@ class LaravelExcelWriter {
     protected function _download()
     {
         // Set the headers
-        $this->_setHeaders([
+        $this->_setHeaders(array(
 
             'Content-Type'        => $this->contentType,
             'Content-Disposition' => 'attachment; filename="' . $this->filename . '.' . $this->ext . '"',
@@ -298,7 +298,7 @@ class LaravelExcelWriter {
             'Cache-Control'       => 'cache, must-revalidate',
             'Pragma'              => 'public'
 
-        ]);
+        ));
 
         // Check if writer isset
         if (!$this->writer)
@@ -339,13 +339,13 @@ class LaravelExcelWriter {
         if ($this->returnInfo($returnInfo))
         {
             // Send back information about the stored file
-            return [
+            return array(
                 'full'  => $toStore,
                 'path'  => $this->storagePath,
                 'file'  => $this->filename . '.' . $this->ext,
                 'title' => $this->filename,
                 'ext'   => $this->ext
-            ];
+            );
         }
 
         // Return itself
@@ -440,7 +440,7 @@ class LaravelExcelWriter {
         if ($this->excel->isChangeableProperty($setter))
         {
             // Set the properties
-            call_user_func_array([$this->excel->getProperties(), $setter], $params);
+            call_user_func_array(array($this->excel->getProperties(), $setter), $params);
         }
     }
 
@@ -545,7 +545,7 @@ class LaravelExcelWriter {
         elseif (method_exists($this->excel, $method))
         {
             // Call the method from the excel object with the given params
-            $return = call_user_func_array([$this->excel, $method], $params);
+            $return = call_user_func_array(array($this->excel, $method), $params);
 
             return $return ? $return : $this;
         }
@@ -554,7 +554,7 @@ class LaravelExcelWriter {
         elseif (method_exists($this->excel->getActiveSheet(), $method))
         {
             // Call the method from the excel object with the given params
-            $return = call_user_func_array([$this->excel->getActiveSheet(), $method], $params);
+            $return = call_user_func_array(array($this->excel->getActiveSheet(), $method), $params);
 
             return $return ? $return : $this;
         }

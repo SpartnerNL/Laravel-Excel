@@ -70,7 +70,7 @@ class ExcelParser {
      * Columns we want to fetch
      * @var array
      */
-    protected $columns = [];
+    protected $columns = array();
 
     /**
      * Row counter
@@ -103,7 +103,7 @@ class ExcelParser {
      * @param array $columns
      * @return SheetCollection
      */
-    public function parseFile($columns = [])
+    public function parseFile($columns = array())
     {
         // Init new sheet collection
         $workbook = new SheetCollection();
@@ -174,7 +174,7 @@ class ExcelParser {
         $this->excel->setActiveSheetIndex($this->w);
 
         // Fetch the labels
-        $this->indices = $this->reader->hasHeading() ? $this->getIndices() : [];
+        $this->indices = $this->reader->hasHeading() ? $this->getIndices() : array();
 
         // Parse the rows
         return $this->parseRows();
@@ -190,7 +190,7 @@ class ExcelParser {
         $this->row = $this->worksheet->getRowIterator(1)->current();
 
         // Set empty labels array
-        $this->indices = [];
+        $this->indices = array();
 
         // Loop through the cells
         foreach ($this->row->getCellIterator() as $this->cell)
@@ -385,7 +385,7 @@ class ExcelParser {
     protected function parseCells()
     {
         $i = 0;
-        $parsedCells = [];
+        $parsedCells = array();
 
         // Set the cell iterator
         $cellIterator = $this->row->getCellIterator();
@@ -471,7 +471,7 @@ class ExcelParser {
     protected function encode($value)
     {
         // Get input and output encoding
-        list($input, $output) = array_values(Config::get('excel::import.encoding', ['UTF-8', 'UTF-8']));
+        list($input, $output) = array_values(Config::get('excel::import.encoding', array('UTF-8', 'UTF-8')));
 
         // If they are the same, return the value
         if ($input == $output)
@@ -572,7 +572,7 @@ class ExcelParser {
      * Set selected columns
      * @param array $columns
      */
-    protected function setSelectedColumns($columns = [])
+    protected function setSelectedColumns($columns = array())
     {
         // Set the columns
         $this->columns = $columns;
@@ -603,7 +603,7 @@ class ExcelParser {
      */
     protected function reset()
     {
-        $this->indices = [];
+        $this->indices = array();
         $this->isParsed = false;
     }
 }
