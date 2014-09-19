@@ -44,7 +44,7 @@ class LaravelExcelReader {
      * Selected columns
      * @var array
      */
-    public $columns = [];
+    public $columns = array();
 
     /**
      * Spreadsheet title
@@ -122,7 +122,7 @@ class LaravelExcelReader {
      * The date columns
      * @var array
      */
-    public $dateColumns = [];
+    public $dateColumns = array();
 
     /**
      * If the file has a heading or not
@@ -152,13 +152,13 @@ class LaravelExcelReader {
      * Selected sheets
      * @var array
      */
-    public $selectedSheets = [];
+    public $selectedSheets = array();
 
     /**
      * Selected sheet indices
      * @var array
      */
-    public $selectedSheetIndices = [];
+    public $selectedSheetIndices = array();
 
     /**
      * Construct new reader
@@ -320,7 +320,7 @@ class LaravelExcelReader {
      * @param  array $columns
      * @return LaravelExcelReader
      */
-    public function select($columns = [])
+    public function select($columns = array())
     {
         $this->columns = array_merge($this->columns, $columns);
 
@@ -332,7 +332,7 @@ class LaravelExcelReader {
      * @param  array $columns
      * @return LaravelExcelReader
      */
-    public function all($columns = [])
+    public function all($columns = array())
     {
         return $this->get($columns);
     }
@@ -342,7 +342,7 @@ class LaravelExcelReader {
      * @param  array $columns
      * @return SheetCollection|RowCollection
      */
-    public function first($columns = [])
+    public function first($columns = array())
     {
         return $this->take(1)->get($columns)->first();
     }
@@ -352,7 +352,7 @@ class LaravelExcelReader {
      * @param array $columns
      * @return SheetCollection|RowCollection
      */
-    public function get($columns = [])
+    public function get($columns = array())
     {
         if ($this->remembered)
         {
@@ -388,7 +388,7 @@ class LaravelExcelReader {
      * @param  array $columns
      * @return array
      */
-    public function toArray($columns = [])
+    public function toArray($columns = array())
     {
         return (array) $this->get($columns)->toArray();
     }
@@ -398,7 +398,7 @@ class LaravelExcelReader {
      * @param array $columns
      * @return SheetCollection|RowCollection
      */
-    public function toObject($columns = [])
+    public function toObject($columns = array())
     {
         return $this->get($columns);
     }
@@ -409,7 +409,7 @@ class LaravelExcelReader {
      * @param  boolean $die
      * @return string
      */
-    public function dump($columns = [], $die = false)
+    public function dump($columns = array(), $die = false)
     {
         echo '<pre class="container" style="background: #f5f5f5; border: 1px solid #e3e3e3; padding:15px;">';
         $die ? dd($this->get($columns)) : var_dump($this->get($columns));
@@ -421,7 +421,7 @@ class LaravelExcelReader {
      * @param array $columns
      * @return string
      */
-    public function dd($columns = [])
+    public function dd($columns = array())
     {
         return $this->dump($columns, true);
     }
@@ -712,7 +712,7 @@ class LaravelExcelReader {
      * @param  array $columns
      * @return void
      */
-    protected function _parseFile($columns = [])
+    protected function _parseFile($columns = array())
     {
         // Merge the selected columns
         $columns = array_merge($this->columns, $columns);
@@ -779,7 +779,7 @@ class LaravelExcelReader {
         $this->formatDates = Config::get('excel::import.dates.enabled', true);
 
         // Set default date columns
-        $this->dateColumns = Config::get('excel::import.dates.columns', []);
+        $this->dateColumns = Config::get('excel::import.dates.columns', array());
     }
 
     /**
@@ -812,14 +812,14 @@ class LaravelExcelReader {
         if (method_exists($this->excel, $method))
         {
             // Call the method from the excel object with the given params
-            return call_user_func_array([$this->excel, $method], $params);
+            return call_user_func_array(array($this->excel, $method), $params);
         }
 
         // If it's a reader method
         elseif (method_exists($this->reader, $method))
         {
             // Call the method from the excel object with the given params
-            return call_user_func_array([$this->reader, $method], $params);
+            return call_user_func_array(array($this->reader, $method), $params);
         }
 
         throw new LaravelExcelException('[ERROR] Reader method [' . $method . '] does not exist.');

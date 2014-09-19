@@ -26,13 +26,13 @@ class ViewParser {
      * Data array
      * @var array
      */
-    public $data = [];
+    public $data = array();
 
     /**
      * View merge data
      * @var array
      */
-    public $mergeData = [];
+    public $mergeData = array();
 
     /**
      * Construct the view parser
@@ -108,7 +108,7 @@ class ViewParser {
      * Set the data
      * @param array $data
      */
-    public function setData($data = [])
+    public function setData($data = array())
     {
         if (!empty($data))
             $this->data = array_merge($this->data, $data);
@@ -118,7 +118,7 @@ class ViewParser {
      * Set the merge data
      * @param array $mergeData
      */
-    public function setMergeData($mergeData = [])
+    public function setMergeData($mergeData = array())
     {
         if (!empty($mergeData))
             $this->mergeData = array_merge($this->mergeData, $mergeData);

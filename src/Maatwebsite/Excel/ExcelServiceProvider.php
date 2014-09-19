@@ -77,7 +77,6 @@ class ExcelServiceProvider extends ServiceProvider {
         // Bind the PHPExcel class
         $this->app['phpexcel'] = $this->app->share(function ($app) use ($me)
         {
-
             // Set locale
             $me->setLocale();
 
@@ -95,7 +94,7 @@ class ExcelServiceProvider extends ServiceProvider {
     protected function bindCssParser()
     {
         // Bind css parser
-        $this->app->bindShared('excel.parsers.css', function($app)
+        $this->app->bindShared('excel.parsers.css', function ($app)
         {
             return new CssParser(new CssToInlineStyles());
         });
@@ -206,13 +205,13 @@ class ExcelServiceProvider extends ServiceProvider {
      */
     public function provides()
     {
-        return [
+        return array(
             'excel',
             'phpexcel',
             'excel.reader',
             'excel.readers.html',
             'excel.parsers.view',
             'excel.writer'
-        ];
+        );
     }
 }

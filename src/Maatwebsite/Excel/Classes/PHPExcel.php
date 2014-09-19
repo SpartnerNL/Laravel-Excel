@@ -20,7 +20,7 @@ class PHPExcel extends PHPOffice_PHPExcel {
      * Allowed autofill properties
      * @var array
      */
-    public $allowedProperties = [
+    public $allowedProperties = array(
         'creator',
         'lastModifiedBy',
         'description',
@@ -29,7 +29,7 @@ class PHPExcel extends PHPOffice_PHPExcel {
         'category',
         'manager',
         'company'
-    ];
+    );
 
     /**
      * Create sheet and add it to this workbook
