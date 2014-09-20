@@ -503,12 +503,12 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet {
      * @param string      $key
      * @param bool|string $value
      * @param null        $nullValue
-     * @param bool        $startCell
+     * @param bool|string $startCell
      * @param bool        $strictNullComparison
      * @throws PHPExcel_Exception
      * @return void|$this
      */
-    protected function _addVars($key, $value = false, $nullValue = null, $startCell = false, $strictNullComparison = false)
+    protected function _addVars($key, $value = false, $nullValue = null, $startCell = 'A1', $strictNullComparison = false)
     {
         // Add array of data
         if (is_array($key) || $key instanceof Collection)
