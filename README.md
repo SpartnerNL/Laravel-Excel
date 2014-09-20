@@ -1,4 +1,4 @@
-## Laravel Excel v1.2.0
+## Laravel Excel v1.2.1
 
 [<img src="http://www.maatwebsite.nl/img/excel_banner.jpg"/>](http://www.maatwebsite.nl/laravel-excel/docs)
 
@@ -41,7 +41,7 @@ Excel::create('Laravel Excel', function($excel) {
 Require this package in your `composer.json` and update composer. This will download the package and PHPExcel of PHPOffice.
 
 ```php
-"maatwebsite/excel": "~1.2.0"
+"maatwebsite/excel": "~1.2.1"
 ```
 
 After updating composer, add the ServiceProvider to the providers array in `app/config/app.php`

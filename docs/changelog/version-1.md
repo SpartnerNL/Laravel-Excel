@@ -1,5 +1,8 @@
 # Version 1
 
+### 1.2.1
+- Fix with() method parameters
+
 ### 1.2.0
 - Filters
 - Chunk filter (with chunked importer)
