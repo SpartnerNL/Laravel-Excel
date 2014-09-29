@@ -453,7 +453,7 @@ class LaravelExcelReader {
         $this->reader->setReadDataOnly(true);
 
         // Start the chunking
-        for ($startRow = 1; $startRow <= $totalRows; $startRow += $size)
+        for ($startRow = 0; $startRow <= $totalRows; $startRow += $size)
         {
             // Set the rows for the chunking
             $this->filter->setRows($startRow, $size);
@@ -462,7 +462,7 @@ class LaravelExcelReader {
             $this->excel = $this->reader->load($this->file);
 
             // Set start index
-            $startIndex = ($startRow == 1) ? $startRow : $startRow - 1;
+            $startIndex = ($startRow == 0) ? $startRow : $startRow - 1;
 
             // Slice the results
             $results = $this->get()->slice($startIndex, $size);
