@@ -14,10 +14,11 @@ class ChunkReadFilterTest extends TestCase {
 
     public function testCanChunkXls()
     {
-    	$this->assertCanChunkIntoGroups(1,"sample.xls",20);
-    	$this->assertCanChunkIntoGroups(1,"sample.xls",15);
-    	$this->assertCanChunkIntoGroups(2,"sample.xls",10);
-    	$this->assertCanChunkIntoGroups(3,"sample.xls",5);
+        $this->assertCanChunkIntoGroups(1,"sample.xls",20);
+        $this->assertCanChunkIntoGroups(1,"sample.xls",15);
+        $this->assertCanChunkIntoGroups(2,"sample.xls",10);
+        $this->assertCanChunkIntoGroups(3,"sample.xls",5);
+        $this->assertCanChunkIntoGroups(15,"sample.xls",1);
     }    
 
     public function testCanChunkXlsx()
@@ -25,7 +26,8 @@ class ChunkReadFilterTest extends TestCase {
     	$this->assertCanChunkIntoGroups(1,"sample.xlsx",20);
     	$this->assertCanChunkIntoGroups(1,"sample.xlsx",15);
     	$this->assertCanChunkIntoGroups(2,"sample.xlsx",10);
-    	$this->assertCanChunkIntoGroups(3,"sample.xlsx",5);
+        $this->assertCanChunkIntoGroups(3,"sample.xlsx",5);
+    	$this->assertCanChunkIntoGroups(15,"sample.xlsx",1);
     }    
 
     public function testCanChunkCsv()
@@ -33,7 +35,8 @@ class ChunkReadFilterTest extends TestCase {
     	$this->assertCanChunkIntoGroups(1,"sample.csv", 20);
     	$this->assertCanChunkIntoGroups(1,"sample.csv", 15);
     	$this->assertCanChunkIntoGroups(2,"sample.csv", 10);
-    	$this->assertCanChunkIntoGroups(3,"sample.csv", 5);
+        $this->assertCanChunkIntoGroups(3,"sample.csv", 5);
+    	$this->assertCanChunkIntoGroups(15,"sample.csv", 1);
     }
 
     private function assertCanChunkIntoGroups($expected_chunks, $file, $chunk_size)
@@ -52,7 +55,7 @@ class ChunkReadFilterTest extends TestCase {
         $expected = "1,2,3,4,5,6,7,8,9,10,11,12,13,14,15";
 
         $this->assertEquals($expected, implode(",", $output ), "Chunked ($chunk_size) value not equal with source data.");
-        $this->assertEquals($expected_chunks, $rounds, "Expecting total chunks is $expected_rounds when chunk with size $chunk_size");
+        $this->assertEquals($expected_chunks, $rounds, "Expecting total chunks is $expected_chunks when chunk with size $chunk_size");
 
     }
 }
