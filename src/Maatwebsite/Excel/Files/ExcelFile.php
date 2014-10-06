@@ -28,7 +28,7 @@ abstract class ExcelFile extends File {
      */
     public function getFilters()
     {
-        return [];
+        return array();
     }
 
     /**
