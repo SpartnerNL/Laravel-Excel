@@ -186,7 +186,7 @@ class Excel {
         if (method_exists($this->excel, $method))
         {
             // Call the method from the excel object with the given params
-            return call_user_func_array([$this->excel, $method], $params);
+            return call_user_func_array(array($this->excel, $method), $params);
         }
 
         throw new LaravelExcelException('Laravel Excel method [' . $method . '] does not exist');

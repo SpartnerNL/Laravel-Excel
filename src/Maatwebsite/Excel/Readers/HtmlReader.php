@@ -1293,6 +1293,6 @@ class Html extends PHPExcel_Reader_HTML {
             }
         }
 
-        return [$column, $cellContent];
+        return array($column, $cellContent);
     }
 }
