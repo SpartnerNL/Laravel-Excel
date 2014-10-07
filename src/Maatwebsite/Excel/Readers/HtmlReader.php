@@ -1246,6 +1246,42 @@ class Html extends PHPExcel_Reader_HTML {
                 return PHPExcel_Style_Border::BORDER_THICK;
                 break;
 
+            case 'none':
+                return PHPExcel_Style_Border::BORDER_NONE;
+                break;
+
+            case 'dash-dot':
+                return PHPExcel_Style_Border::BORDER_DASHDOT;
+                break;
+
+            case 'dash-dot-dot':
+                return PHPExcel_Style_Border::BORDER_DASHDOTDOT;
+                break;
+
+            case 'double':
+                return PHPExcel_Style_Border::BORDER_DOUBLE;
+                break;
+
+            case 'hair':
+                return PHPExcel_Style_Border::BORDER_HAIR;
+                break;
+
+            case 'medium-dash-dot':
+                return PHPExcel_Style_Border::BORDER_MEDIUMDASHDOT;
+                break;
+
+            case 'medium-dash-dot-dot':
+                return PHPExcel_Style_Border::BORDER_MEDIUMDASHDOTDOT;
+                break;
+
+            case 'medium-dashed':
+                return PHPExcel_Style_Border::BORDER_MEDIUMDASHED;
+                break;
+
+            case 'slant-dash-dot':
+                return PHPExcel_Style_Border::BORDER_SLANTDASHDOT;
+                break;
+
             default:
                 return '';
                 break;
