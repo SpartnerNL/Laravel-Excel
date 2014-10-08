@@ -562,6 +562,7 @@ class LaravelExcelReader {
     /**
      * Set filters
      * @param array $filters
+     *
      */
     public function setFilters($filters = array())
     {
@@ -598,7 +599,7 @@ class LaravelExcelReader {
     /**
      * Set the file
      * @param string $file
-     * @return  LaraveExcelReader
+     * @return $this
      */
     protected function _setFile($file)
     {
