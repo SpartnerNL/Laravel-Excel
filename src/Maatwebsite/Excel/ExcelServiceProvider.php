@@ -207,7 +207,7 @@ class ExcelServiceProvider extends ServiceProvider {
      */
     public function registerFilters()
     {
-        app('excel')->registerFilters(Config::get('excel::filters', []));
+        app('excel')->registerFilters(Config::get('excel::filters', array() ));
     }
 
     /**
