@@ -170,9 +170,9 @@ class LaravelExcelReader {
      * Filters
      * @var array
      */
-    public $filters = [
-        'registered' => []
-    ];
+    public $filters = array(
+        'registered' => array()
+    );
 
     /**
      * @var LaravelExcelWorksheet
@@ -563,7 +563,7 @@ class LaravelExcelReader {
      * Set filters
      * @param array $filters
      */
-    public function setFilters($filters = [])
+    public function setFilters($filters = array())
     {
         $this->filters = $filters;
     }
@@ -1055,7 +1055,7 @@ class LaravelExcelReader {
 
         elseif($this->writerHasMethod($method))
         {
-            return call_user_func_array([$this->writer, $method], $params);
+            return call_user_func_array(array($this->writer, $method), $params);
         }
 
         throw new LaravelExcelException('[ERROR] Reader method [' . $method . '] does not exist.');
