@@ -48,6 +48,18 @@ You can inject these ExcelFiles inside the __constructor or inside the method (w
 
     }
 
+## CSV Settings
+
+You can pass through optional CSV settings, like `$delimiter`, `$enclosure` and `$lineEnding` as protected properties of the class.
+
+    class UserListImport extends \Maatwebsite\Excel\Files\ExcelFile {
+
+        protected $delimiter  = ',';
+        protected $enclosure  = '"';
+        protected $lineEnding = '\r\n';
+
+    }
+
 ## Import Handlers
 
 To decouple your Excel-import code completely from the controller, you can use the import handlers.
