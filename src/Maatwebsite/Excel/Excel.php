@@ -266,6 +266,13 @@ class Excel {
             return call_user_func_array(array($this->excel, $method), $params);
         }
 
+        // If reader method exists, call that one
+        if (method_exists($this->reader, $method))
+        {
+            // Call the method from the reader object with the given params
+            return call_user_func_array(array($this->reader, $method), $params);
+        }
+
         throw new LaravelExcelException('Laravel Excel method [' . $method . '] does not exist');
     }
 }

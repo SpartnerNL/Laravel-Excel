@@ -77,12 +77,6 @@ class LaravelExcelReader {
     public $parsed;
 
     /**
-     * Delimiter
-     * @var string
-     */
-    public $delimiter;
-
-    /**
      * Calculate [true/false]
      * @var boolean
      */
@@ -185,6 +179,21 @@ class LaravelExcelReader {
     protected $writer;
 
     /**
+     * @var bool|string
+     */
+    protected $delimiter;
+
+    /**
+     * @var bool|string
+     */
+    protected $lineEnding;
+
+    /**
+     * @var bool|string
+     */
+    protected $enclosure;
+
+    /**
      * Construct new reader
      * @param Filesystem       $filesystem
      * @param FormatIdentifier $identifier
@@ -253,6 +262,40 @@ class LaravelExcelReader {
         // Return the sheet
         return $this->sheet;
     }
+
+    /**
+     * Set csv delimiter
+     * @param $delimiter
+     * @return $this
+     */
+    public function setDelimiter($delimiter)
+    {
+        $this->delimiter = $delimiter;
+        return $this;
+    }
+
+    /**
+     * Set csv enclosure
+     * @param $enclosure
+     * @return $this
+     */
+    public function setEnclosure($enclosure)
+    {
+        $this->enclosure = $enclosure;
+        return $this;
+    }
+
+    /**
+     * Set csv line ending
+     * @param $lineEnding
+     * @return $this
+     */
+    public function setLineEnding($lineEnding)
+    {
+        $this->lineEnding = $lineEnding;
+        return $this;
+    }
+
 
     /**
      * set selected sheets
@@ -711,19 +754,6 @@ class LaravelExcelReader {
     }
 
     /**
-     * Set the delimiter
-     * Calling this after the ->load() will have no effect
-     * @param  string $delimiter
-     * @return LaraveExcelReader
-     */
-    public function setDelimiter($delimiter)
-    {
-        $this->reader->setDelimiter($delimiter);
-
-        return $this;
-    }
-
-    /**
      *  Set default calculate
      * @param bool $boolean Calculate yes or no
      * @return LaraveExcelReader
@@ -992,9 +1022,21 @@ class LaravelExcelReader {
         // Set CSV delimiter
         if ($this->format == 'CSV')
         {
-            $this->reader->setDelimiter(Config::get('excel::csv.delimiter', ','));
-            $this->reader->setEnclosure(Config::get('excel::csv.enclosure', '"'));
-            $this->reader->setLineEnding(Config::get('excel::csv.line_ending', "\r\n"));
+            // If no delimiter was given, take from config
+            if(!$this->delimiter)
+                $this->reader->setDelimiter(Config::get('excel::csv.delimiter', ','));
+            else
+                $this->reader->setDelimiter($this->delimiter);
+
+            if(!$this->enclosure)
+                $this->reader->setEnclosure(Config::get('excel::csv.enclosure', '"'));
+            else
+                $this->reader->setEnclosure($this->enclosure);
+
+            if(!$this->lineEnding)
+                $this->reader->setLineEnding(Config::get('excel::csv.line_ending', "\r\n"));
+            else
+                $this->reader->setLineEnding($this->lineEnding);
         }
 
         // Set default calculate

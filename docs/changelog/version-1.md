@@ -1,5 +1,12 @@
 # Version 1
 
+### 1.2.2
+- Chunk filter fixes
+- Isset() CellCollection fixes
+- PHP 5.3 support
+- Missing border styles
+- Add CSV settings (delimiter, enclosure, lineEnding) to ExcelFile objects
+
 ### 1.2.1
 - Fix with() method parameters
 
@@ -11,6 +18,9 @@
 - Edit existing worksheets
 - Converting existing worksheet
 - Laravel 4.* + 5.0 support
+
+### 1.1.9
+- PHP 5.3 fixes
 
 ### 1.1.8
 - PHP 5.3 support

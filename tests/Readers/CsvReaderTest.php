@@ -20,10 +20,12 @@ class CsvReaderTest extends TestCase {
      */
     protected $fileName = 'files/test.csv';
 
+
     public function testSeparator()
     {
         $this->assertEquals('_', $this->loadedFile->getSeparator());
     }
+
 
     public function testSetSeparator()
     {
@@ -31,9 +33,27 @@ class CsvReaderTest extends TestCase {
         $this->assertEquals('-', $set->getSeparator());
     }
 
+
     public function testSetDelimiter()
     {
-        $set = $this->loadedFile->setDelimiter(';');
-        $this->assertEquals(';', $set->getDelimiter());
+        $this->loadedFile->setDelimiter(';');
+        $this->reload();
+        $this->assertEquals(';', $this->loadedFile->getDelimiter());
+    }
+
+
+    public function testSetEnclosure()
+    {
+        $this->loadedFile->setEnclosure('d');
+        $this->reload();
+        $this->assertEquals('d', $this->loadedFile->getEnclosure());
+    }
+
+
+    public function testSetLineEnding()
+    {
+        $this->loadedFile->setLineEnding('d');
+        $this->reload();
+        $this->assertEquals('d', $this->loadedFile->getLineEnding());
     }
 }
