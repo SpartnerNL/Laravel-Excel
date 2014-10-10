@@ -874,8 +874,31 @@ class LaravelExcelReader {
      */
     public function getTotalRowsOfFile()
     {
+        // Get worksheet info
+        $spreadsheetInfo = $this->getSheetInfoForActive();
+
+        // return total rows
+        return $spreadsheetInfo['totalRows'];
+    }
+
+    /**
+     * Get sheet info for active sheet
+     * @return mixed
+     */
+    public function getSheetInfoForActive()
+    {
         $spreadsheetInfo = $this->reader->listWorksheetInfo($this->file);
-        return $spreadsheetInfo[0]['totalRows'];
+
+        // Loop through the info
+        foreach($spreadsheetInfo as $key => $value)
+        {
+            // When we hit the right worksheet
+            if($value['worksheetName'] == $this->getActiveSheet()->getTitle())
+                $index = $key;
+        }
+
+        // return total rows
+        return $spreadsheetInfo[$index];
     }
 
     /**

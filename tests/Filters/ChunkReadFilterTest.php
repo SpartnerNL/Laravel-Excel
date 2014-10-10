@@ -18,7 +18,7 @@ class ChunkReadFilterTest extends TestCase {
         $this->assertCanChunkIntoGroups(2,"sample.xls",10);
         $this->assertCanChunkIntoGroups(3,"sample.xls",5);
         $this->assertCanChunkIntoGroups(15,"sample.xls",1);
-    }    
+    }
 
 
     public function testCanChunkXlsx()
@@ -28,7 +28,7 @@ class ChunkReadFilterTest extends TestCase {
     	$this->assertCanChunkIntoGroups(2,"sample.xlsx",10);
         $this->assertCanChunkIntoGroups(3,"sample.xlsx",5);
     	$this->assertCanChunkIntoGroups(15,"sample.xlsx",1);
-    }    
+    }
 
 
     public function testCanChunkCsv()
@@ -49,6 +49,8 @@ class ChunkReadFilterTest extends TestCase {
 
         // test with small chunks
         $chunk_size = 2;
+        $expected = "1,3,5,7,9,11,13,15,17,19,1,3,5,7,9,11,13,15,17,19";
+        $expected_chunks = 10;
 
         // Sheet2 has more rows than sheet 1
         $this->excel->filter('chunk')->selectSheets('Sheet2')->load(__DIR__ . "/files/multi.xls")->chunk($chunk_size,function($results) use (&$output, &$rounds){
@@ -57,8 +59,6 @@ class ChunkReadFilterTest extends TestCase {
                 $output[] = (int) $row->header;
             }
         });
-
-        $expected = "1,3,5,7,9,11,13,15,17,19,1,3,5,7,9,11,13,15,17,19";
 
         $this->assertEquals($expected, implode(",", $output ), "Chunked ($chunk_size) value not equal with source data.");
         $this->assertEquals($expected_chunks, $rounds, "Expecting total chunks is $expected_chunks when chunk with size $chunk_size");
