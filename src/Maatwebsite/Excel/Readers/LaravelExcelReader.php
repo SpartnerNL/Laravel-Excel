@@ -1076,6 +1076,9 @@ class LaravelExcelReader {
 
         // Set default date columns
         $this->dateColumns = Config::get('excel::import.dates.columns', array());
+        
+        // Set default include charts
+        $this->reader->setIncludeCharts(Config::get('excel::import.includeCharts', false));
     }
 
     /**
