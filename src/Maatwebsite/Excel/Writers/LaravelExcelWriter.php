@@ -466,6 +466,22 @@ class LaravelExcelWriter {
      */
     protected function _setWriter()
     {
+        if ($this->format == 'PDF')
+        {
+            // Setup the renderer
+            $rendererName = \PHPExcel_Settings::PDF_RENDERER_DOMPDF;
+            $rendererLibraryPath = __DIR__.'/../../../../../../dompdf/dompdf/';
+            // DOMPDF can't be allowed to autoload with composer which we must be using since this is Laravel...
+            define("DOMPDF_ENABLE_AUTOLOAD", false);
+
+            if (!\PHPExcel_Settings::setPdfRenderer(
+                $rendererName,
+                $rendererLibraryPath
+            )) {
+                throw new \Exception("PDF Path is incorrect.  Composer must have put dompdf elsewhere.");
+            }
+        }
+        
         $this->writer = PHPExcel_IOFactory::createWriter($this->excel, $this->format);
 
         // Set CSV delimiter
