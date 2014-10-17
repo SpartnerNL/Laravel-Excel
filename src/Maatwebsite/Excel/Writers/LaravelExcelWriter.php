@@ -466,22 +466,11 @@ class LaravelExcelWriter {
      */
     protected function _setWriter()
     {
+        // Set pdf renderer
         if ($this->format == 'PDF')
-        {
-            // Setup the renderer
-            $rendererName = \PHPExcel_Settings::PDF_RENDERER_DOMPDF;
-            $rendererLibraryPath = __DIR__.'/../../../../../../dompdf/dompdf/';
-            // DOMPDF can't be allowed to autoload with composer which we must be using since this is Laravel...
-            define("DOMPDF_ENABLE_AUTOLOAD", false);
+            $this->setPdfRenderer();
 
-            if (!\PHPExcel_Settings::setPdfRenderer(
-                $rendererName,
-                $rendererLibraryPath
-            )) {
-                throw new \Exception("PDF Path is incorrect.  Composer must have put dompdf elsewhere.");
-            }
-        }
-        
+        // Create the writer
         $this->writer = PHPExcel_IOFactory::createWriter($this->excel, $this->format);
 
         // Set CSV delimiter
@@ -494,11 +483,29 @@ class LaravelExcelWriter {
 
         // Calculation settings
         $this->writer->setPreCalculateFormulas(Config::get('excel::export.calculate', true));
-        
+
         // Include Charts
         $this->writer->setIncludeCharts(Config::get('excel::export.includeCharts', false));
 
         return $this->writer;
+    }
+
+    /**
+     * Set the pdf renderer
+     * @throws \Exception
+     */
+    protected function setPdfRenderer()
+    {
+        // Get the driver name
+        $driver = Config::get('excel::export.pdf.driver');
+        $path = Config::get('excel::export.pdf.drivers.' . $driver . '.path');
+
+        // Disable autoloading for dompdf
+        define("DOMPDF_ENABLE_AUTOLOAD", false);
+
+        // Set the pdf renderer
+        if (!\PHPExcel_Settings::setPdfRenderer($driver, $path))
+            throw new \Exception("{$driver} could not be found. Make sure you've included it in your composer.json");
     }
 
     /**
