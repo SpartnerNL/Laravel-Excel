@@ -21,6 +21,7 @@ class FormatIdentifier {
         'Gnumeric',
         'CSV',
         'HTML',
+        'PDF'
     );
 
     /**
@@ -148,9 +149,9 @@ class FormatIdentifier {
             | PDF
             |--------------------------------------------------------------------------
             */
-            // case 'pdf':
-            //     return 'PDF';
-            //     break;
+             case 'pdf':
+                 return 'PDF';
+                 break;
         }
     }
 
@@ -205,9 +206,9 @@ class FormatIdentifier {
             | PDF
             |--------------------------------------------------------------------------
             */
-            // case 'PDF':
-            //     return'application/pdf; charset=UTF-8';
-            //     break;
+             case 'PDF':
+                 return'application/pdf; charset=UTF-8';
+                 break;
         }
     }
 
