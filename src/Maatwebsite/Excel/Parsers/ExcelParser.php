@@ -546,7 +546,11 @@ class ExcelParser {
     protected function cellIsDate($index)
     {
         // if is a date or if is a date column
-        return PHPExcel_Shared_Date::isDateTime($this->cell) || in_array($index, $this->reader->getDateColumns());
+        if ($this->reader->getDateColumns()) {
+            return in_array($index, $this->reader->getDateColumns());
+        } else {
+            return PHPExcel_Shared_Date::isDateTime($this->cell);
+        }
     }
 
     /**
