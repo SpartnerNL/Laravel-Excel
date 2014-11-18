@@ -28,7 +28,7 @@
      "suggest": {
         "illuminate/http": "~4.0|~5.0",
         "illuminate/routing": "~4.0|~5.0",
-        "illuminate/view": "~4.0|~5.0",
+        "illuminate/view": "~4.0|~5.0"
     },
     "autoload": {
         "classmap": [
