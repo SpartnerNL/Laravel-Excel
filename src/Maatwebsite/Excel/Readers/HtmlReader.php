@@ -42,19 +42,19 @@ class Html extends PHPExcel_Reader_HTML {
      * Input encoding
      * @var string
      */
-    private $_inputEncoding = 'ANSI';
+    protected $_inputEncoding = 'ANSI';
 
     /**
      * Sheet index to read
      * @var int
      */
-    private $_sheetIndex = 0;
+    protected $_sheetIndex = 0;
 
     /**
      * HTML tags formatting settings
      * @var array
      */
-    private $_formats = array();
+    protected $_formats = array();
 
     /**
      * The current colspan
@@ -244,7 +244,7 @@ class Html extends PHPExcel_Reader_HTML {
      * @param  string                $cellContent
      * @return void
      */
-    private function _processDomElement(DOMNode $element, $sheet, &$row, &$column, &$cellContent)
+    protected function _processDomElement(DOMNode $element, $sheet, &$row, &$column, &$cellContent, $format = null)
     {
         foreach ($element->childNodes as $child)
         {
@@ -340,13 +340,13 @@ class Html extends PHPExcel_Reader_HTML {
                         }
 
                         // Continue processing dom element
-                        $this->_processDomElement($child, $sheet, $row, $column, $cellContent);
+                        $this->_processDomElement($child, $sheet, $row, $column, $cellContent, $format);
 
                         break;
 
                     // Set sheet title
                     case 'title' :
-                        $this->_processDomElement($child, $sheet, $row, $column, $cellContent);
+                        $this->_processDomElement($child, $sheet, $row, $column, $cellContent, $format);
                         $sheet->setTitle($cellContent);
                         $cellContent = '';
                         break;
@@ -365,7 +365,7 @@ class Html extends PHPExcel_Reader_HTML {
                             $cellContent .= ' ';
 
                         // Continue processing
-                        $this->_processDomElement($child, $sheet, $row, $column, $cellContent);
+                        $this->_processDomElement($child, $sheet, $row, $column, $cellContent, $format);
 
                         // Add space after empty cells
                         if ($cellContent > '')
@@ -447,7 +447,7 @@ class Html extends PHPExcel_Reader_HTML {
 
                         // Add empty space
                         $cellContent .= ' ';
-                        $this->_processDomElement($child, $sheet, $row, $column, $cellContent);
+                        $this->_processDomElement($child, $sheet, $row, $column, $cellContent, $format);
 
                         break;
 
@@ -465,7 +465,7 @@ class Html extends PHPExcel_Reader_HTML {
                         if ($this->_tableLevel > 0)
                         {
                             $cellContent .= "\n";
-                            $this->_processDomElement($child, $sheet, $row, $column, $cellContent);
+                            $this->_processDomElement($child, $sheet, $row, $column, $cellContent, $format);
                             $this->flushCell($sheet, $column, $row, $cellContent);
 
                             // Set style
@@ -481,7 +481,7 @@ class Html extends PHPExcel_Reader_HTML {
                                 $this->flushCell($sheet, $column, $row, $cellContent);
                                 $row += 2;
                             }
-                            $this->_processDomElement($child, $sheet, $row, $column, $cellContent);
+                            $this->_processDomElement($child, $sheet, $row, $column, $cellContent, $format);
                             $this->flushCell($sheet, $column, $row, $cellContent);
 
                             // Set style
@@ -502,7 +502,7 @@ class Html extends PHPExcel_Reader_HTML {
                         {
                             //  If we're inside a table, replace with a \n
                             $cellContent .= "\n";
-                            $this->_processDomElement($child, $sheet, $row, $column, $cellContent);
+                            $this->_processDomElement($child, $sheet, $row, $column, $cellContent, $format);
                         }
                         else
                         {
@@ -513,7 +513,7 @@ class Html extends PHPExcel_Reader_HTML {
 
                             ++$row;
 
-                            $this->_processDomElement($child, $sheet, $row, $column, $cellContent);
+                            $this->_processDomElement($child, $sheet, $row, $column, $cellContent, $format);
                             $this->flushCell($sheet, $column, $row, $cellContent);
                             $column = 'A';
                         }
@@ -531,7 +531,7 @@ class Html extends PHPExcel_Reader_HTML {
                         if ($this->_tableLevel > 1)
                             --$row;
 
-                        $this->_processDomElement($child, $sheet, $row, $column, $cellContent);
+                        $this->_processDomElement($child, $sheet, $row, $column, $cellContent, $format);
 
                         // Release the table start column
                         $column = $this->_releaseTableStartColumn();
@@ -550,7 +550,7 @@ class Html extends PHPExcel_Reader_HTML {
                     // Heading and body
                     case 'thead' :
                     case 'tbody' :
-                        $this->_processDomElement($child, $sheet, $row, $column, $cellContent);
+                        $this->_processDomElement($child, $sheet, $row, $column, $cellContent, $format);
                         break;
 
                     case 'img':
@@ -567,7 +567,7 @@ class Html extends PHPExcel_Reader_HTML {
                         $cellContent = '';
 
                         // Continue processing
-                        $this->_processDomElement($child, $sheet, $row, $column, $cellContent);
+                        $this->_processDomElement($child, $sheet, $row, $column, $cellContent, $format);
 
                         ++$row;
 
@@ -594,7 +594,7 @@ class Html extends PHPExcel_Reader_HTML {
 
                     // Table cell
                     case 'td' :
-                        $this->_processDomElement($child, $sheet, $row, $column, $cellContent);
+                        $this->_processDomElement($child, $sheet, $row, $column, $cellContent, $format);
                         $this->flushCell($sheet, $column, $row, $cellContent);
 
                         // If we have a colspan, count the right amount of columns, else just 1
@@ -613,12 +613,12 @@ class Html extends PHPExcel_Reader_HTML {
                         $column = 'A';
                         $content = '';
                         $this->_tableLevel = 0;
-                        $this->_processDomElement($child, $sheet, $row, $column, $cellContent);
+                        $this->_processDomElement($child, $sheet, $row, $column, $cellContent, $format);
                         break;
 
                     // Default
                     default:
-                        $this->_processDomElement($child, $sheet, $row, $column, $cellContent);
+                        $this->_processDomElement($child, $sheet, $row, $column, $cellContent, $format);
                 }
             }
         }
@@ -629,7 +629,7 @@ class Html extends PHPExcel_Reader_HTML {
      * @param   string $column
      * @return  string
      */
-    private function _setTableStartColumn($column)
+    protected function _setTableStartColumn($column)
     {
         // Set to a
         if ($this->_tableLevel == 0)
@@ -647,7 +647,7 @@ class Html extends PHPExcel_Reader_HTML {
      * Get the table start column
      * @return string
      */
-    private function _getTableStartColumn()
+    protected function _getTableStartColumn()
     {
         return $this->_nestedColumn[$this->_tableLevel];
     }
@@ -656,7 +656,7 @@ class Html extends PHPExcel_Reader_HTML {
      * Release the table start column
      * @return array
      */
-    private function _releaseTableStartColumn()
+    protected function _releaseTableStartColumn()
     {
         --$this->_tableLevel;
 
