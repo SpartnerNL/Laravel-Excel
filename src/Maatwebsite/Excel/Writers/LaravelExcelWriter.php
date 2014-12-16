@@ -466,6 +466,11 @@ class LaravelExcelWriter {
      */
     protected function _setWriter()
     {
+        // Set pdf renderer
+        if ($this->format == 'PDF')
+            $this->setPdfRenderer();
+
+        // Create the writer
         $this->writer = PHPExcel_IOFactory::createWriter($this->excel, $this->format);
 
         // Set CSV delimiter
@@ -479,7 +484,28 @@ class LaravelExcelWriter {
         // Calculation settings
         $this->writer->setPreCalculateFormulas(Config::get('excel::export.calculate', true));
 
+        // Include Charts
+        $this->writer->setIncludeCharts(Config::get('excel::export.includeCharts', false));
+
         return $this->writer;
+    }
+
+    /**
+     * Set the pdf renderer
+     * @throws \Exception
+     */
+    protected function setPdfRenderer()
+    {
+        // Get the driver name
+        $driver = Config::get('excel::export.pdf.driver');
+        $path = Config::get('excel::export.pdf.drivers.' . $driver . '.path');
+
+        // Disable autoloading for dompdf
+        define("DOMPDF_ENABLE_AUTOLOAD", false);
+
+        // Set the pdf renderer
+        if (!\PHPExcel_Settings::setPdfRenderer($driver, $path))
+            throw new \Exception("{$driver} could not be found. Make sure you've included it in your composer.json");
     }
 
     /**

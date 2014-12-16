@@ -286,7 +286,7 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet {
 
         // Else if the 2nd param was set, we will use it as a cell value
         if ($callback)
-            $this->sheet->setCellValue($cell, $callback);
+            $this->setCellValue($cell, $callback);
 
         return $this;
     }
