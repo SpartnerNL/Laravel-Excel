@@ -2,10 +2,7 @@
 
 trait SingleImportTestingTrait {
 
-    /**
-     * Test get
-     * @return [type] [description]
-     */
+
     public function testGet()
     {
         $got = $this->loadedFile->get();
@@ -13,10 +10,7 @@ trait SingleImportTestingTrait {
         $this->assertCount(5, $got);
     }
 
-    /**
-     * Test get with columns
-     * @return [type] [description]
-     */
+
     public function testGetWithColumns()
     {
         $columns = array('heading_one', 'heading_two');
@@ -26,10 +20,7 @@ trait SingleImportTestingTrait {
         $this->assertCount(5, $got);
     }
 
-    /**
-     * Test all
-     * @return [type] [description]
-     */
+
     public function testAll()
     {
         $all = $this->loadedFile->all();
@@ -37,10 +28,7 @@ trait SingleImportTestingTrait {
         $this->assertCount(5, $all);
     }
 
-    /**
-     * Test first
-     * @return [type] [description]
-     */
+
     public function testFirst()
     {
         $first = $this->loadedFile->first();
@@ -50,10 +38,7 @@ trait SingleImportTestingTrait {
         $this->assertCount(3, $first);
     }
 
-    /**
-     * Test first with columns
-     * @return [type] [description]
-     */
+
     public function testFirstWithColumns()
     {
         $columns = array('heading_one', 'heading_two');
@@ -63,10 +48,7 @@ trait SingleImportTestingTrait {
         $this->assertCount(count($columns), $first);
     }
 
-    /**
-     * Test each
-     * @return [type] [description]
-     */
+
     public function testEach()
     {
         $me = $this;
@@ -78,10 +60,7 @@ trait SingleImportTestingTrait {
         });
     }
 
-    /**
-     * Test toArray
-     * @return [type] [description]
-     */
+
     public function testToArray()
     {
         $array = $this->loadedFile->toArray();
@@ -116,10 +95,7 @@ trait SingleImportTestingTrait {
         ), $array);
     }
 
-    /**
-     * Test the imported headings
-     * @return [type] [description]
-     */
+
     public function testImportedHeadingsSlugged()
     {
         $first = $this->loadedFile->first()->toArray();
@@ -132,10 +108,7 @@ trait SingleImportTestingTrait {
         ), $keys);
     }
 
-    /**
-     * Test the imported headings
-     * @return [type] [description]
-     */
+
     public function testImportedHeadingsHashed()
     {
         Config::set('excel::import.heading', 'hashed');
@@ -152,10 +125,7 @@ trait SingleImportTestingTrait {
         ), $keys);
     }
 
-    /**
-     * Test the imported headings
-     * @return [type] [description]
-     */
+
     public function testImportedHeadingsNumeric()
     {
         Config::set('excel::import.heading', 'numeric');
@@ -166,16 +136,13 @@ trait SingleImportTestingTrait {
         $keys  = array_keys($first);
 
         $this->assertEquals(array(
+            0,
             1,
-            2,
-            3
+            2
         ), $keys);
     }
 
-    /**
-     * Test the imported headings
-     * @return [type] [description]
-     */
+
     public function testImportedHeadingsOriginal()
     {
         Config::set('excel::import.heading', 'original');
@@ -192,10 +159,7 @@ trait SingleImportTestingTrait {
         ), $keys);
     }
 
-    /**
-     * Test remember method
-     * @return [type] [description]
-     */
+
     public function testRemember()
     {
         $remembered = $this->loadedFile->remember(10);
@@ -205,20 +169,14 @@ trait SingleImportTestingTrait {
         $this->assertTrue($remembered->remembered);
     }
 
-    /**
-     * Test set selected sheets
-     * @return [type] [description]
-     */
+
     public function testByConfig()
     {
         $config = $this->loadedFile->byConfig('excel::import.sheets');
         $this->assertInstanceOf('Maatwebsite\Excel\Collections\SheetCollection', $config);
     }
 
-    /**
-     * Test set selected sheets
-     * @return [type] [description]
-     */
+
     public function testByConfigCallback()
     {
         $me = $this;
@@ -231,10 +189,7 @@ trait SingleImportTestingTrait {
         $this->assertInstanceOf('Maatwebsite\Excel\Collections\SheetCollection', $config);
     }
 
-    /**
-     * Test take
-     * @return [type] [description]
-     */
+
     public function testTake()
     {
         $taken = $this->loadedFile->take(2);
@@ -242,10 +197,7 @@ trait SingleImportTestingTrait {
         $this->assertCount(2, $taken->get());
     }
 
-    /**
-     * Test limit
-     * @return [type] [description]
-     */
+
     public function testSkip()
     {
         $taken = $this->loadedFile->skip(1);
@@ -253,10 +205,7 @@ trait SingleImportTestingTrait {
         $this->assertCount(4, $taken->get());
     }
 
-    /**
-     * Test limit
-     * @return [type] [description]
-     */
+
     public function testLimit()
     {
         $taken = $this->loadedFile->limit(2, 1);
@@ -265,10 +214,7 @@ trait SingleImportTestingTrait {
         $this->assertCount(2, $taken->get());
     }
 
-    /**
-     * Test select columns
-     * @return [type] [description]
-     */
+
     public function testSelect()
     {
         $columns = array('heading_one', 'heading_two');
@@ -277,15 +223,13 @@ trait SingleImportTestingTrait {
         $this->assertEquals($columns, $taken->columns);
     }
 
-    /**
-     * Test set date format
-     * @return [type] [description]
-     */
+
     public function testSetDateFormat()
     {
         $set = $this->loadedFile->setDateFormat('Y-m-d');
         $this->assertEquals('Y-m-d', $set->getDateFormat());
     }
+
 
     public function testFormatDates()
     {
@@ -294,6 +238,7 @@ trait SingleImportTestingTrait {
         $this->assertEquals('Y-m-d', $set->getDateFormat());
     }
 
+    
     public function testSetDateColumns()
     {
         $set = $this->loadedFile->setDateColumns('created_at', 'deleted_at');
@@ -301,11 +246,13 @@ trait SingleImportTestingTrait {
         $this->assertEquals(array('created_at', 'deleted_at'), $set->getDateColumns());
     }
 
+
     public function testCalculate()
     {
         $set = $this->loadedFile->calculate();
         $this->assertTrue($set->needsCalculation());
     }
+
 
     public function testIgnoreEmpty()
     {
