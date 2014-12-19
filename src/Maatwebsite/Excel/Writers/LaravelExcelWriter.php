@@ -248,9 +248,10 @@ class LaravelExcelWriter {
     /**
      * Export the spreadsheet
      * @param string $ext
-     * @return void
+     * @param array  $headers
+     * @throws LaravelExcelException
      */
-    public function export($ext = 'xls')
+    public function export($ext = 'xls', Array $headers = array())
     {
         // Set the extension
         $this->ext = $ext;
@@ -259,46 +260,48 @@ class LaravelExcelWriter {
         $this->_render();
 
         // Download the file
-        $this->_download();
+        $this->_download($headers);
     }
 
     /**
      * Convert and existing file to newly requested extension
-     * @param $ext
+     * @param       $ext
+     * @param array $headers
      */
-    public function convert($ext)
+    public function convert($ext, Array $headers = array())
     {
-        $this->export($ext);
+        $this->export($ext, $headers);
     }
 
     /**
      * Export and download the spreadsheet
      * @param  string $ext
-     * @return void
+     * @param array   $headers
      */
-    public function download($ext = 'xls')
+    public function download($ext = 'xls', Array $headers = array())
     {
-        $this->export($ext);
+        $this->export($ext, $headers);
     }
 
     /**
      * Download a file
+     * @param array $headers
      * @throws LaravelExcelException
-     * @return void
      */
-    protected function _download()
+    protected function _download(Array $headers = array())
     {
         // Set the headers
-        $this->_setHeaders(array(
-
-            'Content-Type'        => $this->contentType,
-            'Content-Disposition' => 'attachment; filename="' . $this->filename . '.' . $this->ext . '"',
-            'Expires'             => 'Mon, 26 Jul 1997 05:00:00 GMT', // Date in the past
-            'Last-Modified'       => Carbon::now()->format('D, d M Y H:i:s'),
-            'Cache-Control'       => 'cache, must-revalidate',
-            'Pragma'              => 'public'
-
-        ));
+        $this->_setHeaders(
+            $headers,
+            array(
+                'Content-Type'        => $this->contentType,
+                'Content-Disposition' => 'attachment; filename="' . $this->filename . '.' . $this->ext . '"',
+                'Expires'             => 'Mon, 26 Jul 1997 05:00:00 GMT', // Date in the past
+                'Last-Modified'       => Carbon::now()->format('D, d M Y H:i:s'),
+                'Cache-Control'       => 'cache, must-revalidate',
+                'Pragma'              => 'public'
+            )
+        );
 
         // Check if writer isset
         if (!$this->writer)
@@ -513,9 +516,12 @@ class LaravelExcelWriter {
      * @param $headers
      * @throws LaravelExcelException
      */
-    protected function _setHeaders($headers)
+    protected function _setHeaders(Array $headers = array(), Array $default)
     {
         if (headers_sent()) throw new LaravelExcelException('[ERROR]: Headers already sent');
+
+        // Merge the default headers with the overruled headers
+        $headers = array_merge($default, $headers);
 
         foreach ($headers as $header => $value)
         {
