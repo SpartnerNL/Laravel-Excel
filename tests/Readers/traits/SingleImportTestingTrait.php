@@ -238,7 +238,7 @@ trait SingleImportTestingTrait {
         $this->assertEquals('Y-m-d', $set->getDateFormat());
     }
 
-    
+
     public function testSetDateColumns()
     {
         $set = $this->loadedFile->setDateColumns('created_at', 'deleted_at');
