@@ -396,7 +396,6 @@ class ExcelParser {
         // Foreach cells
         foreach ($cellIterator as $this->cell)
         {
-
             // Check how we need to save the parsed array
             $index = ($this->reader->hasHeading() && isset($this->indices[$i])) ? $this->indices[$i] : $this->getIndexFromColumn();
 
@@ -421,6 +420,7 @@ class ExcelParser {
      */
     protected function parseCell($index)
     {
+
         // If the cell is a date time
         if ($this->cellIsDate($index))
         {

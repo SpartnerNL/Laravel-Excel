@@ -31,6 +31,10 @@ trait ImportTrait {
         $this->reader   = App::make('excel.reader');
         $this->reader->injectExcel($this->excel);
 
+        // Disable heading usage
+        if(isset($this->noHeadings) && $this->noHeadings)
+            $this->reader->noHeading(true);
+
         // Load csv file
         $this->loadFile();
     }

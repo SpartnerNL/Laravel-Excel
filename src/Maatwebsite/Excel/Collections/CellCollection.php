@@ -31,8 +31,16 @@ class CellCollection extends ExcelCollection {
     {
         foreach ($items as $name => $value)
         {
-            if ($name)
-                $this->put($name, $value || is_numeric($value) ? $value : null);
+            $value = !empty($value) || is_numeric($value) ? $value : null;
+
+            if ($name && !is_numeric($name))
+            {
+                $this->put($name, $value);
+            }
+            else
+            {
+                $this->push($value);
+            }
         }
     }
 
