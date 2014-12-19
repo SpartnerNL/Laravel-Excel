@@ -666,10 +666,12 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet {
         // If is a style
         elseif (in_array($key, $this->allowedStyles))
         {
-            $this->setDefaultStyles($setter, $key, $params);
+           return $this->setDefaultStyles($setter, $key, $params);
         }
-
-        throw new LaravelExcelException('[ERROR] Laravel Worksheet method [' . $setter . '] does not exist.');
+        else
+        {
+            throw new LaravelExcelException('[ERROR] Laravel Worksheet method [' . $setter . '] does not exist.');
+        }
     }
 
     /**
@@ -724,24 +726,17 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet {
      * @param array|string $params
      * @return  PHPExcel_Style
      */
-    protected function setFontStyle($caller, $key, $params)
+    protected function setFontStyle($caller, $setter, $key, $params)
     {
         // Set caller to font
         $caller = $caller->getFont();
         $params = is_array($params) ? $params : array($params);
 
         // Clean the setter name
-        $key = lcfirst(str_replace('font', '', $key));
+        $setter = lcfirst(str_replace('Font', '', $setter));
 
-        // Get setter method
-        list($setter, $key) = $this->_setSetter($key);
-
-        switch ($key)
-        {
-            case 'family':
-                $setter = 'setName';
-                break;
-        }
+        // Replace special cases
+        $setter = str_replace('Family', 'Name', $setter);
 
         return call_user_func_array(array($caller, $setter), $params);
     }
