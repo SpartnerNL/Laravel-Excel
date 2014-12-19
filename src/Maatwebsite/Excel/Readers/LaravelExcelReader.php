@@ -209,12 +209,13 @@ class LaravelExcelReader {
      * Load a file
      * @param  string        $file
      * @param string|boolean $encoding
+     * @param bool           $noBasePath
      * @return LaravelExcelReader
      */
-    public function load($file, $encoding = false)
+    public function load($file, $encoding = false, $noBasePath = false)
     {
         // init the loading
-        $this->_init($file, $encoding);
+        $this->_init($file, $encoding, $noBasePath);
 
         // Only fetch selected sheets if necessary
         if ($this->sheetsSelected())
@@ -577,12 +578,12 @@ class LaravelExcelReader {
      * Init the loading
      * @param      $file
      * @param bool $encoding
-     * @return void
+     * @param bool $noBasePath
      */
-    protected function _init($file, $encoding = false)
+    protected function _init($file, $encoding = false, $noBasePath = false)
     {
         // Set the extension
-        $this->_setFile($file)
+        $this->_setFile($file, $noBasePath)
               ->setExtension()
               ->setTitle()
               ->_setFormat()
@@ -642,12 +643,13 @@ class LaravelExcelReader {
     /**
      * Set the file
      * @param string $file
+     * @param bool   $noBasePath
      * @return $this
      */
-    protected function _setFile($file)
+    protected function _setFile($file, $noBasePath = false)
     {
         // check if we have a correct path
-        if (!realpath($file))
+        if (!$noBasePath && !realpath($file))
             $file = base_path($file);
 
         $this->file = $file;

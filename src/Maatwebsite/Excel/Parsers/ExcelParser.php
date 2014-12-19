@@ -320,7 +320,7 @@ class ExcelParser {
         // set sheet title
         $parsedRows->setTitle($this->excel->getActiveSheet()->getTitle());
 
-        // Get the startrow
+        // Get the start row
         $startRow = $this->getStartRow();
 
         // Loop through the rows inside the worksheet
@@ -420,7 +420,6 @@ class ExcelParser {
      */
     protected function parseCell($index)
     {
-
         // If the cell is a date time
         if ($this->cellIsDate($index))
         {

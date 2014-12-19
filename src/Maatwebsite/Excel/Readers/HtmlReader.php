@@ -39,6 +39,11 @@ class Html extends PHPExcel_Reader_HTML {
     protected $styles = array();
 
     /**
+     * @var int
+     */
+    private $_tableLevel   = 0;
+
+    /**
      * Input encoding
      * @var string
      */

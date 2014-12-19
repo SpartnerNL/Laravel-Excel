@@ -1213,7 +1213,7 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet {
      */
     public function setValueOfCell($cellValue, $currentColumn, $startRow)
     {
-        is_numeric($cellValue) && !is_integer($cellValue)
+        is_string($cellValue) && is_numeric($cellValue) && !is_integer($cellValue)
             ? $this->getCell($currentColumn . $startRow)->setValueExplicit($cellValue)
             : $this->getCell($currentColumn . $startRow)->setValue($cellValue);
     }
