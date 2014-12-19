@@ -485,7 +485,7 @@ class LaravelExcelWriter {
         }
 
         // Calculation settings
-        $this->writer->setPreCalculateFormulas(Config::get('excel::export.calculate', true));
+        $this->writer->setPreCalculateFormulas(Config::get('excel::export.calculate', false));
 
         // Include Charts
         $this->writer->setIncludeCharts(Config::get('excel::export.includeCharts', false));
@@ -578,15 +578,6 @@ class LaravelExcelWriter {
         {
             // Call the method from the excel object with the given params
             $return = call_user_func_array(array($this->excel, $method), $params);
-
-            return $return ? $return : $this;
-        }
-
-        // Call a php excel sheet method
-        elseif (method_exists($this->excel->getActiveSheet(), $method))
-        {
-            // Call the method from the excel object with the given params
-            $return = call_user_func_array(array($this->excel->getActiveSheet(), $method), $params);
 
             return $return ? $return : $this;
         }
