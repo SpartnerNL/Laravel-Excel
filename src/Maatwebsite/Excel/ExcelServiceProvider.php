@@ -97,7 +97,7 @@ class ExcelServiceProvider extends ServiceProvider {
     protected function bindCssParser()
     {
         // Bind css parser
-        $this->app->bindShared('excel.parsers.css', function ($app)
+        $this->app['excel.parsers.css'] = $this->app->share(function ($app)
         {
             return new CssParser(new CssToInlineStyles());
         });
