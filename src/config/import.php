@@ -14,6 +14,18 @@ return array(
     */
 
     'heading'                 => 'slugged',
+    
+    /*
+    |--------------------------------------------------------------------------
+    | First Row with data or heading of data
+    |--------------------------------------------------------------------------
+    |
+    | If heading row not first we can change this option to current heading row.
+    | It changes and the first data row, so we don't need to use ->skip() method
+    |
+    */
+
+    'startRow'                 => 1,
 
     /*
     |--------------------------------------------------------------------------

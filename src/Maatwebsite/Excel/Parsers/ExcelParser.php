@@ -93,6 +93,9 @@ class ExcelParser {
     {
         $this->reader = $reader;
         $this->excel = $reader->excel;
+        
+        //Change first row
+        $this->defaultStartRow = $this->currentRow = Config::get('excel::import.startRow', 1);
 
         // Reset
         $this->reset();
@@ -186,8 +189,8 @@ class ExcelParser {
      */
     protected function getIndices()
     {
-        // Fetch the first row
-        $this->row = $this->worksheet->getRowIterator(1)->current();
+        // Fetch the first row or row with heading(from config)
+        $this->row = $this->worksheet->getRowIterator($this->defaultStartRow)->current();
 
         // Set empty labels array
         $this->indices = array();
