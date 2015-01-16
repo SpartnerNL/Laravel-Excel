@@ -940,6 +940,15 @@ class LaravelExcelReader {
     {
         return $this->excel->getProperties()->getTitle();
     }
+    /**
+     * Get the activeSheet title
+     * @return string
+     */
+    public function getActiveSheetName()
+    {
+
+        return $this->excel->getActiveSheet()->getTitle();
+    }
 
     /**
      * Get the current filename
