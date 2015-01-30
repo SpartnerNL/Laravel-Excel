@@ -1,4 +1,4 @@
-## Laravel Excel v1.2.2
+## Laravel Excel v1.3.0
 
 [<img src="http://www.maatwebsite.nl/img/excel_banner.jpg"/>](http://www.maatwebsite.nl/laravel-excel/docs)
 
@@ -41,7 +41,7 @@ Excel::create('Laravel Excel', function($excel) {
 Require this package in your `composer.json` and update composer. This will download the package and PHPExcel of PHPOffice.
 
 ```php
-"maatwebsite/excel": "~1.2.1"
+"maatwebsite/excel": "~1.3.0"
 ```
 
 After updating composer, add the ServiceProvider to the providers array in `app/config/app.php`
@@ -68,7 +68,7 @@ The complete documentation can be found at: [http://www.maatwebsite.nl/laravel-e
 
 # Contributing
 
-**ALL** bug fixes should be made to appropriate branch (e.g. `1.2` for 1.2.* bug fixes). Bug fixes should never be sent to the `master` branch.
+**ALL** bug fixes should be made to appropriate branch (e.g. `1.3` for 1.3.* bug fixes). Bug fixes should never be sent to the `master` branch.
 
 More about contributing can be found at: [http://www.maatwebsite.nl/laravel-excel/docs/getting-started#contributing](http://www.maatwebsite.nl/laravel-excel/docs/getting-started#contributing)
 
