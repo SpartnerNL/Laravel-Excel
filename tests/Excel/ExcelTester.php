@@ -5,28 +5,8 @@ use Mockery as m;
 class ExcelTester extends ExcelTestCase {
 
     /**
-     * Test create
-     * @return [type] [description]
-     */
-    public function testCreate()
-    {
-        $created = $this->excel->create('test', function() {});
-        $this->assertEquals($this->writer, $created);
-    }
-
-    /**
-     * Test load
-     * @return [type] [description]
-     */
-    public function testLoad()
-    {
-        $loaded = $this->excel->load('test.csv', function() {});
-        $this->assertEquals($this->reader, $loaded);
-    }
-
-    /**
      * Test select sheets
-     * @return [type] [description]
+     * @return
      */
     public function testSelectSheets()
     {
@@ -36,7 +16,7 @@ class ExcelTester extends ExcelTestCase {
 
     /**
      * Test select sheets
-     * @return [type] [description]
+     * @return
      */
     public function testSelectSheetsByIndex()
     {
@@ -46,7 +26,7 @@ class ExcelTester extends ExcelTestCase {
 
     /**
      * Test the share view
-     * @return [type] [description]
+     * @return
      */
     public function testShareView()
     {
@@ -56,12 +36,11 @@ class ExcelTester extends ExcelTestCase {
 
     /**
      * Test load view
-     * @return [type] [description]
+     * @return
      */
     public function testLoadView()
     {
         $selected = $this->excel->loadView('filename', array('test'), array('test'));
         $this->assertEquals($this->writer, $selected);
     }
-
 }
