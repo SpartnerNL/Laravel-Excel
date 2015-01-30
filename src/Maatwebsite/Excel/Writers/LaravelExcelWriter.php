@@ -224,7 +224,7 @@ class LaravelExcelWriter {
 
         // Autosize columns when no user didn't change anything about column sizing
         if (!$this->sheet->hasFixedSizeColumns())
-            $this->sheet->setAutosize(Config::get('excel::export.autosize', false));
+            $this->sheet->setAutosize(Config::get('excel.export.autosize', false));
 
         // Parse the sheet
         $this->sheet->parsed();
@@ -362,7 +362,7 @@ class LaravelExcelWriter {
      */
     public function returnInfo($returnInfo = false)
     {
-        return $returnInfo ? $returnInfo : Config::get('excel::export.store.returnInfo', false);
+        return $returnInfo ? $returnInfo : Config::get('excel.export.store.returnInfo', false);
     }
 
     /**
@@ -479,16 +479,16 @@ class LaravelExcelWriter {
         // Set CSV delimiter
         if ($this->format == 'CSV')
         {
-            $this->writer->setDelimiter(Config::get('excel::csv.delimiter', ','));
-            $this->writer->setEnclosure(Config::get('excel::csv.enclosure', '"'));
-            $this->writer->setLineEnding(Config::get('excel::csv.line_ending', "\r\n"));
+            $this->writer->setDelimiter(Config::get('excel.csv.delimiter', ','));
+            $this->writer->setEnclosure(Config::get('excel.csv.enclosure', '"'));
+            $this->writer->setLineEnding(Config::get('excel.csv.line_ending', "\r\n"));
         }
 
         // Calculation settings
-        $this->writer->setPreCalculateFormulas(Config::get('excel::export.calculate', false));
+        $this->writer->setPreCalculateFormulas(Config::get('excel.export.calculate', false));
 
         // Include Charts
-        $this->writer->setIncludeCharts(Config::get('excel::export.includeCharts', false));
+        $this->writer->setIncludeCharts(Config::get('excel.export.includeCharts', false));
 
         return $this->writer;
     }
@@ -500,8 +500,8 @@ class LaravelExcelWriter {
     protected function setPdfRenderer()
     {
         // Get the driver name
-        $driver = Config::get('excel::export.pdf.driver');
-        $path = Config::get('excel::export.pdf.drivers.' . $driver . '.path');
+        $driver = Config::get('excel.export.pdf.driver');
+        $path = Config::get('excel.export.pdf.drivers.' . $driver . '.path');
 
         // Disable autoloading for dompdf
         define("DOMPDF_ENABLE_AUTOLOAD", false);
@@ -537,7 +537,7 @@ class LaravelExcelWriter {
     protected function _setStoragePath($path = false)
     {
         // Get the default path
-        $path = $path ? $path : Config::get('excel::export.store.path', storage_path($this->storagePath));
+        $path = $path ? $path : Config::get('excel.export.store.path', storage_path($this->storagePath));
 
         // Trim of slashes, to makes sure we won't add them double
         $this->storagePath = rtrim($path, '/');

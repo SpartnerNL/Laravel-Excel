@@ -23,7 +23,6 @@ abstract class File {
      */
     protected $file;
 
-
     /**
      * @param Application $app
      * @param Excel       $excel
