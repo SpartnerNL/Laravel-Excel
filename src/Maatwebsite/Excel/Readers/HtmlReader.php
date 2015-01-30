@@ -38,10 +38,12 @@ class Html extends PHPExcel_Reader_HTML {
      */
     protected $styles = array();
 
+    protected $_dataArray    = [];
+    protected $_nestedColumn = ['A'];
     /**
      * @var int
      */
-    private $_tableLevel   = 0;
+    protected $_tableLevel   = 0;
 
     /**
      * Input encoding
