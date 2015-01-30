@@ -22,7 +22,7 @@ trait ImportTrait {
         parent::setUp();
 
         // Set default heading
-        Config::set('excel::import.heading', 'slugged');
+        Config::set('excel.import.heading', 'slugged');
 
         // Set excel class
         $this->excel    = App::make('phpexcel');

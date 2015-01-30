@@ -20,10 +20,10 @@
   "require": {
     "php": ">=5.3.0",
     "phpoffice/phpexcel": "~1.8.0",
-    "illuminate/cache": "5.0-dev",
-    "illuminate/config": "5.0-dev",
-    "illuminate/filesystem": "5.0-dev",
-    "illuminate/support": "5.0-dev",
+    "illuminate/cache": "5.0.*@dev",
+    "illuminate/config": "5.0.*@dev",
+    "illuminate/filesystem": "5.0.*@dev",
+    "illuminate/support": "5.0.*@dev",
     "nesbot/carbon": "~1.0",
     "tijsverkoyen/css-to-inline-styles": "~1.5"
   },
@@ -31,12 +31,12 @@
     "phpseclib/phpseclib": ">=0.3.7",
     "phpunit/phpunit": "~4.0",
     "mockery/mockery": "~0.9",
-    "orchestra/testbench": "~2.2.0"
+    "orchestra/testbench": "~3.0.0"
   },
   "suggest": {
-    "illuminate/http": "5.0-dev",
-    "illuminate/routing": "5.0-dev",
-    "illuminate/view": "5.0-dev"
+    "illuminate/http": "5.0.*@dev",
+    "illuminate/routing": "5.0.*@dev",
+    "illuminate/view": "5.0.*@dev"
   },
   "autoload": {
     "classmap": [
@@ -46,5 +46,6 @@
     "psr-0": {
       "Maatwebsite\\Excel\\": "src/"
     }
-  }
+  },
+  "minimum-stability": "dev"
 }

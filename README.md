@@ -64,6 +64,14 @@ The class is bound to the ioC as `excel`
 $excel = App::make('excel');
 ```
 
+To publish the config settings in Laravel 5 use:
+
+```php
+php artisan vendor:publish
+```
+
+This will add an `excel.php` config file to your config folder.
+
 # Documentation
 
 The complete documentation can be found at: [http://www.maatwebsite.nl/laravel-excel/docs](http://www.maatwebsite.nl/laravel-excel/docs)

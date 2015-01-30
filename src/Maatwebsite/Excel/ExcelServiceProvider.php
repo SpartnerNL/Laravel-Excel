@@ -42,10 +42,14 @@ class ExcelServiceProvider extends ServiceProvider {
     public function boot()
     {
         $this->publishes([
-            __DIR__ . '/../../config/excel.php' => config_path('courier.php'),
+            __DIR__ . '/../../config/excel.php' => config_path('excel.php'),
         ]);
 
-        // Set the autosizing settings
+        $this->mergeConfigFrom(
+            __DIR__ . '/../../config/excel.php', 'excel'
+        );
+
+        //Set the autosizing settings
         $this->setAutoSizingSettings();
 
         // Register filters

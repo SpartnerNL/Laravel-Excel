@@ -111,7 +111,7 @@ trait SingleImportTestingTrait {
 
     public function testImportedHeadingsHashed()
     {
-        Config::set('excel::import.heading', 'hashed');
+        Config::set('excel.import.heading', 'hashed');
 
         $loaded = $this->reload();
 
@@ -128,7 +128,7 @@ trait SingleImportTestingTrait {
 
     public function testImportedHeadingsNumeric()
     {
-        Config::set('excel::import.heading', 'numeric');
+        Config::set('excel.import.heading', 'numeric');
 
         $loaded = $this->reload();
 
@@ -145,7 +145,7 @@ trait SingleImportTestingTrait {
 
     public function testImportedHeadingsOriginal()
     {
-        Config::set('excel::import.heading', 'original');
+        Config::set('excel.import.heading', 'original');
 
         $loaded = $this->reload();
 
@@ -172,7 +172,7 @@ trait SingleImportTestingTrait {
 
     public function testByConfig()
     {
-        $config = $this->loadedFile->byConfig('excel::import.sheets');
+        $config = $this->loadedFile->byConfig('excel.import.sheets');
         $this->assertInstanceOf('Maatwebsite\Excel\Collections\SheetCollection', $config);
     }
 
@@ -181,7 +181,7 @@ trait SingleImportTestingTrait {
     {
         $me = $this;
 
-        $config = $this->loadedFile->byConfig('excel::import.sheets', function($config) use($me)
+        $config = $this->loadedFile->byConfig('excel.import.sheets', function($config) use($me)
         {
             $me->assertInstanceOf('Maatwebsite\Excel\Readers\ConfigReader', $config);
         });

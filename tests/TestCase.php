@@ -12,7 +12,7 @@ class TestCase extends TestBenchTestCase
     }
 
 
-    protected function getPackageProviders()
+    protected function getPackageProviders($app)
     {
         return array('Maatwebsite\Excel\ExcelServiceProvider');
     }
