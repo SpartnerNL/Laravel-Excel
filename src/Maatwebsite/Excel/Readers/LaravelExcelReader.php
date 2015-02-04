@@ -787,7 +787,7 @@ class LaravelExcelReader {
     {
         if (!$this->noHeading)
         {
-            $config = Config::get('excel::import.heading', true);
+            $config = Config::get('excel.import.heading', true);
 
             return $config !== false && $config !== 'numeric';
         }
@@ -804,7 +804,7 @@ class LaravelExcelReader {
         if ($this->separator)
             return $this->separator;
 
-        return Config::get('excel::import.separator', Config::get('excel::import.seperator', '_'));
+        return Config::get('excel.import.separator', Config::get('excel.import.seperator', '_'));
     }
 
     /**
@@ -1031,7 +1031,7 @@ class LaravelExcelReader {
         if ($this->format == 'CSV')
         {
             // If no encoding was given, use the config value
-            $encoding = $encoding ? $encoding : Config::get('excel::import.encoding.input', 'UTF-8');
+            $encoding = $encoding ? $encoding : Config::get('excel.import.encoding.input', 'UTF-8');
             $this->reader->setInputEncoding($encoding);
         }
 
@@ -1049,38 +1049,38 @@ class LaravelExcelReader {
         {
             // If no delimiter was given, take from config
             if(!$this->delimiter)
-                $this->reader->setDelimiter(Config::get('excel::csv.delimiter', ','));
+                $this->reader->setDelimiter(Config::get('excel.csv.delimiter', ','));
             else
                 $this->reader->setDelimiter($this->delimiter);
 
             if(!$this->enclosure)
-                $this->reader->setEnclosure(Config::get('excel::csv.enclosure', '"'));
+                $this->reader->setEnclosure(Config::get('excel.csv.enclosure', '"'));
             else
                 $this->reader->setEnclosure($this->enclosure);
 
             if(!$this->lineEnding)
-                $this->reader->setLineEnding(Config::get('excel::csv.line_ending', "\r\n"));
+                $this->reader->setLineEnding(Config::get('excel.csv.line_ending', "\r\n"));
             else
                 $this->reader->setLineEnding($this->lineEnding);
         }
 
         // Set default calculate
-        $this->calculate = Config::get('excel::import.calculate', true);
+        $this->calculate = Config::get('excel.import.calculate', true);
 
         // Set default for ignoring empty cells
-        $this->ignoreEmpty = Config::get('excel::import.ignoreEmpty', true);
+        $this->ignoreEmpty = Config::get('excel.import.ignoreEmpty', true);
 
         // Set default date format
-        $this->dateFormat = Config::get('excel::import.dates.format', 'Y-m-d');
+        $this->dateFormat = Config::get('excel.import.dates.format', 'Y-m-d');
 
         // Date formatting disabled/enabled
-        $this->formatDates = Config::get('excel::import.dates.enabled', true);
+        $this->formatDates = Config::get('excel.import.dates.enabled', true);
 
         // Set default date columns
-        $this->dateColumns = Config::get('excel::import.dates.columns', array());
+        $this->dateColumns = Config::get('excel.import.dates.columns', array());
         
         // Set default include charts
-        $this->reader->setIncludeCharts(Config::get('excel::import.includeCharts', false));
+        $this->reader->setIncludeCharts(Config::get('excel.import.includeCharts', false));
     }
 
     /**

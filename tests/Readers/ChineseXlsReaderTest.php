@@ -26,7 +26,7 @@ class ChineseXlsReaderTest extends TestCase {
         parent::setUp();
 
         // Disable to ascii
-        Config::set('excel::import.to_ascii', false);
+        Config::set('excel.import.to_ascii', false);
 
         // Set excel class
         $this->excel    = App::make('phpexcel');

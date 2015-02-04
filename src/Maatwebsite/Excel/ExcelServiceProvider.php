@@ -41,10 +41,15 @@ class ExcelServiceProvider extends ServiceProvider {
 
     public function boot()
     {
-        // Boot the package
-        $this->package('maatwebsite/excel');
+        $this->publishes([
+            __DIR__ . '/../../config/excel.php' => config_path('excel.php'),
+        ]);
 
-        // Set the autosizing settings
+        $this->mergeConfigFrom(
+            __DIR__ . '/../../config/excel.php', 'excel'
+        );
+
+        //Set the autosizing settings
         $this->setAutoSizingSettings();
 
         // Register filters
@@ -214,7 +219,7 @@ class ExcelServiceProvider extends ServiceProvider {
      */
     public function setAutoSizingSettings()
     {
-        $method = Config::get('excel::export.autosize-method', PHPExcel_Shared_Font::AUTOSIZE_METHOD_APPROX);
+        $method = Config::get('excel.export.autosize-method', PHPExcel_Shared_Font::AUTOSIZE_METHOD_APPROX);
         PHPExcel_Shared_Font::setAutoSizeMethod($method);
     }
 
@@ -224,7 +229,7 @@ class ExcelServiceProvider extends ServiceProvider {
      */
     public function registerFilters()
     {
-        $this->app['excel']->registerFilters(Config::get('excel::filters', array()));
+        $this->app['excel']->registerFilters(Config::get('excel.filters', array()));
     }
 
     /**

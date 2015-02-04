@@ -1,42 +1,50 @@
 {
-    "name": "maatwebsite/excel",
-    "description": "An eloquent way of importing and exporting Excel and CSV in Laravel 4 with the power of PHPExcel",
-    "license": "LGPL",
-    "keywords": ["laravel", "phpexcel", "excel", "csv", "export", "import", "batch"],
-    "authors": [
-        {
-            "name": "Maatwebsite.nl",
-            "email": "patrick@maatwebsite.nl"
-        }
-    ],
-    "require": {
-        "php": ">=5.3.0",
-        "phpoffice/phpexcel": "~1.8.0",
-        "illuminate/cache": "~4.0|~5.0",
-        "illuminate/config": "~4.0|~5.0",
-        "illuminate/filesystem": "~4.0|~5.0",
-        "illuminate/support": "~4.0|~5.0",
-        "nesbot/carbon": "~1.0",
-        "tijsverkoyen/css-to-inline-styles": "~1.5"
-    },
-    "require-dev": {
-        "phpseclib/phpseclib": ">=0.3.7",
-        "phpunit/phpunit": "~4.0",
-        "mockery/mockery": "~0.9",
-        "orchestra/testbench": "~2.2.0"
-    },
-     "suggest": {
-        "illuminate/http": "~4.0|~5.0",
-        "illuminate/routing": "~4.0|~5.0",
-        "illuminate/view": "~4.0|~5.0"
-    },
-    "autoload": {
-        "classmap": [
-            "src/Maatwebsite/Excel",
-            "tests/TestCase.php"
-        ],
-        "psr-0": {
-            "Maatwebsite\\Excel\\": "src/"
-        }
+  "name": "maatwebsite/excel",
+  "description": "An eloquent way of importing and exporting Excel and CSV in Laravel 4 with the power of PHPExcel",
+  "license": "LGPL",
+  "keywords": [
+    "laravel",
+    "phpexcel",
+    "excel",
+    "csv",
+    "export",
+    "import",
+    "batch"
+  ],
+  "authors": [
+    {
+      "name": "Maatwebsite.nl",
+      "email": "patrick@maatwebsite.nl"
     }
+  ],
+  "require": {
+    "php": ">=5.3.0",
+    "phpoffice/phpexcel": "~1.8.0",
+    "illuminate/cache": "~5.0",
+    "illuminate/config": "~5.0",
+    "illuminate/filesystem": "~5.0",
+    "illuminate/support": "~5.0",
+    "nesbot/carbon": "~1.0",
+    "tijsverkoyen/css-to-inline-styles": "~1.5"
+  },
+  "require-dev": {
+    "phpseclib/phpseclib": ">=0.3.7",
+    "phpunit/phpunit": "~4.0",
+    "mockery/mockery": "~0.9",
+    "orchestra/testbench": "~3.0.0"
+  },
+  "suggest": {
+    "illuminate/http": "~5.0",
+    "illuminate/routing": "~5.0",
+    "illuminate/view": "~5.0"
+  },
+  "autoload": {
+    "classmap": [
+      "src/Maatwebsite/Excel",
+      "tests/TestCase.php"
+    ],
+    "psr-0": {
+      "Maatwebsite\\Excel\\": "src/"
+    }
+  }
 }
