@@ -680,7 +680,7 @@ class Html extends PHPExcel_Reader_HTML {
      * @param  string                $cellContent
      * @return void
      */
-    protected function flushCell($sheet, &$column, $row, &$cellContent)
+    protected function flushCell($sheet, $column, $row, &$cellContent)
     {
         // Process merged cells
         list($column, $cellContent) = $this->processMergedCells($sheet, $column, $row, $cellContent);
