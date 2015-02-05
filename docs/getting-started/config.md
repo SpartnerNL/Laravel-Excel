@@ -13,8 +13,6 @@ The config files can now be found at `app/config/packages/maatwebsite/excel`
 
 To publish the config settings in Laravel 5 use:
 
-```php
-php artisan vendor:publish
-```
+    php artisan vendor:publish
 
 This will add an `excel.php` config file to your config folder.
