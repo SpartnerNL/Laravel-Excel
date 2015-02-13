@@ -1,4 +1,4 @@
-Custom Formatting Values
+# Custom Formatting Values
 
 By default Laravel Excel uses PHPExcel's default value binder to intelligently format a cells value when reading it. You may override this behavior by passing in your own value binder to suit your specific needs. Value binders must implement PHPExcel_Cell_IValueBinder and have a bindValue method. They may also extend PHPExcel_Cell_DefaultValueBinder to return the default behavior.
     
