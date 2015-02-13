@@ -31,4 +31,8 @@ By default Laravel Excel uses PHPExcel's default value binder to intelligently f
 
     });
 
-Available PHPExcel_Cell_DataType's are TYPE_STRING, TYPE_FORMULA, TYPE_NUMERIC, TYPE_BOOL, TYPE_NULL, TYPE_INLINE and TYPE_ERROR 
+Available PHPExcel_Cell_DataType's are TYPE_STRING, TYPE_FORMULA, TYPE_NUMERIC, TYPE_BOOL, TYPE_NULL, TYPE_INLINE and TYPE_ERROR
+
+To reset the value binder back to default and/or before calling Laravel Excel after setting a custom value binder you need to call the resetValueBinder method.
+
+    Excel::resetValueBinder();
