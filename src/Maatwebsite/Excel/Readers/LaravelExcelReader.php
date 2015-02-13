@@ -692,6 +692,8 @@ class LaravelExcelReader {
     public function setValueBinder(PHPExcel_Cell_IValueBinder $binder)
     {
         PHPExcel_Cell::setValueBinder($binder);
+
+        return $this;
     }
 
     /**
@@ -701,6 +703,8 @@ class LaravelExcelReader {
     public function resetValueBinder()
     {
         PHPExcel_Cell::setValueBinder(new PHPExcel_Cell_DefaultValueBinder);
+
+        return $this;
     }
 
     /**
