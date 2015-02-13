@@ -1,22 +1,6 @@
 <?php
 
-require_once('traits/ImportTrait.php');
-require_once('traits/SingleImportTestingTrait.php');
-
-use Mockery as m;
-
 class CustomValuBinderTest extends TestCase {
-
-    /**
-     * Import trait
-     */
-    use ImportTrait;
-
-    /**
-     * Filename
-     * @var string
-     */
-    protected $fileName = 'files/customBinder.csv';
 
     /**
      * Setup
