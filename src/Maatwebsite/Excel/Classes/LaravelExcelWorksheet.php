@@ -127,7 +127,7 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet {
             list($setter, $set) = $this->_setSetter($setup);
 
             // get the value
-            $value = Config::get('excel::sheets.pageSetup.' . $setup, null);
+            $value = Config::get('excel.sheets.pageSetup.' . $setup, null);
 
             // Set the page setup value
             if (!is_null($value))
@@ -135,7 +135,7 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet {
         }
 
         // Set default page margins
-        $this->setPageMargin(Config::get('excel::export.sheets.page_margin', false));
+        $this->setPageMargin(Config::get('excel.export.sheets.page_margin', false));
     }
 
     /**
@@ -638,7 +638,7 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet {
         if (!$this->autoGenerateHeading)
             return false;
 
-        return Config::get('excel::export.generate_heading_by_indices', false);
+        return Config::get('excel.export.generate_heading_by_indices', false);
     }
 
     /**
@@ -921,7 +921,7 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet {
         if (isset($this->autoSize))
             return $this->autoSize;
 
-        return Config::get('excel::export.autosize', true);
+        return Config::get('excel.export.autosize', true);
     }
 
     /**
@@ -1064,7 +1064,7 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet {
         // Set center alignment on merge cells
         $this->cells($pRange, function ($cell) use ($alignment)
         {
-            $aligment = is_string($alignment) ? $alignment : Config::get('excel::export.merged_cell_alignment', 'left');
+            $aligment = is_string($alignment) ? $alignment : Config::get('excel.export.merged_cell_alignment', 'left');
             $cell->setAlignment($aligment);
         });
 
@@ -1118,7 +1118,7 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet {
      */
     protected function getDefaultNullValue()
     {
-        return Config::get('excel::export.sheets.nullValue', null);
+        return Config::get('excel.export.sheets.nullValue', null);
     }
 
     /**
@@ -1127,7 +1127,7 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet {
      */
     protected function getDefaultStartCell()
     {
-        return Config::get('excel::export.sheets.startCell', 'A1');
+        return Config::get('excel.export.sheets.startCell', 'A1');
     }
 
 
@@ -1137,7 +1137,7 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet {
      */
     protected function getDefaultStrictNullComparison()
     {
-        return Config::get('excel::export.sheets.strictNullComparison', false);
+        return Config::get('excel.export.sheets.strictNullComparison', false);
     }
 
     /**

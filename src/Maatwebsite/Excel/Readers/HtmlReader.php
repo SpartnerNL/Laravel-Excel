@@ -23,7 +23,7 @@ use Maatwebsite\Excel\Classes\LaravelExcelWorksheet;
  * LaravelExcel HTML reader
  *
  * @category   Laravel Excel
- * @version    1.0.0
+ * @version    2.0.0
  * @package    maatwebsite/excel
  * @copyright  Copyright (c) 2013 - 2014 Maatwebsite (http://www.maatwebsite.nl)
  * @copyright  Original Copyright (c) 2006 - 2014 PHPExcel (http://www.codeplex.com/PHPExcel)
@@ -127,7 +127,7 @@ class Html extends PHPExcel_Reader_HTML {
      */
     protected function setStyleFormats()
     {
-        $this->_formats = Config::get('excel::views.styles', array());
+        $this->_formats = Config::get('excel.views.styles', array());
     }
 
     /**

@@ -1,5 +1,25 @@
 # Version 1
 
+### 1.3.1
+- Fix short array syntax
+
+### 1.3.0
+- Additional headers with export() 
+- Float, integer, string, timestamps problems
+- Cell content ending by zeros
+- Images in html
+- Font family bug
+- Setting row number of row with headings
+
+### 1.2.3
+- PDF writer
+- Include charts config
+- Chunk filter with selected sheet
+- Compatibility fix with new PHPExcel release
+- setDateColumns fix
+- Optional dependencies to require-dev
+- Several bugfixes
+
 ### 1.2.2
 - Chunk filter fixes
 - Isset() CellCollection fixes

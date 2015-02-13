@@ -34,7 +34,7 @@ class Cache {
      * The name of the config file
      * @var string
      */
-    private $configName = 'excel::cache';
+    private $configName = 'excel.cache';
 
     /**
      * Cache constructor
