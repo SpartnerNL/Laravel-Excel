@@ -3,7 +3,10 @@
 use Cache;
 use Config;
 use Maatwebsite\Excel\Classes\PHPExcel;
+use PHPExcel_Cell;
 use PHPExcel_IOFactory;
+use PHPExcel_Cell_IValueBinder;
+use PHPExcel_Cell_DefaultValueBinder;
 use Illuminate\Filesystem\Filesystem;
 use Maatwebsite\Excel\Parsers\ExcelParser;
 use Maatwebsite\Excel\Classes\FormatIdentifier;
@@ -682,6 +685,25 @@ class LaravelExcelReader {
     }
 
     /**
+     * Set custom value binder
+     * @param string|boolean $ext
+     * @return void
+     */
+    public function setValueBinder(PHPExcel_Cell_IValueBinder $binder)
+    {
+        PHPExcel_Cell::setValueBinder($binder);
+    }
+
+    /**
+     * Reset the value binder back to default
+     * @return void
+     */
+    public function resetValueBinder()
+    {
+        PHPExcel_Cell::setValueBinder(new PHPExcel_Cell_DefaultValueBinder);
+    }
+
+    /**
      * Set the date format
      * @param bool|string $format The date format
      * @return LaraveExcelReader
@@ -1090,6 +1112,7 @@ class LaravelExcelReader {
     protected function _reset()
     {
         $this->excel->disconnectWorksheets();
+        $this->resetValueBinder();
         unset($this->parsed);
     }
 

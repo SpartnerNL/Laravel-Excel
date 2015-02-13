@@ -4,6 +4,7 @@
 @include:Selecting sheets and columns|select
 @include:Dates|dates
 @include:Calculation|calculation
+@include:Custom formatting values|formatting
 @include:Caching and cell caching|cache
 @include:Chunk importing|chunk
 @include:Batch import|batch
