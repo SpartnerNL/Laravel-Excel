@@ -1,5 +1,9 @@
 # Version 1
 
+### 1.3.2
+- Custom value binders
+- Html reader update
+
 ### 1.3.1
 - Fix short array syntax
 
