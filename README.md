@@ -46,7 +46,7 @@ Require this package in your `composer.json` and update composer. This will down
 "maatwebsite/excel": "~2.0.0"
 ```
 
-After updating composer, add the ServiceProvider to the providers array in `app/config/app.php`
+After updating composer, add the ServiceProvider to the providers array in `config/app.php`
 
 ```php
 'Maatwebsite\Excel\ExcelServiceProvider',
