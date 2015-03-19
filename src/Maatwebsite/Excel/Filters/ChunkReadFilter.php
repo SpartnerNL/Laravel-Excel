@@ -38,7 +38,7 @@ class ChunkReadFilter implements PHPExcel_Reader_IReadFilter
     public function readCell($column, $row, $worksheetName = '')
     {
         //  Only read the heading row, and the rows that are configured in $this->_startRow and $this->_endRow
-        if (($row == 1) || ($row >= $this->_startRow && $row <= $this->_endRow)) {
+        if (($row == config('excel.import.startRow')) || ($row >= $this->_startRow && $row <= $this->_endRow)) {
             return true;
         }
         return false;
