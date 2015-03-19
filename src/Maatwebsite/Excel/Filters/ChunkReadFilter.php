@@ -1,5 +1,6 @@
 <?php namespace Maatwebsite\Excel\Filters;
 
+use Config;
 use PHPExcel_Reader_IReadFilter;
 
 class ChunkReadFilter implements PHPExcel_Reader_IReadFilter
@@ -38,7 +39,7 @@ class ChunkReadFilter implements PHPExcel_Reader_IReadFilter
     public function readCell($column, $row, $worksheetName = '')
     {
         //  Only read the heading row, and the rows that are configured in $this->_startRow and $this->_endRow
-        if (($row == 1) || ($row >= $this->_startRow && $row <= $this->_endRow)) {
+        if (($row == Config::get('excel::import.startRow', 1)) || ($row >= $this->_startRow && $row <= $this->_endRow)) {
             return true;
         }
         return false;
