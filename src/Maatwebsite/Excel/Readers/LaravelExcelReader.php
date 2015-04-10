@@ -500,20 +500,17 @@ class LaravelExcelReader {
         $this->reader->setReadDataOnly(true);
 
         // Start the chunking
-        for ($startRow = 0; $startRow < $totalRows; $startRow += $chunkSize)
-        {
-            // Set start index
-            $startIndex = ($startRow == 0) ? $startRow : $startRow - 1;
-            $chunkSize = ($startRow == 0)? $size + 1 : $size;
-
+        for ($startRow = 0; $startRow < $totalRows; $startRow += $size) {
             // Set the rows for the chunking
-            $this->filter->setRows($startRow, $chunkSize);
+            $this->filter->setRows($startRow, $size);
 
             // Load file with chunk filter enabled
             $this->excel = $this->reader->load($this->file);
+            // It's a fix for issue 319
+            $this->skip($startRow);
             
             // Slice the results
-            $results = $this->get()->slice($startIndex, $chunkSize);
+            $results = $this->get();
 
             // Do a callback
             if(is_callable($callback))
@@ -1107,6 +1104,9 @@ class LaravelExcelReader {
         
         // Set default include charts
         $this->reader->setIncludeCharts(Config::get('excel.import.includeCharts', false));
+        
+        // Set read-only
+        $this->reader->setReadDataOnly(Config::get('excel::import.readOnly', false));
     }
 
     /**
