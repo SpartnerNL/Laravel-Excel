@@ -23,7 +23,7 @@ use Maatwebsite\Excel\Classes\LaravelExcelWorksheet;
  * LaravelExcel HTML reader
  *
  * @category   Laravel Excel
- * @version    1.0.0
+ * @version    2.0.0
  * @package    maatwebsite/excel
  * @copyright  Copyright (c) 2013 - 2014 Maatwebsite (http://www.maatwebsite.nl)
  * @copyright  Original Copyright (c) 2006 - 2014 PHPExcel (http://www.codeplex.com/PHPExcel)
@@ -127,7 +127,7 @@ class Html extends PHPExcel_Reader_HTML {
      */
     protected function setStyleFormats()
     {
-        $this->_formats = Config::get('excel::views.styles', array());
+        $this->_formats = Config::get('excel.views.styles', array());
     }
 
     /**
@@ -316,7 +316,12 @@ class Html extends PHPExcel_Reader_HTML {
                         case 'valign':
                             $this->parseValign($sheet, $column, $row, $attribute->value);
                             break;
-
+                        
+                        // Cell format
+                        case 'data-format':
+                            $this->parseDataFormat($sheet, $column, $row, $attribute->value);
+                            break;
+                            
                         // Inline css styles
                         case 'style':
                             $this->parseInlineStyles($sheet, $column, $row, $attribute->value);
@@ -768,6 +773,19 @@ class Html extends PHPExcel_Reader_HTML {
         $this->parseHeight($sheet, $column, $row, $drawing->getHeight());
     }
 
+    /**
+     * Set cell data format
+     * @param  LaravelExcelWorksheet $sheet
+     * @param  string                $column
+     * @param  integer               $row
+     * @param  integer               $width
+     * @return void
+     */
+    protected function parseDataFormat($sheet, $column, $row, $format)
+    {
+        $sheet->setColumnFormat([$column.$row => $format]);
+    }
+    
     /**
      * Set column width
      * @param  LaravelExcelWorksheet $sheet
