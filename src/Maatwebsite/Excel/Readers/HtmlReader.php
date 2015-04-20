@@ -316,7 +316,12 @@ class Html extends PHPExcel_Reader_HTML {
                         case 'valign':
                             $this->parseValign($sheet, $column, $row, $attribute->value);
                             break;
-
+                        
+                        // Cell format
+                        case 'data-format':
+                            $this->parseDataFormat($sheet, $column, $row, $attribute->value);
+                            break;
+                            
                         // Inline css styles
                         case 'style':
                             $this->parseInlineStyles($sheet, $column, $row, $attribute->value);
@@ -768,6 +773,19 @@ class Html extends PHPExcel_Reader_HTML {
         $this->parseHeight($sheet, $column, $row, $drawing->getHeight());
     }
 
+    /**
+     * Set cell data format
+     * @param  LaravelExcelWorksheet $sheet
+     * @param  string                $column
+     * @param  integer               $row
+     * @param  integer               $width
+     * @return void
+     */
+    protected function parseDataFormat($sheet, $column, $row, $format)
+    {
+        $sheet->setColumnFormat([$column.$row => $format]);
+    }
+    
     /**
      * Set column width
      * @param  LaravelExcelWorksheet $sheet
