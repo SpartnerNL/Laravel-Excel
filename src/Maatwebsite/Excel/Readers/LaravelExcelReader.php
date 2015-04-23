@@ -248,6 +248,10 @@ class LaravelExcelReader {
             $callback = $sheetID;
             $isCallable = true;
         }
+        elseif(is_callable($callback))
+        {
+            $isCallable = true;
+        }
 
         // Clone the loaded excel instance
         $clone = clone $this->excel;
@@ -511,7 +515,7 @@ class LaravelExcelReader {
 
             // Load file with chunk filter enabled
             $this->excel = $this->reader->load($this->file);
-            
+
             // Slice the results
             $results = $this->get()->slice($startIndex, $chunkSize);
 
@@ -1104,7 +1108,7 @@ class LaravelExcelReader {
 
         // Set default date columns
         $this->dateColumns = Config::get('excel.import.dates.columns', array());
-        
+
         // Set default include charts
         $this->reader->setIncludeCharts(Config::get('excel.import.includeCharts', false));
     }
