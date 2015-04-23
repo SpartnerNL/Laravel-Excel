@@ -1227,6 +1227,10 @@ class Html extends PHPExcel_Reader_HTML {
                 $cells->getAlignment()->setWrapText($wrap);
 
                 break;
+
+            case 'text-indent':
+                $cells->getAlignment()->setIndent(1);
+                break;
         }
     }
 
