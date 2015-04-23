@@ -484,6 +484,11 @@ class LaravelExcelWriter {
             $this->writer->setLineEnding(Config::get('excel::csv.line_ending', "\r\n"));
         }
 
+        if ($this->format == 'PDF')
+        {
+            $this->writer->writeAllSheets();
+        }
+
         // Calculation settings
         $this->writer->setPreCalculateFormulas(Config::get('excel::export.calculate', false));
 
