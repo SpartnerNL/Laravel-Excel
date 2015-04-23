@@ -1185,6 +1185,9 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet {
             );
         }
 
+        // Rebind the PhpExcel object to the style objects
+        $this->getStyle()->bindParent($this->getParent());
+
         return $this;
     }
 

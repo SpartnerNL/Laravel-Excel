@@ -307,6 +307,7 @@ class LaravelExcelWriter {
         if (!$this->writer)
             throw new LaravelExcelException('[ERROR] No writer was set.');
 
+
         // Download
         $this->writer->save('php://output');
 
