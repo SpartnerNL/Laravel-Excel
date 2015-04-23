@@ -1104,8 +1104,6 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet {
         $protection->setInsertRows(true);
         $protection->setFormatCells(true);
 
-        dd($protection);
-
         if(is_callable($callback)) {
             call_user_func($callback, $protection);
         }
