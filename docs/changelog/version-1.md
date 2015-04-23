@@ -1,5 +1,16 @@
 # Version 1
 
+### 1.3.4
+- Fix usage of sheet callback when modifying an existing file
+- Modifying existing files improvements (support style overriding)
+- Add text-indent support to HtmlReader
+- Add simple sheet password protection
+- Add support for exporting multiple pdf pages
+- Add inline cell formatting to blade
+
+### 1.3.3
+- Fix issue with different start row in chunk filter
+
 ### 1.3.2
 - Custom value binders
 - Html reader update
