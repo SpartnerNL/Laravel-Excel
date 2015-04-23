@@ -1091,6 +1091,27 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet {
     }
 
     /**
+     * Password protect a sheet
+     * @param          $password
+     * @param callable $callback
+     */
+    public function protect($password, Closure $callback = null)
+    {
+        $protection = $this->getProtection();
+        $protection->setPassword($password);
+        $protection->setSheet(true);
+        $protection->setSort(true);
+        $protection->setInsertRows(true);
+        $protection->setFormatCells(true);
+
+        dd($protection);
+
+        if(is_callable($callback)) {
+            call_user_func($callback, $protection);
+        }
+    }
+
+    /**
      * Return the start row
      * @return integer
      */
