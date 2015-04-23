@@ -51,7 +51,7 @@ There are a couple of properties we can change inside the closure. Most of them 
 
 ### Default page margin
 
-It's possible to set the default page margin insde the config file `excel::export.sheets`.
+It's possible to set the default page margin inside the config file `excel::export.sheets`.
 It accepts boolean, single value or array.
 
 To manually set the page margin you can use: `->setPageMargin()`
@@ -63,3 +63,15 @@ To manually set the page margin you can use: `->setPageMargin()`
 
     // Set all margins
     $sheet->setPageMargin(0.25);
+    
+### Password protecting a sheet
+    
+A sheet can be password protected with `$sheet->protect()`:
+
+    // Default protect
+    $sheet->protect('password');
+    
+    // Advanced protect
+    $sheet->protect('password', function(\PHPExcel_Worksheet_Protection $protection) {
+        $protection->setSort(true);
+    });

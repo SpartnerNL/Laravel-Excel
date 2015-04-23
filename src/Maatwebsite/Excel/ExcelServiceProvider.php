@@ -91,7 +91,9 @@ class ExcelServiceProvider extends ServiceProvider {
             $me->setCacheSettings();
 
             // Init phpExcel
-            return new PHPExcel();
+            $excel = new PHPExcel();
+            $excel->setDefaultProperties();
+            return $excel;
         });
     }
 

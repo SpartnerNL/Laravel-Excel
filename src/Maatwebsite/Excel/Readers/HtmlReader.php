@@ -317,6 +317,11 @@ class Html extends PHPExcel_Reader_HTML {
                             $this->parseValign($sheet, $column, $row, $attribute->value);
                             break;
 
+                        // Cell format
+                        case 'data-format':
+                            $this->parseDataFormat($sheet, $column, $row, $attribute->value);
+                            break;
+
                         // Inline css styles
                         case 'style':
                             $this->parseInlineStyles($sheet, $column, $row, $attribute->value);
@@ -769,6 +774,19 @@ class Html extends PHPExcel_Reader_HTML {
     }
 
     /**
+     * Set cell data format
+     * @param  LaravelExcelWorksheet $sheet
+     * @param  string                $column
+     * @param  integer               $row
+     * @param  integer               $width
+     * @return void
+    */
+    protected function parseDataFormat($sheet, $column, $row, $format)
+    {
+        $sheet->setColumnFormat([$column.$row => $format]);
+    }
+
+    /**
      * Set column width
      * @param  LaravelExcelWorksheet $sheet
      * @param  string                $column
@@ -1208,6 +1226,10 @@ class Html extends PHPExcel_Reader_HTML {
 
                 $cells->getAlignment()->setWrapText($wrap);
 
+                break;
+
+            case 'text-indent':
+                $cells->getAlignment()->setIndent(1);
                 break;
         }
     }
