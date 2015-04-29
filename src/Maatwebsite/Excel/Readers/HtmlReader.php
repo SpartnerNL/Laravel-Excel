@@ -783,7 +783,7 @@ class Html extends PHPExcel_Reader_HTML {
     */
     protected function parseDataFormat($sheet, $column, $row, $format)
     {
-        $sheet->setColumnFormat([$column.$row => $format]);
+        $sheet->setColumnFormat(array($column.$row => $format));
     }
 
     /**
