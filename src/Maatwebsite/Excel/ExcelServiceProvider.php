@@ -46,9 +46,6 @@ class ExcelServiceProvider extends ServiceProvider {
 
         // Set the autosizing settings
         $this->setAutoSizingSettings();
-
-        // Register filters
-        $this->registerFilters();
     }
 
     /**
@@ -171,12 +168,16 @@ class ExcelServiceProvider extends ServiceProvider {
         // Bind the Excel class and inject its dependencies
         $this->app['excel'] = $this->app->share(function ($app)
         {
-            return new Excel(
+            $excel = new Excel(
                 $app['phpexcel'],
                 $app['excel.reader'],
                 $app['excel.writer'],
                 $app['excel.parsers.view']
             );
+            $filters = Config::get('excel::filters', array());
+
+            $excel->registerFilters($filters);
+            return $excel;
         });
     }
 
