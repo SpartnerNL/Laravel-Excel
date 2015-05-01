@@ -1091,11 +1091,6 @@ class LaravelExcelReader {
                 $this->reader->setEnclosure(Config::get('excel.csv.enclosure', '"'));
             else
                 $this->reader->setEnclosure($this->enclosure);
-
-            if(!$this->lineEnding)
-                $this->reader->setLineEnding(Config::get('excel.csv.line_ending', "\r\n"));
-            else
-                $this->reader->setLineEnding($this->lineEnding);
         }
 
         // Set default calculate
