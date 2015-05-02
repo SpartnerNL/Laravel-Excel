@@ -1,5 +1,9 @@
 # Version 2
 
+### 2.0.4
+- PHPExcel 1.8.1 compatibility
+- Clean-up ServiceProvider
+
 ### 2.0.3
 - Fix usage of sheet callback when modifying an existing file
 - Modifying existing files improvements (support style overriding)

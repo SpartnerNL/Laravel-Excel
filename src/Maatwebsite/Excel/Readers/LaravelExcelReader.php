@@ -200,7 +200,6 @@ class LaravelExcelReader {
      * Construct new reader
      * @param Filesystem       $filesystem
      * @param FormatIdentifier $identifier
-     * @internal param Filesystem $files
      */
     public function __construct(Filesystem $filesystem, FormatIdentifier $identifier)
     {

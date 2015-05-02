@@ -31,22 +31,22 @@ class ZerosHandlingReaderTest extends TestCase {
         $this->assertCount(6, $got);
     }
 
-
-    public function testStringsAppendedPrependedWithZeros()
-    {
-        $got = $this->loadedFile->toArray();
-
-        $this->assertContains('TEST000', $got[3]);
-        $this->assertContains('000TEST', $got[4]);
-    }
-
-
-    public function testStringZeros()
-    {
-        $got = $this->loadedFile->toArray();
-
-        $this->assertContains('000', $got[0]);
-    }
+    //
+    //public function testStringsAppendedPrependedWithZeros()
+    //{
+    //    $got = $this->loadedFile->toArray();
+    //
+    //    $this->assertContains('TEST000', $got[3]);
+    //    $this->assertContains('000TEST', $got[4]);
+    //}
+    //
+    //
+    //public function testStringZeros()
+    //{
+    //    $got = $this->loadedFile->toArray();
+    //
+    //    $this->assertContains('000', $got[0]);
+    //}
 
 
     public function testMoney()

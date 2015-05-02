@@ -1,5 +1,10 @@
 # Version 1
 
+### 1.3.5
+- PHPExcel 1.8.1 compatibility
+- Clean-up ServiceProvider
+- Fix short array syntax for PHP5.3
+
 ### 1.3.4
 - Fix usage of sheet callback when modifying an existing file
 - Modifying existing files improvements (support style overriding)
