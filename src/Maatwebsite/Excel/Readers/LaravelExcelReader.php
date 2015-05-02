@@ -189,11 +189,6 @@ class LaravelExcelReader {
     /**
      * @var bool|string
      */
-    protected $lineEnding;
-
-    /**
-     * @var bool|string
-     */
     protected $enclosure;
 
     /**
@@ -302,18 +297,6 @@ class LaravelExcelReader {
         $this->enclosure = $enclosure;
         return $this;
     }
-
-    /**
-     * Set csv line ending
-     * @param $lineEnding
-     * @return $this
-     */
-    public function setLineEnding($lineEnding)
-    {
-        $this->lineEnding = $lineEnding;
-        return $this;
-    }
-
 
     /**
      * set selected sheets
@@ -1092,10 +1075,6 @@ class LaravelExcelReader {
             else
                 $this->reader->setEnclosure($this->enclosure);
 
-            if(!$this->lineEnding)
-                $this->reader->setLineEnding(Config::get('excel.csv.line_ending', "\r\n"));
-            else
-                $this->reader->setLineEnding($this->lineEnding);
         }
 
         // Set default calculate

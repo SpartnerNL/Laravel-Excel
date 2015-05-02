@@ -48,12 +48,4 @@ class CsvReaderTest extends TestCase {
         $this->reload();
         $this->assertEquals('d', $this->loadedFile->getEnclosure());
     }
-
-
-    public function testSetLineEnding()
-    {
-        $this->loadedFile->setLineEnding('d');
-        $this->reload();
-        $this->assertEquals('d', $this->loadedFile->getLineEnding());
-    }
 }
