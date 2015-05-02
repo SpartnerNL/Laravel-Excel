@@ -174,9 +174,9 @@ class ExcelServiceProvider extends ServiceProvider {
                 $app['excel.writer'],
                 $app['excel.parsers.view']
             );
-            $filters = Config::get('excel::filters', array());
 
-            $excel->registerFilters($filters);
+            $excel->registerFilters($app['config']->get('excel::filters', array()));
+
             return $excel;
         });
     }
@@ -219,15 +219,6 @@ class ExcelServiceProvider extends ServiceProvider {
     {
         $method = Config::get('excel::export.autosize-method', PHPExcel_Shared_Font::AUTOSIZE_METHOD_APPROX);
         PHPExcel_Shared_Font::setAutoSizeMethod($method);
-    }
-
-    /**
-     * Register filters
-     * @return void
-     */
-    public function registerFilters()
-    {
-        $this->app['excel']->registerFilters(Config::get('excel::filters', array()));
     }
 
     /**
