@@ -284,6 +284,32 @@ class LaravelExcelWriter {
     }
 
     /**
+     * Return the spreadsheet file as a string
+     * @param  string $ext
+     * @return string
+     * @throws LaravelExcelException
+     */
+    public function string($ext = 'xls')
+    {
+        // Set the extension
+        $this->ext = $ext;
+
+        // Render the file
+        $this->_render();
+
+        // Check if writer isset
+        if (!$this->writer)
+            throw new LaravelExcelException('[ERROR] No writer was set.');
+
+        //Capture the content as a string and return it
+        ob_start();
+
+        $this->writer->save('php://output');
+
+        return ob_get_clean();
+    }
+
+    /**
      * Download a file
      * @param array $headers
      * @throws LaravelExcelException
