@@ -2,6 +2,7 @@
 
 use Carbon\Carbon;
 use PHPExcel_Cell;
+use PHPExcel_Exception;
 use PHPExcel_Shared_Date;
 use Illuminate\Support\Str;
 use PHPExcel_Style_NumberFormat;
@@ -325,8 +326,14 @@ class ExcelParser {
         // Get the start row
         $startRow = $this->getStartRow();
 
+        try {
+            $rows = $this->worksheet->getRowIterator($startRow);
+        } catch(PHPExcel_Exception $e) {
+            $rows = [];
+        }
+
         // Loop through the rows inside the worksheet
-        foreach ($this->worksheet->getRowIterator($startRow) as $this->row)
+        foreach ($rows as $this->row)
         {
             // Limit the results when needed
             if ( $this->hasReachedLimit() )
