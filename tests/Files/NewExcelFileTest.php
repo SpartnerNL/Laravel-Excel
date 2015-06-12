@@ -2,6 +2,8 @@
 
 include_once 'classes/TestExport.php';
 include_once 'classes/TestExportHandler.php';
+include_once 'classes/TestNewFile.php';
+include_once 'classes/TestNewFileHandler.php';
 
 class NewExcelFileTest extends TestCase {
 
@@ -40,6 +42,11 @@ class NewExcelFileTest extends TestCase {
     public function testExportHandler()
     {
         $exporter = app('TestExport');
+        $result = $exporter->handleExport();
+
+        $this->assertEquals('exported', $result);
+
+        $exporter = app('TestNewFile');
         $result = $exporter->handleExport();
 
         $this->assertEquals('exported', $result);
