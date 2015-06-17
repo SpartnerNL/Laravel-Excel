@@ -26,7 +26,9 @@ abstract class NewExcelFile extends File {
      */
     public function handleExport()
     {
-        return $this->handle('Export');
+        return $this->handle( 
+            get_class($this) 
+        );
     }
 
 

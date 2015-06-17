@@ -1,8 +1,8 @@
 <?php
 
-use Maatwebsite\Excel\Files\ImportHandler;
+use Maatwebsite\Excel\Files\ExportHandler;
 
-class TestImportHandler implements ImportHandler {
+class TestNewFileHandler implements ExportHandler {
 
     /**
      * Handle
@@ -11,7 +11,7 @@ class TestImportHandler implements ImportHandler {
      */
     public function handle($file)
     {
-        return $file->get();
+        return 'exported';
     }
 
 } 
