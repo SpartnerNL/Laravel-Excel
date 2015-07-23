@@ -4,7 +4,7 @@ Require this package in your `composer.json` and update composer. This will down
 
 #### Laravel 4
 
-    "maatwebsite/excel": "~1.3*"
+    "maatwebsite/excel": "~1.3"
     
 #### Laravel 5
 
