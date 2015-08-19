@@ -44,6 +44,16 @@ class CellCollection extends ExcelCollection {
         }
     }
 
+     /**
+     * Get the items
+     *
+     * @return array
+     */
+    public function getItems()
+    {
+        return $this->items;
+    }
+    
     /**
      * Dynamically get values
      * @param  string $key
