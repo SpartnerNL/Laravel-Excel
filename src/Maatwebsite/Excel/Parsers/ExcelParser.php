@@ -224,6 +224,13 @@ class ExcelParser {
             case 'slugged':
                 return $this->getSluggedIndex($value, Config::get('excel.import.to_ascii', true));
                 break;
+            case 'slugged_with_count':
+                $index = $this->getSluggedIndex($value, Config::get('excel.import.to_ascii', true));
+                if(in_array($index,$this->indices)){
+                    $index = $this->appendOrIncreaseStringCount($index);
+                }
+                return $index;
+                break;
 
             case 'ascii':
                 return $this->getAsciiIndex($value);
@@ -241,6 +248,32 @@ class ExcelParser {
                 return $value;
                 break;
         }
+    }
+
+    /**
+     * Append or increase the count at the String like: test to test_1
+     * @param string $index
+     * @return string
+     */
+    protected function appendOrIncreaseStringCount($index)
+    {
+        do {
+            if (preg_match("/(\d+)$/",$index,$matches) === 1)
+            {
+                // increase +1
+                $index = preg_replace_callback( "/(\d+)$/",
+                    function ($matches) {
+                        return ++$matches[1];
+                    }, $index);
+            }
+            else
+            {
+                $index .= '_1';
+            }
+
+        } while(in_array($index,$this->indices));
+
+        return $index;
     }
 
     /**
