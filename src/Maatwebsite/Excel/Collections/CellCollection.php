@@ -43,6 +43,21 @@ class CellCollection extends ExcelCollection {
             }
         }
     }
+    
+    /**
+     * unSet the items by key
+     * @param array $keys
+     * @return void
+     */
+    public function unSetItems($keys)
+    {
+        foreach ($keys as $index => $key)
+        {
+            if (array_key_exists($key, $this->items)) {
+                unset($this[$key]);
+            }
+        }
+    }
 
     /**
      * Dynamically get values
