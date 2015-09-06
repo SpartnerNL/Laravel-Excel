@@ -38,5 +38,6 @@ Injected ExcelFile example:
         $import->chunk(250, function($results)
         {
             // do stuff
-        })
+            // or return true if you want to stop importing.
+        });
     }
