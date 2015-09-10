@@ -41,6 +41,14 @@ class ChunkReadFilterTest extends TestCase {
     }
 
 
+    public function testCanStopChunkEarly()
+    {
+        $this->assertCanStopChunkEarly(1,"sample.xls", 5);
+        $this->assertCanStopChunkEarly(1,"sample.xlsx", 2);
+        $this->assertCanStopChunkEarly(2,"sample.csv", 1);
+    }
+
+
     public function testCanChunkMultipleSheets()
     {
         $output = [];
@@ -84,5 +92,20 @@ class ChunkReadFilterTest extends TestCase {
         $this->assertEquals($expected, implode(",", $output ), "Chunked ($chunk_size) value not equal with source data.");
         $this->assertEquals($expected_chunks, $rounds, "Expecting total chunks is $expected_chunks when chunk with size $chunk_size");
 
+    }
+
+    private function assertCanStopChunkEarly($expected_chunks, $file, $chunk_size)
+    {
+        $rounds = 0;
+
+        $this->excel->filter('chunk')->load(__DIR__ . "/files/{$file}")->chunk($chunk_size,function($results) use (&$rounds, $expected_chunks){
+            $rounds++;
+
+            if ($rounds === $expected_chunks) {
+                return true;
+            }
+        });
+
+        $this->assertEquals($expected_chunks, $rounds, "Expecting total chunks is $expected_chunks when chunk with size $chunk_size");
     }
 }
