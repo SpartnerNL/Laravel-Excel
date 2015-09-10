@@ -77,6 +77,10 @@ This will add an `excel.php` config file to your config folder.
 
 The complete documentation can be found at: [http://www.maatwebsite.nl/laravel-excel/docs](http://www.maatwebsite.nl/laravel-excel/docs)
 
+# Support
+
+Support only through Github. Please don't mail us about issues, make a Github issue instead.
+
 # Contributing
 
 **ALL** bug fixes should be made to appropriate branch (e.g. `2.0` for 2.0.* bug fixes). Bug fixes should never be sent to the `master` branch.
