@@ -972,12 +972,7 @@ class LaravelExcelReader {
      */
     public function getFileName()
     {
-        $filename = $this->file;
-        $segments = explode('/', $filename);
-        $file = end($segments);
-        list($name, $ext) = explode('.', $file);
-
-        return $name;
+        return pathinfo($this->file, PATHINFO_FILENAME);
     }
 
     /**
