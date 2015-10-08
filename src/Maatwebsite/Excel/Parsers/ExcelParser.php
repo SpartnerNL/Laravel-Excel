@@ -429,26 +429,36 @@ class ExcelParser {
         $i = 0;
         $parsedCells = array();
 
-        // Set the cell iterator
-        $cellIterator = $this->row->getCellIterator();
+        try {
+            // Set the cell iterator
+            $cellIterator = $this->row->getCellIterator();
 
-        // Ignore empty cells if needed
-        $cellIterator->setIterateOnlyExistingCells($this->reader->needsIgnoreEmpty());
+            // Ignore empty cells if needed
+            $cellIterator->setIterateOnlyExistingCells($this->reader->needsIgnoreEmpty());
 
-        // Foreach cells
-        foreach ($cellIterator as $this->cell)
-        {
-            // Check how we need to save the parsed array
-            $index = ($this->reader->hasHeading() && isset($this->indices[$i])) ? $this->indices[$i] : $this->getIndexFromColumn();
-
-            // Check if we want to select this column
-            if ( $this->cellNeedsParsing($index) )
+            // Foreach cells
+            foreach ($cellIterator as $this->cell)
             {
-                // Set the value
-                $parsedCells[$index] = $this->parseCell($index);
+                // Check how we need to save the parsed array
+                $index = ($this->reader->hasHeading() && isset($this->indices[$i])) ? $this->indices[$i] : $this->getIndexFromColumn();
+
+                // Check if we want to select this column
+                if ( $this->cellNeedsParsing($index) )
+                {
+                    // Set the value
+                    $parsedCells[$index] = $this->parseCell($index);
+                }
+
+                $i++;
             }
 
-            $i++;
+        } catch (PHPExcel_Exception $e) {
+            // silently ignore the 'No cells exist within the specified range' error, but rethrow any others
+            if ($e->getMessage() != 'No cells exist within the specified range') {
+                throw $e;
+            }
+            // make sure that we return an empty CellCollection
+            $parsedCells = array();
         }
 
         // Return array with parsed cells

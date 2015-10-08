@@ -539,7 +539,9 @@ class LaravelExcelWriter {
         $path = Config::get('excel.export.pdf.drivers.' . $driver . '.path');
 
         // Disable autoloading for dompdf
-        define("DOMPDF_ENABLE_AUTOLOAD", false);
+        if(! defined("DOMPDF_ENABLE_AUTOLOAD")){
+            define("DOMPDF_ENABLE_AUTOLOAD", false);
+        }
 
         // Set the pdf renderer
         if (!\PHPExcel_Settings::setPdfRenderer($driver, $path))
