@@ -39,6 +39,8 @@ Excel::create('Laravel Excel', function($excel) {
 [![Monthly Downloads](https://poser.pugx.org/maatwebsite/excel/d/monthly.png)](https://packagist.org/packages/maatwebsite/excel)
 [![Daily Downloads](https://poser.pugx.org/maatwebsite/excel/d/daily.png)](https://packagist.org/packages/maatwebsite/excel)
 
+-[![Help the project](http://www.pledgie.com/campaigns/30385.png?skin_name=chrome)](http://pledgie.com/campaigns/30385)
+
 #Installation
 
 Require this package in your `composer.json` and update composer. This will download the package and PHPExcel of PHPOffice.
