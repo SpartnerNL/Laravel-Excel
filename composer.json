@@ -18,25 +18,25 @@
     }
   ],
   "require": {
-    "php": ">=5.3.0",
-    "phpoffice/phpexcel": "~1.8.0",
-    "illuminate/cache": "~5.0|~5.1",
-    "illuminate/config": "~5.0|~5.1",
-    "illuminate/filesystem": "~5.0|~5.1",
-    "illuminate/support": "~5.0|~5.1",
+    "php": ">=5.4",
+    "phpoffice/phpexcel": "1.8.*",
+    "illuminate/cache": "5.0.*|5.1.*",
+    "illuminate/config": "5.0.*|5.1.*",
+    "illuminate/filesystem": "5.0.*|5.1.*",
+    "illuminate/support": "5.0.*|5.1.*",
     "nesbot/carbon": "~1.0",
     "tijsverkoyen/css-to-inline-styles": "~1.5"
   },
   "require-dev": {
-    "phpseclib/phpseclib": ">=0.3.7",
+    "phpseclib/phpseclib": "~1.0",
     "phpunit/phpunit": "~4.0",
     "mockery/mockery": "~0.9",
-    "orchestra/testbench": "~3.0.0"
+    "orchestra/testbench": "3.0.*"
   },
   "suggest": {
-    "illuminate/http": "~5.0|~5.1",
-    "illuminate/routing": "~5.0|~5.1",
-    "illuminate/view": "~5.0|~5.1"
+    "illuminate/http": "5.0.*|5.1.*",
+    "illuminate/routing": "5.0.*|5.1.*",
+    "illuminate/view": "5.0.*|5.1.*"
   },
   "autoload": {
     "classmap": [
