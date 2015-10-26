@@ -2,7 +2,13 @@
 
 Require this package in your `composer.json` and update composer. This will download the package and PHPExcel of PHPOffice.
 
-    "maatwebsite/excel": "1.*"
+#### Laravel 4
+
+    "maatwebsite/excel": "~1.3"
+    
+#### Laravel 5
+
+    "maatwebsite/excel": "~2.0"
 
 After updating composer, add the ServiceProvider to the providers array in `app/config/app.php`
 
