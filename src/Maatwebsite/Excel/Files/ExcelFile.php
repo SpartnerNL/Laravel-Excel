@@ -17,6 +17,11 @@ abstract class ExcelFile extends File {
     protected $enclosure;
 
     /**
+     * @var null
+     */
+    protected $encoding = null;
+
+    /**
      * @param Application $app
      * @param Excel       $excel
      */
@@ -83,7 +88,9 @@ abstract class ExcelFile extends File {
 
         // Load the file
         $file = $this->excel->load(
-            $this->getFile()
+            $this->getFile(),
+            null,
+            $this->encoding
         );
 
         return $file;
