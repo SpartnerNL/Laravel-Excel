@@ -1,4 +1,4 @@
-## Laravel Excel v2.0.0 for Laravel 5
+## Laravel Excel v2.1.* for Laravel 5
 
 Looking for Laravel Excel for Laravel 4? Visit the [`1.3` branch](https://github.com/Maatwebsite/Laravel-Excel/tree/1.3)
 
@@ -12,7 +12,7 @@ Laravel Excel brings the power of PHPOffice's PHPExcel to Laravel 5 with a touch
 - **Batch** imports
 - A lot of optional **config settings**
 - Easy **cell caching**
-- Chunked importer
+- Chunked and queued importer
 - ExcelFile method injections
 - Editing existing Excel files
 - **Advanced import** by config files
