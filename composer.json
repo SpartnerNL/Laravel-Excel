@@ -31,12 +31,13 @@
     "phpseclib/phpseclib": "~1.0",
     "phpunit/phpunit": "~4.0",
     "mockery/mockery": "~0.9",
-    "orchestra/testbench": "3.0.*"
+    "orchestra/testbench": "3.1.*"
   },
   "suggest": {
     "illuminate/http": "5.0.*|5.1.*|5.2.*",
     "illuminate/routing": "5.0.*|5.1.*|5.2.*",
-    "illuminate/view": "5.0.*|5.1.*|5.2.*"
+    "illuminate/view": "5.0.*|5.1.*|5.2.*",
+    "illuminate/queue": "5.0.*|5.1.*|5.2.*"
   },
   "autoload": {
     "classmap": [
