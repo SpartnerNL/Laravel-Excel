@@ -46,18 +46,15 @@ Injected ExcelFile example:
 
 We automatically queue every chunk for you, if you have enabled the queue driver in your config. 
 
-```
- Excel::filter('chunk')->load(storage_path('test2.xls'))->chunk(10, function ($results) {
-     // This will be handled inside the queue
-     app('log')->info('Import: ' . count($results));
- });
-```
+     Excel::filter('chunk')->load(storage_path('test2.xls'))->chunk(10, function ($results) {
+         // This will be handled inside the queue
+         app('log')->info('Import: ' . count($results));
+     });
 
 If you want to by-pass the behaviour, you can pass `false` as third param of `chunk($size, $callback, $shouldQueue)`.
 
-```
- Excel::filter('chunk')->load(storage_path('test2.xls'))->chunk(10, function ($results) {
-     // This will be handled inside the queue
-     app('log')->info('Import: ' . count($results));
- }, false);
-```
+
+     Excel::filter('chunk')->load(storage_path('test2.xls'))->chunk(10, function ($results) {
+         // This will be handled inside the queue
+         app('log')->info('Import: ' . count($results));
+     }, false);
