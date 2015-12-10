@@ -18,7 +18,7 @@
     }
   ],
   "require": {
-    "php": ">=5.4",
+    "php": ">=5.5",
     "phpoffice/phpexcel": "1.8.*",
     "illuminate/cache": "5.0.*|5.1.*|5.2.*",
     "illuminate/config": "5.0.*|5.1.*|5.2.*",
