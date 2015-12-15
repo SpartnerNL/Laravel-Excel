@@ -119,7 +119,8 @@ class ExcelServiceProvider extends ServiceProvider {
         {
             return new LaravelExcelReader(
                 $app['files'],
-                $app['excel.identifier']
+                $app['excel.identifier'],
+                $app['Illuminate\Contracts\Bus\Dispatcher']
             );
         });
 

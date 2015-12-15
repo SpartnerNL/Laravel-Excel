@@ -2,7 +2,7 @@
 
 use Cache;
 use Config;
-use Illuminate\Foundation\Bus\DispatchesJobs;
+use Illuminate\Contracts\Bus\Dispatcher;
 use Illuminate\Support\Facades\Queue;
 use Maatwebsite\Excel\Classes\PHPExcel;
 use PHPExcel_Cell;
@@ -26,8 +26,6 @@ use Maatwebsite\Excel\Exceptions\LaravelExcelException;
  */
 class LaravelExcelReader
 {
-    use DispatchesJobs;
-
     /**
      * Excel object
      *
@@ -224,15 +222,22 @@ class LaravelExcelReader
     protected $original;
 
     /**
+     * @var Dispatcher
+     */
+    protected $dispatcher;
+
+    /**
      * Construct new reader
      *
      * @param Filesystem       $filesystem
      * @param FormatIdentifier $identifier
+     * @param Dispatcher       $dispatcher
      */
-    public function __construct(Filesystem $filesystem, FormatIdentifier $identifier)
+    public function __construct(Filesystem $filesystem, FormatIdentifier $identifier, Dispatcher $dispatcher)
     {
         $this->filesystem = $filesystem;
         $this->identifier = $identifier;
+        $this->dispatcher = $dispatcher;
     }
 
     /**
@@ -565,7 +570,7 @@ class LaravelExcelReader
             );
 
             if ($shouldQueue) {
-                $this->dispatch($job);
+                $this->dispatcher->dispatch($job);
             } else {
                 $break = $job->handle();
             }
