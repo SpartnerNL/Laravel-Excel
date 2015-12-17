@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Response;
 use Maatwebsite\Excel\Classes\FormatIdentifier;
 use Maatwebsite\Excel\Classes\LaravelExcelWorksheet;
 use Maatwebsite\Excel\Exceptions\LaravelExcelException;
+use Symfony\Component\Finder\Exception\AccessDeniedException;
 
 /**
  *
@@ -580,8 +581,13 @@ class LaravelExcelWriter {
         $this->storagePath = rtrim($path, '/');
 
         // Make sure the storage path exists
-        if (!$this->filesystem->isWritable($this->storagePath))
+        if (!$this->filesystem->exists($this->storagePath)) {
             $this->filesystem->makeDirectory($this->storagePath, 0777, true);
+        }
+
+        if (!$this->filesystem->isWritable($this->storagePath)) {
+            throw new LaravelExcelException("Permission denied to the storage path");
+        }
     }
 
     /**
