@@ -70,7 +70,7 @@ $excel = App::make('excel');
 To publish the config settings in Laravel 5 use:
 
 ```php
-php artisan vendor:publish
+php artisan vendor:publish --provider="Maatwebsite\Excel\ExcelServiceProvider"
 ```
 
 This will add an `excel.php` config file to your config folder.
