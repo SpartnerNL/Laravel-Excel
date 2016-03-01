@@ -1229,7 +1229,7 @@ class Html extends PHPExcel_Reader_HTML {
                 break;
 
             case 'text-indent':
-                $cells->getAlignment()->setIndent(1);
+                $cells->getAlignment()->setIndent((int)$value);
                 break;
         }
     }
