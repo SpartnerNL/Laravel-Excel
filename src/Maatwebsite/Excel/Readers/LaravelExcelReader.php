@@ -1,7 +1,7 @@
 <?php namespace Maatwebsite\Excel\Readers;
 
-use Cache;
-use Config;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Contracts\Bus\Dispatcher;
 use Illuminate\Support\Facades\Queue;
 use Maatwebsite\Excel\Classes\PHPExcel;
