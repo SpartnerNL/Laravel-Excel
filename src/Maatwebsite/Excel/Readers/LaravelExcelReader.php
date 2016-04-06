@@ -254,7 +254,7 @@ class LaravelExcelReader
         // init the loading
         $this->_init($file, $encoding, $noBasePath);
 
-        if ($callbackConfigReader) {
+        if (is_callable($callbackConfigReader)) {
             call_user_func($callbackConfigReader, $this);
         }
 
