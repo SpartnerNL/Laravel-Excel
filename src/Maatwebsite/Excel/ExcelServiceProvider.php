@@ -7,6 +7,7 @@ use Maatwebsite\Excel\Classes\Cache;
 use Illuminate\Support\Facades\Config;
 use Maatwebsite\Excel\Classes\PHPExcel;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Response;
 use Maatwebsite\Excel\Parsers\CssParser;
 use Maatwebsite\Excel\Parsers\ViewParser;
 use Maatwebsite\Excel\Classes\FormatIdentifier;
@@ -158,7 +159,7 @@ class ExcelServiceProvider extends ServiceProvider {
         $this->app['excel.writer'] = $this->app->share(function ($app)
         {
             return new LaravelExcelWriter(
-                $app->make('Response'),
+                $app->make(Response::class),
                 $app['files'],
                 $app['excel.identifier']
             );
