@@ -249,10 +249,14 @@ class LaravelExcelReader
      *
      * @return LaravelExcelReader
      */
-    public function load($file, $encoding = false, $noBasePath = false)
+    public function load($file, $encoding = false, $noBasePath = false, $callbackConfigReader = null)
     {
         // init the loading
         $this->_init($file, $encoding, $noBasePath);
+
+        if (is_callable($callbackConfigReader)) {
+            call_user_func($callbackConfigReader, $this);
+        }
 
         // Only fetch selected sheets if necessary
         if ($this->sheetsSelected()) {
