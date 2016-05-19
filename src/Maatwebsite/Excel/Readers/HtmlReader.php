@@ -282,6 +282,67 @@ class Html extends PHPExcel_Reader_HTML {
                 // Loop through the child's attributes
                 foreach ($child->attributes as $attribute)
                 {
+                    if ( $attribute->name != 'rowspan' ) {
+                        continue;
+                    }
+
+                    // Add the attribute to the array
+                    $attributeArray[$attribute->name] = $attribute->value;
+
+                    // Attribute names
+                    switch ($attribute->name)
+                    {
+                        // Colspan
+                        case 'width':
+                            $this->parseWidth($sheet, $column, $row, $attribute->value);
+                            break;
+
+                        case 'height':
+                            $this->parseHeight($sheet, $column, $row, $attribute->value);
+                            break;
+
+                        // Colspan
+                        case 'colspan':
+                            $this->parseColSpan($sheet, $column, $row, $attribute->value, $child->attributes);
+                            break;
+
+                        // Rowspan
+                        case 'rowspan':
+                            $this->parseRowSpan($sheet, $column, $row, $attribute->value, $child->attributes);
+                            break;
+
+                        // Alignment
+                        case 'align':
+                            $this->parseAlign($sheet, $column, $row, $attribute->value);
+                            break;
+
+                        // Vertical alignment
+                        case 'valign':
+                            $this->parseValign($sheet, $column, $row, $attribute->value);
+                            break;
+
+                        // Cell format
+                        case 'data-format':
+                            $this->parseDataFormat($sheet, $column, $row, $attribute->value);
+                            break;
+
+                        // Inline css styles
+                        case 'style':
+                            $this->parseInlineStyles($sheet, $column, $row, $attribute->value);
+
+                            if ( $child->nodeName == 'tr' )
+                                $this->styles[$row] = $attribute->value;
+                            break;
+                    }
+                }
+
+                // Loop through the child's attributes
+                foreach ($child->attributes as $attribute)
+                {
+                    if ( $attribute->name == 'rowspan' ) {
+                        continue;
+                    }
+
                     // Add the attribute to the array
                     $attributeArray[$attribute->name] = $attribute->value;
 
@@ -863,6 +924,24 @@ class Html extends PHPExcel_Reader_HTML {
      */
     protected function parseRowSpan($sheet, $column, $row, $spanHeight, $attributes)
     {
+        $colspan = 1;
+
+        foreach ( $attributes as $attribute ) {
+            if ( $attribute->name == 'colspan' ) {
+                $colspan = $attribute->value;
+            }
+        }
+
+        $endColumn = $column;
+
+        $endColumnNumber = PHPExcel_Cell::columnIndexFromString($endColumn);
+        
+        if ( $colspan ) {
+            $endColumnNumber += ($colspan - 1);
+        }
+
+        $endColumn = PHPExcel_Cell::stringFromColumnIndex($endColumnNumber - 1);        
+
         // Set the span height
         $this->spanHeight = --$spanHeight;
 
@@ -870,7 +949,7 @@ class Html extends PHPExcel_Reader_HTML {
         $startCell = $column . $row;
 
         // Set endcell = current row number + spanheight
-        $endCell = $column . ($row + $this->spanHeight);
+        $endCell = $endColumn . ($row + $this->spanHeight);
         $range = $startCell . ':' . $endCell;
 
         // Remember css inline styles
