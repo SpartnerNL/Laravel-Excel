@@ -257,6 +257,17 @@ class LaravelExcelWriter {
         // Set the extension
         $this->ext = $ext;
 
+        //Fix borders for merged cells
+        foreach($this->getAllSheets() as $sheet){
+
+            foreach($sheet->getMergeCells() as $cells){
+
+                $style = $sheet->getStyle(explode(':', $cells)[0]);
+
+                $sheet->duplicateStyle($style, $cells);
+            }
+        }
+
         // Render the file
         $this->_render();
 
