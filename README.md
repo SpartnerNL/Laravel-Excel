@@ -64,12 +64,6 @@ Then add the following lines to the `config/app.php`:
     Collective\Bus\BusServiceProvider::class,
     // ...
   ],
-  
-  'aliases' => [
-    // ...
-    'Illuminate\Bus\Dispatcher' => Collective\Bus\Dispatcher::class,
-    // ...
-  ],
 ```
 
 After updating composer, add the ServiceProvider to the providers array in `config/app.php`
