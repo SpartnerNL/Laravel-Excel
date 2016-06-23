@@ -33,7 +33,7 @@ class CellCollection extends ExcelCollection {
         {
             $value = !empty($value) || is_numeric($value) ? $value : null;
 
-            if ($name && !is_numeric($name))
+            if ($name)
             {
                 $this->put($name, $value);
             }
