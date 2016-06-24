@@ -188,6 +188,17 @@ class CellWriter {
     }
 
     /**
+     * Set the text indent
+     * @param integer $indent
+     * @return  CellWriter
+     */
+    public function setTextIndent($indent)
+    {
+      $style = $this->getCellStyle()->getAlignment()->setIndent((int)$indent);
+      return $this;
+    }
+
+    /**
      * Set the color style
      * @param         $styleType
      * @param string  $color
