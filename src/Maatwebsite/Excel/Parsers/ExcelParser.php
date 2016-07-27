@@ -446,7 +446,7 @@ class ExcelParser {
                 if ( $this->cellNeedsParsing($index) )
                 {
                     // Set the value
-                    $parsedCells[$index] = $this->parseCell($index);
+                    $parsedCells[(string) $index] = $this->parseCell($index);
                 }
 
                 $i++;
