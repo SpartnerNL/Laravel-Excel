@@ -3,6 +3,7 @@
     $sheet->cell('A1', function($cell) {
 
         // manipulate the cell
+        $cell->setValue('data1');
 
     });
 
