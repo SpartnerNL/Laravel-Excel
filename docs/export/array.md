@@ -48,7 +48,7 @@ By default 0 is shown as an empty cell. If you want to change this behaviour, yo
     // Will show 0 as 0
     $sheet->fromArray($data, null, 'A1', true);
 
->> To change the default behaviour, you can use `excel::export.sheets.strictNullComparison` config setting.
+> To change the default behaviour, you can use `excel::export.sheets.strictNullComparison` config setting.
 
 ## Eloquent model
 
