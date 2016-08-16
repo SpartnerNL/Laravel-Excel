@@ -2,12 +2,11 @@
 
 namespace Maatwebsite\Excel\Readers;
 
-use Illuminate\Contracts\Bus\SelfHandling;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Maatwebsite\Excel\Filters\ChunkReadFilter;
 use SuperClosure\Serializer;
 
-class ChunkedReadJob implements SelfHandling, ShouldQueue
+class ChunkedReadJob implements ShouldQueue
 {
     /**
      * @var int
