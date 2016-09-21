@@ -10,6 +10,7 @@ use Maatwebsite\Excel\Drivers\PHPExcel\Classes\FormatIdentifier;
 use Maatwebsite\Excel\Drivers\PHPExcel\Classes\PHPExcel;
 use Maatwebsite\Excel\Drivers\PHPExcel\Parsers\ExcelParser;
 use Maatwebsite\Excel\Exceptions\LaravelExcelException;
+use Maatwebsite\Excel\Reader;
 use PHPExcel_Cell;
 use PHPExcel_Cell_DefaultValueBinder;
 use PHPExcel_Cell_IValueBinder;
@@ -25,7 +26,7 @@ use PHPExcel_IOFactory;
  * @author     Maatwebsite <info@maatwebsite.nl>
  * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
  */
-class LaravelExcelReader
+class LaravelExcelReader implements Reader
 {
     /**
      * Excel object.

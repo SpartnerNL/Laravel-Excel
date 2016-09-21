@@ -2,35 +2,32 @@
 
 namespace Maatwebsite\Excel;
 
-use Maatwebsite\Excel\Drivers\PHPExcel\Readers\LaravelExcelReader;
-use Maatwebsite\Excel\Drivers\PHPExcel\Writers\LaravelExcelWriter;
-
 interface Excel
 {
     /**
      * Create a new file.
-     * @param                     $filename
-     * @param  callable|null      $callback
-     * @return LaravelExcelWriter
+     * @param                $filename
+     * @param  callable|null $callback
+     * @return Writer
      */
     public function create($filename, $callback = null);
 
     /**
      *  Load an existing file.
      *
-     * @param  string             $file                 The file we want to load
-     * @param  callback|null      $callback
-     * @param  string|null        $encoding
-     * @param  bool               $noBasePath
-     * @param  null               $callbackConfigReader
-     * @return LaravelExcelReader
+     * @param  string        $file                 The file we want to load
+     * @param  callback|null $callback
+     * @param  string|null   $encoding
+     * @param  bool          $noBasePath
+     * @param  null          $callbackConfigReader
+     * @return Reader
      */
     public function load($file, $callback = null, $encoding = null, $noBasePath = false, $callbackConfigReader = null);
 
     /**
      * Set select sheets.
      * @param  $sheets
-     * @return LaravelExcelReader
+     * @return Reader
      */
     public function selectSheets($sheets = []);
 
@@ -51,19 +48,19 @@ interface Excel
 
     /**
      * Create a new file and share a view.
-     * @param  string             $view
-     * @param  array              $data
-     * @param  array              $mergeData
-     * @return LaravelExcelWriter
+     * @param  string $view
+     * @param  array  $data
+     * @param  array  $mergeData
+     * @return Writer
      */
     public function shareView($view, $data = [], $mergeData = []);
 
     /**
      * Create a new file and load a view.
-     * @param  string             $view
-     * @param  array              $data
-     * @param  array              $mergeData
-     * @return LaravelExcelWriter
+     * @param  string $view
+     * @param  array  $data
+     * @param  array  $mergeData
+     * @return Writer
      */
     public function loadView($view, $data = [], $mergeData = []);
 

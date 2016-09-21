@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Response;
 use Maatwebsite\Excel\Drivers\PHPExcel\Classes\FormatIdentifier;
 use Maatwebsite\Excel\Drivers\PHPExcel\Classes\LaravelExcelWorksheet;
 use Maatwebsite\Excel\Exceptions\LaravelExcelException;
+use Maatwebsite\Excel\Writer;
 use PHPExcel_IOFactory;
 
 /**
@@ -22,7 +23,7 @@ use PHPExcel_IOFactory;
  * @author     Maatwebsite <info@maatwebsite.nl>
  * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
  */
-class LaravelExcelWriter
+class LaravelExcelWriter implements Writer
 {
     /**
      * Spreadsheet filename.
