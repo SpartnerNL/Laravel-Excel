@@ -187,7 +187,7 @@ class ExcelServiceProvider extends ServiceProvider {
             return $excel;
         });
         
-        $this->app->alias('excel', Excel::class);
+        $this->app->alias('phpexcel', PHPExcel::class);
     }
 
     /**
