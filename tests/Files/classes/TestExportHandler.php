@@ -2,10 +2,10 @@
 
 use Maatwebsite\Excel\Files\ExportHandler;
 
-class TestExportHandler implements ExportHandler {
-
+class TestExportHandler implements ExportHandler
+{
     /**
-     * Handle
+     * Handle.
      * @param $file
      * @return mixed|void
      */
@@ -13,5 +13,4 @@ class TestExportHandler implements ExportHandler {
     {
         return 'exported';
     }
-
-} 
+}

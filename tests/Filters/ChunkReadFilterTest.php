@@ -1,10 +1,8 @@
 <?php
 
-use Mockery as m;
 
 class ChunkReadFilterTest extends TestCase
 {
-
     public function setUp()
     {
         parent::setUp();

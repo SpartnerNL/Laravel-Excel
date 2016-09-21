@@ -41,9 +41,9 @@
   },
   "autoload": {
     "classmap": [
-      "src/Maatwebsite/Excel"
+      "src/"
     ],
-    "psr-0": {
+    "psr-4": {
       "Maatwebsite\\Excel\\": "src/"
     }
   },

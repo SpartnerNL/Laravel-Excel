@@ -1,9 +1,8 @@
 <?php
 
-use Mockery as m;
 
-class RegisterFilterTestCase extends TestCase {
-
+class RegisterFilterTestCase extends TestCase
+{
     public function setUp()
     {
         parent::setUp();
@@ -20,9 +19,9 @@ class RegisterFilterTestCase extends TestCase {
 
     public function testOnlyRegister()
     {
-        $toRegister = array(
-            'chunk' =>  'ChunkFilter'
-        );
+        $toRegister = [
+            'chunk' => 'ChunkFilter',
+        ];
 
         $excel = $this->excel->registerFilters($toRegister);
 
@@ -32,20 +31,19 @@ class RegisterFilterTestCase extends TestCase {
 
     public function testRegisterAndEnabled()
     {
-        $toRegister = array(
-            'registered'    =>  array(
-                'chunk' =>  'ChunkFilter'
-            ),
-            'enabled'   =>  array(
-                'chunk'
-            )
-        );
+        $toRegister = [
+            'registered'    => [
+                'chunk' => 'ChunkFilter',
+            ],
+            'enabled'   => [
+                'chunk',
+            ],
+        ];
 
         $excel = $this->excel->registerFilters($toRegister);
 
         $filters = $this->excel->getFilters();
         $this->assertEquals($toRegister, $filters);
-
     }
 
     public function testEnableOneFilter()
@@ -58,7 +56,7 @@ class RegisterFilterTestCase extends TestCase {
 
     public function testEnableMultipleFilter()
     {
-        $excel = $this->excel->filter(array('chunk', 'range'));
+        $excel = $this->excel->filter(['chunk', 'range']);
 
         $filters = $this->excel->getFilters('enabled');
         $this->assertContains('chunk', $filters);
@@ -70,10 +68,9 @@ class RegisterFilterTestCase extends TestCase {
         $excel = $this->excel->filter('chunk', 'ChunkFilter');
 
         $registered = $this->excel->getFilters('registered');
-        $this->assertEquals(array('chunk' => 'ChunkFilter'), $registered);
+        $this->assertEquals(['chunk' => 'ChunkFilter'], $registered);
 
         $enabled    = $this->excel->getFilters('enabled');
         $this->assertContains('chunk', $enabled);
-
     }
 }
