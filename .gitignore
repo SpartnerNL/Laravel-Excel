@@ -2,3 +2,6 @@
 composer.phar
 composer.lock
 .DS_Store
+
+## Ignore IDE working environment files
+.idea/
