@@ -46,4 +46,6 @@ Injected ExcelFile example:
 
 We automatically queue every chunk for you, if you have enabled the queue driver in your config. 
 
-If you want to by-pass the behaviour, you can pass `false` as third param of `chunk($size, $callback, $shouldQueue)`.
+If you want to by-pass the behaviour, you can pass `false` as the third parameter of `chunk($size, $callback, $shouldQueue)`.
+
+A non-default job queue may be specified by passing its name as the third parameter of `chunk($size, $callback, $shouldQueue)`.
