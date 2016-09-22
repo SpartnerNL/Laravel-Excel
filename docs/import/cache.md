@@ -2,7 +2,7 @@
 
 ### Cell caching
 
-You can enable cell caching inside the config `cache.php`. You can choose between a couple of drivers and change a couple of settings. By default the caching is **enabled** and will use **in memory** caching.
+You can enable cell caching inside the config `excel.php`. You can choose between a couple of drivers and change a couple of settings. By default the caching is **enabled** and will use **in memory** caching.
 
 ### Remembering results
 

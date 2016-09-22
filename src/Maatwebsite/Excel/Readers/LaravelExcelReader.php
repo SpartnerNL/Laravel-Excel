@@ -546,9 +546,9 @@ class LaravelExcelReader
     /**
      * Parse the file in chunks and queues the processing of each chunk
      *
-     * @param int      $size
-     * @param callable $callback
-     * @param bool     $shouldQueue
+     * @param int           $size
+     * @param callable      $callback
+     * @param bool|string   $shouldQueue
      */
     public function chunk($size = 10, callable $callback, $shouldQueue = true)
     {
@@ -574,6 +574,10 @@ class LaravelExcelReader
             );
 
             if ($shouldQueue) {
+                // If a string is passed (which also evaluates to true if not empty), assign to that named queue
+                if(is_string($shouldQueue)) {
+                    $job->onQueue($shouldQueue);
+                }
                 $this->dispatcher->dispatch($job);
             } else {
                 $break = $job->handle();
