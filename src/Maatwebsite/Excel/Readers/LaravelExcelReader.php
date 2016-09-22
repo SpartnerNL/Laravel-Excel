@@ -574,7 +574,6 @@ class LaravelExcelReader
             );
 
             if ($shouldQueue) {
-
                 // If a string is passed (which also evaluates to true if not empty), assign to that named queue
                 if(is_string($shouldQueue)) {
                     $job->onQueue($shouldQueue);
