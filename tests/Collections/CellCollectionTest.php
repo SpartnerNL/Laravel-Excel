@@ -25,6 +25,21 @@ class CellCollectionTest extends TestCase {
     }
 
 
+    /**
+     * @see https://github.com/Maatwebsite/Laravel-Excel/issues/823
+     */
+    public function testSetItemsWithNumericHeaders()
+    {
+        $this->collection->setItems([
+            0 => 0.5,
+            100 => 0.216,
+        ]);
+
+        $this->assertArrayHasKey(0, $this->collection);
+        $this->assertArrayHasKey(100, $this->collection);
+    }
+
+
     public function testDynamicGetters()
     {
         $this->assertEquals('two', $this->collection->two);
