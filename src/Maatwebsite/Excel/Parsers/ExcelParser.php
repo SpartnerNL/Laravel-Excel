@@ -462,7 +462,14 @@ class ExcelParser {
         }
 
         // Return array with parsed cells
-        return new CellCollection($parsedCells);
+        $cells = new CellCollection($parsedCells);
+
+        if (! $this->reader->hasHeading()) {
+            // Cell index starts at 0 when no heading
+            return $cells->values();
+        }
+
+        return $cells;
     }
 
     /**
