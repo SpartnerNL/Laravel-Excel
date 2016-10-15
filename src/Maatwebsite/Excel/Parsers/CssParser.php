@@ -48,23 +48,15 @@ class CssParser {
      */
     public function transformCssToInlineStyles($html)
     {
-        // Clean-up html
-        $this->cssInliner->setCleanup(true);
-
-        // Set html
-        $this->cssInliner->setHtml($html);
-
-        // Use inline style blocks
-        $this->cssInliner->setUseInlineStylesBlock(true);
+        $css = '';
 
         // Loop through all stylesheets
         foreach($this->links as $link)
         {
-            $css = file_get_contents($link);
-            $this->cssInliner->setCSS($css);
+            $css .= file_get_contents($link);
         }
 
-        return $this->cssInliner->convert();
+        return $this->cssInliner->convert($html, $css);
     }
 
     /**
