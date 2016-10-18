@@ -257,17 +257,6 @@ class LaravelExcelWriter {
         // Set the extension
         $this->ext = $ext;
 
-        //Fix borders for merged cells
-        foreach($this->getAllSheets() as $sheet){
-
-            foreach($sheet->getMergeCells() as $cells){
-
-                $style = $sheet->getStyle(explode(':', $cells)[0]);
-
-                $sheet->duplicateStyle($style, $cells);
-            }
-        }
-
         // Render the file
         $this->_render();
 
@@ -423,6 +412,17 @@ class LaravelExcelWriter {
      */
     protected function _render()
     {
+        //Fix borders for merged cells
+        foreach($this->getAllSheets() as $sheet){
+
+            foreach($sheet->getMergeCells() as $cells){
+
+                $style = $sheet->getStyle(explode(':', $cells)[0]);
+
+                $sheet->duplicateStyle($style, $cells);
+            }
+        }
+
         // There should be enough sheets to continue rendering
         if ($this->excel->getSheetCount() < 0)
             throw new LaravelExcelException('[ERROR] Aborting spreadsheet render: no sheets were created.');
