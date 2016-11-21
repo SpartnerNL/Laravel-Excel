@@ -13,6 +13,7 @@ use Maatwebsite\Excel\Classes\FormatIdentifier;
 use Maatwebsite\Excel\Readers\LaravelExcelReader;
 use Maatwebsite\Excel\Writers\LaravelExcelWriter;
 use TijsVerkoyen\CssToInlineStyles\CssToInlineStyles;
+use Laravel\Lumen\Application as LumenApplication;
 
 /**
  *
