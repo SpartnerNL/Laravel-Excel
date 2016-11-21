@@ -42,9 +42,14 @@ class ExcelServiceProvider extends ServiceProvider {
 
     public function boot()
     {
-        $this->publishes([
-            __DIR__ . '/../../config/excel.php' => config_path('excel.php'),
-        ]);
+        if ($this->app instanceof LumenApplication) {
+            $this->app->configure('excel');
+        } else {
+            $this->publishes([
+                __DIR__ . '/../../config/excel.php' => config_path('excel.php'),
+            ]);
+        }
+
 
         $this->mergeConfigFrom(
             __DIR__ . '/../../config/excel.php', 'excel'
