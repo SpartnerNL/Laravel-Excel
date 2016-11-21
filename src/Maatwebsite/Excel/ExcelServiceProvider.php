@@ -4,7 +4,6 @@ use PHPExcel_Settings;
 use PHPExcel_Shared_Font;
 use Maatwebsite\Excel\Readers\Html;
 use Maatwebsite\Excel\Classes\Cache;
-use Illuminate\Support\Facades\Config;
 use Maatwebsite\Excel\Classes\PHPExcel;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Response;
@@ -49,7 +48,6 @@ class ExcelServiceProvider extends ServiceProvider {
                 __DIR__ . '/../../config/excel.php' => config_path('excel.php'),
             ]);
         }
-
 
         $this->mergeConfigFrom(
             __DIR__ . '/../../config/excel.php', 'excel'

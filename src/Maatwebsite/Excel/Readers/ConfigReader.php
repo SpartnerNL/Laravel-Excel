@@ -3,7 +3,6 @@
 use Closure;
 use PHPExcel;
 use Maatwebsite\Excel\Excel;
-use Illuminate\Support\Facades\Config;
 use Maatwebsite\Excel\Collections\SheetCollection;
 use Maatwebsite\Excel\Exceptions\LaravelExcelException;
 

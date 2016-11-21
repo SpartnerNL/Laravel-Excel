@@ -14,7 +14,6 @@ use PHPExcel_Style_Font;
 use PHPExcel_Style_Border;
 use PHPExcel_Worksheet_Drawing;
 use PHPExcel_Style_Alignment;
-use Illuminate\Support\Facades\Config;
 use Maatwebsite\Excel\Parsers\CssParser;
 use Maatwebsite\Excel\Classes\LaravelExcelWorksheet;
 
