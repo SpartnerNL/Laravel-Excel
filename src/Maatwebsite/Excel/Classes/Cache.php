@@ -42,8 +42,8 @@ class Cache {
     public function __construct()
     {
         // Get driver and settings from the config
-        $this->driver = Config::get($this->configName . '.driver', 'memory');
-        $this->settings = Config::get($this->configName . '.settings', array());
+        $this->driver = config($this->configName . '.driver', 'memory');
+        $this->settings = config($this->configName . '.settings', array());
 
         // Init if caching is enabled
         if ($this->isEnabled())
@@ -98,8 +98,8 @@ class Cache {
 
                 // Add extra memcache settings
                 $this->settings = array_merge($this->settings, array(
-                    'memcacheServer' => Config::get($this->configName . '.memcache.host', 'localhost'),
-                    'memcachePort'   => Config::get($this->configName . '.memcache.port', 11211)
+                    'memcacheServer' => config($this->configName . '.memcache.host', 'localhost'),
+                    'memcachePort'   => config($this->configName . '.memcache.port', 11211)
                 ));
 
                 break;
@@ -108,7 +108,7 @@ class Cache {
 
                 // Add dir
                 $this->settings = array_merge($this->settings, array(
-                    'dir' => Config::get($this->configName . '.dir', storage_path('cache')),
+                    'dir' => config($this->configName . '.dir', storage_path('cache')),
                 ));
 
                 break;
@@ -121,6 +121,6 @@ class Cache {
      */
     public function isEnabled()
     {
-        return Config::get($this->configName . '.enable', true) ? true : false;
+        return config($this->configName . '.enable', true) ? true : false;
     }
 }

@@ -217,7 +217,7 @@ class ExcelServiceProvider extends ServiceProvider {
      */
     public function setLocale()
     {
-        $locale = Config::get('app.locale', 'en_us');
+        $locale = config('app.locale', 'en_us');
         PHPExcel_Settings::setLocale($locale);
     }
 
@@ -226,7 +226,7 @@ class ExcelServiceProvider extends ServiceProvider {
      */
     public function setAutoSizingSettings()
     {
-        $method = Config::get('excel.export.autosize-method', PHPExcel_Shared_Font::AUTOSIZE_METHOD_APPROX);
+        $method = config('excel.export.autosize-method', PHPExcel_Shared_Font::AUTOSIZE_METHOD_APPROX);
         PHPExcel_Shared_Font::setAutoSizeMethod($method);
     }
 

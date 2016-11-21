@@ -161,7 +161,7 @@ class ConfigReader {
      */
     protected function getCoordinateByKey($field)
     {
-        return Config::get($this->configName . '.' . $this->sheetName . '.' . $field, false);
+        return config($this->configName . '.' . $this->sheetName . '.' . $field, false);
     }
 
     /**

@@ -127,7 +127,7 @@ class Html extends PHPExcel_Reader_HTML {
      */
     protected function setStyleFormats()
     {
-        $this->_formats = Config::get('excel.views.styles', array());
+        $this->_formats = config('excel.views.styles', array());
     }
 
     /**
