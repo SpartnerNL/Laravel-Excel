@@ -2,6 +2,10 @@
   "name": "melnykdmitro/excel",
   "description": "An eloquent way of importing and exporting Excel and CSV in Laravel 4 with the power of PHPExcel",
   "license": "LGPL",
+  "dist": {
+    "url": "https://github.com/MelnykDmitro/Laravel-Excel",
+    "type": "git"
+  },
   "keywords": [
     "laravel",
     "phpexcel",
