@@ -467,6 +467,18 @@ class LaravelExcelWriter {
     {
         return $this->sheet;
     }
+    
+    /**
+     * Set the active sheet index
+     * @param integer $index
+     * @return LaravelExcelWriter
+     */
+    public function setActiveSheetIndex($index)
+    {
+        $this->sheet = $this->excel->setActiveSheetIndex($index);
+
+        return $this;
+    }
 
     /**
      * Set attributes
