@@ -396,6 +396,18 @@ return array(
         */
 
         'separator'               => '_',
+        
+          /*
+        |--------------------------------------------------------------------------
+        | Cell name word custom_seperators
+        |--------------------------------------------------------------------------
+        |
+        | The default custom separator which is used for the cell names
+        | Note: only applies to 'heading' settings 'true' && 'slugged'
+        |
+        */
+        
+        'custom_seperators'       => '._',
 
         /*
         |--------------------------------------------------------------------------
