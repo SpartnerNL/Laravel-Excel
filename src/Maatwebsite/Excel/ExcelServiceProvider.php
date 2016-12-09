@@ -4,7 +4,6 @@ use PHPExcel_Settings;
 use PHPExcel_Shared_Font;
 use Maatwebsite\Excel\Readers\Html;
 use Maatwebsite\Excel\Classes\Cache;
-use Illuminate\Support\Facades\Config;
 use Maatwebsite\Excel\Classes\PHPExcel;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Response;
@@ -14,6 +13,7 @@ use Maatwebsite\Excel\Classes\FormatIdentifier;
 use Maatwebsite\Excel\Readers\LaravelExcelReader;
 use Maatwebsite\Excel\Writers\LaravelExcelWriter;
 use TijsVerkoyen\CssToInlineStyles\CssToInlineStyles;
+use Laravel\Lumen\Application as LumenApplication;
 
 /**
  *
@@ -42,9 +42,13 @@ class ExcelServiceProvider extends ServiceProvider {
 
     public function boot()
     {
-        $this->publishes([
-            __DIR__ . '/../../config/excel.php' => config_path('excel.php'),
-        ]);
+        if ($this->app instanceof LumenApplication) {
+            $this->app->configure('excel');
+        } else {
+            $this->publishes([
+                __DIR__ . '/../../config/excel.php' => config_path('excel.php'),
+            ]);
+        }
 
         $this->mergeConfigFrom(
             __DIR__ . '/../../config/excel.php', 'excel'
@@ -217,7 +221,7 @@ class ExcelServiceProvider extends ServiceProvider {
      */
     public function setLocale()
     {
-        $locale = Config::get('app.locale', 'en_us');
+        $locale = config('app.locale', 'en_us');
         PHPExcel_Settings::setLocale($locale);
     }
 
@@ -226,7 +230,7 @@ class ExcelServiceProvider extends ServiceProvider {
      */
     public function setAutoSizingSettings()
     {
-        $method = Config::get('excel.export.autosize-method', PHPExcel_Shared_Font::AUTOSIZE_METHOD_APPROX);
+        $method = config('excel.export.autosize-method', PHPExcel_Shared_Font::AUTOSIZE_METHOD_APPROX);
         PHPExcel_Shared_Font::setAutoSizeMethod($method);
     }
 
