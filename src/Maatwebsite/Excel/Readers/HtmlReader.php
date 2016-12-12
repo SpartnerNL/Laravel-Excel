@@ -1151,67 +1151,77 @@ class Html extends PHPExcel_Reader_HTML {
             case 'border':
             case 'borders':
                 $borders = explode(' ', $value);
-                $style = $borders[1];
-                $color = end($borders);
-                $color = $this->getColor($color);
-                $borderStyle = $this->borderStyle($style);
+                if (!empty($borders[1])) {
+                    $style = $borders[1];
+                    $color = end($borders);
+                    $color = $this->getColor($color);
+                    $borderStyle = $this->borderStyle($style);
 
-                $cells->getBorders()->applyFromArray(
-                    array('allborders' => array('style' => $borderStyle, 'color' => array('rgb' => $color)))
-                );
+                    $cells->getBorders()->applyFromArray(
+                        array('allborders' => array('style' => $borderStyle, 'color' => array('rgb' => $color)))
+                    );
+                }
                 break;
 
             // Border-top
             case 'border-top':
                 $borders = explode(' ', $value);
-                $style = $borders[1];
-                $color = end($borders);
-                $color = $this->getColor($color);
+                if (!empty($borders[1])) {
+                    $style = $borders[1];
+                    $color = end($borders);
+                    $color = $this->getColor($color);
 
-                $borderStyle = $this->borderStyle($style);
+                    $borderStyle = $this->borderStyle($style);
 
-                $cells->getBorders()->getTop()->applyFromArray(
-                    array('style' => $borderStyle, 'color' => array('rgb' => $color))
-                );
+                    $cells->getBorders()->getTop()->applyFromArray(
+                        array('style' => $borderStyle, 'color' => array('rgb' => $color))
+                    );
+                }
                 break;
 
             // Border-bottom
             case 'border-bottom':
                 $borders = explode(' ', $value);
-                $style = $borders[1];
-                $color = end($borders);
-                $color = $this->getColor($color);
-                $borderStyle = $this->borderStyle($style);
+                if (!empty($borders[1])) {
+                    $style = $borders[1];
+                    $color = end($borders);
+                    $color = $this->getColor($color);
+                    $borderStyle = $this->borderStyle($style);
 
-                $cells->getBorders()->getBottom()->applyFromArray(
-                    array('style' => $borderStyle, 'color' => array('rgb' => $color))
-                );
+                    $cells->getBorders()->getBottom()->applyFromArray(
+                        array('style' => $borderStyle, 'color' => array('rgb' => $color))
+                    );
+                }
                 break;
 
             // Border-right
             case 'border-right':
                 $borders = explode(' ', $value);
-                $style = $borders[1];
-                $color = end($borders);
-                $color = $this->getColor($color);
-                $borderStyle = $this->borderStyle($style);
+                if (!empty($borders[1])) {
+                    $style = $borders[1];
+                    $color = end($borders);
+                    $color = $this->getColor($color);
+                    $borderStyle = $this->borderStyle($style);
 
-                $cells->getBorders()->getRight()->applyFromArray(
-                    array('style' => $borderStyle, 'color' => array('rgb' => $color))
-                );
+                    $cells->getBorders()->getRight()->applyFromArray(
+                        array('style' => $borderStyle, 'color' => array('rgb' => $color))
+                    );
+                }
                 break;
 
             // Border-left
             case 'border-left':
                 $borders = explode(' ', $value);
-                $style = $borders[1];
-                $color = end($borders);
-                $color = $this->getColor($color);
-                $borderStyle = $this->borderStyle($style);
+                if (!empty($borders[1])) {
+                    $style = $borders[1];
+                    $color = end($borders);
+                    $color = $this->getColor($color);
+                    $borderStyle = $this->borderStyle($style);
 
-                $cells->getBorders()->getLeft()->applyFromArray(
-                    array('style' => $borderStyle, 'color' => array('rgb' => $color))
-                );
+                    $cells->getBorders()->getLeft()->applyFromArray(
+                        array('style' => $borderStyle, 'color' => array('rgb' => $color))
+                    );
+                }
                 break;
 
             // wrap-text
