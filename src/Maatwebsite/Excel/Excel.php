@@ -97,7 +97,8 @@ class Excel {
      * @param  string        $file The file we want to load
      * @param  callback|null $callback
      * @param  string|null   $encoding
-     * @param bool           $noBasePath
+     * @param  bool          $noBasePath
+     * @param  callback|null $callbackConfigReader
      * @return LaravelExcelReader
      */
     public function load($file, $callback = null, $encoding = null, $noBasePath = false, $callbackConfigReader = null)
