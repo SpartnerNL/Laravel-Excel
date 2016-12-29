@@ -151,7 +151,7 @@ class LaravelExcelWriter {
     }
 
     /**
-     * Get the title
+     * Get the filename
      * @return string
      */
     public function getFileName()
@@ -437,7 +437,7 @@ class LaravelExcelWriter {
     }
 
     /**
-     * Get the view parser
+     * Get the excel object
      * @return PHPExcel
      */
     public function getExcel()
