@@ -241,13 +241,13 @@ class ExcelServiceProvider extends ServiceProvider {
      */
     public function provides()
     {
-        return array(
+        return [
             'excel',
             'phpexcel',
             'excel.reader',
             'excel.readers.html',
             'excel.parsers.view',
             'excel.writer'
-        );
+        ];
     }
 }

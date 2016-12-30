@@ -15,7 +15,7 @@ class Cache {
      * Available caching drivers
      * @var array
      */
-    protected $available = array(
+    protected $available = [
         'memory'     => 'cache_in_memory',
         'gzip'       => 'cache_in_memory_gzip',
         'serialized' => 'cache_in_memory_serialized',
@@ -27,7 +27,7 @@ class Cache {
         'wincache'   => 'cache_to_wincache',
         'sqlite'     => 'cache_to_sqlite',
         'sqlite3'    => 'cache_to_sqlite3'
-    );
+    ];
 
     /**
      * The name of the config file
@@ -42,7 +42,7 @@ class Cache {
     {
         // Get driver and settings from the config
         $this->driver = config($this->configName . '.driver', 'memory');
-        $this->settings = config($this->configName . '.settings', array());
+        $this->settings = config($this->configName . '.settings', []);
 
         // Init if caching is enabled
         if ($this->isEnabled())
@@ -96,19 +96,19 @@ class Cache {
             case 'memcache':
 
                 // Add extra memcache settings
-                $this->settings = array_merge($this->settings, array(
+                $this->settings = array_merge($this->settings, [
                     'memcacheServer' => config($this->configName . '.memcache.host', 'localhost'),
                     'memcachePort'   => config($this->configName . '.memcache.port', 11211)
-                ));
+                ]);
 
                 break;
 
             case 'discISAM':
 
                 // Add dir
-                $this->settings = array_merge($this->settings, array(
+                $this->settings = array_merge($this->settings, [
                     'dir' => config($this->configName . '.dir', storage_path('cache')),
-                ));
+                ]);
 
                 break;
         }

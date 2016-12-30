@@ -45,19 +45,19 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet {
      * Data
      * @var array
      */
-    public $data = array();
+    public $data = [];
 
     /**
      * Merge data
      * @var array
      */
-    public $mergeData = array();
+    public $mergeData = [];
 
     /**
      * Allowed page setup
      * @var array
      */
-    public $allowedPageSetup = array(
+    public $allowedPageSetup = [
         'orientation',
         'paperSize',
         'scale',
@@ -70,17 +70,17 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet {
         'verticalCentered',
         'printArea',
         'firstPageNumber'
-    );
+    ];
 
     /**
      * Allowed page setup
      * @var array
      */
-    public $allowedStyles = array(
+    public $allowedStyles = [
         'fontFamily',
         'fontSize',
         'fontBold'
-    );
+    ];
 
     /**
      * Check if the file was autosized
@@ -148,7 +148,7 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet {
     {
         if (!is_array($margin))
         {
-            $marginArray = array($margin, $margin, $margin, $margin);
+            $marginArray = [$margin, $margin, $margin, $margin];
         }
         else
         {
@@ -224,7 +224,7 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet {
      * @param  boolean $explicit
      * @return LaravelExcelWorksheet
      */
-    public function rows($rows = array(), $explicit = false)
+    public function rows($rows = [], $explicit = false)
     {
         // Get the start row
         $startRow = $this->getStartRow();
@@ -353,7 +353,7 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet {
      */
     public function setView()
     {
-        return call_user_func_array(array($this, 'loadView'), func_get_args());
+        return call_user_func_array([$this, 'loadView'], func_get_args());
     }
 
     /**
@@ -363,7 +363,7 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet {
      * @param array  $mergeData
      * @return LaravelExcelWorksheet
      */
-    public function loadView($view, $data = array(), $mergeData = array())
+    public function loadView($view, $data = [], $mergeData = [])
     {
         // Init the parser
         if (!$this->parser)
@@ -598,7 +598,7 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet {
             if (count($firstRow) != count($firstRow, 1))
             {
                 // Loop through the data to remove arrays
-                $data = array();
+                $data = [];
                 $r = 0;
                 foreach ($array as $row)
                 {
@@ -692,10 +692,10 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet {
         if (in_array($key, $this->allowedPageSetup))
         {
             // Set params
-            $params = is_array($params) ? $params : array($params);
+            $params = is_array($params) ? $params : [$params];
 
             // Call the setter
-            return call_user_func_array(array($this->getPageSetup(), $setter), $params);
+            return call_user_func_array([$this->getPageSetup(), $setter], $params);
         }
 
         // If is a style
@@ -719,12 +719,12 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet {
     protected function setDefaultStyles($setter, $key, $params)
     {
         $caller = $this->getDefaultStyle();
-        $params = is_array($params) ? $params : array($params);
+        $params = is_array($params) ? $params : [$params];
 
         if (str_contains($key, 'font'))
             return $this->setFontStyle($caller, $setter, $key, $params);
 
-        return call_user_func_array(array($caller, $setter), $params);
+        return call_user_func_array([$caller, $setter], $params);
     }
 
     /**
@@ -765,7 +765,7 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet {
     {
         // Set caller to font
         $caller = $caller->getFont();
-        $params = is_array($params) ? $params : array($params);
+        $params = is_array($params) ? $params : [$params];
 
         // Clean the setter name
         $setter = lcfirst(str_replace('Font', '', $setter));
@@ -773,7 +773,7 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet {
         // Replace special cases
         $setter = str_replace('Family', 'Name', $setter);
 
-        return call_user_func_array(array($caller, $setter), $params);
+        return call_user_func_array([$caller, $setter], $params);
     }
 
     /**
@@ -1050,13 +1050,13 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet {
      */
     public function setAllBorders($weight = 'thin')
     {
-        $styleArray = array(
-            'borders' => array(
-                'allborders' => array(
+        $styleArray = [
+            'borders' => [
+                'allborders' => [
                     'style' => $weight
-                )
-            )
-        );
+                ]
+            ]
+        ];
 
         // Apply the style
         $this->getDefaultStyle()

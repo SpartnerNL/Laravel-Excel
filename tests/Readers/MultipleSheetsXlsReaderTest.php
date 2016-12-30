@@ -62,7 +62,7 @@ class MultipleSheetsXlsReaderTest extends TestCase {
 
     public function testSelectSheetByIndex()
     {
-        $this->reader->setSelectedSheetIndices(array(1));
+        $this->reader->setSelectedSheetIndices([1]);
         $this->reload();
 
         $sheet = $this->loadedFile->get();
@@ -74,7 +74,7 @@ class MultipleSheetsXlsReaderTest extends TestCase {
 
     public function testSelectMultipleSheets()
     {
-        $this->reader->setSelectedSheets(array('Sheet1', 'Sheet2'));
+        $this->reader->setSelectedSheets(['Sheet1', 'Sheet2']);
         $this->reload();
 
         $got = $this->loadedFile->get();
@@ -92,7 +92,7 @@ class MultipleSheetsXlsReaderTest extends TestCase {
 
     public function testSelectMultipleSheetsByIndex()
     {
-        $this->reader->setSelectedSheetIndices(array(0,1));
+        $this->reader->setSelectedSheetIndices([0,1]);
         $this->reload();
 
         $got = $this->loadedFile->get();

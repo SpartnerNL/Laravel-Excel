@@ -20,9 +20,9 @@ class RegisterFilterTestCase extends TestCase {
 
     public function testOnlyRegister()
     {
-        $toRegister = array(
+        $toRegister = [
             'chunk' =>  'ChunkFilter'
-        );
+        ];
 
         $excel = $this->excel->registerFilters($toRegister);
 
@@ -32,14 +32,14 @@ class RegisterFilterTestCase extends TestCase {
 
     public function testRegisterAndEnabled()
     {
-        $toRegister = array(
-            'registered'    =>  array(
+        $toRegister = [
+            'registered'    =>  [
                 'chunk' =>  'ChunkFilter'
-            ),
-            'enabled'   =>  array(
+            ],
+            'enabled'   =>  [
                 'chunk'
-            )
-        );
+            ]
+        ];
 
         $excel = $this->excel->registerFilters($toRegister);
 
@@ -58,7 +58,7 @@ class RegisterFilterTestCase extends TestCase {
 
     public function testEnableMultipleFilter()
     {
-        $excel = $this->excel->filter(array('chunk', 'range'));
+        $excel = $this->excel->filter(['chunk', 'range']);
 
         $filters = $this->excel->getFilters('enabled');
         $this->assertContains('chunk', $filters);
@@ -70,7 +70,7 @@ class RegisterFilterTestCase extends TestCase {
         $excel = $this->excel->filter('chunk', 'ChunkFilter');
 
         $registered = $this->excel->getFilters('registered');
-        $this->assertEquals(array('chunk' => 'ChunkFilter'), $registered);
+        $this->assertEquals(['chunk' => 'ChunkFilter'], $registered);
 
         $enabled    = $this->excel->getFilters('enabled');
         $this->assertContains('chunk', $enabled);

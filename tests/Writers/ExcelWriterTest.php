@@ -69,8 +69,8 @@ class ExcelWriterTest extends TestCase {
     {
         // Set params
         $view = 'excel';
-        $data = array();
-        $mergeData = array();
+        $data = [];
+        $mergeData = [];
 
         $viewShared = $this->writer->shareView($view, $data, $mergeData);
         $this->assertEquals($this->writer, $viewShared);
@@ -123,11 +123,11 @@ class ExcelWriterTest extends TestCase {
     public function testMultipleSheets()
     {
         // Set sheet titles
-        $sheets = array(
+        $sheets = [
             'Worksheet 1 title',
             'Worksheet 2 title',
             'Worksheet 3 title'
-        );
+        ];
 
         // Create the sheets
         foreach($sheets as $sheetTitle)
@@ -165,10 +165,10 @@ class ExcelWriterTest extends TestCase {
             $getMethod  = 'get' . ucfirst($prop);
 
             // Set the property with the random value
-            call_user_func_array(array($this->writer, $method), array($originalValue));
+            call_user_func_array([$this->writer, $method], [$originalValue]);
 
             // Get the property back
-            $returnedValue = call_user_func_array(array($this->writer->getProperties(), $getMethod), array());
+            $returnedValue = call_user_func_array([$this->writer->getProperties(), $getMethod], []);
 
             // Check if the properties matches
             $this->assertEquals($originalValue, $returnedValue, $prop . ' doesn\'t match');

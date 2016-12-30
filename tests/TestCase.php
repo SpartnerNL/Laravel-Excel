@@ -20,12 +20,12 @@ class TestCase extends TestBenchTestCase
 
     protected function getPackagePath()
     {
-        return realpath(implode(DIRECTORY_SEPARATOR, array(
+        return realpath(implode(DIRECTORY_SEPARATOR, [
             __DIR__,
             '..',
             'src',
             'Maatwebsite',
             'Excel'
-        )));
+        ]));
     }
 }

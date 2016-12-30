@@ -17,7 +17,7 @@ class CellCollection extends ExcelCollection {
      * @param  array $items
      * @return \Maatwebsite\Excel\Collections\CellCollection
      */
-    public function __construct(array $items = array())
+    public function __construct(array $items = [])
     {
         $this->setItems($items);
     }
