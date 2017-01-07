@@ -12,7 +12,7 @@ class FormatIdentifier {
      * @var array
      * @access  protected
      */
-    protected $formats = array(
+    protected $formats = [
         'Excel2007',
         'Excel5',
         'Excel2003XML',
@@ -22,7 +22,7 @@ class FormatIdentifier {
         'CSV',
         'HTML',
         'PDF'
-    );
+    ];
 
     /**
      * Construct new format identifier

@@ -94,9 +94,9 @@ class CellWriter {
      */
     public function setFontFamily($family)
     {
-        return $this->setStyle('font', array(
+        return $this->setStyle('font', [
             'name' => $family
-        ));
+        ]);
     }
 
     /**
@@ -106,9 +106,9 @@ class CellWriter {
      */
     public function setFontSize($size)
     {
-        return $this->setStyle('font', array(
+        return $this->setStyle('font', [
             'size' => $size
-        ));
+        ]);
     }
 
     /**
@@ -118,9 +118,9 @@ class CellWriter {
      */
     public function setFontWeight($bold = true)
     {
-        return $this->setStyle('font', array(
+        return $this->setStyle('font', [
             'bold' => ($bold === 'bold' || $bold === true)
-        ));
+        ]);
     }
 
     /**
@@ -134,20 +134,20 @@ class CellWriter {
     public function setBorder($top = 'none', $right = 'none', $bottom = 'none', $left = 'none')
     {
         // Set the border styles
-        $styles = is_array($top) ? $top : array(
-            'top'    => array(
+        $styles = is_array($top) ? $top : [
+            'top'    => [
                 'style' => $top
-            ),
-            'left'   => array(
+            ],
+            'left'   => [
                 'style' => $left,
-            ),
-            'right'  => array(
+            ],
+            'right'  => [
                 'style' => $right,
-            ),
-            'bottom' => array(
+            ],
+            'bottom' => [
                 'style' => $bottom,
-            )
-        );
+            ]
+        ];
 
         return $this->setStyle('borders', $styles);
     }
@@ -170,9 +170,9 @@ class CellWriter {
      */
     public function setAlignment($alignment)
     {
-        return $this->setStyle('alignment', array(
+        return $this->setStyle('alignment', [
             'horizontal' => $alignment
-        ));
+        ]);
     }
 
     /**
@@ -182,9 +182,9 @@ class CellWriter {
      */
     public function setValignment($alignment)
     {
-        return $this->setStyle('alignment', array(
+        return $this->setStyle('alignment', [
             'vertical' => $alignment
-        ));
+        ]);
     }
 
     /**
@@ -209,10 +209,10 @@ class CellWriter {
     protected function setColorStyle($styleType, $color, $type = false, $colorType = 'rgb')
     {
         // Set the styles
-        $styles = is_array($color) ? $color : array(
+        $styles = is_array($color) ? $color : [
             'type'  => $type,
-            'color' => array($colorType => str_replace('#', '', $color))
-        );
+            'color' => [$colorType => str_replace('#', '', $color)]
+        ];
 
         return $this->setStyle($styleType, $styles);
     }
@@ -229,9 +229,9 @@ class CellWriter {
         $style = $this->getCellStyle();
 
         // Apply style from array
-        $style->applyFromArray(array(
+        $style->applyFromArray([
             $styleType => $styles
-        ));
+        ]);
 
         return $this;
     }

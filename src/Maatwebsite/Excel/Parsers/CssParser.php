@@ -32,7 +32,7 @@ class CssParser {
      * Style sheet links
      * @var array
      */
-    protected $links = array();
+    protected $links = [];
 
     /**
      * Construct the css parser

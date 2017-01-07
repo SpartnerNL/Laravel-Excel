@@ -70,7 +70,7 @@ class ExcelParser {
      * Columns we want to fetch
      * @var array
      */
-    protected $columns = array();
+    protected $columns = [];
 
     /**
      * Row counter
@@ -105,7 +105,7 @@ class ExcelParser {
      * @param array $columns
      * @return SheetCollection
      */
-    public function parseFile($columns = array())
+    public function parseFile($columns = [])
     {
         // Init new sheet collection
         $workbook = new SheetCollection();
@@ -176,7 +176,7 @@ class ExcelParser {
         $this->excel->setActiveSheetIndex($this->w);
 
         // Fetch the labels
-        $this->indices = $this->reader->hasHeading() ? $this->getIndices() : array();
+        $this->indices = $this->reader->hasHeading() ? $this->getIndices() : [];
 
         // Parse the rows
         return $this->parseRows();
@@ -192,7 +192,7 @@ class ExcelParser {
         $this->row = $this->worksheet->getRowIterator($this->defaultStartRow)->current();
 
         // Set empty labels array
-        $this->indices = array();
+        $this->indices = [];
 
         // Loop through the cells
         foreach ($this->row->getCellIterator() as $this->cell)
@@ -457,7 +457,7 @@ class ExcelParser {
                 throw $e;
             }
             // make sure that we return an empty CellCollection
-            $parsedCells = array();
+            $parsedCells = [];
         }
 
         // Return array with parsed cells
@@ -667,7 +667,7 @@ class ExcelParser {
      */
     protected function reset()
     {
-        $this->indices = array();
+        $this->indices = [];
         $this->isParsed = false;
     }
 }

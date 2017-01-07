@@ -10,7 +10,7 @@ class ExcelTester extends ExcelTestCase {
      */
     public function testSelectSheets()
     {
-        $selected = $this->excel->selectSheets(array('sheet'));
+        $selected = $this->excel->selectSheets(['sheet']);
         $this->assertEquals($this->excel, $selected);
     }
 
@@ -20,7 +20,7 @@ class ExcelTester extends ExcelTestCase {
      */
     public function testSelectSheetsByIndex()
     {
-        $selected = $this->excel->selectSheetsByIndex(array('0'));
+        $selected = $this->excel->selectSheetsByIndex(['0']);
         $this->assertEquals($this->excel, $selected);
     }
 
@@ -30,7 +30,7 @@ class ExcelTester extends ExcelTestCase {
      */
     public function testShareView()
     {
-        $selected = $this->excel->shareView('filename', array('test'), array('test'));
+        $selected = $this->excel->shareView('filename', ['test'], ['test']);
         $this->assertEquals($this->writer, $selected);
     }
 
@@ -40,7 +40,7 @@ class ExcelTester extends ExcelTestCase {
      */
     public function testLoadView()
     {
-        $selected = $this->excel->loadView('filename', array('test'), array('test'));
+        $selected = $this->excel->loadView('filename', ['test'], ['test']);
         $this->assertEquals($this->writer, $selected);
     }
 }
