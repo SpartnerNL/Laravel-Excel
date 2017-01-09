@@ -2,6 +2,7 @@
 
 use Carbon\Carbon;
 use PHPExcel_Cell;
+use PHPExcel_Exception;
 use PHPExcel_Shared_Date;
 use Illuminate\Support\Str;
 use PHPExcel_Style_NumberFormat;
