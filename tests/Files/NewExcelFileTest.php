@@ -5,15 +5,13 @@ include_once 'classes/TestExportHandler.php';
 include_once 'classes/TestNewFile.php';
 include_once 'classes/TestNewFileHandler.php';
 
-class NewExcelFileTest extends TestCase {
-
-
+class NewExcelFileTest extends TestCase
+{
     public function testInit()
     {
         $exporter = app('TestExport');
         $this->assertInstanceOf('Maatwebsite\Excel\Files\NewExcelFile', $exporter);
     }
-
 
     public function testGetFilename()
     {
@@ -21,14 +19,12 @@ class NewExcelFileTest extends TestCase {
         $this->assertEquals('test-file', $exporter->getFilename());
     }
 
-
     public function testCreateNewFile()
     {
         $exporter = app('TestExport');
         $exporter->createNewFile();
-        $this->assertInstanceOf('Maatwebsite\Excel\Writers\LaravelExcelWriter', $exporter->getFileInstance());
+        $this->assertInstanceOf('Maatwebsite\Excel\Drivers\PHPExcel\Writers\LaravelExcelWriter', $exporter->getFileInstance());
     }
-
 
     public function testDirectUsage()
     {
@@ -38,18 +34,16 @@ class NewExcelFileTest extends TestCase {
         $this->assertEquals('New title', $exporter->getFileInstance()->getTitle());
     }
 
-
     public function testExportHandler()
     {
         $exporter = app('TestExport');
-        $result = $exporter->handleExport();
+        $result   = $exporter->handleExport();
 
         $this->assertEquals('exported', $result);
 
         $exporter = app('TestNewFile');
-        $result = $exporter->handleExport();
+        $result   = $exporter->handleExport();
 
         $this->assertEquals('exported', $result);
     }
-
 }

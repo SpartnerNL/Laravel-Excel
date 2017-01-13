@@ -1,35 +1,31 @@
 <?php
 
-use Maatwebsite\Excel\Collections\CellCollection;
+use Maatwebsite\Excel\Drivers\PHPExcel\Collections\CellCollection;
 
-class CellCollectionTest extends TestCase {
-
-
+class CellCollectionTest extends TestCase
+{
     public function __construct()
     {
         $this->collection = new CellCollection([
             'one' => 'one',
-            'two' => 'two'
+            'two' => 'two',
         ]);
     }
-
 
     public function testSetItems()
     {
         $this->collection->setItems([
-            'three' => 'three'
+            'three' => 'three',
         ]);
 
         $this->assertContains('three', $this->collection);
         $this->assertCount(3, $this->collection);
     }
 
-
     public function testDynamicGetters()
     {
         $this->assertEquals('two', $this->collection->two);
     }
-
 
     public function testIsset()
     {
@@ -37,13 +33,11 @@ class CellCollectionTest extends TestCase {
         $this->assertFalse(isset($this->collection->nonexisting));
     }
 
-
     public function testEmpty()
     {
         $this->assertFalse(empty($this->collection->two));
         $this->assertTrue(empty($this->collection->nonexisting));
     }
-
 
     public function testDynamicCheck()
     {

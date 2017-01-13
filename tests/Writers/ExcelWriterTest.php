@@ -1,14 +1,11 @@
 <?php
 
-use Mockery as m;
 use Maatwebsite\Excel\Facades\Excel;
-use Maatwebsite\Excel\Classes;
-use Maatwebsite\Excel\Writers\LaravelExcelWriter;
 
-class ExcelWriterTest extends TestCase {
-
+class ExcelWriterTest extends TestCase
+{
     /**
-     * Setup
+     * Setup.
      */
     public function setUp()
     {
@@ -23,7 +20,7 @@ class ExcelWriterTest extends TestCase {
     }
 
     /**
-     * Test the excel injection
+     * Test the excel injection.
      * @return [type] [description]
      */
     public function testExcelInjection()
@@ -32,12 +29,12 @@ class ExcelWriterTest extends TestCase {
     }
 
     /**
-     * Test setTitle()
+     * Test setTitle().
      * @return [type] [description]
      */
     public function testSetTitle()
     {
-        $title = 'Workbook Title';
+        $title    = 'Workbook Title';
         $titleSet = $this->writer->setTitle($title);
         $this->assertEquals($this->writer, $titleSet);
 
@@ -47,7 +44,7 @@ class ExcelWriterTest extends TestCase {
     }
 
     /**
-     * Test setTitle()
+     * Test setTitle().
      * @return [type] [description]
      */
     public function testSetFilename()
@@ -60,17 +57,16 @@ class ExcelWriterTest extends TestCase {
         $this->assertEquals($this->writer->getFileName(), $filename);
     }
 
-
     /**
-     * Test the share view
+     * Test the share view.
      * @return [type] [description]
      */
     public function testShareView()
     {
         // Set params
-        $view = 'excel';
-        $data = array();
-        $mergeData = array();
+        $view      = 'excel';
+        $data      = [];
+        $mergeData = [];
 
         $viewShared = $this->writer->shareView($view, $data, $mergeData);
         $this->assertEquals($this->writer, $viewShared);
@@ -85,12 +81,12 @@ class ExcelWriterTest extends TestCase {
     }
 
     /**
-     * Test basic sheet creation
+     * Test basic sheet creation.
      * @return [type] [description]
      */
     public function testSheet()
     {
-        $title = 'Worksheet Title';
+        $title        = 'Worksheet Title';
         $sheetCreated = $this->writer->sheet($title);
 
         $this->assertEquals($this->writer, $sheetCreated);
@@ -100,15 +96,15 @@ class ExcelWriterTest extends TestCase {
     }
 
     /**
-     * Test sheet closure
+     * Test sheet closure.
      * @return [type] [description]
      */
     public function testSheetClosure()
     {
-        $title = 'Worksheet Title';
+        $title        = 'Worksheet Title';
         $closureTitle = 'Closure Title';
 
-        $this->writer->sheet($title, function($sheet) use($closureTitle) {
+        $this->writer->sheet($title, function ($sheet) use ($closureTitle) {
             $sheet->setTitle($closureTitle);
         });
 
@@ -117,21 +113,20 @@ class ExcelWriterTest extends TestCase {
     }
 
     /**
-     * Test multiple sheet creation
+     * Test multiple sheet creation.
      * @return [type] [description]
      */
     public function testMultipleSheets()
     {
         // Set sheet titles
-        $sheets = array(
+        $sheets = [
             'Worksheet 1 title',
             'Worksheet 2 title',
-            'Worksheet 3 title'
-        );
+            'Worksheet 3 title',
+        ];
 
         // Create the sheets
-        foreach($sheets as $sheetTitle)
-        {
+        foreach ($sheets as $sheetTitle) {
             $this->writer->sheet($sheetTitle);
         }
 
@@ -139,14 +134,13 @@ class ExcelWriterTest extends TestCase {
         $this->assertEquals(count($sheets), $this->writer->getSheetCount());
 
         // Test if all sheet titles where set correctly
-        foreach($sheets as $sheetTitle)
-        {
+        foreach ($sheets as $sheetTitle) {
             $this->assertContains($sheetTitle, $this->writer->getSheetNames());
         }
     }
 
     /**
-     * Test setting properties (creator, ...)
+     * Test setting properties (creator, ...).
      * @return [type] [description]
      */
     public function testSetProperties()
@@ -155,8 +149,7 @@ class ExcelWriterTest extends TestCase {
         $properties = $this->excel->getAllowedProperties();
 
         // Loop through them
-        foreach($properties as $prop)
-        {
+        foreach ($properties as $prop) {
             // Set a random value
             $originalValue = rand();
 
@@ -165,10 +158,10 @@ class ExcelWriterTest extends TestCase {
             $getMethod  = 'get' . ucfirst($prop);
 
             // Set the property with the random value
-            call_user_func_array(array($this->writer, $method), array($originalValue));
+            call_user_func_array([$this->writer, $method], [$originalValue]);
 
             // Get the property back
-            $returnedValue = call_user_func_array(array($this->writer->getProperties(), $getMethod), array());
+            $returnedValue = call_user_func_array([$this->writer->getProperties(), $getMethod], []);
 
             // Check if the properties matches
             $this->assertEquals($originalValue, $returnedValue, $prop . ' doesn\'t match');
@@ -177,13 +170,11 @@ class ExcelWriterTest extends TestCase {
 
     public function testCreateFromArray()
     {
-        $info = Excel::create('test', function ($writer)
-        {
+        $info = Excel::create('test', function ($writer) {
 
-            $writer->sheet('test', function ($sheet)
-            {
+            $writer->sheet('test', function ($sheet) {
                 $sheet->fromArray([
-                    'test data'
+                    'test data',
                 ]);
             });
         })->store('csv', __DIR__ . '/exports', true);
@@ -191,13 +182,10 @@ class ExcelWriterTest extends TestCase {
         $this->assertTrue(file_exists($info['full']));
     }
 
-
     public function testNumberPrecision()
     {
-        $info = Excel::create('numbers', function ($writer)
-        {
-            $writer->sheet('test', function ($sheet)
-            {
+        $info = Excel::create('numbers', function ($writer) {
+            $writer->sheet('test', function ($sheet) {
                 $sheet->fromArray([
                     ['number' => '1234'],
                     ['number' => '1234.020'],

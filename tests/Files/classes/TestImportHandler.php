@@ -2,10 +2,10 @@
 
 use Maatwebsite\Excel\Files\ImportHandler;
 
-class TestImportHandler implements ImportHandler {
-
+class TestImportHandler implements ImportHandler
+{
     /**
-     * Handle
+     * Handle.
      * @param $file
      * @return mixed|void
      */
@@ -13,5 +13,4 @@ class TestImportHandler implements ImportHandler {
     {
         return $file->get();
     }
-
-} 
+}

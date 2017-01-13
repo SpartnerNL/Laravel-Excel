@@ -1,21 +1,21 @@
 <?php
 
-trait ImportTrait {
-
+trait ImportTrait
+{
     /**
-     * Test csv file
+     * Test csv file.
      * @var [type]
      */
     protected $file;
 
     /**
-     * Loaded csv file
+     * Loaded csv file.
      * @var [type]
      */
     protected $loadedFile;
 
     /**
-     * Setup
+     * Setup.
      */
     public function setUp()
     {
@@ -32,15 +32,16 @@ trait ImportTrait {
         $this->reader->injectExcel($this->excel);
 
         // Disable heading usage
-        if(isset($this->noHeadings) && $this->noHeadings)
+        if (isset($this->noHeadings) && $this->noHeadings) {
             $this->reader->noHeading(true);
+        }
 
         // Load csv file
         $this->loadFile();
     }
 
     /**
-     * Test loading a csv file
+     * Test loading a csv file.
      * @return [type] [description]
      */
     public function testLoadFile()
@@ -50,7 +51,7 @@ trait ImportTrait {
     }
 
     /**
-     * Load a csv file
+     * Load a csv file.
      * @return [type] [description]
      */
     protected function loadFile()
@@ -63,7 +64,7 @@ trait ImportTrait {
     }
 
     /**
-     * Load a csv file
+     * Load a csv file.
      * @return [type] [description]
      */
     protected function reload()

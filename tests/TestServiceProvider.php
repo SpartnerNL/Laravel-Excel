@@ -5,7 +5,6 @@ use Mockery as m;
 
 class TestServiceProvider extends TestCase
 {
-
     public function setUp()
     {
         parent::setUp();
@@ -19,7 +18,7 @@ class TestServiceProvider extends TestCase
 
     public function testProviders()
     {
-        $app = m::mock('Illuminate\Foundation\Application');
+        $app      = m::mock('Illuminate\Foundation\Application');
         $provider = new ExcelServiceProvider($app);
 
         $this->assertCount(6, $provider->provides());

@@ -1,9 +1,9 @@
 <?php
 
-class CustomValuBinderTest extends TestCase {
-
+class CustomValuBinderTest extends TestCase
+{
     /**
-     * Setup
+     * Setup.
      */
     public function setUp()
     {
@@ -26,7 +26,7 @@ class CustomValuBinderTest extends TestCase {
     }
 
     /**
-     * Tear down
+     * Tear down.
      */
     public function tearDown()
     {
@@ -37,7 +37,7 @@ class CustomValuBinderTest extends TestCase {
     public function testDefaultGet()
     {
         $got = $this->loadedFile->get();
-        $this->assertInstanceOf('Maatwebsite\Excel\Collections\RowCollection', $got);
+        $this->assertInstanceOf('Maatwebsite\Excel\Drivers\PHPExcel\Collections\RowCollection', $got);
         $this->assertCount(5, $got);
     }
 
@@ -82,7 +82,7 @@ class CustomValuBinderTest extends TestCase {
     }
 
     /**
-     * Load a csv file
+     * Load a csv file.
      * @return [type] [description]
      */
     protected function loadFile()

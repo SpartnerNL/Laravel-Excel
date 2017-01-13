@@ -8,7 +8,7 @@ Require this package in your `composer.json` and update composer. This will down
     
 #### Laravel 5
 
-    "maatwebsite/excel": "~2.0"
+    "maatwebsite/excel": "~2.1.0"
 
 After updating composer, add the ServiceProvider to the providers array in `app/config/app.php`
 

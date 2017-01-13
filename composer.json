@@ -18,12 +18,12 @@
     }
   ],
   "require": {
-    "php": ">=5.4",
+    "php": ">=5.5",
     "phpoffice/phpexcel": "1.8.*",
-    "illuminate/cache": "5.0.*|5.1.*|5.2.*",
-    "illuminate/config": "5.0.*|5.1.*|5.2.*",
-    "illuminate/filesystem": "5.0.*|5.1.*|5.2.*",
-    "illuminate/support": "5.0.*|5.1.*|5.2.*",
+    "illuminate/cache": "5.0.*|5.1.*|5.2.*|5.3.*",
+    "illuminate/config": "5.0.*|5.1.*|5.2.*|5.3.*",
+    "illuminate/filesystem": "5.0.*|5.1.*|5.2.*|5.3.*",
+    "illuminate/support": "5.0.*|5.1.*|5.2.*|5.3.*",
     "nesbot/carbon": "~1.0",
     "tijsverkoyen/css-to-inline-styles": "~1.5"
   },
@@ -31,20 +31,25 @@
     "phpseclib/phpseclib": "~1.0",
     "phpunit/phpunit": "~4.0",
     "mockery/mockery": "~0.9",
-    "orchestra/testbench": "3.0.*"
+    "orchestra/testbench": "3.1.*"
   },
   "suggest": {
-    "illuminate/http": "5.0.*|5.1.*|5.2.*",
-    "illuminate/routing": "5.0.*|5.1.*|5.2.*",
-    "illuminate/view": "5.0.*|5.1.*|5.2.*"
+    "illuminate/http": "5.0.*|5.1.*|5.2.*|5.3.*",
+    "illuminate/routing": "5.0.*|5.1.*|5.2.*|5.3.*",
+    "illuminate/view": "5.0.*|5.1.*|5.2.*|5.3.*",
+    "illuminate/queue": "5.0.*|5.1.*|5.2.*|5.3.*"
   },
   "autoload": {
     "classmap": [
-      "src/Maatwebsite/Excel",
-      "tests/TestCase.php"
+      "src/"
     ],
-    "psr-0": {
+    "psr-4": {
       "Maatwebsite\\Excel\\": "src/"
     }
+  },
+  "autoload-dev": {
+    "classmap": [
+      "tests/TestCase.php"
+    ]
   }
 }

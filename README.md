@@ -1,4 +1,4 @@
-## Laravel Excel v2.0.0 for Laravel 5
+## Laravel Excel v2.1.* for Laravel 5
 
 Looking for Laravel Excel for Laravel 4? Visit the [`1.3` branch](https://github.com/Maatwebsite/Laravel-Excel/tree/1.3)
 
@@ -12,7 +12,7 @@ Laravel Excel brings the power of PHPOffice's PHPExcel to Laravel 5 with a touch
 - **Batch** imports
 - A lot of optional **config settings**
 - Easy **cell caching**
-- Chunked importer
+- Chunked and queued importer
 - ExcelFile method injections
 - Editing existing Excel files
 - **Advanced import** by config files
@@ -46,19 +46,19 @@ Excel::create('Laravel Excel', function($excel) {
 Require this package in your `composer.json` and update composer. This will download the package and PHPExcel of PHPOffice.
 
 ```php
-"maatwebsite/excel": "~2.0.0"
+"maatwebsite/excel": "~2.1.0"
 ```
 
 After updating composer, add the ServiceProvider to the providers array in `config/app.php`
 
 ```php
-'Maatwebsite\Excel\ExcelServiceProvider',
+Maatwebsite\Excel\ExcelServiceProvider::class,
 ```
 
 You can use the facade for shorter code. Add this to your aliases:
 
 ```php
-'Excel' => 'Maatwebsite\Excel\Facades\Excel',
+'Excel' => Maatwebsite\Excel\Facades\Excel::class,
 ```
 
 The class is bound to the ioC as `excel`
@@ -70,7 +70,7 @@ $excel = App::make('excel');
 To publish the config settings in Laravel 5 use:
 
 ```php
-php artisan vendor:publish
+php artisan vendor:publish --provider="Maatwebsite\Excel\ExcelServiceProvider"
 ```
 
 This will add an `excel.php` config file to your config folder.
