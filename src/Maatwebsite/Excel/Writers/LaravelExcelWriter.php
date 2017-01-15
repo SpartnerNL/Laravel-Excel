@@ -356,8 +356,14 @@ class LaravelExcelWriter {
         // Set the extension
         $this->ext = $ext;
 
+        // Preserve any existing active sheet index
+        $activeIndex = $this->getExcel()->getActiveSheetIndex();
+
         // Render the XLS
         $this->_render();
+
+        // Restore active sheet index.
+        $this->setActiveSheetIndex($activeIndex);
 
         // Set the storage path and file
         $toStore = $this->storagePath . '/' . $this->filename . '.' . $this->ext;
