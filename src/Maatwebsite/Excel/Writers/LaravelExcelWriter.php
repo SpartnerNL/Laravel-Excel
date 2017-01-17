@@ -356,14 +356,8 @@ class LaravelExcelWriter {
         // Set the extension
         $this->ext = $ext;
 
-        // Preserve any existing active sheet index
-        $activeIndex = $this->getExcel()->getActiveSheetIndex();
-
         // Render the XLS
         $this->_render();
-
-        // Restore active sheet index.
-        $this->setActiveSheetIndex($activeIndex);
 
         // Set the storage path and file
         $toStore = $this->storagePath . '/' . $this->filename . '.' . $this->ext;
@@ -417,6 +411,9 @@ class LaravelExcelWriter {
      */
     protected function _render()
     {
+        // Preserve any existing active sheet index
+        $activeIndex = $this->getExcel()->getActiveSheetIndex();
+
         //Fix borders for merged cells
         foreach($this->getAllSheets() as $sheet){
 
@@ -427,6 +424,9 @@ class LaravelExcelWriter {
                 $sheet->duplicateStyle($style, $cells);
             }
         }
+
+        // Restore active sheet index.
+        $this->setActiveSheetIndex($activeIndex);
 
         // There should be enough sheets to continue rendering
         if ($this->excel->getSheetCount() < 0)
