@@ -235,4 +235,13 @@ class ExcelWriterTest extends TestCase {
 
         $this->assertEquals(1234 + 1234, $results[8]['number']);
     }
+
+    /**
+     * @expectedException Maatwebsite\Excel\Exceptions\LaravelExcelException
+     * @expectedExceptionMessage [ERROR] Aborting spreadsheet render: a minimum of 1 sheet is required.
+     */
+    public function testNoSheets()
+    {
+        Excel::create('no_sheets', function ($writer) {})->string();
+    }
 }
