@@ -24,6 +24,7 @@
     "illuminate/config": "5.0.*|5.1.*|5.2.*|5.3.*|5.4.*",
     "illuminate/filesystem": "5.0.*|5.1.*|5.2.*|5.3.*|5.4.*",
     "illuminate/support": "5.0.*|5.1.*|5.2.*|5.3.*|5.4.*",
+    "jeremeamia/superclosure": "^2.3",
     "nesbot/carbon": "~1.0",
     "tijsverkoyen/css-to-inline-styles": "~2.0"
   },
