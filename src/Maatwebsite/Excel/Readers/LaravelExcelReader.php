@@ -96,18 +96,31 @@ class LaravelExcelReader
     public $calculate;
 
     /**
-     * Limit data
+     * Limit of rows
      *
      * @var boolean
      */
-    protected $limit = false;
+    protected $limitRows = false;
 
     /**
      * Amount of rows to skip
      *
      * @var integer
      */
-    protected $skip = 0;
+    protected $skipRows = 0;
+    /**
+     * Limit of columns
+     *
+     * @var boolean
+     */
+    protected $limitColumns = false;
+
+    /**
+     * Amount of columns to skip
+     *
+     * @var integer
+     */
+    protected $skipColumns = 0;
 
     /**
      * Slug separator
@@ -441,7 +454,20 @@ class LaravelExcelReader
     public function take($amount)
     {
         // Set limit
-        $this->limit = $amount;
+        return $this->takeRows($amount);
+    }
+
+    /**
+     * Take x rows
+     *
+     * @param  integer $amount
+     *
+     * @return LaravelExcelReader
+     */
+    public function takeRows($amount)
+    {
+        // Set limit
+        $this->limitRows = $amount;
 
         return $this;
     }
@@ -456,7 +482,20 @@ class LaravelExcelReader
     public function skip($amount)
     {
         // Set skip amount
-        $this->skip = $amount;
+        return $this->skipRows($amount);
+    }
+
+    /**
+     * Skip x rows
+     *
+     * @param  integer $amount
+     *
+     * @return LaravelExcelReader
+     */
+    public function skipRows($amount)
+    {
+        // Set skip amount
+        $this->skipRows = $amount;
 
         return $this;
     }
@@ -471,11 +510,74 @@ class LaravelExcelReader
      */
     public function limit($take, $skip = 0)
     {
+        // Limit the results by x
+        return $this->limitRows($take, $skip);
+    }
+
+    /**
+     * Limit the results by x
+     *
+     * @param  integer $take
+     * @param  integer $skip
+     *
+     * @return LaravelExcelReader
+     */
+    public function limitRows($take, $skip = 0)
+    {
         // Skip x records
-        $this->skip($skip);
+        $this->skipRows($skip);
 
         // Take x records
-        $this->take($take);
+        $this->takeRows($take);
+
+        return $this;
+    }
+
+    /**
+     * Take x columns
+     *
+     * @param  integer $amount
+     *
+     * @return LaravelExcelReader
+     */
+    public function takeColumns($amount)
+    {
+        // Set limit
+        $this->limitColumns = $amount;
+
+        return $this;
+    }
+
+    /**
+     * Skip x columns
+     *
+     * @param  integer $amount
+     *
+     * @return LaravelExcelReader
+     */
+    public function skipColumns($amount)
+    {
+        // Set skip amount
+        $this->skipColumns = $amount;
+
+        return $this;
+    }
+
+    /**
+     * Limit the results by x
+     *
+     * @param  integer $take
+     * @param  integer $skip
+     *
+     * @return LaravelExcelReader
+     */
+    public function limitColumns($take, $skip = 0)
+    {
+        // Skip x records
+        $this->skipColumns($skip);
+
+        // Take x records
+        $this->takeColumns($take);
 
         return $this;
     }
@@ -1002,7 +1104,17 @@ class LaravelExcelReader
      */
     public function getSkip()
     {
-        return $this->skip;
+        return $this->getSkipRows();
+    }
+
+    /**
+     * Return the amount of rows to skip
+     *
+     * @return integer
+     */
+    public function getSkipRows()
+    {
+        return $this->skipRows;
     }
 
     /**
@@ -1012,7 +1124,69 @@ class LaravelExcelReader
      */
     public function getLimit()
     {
-        return $this->limit;
+        return $this->getLimitRows();
+    }
+
+    /**
+     * Return the amount of rows to take
+     *
+     * @return integer
+     */
+    public function getLimitRows()
+    {
+        return $this->limitRows;
+    }
+
+    /**
+     * Return the amount of columns to skip
+     *
+     * @return integer
+     */
+    public function getSkipColumns()
+    {
+        return $this->skipColumns;
+    }
+
+    /**
+     * Return the target of columns to skip
+     *
+     * @return string
+     */
+    public function getTargetSkipColumns()
+    {
+        if (empty($this->limitColumns)) {
+            return 'A';
+        }
+
+        $letters = range('A','ZZZ');
+
+        return $letters[$this->skipColumns];
+    }
+
+    /**
+     * Return the amount of columns to take
+     *
+     * @return integer
+     */
+    public function getLimitColumns()
+    {
+        return $this->limitColumns;
+    }
+
+    /**
+     * Return the target of columns to take
+     *
+     * @return string
+     */
+    public function getTargetLimitColumns()
+    {
+        if (empty($this->limitColumns)) {
+            return;
+        }
+
+        $letters = range('A','ZZZ');
+
+        return $letters[$this->limitColumns -1];
     }
 
     /**

@@ -368,7 +368,7 @@ class ExcelParser {
         foreach ($rows as $this->row)
         {
             // Limit the results when needed
-            if ( $this->hasReachedLimit() )
+            if ( $this->hasReachedLimitRows() )
                 break;
 
             // Push the parsed cells inside the parsed rows
@@ -407,16 +407,16 @@ class ExcelParser {
     }
 
     /**
-     * Check for the limit
+     * Check for the row limit
      * @return boolean
      */
-    protected function hasReachedLimit()
+    protected function hasReachedLimitRows()
     {
         // Get skip
-        $limit = $this->reader->getLimit();
+        $rowsLimit = $this->reader->getLimitRows();
 
         // If we have a limit, check if we hit this limit
-        return $limit && $this->currentRow > $limit ? true : false;
+        return $rowsLimit && $this->currentRow > $rowsLimit ? true : false;
     }
 
     /**
@@ -428,9 +428,15 @@ class ExcelParser {
         $i = 0;
         $parsedCells = array();
 
+        // Skip the columns when needed
+        $startColumn = $this->reader->getTargetSkipColumns();
+
+        // Limit the columns when needed
+        $endColumn = $this->reader->getTargetLimitColumns();
+
         try {
             // Set the cell iterator
-            $cellIterator = $this->row->getCellIterator();
+            $cellIterator = $this->row->getCellIterator($startColumn, $endColumn);
 
             // Ignore empty cells if needed
             $cellIterator->setIterateOnlyExistingCells($this->reader->needsIgnoreEmpty());
