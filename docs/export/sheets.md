@@ -2,7 +2,7 @@
 
 ### Creating a sheet
 
-To create a new sheet inside our newly created file, use `->sheet('Sheetname')`.
+To create a new sheet inside our newly created file, use `->sheet('Sheetname')` with callback of `LaravelExcelWorksheet` type parameter.
 
     Excel::create('Filename', function($excel) {
 
