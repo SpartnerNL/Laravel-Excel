@@ -27,7 +27,7 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet {
      * Parent
      * @var PHPExcel
      */
-    public $_parent;
+    private $_parent;
 
     /**
      * Parser
@@ -39,25 +39,25 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet {
      * View
      * @var string
      */
-    public $view;
+    private $view;
 
     /**
      * Data
      * @var array
      */
-    public $data = [];
+    private $data = [];
 
     /**
      * Merge data
      * @var array
      */
-    public $mergeData = [];
+    private $mergeData = [];
 
     /**
      * Allowed page setup
      * @var array
      */
-    public $allowedPageSetup = [
+    private $allowedPageSetup = [
         'orientation',
         'paperSize',
         'scale',
@@ -76,7 +76,7 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet {
      * Allowed page setup
      * @var array
      */
-    public $allowedStyles = [
+    private $allowedStyles = [
         'fontFamily',
         'fontSize',
         'fontBold'
@@ -86,7 +86,7 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet {
      * Check if the file was autosized
      * @var boolean
      */
-    public $hasFixedSizeColumns = false;
+    private $hasFixedSizeColumns = false;
 
     /**
      * Auto generate table heading
@@ -1261,5 +1261,21 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet {
         is_string($cellValue) && is_numeric($cellValue) && !is_integer($cellValue)
             ? $this->getCell($currentColumn . $startRow)->setValueExplicit($cellValue)
             : $this->getCell($currentColumn . $startRow)->setValue($cellValue);
+    }
+
+    /**
+     * @return array
+     */
+    public function getAllowedPageSetup(): array
+    {
+        return $this->allowedPageSetup;
+    }
+
+    /**
+     * @return array
+     */
+    public function getAllowedStyles(): array
+    {
+        return $this->allowedStyles;
     }
 }
