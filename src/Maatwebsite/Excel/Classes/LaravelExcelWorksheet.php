@@ -133,7 +133,7 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet {
 
             // Set the page setup value
             if (!is_null($value))
-                call_user_func_array(array($pageSetup, $setter), array($value));
+                call_user_func_array([$pageSetup, $setter], [$value]);
         }
 
         // Set default page margins
@@ -496,7 +496,7 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet {
         //    Convert a 1-D array to 2-D (for ease of looping)
         if (!is_array(end($source)))
         {
-            $source = array($source);
+            $source = [$source];
         }
 
         // start coordinate
@@ -787,7 +787,7 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet {
         }
 
         // Return the setter method and the key
-        return array($setter, $key);
+        return [$setter, $key];
     }
 
     /**
@@ -1264,17 +1264,19 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet {
     }
 
     /**
+     * Allowed page setup
      * @return array
      */
-    public function getAllowedPageSetup(): array
+    public function getAllowedPageSetup()
     {
         return $this->allowedPageSetup;
     }
 
     /**
+     * Allowed page setup
      * @return array
      */
-    public function getAllowedStyles(): array
+    public function getAllowedStyles()
     {
         return $this->allowedStyles;
     }
