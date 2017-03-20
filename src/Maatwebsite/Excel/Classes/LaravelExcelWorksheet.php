@@ -27,7 +27,7 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet {
      * Parent
      * @var PHPExcel
      */
-    private $_parent;
+    public $_parent;
 
     /**
      * Parser
