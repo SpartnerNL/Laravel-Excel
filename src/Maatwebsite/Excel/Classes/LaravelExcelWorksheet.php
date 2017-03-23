@@ -45,19 +45,19 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet {
      * Data
      * @var array
      */
-    private $data = [];
+    public $data = [];
 
     /**
      * Merge data
      * @var array
      */
-    private $mergeData = [];
+    public $mergeData = [];
 
     /**
      * Allowed page setup
      * @var array
      */
-    private $allowedPageSetup = [
+    public $allowedPageSetup = [
         'orientation',
         'paperSize',
         'scale',
@@ -76,7 +76,7 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet {
      * Allowed page setup
      * @var array
      */
-    private $allowedStyles = [
+    public $allowedStyles = [
         'fontFamily',
         'fontSize',
         'fontBold'
@@ -86,7 +86,7 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet {
      * Check if the file was autosized
      * @var boolean
      */
-    private $hasFixedSizeColumns = false;
+    public $hasFixedSizeColumns = false;
 
     /**
      * Auto generate table heading
