@@ -39,7 +39,7 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet {
      * View
      * @var string
      */
-    private $view;
+    public $view;
 
     /**
      * Data
