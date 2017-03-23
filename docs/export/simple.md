@@ -6,7 +6,7 @@ A new file can be created using the `create` method with the filename as first p
 
     Excel::create('Filename');
 
-To manipulate the creation of the file you can use the callback
+To manipulate the creation of the file you can use the callback with `LaravelExcelWriter` parameter
 
     Excel::create('Filename', function($excel) {
 

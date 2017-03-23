@@ -1,9 +1,6 @@
 <?php
 
-use Mockery as m;
 use Maatwebsite\Excel\Facades\Excel;
-use Maatwebsite\Excel\Classes;
-use Maatwebsite\Excel\Writers\LaravelExcelWriter;
 
 class ExcelWriterTest extends TestCase {
 
@@ -191,6 +188,28 @@ class ExcelWriterTest extends TestCase {
         $this->assertTrue(file_exists($info['full']));
     }
 
+    public function testCreateSheetFromArray()
+    {
+        $info = Excel::create('test', function ($writer) {
+            $writer->sheet('test', function ($sheet) {
+                $sheet->createSheetFromArray([
+                    'test data'
+                ]);
+            });
+        })->store('csv', __DIR__ . '/exports', true);
+
+        $this->assertTrue(file_exists($info['full']));
+    }
+
+    public function testCreateSheetFromArrayThrowsException()
+    {
+        Excel::create('test', function ($writer) {
+            $writer->sheet('test', function ($sheet) {
+                $this->setExpectedException(PHPExcel_Exception::class);
+                $sheet->createSheetFromArray('test data');
+            });
+        })->store('csv', __DIR__ . '/exports', true);
+    }
 
     public function testNumberPrecision()
     {
