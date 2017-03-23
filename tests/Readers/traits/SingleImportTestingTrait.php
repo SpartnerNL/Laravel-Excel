@@ -212,6 +212,29 @@ trait SingleImportTestingTrait {
         $this->assertEquals(2, $taken->getLimit());
         $this->assertEquals(1, $taken->getSkip());
         $this->assertCount(2, $taken->get());
+        $this->assertCount(3, $taken->first());
+    }
+
+
+    public function testLimitRows()
+    {
+        $taken = $this->loadedFile->limitRows(2, 1);
+        $this->assertEquals(2, $taken->getLimitRows());
+        $this->assertEquals(1, $taken->getSkipRows());
+        $this->assertCount(2, $taken->get());
+        $this->assertCount(3, $taken->first());
+    }
+
+
+    public function testLimitColumns()
+    {
+        $taken = $this->loadedFile->limitColumns(3, 1);
+        $this->assertEquals(3, $taken->getLimitColumns());
+        $this->assertEquals('C', $taken->getTargetLimitColumns());
+        $this->assertEquals(1, $taken->getSkipColumns());
+        $this->assertEquals('B', $taken->getTargetSkipColumns());
+        $this->assertCount(5, $taken->get());
+        $this->assertCount(2, $taken->first());
     }
 
 

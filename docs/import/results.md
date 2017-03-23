@@ -61,33 +61,53 @@ It's possible to retrieve the workbook and sheet title with `->getTitle()`.
         $sheetTitle = $sheet->getTitle();
     }
 
-### Limiting the results
+### Limiting the file reading
 
 ##### Taking rows
 
-When you only want to return the first x rows of a sheet, you can use `->take()` or `->limit()`.
+When you only want to return the first x rows of a sheet, you can use `->takeRows()` or `->limitRows()`.
 
-    // You can either use ->take()
-    $reader->take(10);
+    // You can either use ->takeRows()
+    $reader->takeRows(10);
 
-    // Or ->limit()
-    $reader->limit(10);
+    // Or ->limitRows()
+    $reader->limitRows(10);
 
 ##### Skipping rows
 
-When you want to skip a certain amount of rows you can use `->skip()` or `->limit(false, 10)`
+When you want to skip a certain amount of rows you can use `->skipRows()` or `->limitRows(false, 10)`
 
     // Skip 10 results
-    $reader->skip(10);
+    $reader->skipRows(10);
 
     // Skip 10 results with limit, but return all other rows
-    $reader->limit(false, 10);
+    $reader->limitRows(false, 10);
 
     // Skip and take
-    $reader->skip(10)->take(10);
+    $reader->skipRows(10)->takeRows(10);
 
-    // Limit with skip and take
-    $reader->($skip, $take);
+##### Taking columns
+
+When you only want to return the first x columns of a sheet, you can use `->takeColumns()` or `->limitColumns()`.
+
+    // You can either use ->takeColumns()
+    $reader->takeColumns(10);
+
+    // Or ->limitColumns()
+    $reader->limitColumns(10);
+
+##### Skipping columns
+
+When you want to skip a certain amount of columns you can use `->skipColumns()` or `->limitColumns(false, 10)`
+
+    // Skip 10 results
+    $reader->skipColumns(10);
+
+    // Skip 10 results with limit, but return all other columns
+    $reader->limitColumns(false, 10);
+
+    // Skip and take
+    $reader->skipColumns(10)->takeColumns(10);
 
 ### Result mutators
 
