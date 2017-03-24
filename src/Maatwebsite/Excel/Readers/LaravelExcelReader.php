@@ -108,6 +108,14 @@ class LaravelExcelReader
      * @var integer
      */
     protected $skipRows = 0;
+
+    /**
+     * Target columns
+     *
+     * @var array
+     */
+    protected $targetColumns = [];
+
     /**
      * Limit of columns
      *
@@ -1154,13 +1162,32 @@ class LaravelExcelReader
      */
     public function getTargetSkipColumns()
     {
-        if (empty($this->limitColumns)) {
+        if (empty($this->skipColumns)) {
             return 'A';
         }
 
-        $letters = range('A','ZZZ');
+        $columns = $this->getTargetColumns();
 
-        return $letters[$this->skipColumns];
+        return $columns[$this->skipColumns];
+    }
+
+    /**
+     * Return the target columns
+     *
+     * @return array
+     */
+    private function getTargetColumns()
+    {
+        if (!empty($this->targetColumns)) {
+            return $this->targetColumns;
+        }
+
+        $this->targetColumns = [];
+        for ($letter = 'A'; $letter <= 'ZZZ'; $letter++) {
+            $this->targetColumns[] = $letter;
+        }
+
+        return $this->targetColumns;
     }
 
     /**
@@ -1184,9 +1211,9 @@ class LaravelExcelReader
             return;
         }
 
-        $letters = range('A','ZZZ');
+        $columns = $this->getTargetColumns();
 
-        return $letters[$this->limitColumns -1];
+        return $columns[$this->limitColumns -1];
     }
 
     /**
