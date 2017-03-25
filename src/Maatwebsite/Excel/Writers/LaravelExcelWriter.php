@@ -680,7 +680,7 @@ class LaravelExcelWriter {
     }
 
     /**
-     * Valid file extensions for export() and download() methods.
+     * Valid file extensions for store(), export() and download() methods.
      * @return array
      */
     public function getValidExtensions()
