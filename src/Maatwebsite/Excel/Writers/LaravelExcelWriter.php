@@ -72,6 +72,12 @@ class LaravelExcelWriter {
     public $ext = 'xls';
 
     /**
+     * Valid file extensions for store(), export() and download() methods.
+     * @var array
+     */
+    private $validExtensions = ['xls', 'xlsx', 'csv'];
+
+    /**
      * Path the file will be stored to
      * @var string
      */
@@ -253,6 +259,8 @@ class LaravelExcelWriter {
      */
     public function export($ext = 'xls', Array $headers = [])
     {
+        $this->checkExtensionIsValid($ext);
+
         // Set the extension
         $this->ext = $ext;
 
@@ -263,6 +271,13 @@ class LaravelExcelWriter {
         $this->_download($headers);
     }
 
+    private function checkExtensionIsValid($ext) {
+        // Check file extension is valid
+        if (!in_array($ext, $this->validExtensions)) {
+            throw new \InvalidArgumentException("Invalid file extension `$ext`, expected "
+                .implode(", ",$this->validExtensions).".");
+        }
+    }
     /**
      * Convert and existing file to newly requested extension
      * @param       $ext
@@ -350,6 +365,8 @@ class LaravelExcelWriter {
      */
     public function store($ext = 'xls', $path = false, $returnInfo = false)
     {
+        $this->checkExtensionIsValid($ext);
+
         // Set the storage path
         $this->_setStoragePath($path);
 
@@ -526,7 +543,7 @@ class LaravelExcelWriter {
 
     /**
      * Set the writer
-     * @return PHPExcel_***_Writer
+     * @return PHPExcel_Writer
      */
     protected function _setWriter()
     {
@@ -661,4 +678,14 @@ class LaravelExcelWriter {
 
         throw new LaravelExcelException('[ERROR] Writer method [' . $method . '] does not exist.');
     }
+
+    /**
+     * Valid file extensions for export() and download() methods.
+     * @return array
+     */
+    public function getValidExtensions()
+    {
+        return $this->validExtensions;
+    }
+
 }
