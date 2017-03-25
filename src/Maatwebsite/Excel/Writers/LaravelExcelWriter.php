@@ -75,7 +75,17 @@ class LaravelExcelWriter {
      * Valid file extensions for store(), export() and download() methods.
      * @var array
      */
-    private $validExtensions = ['xls', 'xlsx', 'csv'];
+    private $validExtensions = [
+        'xls', 'xlsm', 'xltx', 'xltm', //Excel 2007
+        'xls', 'xlt', //Excel5
+        'ods', 'ots', //OOCalc
+        'slk', //SYLK
+        'xml', //Excel2003XML
+        'gnumeric', //gnumeric
+        'htm', 'html', //HTML
+        'csv','txt' //CSV
+        ,'pdf' //PDF
+    ];
 
     /**
      * Path the file will be stored to
@@ -259,10 +269,8 @@ class LaravelExcelWriter {
      */
     public function export($ext = 'xls', Array $headers = [])
     {
-        $this->checkExtensionIsValid($ext);
-
         // Set the extension
-        $this->ext = $ext;
+        $this->ext = mb_strtolower($ext);
 
         // Render the file
         $this->_render();
@@ -271,13 +279,20 @@ class LaravelExcelWriter {
         $this->_download($headers);
     }
 
-    private function checkExtensionIsValid($ext) {
+    /**
+     * Check if input file extension is valid.
+     * @param $ext
+     */
+    private function checkExtensionIsValid($ext)
+    {
         // Check file extension is valid
-        if (!in_array($ext, $this->validExtensions)) {
+        if (!in_array($ext, $this->validExtensions))
+        {
             throw new \InvalidArgumentException("Invalid file extension `$ext`, expected "
-                .implode(", ",$this->validExtensions).".");
+                .implode(", ", $this->validExtensions).".");
         }
     }
+
     /**
      * Convert and existing file to newly requested extension
      * @param       $ext
@@ -365,13 +380,11 @@ class LaravelExcelWriter {
      */
     public function store($ext = 'xls', $path = false, $returnInfo = false)
     {
-        $this->checkExtensionIsValid($ext);
-
         // Set the storage path
         $this->_setStoragePath($path);
 
         // Set the extension
-        $this->ext = $ext;
+        $this->ext = mb_strtolower($ext);
 
         // Render the XLS
         $this->_render();
@@ -547,6 +560,9 @@ class LaravelExcelWriter {
      */
     protected function _setWriter()
     {
+        // Check if input file extension is valid
+        $this->checkExtensionIsValid($this->ext);
+
         // Set pdf renderer
         if ($this->format == 'PDF')
         {
