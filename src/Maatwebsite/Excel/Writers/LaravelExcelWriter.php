@@ -72,7 +72,7 @@ class LaravelExcelWriter {
     public $ext = 'xls';
 
     /**
-     * Valid file extensions for store(), export() and download() methods.
+     * Valid file extensions.
      * @var array
      */
     private $validExtensions = [
@@ -696,7 +696,7 @@ class LaravelExcelWriter {
     }
 
     /**
-     * Valid file extensions for store(), export() and download() methods.
+     * Valid file extensions.
      * @return array
      */
     public function getValidExtensions()
