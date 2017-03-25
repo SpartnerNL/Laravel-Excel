@@ -543,7 +543,7 @@ class LaravelExcelWriter {
 
     /**
      * Set the writer
-     * @return PHPExcel_Writer
+     * @return PHPExcel_***_Writer
      */
     protected function _setWriter()
     {
