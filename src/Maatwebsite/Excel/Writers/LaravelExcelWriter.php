@@ -390,7 +390,7 @@ class LaravelExcelWriter {
         $this->_render();
 
         // Set the storage path and file
-        $toStore = $this->storagePath . '/' . $this->filename . '.' . $this->ext;
+        $toStore = $this->storagePath . DIRECTORY_SEPARATOR . $this->filename . '.' . $this->ext;
 
         // Save the file to specified location
         $this->writer->save($toStore);
@@ -645,7 +645,7 @@ class LaravelExcelWriter {
         $path = $path ? $path : config('excel.export.store.path', storage_path($this->storagePath));
 
         // Trim of slashes, to makes sure we won't add them double
-        $this->storagePath = rtrim($path, '/');
+        $this->storagePath = rtrim($path, DIRECTORY_SEPARATOR);
 
         // Make sure the storage path exists
         if (!$this->filesystem->exists($this->storagePath)) {
