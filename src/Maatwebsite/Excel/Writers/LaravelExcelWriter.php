@@ -72,6 +72,22 @@ class LaravelExcelWriter {
     public $ext = 'xls';
 
     /**
+     * Valid file extensions.
+     * @var array
+     */
+    private $validExtensions = [
+        'xls', 'xlsm', 'xltx', 'xltm', //Excel 2007
+        'xls', 'xlt', //Excel5
+        'ods', 'ots', //OOCalc
+        'slk', //SYLK
+        'xml', //Excel2003XML
+        'gnumeric', //gnumeric
+        'htm', 'html', //HTML
+        'csv','txt' //CSV
+        ,'pdf' //PDF
+    ];
+
+    /**
      * Path the file will be stored to
      * @var string
      */
@@ -254,13 +270,27 @@ class LaravelExcelWriter {
     public function export($ext = 'xls', Array $headers = [])
     {
         // Set the extension
-        $this->ext = $ext;
+        $this->ext = mb_strtolower($ext);
 
         // Render the file
         $this->_render();
 
         // Download the file
         $this->_download($headers);
+    }
+
+    /**
+     * Check if input file extension is valid.
+     * @param $ext
+     */
+    private function checkExtensionIsValid($ext)
+    {
+        // Check file extension is valid
+        if (!in_array($ext, $this->validExtensions))
+        {
+            throw new \InvalidArgumentException("Invalid file extension `$ext`, expected "
+                .implode(", ", $this->validExtensions).".");
+        }
     }
 
     /**
@@ -354,7 +384,7 @@ class LaravelExcelWriter {
         $this->_setStoragePath($path);
 
         // Set the extension
-        $this->ext = $ext;
+        $this->ext = mb_strtolower($ext);
 
         // Render the XLS
         $this->_render();
@@ -530,6 +560,9 @@ class LaravelExcelWriter {
      */
     protected function _setWriter()
     {
+        // Check if input file extension is valid
+        $this->checkExtensionIsValid($this->ext);
+
         // Set pdf renderer
         if ($this->format == 'PDF')
         {
@@ -661,4 +694,14 @@ class LaravelExcelWriter {
 
         throw new LaravelExcelException('[ERROR] Writer method [' . $method . '] does not exist.');
     }
+
+    /**
+     * Valid file extensions.
+     * @return array
+     */
+    public function getValidExtensions()
+    {
+        return $this->validExtensions;
+    }
+
 }

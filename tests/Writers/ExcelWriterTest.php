@@ -263,4 +263,49 @@ class ExcelWriterTest extends TestCase {
     {
         Excel::create('no_sheets', function ($writer) {})->string();
     }
+
+    public function testInvalidExtensionStore()
+    {
+        $file = Excel::create('numbers', function ($writer)
+        {
+            $writer->sheet('test', function ($sheet)
+            {
+                $sheet->fromArray([
+                    'number' => 1234
+                ]);
+            });
+        });
+        $this->setExpectedException(InvalidArgumentException::class);
+        $file->store('invalid file extension');
+    }
+
+    public function testInvalidExtensionDownloadExport()
+    {
+        $file = Excel::create('numbers', function ($writer)
+        {
+            $writer->sheet('test', function ($sheet)
+            {
+                $sheet->fromArray([
+                    'number' => 1234
+                ]);
+            });
+        });
+        $this->setExpectedException(InvalidArgumentException::class);
+        $file->download('invalid file extension');
+    }
+
+    public function testInvalidExtensionString()
+    {
+        $file = Excel::create('numbers', function ($writer)
+        {
+            $writer->sheet('test', function ($sheet)
+            {
+                $sheet->fromArray([
+                    'number' => 1234
+                ]);
+            });
+        });
+        $this->setExpectedException(InvalidArgumentException::class);
+        $file->string('invalid file extension');
+    }
 }
