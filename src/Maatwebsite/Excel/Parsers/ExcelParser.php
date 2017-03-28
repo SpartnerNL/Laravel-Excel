@@ -295,7 +295,7 @@ class ExcelParser {
         $value = preg_replace('![' . preg_quote($flip) . ']+!u', $separator, $value);
 
         // Remove all characters that are not the separator, letters, numbers, or whitespace.
-        $value = preg_replace('![^' . preg_quote($separator) . '\pL\pN\s]%+!u', '', mb_strtolower($value));
+        $value = preg_replace('![^' . preg_quote($separator) . '\pL\pN\s]+!u', '', mb_strtolower($value));
 
         // Replace all separator characters and whitespace by a single separator
         $value = preg_replace('![' . preg_quote($separator) . '\s]+!u', $separator, $value);
