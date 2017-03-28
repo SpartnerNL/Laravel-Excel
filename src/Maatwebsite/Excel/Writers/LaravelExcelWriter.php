@@ -76,7 +76,7 @@ class LaravelExcelWriter {
      * @var array
      */
     private $validExtensions = [
-        'xls', 'xlsm', 'xltx', 'xltm', //Excel 2007
+        'xlsx', 'xlsm', 'xltx', 'xltm', //Excel 2007
         'xls', 'xlt', //Excel5
         'ods', 'ots', //OOCalc
         'slk', //SYLK
