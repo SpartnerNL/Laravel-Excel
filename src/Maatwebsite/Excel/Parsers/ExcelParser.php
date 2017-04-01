@@ -446,7 +446,10 @@ class ExcelParser {
             {
                 // Check how we need to save the parsed array
                 $index = ($this->reader->hasHeading() && isset($this->indices[$i])) ? $this->indices[$i] : $this->getIndexFromColumn();
-
+                
+                if (empty($index))
+                    $index = $i;
+                
                 // Check if we want to select this column
                 if ( $this->cellNeedsParsing($index) )
                 {
