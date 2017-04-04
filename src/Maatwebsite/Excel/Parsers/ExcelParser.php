@@ -425,7 +425,6 @@ class ExcelParser {
      */
     protected function parseCells()
     {
-        $i = 0;
         $parsedCells = array();
 
         // Skip the columns when needed
@@ -445,7 +444,11 @@ class ExcelParser {
             foreach ($cellIterator as $this->cell)
             {
                 // Check how we need to save the parsed array
-                $index = ($this->reader->hasHeading() && isset($this->indices[$i])) ? $this->indices[$i] : $this->getIndexFromColumn();
+                // Use the index from column as the initial position
+                // Or else PHPExcel skips empty cells (even between non-empty) cells and it will cause
+                // data to end up in the result object
+                $index = $this->getIndexFromColumn() - 1;
+                $index = ($this->reader->hasHeading() && isset($this->indices[$index])) ? $this->indices[$index] : $index;
 
                 // Check if we want to select this column
                 if ( $this->cellNeedsParsing($index) )
@@ -453,8 +456,6 @@ class ExcelParser {
                     // Set the value1
                     $parsedCells[(string) $index] = $this->parseCell($index);
                 }
-
-                $i++;
             }
 
         } catch (PHPExcel_Exception $e) {
