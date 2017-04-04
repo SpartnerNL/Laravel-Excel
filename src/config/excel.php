@@ -399,6 +399,19 @@ return array(
 
         /*
         |--------------------------------------------------------------------------
+        | Slug whitelisting
+        |--------------------------------------------------------------------------
+        |
+        | Here you can whitelist certain characters in the slug.
+        | E.g. user.last_name will not remove . and _
+        | Note: only applies to 'heading' settings 'true' && 'slugged'
+        |
+        */
+
+        'slug_whitelist'       => '._',
+
+        /*
+        |--------------------------------------------------------------------------
         | Include Charts during import
         |--------------------------------------------------------------------------
         */
