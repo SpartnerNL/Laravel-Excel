@@ -1,6 +1,9 @@
 <?php namespace Maatwebsite\Excel\Parsers;
 
 use Carbon\Carbon;
+use Maatwebsite\Excel\Classes\LaravelExcelWorksheet;
+use Maatwebsite\Excel\Classes\PHPExcel;
+use Maatwebsite\Excel\Readers\LaravelExcelReader;
 use PHPExcel_Cell;
 use PHPExcel_Exception;
 use PHPExcel_Shared_Date;
@@ -50,7 +53,7 @@ class ExcelParser {
 
     /**
      * Row object
-     * @var PHPExcel_Worksheet_Row
+     * @var \PHPExcel_Worksheet_Row
      */
     protected $row;
 
@@ -85,9 +88,7 @@ class ExcelParser {
     protected $defaultStartRow = 1;
 
     /**
-     * Construct excel parser
      * @param LaravelExcelReader $reader
-     * @return \Maatwebsite\Excel\Parsers\ExcelParser
      */
     public function  __construct($reader)
     {
@@ -195,8 +196,7 @@ class ExcelParser {
         $this->indices = [];
 
         // Loop through the cells
-        foreach ($this->row->getCellIterator() as $this->cell)
-        {
+        foreach ($this->row->getCellIterator() as $this->cell) {
             $this->indices[] = $this->getIndex($this->cell);
         }
 
@@ -450,7 +450,7 @@ class ExcelParser {
                 // Check if we want to select this column
                 if ( $this->cellNeedsParsing($index) )
                 {
-                    // Set the value
+                    // Set the value1
                     $parsedCells[(string) $index] = $this->parseCell($index);
                 }
 

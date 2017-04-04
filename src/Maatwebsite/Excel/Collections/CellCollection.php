@@ -30,6 +30,7 @@ class CellCollection extends ExcelCollection {
     public function setItems($items)
     {
         foreach ($items as $name => $value) {
+            $name = trim($name) !== '' && !empty($name) ? $name : null;
             $value = !empty($value) || is_numeric($value) || is_bool($value) ? $value : null;
             $this->put($name, $value);
         }
