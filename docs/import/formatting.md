@@ -25,11 +25,8 @@ By default Laravel Excel uses PHPExcel's default value binder to intelligently f
 
     $myValueBinder = new MyValueBinder;
 
-    Excel::setValueBinder($myValueBinder)->load('file.xls', function($reader) {
-
-        // reader methods
-
-    });
+    $reader = Excel::setValueBinder($myValueBinder)->load('file.xls');
+    // Reader methods
 
 Available PHPExcel_Cell_DataType's are TYPE_STRING, TYPE_FORMULA, TYPE_NUMERIC, TYPE_BOOL, TYPE_NULL, TYPE_INLINE and TYPE_ERROR
 
