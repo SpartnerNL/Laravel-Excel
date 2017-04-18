@@ -38,4 +38,13 @@ class ExcelCollection extends Collection {
     {
         $this->title = $title;
     }
+
+    /**
+     * Get the items
+     * @return array
+     */    
+    public function getItems()
+    {
+        return $this->items;
+    }    
 }
