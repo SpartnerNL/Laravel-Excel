@@ -35,7 +35,7 @@ To set the cell size use `->setSize($cell, $width, $height)`.
 
     $sheet->setSize(array(
         'A1' => array(
-            'width'     => 50
-            'height'    => 500,
+            'width'     => 50,
+            'height'    => 500
         )
     ));
