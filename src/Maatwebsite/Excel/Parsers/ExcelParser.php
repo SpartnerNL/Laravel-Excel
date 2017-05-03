@@ -570,8 +570,12 @@ class ExcelParser {
             // Convert excel time to php date object
             $date = PHPExcel_Shared_Date::ExcelToPHPObject($this->cell->getCalculatedValue())->format('Y-m-d H:i:s');
 
-            // Parse with carbon
-            $date = Carbon::parse($date);
+	        // Parse with carbon
+	        if (strtotime($date)) {
+		        $date = Carbon::parse($date);
+	        } else {
+		        $date = Carbon::now();
+	        }
 
             // Format the date if wanted
             return $this->reader->getDateFormat() ? $date->format($this->reader->getDateFormat()) : $date;
