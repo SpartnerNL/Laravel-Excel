@@ -96,4 +96,5 @@ This package is licensed under LGPL. You are free to use it in personal and comm
 # FAQ
 
 1) Chunk importer only imports the first row
+
 Check that auto_detect_line_endings in your php.ini is set to true.
