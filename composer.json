@@ -52,5 +52,15 @@
     "classmap": [
       "tests/TestCase.php"
     ]
-  }
+  },
+  "extra": {
+        "laravel": {
+            "providers": [
+                "Maatwebsite\\Excel\\ExcelServiceProvider"
+            ],
+            "aliases": {
+                "Excel": "Maatwebsite\\Excel\\Facades\\Excel"
+            }
+        }
+    }
 }
