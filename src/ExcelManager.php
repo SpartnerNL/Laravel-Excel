@@ -44,6 +44,7 @@ class ExcelManager
      * @param string|null $name
      *
      * @throws InvalidArgumentException
+     *
      * @return Excel
      */
     public function get(string $name = null): Excel
@@ -61,7 +62,7 @@ class ExcelManager
         }
 
         $resolver = $this->resolvers[$name];
-        $driver   = $resolver();
+        $driver = $resolver();
 
         // If the resolver has a driver instance, let the driver build the class structure
         if ($driver instanceof Driver) {
