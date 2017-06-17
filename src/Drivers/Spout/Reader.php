@@ -7,12 +7,12 @@ use Maatwebsite\Excel\Reader as ReaderInterface;
 class Reader implements ReaderInterface
 {
     /**
-     * @param string        $filepath
+     * @param string        $filePath
      * @param callable|null $callback
      *
      * @return ReaderInterface
      */
-    public function load(string $filepath, callable $callback = null): ReaderInterface
+    public function load(string $filePath, callable $callback = null): ReaderInterface
     {
         if (is_callable($callback)) {
             $callback($this);

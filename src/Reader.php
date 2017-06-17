@@ -5,10 +5,10 @@ namespace Maatwebsite\Excel;
 interface Reader
 {
     /**
-     * @param string        $filepath
+     * @param string        $filePath
      * @param callable|null $callback
      *
      * @return Reader
      */
-    public function load(string $filepath, callable $callback = null): Reader;
+    public function load(string $filePath, callable $callback = null): Reader;
 }
