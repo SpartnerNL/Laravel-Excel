@@ -22,9 +22,7 @@
   ],
   "require": {
     "php": ">=7.0",
-    "phpoffice/phpspreadsheet": "dev-develop",
-    "nesbot/carbon": "~1.0",
-    "tijsverkoyen/css-to-inline-styles": "~1.5"
+    "phpoffice/phpspreadsheet": "dev-develop"
   },
   "require-dev": {
     "phpunit/phpunit": "~6.2",
