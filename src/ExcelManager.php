@@ -2,26 +2,93 @@
 
 namespace Maatwebsite\Excel;
 
-use Illuminate\Support\Manager;
-use Maatwebsite\Excel\Drivers\PHPExcel\Excel as PHPExcel;
+use InvalidArgumentException;
+use Maatwebsite\Excel\Drivers\Driver;
+use Maatwebsite\Excel\Drivers\PhpSpreadsheet;
+use Maatwebsite\Excel\Drivers\Spout;
 
-class ExcelManager extends Manager
+class ExcelManager
 {
     /**
-     * @return PHPExcel
+     * @var array
      */
-    public function createPhpexcelDriver()
+    protected $drivers = [];
+
+    /**
+     * @var array
+     */
+    protected $resolvers = [];
+
+    /**
+     * @var string
+     */
+    protected $default = PhpSpreadsheet\Driver::DRIVER_NAME;
+
+    /**
+     * @param Configuration $configuration
+     */
+    public function __construct(Configuration $configuration)
     {
-        return $this->app->make(PHPExcel::class);
+        $this->add(PhpSpreadsheet\Driver::DRIVER_NAME, function () use ($configuration) {
+            return new PhpSpreadsheet\Driver($configuration);
+        });
+
+        $this->add(Spout\Driver::DRIVER_NAME, function () use ($configuration) {
+            return new Spout\Driver($configuration);
+        });
+
+        $this->setDefault($configuration->getDefaultDriver());
     }
 
     /**
-     * Get the default driver name.
+     * @param string|null $name
      *
-     * @return string
+     * @throws InvalidArgumentException
+     * @return Excel
      */
-    public function getDefaultDriver()
+    public function get(string $name = null): Excel
     {
-        return 'phpexcel';
+        $name = $name ?: $this->default;
+
+        if (isset($this->drivers[$name])) {
+            return $this->drivers[$name];
+        }
+
+        if (!isset($this->resolvers[$name])) {
+            throw new InvalidArgumentException(
+                sprintf('Driver [%s] not found or not added to the ExcelManager.', $name)
+            );
+        }
+
+        $resolver = $this->resolvers[$name];
+        $driver   = $resolver();
+
+        // If the resolver has a driver instance, let the driver build the class structure
+        if ($driver instanceof Driver) {
+            $driver = $driver->build();
+        }
+
+        return $this->drivers[$name] = $driver;
+    }
+
+    /**
+     * @param string   $driver
+     * @param callable $callback
+     *
+     * @return $this
+     */
+    public function add(string $driver, callable $callback)
+    {
+        $this->resolvers[$driver] = $callback;
+
+        return $this;
+    }
+
+    /**
+     * @param string $default
+     */
+    public function setDefault(string $default)
+    {
+        $this->default = $default;
     }
 }

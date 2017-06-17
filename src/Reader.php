@@ -5,29 +5,10 @@ namespace Maatwebsite\Excel;
 interface Reader
 {
     /**
-     * Return all sheets/rows.
+     * @param string        $filepath
+     * @param callable|null $callback
      *
-     * @param array $columns
-     *
-     * @return LaravelExcelReader
+     * @return Reader
      */
-    public function all($columns = []);
-
-    /**
-     * Get first row/sheet only.
-     *
-     * @param array $columns
-     *
-     * @return SheetCollection|RowCollection
-     */
-    public function first($columns = []);
-
-    /**
-     * Get all sheets/rows.
-     *
-     * @param array $columns
-     *
-     * @return SheetCollection|RowCollection
-     */
-    public function get($columns = []);
+    public function load(string $filepath, callable $callback = null): Reader;
 }

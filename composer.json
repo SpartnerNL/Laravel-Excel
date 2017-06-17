@@ -1,9 +1,12 @@
 {
   "name": "maatwebsite/excel",
-  "description": "An eloquent way of importing and exporting Excel and CSV in Laravel 4 with the power of PHPExcel",
+  "description": "An eloquent way of importing and exporting Excel and CSV",
   "license": "LGPL",
   "keywords": [
     "laravel",
+    "php",
+    "spout",
+    "phpspreadsheet",
     "phpexcel",
     "excel",
     "csv",
@@ -18,38 +21,33 @@
     }
   ],
   "require": {
-    "php": ">=5.5",
-    "phpoffice/phpexcel": "1.8.*",
-    "illuminate/cache": "5.0.*|5.1.*|5.2.*|5.3.*",
-    "illuminate/config": "5.0.*|5.1.*|5.2.*|5.3.*",
-    "illuminate/filesystem": "5.0.*|5.1.*|5.2.*|5.3.*",
-    "illuminate/support": "5.0.*|5.1.*|5.2.*|5.3.*",
+    "php": ">=7.0",
+    "phpoffice/phpspreadsheet": "dev-develop",
     "nesbot/carbon": "~1.0",
     "tijsverkoyen/css-to-inline-styles": "~1.5"
   },
   "require-dev": {
-    "phpseclib/phpseclib": "~1.0",
-    "phpunit/phpunit": "~4.0",
-    "mockery/mockery": "~0.9",
-    "orchestra/testbench": "3.1.*"
-  },
-  "suggest": {
-    "illuminate/http": "5.0.*|5.1.*|5.2.*|5.3.*",
-    "illuminate/routing": "5.0.*|5.1.*|5.2.*|5.3.*",
-    "illuminate/view": "5.0.*|5.1.*|5.2.*|5.3.*",
-    "illuminate/queue": "5.0.*|5.1.*|5.2.*|5.3.*"
+    "phpunit/phpunit": "~6.2",
+    "illuminate/support": "5.*"
   },
   "autoload": {
-    "classmap": [
-      "src/"
-    ],
     "psr-4": {
       "Maatwebsite\\Excel\\": "src/"
     }
   },
   "autoload-dev": {
-    "classmap": [
-      "tests/TestCase.php"
-    ]
+    "psr-4": {
+      "Maatwebsite\\Excel\\Tests\\": "tests/"
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Maatwebsite\\Excel\\Bridge\\Laravel\\ExcelServiceProvider"
+      ],
+      "aliases": {
+        "Excel": "Maatwebsite\\Excel\\Bridge\\Laravel\\Facades\\Excel"
+      }
+    }
   }
 }
