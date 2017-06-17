@@ -101,11 +101,13 @@ class Reader implements ReaderInterface, IteratorAggregate
     }
 
     /**
-     * Retrieve an external iterator
+     * Retrieve an external iterator.
      *
      * @link  http://php.net/manual/en/iteratoraggregate.getiterator.php
+     *
      * @return Traversable An instance of an object implementing <b>Iterator</b> or
-     * <b>Traversable</b>
+     *                     <b>Traversable</b>
+     *
      * @since 5.0.0
      */
     public function getIterator()
@@ -118,7 +120,7 @@ class Reader implements ReaderInterface, IteratorAggregate
     }
 
     /**
-     * Read the spreadsheet file
+     * Read the spreadsheet file.
      */
     protected function readFile()
     {
