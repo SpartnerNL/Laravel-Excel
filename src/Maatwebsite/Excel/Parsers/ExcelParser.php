@@ -355,6 +355,9 @@ class ExcelParser {
         // set sheet title
         $parsedRows->setTitle($this->excel->getActiveSheet()->getTitle());
 
+        // set sheet heading
+        $parsedRows->setHeading($this->indices);
+
         // Get the start row
         $startRow = $this->getStartRow();
 
