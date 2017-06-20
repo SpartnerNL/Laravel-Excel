@@ -625,7 +625,7 @@ class LaravelExcelReader
      */
     public function first($columns = [])
     {
-        return $this->take(1)->get($columns)->first();
+        return $this->get($columns)->first();
     }
 
     /**
