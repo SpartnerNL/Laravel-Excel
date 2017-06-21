@@ -13,4 +13,27 @@
  */
 class RowCollection extends ExcelCollection {
 
+    /**
+     * Sheet heading
+     * @var array
+     */
+    protected $heading;
+
+    /**
+     * Get the heading
+     * @return array
+     */
+    public function getHeading()
+    {
+        return $this->heading;
+    }
+
+    /**
+     * Set the heading
+     * @param array $heading
+     */
+    public function setHeading(array $heading)
+    {
+        $this->heading = $heading;
+    }
 }
