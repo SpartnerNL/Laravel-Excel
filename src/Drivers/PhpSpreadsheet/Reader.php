@@ -4,13 +4,16 @@ namespace Maatwebsite\Excel\Drivers\PhpSpreadsheet;
 
 use IteratorAggregate;
 use Maatwebsite\Excel\Drivers\PhpSpreadsheet\Iterators\SheetIterator;
+use Maatwebsite\Excel\Exceptions\SheetNotFoundException;
 use Maatwebsite\Excel\Reader as ReaderInterface;
+use Maatwebsite\Excel\Sheet as SheetInterface;
+use PhpOffice\PhpSpreadsheet\Exception;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Worksheet;
 use Traversable;
 
-class Reader implements ReaderInterface, IteratorAggregate
+class Reader implements ReaderInterface, IteratorAggregate, \Countable
 {
     /**
      * @var Spreadsheet
@@ -26,7 +29,7 @@ class Reader implements ReaderInterface, IteratorAggregate
      * @param string        $filePath
      * @param callable|null $callback
      *
-     * @return ReaderInterface
+     * @return ReaderInterface|Reader
      */
     public function load(string $filePath, callable $callback = null): ReaderInterface
     {
@@ -55,26 +58,31 @@ class Reader implements ReaderInterface, IteratorAggregate
     }
 
     /**
-     * @return ReaderInterface
+     * @return Traversable|SheetInterface[]
      */
-    public function sheets(): ReaderInterface
+    public function sheets(): Traversable
     {
         $this->readFile();
 
-        return $this;
+        return $this->getIterator();
     }
 
     /**
      * @param string        $name
      * @param callable|null $callback
      *
-     * @return Sheet
+     * @throws SheetNotFoundException
+     * @return Sheet|SheetInterface
      */
-    public function sheetByName(string $name, callable $callback = null): Sheet
+    public function sheetByName(string $name, callable $callback = null): SheetInterface
     {
         $this->readFile();
 
         $sheet = $this->spreadsheet->getSheetByName($name);
+
+        if ($sheet === null) {
+            throw SheetNotFoundException::byName($name);
+        }
 
         return $this->handleSheet(
             $sheet,
@@ -86,13 +94,18 @@ class Reader implements ReaderInterface, IteratorAggregate
      * @param int           $index
      * @param callable|null $callback
      *
-     * @return Sheet
+     * @throws SheetNotFoundException
+     * @return Sheet|SheetInterface
      */
-    public function sheetByIndex(int $index, callable $callback = null): Sheet
+    public function sheetByIndex(int $index, callable $callback = null): SheetInterface
     {
         $this->readFile();
 
-        $sheet = $this->spreadsheet->getSheet($index);
+        try {
+            $sheet = $this->spreadsheet->getSheet($index);
+        } catch (Exception $e) {
+            throw new SheetNotFoundException($e->getMessage());
+        }
 
         return $this->handleSheet(
             $sheet,
@@ -104,10 +117,8 @@ class Reader implements ReaderInterface, IteratorAggregate
      * Retrieve an external iterator.
      *
      * @link  http://php.net/manual/en/iteratoraggregate.getiterator.php
-     *
      * @return Traversable An instance of an object implementing <b>Iterator</b> or
      *                     <b>Traversable</b>
-     *
      * @since 5.0.0
      */
     public function getIterator()
@@ -121,6 +132,8 @@ class Reader implements ReaderInterface, IteratorAggregate
 
     /**
      * Read the spreadsheet file.
+     *
+     * @return void
      */
     protected function readFile()
     {
@@ -133,9 +146,9 @@ class Reader implements ReaderInterface, IteratorAggregate
      * @param Worksheet     $worksheet
      * @param callable|null $callback
      *
-     * @return Sheet
+     * @return SheetInterface|Sheet
      */
-    protected function handleSheet(Worksheet $worksheet, callable $callback = null): Sheet
+    protected function handleSheet(Worksheet $worksheet, callable $callback = null): SheetInterface
     {
         $sheet = new Sheet($worksheet);
 
@@ -144,5 +157,22 @@ class Reader implements ReaderInterface, IteratorAggregate
         }
 
         return $sheet;
+    }
+
+    /**
+     * Count elements of an object
+     *
+     * @link  http://php.net/manual/en/countable.count.php
+     * @return int The custom count as an integer.
+     * </p>
+     * <p>
+     * The return value is cast to an integer.
+     * @since 5.1.0
+     */
+    public function count()
+    {
+        $this->readFile();
+
+        return $this->spreadsheet->getSheetCount();
     }
 }
