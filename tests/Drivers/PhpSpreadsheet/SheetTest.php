@@ -4,11 +4,11 @@ namespace Maatwebsite\Excel\Tests\Drivers\PhpSpreadsheet;
 
 use Countable;
 use IteratorAggregate;
-use Maatwebsite\Excel\Drivers\PhpSpreadsheet\Column;
 use PHPUnit\Framework\TestCase;
 use Maatwebsite\Excel\Configuration;
 use Maatwebsite\Excel\Drivers\PhpSpreadsheet\Row;
 use Maatwebsite\Excel\Drivers\PhpSpreadsheet\Sheet;
+use Maatwebsite\Excel\Drivers\PhpSpreadsheet\Column;
 use Maatwebsite\Excel\Drivers\PhpSpreadsheet\Reader;
 use Maatwebsite\Excel\Tests\Drivers\IterableTestCase;
 use Maatwebsite\Excel\Tests\Drivers\CountableTestCase;

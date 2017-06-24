@@ -2,26 +2,16 @@
 
 namespace Maatwebsite\Excel\Drivers\PhpSpreadsheet;
 
+use Traversable;
 use IteratorAggregate;
+use Maatwebsite\Excel\Configuration;
 use Maatwebsite\Excel\Cell as CellInterface;
 use Maatwebsite\Excel\Column as ColumnInterface;
-use Maatwebsite\Excel\Configuration;
 use Maatwebsite\Excel\Drivers\PhpSpreadsheet\Iterators\CellIterator;
 use PhpOffice\PhpSpreadsheet\Worksheet\Column as PhpSpreadsheetColumn;
-use Traversable;
 
 class Column implements ColumnInterface, IteratorAggregate
 {
-    /**
-     * @var PhpSpreadsheetColumn
-     */
-    private $column;
-
-    /**
-     * @var Configuration
-     */
-    private $configuration;
-
     /**
      * @var int
      */
@@ -31,6 +21,15 @@ class Column implements ColumnInterface, IteratorAggregate
      * @var int|null
      */
     protected $endRow = null;
+    /**
+     * @var PhpSpreadsheetColumn
+     */
+    private $column;
+
+    /**
+     * @var Configuration
+     */
+    private $configuration;
 
     /**
      * @param PhpSpreadsheetColumn $column

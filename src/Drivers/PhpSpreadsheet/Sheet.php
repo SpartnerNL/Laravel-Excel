@@ -3,15 +3,15 @@
 namespace Maatwebsite\Excel\Drivers\PhpSpreadsheet;
 
 use Countable;
-use Maatwebsite\Excel\Drivers\PhpSpreadsheet\Iterators\ColumnIterator;
 use Traversable;
 use IteratorAggregate;
 use Maatwebsite\Excel\Configuration;
 use PhpOffice\PhpSpreadsheet\Worksheet;
 use Maatwebsite\Excel\Row as RowInterface;
 use Maatwebsite\Excel\Sheet as SheetInterface;
-use Maatwebsite\Excel\Drivers\PhpSpreadsheet\Iterators\RowIterator;
 use PhpOffice\PhpSpreadsheet\Cell as PhpSpreadsheetCell;
+use Maatwebsite\Excel\Drivers\PhpSpreadsheet\Iterators\RowIterator;
+use Maatwebsite\Excel\Drivers\PhpSpreadsheet\Iterators\ColumnIterator;
 
 class Sheet implements SheetInterface, IteratorAggregate, Countable
 {
