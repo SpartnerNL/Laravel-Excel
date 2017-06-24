@@ -4,6 +4,7 @@ namespace Maatwebsite\Excel\Tests\Drivers\PhpSpreadsheet;
 
 use Countable;
 use IteratorAggregate;
+use Maatwebsite\Excel\Drivers\PhpSpreadsheet\Column;
 use PHPUnit\Framework\TestCase;
 use Maatwebsite\Excel\Configuration;
 use Maatwebsite\Excel\Drivers\PhpSpreadsheet\Row;
@@ -34,7 +35,9 @@ class SheetTest extends TestCase
 
     public static function setUpBeforeClass()
     {
-        static::$cachedSheet = (new Reader(new Configuration(), new DefaultLoader()))->load(static::$simpleXlsx)->sheetByIndex(0);
+        static::$cachedSheet = (new Reader(new Configuration(), new DefaultLoader()))
+            ->load(static::$simpleXlsx)
+            ->sheetByIndex(0);
     }
 
     public function setUp()
@@ -84,6 +87,22 @@ class SheetTest extends TestCase
     /**
      * @test
      */
+    public function sheet_can_iterate_over_columns()
+    {
+        // Method
+        foreach ($this->sheet->columns() as $column) {
+            $this->assertInstanceOf(Column::class, $column);
+        }
+
+        // Iterator
+        foreach ($this->sheet->getColumnIterator() as $column) {
+            $this->assertInstanceOf(Column::class, $column);
+        }
+    }
+
+    /**
+     * @test
+     */
     public function sheet_can_set_start_and_end_row()
     {
         $this->sheet->setStartRow(2);
@@ -101,15 +120,35 @@ class SheetTest extends TestCase
     /**
      * @test
      */
-    public function sheet_can_iterator_starting_on_a_certain_row()
+    public function sheet_can_iterate_rows_starting_on_a_certain_row()
     {
         $count = 0;
+        $start = 2;
         foreach ($this->sheet->rows(2, 5) as $row) {
-            $count++;
             $this->assertInstanceOf(Row::class, $row);
+            $this->assertEquals($start, $row->getRowNumber());
+            $count++;
+            $start++;
         }
 
         $this->assertEquals(4, $count);
+    }
+
+    /**
+     * @test
+     */
+    public function sheet_can_iterate_columns_starting_on_a_certain_column()
+    {
+        $count = 0;
+        $start = 'B';
+        foreach ($this->sheet->columns('B', 'D') as $column) {
+            $this->assertInstanceOf(Column::class, $column);
+            $this->assertEquals($start, $column->getColumnIndex());
+            $count++;
+            $start++;
+        }
+
+        $this->assertEquals(3, $count);
     }
 
     /**
@@ -120,6 +159,18 @@ class SheetTest extends TestCase
         $this->assertCount(11, $this->sheet);
         $this->assertSame(11, count($this->sheet));
         $this->assertSame(11, $this->sheet->count());
+    }
+
+    /**
+     * @test
+     * @incomplete
+     */
+    public function sheet_can_count_columns()
+    {
+        $this->markTestIncomplete('Column count is not correct yet. File needs to be fixed.');
+
+        // This sheet seems a bit odd. Should be 4
+        $this->assertSame(4, $this->sheet->columnCount());
     }
 
     /**

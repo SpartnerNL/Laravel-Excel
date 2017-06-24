@@ -3,6 +3,7 @@
 namespace Maatwebsite\Excel\Drivers\PhpSpreadsheet;
 
 use Countable;
+use Maatwebsite\Excel\Drivers\PhpSpreadsheet\Iterators\ColumnIterator;
 use Traversable;
 use IteratorAggregate;
 use Maatwebsite\Excel\Configuration;
@@ -10,6 +11,7 @@ use PhpOffice\PhpSpreadsheet\Worksheet;
 use Maatwebsite\Excel\Row as RowInterface;
 use Maatwebsite\Excel\Sheet as SheetInterface;
 use Maatwebsite\Excel\Drivers\PhpSpreadsheet\Iterators\RowIterator;
+use PhpOffice\PhpSpreadsheet\Cell as PhpSpreadsheetCell;
 
 class Sheet implements SheetInterface, IteratorAggregate, Countable
 {
@@ -124,6 +126,17 @@ class Sheet implements SheetInterface, IteratorAggregate, Countable
     }
 
     /**
+     * @param string      $startColumn
+     * @param string|null $endColumn
+     *
+     * @return Column[]|ColumnIterator
+     */
+    public function columns(string $startColumn = 'A', string $endColumn = null): ColumnIterator
+    {
+        return $this->getColumnIterator($startColumn, $endColumn);
+    }
+
+    /**
      * @return array
      */
     public function toArray(): array
@@ -152,6 +165,24 @@ class Sheet implements SheetInterface, IteratorAggregate, Countable
     }
 
     /**
+     * @param string      $startColumn
+     * @param string|null $endColumn
+     *
+     * @return ColumnIterator
+     */
+    public function getColumnIterator(string $startColumn = 'A', string $endColumn = null)
+    {
+        if ($endColumn === null) {
+            $endColumn = $this->getHighestColumn();
+        }
+
+        return new ColumnIterator(
+            $this->worksheet->getColumnIterator($startColumn, $endColumn),
+            $this->configuration
+        );
+    }
+
+    /**
      * Count elements of an object.
      *
      * @link  http://php.net/manual/en/countable.count.php
@@ -164,5 +195,21 @@ class Sheet implements SheetInterface, IteratorAggregate, Countable
     public function count()
     {
         return $this->worksheet->getHighestRow();
+    }
+
+    /**
+     * @return string
+     */
+    public function getHighestColumn(): string
+    {
+        return $this->worksheet->getHighestColumn();
+    }
+
+    /**
+     * @return int
+     */
+    public function columnCount(): int
+    {
+        return PhpSpreadsheetCell::columnIndexFromString($this->getHighestColumn());
     }
 }
