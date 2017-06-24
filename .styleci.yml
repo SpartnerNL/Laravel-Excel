@@ -1,3 +1,14 @@
-preset: recommended
+preset: laravel
 
 risky: false
+
+enabled:
+  - align_double_arrow
+  - align_equals
+  - concat_with_spaces
+  - ordered_class_elements
+
+disabled:
+  - concat_without_spaces
+  - not_operator_with_successor_space
+  - unalign_equals
