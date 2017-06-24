@@ -178,8 +178,6 @@ class SheetTest extends TestCase
      */
     public function sheet_can_count_columns()
     {
-        $this->markTestIncomplete('Column count is not correct yet. File needs to be fixed.');
-
         $this->assertSame(4, $this->sheet->columnCount());
     }
 
@@ -188,8 +186,6 @@ class SheetTest extends TestCase
      */
     public function can_get_highest_column()
     {
-        $this->markTestIncomplete('Highest column is not correct yet. File needs to be fixed.');
-
         $this->assertEquals('D', $this->sheet->getHighestColumn());
     }
 

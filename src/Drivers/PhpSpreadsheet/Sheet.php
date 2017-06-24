@@ -2,7 +2,6 @@
 
 namespace Maatwebsite\Excel\Drivers\PhpSpreadsheet;
 
-use Countable;
 use Traversable;
 use IteratorAggregate;
 use Maatwebsite\Excel\Configuration;
@@ -153,48 +152,6 @@ class Sheet implements SheetInterface
     }
 
     /**
-     * Retrieve an external iterator.
-     *
-     * @link  http://php.net/manual/en/iteratoraggregate.getiterator.php
-     * @return Traversable|RowIterator
-     * @since 5.0.0
-     */
-    public function getIterator()
-    {
-        return $this->getRowIterator($this->startRow, $this->endRow);
-    }
-
-    /**
-     * @param int      $startRow
-     * @param int|null $endRow
-     *
-     * @return IteratorAggregate|RowIterator
-     */
-    public function getRowIterator(int $startRow = 1, int $endRow = null)
-    {
-        return new RowIterator(
-            $this,
-            $this->worksheet->getRowIterator($startRow, $endRow),
-            $this->configuration
-        );
-    }
-
-    /**
-     * @param string      $startColumn
-     * @param string|null $endColumn
-     *
-     * @return IteratorAggregate|ColumnIterator
-     */
-    public function getColumnIterator(string $startColumn = 'A', string $endColumn = null)
-    {
-        return new ColumnIterator(
-            $this,
-            $this->worksheet->getColumnIterator($startColumn, $endColumn),
-            $this->configuration
-        );
-    }
-
-    /**
      * @param string $coordinate
      *
      * @return bool
@@ -229,7 +186,7 @@ class Sheet implements SheetInterface
      */
     public function count()
     {
-        return $this->worksheet->getHighestRow();
+        return intval($this->worksheet->getHighestRow());
     }
 
     /**
@@ -246,5 +203,49 @@ class Sheet implements SheetInterface
     public function columnCount(): int
     {
         return PhpSpreadsheetCell::columnIndexFromString($this->getHighestColumn());
+    }
+
+    /**
+     * Retrieve an external iterator.
+     *
+     * @link  http://php.net/manual/en/iteratoraggregate.getiterator.php
+     * @return Traversable|RowIterator
+     * @since 5.0.0
+     */
+    public function getIterator()
+    {
+        return $this->getRowIterator($this->startRow, $this->endRow);
+    }
+
+    /**
+     * @param int      $startRow
+     * @param int|null $endRow
+     *
+     * @return IteratorAggregate|RowIterator
+     */
+    public function getRowIterator(int $startRow = 1, int $endRow = null)
+    {
+        // TODO: add interface
+        return new RowIterator(
+            $this,
+            $this->worksheet->getRowIterator($startRow, $endRow),
+            $this->configuration
+        );
+    }
+
+    /**
+     * @param string      $startColumn
+     * @param string|null $endColumn
+     *
+     * @return IteratorAggregate|ColumnIterator
+     */
+    public function getColumnIterator(string $startColumn = 'A', string $endColumn = null)
+    {
+        // TODO: add interface
+        return new ColumnIterator(
+            $this,
+            $this->worksheet->getColumnIterator($startColumn, $endColumn),
+            $this->configuration
+        );
     }
 }

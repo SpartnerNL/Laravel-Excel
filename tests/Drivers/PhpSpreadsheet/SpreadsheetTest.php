@@ -49,8 +49,7 @@ class SpreadsheetTest extends TestCase
      */
     public function spreadsheet_can_get_title()
     {
-        // TODO: add actual title to the spreadsheet
-        $this->assertEquals('', $this->spreadsheet->getTitle());
+        $this->assertEquals('Untitled Spreadsheet', $this->spreadsheet->getTitle());
     }
 
     /**
