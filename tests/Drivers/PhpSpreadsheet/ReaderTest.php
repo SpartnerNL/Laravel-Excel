@@ -87,7 +87,6 @@ class ReaderTest extends TestCase
     public function reader_can_load_and_parse_simple_xlsx()
     {
         $this->reader->load($this->simpleXlsx, function (Spreadsheet $spreadsheet) {
-
             $spreadsheet->sheet('Simple', function (Sheet $sheet) {
                 $this->assertEquals('Simple', $sheet->getTitle());
 
