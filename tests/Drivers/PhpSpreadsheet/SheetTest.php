@@ -109,7 +109,7 @@ class SheetTest extends TestCase
         $this->sheet->setEndRow(5);
 
         $count = 0;
-        foreach ($this->sheet->rows() as $row) {
+        foreach ($this->sheet as $row) {
             $count++;
             $this->assertInstanceOf(Row::class, $row);
         }
@@ -149,6 +149,17 @@ class SheetTest extends TestCase
         }
 
         $this->assertEquals(3, $count);
+    }
+
+    /**
+     * @test
+     */
+    public function sheet_can_get_column_by_index()
+    {
+        $column = $this->sheet->column('D');
+
+        $this->assertInstanceOf(Column::class, $column);
+        $this->assertEquals('D', $column->getColumnIndex());
     }
 
     /**

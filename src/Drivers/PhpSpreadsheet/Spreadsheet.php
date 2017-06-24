@@ -126,6 +126,14 @@ class Spreadsheet implements SpreadsheetInterface, IteratorAggregate, Countable
      */
     public function getIterator()
     {
+        return $this->getSheetIterator();
+    }
+
+    /**
+     * @return SheetIterator|SheetInterface[]
+     */
+    public function getSheetIterator()
+    {
         return new SheetIterator(
             $this->spreadsheet->getWorksheetIterator(),
             $this->configuration

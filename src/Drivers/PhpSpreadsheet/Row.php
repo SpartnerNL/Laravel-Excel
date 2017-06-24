@@ -34,16 +34,20 @@ class Row implements RowInterface, IteratorAggregate, Countable
     protected $configuration;
 
     /**
+     * @var Sheet
+     */
+    protected $sheet;
+
+    /**
      * @param PhpSpreadsheetRow $row
+     * @param Sheet             $sheet
      * @param Configuration     $configuration
      */
-    public function __construct(PhpSpreadsheetRow $row, Configuration $configuration)
+    public function __construct(PhpSpreadsheetRow $row, Sheet $sheet, Configuration $configuration)
     {
         $this->row           = $row;
+        $this->sheet         = $sheet;
         $this->configuration = $configuration;
-
-        $this->setStartColumn('A');
-        $this->setEndColumn($this->getHighestColumn());
     }
 
     /**
@@ -71,22 +75,28 @@ class Row implements RowInterface, IteratorAggregate, Countable
     }
 
     /**
+     * @param string $column
+     * @param bool   $createIfNotExist
+     *
+     * @return Cell
+     */
+    public function cell(string $column, bool $createIfNotExist = false)
+    {
+        return $this->sheet->cell(
+            $column . $this->getRowNumber(),
+            $createIfNotExist
+        );
+    }
+
+    /**
      * @param string|null $startColumn
      * @param string|null $endColumn
      *
-     * @return Row|Cell[]
+     * @return CellIterator|Cell[]
      */
-    public function cells(string $startColumn = null, string $endColumn = null): Row
+    public function cells(string $startColumn = 'A', string $endColumn = null)
     {
-        if ($startColumn !== null) {
-            $this->setStartColumn($startColumn);
-        }
-
-        if ($endColumn !== null) {
-            $this->setEndColumn($endColumn);
-        }
-
-        return $this;
+        return $this->getCellIterator($startColumn, $endColumn);
     }
 
     /**
@@ -95,7 +105,7 @@ class Row implements RowInterface, IteratorAggregate, Countable
     public function toArray(): array
     {
         $cells = [];
-        foreach ($this->cells() as $cell) {
+        foreach ($this->getIterator() as $cell) {
             $cells[] = (string) $cell;
         }
 
@@ -124,15 +134,28 @@ class Row implements RowInterface, IteratorAggregate, Countable
      * Retrieve an external iterator.
      *
      * @link  http://php.net/manual/en/iteratoraggregate.getiterator.php
-     *
      * @return Traversable|CellIterator
-     *
      * @since 5.0.0
      */
     public function getIterator()
     {
+        return $this->getCellIterator($this->startColumn, $this->endColumn);
+    }
+
+    /**
+     * @param string      $startColumn
+     * @param string|null $endColumn
+     *
+     * @return CellIterator
+     */
+    public function getCellIterator(string $startColumn = 'A', string $endColumn = null): CellIterator
+    {
+        if ($endColumn === null) {
+            $endColumn = $this->getHighestColumn();
+        }
+
         return new CellIterator(
-            $this->row->getCellIterator($this->startColumn, $this->endColumn),
+            $this->row->getCellIterator($startColumn, $endColumn),
             $this->configuration
         );
     }
@@ -141,18 +164,26 @@ class Row implements RowInterface, IteratorAggregate, Countable
      * Count elements of an object.
      *
      * @link  http://php.net/manual/en/countable.count.php
-     *
      * @return int The custom count as an integer.
      *             </p>
      *             <p>
      *             The return value is cast to an integer.
-     *
      * @since 5.1.0
      */
     public function count()
     {
         $highestColumn = $this->getHighestColumn();
 
-        return PhpSpreadsheetCell::columnIndexFromString($highestColumn);
+        return $this->getColumnIndex($highestColumn);
+    }
+
+    /**
+     * @param string $column
+     *
+     * @return int
+     */
+    protected function getColumnIndex(string $column): int
+    {
+        return PhpSpreadsheetCell::columnIndexFromString($column);
     }
 }

@@ -3,6 +3,7 @@
 namespace Maatwebsite\Excel\Drivers\PhpSpreadsheet;
 
 use Countable;
+use Maatwebsite\Excel\Column;
 use Traversable;
 use IteratorAggregate;
 use Maatwebsite\Excel\Configuration;
@@ -86,16 +87,24 @@ class Sheet implements SheetInterface, IteratorAggregate, Countable
     }
 
     /**
+     * @param int      $startRow
+     * @param int|null $endRow
+     *
+     * @return Traversable|RowIterator|RowInterface[]
+     */
+    public function rows(int $startRow = 1, int $endRow = null): Traversable
+    {
+        return $this->getRowIterator($startRow, $endRow);
+    }
+
+    /**
      * @param int $rowNumber
      *
      * @return RowInterface
      */
     public function row(int $rowNumber): RowInterface
     {
-        $this->setStartRow($rowNumber);
-        $this->setEndRow($rowNumber + 1);
-
-        return $this->getIterator()->first();
+        return $this->getRowIterator($rowNumber, $rowNumber + 1)->first();
     }
 
     /**
@@ -104,25 +113,6 @@ class Sheet implements SheetInterface, IteratorAggregate, Countable
     public function first(): RowInterface
     {
         return $this->row(1);
-    }
-
-    /**
-     * @param int|null $startRow
-     * @param int|null $endRow
-     *
-     * @return SheetInterface|RowInterface[]
-     */
-    public function rows(int $startRow = null, int $endRow = null): SheetInterface
-    {
-        if ($startRow !== null) {
-            $this->setStartRow($startRow);
-        }
-
-        if ($endRow !== null) {
-            $this->setEndRow($endRow);
-        }
-
-        return $this;
     }
 
     /**
@@ -137,12 +127,24 @@ class Sheet implements SheetInterface, IteratorAggregate, Countable
     }
 
     /**
+     * @param string $column
+     *
+     * @return Column
+     */
+    public function column(string $column): Column
+    {
+        $iterator = $this->getColumnIterator($column, ++$column);
+
+        return $iterator->first();
+    }
+
+    /**
      * @return array
      */
     public function toArray(): array
     {
         $rows = [];
-        foreach ($this->rows() as $row) {
+        foreach ($this->getIterator() as $row) {
             $rows[] = $row->toArray();
         }
 
@@ -158,8 +160,20 @@ class Sheet implements SheetInterface, IteratorAggregate, Countable
      */
     public function getIterator()
     {
+        return $this->getRowIterator($this->startRow, $this->endRow);
+    }
+
+    /**
+     * @param int      $startRow
+     * @param int|null $endRow
+     *
+     * @return RowIterator
+     */
+    public function getRowIterator(int $startRow = 1, int $endRow = null): RowIterator
+    {
         return new RowIterator(
-            $this->worksheet->getRowIterator($this->startRow, $this->endRow),
+            $this,
+            $this->worksheet->getRowIterator($startRow, $endRow),
             $this->configuration
         );
     }
@@ -172,14 +186,24 @@ class Sheet implements SheetInterface, IteratorAggregate, Countable
      */
     public function getColumnIterator(string $startColumn = 'A', string $endColumn = null)
     {
-        if ($endColumn === null) {
-            $endColumn = $this->getHighestColumn();
-        }
-
         return new ColumnIterator(
+            $this,
             $this->worksheet->getColumnIterator($startColumn, $endColumn),
             $this->configuration
         );
+    }
+
+    /**
+     * @param string $coordinate
+     * @param bool   $createIfNotExist
+     *
+     * @return Cell
+     */
+    public function cell(string $coordinate, bool $createIfNotExist = false): Cell
+    {
+        $cell = $this->worksheet->getCell($coordinate, $createIfNotExist);
+
+        return new Cell($cell, $this->configuration);
     }
 
     /**

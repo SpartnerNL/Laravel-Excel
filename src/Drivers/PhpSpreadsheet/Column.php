@@ -21,6 +21,7 @@ class Column implements ColumnInterface, IteratorAggregate
      * @var int|null
      */
     protected $endRow = null;
+
     /**
      * @var PhpSpreadsheetColumn
      */
@@ -32,19 +33,26 @@ class Column implements ColumnInterface, IteratorAggregate
     private $configuration;
 
     /**
+     * @var Sheet
+     */
+    private $sheet;
+
+    /**
      * @param PhpSpreadsheetColumn $column
+     * @param Sheet                $sheet
      * @param Configuration        $configuration
      */
-    public function __construct(PhpSpreadsheetColumn $column, Configuration $configuration)
+    public function __construct(PhpSpreadsheetColumn $column, Sheet $sheet, Configuration $configuration)
     {
         $this->column        = $column;
         $this->configuration = $configuration;
+        $this->sheet         = $sheet;
     }
 
     /**
      * @return string
      */
-    public function getColumnIndex()
+    public function getColumnIndex(): string
     {
         return $this->column->getColumnIndex();
     }
@@ -74,35 +82,66 @@ class Column implements ColumnInterface, IteratorAggregate
     }
 
     /**
-     * @param int|null $startRow
+     * @param int  $row
+     * @param bool $createIfNotExist
+     *
+     * @return Cell
+     */
+    public function cell(int $row, bool $createIfNotExist = false): Cell
+    {
+        return $this->sheet->cell(
+            $this->getColumnIndex() . $row,
+            $createIfNotExist
+        );
+    }
+
+    /**
+     * @param int      $startRow
      * @param int|null $endRow
      *
-     * @return ColumnInterface|CellInterface[]
+     * @return CellIterator|CellInterface[]
      */
-    public function cells(int $startRow = null, int $endRow = null): ColumnInterface
+    public function cells(int $startRow = 1, int $endRow = null)
     {
-        if ($startRow !== null) {
-            $this->setStartRow($startRow);
+        return $this->getCellIterator($startRow, $endRow);
+    }
+
+    /**
+     * @return array
+     */
+    public function toArray(): array
+    {
+        $cells = [];
+
+        foreach ($this->cells() as $cell) {
+            $cells[] = (string) $cell;
         }
 
-        if ($endRow !== null) {
-            $this->setEndRow($endRow);
-        }
-
-        return $this;
+        return $cells;
     }
 
     /**
      * Retrieve an external iterator.
      *
      * @link  http://php.net/manual/en/iteratoraggregate.getiterator.php
-     * @return Traversable|CellIterator
+     * @return Traversable|CellIterator|CellInterface[]
      * @since 5.0.0
      */
     public function getIterator()
     {
+        return $this->getCellIterator($this->startRow, $this->endRow);
+    }
+
+    /**
+     * @param int      $startRow
+     * @param int|null $endRow
+     *
+     * @return Traversable|CellIterator|CellInterface[]
+     */
+    public function getCellIterator(int $startRow = 1, int $endRow = null)
+    {
         return new CellIterator(
-            $this->column->getCellIterator($this->startRow, $this->endRow),
+            $this->column->getCellIterator($startRow, $endRow),
             $this->configuration
         );
     }

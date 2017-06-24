@@ -71,6 +71,17 @@ class RowTest extends TestCase
     /**
      * @test
      */
+    public function row_can_get_cell_by_column()
+    {
+        $cell = $this->row->cell('C');
+
+        $this->assertInstanceOf(Cell::class, $cell);
+        $this->assertEquals('C1', $cell->getCoordinate());
+    }
+
+    /**
+     * @test
+     */
     public function row_can_get_highest_column()
     {
         $this->assertEquals('D', $this->row->getHighestColumn());
@@ -122,9 +133,16 @@ class RowTest extends TestCase
      */
     public function row_can_loop_through_cells_with_start_and_end_column()
     {
-        $columns = $this->row->cells('B', 'C')->toArray();
+        $count = 0;
+        $start = 'B';
+        foreach ($this->row->cells('B', 'C') as $column) {
+            $this->assertInstanceOf(Cell::class, $column);
+            $this->assertEquals($start . '1', $column->getCoordinate());
+            $count++;
+            $start++;
+        }
 
-        $this->assertEquals(['B1', 'C1'], $columns);
+        $this->assertEquals(2, $count);
     }
 
     /**
