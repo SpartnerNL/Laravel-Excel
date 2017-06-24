@@ -17,7 +17,7 @@ class ReaderTest extends TestCase
     /**
      * @var string
      */
-    protected $simpleXlsx = __DIR__ . '/../../_data/simple_xlsx.xlsx';
+    protected $simpleXlsx = __DIR__.'/../../_data/simple_xlsx.xlsx';
 
     /**
      * @var Reader
@@ -51,7 +51,7 @@ class ReaderTest extends TestCase
     public function reader_can_load_sheet_by_index()
     {
         $reader = $this->reader->load($this->simpleXlsx);
-        $sheet  = $reader->sheetByIndex(0);
+        $sheet = $reader->sheetByIndex(0);
 
         $this->assertInstanceOf(Sheet::class, $sheet);
     }
@@ -62,7 +62,7 @@ class ReaderTest extends TestCase
     public function reader_can_load_sheet_by_name()
     {
         $reader = $this->reader->load($this->simpleXlsx);
-        $sheet  = $reader->sheetByName('Simple');
+        $sheet = $reader->sheetByName('Simple');
 
         $this->assertInstanceOf(Sheet::class, $sheet);
     }

@@ -66,7 +66,7 @@ class Sheet implements SheetInterface, IteratorAggregate, Countable
     public function row(int $rowNumber): Row
     {
         $startRow = $rowNumber;
-        $endRow   = $rowNumber + 1;
+        $endRow = $rowNumber + 1;
 
         return $this->rows($startRow, $endRow)->first();
     }
@@ -99,10 +99,12 @@ class Sheet implements SheetInterface, IteratorAggregate, Countable
     }
 
     /**
-     * Retrieve an external iterator
+     * Retrieve an external iterator.
      *
      * @link  http://php.net/manual/en/iteratoraggregate.getiterator.php
+     *
      * @return Traversable|RowIterator
+     *
      * @since 5.0.0
      */
     public function getIterator()
@@ -113,13 +115,15 @@ class Sheet implements SheetInterface, IteratorAggregate, Countable
     }
 
     /**
-     * Count elements of an object
+     * Count elements of an object.
      *
      * @link  http://php.net/manual/en/countable.count.php
+     *
      * @return int The custom count as an integer.
-     * </p>
-     * <p>
-     * The return value is cast to an integer.
+     *             </p>
+     *             <p>
+     *             The return value is cast to an integer.
+     *
      * @since 5.1.0
      */
     public function count()

@@ -24,10 +24,12 @@ class CellIterator extends IteratorAdapter implements Iterator
     }
 
     /**
-     * Return the current element
+     * Return the current element.
      *
      * @link  http://php.net/manual/en/iterator.current.php
+     *
      * @return mixed Can return any type.
+     *
      * @since 5.0.0
      */
     public function current()
