@@ -28,7 +28,7 @@ class CellIterator extends IteratorAdapter implements Iterator
      *
      * @link  http://php.net/manual/en/iterator.current.php
      *
-     * @return mixed Can return any type.
+     * @return Cell
      *
      * @since 5.0.0
      */

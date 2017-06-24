@@ -35,6 +35,22 @@ class Sheet implements SheetInterface, IteratorAggregate, Countable
     }
 
     /**
+     * @return string
+     */
+    public function getTitle(): string
+    {
+        return $this->worksheet->getTitle();
+    }
+
+    /**
+     * @return int
+     */
+    public function getSheetIndex(): int
+    {
+        return $this->worksheet->getParent()->getIndex($this->worksheet);
+    }
+
+    /**
      * @param int $rowNumber
      *
      * @return Sheet
@@ -66,7 +82,7 @@ class Sheet implements SheetInterface, IteratorAggregate, Countable
     public function row(int $rowNumber): Row
     {
         $startRow = $rowNumber;
-        $endRow = $rowNumber + 1;
+        $endRow   = $rowNumber + 1;
 
         return $this->rows($startRow, $endRow)->first();
     }
@@ -99,12 +115,23 @@ class Sheet implements SheetInterface, IteratorAggregate, Countable
     }
 
     /**
+     * @return array
+     */
+    public function toArray(): array
+    {
+        $rows = [];
+        foreach ($this->rows() as $row) {
+            $rows[] = $row->toArray();
+        }
+
+        return $rows;
+    }
+
+    /**
      * Retrieve an external iterator.
      *
      * @link  http://php.net/manual/en/iteratoraggregate.getiterator.php
-     *
      * @return Traversable|RowIterator
-     *
      * @since 5.0.0
      */
     public function getIterator()
@@ -118,12 +145,10 @@ class Sheet implements SheetInterface, IteratorAggregate, Countable
      * Count elements of an object.
      *
      * @link  http://php.net/manual/en/countable.count.php
-     *
      * @return int The custom count as an integer.
      *             </p>
      *             <p>
      *             The return value is cast to an integer.
-     *
      * @since 5.1.0
      */
     public function count()
