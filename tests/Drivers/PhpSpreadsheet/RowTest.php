@@ -7,7 +7,6 @@ use IteratorAggregate;
 use Maatwebsite\Excel\Drivers\PhpSpreadsheet\Cell;
 use Maatwebsite\Excel\Drivers\PhpSpreadsheet\Reader;
 use Maatwebsite\Excel\Drivers\PhpSpreadsheet\Row;
-use Maatwebsite\Excel\Drivers\PhpSpreadsheet\Sheet;
 use Maatwebsite\Excel\Tests\Drivers\CountableTestCase;
 use Maatwebsite\Excel\Tests\Drivers\IterableTestCase;
 use PHPUnit\Framework\TestCase;
@@ -19,7 +18,7 @@ class RowTest extends TestCase
     /**
      * @var string
      */
-    protected $simpleXlsx = __DIR__ . '/../../_data/simple_xlsx.xlsx';
+    protected $simpleXlsx = __DIR__.'/../../_data/simple_xlsx.xlsx';
 
     /**
      * @var Row
