@@ -7,6 +7,11 @@ interface Cell
     /**
      * @return string
      */
+    public function __toString();
+
+    /**
+     * @return string
+     */
     public function getCoordinate(): string;
 
     /**
@@ -23,9 +28,4 @@ interface Cell
      * @return mixed
      */
     public function getValue();
-
-    /**
-     * @return string
-     */
-    public function __toString();
 }

@@ -2,9 +2,8 @@
 
 namespace Maatwebsite\Excel\Drivers\Spout;
 
-use Maatwebsite\Excel\Configuration;
-use Maatwebsite\Excel\Exceptions\InvalidSpreadsheetLoaderException;
 use Maatwebsite\Excel\Spreadsheet;
+use Maatwebsite\Excel\Configuration;
 use Maatwebsite\Excel\Reader as ReaderInterface;
 
 class Reader implements ReaderInterface

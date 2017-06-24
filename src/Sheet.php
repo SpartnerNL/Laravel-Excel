@@ -2,8 +2,8 @@
 
 namespace Maatwebsite\Excel;
 
-use Countable;
 use Iterator;
+use Countable;
 use IteratorAggregate;
 
 interface Sheet extends IteratorAggregate, Countable

@@ -3,8 +3,8 @@
 namespace Maatwebsite\Excel;
 
 use Iterator;
-use IteratorAggregate;
 use Traversable;
+use IteratorAggregate;
 
 interface Column extends IteratorAggregate
 {

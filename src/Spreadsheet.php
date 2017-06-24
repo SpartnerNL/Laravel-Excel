@@ -2,8 +2,8 @@
 
 namespace Maatwebsite\Excel;
 
-use Countable;
 use Iterator;
+use Countable;
 use IteratorAggregate;
 use Maatwebsite\Excel\Exceptions\SheetNotFoundException;
 

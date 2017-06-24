@@ -2,10 +2,10 @@
 
 namespace Maatwebsite\Excel\Drivers\Spout;
 
-use Maatwebsite\Excel\Drivers\PhpSpreadsheet\Loaders\DefaultLoader;
 use Maatwebsite\Excel\Excel;
 use Maatwebsite\Excel\Configuration;
 use Maatwebsite\Excel\Drivers\Driver as DriverInterface;
+use Maatwebsite\Excel\Drivers\PhpSpreadsheet\Loaders\DefaultLoader;
 
 class Driver implements DriverInterface
 {

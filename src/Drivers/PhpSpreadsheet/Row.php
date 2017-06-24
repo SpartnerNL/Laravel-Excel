@@ -2,12 +2,12 @@
 
 namespace Maatwebsite\Excel\Drivers\PhpSpreadsheet;
 
-use Countable;
 use Iterator;
-use Maatwebsite\Excel\Cell as CellInterface;
+use Countable;
 use Traversable;
 use Maatwebsite\Excel\Configuration;
 use Maatwebsite\Excel\Row as RowInterface;
+use Maatwebsite\Excel\Cell as CellInterface;
 use PhpOffice\PhpSpreadsheet\Cell as PhpSpreadsheetCell;
 use PhpOffice\PhpSpreadsheet\Worksheet\Row as PhpSpreadsheetRow;
 use Maatwebsite\Excel\Drivers\PhpSpreadsheet\Iterators\CellIterator;
