@@ -27,7 +27,7 @@ class CellIterator extends IteratorAdapter implements Iterator
      */
     public function __construct(CellIteratorDelegate $iterator, Configuration $configuration)
     {
-        $this->iterator      = $iterator;
+        $this->iterator = $iterator;
         $this->configuration = $configuration;
     }
 
@@ -35,7 +35,9 @@ class CellIterator extends IteratorAdapter implements Iterator
      * Return the current element.
      *
      * @link  http://php.net/manual/en/iterator.current.php
+     *
      * @return Cell
+     *
      * @since 5.0.0
      */
     public function current()

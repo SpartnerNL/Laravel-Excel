@@ -20,7 +20,7 @@ class SheetTest extends TestCase
     /**
      * @var string
      */
-    protected static $simpleXlsx = __DIR__ . '/../../_data/simple_xlsx.xlsx';
+    protected static $simpleXlsx = __DIR__.'/../../_data/simple_xlsx.xlsx';
 
     /**
      * @var Row

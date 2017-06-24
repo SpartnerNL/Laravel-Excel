@@ -24,7 +24,7 @@ class Cell implements CellInterface
      */
     public function __construct(PhpSpreadsheetCell $cell, Configuration $configuration)
     {
-        $this->cell          = $cell;
+        $this->cell = $cell;
         $this->configuration = $configuration;
     }
 

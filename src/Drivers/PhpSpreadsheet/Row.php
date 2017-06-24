@@ -39,7 +39,7 @@ class Row implements RowInterface, IteratorAggregate, Countable
      */
     public function __construct(PhpSpreadsheetRow $row, Configuration $configuration)
     {
-        $this->row           = $row;
+        $this->row = $row;
         $this->configuration = $configuration;
 
         $this->setStartColumn('A');
@@ -124,7 +124,9 @@ class Row implements RowInterface, IteratorAggregate, Countable
      * Retrieve an external iterator.
      *
      * @link  http://php.net/manual/en/iteratoraggregate.getiterator.php
+     *
      * @return Traversable|CellIterator
+     *
      * @since 5.0.0
      */
     public function getIterator()
@@ -139,10 +141,12 @@ class Row implements RowInterface, IteratorAggregate, Countable
      * Count elements of an object.
      *
      * @link  http://php.net/manual/en/countable.count.php
+     *
      * @return int The custom count as an integer.
      *             </p>
      *             <p>
      *             The return value is cast to an integer.
+     *
      * @since 5.1.0
      */
     public function count()

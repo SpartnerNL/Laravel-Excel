@@ -19,7 +19,7 @@ class LaravelFilesystemConfiguration
      */
     protected $drivers = [
         'native',
-        'filesystem'
+        'filesystem',
     ];
 
     /**
@@ -44,6 +44,7 @@ class LaravelFilesystemConfiguration
      * @param string $driver
      *
      * @throws \InvalidArgumentException
+     *
      * @return $this
      */
     public function setDriver(string $driver)

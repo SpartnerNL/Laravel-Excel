@@ -50,5 +50,5 @@ return [
             'driver'      => 'filesystem',
             'defaultDisk' => 'local',
         ],
-    ]
+    ],
 ];

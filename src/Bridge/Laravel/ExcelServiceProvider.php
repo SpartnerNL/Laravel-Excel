@@ -69,6 +69,6 @@ class ExcelServiceProvider extends ServiceProvider
      */
     protected function getConfigFile(): string
     {
-        return __DIR__ . static::DS . '..' . static::DS . '..' . static::DS . '..' . static::DS . 'config/excel.php';
+        return __DIR__.static::DS.'..'.static::DS.'..'.static::DS.'..'.static::DS.'config/excel.php';
     }
 }

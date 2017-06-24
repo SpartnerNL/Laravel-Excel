@@ -13,7 +13,7 @@ class ReaderTest extends TestCase
     /**
      * @var string
      */
-    protected $simpleXlsx = __DIR__ . '/../../_data/simple_xlsx.xlsx';
+    protected $simpleXlsx = __DIR__.'/../../_data/simple_xlsx.xlsx';
 
     /**
      * @var Reader

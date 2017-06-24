@@ -25,7 +25,7 @@ class SheetIterator extends IteratorAdapter implements Iterator
      */
     public function __construct(WorksheetIterator $iterator, Configuration $configuration)
     {
-        $this->iterator      = $iterator;
+        $this->iterator = $iterator;
         $this->configuration = $configuration;
     }
 
@@ -33,7 +33,9 @@ class SheetIterator extends IteratorAdapter implements Iterator
      * Return the current element.
      *
      * @link  http://php.net/manual/en/iterator.current.php
+     *
      * @return Sheet
+     *
      * @since 5.0.0
      */
     public function current()

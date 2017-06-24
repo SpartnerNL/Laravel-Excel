@@ -31,9 +31,9 @@ class FilesystemLoader
      */
     public function __construct(FilesystemManager $manager, callable $defaultLoader, $defaultDisk = 'local')
     {
-        $this->manager       = $manager;
+        $this->manager = $manager;
         $this->defaultLoader = $defaultLoader;
-        $this->defaultDisk   = $defaultDisk;
+        $this->defaultDisk = $defaultDisk;
     }
 
     /**
@@ -46,7 +46,7 @@ class FilesystemLoader
         $loader = $this->defaultLoader;
 
         $tmpFilePath = $this->getTmpFilePath();
-        $tmpFile     = $this->getTmpFile($tmpFilePath);
+        $tmpFile = $this->getTmpFile($tmpFilePath);
 
         list($diskName, $filePath) = $this->resolvePath($filePath);
 
@@ -77,6 +77,7 @@ class FilesystemLoader
      * @param string $filePath
      *
      * @throws InvalidSpreadsheetLoaderException
+     *
      * @return bool|resource
      */
     protected function loadFileFromDisk(string $diskName, string $filePath)
