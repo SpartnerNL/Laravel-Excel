@@ -3,20 +3,22 @@
 namespace Maatwebsite\Excel\Drivers\PhpSpreadsheet\Iterators;
 
 use Iterator;
+use Maatwebsite\Excel\Drivers\PhpSpreadsheet\Row;
 use Maatwebsite\Excel\Drivers\PhpSpreadsheet\Sheet;
 use PhpOffice\PhpSpreadsheet\Worksheet\Iterator as WorksheetIterator;
+use PhpOffice\PhpSpreadsheet\Worksheet\RowIterator as RowIteratorDelegate;
 
-class SheetIterator extends IteratorAdapter implements Iterator
+class RowIterator extends IteratorAdapter implements Iterator
 {
     /**
-     * @var WorksheetIterator
+     * @var RowIteratorDelegate
      */
     private $iterator;
 
     /**
-     * @param WorksheetIterator $iterator
+     * @param RowIteratorDelegate $iterator
      */
-    public function __construct(WorksheetIterator $iterator)
+    public function __construct(RowIteratorDelegate $iterator)
     {
         $this->iterator = $iterator;
     }
@@ -30,17 +32,15 @@ class SheetIterator extends IteratorAdapter implements Iterator
      */
     public function current()
     {
-        return new Sheet($this->iterator->current());
+        return new Row($this->iterator->current());
     }
 
     /**
-     * @return Sheet
+     * @return Row
      */
-    public function first(): Sheet
+    public function first(): Row
     {
         $this->rewind();
-
-        $this->next();
 
         return $this->current();
     }

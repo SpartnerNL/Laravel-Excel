@@ -2,16 +2,22 @@
 
 namespace Maatwebsite\Excel\Tests\Drivers\PhpSpreadsheet;
 
+use Countable;
+use IteratorAggregate;
 use Maatwebsite\Excel\Drivers\PhpSpreadsheet\Reader;
 use Maatwebsite\Excel\Drivers\PhpSpreadsheet\Sheet;
+use Maatwebsite\Excel\Tests\Drivers\CountableTestCase;
+use Maatwebsite\Excel\Tests\Drivers\IterableTestCase;
 use PHPUnit\Framework\TestCase;
 
 class ReaderTest extends TestCase
 {
+    use IterableTestCase, CountableTestCase;
+
     /**
      * @var string
      */
-    protected $simpleXlsx = __DIR__.'/../../_data/simple_xlsx.xlsx';
+    protected $simpleXlsx = __DIR__ . '/../../_data/simple_xlsx.xlsx';
 
     /**
      * @var Reader
@@ -45,7 +51,7 @@ class ReaderTest extends TestCase
     public function reader_can_load_sheet_by_index()
     {
         $reader = $this->reader->load($this->simpleXlsx);
-        $sheet = $reader->sheetByIndex(0);
+        $sheet  = $reader->sheetByIndex(0);
 
         $this->assertInstanceOf(Sheet::class, $sheet);
     }
@@ -56,7 +62,7 @@ class ReaderTest extends TestCase
     public function reader_can_load_sheet_by_name()
     {
         $reader = $this->reader->load($this->simpleXlsx);
-        $sheet = $reader->sheetByName('Simple');
+        $sheet  = $reader->sheetByName('Simple');
 
         $this->assertInstanceOf(Sheet::class, $sheet);
     }
@@ -97,20 +103,39 @@ class ReaderTest extends TestCase
     /**
      * @test
      */
-    public function reader_can_iterator_over_sheets()
+    public function reader_can_iterate_over_sheets()
     {
         $reader = $this->reader->load($this->simpleXlsx);
 
+        // Traversable
         foreach ($reader as $sheet) {
             $this->assertInstanceOf(Sheet::class, $sheet);
         }
 
+        // Method
         foreach ($reader->sheets() as $sheet) {
             $this->assertInstanceOf(Sheet::class, $sheet);
         }
 
+        // Iterator
         foreach ($reader->getIterator() as $sheet) {
             $this->assertInstanceOf(Sheet::class, $sheet);
         }
+    }
+
+    /**
+     * @return IteratorAggregate
+     */
+    public function getIterable()
+    {
+        return $this->reader->load($this->simpleXlsx);
+    }
+
+    /**
+     * @return Countable
+     */
+    public function getCountable()
+    {
+        return $this->reader->load($this->simpleXlsx);
     }
 }

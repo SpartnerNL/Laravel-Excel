@@ -8,7 +8,7 @@
          convertWarningsToExceptions="true"
          processIsolation="false"
          stopOnFailure="true"
-         syntaxCheck="false"
+         syntaxCheck="true"
 >
     <testsuites>
         <testsuite name="Package Test Suite">

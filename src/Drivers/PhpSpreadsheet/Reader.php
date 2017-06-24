@@ -2,6 +2,7 @@
 
 namespace Maatwebsite\Excel\Drivers\PhpSpreadsheet;
 
+use Countable;
 use IteratorAggregate;
 use Maatwebsite\Excel\Drivers\PhpSpreadsheet\Iterators\SheetIterator;
 use Maatwebsite\Excel\Exceptions\SheetNotFoundException;
@@ -13,7 +14,7 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Worksheet;
 use Traversable;
 
-class Reader implements ReaderInterface, IteratorAggregate, \Countable
+class Reader implements ReaderInterface, IteratorAggregate, Countable
 {
     /**
      * @var Spreadsheet
@@ -72,7 +73,6 @@ class Reader implements ReaderInterface, IteratorAggregate, \Countable
      * @param callable|null $callback
      *
      * @throws SheetNotFoundException
-     *
      * @return Sheet|SheetInterface
      */
     public function sheetByName(string $name, callable $callback = null): SheetInterface
@@ -96,8 +96,7 @@ class Reader implements ReaderInterface, IteratorAggregate, \Countable
      * @param callable|null $callback
      *
      * @throws SheetNotFoundException
-     *
-     * @return Sheet|SheetInterface
+     * @return Sheet
      */
     public function sheetByIndex(int $index, callable $callback = null): SheetInterface
     {
@@ -119,10 +118,8 @@ class Reader implements ReaderInterface, IteratorAggregate, \Countable
      * Retrieve an external iterator.
      *
      * @link  http://php.net/manual/en/iteratoraggregate.getiterator.php
-     *
      * @return Traversable An instance of an object implementing <b>Iterator</b> or
      *                     <b>Traversable</b>
-     *
      * @since 5.0.0
      */
     public function getIterator()
@@ -138,12 +135,10 @@ class Reader implements ReaderInterface, IteratorAggregate, \Countable
      * Count elements of an object.
      *
      * @link  http://php.net/manual/en/countable.count.php
-     *
      * @return int The custom count as an integer.
      *             </p>
      *             <p>
      *             The return value is cast to an integer.
-     *
      * @since 5.1.0
      */
     public function count()
