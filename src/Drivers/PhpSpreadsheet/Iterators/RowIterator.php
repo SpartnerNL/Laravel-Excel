@@ -25,7 +25,7 @@ class RowIterator extends IteratorAdapter implements Iterator
      */
     public function __construct(RowIteratorDelegate $iterator, Configuration $configuration)
     {
-        $this->iterator = $iterator;
+        $this->iterator      = $iterator;
         $this->configuration = $configuration;
     }
 

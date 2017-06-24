@@ -5,9 +5,9 @@ namespace Maatwebsite\Excel\Drivers\PhpSpreadsheet\Iterators;
 use Iterator;
 use Maatwebsite\Excel\Configuration;
 use Maatwebsite\Excel\Drivers\PhpSpreadsheet\Cell;
-use PhpOffice\PhpSpreadsheet\Worksheet\CellIterator as CellIteratorDelegate;
-use PhpOffice\PhpSpreadsheet\Worksheet\ColumnCellIterator;
 use PhpOffice\PhpSpreadsheet\Worksheet\RowCellIterator;
+use PhpOffice\PhpSpreadsheet\Worksheet\ColumnCellIterator;
+use PhpOffice\PhpSpreadsheet\Worksheet\CellIterator as CellIteratorDelegate;
 
 class CellIterator extends IteratorAdapter implements Iterator
 {
@@ -27,7 +27,7 @@ class CellIterator extends IteratorAdapter implements Iterator
      */
     public function __construct(CellIteratorDelegate $iterator, Configuration $configuration)
     {
-        $this->iterator = $iterator;
+        $this->iterator      = $iterator;
         $this->configuration = $configuration;
     }
 

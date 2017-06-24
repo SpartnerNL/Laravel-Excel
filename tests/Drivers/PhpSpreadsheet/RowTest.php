@@ -4,14 +4,14 @@ namespace Maatwebsite\Excel\Tests\Drivers\PhpSpreadsheet;
 
 use Countable;
 use IteratorAggregate;
-use Maatwebsite\Excel\Configuration;
-use Maatwebsite\Excel\Drivers\PhpSpreadsheet\Cell;
-use Maatwebsite\Excel\Drivers\PhpSpreadsheet\Loaders\DefaultLoader;
-use Maatwebsite\Excel\Drivers\PhpSpreadsheet\Reader;
-use Maatwebsite\Excel\Drivers\PhpSpreadsheet\Row;
-use Maatwebsite\Excel\Tests\Drivers\CountableTestCase;
-use Maatwebsite\Excel\Tests\Drivers\IterableTestCase;
 use PHPUnit\Framework\TestCase;
+use Maatwebsite\Excel\Configuration;
+use Maatwebsite\Excel\Drivers\PhpSpreadsheet\Row;
+use Maatwebsite\Excel\Drivers\PhpSpreadsheet\Cell;
+use Maatwebsite\Excel\Drivers\PhpSpreadsheet\Reader;
+use Maatwebsite\Excel\Tests\Drivers\IterableTestCase;
+use Maatwebsite\Excel\Tests\Drivers\CountableTestCase;
+use Maatwebsite\Excel\Drivers\PhpSpreadsheet\Loaders\DefaultLoader;
 
 class RowTest extends TestCase
 {
@@ -20,7 +20,7 @@ class RowTest extends TestCase
     /**
      * @var string
      */
-    protected static $simpleXlsx = __DIR__.'/../../_data/simple_xlsx.xlsx';
+    protected static $simpleXlsx = __DIR__ . '/../../_data/simple_xlsx.xlsx';
 
     /**
      * @var Row

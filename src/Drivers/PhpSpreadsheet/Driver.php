@@ -2,13 +2,13 @@
 
 namespace Maatwebsite\Excel\Drivers\PhpSpreadsheet;
 
-use Illuminate\Contracts\Filesystem\Filesystem;
-use Illuminate\Filesystem\FilesystemManager;
-use Maatwebsite\Excel\Bridge\Laravel\Loaders\FilesystemLoader;
-use Maatwebsite\Excel\Configuration;
-use Maatwebsite\Excel\Drivers\Driver as DriverInterface;
-use Maatwebsite\Excel\Drivers\PhpSpreadsheet\Loaders\DefaultLoader;
 use Maatwebsite\Excel\Excel;
+use Maatwebsite\Excel\Configuration;
+use Illuminate\Filesystem\FilesystemManager;
+use Illuminate\Contracts\Filesystem\Filesystem;
+use Maatwebsite\Excel\Drivers\Driver as DriverInterface;
+use Maatwebsite\Excel\Bridge\Laravel\Loaders\FilesystemLoader;
+use Maatwebsite\Excel\Drivers\PhpSpreadsheet\Loaders\DefaultLoader;
 
 class Driver implements DriverInterface
 {

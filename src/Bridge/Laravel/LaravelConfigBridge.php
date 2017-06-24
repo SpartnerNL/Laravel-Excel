@@ -2,8 +2,8 @@
 
 namespace Maatwebsite\Excel\Bridge\Laravel;
 
-use Illuminate\Contracts\Config\Repository;
 use Maatwebsite\Excel\Configuration;
+use Illuminate\Contracts\Config\Repository;
 
 class LaravelConfigBridge
 {

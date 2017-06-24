@@ -3,16 +3,16 @@
 namespace Maatwebsite\Excel\Drivers\PhpSpreadsheet;
 
 use Countable;
+use Traversable;
 use IteratorAggregate;
 use Maatwebsite\Excel\Configuration;
-use Maatwebsite\Excel\Drivers\PhpSpreadsheet\Iterators\SheetIterator;
-use Maatwebsite\Excel\Exceptions\SheetNotFoundException;
-use Maatwebsite\Excel\Sheet as SheetInterface;
-use Maatwebsite\Excel\Spreadsheet as SpreadsheetInterface;
 use PhpOffice\PhpSpreadsheet\Exception;
-use PhpOffice\PhpSpreadsheet\Spreadsheet as PhpSpreadsheet;
 use PhpOffice\PhpSpreadsheet\Worksheet;
-use Traversable;
+use Maatwebsite\Excel\Sheet as SheetInterface;
+use Maatwebsite\Excel\Exceptions\SheetNotFoundException;
+use Maatwebsite\Excel\Spreadsheet as SpreadsheetInterface;
+use PhpOffice\PhpSpreadsheet\Spreadsheet as PhpSpreadsheet;
+use Maatwebsite\Excel\Drivers\PhpSpreadsheet\Iterators\SheetIterator;
 
 class Spreadsheet implements SpreadsheetInterface, IteratorAggregate, Countable
 {

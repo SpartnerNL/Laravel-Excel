@@ -3,10 +3,10 @@
 namespace Maatwebsite\Excel\Drivers\PhpSpreadsheet;
 
 use Maatwebsite\Excel\Configuration;
-use Maatwebsite\Excel\Exceptions\InvalidSpreadsheetLoaderException;
 use Maatwebsite\Excel\Reader as ReaderInterface;
 use Maatwebsite\Excel\Spreadsheet as SpreadsheetInterface;
 use PhpOffice\PhpSpreadsheet\Spreadsheet as PhpSpreadsheet;
+use Maatwebsite\Excel\Exceptions\InvalidSpreadsheetLoaderException;
 
 class Reader implements ReaderInterface
 {
@@ -59,18 +59,6 @@ class Reader implements ReaderInterface
     }
 
     /**
-     * @param string $filePath
-     *
-     * @return PhpSpreadsheet
-     */
-    protected function loadSpreadsheet(string $filePath): PhpSpreadsheet
-    {
-        $loader = $this->getLoader();
-
-        return $loader($filePath);
-    }
-
-    /**
      * @param callable|null $spreadsheetLoader
      *
      * @throws InvalidSpreadsheetLoaderException
@@ -86,5 +74,17 @@ class Reader implements ReaderInterface
     public function getLoader(): callable
     {
         return $this->spreadsheetLoader;
+    }
+
+    /**
+     * @param string $filePath
+     *
+     * @return PhpSpreadsheet
+     */
+    protected function loadSpreadsheet(string $filePath): PhpSpreadsheet
+    {
+        $loader = $this->getLoader();
+
+        return $loader($filePath);
     }
 }

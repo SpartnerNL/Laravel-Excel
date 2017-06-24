@@ -2,8 +2,8 @@
 
 namespace Maatwebsite\Excel\Tests\Drivers;
 
-use IteratorAggregate;
 use Traversable;
+use IteratorAggregate;
 
 trait IterableTestCase
 {

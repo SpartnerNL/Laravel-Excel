@@ -2,11 +2,11 @@
 
 namespace Maatwebsite\Excel\Bridge\Laravel;
 
-use Illuminate\Support\ServiceProvider;
-use Maatwebsite\Excel\Configuration;
-use Maatwebsite\Excel\Drivers\PhpSpreadsheet\Driver;
 use Maatwebsite\Excel\Excel;
 use Maatwebsite\Excel\ExcelManager;
+use Maatwebsite\Excel\Configuration;
+use Illuminate\Support\ServiceProvider;
+use Maatwebsite\Excel\Drivers\PhpSpreadsheet\Driver;
 
 class ExcelServiceProvider extends ServiceProvider
 {
@@ -55,6 +55,14 @@ class ExcelServiceProvider extends ServiceProvider
     }
 
     /**
+     * @return string
+     */
+    protected function getConfigFile(): string
+    {
+        return __DIR__ . static::DS . '..' . static::DS . '..' . static::DS . '..' . static::DS . 'config/excel.php';
+    }
+
+    /**
      * @param Configuration $configuration
      *
      * @return Excel
@@ -62,13 +70,5 @@ class ExcelServiceProvider extends ServiceProvider
     private function buildPhpSpreadsheet(Configuration $configuration)
     {
         return (new Driver($configuration))->buildLaravel($this->app['filesystem']);
-    }
-
-    /**
-     * @return string
-     */
-    protected function getConfigFile(): string
-    {
-        return __DIR__.static::DS.'..'.static::DS.'..'.static::DS.'..'.static::DS.'config/excel.php';
     }
 }

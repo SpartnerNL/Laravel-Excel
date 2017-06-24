@@ -3,13 +3,13 @@
 namespace Maatwebsite\Excel\Drivers\PhpSpreadsheet;
 
 use Countable;
+use Traversable;
 use IteratorAggregate;
 use Maatwebsite\Excel\Configuration;
-use Maatwebsite\Excel\Drivers\PhpSpreadsheet\Iterators\CellIterator;
 use Maatwebsite\Excel\Row as RowInterface;
 use PhpOffice\PhpSpreadsheet\Cell as PhpSpreadsheetCell;
 use PhpOffice\PhpSpreadsheet\Worksheet\Row as PhpSpreadsheetRow;
-use Traversable;
+use Maatwebsite\Excel\Drivers\PhpSpreadsheet\Iterators\CellIterator;
 
 class Row implements RowInterface, IteratorAggregate, Countable
 {
@@ -39,7 +39,7 @@ class Row implements RowInterface, IteratorAggregate, Countable
      */
     public function __construct(PhpSpreadsheetRow $row, Configuration $configuration)
     {
-        $this->row = $row;
+        $this->row           = $row;
         $this->configuration = $configuration;
 
         $this->setStartColumn('A');

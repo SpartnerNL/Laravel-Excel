@@ -2,12 +2,12 @@
 
 namespace Maatwebsite\Excel\Tests;
 
-use Maatwebsite\Excel\Configuration;
-use Maatwebsite\Excel\Drivers\PhpSpreadsheet;
-use Maatwebsite\Excel\Drivers\Spout;
 use Maatwebsite\Excel\Excel;
-use Maatwebsite\Excel\ExcelManager;
 use PHPUnit\Framework\TestCase;
+use Maatwebsite\Excel\ExcelManager;
+use Maatwebsite\Excel\Configuration;
+use Maatwebsite\Excel\Drivers\Spout;
+use Maatwebsite\Excel\Drivers\PhpSpreadsheet;
 
 class ExcelManagerTest extends TestCase
 {

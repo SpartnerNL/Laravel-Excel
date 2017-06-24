@@ -3,9 +3,9 @@
 namespace Maatwebsite\Excel;
 
 use InvalidArgumentException;
+use Maatwebsite\Excel\Drivers\Spout;
 use Maatwebsite\Excel\Drivers\Driver;
 use Maatwebsite\Excel\Drivers\PhpSpreadsheet;
-use Maatwebsite\Excel\Drivers\Spout;
 
 class ExcelManager
 {
@@ -62,7 +62,7 @@ class ExcelManager
         }
 
         $resolver = $this->resolvers[$name];
-        $driver = $resolver();
+        $driver   = $resolver();
 
         // If the resolver has a driver instance, let the driver build the class structure
         if ($driver instanceof Driver) {

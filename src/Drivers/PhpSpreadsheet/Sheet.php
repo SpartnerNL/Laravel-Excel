@@ -3,13 +3,13 @@
 namespace Maatwebsite\Excel\Drivers\PhpSpreadsheet;
 
 use Countable;
+use Traversable;
 use IteratorAggregate;
 use Maatwebsite\Excel\Configuration;
-use Maatwebsite\Excel\Drivers\PhpSpreadsheet\Iterators\RowIterator;
+use PhpOffice\PhpSpreadsheet\Worksheet;
 use Maatwebsite\Excel\Row as RowInterface;
 use Maatwebsite\Excel\Sheet as SheetInterface;
-use PhpOffice\PhpSpreadsheet\Worksheet;
-use Traversable;
+use Maatwebsite\Excel\Drivers\PhpSpreadsheet\Iterators\RowIterator;
 
 class Sheet implements SheetInterface, IteratorAggregate, Countable
 {

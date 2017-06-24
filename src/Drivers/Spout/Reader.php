@@ -2,8 +2,8 @@
 
 namespace Maatwebsite\Excel\Drivers\Spout;
 
-use Maatwebsite\Excel\Reader as ReaderInterface;
 use Maatwebsite\Excel\Spreadsheet;
+use Maatwebsite\Excel\Reader as ReaderInterface;
 
 class Reader implements ReaderInterface
 {

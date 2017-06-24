@@ -2,9 +2,9 @@
 
 namespace Maatwebsite\Excel\Drivers\Spout;
 
+use Maatwebsite\Excel\Excel;
 use Maatwebsite\Excel\Configuration;
 use Maatwebsite\Excel\Drivers\Driver as DriverInterface;
-use Maatwebsite\Excel\Excel;
 
 class Driver implements DriverInterface
 {

@@ -2,10 +2,10 @@
 
 namespace Maatwebsite\Excel\Bridge\Laravel\Loaders;
 
-use Illuminate\Filesystem\FilesystemManager;
 use InvalidArgumentException;
-use Maatwebsite\Excel\Exceptions\InvalidSpreadsheetLoaderException;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use Illuminate\Filesystem\FilesystemManager;
+use Maatwebsite\Excel\Exceptions\InvalidSpreadsheetLoaderException;
 
 class FilesystemLoader
 {
@@ -31,9 +31,9 @@ class FilesystemLoader
      */
     public function __construct(FilesystemManager $manager, callable $defaultLoader, $defaultDisk = 'local')
     {
-        $this->manager = $manager;
+        $this->manager       = $manager;
         $this->defaultLoader = $defaultLoader;
-        $this->defaultDisk = $defaultDisk;
+        $this->defaultDisk   = $defaultDisk;
     }
 
     /**
@@ -46,7 +46,7 @@ class FilesystemLoader
         $loader = $this->defaultLoader;
 
         $tmpFilePath = $this->getTmpFilePath();
-        $tmpFile = $this->getTmpFile($tmpFilePath);
+        $tmpFile     = $this->getTmpFile($tmpFilePath);
 
         list($diskName, $filePath) = $this->resolvePath($filePath);
 
@@ -59,6 +59,14 @@ class FilesystemLoader
         $this->deleteTmpFile($tmpFilePath);
 
         return $spreadsheet;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTmpFilePath(): string
+    {
+        return tempnam(sys_get_temp_dir(), 'laravel-excel');
     }
 
     /**
@@ -93,14 +101,6 @@ class FilesystemLoader
         }
 
         return $disk->readStream($filePath);
-    }
-
-    /**
-     * @return string
-     */
-    public function getTmpFilePath(): string
-    {
-        return tempnam(sys_get_temp_dir(), 'laravel-excel');
     }
 
     /**

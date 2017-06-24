@@ -2,18 +2,18 @@
 
 namespace Maatwebsite\Excel\Tests\Drivers\PhpSpreadsheet;
 
+use PHPUnit\Framework\TestCase;
 use Maatwebsite\Excel\Configuration;
-use Maatwebsite\Excel\Drivers\PhpSpreadsheet\Loaders\DefaultLoader;
 use Maatwebsite\Excel\Drivers\PhpSpreadsheet\Reader;
 use Maatwebsite\Excel\Drivers\PhpSpreadsheet\Spreadsheet;
-use PHPUnit\Framework\TestCase;
+use Maatwebsite\Excel\Drivers\PhpSpreadsheet\Loaders\DefaultLoader;
 
 class ReaderTest extends TestCase
 {
     /**
      * @var string
      */
-    protected $simpleXlsx = __DIR__.'/../../_data/simple_xlsx.xlsx';
+    protected $simpleXlsx = __DIR__ . '/../../_data/simple_xlsx.xlsx';
 
     /**
      * @var Reader

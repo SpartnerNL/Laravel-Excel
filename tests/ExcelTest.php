@@ -4,9 +4,9 @@ namespace Maatwebsite\Excel\Tests;
 
 use Maatwebsite\Excel\Excel;
 use Maatwebsite\Excel\Reader;
-use Maatwebsite\Excel\Spreadsheet;
 use Maatwebsite\Excel\Writer;
 use PHPUnit\Framework\TestCase;
+use Maatwebsite\Excel\Spreadsheet;
 
 class ExcelTest extends TestCase
 {

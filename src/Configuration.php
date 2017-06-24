@@ -2,10 +2,10 @@
 
 namespace Maatwebsite\Excel;
 
-use Maatwebsite\Excel\Configuration\LaravelFilesystemConfiguration;
+use Maatwebsite\Excel\Drivers\PhpSpreadsheet\Driver;
 use Maatwebsite\Excel\Configuration\ReaderConfiguration;
 use Maatwebsite\Excel\Configuration\WriterConfiguration;
-use Maatwebsite\Excel\Drivers\PhpSpreadsheet\Driver;
+use Maatwebsite\Excel\Configuration\LaravelFilesystemConfiguration;
 
 class Configuration
 {

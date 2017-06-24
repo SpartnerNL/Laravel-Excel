@@ -25,7 +25,7 @@ class SheetIterator extends IteratorAdapter implements Iterator
      */
     public function __construct(WorksheetIterator $iterator, Configuration $configuration)
     {
-        $this->iterator = $iterator;
+        $this->iterator      = $iterator;
         $this->configuration = $configuration;
     }
 
