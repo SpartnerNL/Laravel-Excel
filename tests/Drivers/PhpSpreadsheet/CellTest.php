@@ -2,13 +2,10 @@
 
 namespace Maatwebsite\Excel\Tests\Drivers\PhpSpreadsheet;
 
-use IteratorAggregate;
 use PHPUnit\Framework\TestCase;
 use Maatwebsite\Excel\Configuration;
-use Maatwebsite\Excel\Drivers\PhpSpreadsheet\Column;
 use Maatwebsite\Excel\Drivers\PhpSpreadsheet\Cell;
 use Maatwebsite\Excel\Drivers\PhpSpreadsheet\Reader;
-use Maatwebsite\Excel\Tests\Drivers\IterableTestCase;
 use Maatwebsite\Excel\Drivers\PhpSpreadsheet\Loaders\DefaultLoader;
 
 class CellTest extends TestCase

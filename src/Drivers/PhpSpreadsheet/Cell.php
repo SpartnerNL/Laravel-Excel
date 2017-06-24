@@ -31,6 +31,14 @@ class Cell implements CellInterface
     /**
      * @return string
      */
+    public function __toString()
+    {
+        return (string) $this->getValue();
+    }
+
+    /**
+     * @return string
+     */
     public function getCoordinate(): string
     {
         return $this->cell->getCoordinate();
@@ -58,13 +66,5 @@ class Cell implements CellInterface
     public function getValue()
     {
         return $this->cell->getValue();
-    }
-
-    /**
-     * @return string
-     */
-    public function __toString()
-    {
-        return (string) $this->getValue();
     }
 }

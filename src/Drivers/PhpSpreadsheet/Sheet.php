@@ -3,9 +3,9 @@
 namespace Maatwebsite\Excel\Drivers\PhpSpreadsheet;
 
 use Countable;
-use Maatwebsite\Excel\Column;
 use Traversable;
 use IteratorAggregate;
+use Maatwebsite\Excel\Column;
 use Maatwebsite\Excel\Configuration;
 use PhpOffice\PhpSpreadsheet\Worksheet;
 use Maatwebsite\Excel\Row as RowInterface;

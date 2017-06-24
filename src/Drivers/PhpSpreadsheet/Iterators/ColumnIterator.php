@@ -4,8 +4,8 @@ namespace Maatwebsite\Excel\Drivers\PhpSpreadsheet\Iterators;
 
 use Iterator;
 use Maatwebsite\Excel\Configuration;
-use Maatwebsite\Excel\Drivers\PhpSpreadsheet\Column;
 use Maatwebsite\Excel\Drivers\PhpSpreadsheet\Sheet;
+use Maatwebsite\Excel\Drivers\PhpSpreadsheet\Column;
 use PhpOffice\PhpSpreadsheet\Worksheet\ColumnIterator as ColumnIteratorDelegate;
 
 class ColumnIterator extends IteratorAdapter implements Iterator
