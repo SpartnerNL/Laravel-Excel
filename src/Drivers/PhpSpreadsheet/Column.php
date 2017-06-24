@@ -2,15 +2,15 @@
 
 namespace Maatwebsite\Excel\Drivers\PhpSpreadsheet;
 
+use Iterator;
 use Traversable;
-use IteratorAggregate;
 use Maatwebsite\Excel\Configuration;
 use Maatwebsite\Excel\Cell as CellInterface;
 use Maatwebsite\Excel\Column as ColumnInterface;
 use Maatwebsite\Excel\Drivers\PhpSpreadsheet\Iterators\CellIterator;
 use PhpOffice\PhpSpreadsheet\Worksheet\Column as PhpSpreadsheetColumn;
 
-class Column implements ColumnInterface, IteratorAggregate
+class Column implements ColumnInterface
 {
     /**
      * @var int
@@ -85,9 +85,9 @@ class Column implements ColumnInterface, IteratorAggregate
      * @param int  $row
      * @param bool $createIfNotExist
      *
-     * @return Cell
+     * @return CellInterface
      */
-    public function cell(int $row, bool $createIfNotExist = false): Cell
+    public function cell(int $row, bool $createIfNotExist = false): CellInterface
     {
         return $this->sheet->cell(
             $this->getColumnIndex() . $row,
@@ -99,7 +99,7 @@ class Column implements ColumnInterface, IteratorAggregate
      * @param int      $startRow
      * @param int|null $endRow
      *
-     * @return CellIterator|CellInterface[]
+     * @return Iterator|CellInterface[]
      */
     public function cells(int $startRow = 1, int $endRow = null)
     {
@@ -113,7 +113,7 @@ class Column implements ColumnInterface, IteratorAggregate
     {
         $cells = [];
 
-        foreach ($this->cells() as $cell) {
+        foreach ($this as $cell) {
             $cells[] = (string) $cell;
         }
 
@@ -124,7 +124,7 @@ class Column implements ColumnInterface, IteratorAggregate
      * Retrieve an external iterator.
      *
      * @link  http://php.net/manual/en/iteratoraggregate.getiterator.php
-     * @return Traversable|CellIterator|CellInterface[]
+     * @return Traversable|CellInterface[]
      * @since 5.0.0
      */
     public function getIterator()
@@ -136,7 +136,7 @@ class Column implements ColumnInterface, IteratorAggregate
      * @param int      $startRow
      * @param int|null $endRow
      *
-     * @return Traversable|CellIterator|CellInterface[]
+     * @return Iterator|CellInterface[]
      */
     public function getCellIterator(int $startRow = 1, int $endRow = null)
     {

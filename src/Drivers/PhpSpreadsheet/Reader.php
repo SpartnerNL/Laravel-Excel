@@ -59,13 +59,15 @@ class Reader implements ReaderInterface
     }
 
     /**
-     * @param callable|null $spreadsheetLoader
+     * @param callable $spreadsheetLoader
      *
-     * @throws InvalidSpreadsheetLoaderException
+     * @return ReaderInterface
      */
-    public function setLoader(callable $spreadsheetLoader = null)
+    public function setLoader(callable $spreadsheetLoader): ReaderInterface
     {
         $this->spreadsheetLoader = $spreadsheetLoader;
+
+        return $this;
     }
 
     /**

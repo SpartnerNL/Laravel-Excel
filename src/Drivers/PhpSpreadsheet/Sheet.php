@@ -5,7 +5,8 @@ namespace Maatwebsite\Excel\Drivers\PhpSpreadsheet;
 use Countable;
 use Traversable;
 use IteratorAggregate;
-use Maatwebsite\Excel\Column;
+use Maatwebsite\Excel\Column as ColumnInterface;
+use Maatwebsite\Excel\Cell as CellInterface;
 use Maatwebsite\Excel\Configuration;
 use PhpOffice\PhpSpreadsheet\Worksheet;
 use Maatwebsite\Excel\Row as RowInterface;
@@ -14,7 +15,7 @@ use PhpOffice\PhpSpreadsheet\Cell as PhpSpreadsheetCell;
 use Maatwebsite\Excel\Drivers\PhpSpreadsheet\Iterators\RowIterator;
 use Maatwebsite\Excel\Drivers\PhpSpreadsheet\Iterators\ColumnIterator;
 
-class Sheet implements SheetInterface, IteratorAggregate, Countable
+class Sheet implements SheetInterface
 {
     /**
      * @var Worksheet
@@ -92,7 +93,7 @@ class Sheet implements SheetInterface, IteratorAggregate, Countable
      *
      * @return Traversable|RowIterator|RowInterface[]
      */
-    public function rows(int $startRow = 1, int $endRow = null): Traversable
+    public function rows(int $startRow = 1, int $endRow = null)
     {
         return $this->getRowIterator($startRow, $endRow);
     }
@@ -129,9 +130,9 @@ class Sheet implements SheetInterface, IteratorAggregate, Countable
     /**
      * @param string $column
      *
-     * @return Column
+     * @return ColumnInterface
      */
-    public function column(string $column): Column
+    public function column(string $column): ColumnInterface
     {
         $iterator = $this->getColumnIterator($column, ++$column);
 
@@ -167,9 +168,9 @@ class Sheet implements SheetInterface, IteratorAggregate, Countable
      * @param int      $startRow
      * @param int|null $endRow
      *
-     * @return RowIterator
+     * @return IteratorAggregate|RowIterator
      */
-    public function getRowIterator(int $startRow = 1, int $endRow = null): RowIterator
+    public function getRowIterator(int $startRow = 1, int $endRow = null)
     {
         return new RowIterator(
             $this,
@@ -182,7 +183,7 @@ class Sheet implements SheetInterface, IteratorAggregate, Countable
      * @param string      $startColumn
      * @param string|null $endColumn
      *
-     * @return ColumnIterator
+     * @return IteratorAggregate|ColumnIterator
      */
     public function getColumnIterator(string $startColumn = 'A', string $endColumn = null)
     {
@@ -195,11 +196,21 @@ class Sheet implements SheetInterface, IteratorAggregate, Countable
 
     /**
      * @param string $coordinate
+     *
+     * @return bool
+     */
+    public function hasCell(string $coordinate): bool
+    {
+        return $this->worksheet->cellExists($coordinate);
+    }
+
+    /**
+     * @param string $coordinate
      * @param bool   $createIfNotExist
      *
-     * @return Cell
+     * @return CellInterface
      */
-    public function cell(string $coordinate, bool $createIfNotExist = false): Cell
+    public function cell(string $coordinate, bool $createIfNotExist = false): CellInterface
     {
         $cell = $this->worksheet->getCell($coordinate, $createIfNotExist);
 

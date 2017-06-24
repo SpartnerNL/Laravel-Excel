@@ -3,15 +3,16 @@
 namespace Maatwebsite\Excel\Drivers\PhpSpreadsheet;
 
 use Countable;
+use Iterator;
+use Maatwebsite\Excel\Cell as CellInterface;
 use Traversable;
-use IteratorAggregate;
 use Maatwebsite\Excel\Configuration;
 use Maatwebsite\Excel\Row as RowInterface;
 use PhpOffice\PhpSpreadsheet\Cell as PhpSpreadsheetCell;
 use PhpOffice\PhpSpreadsheet\Worksheet\Row as PhpSpreadsheetRow;
 use Maatwebsite\Excel\Drivers\PhpSpreadsheet\Iterators\CellIterator;
 
-class Row implements RowInterface, IteratorAggregate, Countable
+class Row implements RowInterface
 {
     /**
      * @var PhpSpreadsheetRow
@@ -78,9 +79,9 @@ class Row implements RowInterface, IteratorAggregate, Countable
      * @param string $column
      * @param bool   $createIfNotExist
      *
-     * @return Cell
+     * @return CellInterface
      */
-    public function cell(string $column, bool $createIfNotExist = false)
+    public function cell(string $column, bool $createIfNotExist = false): CellInterface
     {
         return $this->sheet->cell(
             $column . $this->getRowNumber(),
@@ -92,7 +93,7 @@ class Row implements RowInterface, IteratorAggregate, Countable
      * @param string|null $startColumn
      * @param string|null $endColumn
      *
-     * @return CellIterator|Cell[]
+     * @return Iterator|CellInterface[]
      */
     public function cells(string $startColumn = 'A', string $endColumn = null)
     {
@@ -146,9 +147,9 @@ class Row implements RowInterface, IteratorAggregate, Countable
      * @param string      $startColumn
      * @param string|null $endColumn
      *
-     * @return CellIterator
+     * @return Iterator
      */
-    public function getCellIterator(string $startColumn = 'A', string $endColumn = null): CellIterator
+    public function getCellIterator(string $startColumn = 'A', string $endColumn = null)
     {
         if ($endColumn === null) {
             $endColumn = $this->getHighestColumn();

@@ -2,6 +2,7 @@
 
 namespace Maatwebsite\Excel\Drivers\Spout;
 
+use Maatwebsite\Excel\Drivers\PhpSpreadsheet\Loaders\DefaultLoader;
 use Maatwebsite\Excel\Excel;
 use Maatwebsite\Excel\Configuration;
 use Maatwebsite\Excel\Drivers\Driver as DriverInterface;
@@ -33,7 +34,7 @@ class Driver implements DriverInterface
     {
         return new Excel(
             new Writer(),
-            new Reader(new Configuration())
+            new Reader(new Configuration(), new DefaultLoader())
         );
     }
 }

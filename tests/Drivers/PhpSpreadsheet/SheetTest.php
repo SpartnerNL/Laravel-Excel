@@ -180,8 +180,17 @@ class SheetTest extends TestCase
     {
         $this->markTestIncomplete('Column count is not correct yet. File needs to be fixed.');
 
-        // This sheet seems a bit odd. Should be 4
         $this->assertSame(4, $this->sheet->columnCount());
+    }
+
+    /**
+     * @test
+     */
+    public function can_get_highest_column()
+    {
+        $this->markTestIncomplete('Highest column is not correct yet. File needs to be fixed.');
+
+        $this->assertEquals('D', $this->sheet->getHighestColumn());
     }
 
     /**
@@ -227,6 +236,24 @@ class SheetTest extends TestCase
             ],
             $this->sheet->toArray()
         );
+    }
+
+    /**
+     * @test
+     */
+    public function can_check_if_cell_exists_on_sheet()
+    {
+        $this->assertTrue($this->sheet->hasCell('B10'));
+        $this->assertFalse($this->sheet->hasCell('ZZZ1000'));
+    }
+
+    /**
+     * @test
+     */
+    public function can_find_cell_by_coordinate()
+    {
+        $cell = $this->sheet->cell('B10');
+        $this->assertEquals('B10', $cell->getCoordinate());
     }
 
     /**

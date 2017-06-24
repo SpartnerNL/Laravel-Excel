@@ -2,11 +2,33 @@
 
 namespace Maatwebsite\Excel\Drivers\Spout;
 
+use Maatwebsite\Excel\Configuration;
+use Maatwebsite\Excel\Exceptions\InvalidSpreadsheetLoaderException;
 use Maatwebsite\Excel\Spreadsheet;
 use Maatwebsite\Excel\Reader as ReaderInterface;
 
 class Reader implements ReaderInterface
 {
+    /**
+     * @var callable
+     */
+    protected $spreadsheetLoader;
+
+    /**
+     * @var Configuration
+     */
+    protected $configuration;
+
+    /**
+     * @param Configuration $configuration
+     * @param callable      $spreadsheetLoader
+     */
+    public function __construct(Configuration $configuration, callable $spreadsheetLoader)
+    {
+        $this->setLoader($spreadsheetLoader);
+        $this->configuration = $configuration;
+    }
+
     /**
      * @param string        $filePath
      * @param callable|null $callback
@@ -18,7 +40,26 @@ class Reader implements ReaderInterface
         if (is_callable($callback)) {
             $callback($this);
         }
-
         //return $this;
+    }
+
+    /**
+     * @param callable $spreadsheetLoader
+     *
+     * @return ReaderInterface
+     */
+    public function setLoader(callable $spreadsheetLoader): ReaderInterface
+    {
+        $this->spreadsheetLoader = $spreadsheetLoader;
+
+        return $this;
+    }
+
+    /**
+     * @return callable
+     */
+    public function getLoader(): callable
+    {
+        return $this->spreadsheetLoader;
     }
 }

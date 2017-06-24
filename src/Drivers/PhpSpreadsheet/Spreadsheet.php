@@ -2,7 +2,7 @@
 
 namespace Maatwebsite\Excel\Drivers\PhpSpreadsheet;
 
-use Countable;
+use Iterator;
 use Traversable;
 use IteratorAggregate;
 use Maatwebsite\Excel\Configuration;
@@ -14,7 +14,7 @@ use Maatwebsite\Excel\Spreadsheet as SpreadsheetInterface;
 use PhpOffice\PhpSpreadsheet\Spreadsheet as PhpSpreadsheet;
 use Maatwebsite\Excel\Drivers\PhpSpreadsheet\Iterators\SheetIterator;
 
-class Spreadsheet implements SpreadsheetInterface, IteratorAggregate, Countable
+class Spreadsheet implements SpreadsheetInterface
 {
     /**
      * @var PhpSpreadsheet
@@ -45,11 +45,11 @@ class Spreadsheet implements SpreadsheetInterface, IteratorAggregate, Countable
     }
 
     /**
-     * @return SpreadsheetInterface|SheetInterface[]
+     * @return Iterator|SheetInterface[]
      */
-    public function sheets(): SpreadsheetInterface
+    public function sheets()
     {
-        return $this;
+        return $this->getSheetIterator();
     }
 
     /**
@@ -130,7 +130,7 @@ class Spreadsheet implements SpreadsheetInterface, IteratorAggregate, Countable
     }
 
     /**
-     * @return SheetIterator|SheetInterface[]
+     * @return IteratorAggregate|SheetIterator|SheetInterface[]
      */
     public function getSheetIterator()
     {
