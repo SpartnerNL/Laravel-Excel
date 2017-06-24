@@ -4,7 +4,9 @@ namespace Maatwebsite\Excel\Tests\Drivers\PhpSpreadsheet;
 
 use Countable;
 use IteratorAggregate;
+use Maatwebsite\Excel\Configuration;
 use Maatwebsite\Excel\Drivers\PhpSpreadsheet\Cell;
+use Maatwebsite\Excel\Drivers\PhpSpreadsheet\Loaders\DefaultLoader;
 use Maatwebsite\Excel\Drivers\PhpSpreadsheet\Reader;
 use Maatwebsite\Excel\Drivers\PhpSpreadsheet\Row;
 use Maatwebsite\Excel\Tests\Drivers\CountableTestCase;
@@ -18,21 +20,31 @@ class RowTest extends TestCase
     /**
      * @var string
      */
-    protected $simpleXlsx = __DIR__.'/../../_data/simple_xlsx.xlsx';
+    protected static $simpleXlsx = __DIR__ . '/../../_data/simple_xlsx.xlsx';
+
+    /**
+     * @var Row
+     */
+    protected static $cachedRow;
 
     /**
      * @var Row
      */
     protected $row;
 
+    public static function setUpBeforeClass()
+    {
+        static::$cachedRow = (new Reader(new Configuration(), new DefaultLoader()))
+            ->load(static::$simpleXlsx)
+            ->sheetByIndex(0)
+            ->row(1);
+    }
+
     public function setUp()
     {
         parent::setUp();
 
-        $this->row = (new Reader())
-            ->load($this->simpleXlsx)
-            ->sheetByIndex(0)
-            ->row(1);
+        $this->row = clone static::$cachedRow;
     }
 
     /**
@@ -90,6 +102,29 @@ class RowTest extends TestCase
         $columns = $this->row->toArray();
 
         $this->assertEquals(['A1', 'B1', 'C1', 'D1'], $columns);
+    }
+
+    /**
+     * @test
+     */
+    public function row_can_set_start_and_end_column()
+    {
+        $this->row->setStartColumn('B');
+        $this->row->setEndColumn('C');
+
+        $columns = $this->row->toArray();
+
+        $this->assertEquals(['B1', 'C1'], $columns);
+    }
+
+    /**
+     * @test
+     */
+    public function row_can_loop_through_cells_with_start_and_end_column()
+    {
+        $columns = $this->row->cells('B', 'C')->toArray();
+
+        $this->assertEquals(['B1', 'C1'], $columns);
     }
 
     /**

@@ -120,4 +120,15 @@ class ExcelManagerTest extends TestCase
 
         $this->assertInstanceOf(Excel::class, $driver);
     }
+
+    /**
+     * @test
+     */
+    public function manager_cases_resolved_drivers()
+    {
+        $driver1 = $this->manager->get();
+        $driver2 = $this->manager->get();
+
+        $this->assertSame($driver1, $driver2);
+    }
 }

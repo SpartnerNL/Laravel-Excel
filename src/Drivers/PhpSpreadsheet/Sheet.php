@@ -4,7 +4,9 @@ namespace Maatwebsite\Excel\Drivers\PhpSpreadsheet;
 
 use Countable;
 use IteratorAggregate;
+use Maatwebsite\Excel\Configuration;
 use Maatwebsite\Excel\Drivers\PhpSpreadsheet\Iterators\RowIterator;
+use Maatwebsite\Excel\Row as RowInterface;
 use Maatwebsite\Excel\Sheet as SheetInterface;
 use PhpOffice\PhpSpreadsheet\Worksheet;
 use Traversable;
@@ -14,7 +16,7 @@ class Sheet implements SheetInterface, IteratorAggregate, Countable
     /**
      * @var Worksheet
      */
-    private $worksheet;
+    protected $worksheet;
 
     /**
      * @var int
@@ -27,11 +29,18 @@ class Sheet implements SheetInterface, IteratorAggregate, Countable
     protected $endRow = null;
 
     /**
-     * @param Worksheet $worksheet
+     * @var Configuration
      */
-    public function __construct(Worksheet $worksheet)
+    protected $configuration;
+
+    /**
+     * @param Worksheet     $worksheet
+     * @param Configuration $configuration
+     */
+    public function __construct(Worksheet $worksheet, Configuration $configuration)
     {
-        $this->worksheet = $worksheet;
+        $this->worksheet     = $worksheet;
+        $this->configuration = $configuration;
     }
 
     /**
@@ -53,9 +62,9 @@ class Sheet implements SheetInterface, IteratorAggregate, Countable
     /**
      * @param int $rowNumber
      *
-     * @return Sheet
+     * @return SheetInterface
      */
-    public function setStartRow(int $rowNumber = 1)
+    public function setStartRow(int $rowNumber = 1): SheetInterface
     {
         $this->startRow = $rowNumber;
 
@@ -65,9 +74,9 @@ class Sheet implements SheetInterface, IteratorAggregate, Countable
     /**
      * @param int|null $rowNumber
      *
-     * @return Sheet
+     * @return SheetInterface
      */
-    public function setEndRow(int $rowNumber = null)
+    public function setEndRow(int $rowNumber = null): SheetInterface
     {
         $this->endRow = $rowNumber;
 
@@ -77,31 +86,31 @@ class Sheet implements SheetInterface, IteratorAggregate, Countable
     /**
      * @param int $rowNumber
      *
-     * @return Row
+     * @return RowInterface
      */
-    public function row(int $rowNumber): Row
+    public function row(int $rowNumber): RowInterface
     {
-        $startRow = $rowNumber;
-        $endRow = $rowNumber + 1;
+        $this->setStartRow($rowNumber);
+        $this->setEndRow($rowNumber + 1);
 
-        return $this->rows($startRow, $endRow)->first();
+        return $this->getIterator()->first();
     }
 
     /**
-     * @return Row
+     * @return RowInterface
      */
-    public function first(): Row
+    public function first(): RowInterface
     {
-        return $this->rows(1)->first();
+        return $this->row(1);
     }
 
     /**
      * @param int|null $startRow
      * @param int|null $endRow
      *
-     * @return RowIterator|Row[]
+     * @return SheetInterface|RowInterface[]
      */
-    public function rows(int $startRow = null, int $endRow = null): RowIterator
+    public function rows(int $startRow = null, int $endRow = null): SheetInterface
     {
         if ($startRow !== null) {
             $this->setStartRow($startRow);
@@ -111,7 +120,7 @@ class Sheet implements SheetInterface, IteratorAggregate, Countable
             $this->setEndRow($endRow);
         }
 
-        return $this->getIterator();
+        return $this;
     }
 
     /**
@@ -131,15 +140,14 @@ class Sheet implements SheetInterface, IteratorAggregate, Countable
      * Retrieve an external iterator.
      *
      * @link  http://php.net/manual/en/iteratoraggregate.getiterator.php
-     *
      * @return Traversable|RowIterator
-     *
      * @since 5.0.0
      */
     public function getIterator()
     {
         return new RowIterator(
-            $this->worksheet->getRowIterator($this->startRow, $this->endRow)
+            $this->worksheet->getRowIterator($this->startRow, $this->endRow),
+            $this->configuration
         );
     }
 
@@ -147,12 +155,10 @@ class Sheet implements SheetInterface, IteratorAggregate, Countable
      * Count elements of an object.
      *
      * @link  http://php.net/manual/en/countable.count.php
-     *
      * @return int The custom count as an integer.
      *             </p>
      *             <p>
      *             The return value is cast to an integer.
-     *
      * @since 5.1.0
      */
     public function count()

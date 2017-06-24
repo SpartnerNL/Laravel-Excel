@@ -26,7 +26,8 @@
   },
   "require-dev": {
     "phpunit/phpunit": "~6.2",
-    "illuminate/support": "5.*"
+    "illuminate/support": "5.*",
+    "illuminate/filesystem": "5.*"
   },
   "autoload": {
     "psr-4": {
@@ -38,6 +39,14 @@
       "Maatwebsite\\Excel\\Tests\\": "tests/"
     }
   },
+  "scripts": {
+    "test": [
+      "@php vendor/bin/phpunit"
+    ],
+    "coverage": [
+      "@php -dzend_extension=xdebug.so vendor/bin/phpunit --coverage-html=tests/_data/tmp/coverage"
+    ]
+  },
   "extra": {
     "laravel": {
       "providers": [
@@ -47,5 +56,7 @@
         "Excel": "Maatwebsite\\Excel\\Bridge\\Laravel\\Facades\\Excel"
       }
     }
-  }
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true
 }

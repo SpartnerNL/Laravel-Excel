@@ -2,19 +2,13 @@
 
 namespace Maatwebsite\Excel\Drivers\PhpSpreadsheet;
 
-use Countable;
-use IteratorAggregate;
-use Maatwebsite\Excel\Drivers\PhpSpreadsheet\Iterators\SheetIterator;
-use Maatwebsite\Excel\Exceptions\SheetNotFoundException;
+use Maatwebsite\Excel\Configuration;
+use Maatwebsite\Excel\Exceptions\InvalidSpreadsheetLoaderException;
 use Maatwebsite\Excel\Reader as ReaderInterface;
-use Maatwebsite\Excel\Sheet as SheetInterface;
-use PhpOffice\PhpSpreadsheet\Exception;
-use PhpOffice\PhpSpreadsheet\IOFactory;
-use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use PhpOffice\PhpSpreadsheet\Worksheet;
-use Traversable;
+use Maatwebsite\Excel\Spreadsheet as SpreadsheetInterface;
+use PhpOffice\PhpSpreadsheet\Spreadsheet as PhpSpreadsheet;
 
-class Reader implements ReaderInterface, IteratorAggregate, Countable
+class Reader implements ReaderInterface
 {
     /**
      * @var Spreadsheet
@@ -22,164 +16,75 @@ class Reader implements ReaderInterface, IteratorAggregate, Countable
     protected $spreadsheet;
 
     /**
-     * @var string
+     * @var Configuration
      */
-    protected $filePath;
+    protected $configuration;
+
+    /**
+     * @var callable|null
+     */
+    protected $spreadsheetLoader;
+
+    /**
+     * @param Configuration $configuration
+     * @param callable      $spreadsheetLoader
+     *
+     * @throws InvalidSpreadsheetLoaderException
+     */
+    public function __construct(Configuration $configuration, callable $spreadsheetLoader)
+    {
+        $this->setLoader($spreadsheetLoader);
+
+        $this->configuration = $configuration;
+    }
 
     /**
      * @param string        $filePath
      * @param callable|null $callback
      *
-     * @return ReaderInterface|Reader
+     * @return SpreadsheetInterface|Spreadsheet
      */
-    public function load(string $filePath, callable $callback = null): ReaderInterface
+    public function load(string $filePath, callable $callback = null): SpreadsheetInterface
     {
-        $this->filePath = $filePath;
+        $this->spreadsheet = new Spreadsheet(
+            $this->loadSpreadsheet($filePath),
+            $this->configuration
+        );
 
         if (is_callable($callback)) {
-            $callback($this);
+            $callback($this->spreadsheet);
         }
 
-        return $this;
+        return $this->spreadsheet;
     }
 
     /**
-     * @param string|int    $nameOrIndex
-     * @param callable|null $callback
+     * @param string $filePath
      *
-     * @return Sheet
+     * @return PhpSpreadsheet
      */
-    public function sheet($nameOrIndex, callable $callback = null): Sheet
+    protected function loadSpreadsheet(string $filePath): PhpSpreadsheet
     {
-        if (is_int($nameOrIndex)) {
-            return $this->sheetByIndex($nameOrIndex, $callback);
-        }
+        $loader = $this->getLoader();
 
-        return $this->sheetByName($nameOrIndex, $callback);
+        return $loader($filePath);
     }
 
     /**
-     * @return Traversable|SheetInterface[]
+     * @param callable|null $spreadsheetLoader
+     *
+     * @throws InvalidSpreadsheetLoaderException
      */
-    public function sheets(): Traversable
+    public function setLoader(callable $spreadsheetLoader = null)
     {
-        $this->readFile();
-
-        return $this->getIterator();
+        $this->spreadsheetLoader = $spreadsheetLoader;
     }
 
     /**
-     * @param string        $name
-     * @param callable|null $callback
-     *
-     * @throws SheetNotFoundException
-     *
-     * @return Sheet|SheetInterface
+     * @return callable
      */
-    public function sheetByName(string $name, callable $callback = null): SheetInterface
+    public function getLoader(): callable
     {
-        $this->readFile();
-
-        $sheet = $this->spreadsheet->getSheetByName($name);
-
-        if ($sheet === null) {
-            throw SheetNotFoundException::byName($name);
-        }
-
-        return $this->handleSheet(
-            $sheet,
-            $callback
-        );
-    }
-
-    /**
-     * @param int           $index
-     * @param callable|null $callback
-     *
-     * @throws SheetNotFoundException
-     *
-     * @return Sheet
-     */
-    public function sheetByIndex(int $index, callable $callback = null): SheetInterface
-    {
-        $this->readFile();
-
-        try {
-            $sheet = $this->spreadsheet->getSheet($index);
-        } catch (Exception $e) {
-            throw new SheetNotFoundException($e->getMessage());
-        }
-
-        return $this->handleSheet(
-            $sheet,
-            $callback
-        );
-    }
-
-    /**
-     * Retrieve an external iterator.
-     *
-     * @link  http://php.net/manual/en/iteratoraggregate.getiterator.php
-     *
-     * @return Traversable An instance of an object implementing <b>Iterator</b> or
-     *                     <b>Traversable</b>
-     *
-     * @since 5.0.0
-     */
-    public function getIterator()
-    {
-        $this->readFile();
-
-        return new SheetIterator(
-            $this->spreadsheet->getWorksheetIterator()
-        );
-    }
-
-    /**
-     * Count elements of an object.
-     *
-     * @link  http://php.net/manual/en/countable.count.php
-     *
-     * @return int The custom count as an integer.
-     *             </p>
-     *             <p>
-     *             The return value is cast to an integer.
-     *
-     * @since 5.1.0
-     */
-    public function count()
-    {
-        $this->readFile();
-
-        return $this->spreadsheet->getSheetCount();
-    }
-
-    /**
-     * Read the spreadsheet file.
-     *
-     * @return void
-     */
-    protected function readFile()
-    {
-        if ($this->spreadsheet === null) {
-            $this->spreadsheet = IOFactory::load($this->filePath);
-        }
-    }
-
-    /**
-     * @param Worksheet     $worksheet
-     * @param callable|null $callback
-     *
-     * @return SheetInterface|Sheet
-     */
-    protected function handleSheet(Worksheet $worksheet, callable $callback = null): SheetInterface
-    {
-        $sheet = new Sheet($worksheet);
-
-        if (is_callable($callback)) {
-            $callback($sheet);
-        }
-
-        return $sheet;
+        return $this->spreadsheetLoader;
     }
 }

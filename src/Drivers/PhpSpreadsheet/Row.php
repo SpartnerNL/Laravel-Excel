@@ -4,12 +4,14 @@ namespace Maatwebsite\Excel\Drivers\PhpSpreadsheet;
 
 use Countable;
 use IteratorAggregate;
+use Maatwebsite\Excel\Configuration;
 use Maatwebsite\Excel\Drivers\PhpSpreadsheet\Iterators\CellIterator;
+use Maatwebsite\Excel\Row as RowInterface;
 use PhpOffice\PhpSpreadsheet\Cell as PhpSpreadsheetCell;
 use PhpOffice\PhpSpreadsheet\Worksheet\Row as PhpSpreadsheetRow;
 use Traversable;
 
-class Row implements IteratorAggregate, Countable
+class Row implements RowInterface, IteratorAggregate, Countable
 {
     /**
      * @var PhpSpreadsheetRow
@@ -27,11 +29,18 @@ class Row implements IteratorAggregate, Countable
     protected $endColumn;
 
     /**
-     * @param PhpSpreadsheetRow $row
+     * @var Configuration
      */
-    public function __construct(PhpSpreadsheetRow $row)
+    protected $configuration;
+
+    /**
+     * @param PhpSpreadsheetRow $row
+     * @param Configuration     $configuration
+     */
+    public function __construct(PhpSpreadsheetRow $row, Configuration $configuration)
     {
-        $this->row = $row;
+        $this->row           = $row;
+        $this->configuration = $configuration;
 
         $this->setStartColumn('A');
         $this->setEndColumn($this->getHighestColumn());
@@ -65,9 +74,9 @@ class Row implements IteratorAggregate, Countable
      * @param string|null $startColumn
      * @param string|null $endColumn
      *
-     * @return Cell[]|CellIterator
+     * @return Row|Cell[]
      */
-    public function cells(string $startColumn = null, string $endColumn = null): CellIterator
+    public function cells(string $startColumn = null, string $endColumn = null): Row
     {
         if ($startColumn !== null) {
             $this->setStartColumn($startColumn);
@@ -77,7 +86,7 @@ class Row implements IteratorAggregate, Countable
             $this->setEndColumn($endColumn);
         }
 
-        return $this->getIterator();
+        return $this;
     }
 
     /**
@@ -115,15 +124,14 @@ class Row implements IteratorAggregate, Countable
      * Retrieve an external iterator.
      *
      * @link  http://php.net/manual/en/iteratoraggregate.getiterator.php
-     *
      * @return Traversable|CellIterator
-     *
      * @since 5.0.0
      */
     public function getIterator()
     {
         return new CellIterator(
-            $this->row->getCellIterator($this->startColumn, $this->endColumn)
+            $this->row->getCellIterator($this->startColumn, $this->endColumn),
+            $this->configuration
         );
     }
 
@@ -131,12 +139,10 @@ class Row implements IteratorAggregate, Countable
      * Count elements of an object.
      *
      * @link  http://php.net/manual/en/countable.count.php
-     *
      * @return int The custom count as an integer.
      *             </p>
      *             <p>
      *             The return value is cast to an integer.
-     *
      * @since 5.1.0
      */
     public function count()

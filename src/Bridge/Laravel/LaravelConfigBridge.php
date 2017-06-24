@@ -10,7 +10,7 @@ class LaravelConfigBridge
     /**
      * @var Repository
      */
-    private $config;
+    protected $config;
 
     /**
      * @param Repository $config
@@ -30,6 +30,20 @@ class LaravelConfigBridge
         $configuration->setDefaultDriver(
             $this->config->get('excel.driver', 'phpspreadsheet')
         );
+
+        $configuration->setReaderConfiguration(new Configuration\ReaderConfiguration(
+            new Configuration\LaravelFilesystemConfiguration(
+                $this->config->get('excel.reader.loader.driver', 'filesystem'),
+                $this->config->get('excel.reader.loader.defaultDisk', 'local')
+            )
+        ));
+
+        $configuration->setWriterConfiguration(new Configuration\WriterConfiguration(
+            new Configuration\LaravelFilesystemConfiguration(
+                $this->config->get('excel.writer.loader.driver', 'filesystem'),
+                $this->config->get('excel.writer.loader.defaultDisk', 'local')
+            )
+        ));
 
         return $configuration;
     }

@@ -4,6 +4,8 @@ namespace Maatwebsite\Excel\Tests\Drivers\PhpSpreadsheet;
 
 use Countable;
 use IteratorAggregate;
+use Maatwebsite\Excel\Configuration;
+use Maatwebsite\Excel\Drivers\PhpSpreadsheet\Loaders\DefaultLoader;
 use Maatwebsite\Excel\Drivers\PhpSpreadsheet\Reader;
 use Maatwebsite\Excel\Drivers\PhpSpreadsheet\Row;
 use Maatwebsite\Excel\Drivers\PhpSpreadsheet\Sheet;
@@ -18,18 +20,28 @@ class SheetTest extends TestCase
     /**
      * @var string
      */
-    protected $simpleXlsx = __DIR__.'/../../_data/simple_xlsx.xlsx';
+    protected static $simpleXlsx = __DIR__ . '/../../_data/simple_xlsx.xlsx';
+
+    /**
+     * @var Row
+     */
+    protected static $cachedSheet;
 
     /**
      * @var Sheet
      */
     protected $sheet;
 
+    public static function setUpBeforeClass()
+    {
+        static::$cachedSheet = (new Reader(new Configuration(), new DefaultLoader()))->load(static::$simpleXlsx)->sheetByIndex(0);
+    }
+
     public function setUp()
     {
         parent::setUp();
 
-        $this->sheet = (new Reader())->load($this->simpleXlsx)->sheetByIndex(0);
+        $this->sheet = clone static::$cachedSheet;
     }
 
     /**

@@ -2,21 +2,30 @@
 
 namespace Maatwebsite\Excel\Drivers\PhpSpreadsheet;
 
+use Maatwebsite\Excel\Cell as CellInterface;
+use Maatwebsite\Excel\Configuration;
 use PhpOffice\PhpSpreadsheet\Cell as PhpSpreadsheetCell;
 
-class Cell
+class Cell implements CellInterface
 {
     /**
      * @var PhpSpreadsheetCell
      */
-    private $cell;
+    protected $cell;
+
+    /**
+     * @var Configuration
+     */
+    protected $configuration;
 
     /**
      * @param PhpSpreadsheetCell $cell
+     * @param Configuration      $configuration
      */
-    public function __construct(PhpSpreadsheetCell $cell)
+    public function __construct(PhpSpreadsheetCell $cell, Configuration $configuration)
     {
-        $this->cell = $cell;
+        $this->cell          = $cell;
+        $this->configuration = $configuration;
     }
 
     /**

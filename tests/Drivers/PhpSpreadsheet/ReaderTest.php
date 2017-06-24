@@ -2,140 +2,81 @@
 
 namespace Maatwebsite\Excel\Tests\Drivers\PhpSpreadsheet;
 
-use Countable;
-use IteratorAggregate;
+use Maatwebsite\Excel\Configuration;
+use Maatwebsite\Excel\Drivers\PhpSpreadsheet\Loaders\DefaultLoader;
 use Maatwebsite\Excel\Drivers\PhpSpreadsheet\Reader;
-use Maatwebsite\Excel\Drivers\PhpSpreadsheet\Sheet;
-use Maatwebsite\Excel\Tests\Drivers\CountableTestCase;
-use Maatwebsite\Excel\Tests\Drivers\IterableTestCase;
+use Maatwebsite\Excel\Drivers\PhpSpreadsheet\Spreadsheet;
 use PHPUnit\Framework\TestCase;
 
 class ReaderTest extends TestCase
 {
-    use IterableTestCase, CountableTestCase;
-
     /**
      * @var string
      */
-    protected $simpleXlsx = __DIR__.'/../../_data/simple_xlsx.xlsx';
+    protected $simpleXlsx = __DIR__ . '/../../_data/simple_xlsx.xlsx';
 
     /**
      * @var Reader
      */
     protected $reader;
 
+    /**
+     * @var Spreadsheet
+     */
+    protected $spreadsheet;
+
     public function setUp()
     {
         parent::setUp();
 
-        $this->reader = new Reader();
+        $this->reader = new Reader(new Configuration(), new DefaultLoader());
     }
 
     /**
      * @test
      */
-    public function reader_can_load_sheet_by_index_or_name()
+    public function reader_can_load_spreadsheet()
     {
-        $reader = $this->reader->load($this->simpleXlsx);
+        $spreadsheet = $this->reader->load($this->simpleXlsx, function ($spreadsheet) {
+            $this->assertInstanceOf(Spreadsheet::class, $spreadsheet);
+        });
 
-        $sheet = $reader->sheet(0);
-        $this->assertInstanceOf(Sheet::class, $sheet);
-
-        $sheet = $reader->sheet('Simple');
-        $this->assertInstanceOf(Sheet::class, $sheet);
+        $this->assertInstanceOf(Spreadsheet::class, $spreadsheet);
     }
 
     /**
      * @test
      */
-    public function reader_can_load_sheet_by_index()
+    public function reader_can_load_with_custom_loader()
     {
-        $reader = $this->reader->load($this->simpleXlsx);
-        $sheet = $reader->sheetByIndex(0);
+        $reader = new Reader(new Configuration(), function () {
+            $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
 
-        $this->assertInstanceOf(Sheet::class, $sheet);
+            $spreadsheet->getProperties()->setTitle('Custom-loaded spreadsheet');
+
+            return $spreadsheet;
+        });
+
+        $spreadsheet = $reader->load($this->simpleXlsx);
+
+        $this->assertInstanceOf(Spreadsheet::class, $spreadsheet);
+        $this->assertEquals('Custom-loaded spreadsheet', $spreadsheet->getTitle());
     }
 
     /**
      * @test
+     * @expectedException \TypeError
+     * @expectedExceptionMessage  Argument 1 passed to Maatwebsite\Excel\Drivers\PhpSpreadsheet\Reader::setLoader()
+     *                            must be callable or null, string given
      */
-    public function reader_can_load_sheet_by_name()
+    public function reader_will_throw_exception_if_custom_loader_is_not_callable()
     {
-        $reader = $this->reader->load($this->simpleXlsx);
-        $sheet = $reader->sheetByName('Simple');
+        $reader = new Reader(new Configuration(), new DefaultLoader());
+        $reader->setLoader('test');
 
-        $this->assertInstanceOf(Sheet::class, $sheet);
-    }
+        $spreadsheet = $reader->load($this->simpleXlsx);
 
-    /**
-     * @test
-     * @expectedException \Maatwebsite\Excel\Exceptions\SheetNotFoundException
-     * @expectedExceptionMessage Your requested sheet index: 999 is out of bounds. The actual number of sheets is 1.
-     */
-    public function reader_will_throw_exception_if_sheet_index_not_exists()
-    {
-        $reader = $this->reader->load($this->simpleXlsx);
-        $reader->sheetByIndex(999);
-    }
-
-    /**
-     * @test
-     * @expectedException \Maatwebsite\Excel\Exceptions\SheetNotFoundException
-     * @expectedExceptionMessage Sheet with name [non-existing] could not be found
-     */
-    public function reader_will_throw_exception_if_sheet_name_not_exists()
-    {
-        $reader = $this->reader->load($this->simpleXlsx);
-        $reader->sheetByName('non-existing');
-    }
-
-    /**
-     * @test
-     */
-    public function test_can_count_the_sheets()
-    {
-        $reader = $this->reader->load($this->simpleXlsx);
-
-        $this->assertEquals(1, count($reader));
-        $this->assertEquals(1, $reader->count());
-    }
-
-    /**
-     * @test
-     */
-    public function reader_can_iterate_over_sheets()
-    {
-        $reader = $this->reader->load($this->simpleXlsx);
-
-        // Traversable
-        foreach ($reader as $sheet) {
-            $this->assertInstanceOf(Sheet::class, $sheet);
-        }
-
-        // Method
-        foreach ($reader->sheets() as $sheet) {
-            $this->assertInstanceOf(Sheet::class, $sheet);
-        }
-
-        // Iterator
-        foreach ($reader->getIterator() as $sheet) {
-            $this->assertInstanceOf(Sheet::class, $sheet);
-        }
-    }
-
-    /**
-     * @return IteratorAggregate
-     */
-    public function getIterable()
-    {
-        return $this->reader->load($this->simpleXlsx);
-    }
-
-    /**
-     * @return Countable
-     */
-    public function getCountable()
-    {
-        return $this->reader->load($this->simpleXlsx);
+        $this->assertInstanceOf(Spreadsheet::class, $spreadsheet);
+        $this->assertEquals('Custom-loaded spreadsheet', $spreadsheet->getTitle());
     }
 }

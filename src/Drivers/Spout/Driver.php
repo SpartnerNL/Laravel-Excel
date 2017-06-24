@@ -16,7 +16,7 @@ class Driver implements DriverInterface
     /**
      * @var Configuration
      */
-    private $configuration;
+    protected $configuration;
 
     /**
      * @param Configuration $configuration
@@ -33,7 +33,7 @@ class Driver implements DriverInterface
     {
         return new Excel(
             new Writer(),
-            new Reader()
+            new Reader(new Configuration())
         );
     }
 }

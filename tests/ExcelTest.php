@@ -4,6 +4,7 @@ namespace Maatwebsite\Excel\Tests;
 
 use Maatwebsite\Excel\Excel;
 use Maatwebsite\Excel\Reader;
+use Maatwebsite\Excel\Spreadsheet;
 use Maatwebsite\Excel\Writer;
 use PHPUnit\Framework\TestCase;
 
@@ -44,11 +45,11 @@ class ExcelTest extends TestCase
         $callback = function () {
         };
 
-        $this->reader->method('load')->with($filepath, $callback)->willReturnSelf();
+        $this->reader->method('load')->with($filepath, $callback)->willReturn($this->getMockForAbstractClass(Spreadsheet::class));
 
-        $reader = $this->excel->load($filepath, $callback);
+        $spreadsheet = $this->excel->load($filepath, $callback);
 
-        $this->assertInstanceOf(Reader::class, $reader);
+        $this->assertInstanceOf(Spreadsheet::class, $spreadsheet);
     }
 
     /**

@@ -7,12 +7,12 @@ class Excel
     /**
      * @var Writer
      */
-    private $writer;
+    protected $writer;
 
     /**
      * @var Reader
      */
-    private $reader;
+    protected $reader;
 
     /**
      * @param Writer $writer
@@ -28,9 +28,9 @@ class Excel
      * @param string        $filepath
      * @param callable|null $callback
      *
-     * @return Reader
+     * @return Spreadsheet
      */
-    public function load(string $filepath, callable $callback = null): Reader
+    public function load(string $filepath, callable $callback = null): Spreadsheet
     {
         return $this->reader->load($filepath, $callback);
     }

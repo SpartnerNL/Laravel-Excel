@@ -8,7 +8,7 @@ interface Reader
      * @param string        $filePath
      * @param callable|null $callback
      *
-     * @return Reader
+     * @return Spreadsheet
      */
-    public function load(string $filePath, callable $callback = null): Reader;
+    public function load(string $filePath, callable $callback = null): Spreadsheet;
 }

@@ -3,6 +3,7 @@
 namespace Maatwebsite\Excel\Drivers\PhpSpreadsheet\Iterators;
 
 use Iterator;
+use Maatwebsite\Excel\Configuration;
 use Maatwebsite\Excel\Drivers\PhpSpreadsheet\Sheet;
 use PhpOffice\PhpSpreadsheet\Worksheet\Iterator as WorksheetIterator;
 
@@ -11,28 +12,33 @@ class SheetIterator extends IteratorAdapter implements Iterator
     /**
      * @var WorksheetIterator
      */
-    private $iterator;
+    protected $iterator;
+
+    /**
+     * @var Configuration
+     */
+    protected $configuration;
 
     /**
      * @param WorksheetIterator $iterator
+     * @param Configuration     $configuration
      */
-    public function __construct(WorksheetIterator $iterator)
+    public function __construct(WorksheetIterator $iterator, Configuration $configuration)
     {
-        $this->iterator = $iterator;
+        $this->iterator      = $iterator;
+        $this->configuration = $configuration;
     }
 
     /**
      * Return the current element.
      *
      * @link  http://php.net/manual/en/iterator.current.php
-     *
-     * @return mixed Can return any type.
-     *
+     * @return Sheet
      * @since 5.0.0
      */
     public function current()
     {
-        return new Sheet($this->iterator->current());
+        return new Sheet($this->iterator->current(), $this->configuration);
     }
 
     /**
@@ -41,8 +47,6 @@ class SheetIterator extends IteratorAdapter implements Iterator
     public function first(): Sheet
     {
         $this->rewind();
-
-        $this->next();
 
         return $this->current();
     }
