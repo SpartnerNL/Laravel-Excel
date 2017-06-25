@@ -27,7 +27,8 @@
   "require-dev": {
     "phpunit/phpunit": "~6.2",
     "illuminate/support": "5.*",
-    "illuminate/filesystem": "5.*"
+    "illuminate/filesystem": "5.*",
+    "codeclimate/php-test-reporter": "^0.4.4"
   },
   "autoload": {
     "psr-4": {
@@ -56,7 +57,5 @@
         "Excel": "Maatwebsite\\Excel\\Bridge\\Laravel\\Facades\\Excel"
       }
     }
-  },
-  "minimum-stability": "dev",
-  "prefer-stable": true
+  }
 }

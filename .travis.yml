@@ -4,10 +4,17 @@ php:
   - 7.0
   - 7.1
 
+addons:
+  code_climate:
+    repo_token: fb4a9c3ed579b70afdf6ab0c19497bc526f36fec20ecf48751e1abeb616adea7
+
 before_script:
   - travis_retry composer install --dev --no-interaction
 
-script: vendor/bin/phpunit
+script: vendor/bin/phpunit --coverage-clover build/logs/clover.xml
+
+after_success:
+  - vendor/bin/test-reporter
 
 matrix:
   fast_finish: true

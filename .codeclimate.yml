@@ -1,0 +1,13 @@
+engines:
+  phpcodesniffer:
+    enabled: true
+    config:
+      standard: "PSR1,PSR2"
+  phpmd:
+    enabled: true
+    config:
+      file_extensions: "php"
+      rulesets: "cleancode,unusedcode,codesize,naming,design,controversial"
+ratings:
+  paths:
+  - "**.php"

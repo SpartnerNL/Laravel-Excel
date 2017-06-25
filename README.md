@@ -2,6 +2,8 @@
 
 [![Build Status](https://travis-ci.org/Maatwebsite/Laravel-Excel.svg?branch=3.0)](https://travis-ci.org/Maatwebsite/Laravel-Excel)
 [![StyleCI](https://styleci.io/repos/14259390/shield?branch=3.0)](https://styleci.io/repos/14259390)
+[![Code Climate](https://img.shields.io/codeclimate/github/Maatwebsite/Laravel-Excel.svg?style=flat-square)](https://codeclimate.com/github/Maatwebsite/Laravel-Excel)
+[![Code Climate](https://img.shields.io/codeclimate/coverage/github/Maatwebsite/Laravel-Excel.svg?style=flat-square)](https://codeclimate.com/github/Maatwebsite/Laravel-Excel)
 [![Latest Stable Version](https://poser.pugx.org/maatwebsite/excel/v/stable.png)](https://packagist.org/packages/maatwebsite/excel)
 [![Total Downloads](https://poser.pugx.org/maatwebsite/excel/downloads.png)](https://packagist.org/packages/maatwebsite/excel)
 [![License](https://poser.pugx.org/maatwebsite/excel/license.png)](https://packagist.org/packages/maatwebsite/excel)
