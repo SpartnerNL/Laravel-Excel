@@ -29,11 +29,10 @@ interface Column extends IteratorAggregate
 
     /**
      * @param int  $row
-     * @param bool $createIfNotExist
      *
      * @return Cell
      */
-    public function cell(int $row, bool $createIfNotExist = false): Cell;
+    public function cell(int $row): Cell;
 
     /**
      * @param int      $startRow

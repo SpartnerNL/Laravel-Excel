@@ -37,7 +37,7 @@ class Reader implements ReaderInterface
     public function load(string $filePath, callable $callback = null): Spreadsheet
     {
         if (is_callable($callback)) {
-            $callback($this);
+            $callback($this, $filePath);
         }
         //return $this;
     }

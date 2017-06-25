@@ -97,11 +97,10 @@ interface Sheet extends IteratorAggregate, Countable
 
     /**
      * @param string $coordinate
-     * @param bool   $createIfNotExist
      *
      * @return Cell
      */
-    public function cell(string $coordinate, bool $createIfNotExist = false): Cell;
+    public function cell(string $coordinate): Cell;
 
     /**
      * @return string

@@ -41,8 +41,8 @@ class ExcelServiceProvider extends ServiceProvider
     {
         $this->app->singleton(ExcelManager::class, function () {
             $configuration = (new LaravelConfigBridge(
-                $this->app->make('config'))
-            )->toConfiguration();
+                $this->app->make('config')
+            ))->toConfiguration();
 
             $manager = new ExcelManager($configuration);
 

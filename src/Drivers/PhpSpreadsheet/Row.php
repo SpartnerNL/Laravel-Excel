@@ -77,16 +77,12 @@ class Row implements RowInterface
 
     /**
      * @param string $column
-     * @param bool   $createIfNotExist
      *
      * @return CellInterface
      */
-    public function cell(string $column, bool $createIfNotExist = false): CellInterface
+    public function cell(string $column): CellInterface
     {
-        return $this->sheet->cell(
-            $column . $this->getRowNumber(),
-            $createIfNotExist
-        );
+        return $this->sheet->cell($column . $this->getRowNumber());
     }
 
     /**

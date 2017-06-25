@@ -24,11 +24,10 @@ interface Row extends IteratorAggregate, Countable
 
     /**
      * @param string $column
-     * @param bool   $createIfNotExist
      *
      * @return Cell
      */
-    public function cell(string $column, bool $createIfNotExist = false): Cell;
+    public function cell(string $column): Cell;
 
     /**
      * @param string|null $startColumn

@@ -82,17 +82,13 @@ class Column implements ColumnInterface
     }
 
     /**
-     * @param int  $row
-     * @param bool $createIfNotExist
+     * @param int $row
      *
      * @return CellInterface
      */
-    public function cell(int $row, bool $createIfNotExist = false): CellInterface
+    public function cell(int $row): CellInterface
     {
-        return $this->sheet->cell(
-            $this->getColumnIndex() . $row,
-            $createIfNotExist
-        );
+        return $this->sheet->cell($this->getColumnIndex() . $row);
     }
 
     /**

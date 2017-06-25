@@ -20,13 +20,12 @@ trait SheetHasCells
 
     /**
      * @param string $coordinate
-     * @param bool   $createIfNotExist
      *
      * @return CellInterface
      */
-    public function cell(string $coordinate, bool $createIfNotExist = false): CellInterface
+    public function cell(string $coordinate): CellInterface
     {
-        $cell = $this->getWorksheet()->getCell($coordinate, $createIfNotExist);
+        $cell = $this->getWorksheet()->getCell($coordinate);
 
         return new Cell($cell, $this->configuration);
     }

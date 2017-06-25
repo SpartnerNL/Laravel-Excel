@@ -1,4 +1,11 @@
 engines:
+  duplication:
+    enabled: false
+  fixme:
+    enabled: true
+    strings:
+      - FIXME
+      - TODO
   phpcodesniffer:
     enabled: true
     config:
@@ -8,9 +15,13 @@ engines:
     config:
       file_extensions: "php"
       rulesets: "cleancode,unusedcode,codesize,naming,design,controversial"
+    checks:
+      CleanCode/StaticAccess:
+        enabled: false
 ratings:
   paths:
   - "**.php"
 exclude_paths:
+  - ".github/"
   - "tests/"
   - "config/"
