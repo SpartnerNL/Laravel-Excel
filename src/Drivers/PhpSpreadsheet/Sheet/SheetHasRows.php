@@ -3,10 +3,10 @@
 namespace Maatwebsite\Excel\Drivers\PhpSpreadsheet\Sheet;
 
 use IteratorAggregate;
-use Maatwebsite\Excel\Drivers\PhpSpreadsheet\Iterators\RowIterator;
-use Maatwebsite\Excel\Sheet as SheetInterface;
-use Maatwebsite\Excel\Row as RowInterface;
 use PhpOffice\PhpSpreadsheet\Worksheet;
+use Maatwebsite\Excel\Row as RowInterface;
+use Maatwebsite\Excel\Sheet as SheetInterface;
+use Maatwebsite\Excel\Drivers\PhpSpreadsheet\Iterators\RowIterator;
 
 trait SheetHasRows
 {
@@ -19,7 +19,6 @@ trait SheetHasRows
      * @var int|null
      */
     protected $endRow = null;
-
 
     /**
      * @param int $rowNumber
@@ -89,7 +88,6 @@ trait SheetHasRows
             $this->configuration
         );
     }
-
 
     /**
      * @return Worksheet

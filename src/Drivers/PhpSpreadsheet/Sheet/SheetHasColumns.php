@@ -3,10 +3,10 @@
 namespace Maatwebsite\Excel\Drivers\PhpSpreadsheet\Sheet;
 
 use IteratorAggregate;
-use Maatwebsite\Excel\Drivers\PhpSpreadsheet\Iterators\ColumnIterator;
-use Maatwebsite\Excel\Column as ColumnInterface;
 use PhpOffice\PhpSpreadsheet\Cell;
 use PhpOffice\PhpSpreadsheet\Worksheet;
+use Maatwebsite\Excel\Column as ColumnInterface;
+use Maatwebsite\Excel\Drivers\PhpSpreadsheet\Iterators\ColumnIterator;
 
 trait SheetHasColumns
 {

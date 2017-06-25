@@ -2,14 +2,14 @@
 
 namespace Maatwebsite\Excel\Drivers\PhpSpreadsheet;
 
-use Maatwebsite\Excel\Drivers\PhpSpreadsheet\Sheet\SheetHasCells;
-use Maatwebsite\Excel\Drivers\PhpSpreadsheet\Sheet\SheetHasColumns;
-use Maatwebsite\Excel\Drivers\PhpSpreadsheet\Sheet\SheetHasRows;
 use Traversable;
 use Maatwebsite\Excel\Configuration;
 use PhpOffice\PhpSpreadsheet\Worksheet;
 use Maatwebsite\Excel\Sheet as SheetInterface;
+use Maatwebsite\Excel\Drivers\PhpSpreadsheet\Sheet\SheetHasRows;
+use Maatwebsite\Excel\Drivers\PhpSpreadsheet\Sheet\SheetHasCells;
 use Maatwebsite\Excel\Drivers\PhpSpreadsheet\Iterators\RowIterator;
+use Maatwebsite\Excel\Drivers\PhpSpreadsheet\Sheet\SheetHasColumns;
 
 class Sheet implements SheetInterface
 {

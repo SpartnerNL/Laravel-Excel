@@ -2,9 +2,9 @@
 
 namespace Maatwebsite\Excel\Drivers\PhpSpreadsheet\Sheet;
 
+use PhpOffice\PhpSpreadsheet\Worksheet;
 use Maatwebsite\Excel\Cell as CellInterface;
 use Maatwebsite\Excel\Drivers\PhpSpreadsheet\Cell;
-use PhpOffice\PhpSpreadsheet\Worksheet;
 
 trait SheetHasCells
 {
