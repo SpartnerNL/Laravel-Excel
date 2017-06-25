@@ -2,34 +2,25 @@
 
 namespace Maatwebsite\Excel\Drivers\PhpSpreadsheet;
 
+use Maatwebsite\Excel\Drivers\PhpSpreadsheet\Sheet\SheetHasCells;
+use Maatwebsite\Excel\Drivers\PhpSpreadsheet\Sheet\SheetHasColumns;
+use Maatwebsite\Excel\Drivers\PhpSpreadsheet\Sheet\SheetHasRows;
 use Traversable;
-use IteratorAggregate;
 use Maatwebsite\Excel\Configuration;
 use PhpOffice\PhpSpreadsheet\Worksheet;
-use Maatwebsite\Excel\Row as RowInterface;
-use Maatwebsite\Excel\Cell as CellInterface;
 use Maatwebsite\Excel\Sheet as SheetInterface;
-use Maatwebsite\Excel\Column as ColumnInterface;
-use PhpOffice\PhpSpreadsheet\Cell as PhpSpreadsheetCell;
 use Maatwebsite\Excel\Drivers\PhpSpreadsheet\Iterators\RowIterator;
-use Maatwebsite\Excel\Drivers\PhpSpreadsheet\Iterators\ColumnIterator;
 
 class Sheet implements SheetInterface
 {
+    use SheetHasCells,
+        SheetHasRows,
+        SheetHasColumns;
+
     /**
      * @var Worksheet
      */
     protected $worksheet;
-
-    /**
-     * @var int
-     */
-    protected $startRow = 1;
-
-    /**
-     * @var int|null
-     */
-    protected $endRow = null;
 
     /**
      * @var Configuration
@@ -63,82 +54,6 @@ class Sheet implements SheetInterface
     }
 
     /**
-     * @param int $rowNumber
-     *
-     * @return SheetInterface
-     */
-    public function setStartRow(int $rowNumber = 1): SheetInterface
-    {
-        $this->startRow = $rowNumber;
-
-        return $this;
-    }
-
-    /**
-     * @param int|null $rowNumber
-     *
-     * @return SheetInterface
-     */
-    public function setEndRow(int $rowNumber = null): SheetInterface
-    {
-        $this->endRow = $rowNumber;
-
-        return $this;
-    }
-
-    /**
-     * @param int      $startRow
-     * @param int|null $endRow
-     *
-     * @return Traversable|RowIterator|RowInterface[]
-     */
-    public function rows(int $startRow = 1, int $endRow = null)
-    {
-        return $this->getRowIterator($startRow, $endRow);
-    }
-
-    /**
-     * @param int $rowNumber
-     *
-     * @return RowInterface
-     */
-    public function row(int $rowNumber): RowInterface
-    {
-        return $this->getRowIterator($rowNumber, $rowNumber + 1)->first();
-    }
-
-    /**
-     * @return RowInterface
-     */
-    public function first(): RowInterface
-    {
-        return $this->row(1);
-    }
-
-    /**
-     * @param string      $startColumn
-     * @param string|null $endColumn
-     *
-     * @return Column[]|ColumnIterator
-     */
-    public function columns(string $startColumn = 'A', string $endColumn = null): ColumnIterator
-    {
-        return $this->getColumnIterator($startColumn, $endColumn);
-    }
-
-    /**
-     * @param string $column
-     *
-     * @return ColumnInterface
-     */
-    public function column(string $column): ColumnInterface
-    {
-        $iterator = $this->getColumnIterator($column, ++$column);
-
-        return $iterator->first();
-    }
-
-    /**
      * @return array
      */
     public function toArray(): array
@@ -149,29 +64,6 @@ class Sheet implements SheetInterface
         }
 
         return $rows;
-    }
-
-    /**
-     * @param string $coordinate
-     *
-     * @return bool
-     */
-    public function hasCell(string $coordinate): bool
-    {
-        return $this->worksheet->cellExists($coordinate);
-    }
-
-    /**
-     * @param string $coordinate
-     * @param bool   $createIfNotExist
-     *
-     * @return CellInterface
-     */
-    public function cell(string $coordinate, bool $createIfNotExist = false): CellInterface
-    {
-        $cell = $this->worksheet->getCell($coordinate, $createIfNotExist);
-
-        return new Cell($cell, $this->configuration);
     }
 
     /**
@@ -190,22 +82,6 @@ class Sheet implements SheetInterface
     }
 
     /**
-     * @return string
-     */
-    public function getHighestColumn(): string
-    {
-        return $this->worksheet->getHighestColumn();
-    }
-
-    /**
-     * @return int
-     */
-    public function columnCount(): int
-    {
-        return PhpSpreadsheetCell::columnIndexFromString($this->getHighestColumn());
-    }
-
-    /**
      * Retrieve an external iterator.
      *
      * @link  http://php.net/manual/en/iteratoraggregate.getiterator.php
@@ -218,34 +94,10 @@ class Sheet implements SheetInterface
     }
 
     /**
-     * @param int      $startRow
-     * @param int|null $endRow
-     *
-     * @return IteratorAggregate|RowIterator
+     * @return Worksheet
      */
-    public function getRowIterator(int $startRow = 1, int $endRow = null)
+    public function getWorksheet(): Worksheet
     {
-        // TODO: add interface
-        return new RowIterator(
-            $this,
-            $this->worksheet->getRowIterator($startRow, $endRow),
-            $this->configuration
-        );
-    }
-
-    /**
-     * @param string      $startColumn
-     * @param string|null $endColumn
-     *
-     * @return IteratorAggregate|ColumnIterator
-     */
-    public function getColumnIterator(string $startColumn = 'A', string $endColumn = null)
-    {
-        // TODO: add interface
-        return new ColumnIterator(
-            $this,
-            $this->worksheet->getColumnIterator($startColumn, $endColumn),
-            $this->configuration
-        );
+        return $this->worksheet;
     }
 }

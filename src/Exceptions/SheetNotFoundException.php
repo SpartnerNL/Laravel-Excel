@@ -18,12 +18,12 @@ class SheetNotFoundException extends OutOfBoundsException
     }
 
     /**
-     * @param Exception $e
+     * @param Exception $exception
      *
      * @return static
      */
-    public static function fromException(Exception $e)
+    public static function fromException(Exception $exception)
     {
-        return new static($e->getMessage(), $e->getCode(), $e);
+        return new static($exception->getMessage(), $exception->getCode(), $exception);
     }
 }
