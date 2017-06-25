@@ -136,13 +136,17 @@ class Row implements RowInterface
      */
     public function toArray(): array
     {
+        $index = 0;
         $cells = [];
         foreach ($this->getIterator() as $cell) {
-            if (isset($this->headings[$cell->getColumn()])) {
-                $cells[$this->headings[$cell->getColumn()]] = (string) $cell;
-            } else {
-                $cells[] = (string) $cell;
-            }
+            // Get heading, or use default array index
+            $heading = isset($this->headings[$cell->getColumn()])
+                ? $this->headings[$cell->getColumn()]
+                : $index;
+
+            $cells[$heading] = (string) $cell;
+
+            ++$index;
         }
 
         return $cells;
@@ -214,16 +218,6 @@ class Row implements RowInterface
     }
 
     /**
-     * @param string $column
-     *
-     * @return int
-     */
-    protected function getColumnIndex(string $column): int
-    {
-        return PhpSpreadsheetCell::columnIndexFromString($column);
-    }
-
-    /**
      * @return array
      */
     public function getHeadings(): array
@@ -232,7 +226,7 @@ class Row implements RowInterface
     }
 
     /**
-     * Whether a offset exists
+     * Whether a offset exists.
      *
      * @link  http://php.net/manual/en/arrayaccess.offsetexists.php
      *
@@ -240,7 +234,7 @@ class Row implements RowInterface
      *                      An offset to check for.
      *                      </p>
      *
-     * @return boolean true on success or false on failure.
+     * @return bool true on success or false on failure.
      * </p>
      * <p>
      * The return value will be casted to boolean if non-boolean was returned.
@@ -252,7 +246,7 @@ class Row implements RowInterface
     }
 
     /**
-     * Offset to retrieve
+     * Offset to retrieve.
      *
      * @link  http://php.net/manual/en/arrayaccess.offsetget.php
      *
@@ -269,7 +263,7 @@ class Row implements RowInterface
     }
 
     /**
-     * Offset to set
+     * Offset to set.
      *
      * @link  http://php.net/manual/en/arrayaccess.offsetset.php
      *
@@ -289,7 +283,7 @@ class Row implements RowInterface
     }
 
     /**
-     * Offset to unset
+     * Offset to unset.
      *
      * @link  http://php.net/manual/en/arrayaccess.offsetunset.php
      *
@@ -303,5 +297,15 @@ class Row implements RowInterface
     public function offsetUnset($offset)
     {
         $this->get($offset)->removeValue();
+    }
+
+    /**
+     * @param string $column
+     *
+     * @return int
+     */
+    protected function getColumnIndex(string $column): int
+    {
+        return PhpSpreadsheetCell::columnIndexFromString($column);
     }
 }

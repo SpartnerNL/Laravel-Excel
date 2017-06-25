@@ -2,11 +2,10 @@
 
 namespace Maatwebsite\Excel;
 
-use ArrayAccess;
 use Iterator;
 use Countable;
+use ArrayAccess;
 use IteratorAggregate;
-use Maatwebsite\Excel\Cell;
 
 interface Row extends IteratorAggregate, Countable, ArrayAccess
 {

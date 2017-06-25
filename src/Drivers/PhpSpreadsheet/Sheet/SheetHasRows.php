@@ -4,10 +4,10 @@ namespace Maatwebsite\Excel\Drivers\PhpSpreadsheet\Sheet;
 
 use IteratorAggregate;
 use Maatwebsite\Excel\Configuration;
-use Maatwebsite\Excel\Drivers\PhpSpreadsheet\Row;
 use PhpOffice\PhpSpreadsheet\Worksheet;
 use Maatwebsite\Excel\Row as RowInterface;
 use Maatwebsite\Excel\Sheet as SheetInterface;
+use Maatwebsite\Excel\Drivers\PhpSpreadsheet\Row;
 use Maatwebsite\Excel\Drivers\PhpSpreadsheet\Iterators\RowIterator;
 
 trait SheetHasRows
