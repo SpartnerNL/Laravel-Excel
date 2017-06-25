@@ -28,4 +28,16 @@ interface Cell
      * @return mixed
      */
     public function getValue();
+
+    /**
+     * @param mixed $value
+     *
+     * @return Cell
+     */
+    public function setValue($value): Cell;
+
+    /**
+     * @return Cell
+     */
+    public function removeValue(): Cell;
 }

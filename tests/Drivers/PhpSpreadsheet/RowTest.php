@@ -146,6 +146,91 @@ class RowTest extends TestCase
     }
 
     /**
+     * @test
+     */
+    public function sheet_headings_will_be_empty_when_heading_row_disabled()
+    {
+        $headings = $this->row->getHeadings();
+
+        $this->assertEquals([], $headings);
+    }
+
+    /**
+     * @test
+     */
+    public function can_get_headings_of_sheet()
+    {
+        $row = (new Reader(new Configuration(), new DefaultLoader()))
+            ->load(static::$simpleXlsx)
+            ->sheetByIndex(0)
+            ->useFirstRowAsHeading()
+            ->row(1);
+
+        $headings = $row->getHeadings();
+
+        $this->assertEquals(['A' => 'A1', 'B' => 'B1', 'C' => 'C1', 'D' => 'D1'], $headings);
+    }
+
+    /**
+     * @test
+     */
+    public function can_get_cell_by_heading()
+    {
+        $row = (new Reader(new Configuration(), new DefaultLoader()))
+            ->load(static::$simpleXlsx)
+            ->sheetByIndex(0)
+            ->useRowAsHeading(2)
+            ->row(4);
+
+        $this->assertEquals('C4', $row->get('C2'));
+
+        // Non-existing heading returns null
+        $this->assertNull($row->get('C98'));
+    }
+
+    /**
+     * @test
+     */
+    public function can_check_if_cell_exists_by_heading()
+    {
+        $row = (new Reader(new Configuration(), new DefaultLoader()))
+            ->load(static::$simpleXlsx)
+            ->sheetByIndex(0)
+            ->useRowAsHeading(2)
+            ->row(4);
+
+        $this->assertTrue($row->has('C2'));
+        $this->assertFalse($row->has('C89'));
+    }
+
+    /**
+     * @test
+     */
+    public function row_has_array_access_by_heading_names()
+    {
+        $row = (new Reader(new Configuration(), new DefaultLoader()))
+            ->load(static::$simpleXlsx)
+            ->sheetByIndex(0)
+            ->useRowAsHeading(2)
+            ->row(4);
+
+        // offset get
+        $this->assertEquals('C4', $row['C2']->getValue());
+
+        // offset exists
+        $this->assertTrue(isset($row['C2']));
+        $this->assertFalse(isset($row['C89']));
+
+        // offset set
+        $row['D2'] = 'custom';
+        $this->assertEquals('custom', $row->cell('D')->getValue());
+
+        // Unset, removes the value and makes the cell value null
+        unset($row['A2']);
+        $this->assertNull($row->cell('A')->getValue());
+    }
+
+    /**
      * @return IteratorAggregate
      */
     public function getIterable()

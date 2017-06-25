@@ -44,16 +44,6 @@ class SheetIterator extends IteratorAdapter implements Iterator
     }
 
     /**
-     * @return Sheet
-     */
-    public function first(): Sheet
-    {
-        $this->rewind();
-
-        return $this->current();
-    }
-
-    /**
      * @return Iterator
      */
     public function getIterator(): Iterator

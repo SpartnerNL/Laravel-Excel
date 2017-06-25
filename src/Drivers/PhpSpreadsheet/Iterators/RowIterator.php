@@ -24,17 +24,27 @@ class RowIterator extends IteratorAdapter implements Iterator
      * @var Sheet
      */
     protected $sheet;
+    /**
+     * @var array
+     */
+    protected $headings = [];
 
     /**
      * @param Sheet               $sheet
+     * @param array               $headings
      * @param RowIteratorDelegate $iterator
      * @param Configuration       $configuration
      */
-    public function __construct(Sheet $sheet, RowIteratorDelegate $iterator, Configuration $configuration)
-    {
+    public function __construct(
+        Sheet $sheet,
+        array $headings,
+        RowIteratorDelegate $iterator,
+        Configuration $configuration
+    ) {
         $this->iterator      = $iterator;
         $this->configuration = $configuration;
         $this->sheet         = $sheet;
+        $this->headings      = $headings;
     }
 
     /**
@@ -46,17 +56,7 @@ class RowIterator extends IteratorAdapter implements Iterator
      */
     public function current()
     {
-        return new Row($this->iterator->current(), $this->sheet, $this->configuration);
-    }
-
-    /**
-     * @return Row
-     */
-    public function first(): Row
-    {
-        $this->rewind();
-
-        return $this->current();
+        return new Row($this->iterator->current(), $this->headings, $this->sheet, $this->configuration);
     }
 
     /**

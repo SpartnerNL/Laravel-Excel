@@ -10,6 +10,11 @@ class ReaderConfiguration
     protected $fileStorage;
 
     /**
+     * @var bool
+     */
+    protected $headingRow = false;
+
+    /**
      * @param LaravelFilesystemConfiguration $fileStorage
      */
     public function __construct(LaravelFilesystemConfiguration $fileStorage)
@@ -35,5 +40,33 @@ class ReaderConfiguration
         $this->fileStorage = $fileStorage;
 
         return $this;
+    }
+
+    /**
+     * @param int|false $row
+     *
+     * @return $this
+     */
+    public function setHeadingRow($row)
+    {
+        $this->headingRow = $row;
+
+        return $this;
+    }
+
+    /**
+     * @return int|false
+     */
+    public function getHeadingRow()
+    {
+        return $this->headingRow;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasHeadingRow(): bool
+    {
+        return $this->headingRow !== false;
     }
 }

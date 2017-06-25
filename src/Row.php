@@ -2,11 +2,13 @@
 
 namespace Maatwebsite\Excel;
 
+use ArrayAccess;
 use Iterator;
 use Countable;
 use IteratorAggregate;
+use Maatwebsite\Excel\Cell;
 
-interface Row extends IteratorAggregate, Countable
+interface Row extends IteratorAggregate, Countable, ArrayAccess
 {
     /**
      * @param string $column
@@ -59,4 +61,23 @@ interface Row extends IteratorAggregate, Countable
      * @return Iterator
      */
     public function getCellIterator(string $startColumn = 'A', string $endColumn = null);
+
+    /**
+     * @return array
+     */
+    public function getHeadings(): array;
+
+    /**
+     * @param string $heading
+     *
+     * @return Cell|null
+     */
+    public function get(string $heading);
+
+    /**
+     * @param string $heading
+     *
+     * @return bool
+     */
+    public function has(string $heading): bool;
 }

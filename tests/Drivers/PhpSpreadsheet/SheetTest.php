@@ -29,6 +29,11 @@ class SheetTest extends TestCase
     protected static $cachedSheet;
 
     /**
+     * @var Configuration
+     */
+    protected static $defaultConfig;
+
+    /**
      * @var Sheet
      */
     protected $sheet;
@@ -45,6 +50,9 @@ class SheetTest extends TestCase
         parent::setUp();
 
         $this->sheet = clone static::$cachedSheet;
+
+        // Reset settings
+        $this->sheet->useRowAsHeading(false);
     }
 
     /**
@@ -237,6 +245,86 @@ class SheetTest extends TestCase
     /**
      * @test
      */
+    public function sheet_covert_itself_with_headings_to_array()
+    {
+        $this->sheet->useFirstRowAsHeading();
+
+        $this->assertEquals(
+            [
+                ['A1' => 'A2', 'B1' => 'B2', 'C1' => 'C2', 'D1' => 'D2'],
+                ['A1' => 'A3', 'B1' => 'B3', 'C1' => 'C3', 'D1' => 'D3'],
+                ['A1' => 'A4', 'B1' => 'B4', 'C1' => 'C4', 'D1' => 'D4'],
+                ['A1' => 'A5', 'B1' => 'B5', 'C1' => 'C5', 'D1' => 'D5'],
+                ['A1' => 'A6', 'B1' => 'B6', 'C1' => 'C6', 'D1' => 'D6'],
+                ['A1' => 'A7', 'B1' => 'B7', 'C1' => 'C7', 'D1' => 'D7'],
+                ['A1' => 'A8', 'B1' => 'B8', 'C1' => 'C8', 'D1' => 'D8'],
+                ['A1' => 'A9', 'B1' => 'B9', 'C1' => 'C9', 'D1' => 'D9'],
+                ['A1' => 'A10', 'B1' => 'B10', 'C1' => 'C10', 'D1' => 'D10'],
+                ['A1' => 'A11', 'B1' => 'B11', 'C1' => 'C11', 'D1' => 'D11'],
+            ],
+            $this->sheet->toArray()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function sheet_covert_itself_with_headings_to_array_with_custom_start_end_row()
+    {
+        $this->sheet->useFirstRowAsHeading();
+        $this->sheet->setStartRow(1); // because of the headings as first row, it will skip that one
+        $this->sheet->setEndRow(3);
+
+        $this->assertEquals(
+            [
+                ['A1' => 'A2', 'B1' => 'B2', 'C1' => 'C2', 'D1' => 'D2'],
+                ['A1' => 'A3', 'B1' => 'B3', 'C1' => 'C3', 'D1' => 'D3'],
+            ],
+            $this->sheet->toArray()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function sheet_can_have_a_different_row_as_heading_row()
+    {
+        $this->sheet->useRowAsHeading(3);
+
+        $this->assertEquals(['A' => 'A3', 'B' => 'B3', 'C' => 'C3', 'D' => 'D3'], $this->sheet->getHeadings());
+
+        $this->assertEquals(
+            [
+                ['A3' => 'A4', 'B3' => 'B4', 'C3' => 'C4', 'D3' => 'D4'],
+                ['A3' => 'A5', 'B3' => 'B5', 'C3' => 'C5', 'D3' => 'D5'],
+                ['A3' => 'A6', 'B3' => 'B6', 'C3' => 'C6', 'D3' => 'D6'],
+                ['A3' => 'A7', 'B3' => 'B7', 'C3' => 'C7', 'D3' => 'D7'],
+                ['A3' => 'A8', 'B3' => 'B8', 'C3' => 'C8', 'D3' => 'D8'],
+                ['A3' => 'A9', 'B3' => 'B9', 'C3' => 'C9', 'D3' => 'D9'],
+                ['A3' => 'A10', 'B3' => 'B10', 'C3' => 'C10', 'D3' => 'D10'],
+                ['A3' => 'A11', 'B3' => 'B11', 'C3' => 'C11', 'D3' => 'D11'],
+            ],
+            $this->sheet->toArray()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function sheet_skips_first_row_if_its_the_heading_row()
+    {
+        $this->sheet->useFirstRowAsHeading();
+
+        $expectedRowIndex = 2;
+        foreach ($this->sheet->rows() as $row) {
+            $this->assertEquals($expectedRowIndex, $row->getRowNumber());
+            $expectedRowIndex++;
+        }
+    }
+
+    /**
+     * @test
+     */
     public function can_check_if_cell_exists_on_sheet()
     {
         $this->assertTrue($this->sheet->hasCell('B10'));
@@ -250,6 +338,37 @@ class SheetTest extends TestCase
     {
         $cell = $this->sheet->cell('B10');
         $this->assertEquals('B10', $cell->getCoordinate());
+    }
+
+    /**
+     * @test
+     */
+    public function sheet_headings_will_be_empty_when_heading_row_disabled()
+    {
+        $headings = $this->sheet->getHeadings();
+
+        $this->assertEquals([], $headings);
+    }
+
+    /**
+     * @test
+     */
+    public function can_get_headings_of_sheet()
+    {
+        $this->sheet->useFirstRowAsHeading();
+        $headings = $this->sheet->getHeadings();
+
+        $this->assertEquals(['A' => 'A1', 'B' => 'B1', 'C' => 'C1', 'D' => 'D1'], $headings);
+    }
+
+    /**
+     * @test
+     */
+    public function sheet_caches_heading_row()
+    {
+        $this->sheet->useFirstRowAsHeading();
+
+        $this->assertEquals($this->sheet->getHeadings(), $this->sheet->getHeadings());
     }
 
     /**

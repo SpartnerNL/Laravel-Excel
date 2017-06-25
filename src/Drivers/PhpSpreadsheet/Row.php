@@ -3,7 +3,6 @@
 namespace Maatwebsite\Excel\Drivers\PhpSpreadsheet;
 
 use Iterator;
-use Countable;
 use Traversable;
 use Maatwebsite\Excel\Configuration;
 use Maatwebsite\Excel\Row as RowInterface;
@@ -40,15 +39,22 @@ class Row implements RowInterface
     protected $sheet;
 
     /**
+     * @var array
+     */
+    protected $headings = [];
+
+    /**
      * @param PhpSpreadsheetRow $row
+     * @param array             $headings
      * @param Sheet             $sheet
      * @param Configuration     $configuration
      */
-    public function __construct(PhpSpreadsheetRow $row, Sheet $sheet, Configuration $configuration)
+    public function __construct(PhpSpreadsheetRow $row, array $headings, Sheet $sheet, Configuration $configuration)
     {
         $this->row           = $row;
         $this->sheet         = $sheet;
         $this->configuration = $configuration;
+        $this->headings      = $headings;
     }
 
     /**
@@ -73,6 +79,35 @@ class Row implements RowInterface
         $this->endColumn = $column;
 
         return $this;
+    }
+
+    /**
+     * @param string $heading
+     *
+     * @return CellInterface|null
+     */
+    public function get(string $heading)
+    {
+        if (!$this->has($heading)) {
+            return null;
+        }
+
+        $columns = array_flip($this->headings);
+        $column  = $columns[$heading];
+
+        return $this->cell($column);
+    }
+
+    /**
+     * @param string $heading
+     *
+     * @return bool
+     */
+    public function has(string $heading): bool
+    {
+        $columns = array_flip($this->headings);
+
+        return isset($columns[$heading]);
     }
 
     /**
@@ -103,7 +138,11 @@ class Row implements RowInterface
     {
         $cells = [];
         foreach ($this->getIterator() as $cell) {
-            $cells[] = (string) $cell;
+            if (isset($this->headings[$cell->getColumn()])) {
+                $cells[$this->headings[$cell->getColumn()]] = (string) $cell;
+            } else {
+                $cells[] = (string) $cell;
+            }
         }
 
         return $cells;
@@ -182,5 +221,87 @@ class Row implements RowInterface
     protected function getColumnIndex(string $column): int
     {
         return PhpSpreadsheetCell::columnIndexFromString($column);
+    }
+
+    /**
+     * @return array
+     */
+    public function getHeadings(): array
+    {
+        return $this->headings;
+    }
+
+    /**
+     * Whether a offset exists
+     *
+     * @link  http://php.net/manual/en/arrayaccess.offsetexists.php
+     *
+     * @param mixed $offset <p>
+     *                      An offset to check for.
+     *                      </p>
+     *
+     * @return boolean true on success or false on failure.
+     * </p>
+     * <p>
+     * The return value will be casted to boolean if non-boolean was returned.
+     * @since 5.0.0
+     */
+    public function offsetExists($offset)
+    {
+        return $this->has($offset);
+    }
+
+    /**
+     * Offset to retrieve
+     *
+     * @link  http://php.net/manual/en/arrayaccess.offsetget.php
+     *
+     * @param mixed $offset <p>
+     *                      The offset to retrieve.
+     *                      </p>
+     *
+     * @return mixed Can return all value types.
+     * @since 5.0.0
+     */
+    public function offsetGet($offset)
+    {
+        return $this->get($offset);
+    }
+
+    /**
+     * Offset to set
+     *
+     * @link  http://php.net/manual/en/arrayaccess.offsetset.php
+     *
+     * @param mixed $offset <p>
+     *                      The offset to assign the value to.
+     *                      </p>
+     * @param mixed $value  <p>
+     *                      The value to set.
+     *                      </p>
+     *
+     * @return void
+     * @since 5.0.0
+     */
+    public function offsetSet($offset, $value)
+    {
+        $this->get($offset)->setValue($value);
+    }
+
+    /**
+     * Offset to unset
+     *
+     * @link  http://php.net/manual/en/arrayaccess.offsetunset.php
+     *
+     * @param mixed $offset <p>
+     *                      The offset to unset.
+     *                      </p>
+     *
+     * @return void
+     * @since 5.0.0
+     */
+    public function offsetUnset($offset)
+    {
+        $this->get($offset)->removeValue();
     }
 }

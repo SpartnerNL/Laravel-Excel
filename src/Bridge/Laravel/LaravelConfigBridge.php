@@ -31,12 +31,7 @@ class LaravelConfigBridge
             $this->config->get('excel.driver', 'phpspreadsheet')
         );
 
-        $configuration->setReaderConfiguration(new Configuration\ReaderConfiguration(
-            new Configuration\LaravelFilesystemConfiguration(
-                $this->config->get('excel.reader.loader.driver', 'filesystem'),
-                $this->config->get('excel.reader.loader.defaultDisk', 'local')
-            )
-        ));
+        $configuration->setReaderConfiguration($this->getReaderConfig());
 
         $configuration->setWriterConfiguration(new Configuration\WriterConfiguration(
             new Configuration\LaravelFilesystemConfiguration(
@@ -46,5 +41,22 @@ class LaravelConfigBridge
         ));
 
         return $configuration;
+    }
+
+    /**
+     * @return Configuration\ReaderConfiguration
+     */
+    public function getReaderConfig(): Configuration\ReaderConfiguration
+    {
+        $reader = new Configuration\ReaderConfiguration(
+            new Configuration\LaravelFilesystemConfiguration(
+                $this->config->get('excel.reader.loader.driver', 'filesystem'),
+                $this->config->get('excel.reader.loader.defaultDisk', 'local')
+            )
+        );
+
+        $reader->setHeadingRow($this->config->get('excel.reader.headingRow', false));
+
+        return $reader;
     }
 }

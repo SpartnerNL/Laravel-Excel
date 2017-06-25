@@ -67,4 +67,26 @@ class Cell implements CellInterface
     {
         return $this->cell->getValue();
     }
+
+    /**
+     * @param mixed $value
+     *
+     * @return CellInterface
+     */
+    public function setValue($value): CellInterface
+    {
+        $this->cell->setValue($value);
+
+        return $this;
+    }
+
+    /**
+     * @return CellInterface
+     */
+    public function removeValue(): CellInterface
+    {
+        $this->cell->setValueExplicit(null, 'null');
+
+        return $this;
+    }
 }

@@ -33,6 +33,18 @@ interface Sheet extends IteratorAggregate, Countable
     public function setEndRow(int $rowNumber = null): Sheet;
 
     /**
+     * @param int|false $headingRow
+     *
+     * @return Sheet
+     */
+    public function useRowAsHeading($headingRow): Sheet;
+
+    /**
+     * @return Sheet
+     */
+    public function useFirstRowAsHeading(): Sheet;
+
+    /**
      * @param int      $startRow
      * @param int|null $endRow
      *
@@ -111,4 +123,9 @@ interface Sheet extends IteratorAggregate, Countable
      * @return int
      */
     public function columnCount(): int;
+
+    /**
+     * @return array
+     */
+    public function getHeadings(): array;
 }

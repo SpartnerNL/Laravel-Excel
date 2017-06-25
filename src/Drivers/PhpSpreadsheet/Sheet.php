@@ -100,4 +100,12 @@ class Sheet implements SheetInterface
     {
         return $this->worksheet;
     }
+
+    /**
+     * @return Configuration
+     */
+    public function getConfiguration(): Configuration
+    {
+        return $this->configuration;
+    }
 }

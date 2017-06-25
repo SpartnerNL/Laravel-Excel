@@ -114,7 +114,7 @@ class Spreadsheet implements SpreadsheetInterface
      */
     public function first(): SheetInterface
     {
-        return $this->getIterator()->first();
+        return $this->sheetByIndex(0);
     }
 
     /**
