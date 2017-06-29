@@ -29,6 +29,6 @@ To download the created file, use `->export($ext)` or `->download($ext)`.
 
 #### Export to PDF
 
-To export files to pdf, you will have to include `"dompdf/dompdf": "~0.6.1"`, `"mpdf/mpdf": "~5.7.3"` or `"tecnick.com/tcpdf": "~6.0.0"` in your `composer.json` and change the `export.pdf.driver` config setting accordingly.
+To export files to pdf, you will have to include `"dompdf/dompdf": "~0.6.1"`, `"mpdf/mpdf": "~6.1"` or `"tecnick.com/tcpdf": "~6.0.0"` in your `composer.json` and change the `export.pdf.driver` config setting accordingly.
 
     ->export('pdf');
