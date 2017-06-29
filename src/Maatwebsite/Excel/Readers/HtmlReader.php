@@ -757,7 +757,7 @@ class Html extends PHPExcel_Reader_HTML {
         $drawing->setWorksheet($sheet);
         $drawing->setCoordinates($column . $row);
         $drawing->setResizeProportional();
-        $drawing->setOffsetX($drawing->getWidth() - $drawing->getWidth() / 5);
+        $drawing->setOffsetX(0);
         $drawing->setOffsetY(10);
 
         // Set height and width
@@ -768,8 +768,8 @@ class Html extends PHPExcel_Reader_HTML {
             $drawing->setHeight($height);
 
         // Set cell width based on image
-        $this->parseWidth($sheet, $column, $row, $drawing->getWidth() / 3);
-        $this->parseHeight($sheet, $column, $row, $drawing->getHeight());
+        $this->parseWidth($sheet, $column, $row, $drawing->getWidth() / 6);
+        $this->parseHeight($sheet, $column, $row, $drawing->getHeight() * 0.9);
     }
 
     /**
