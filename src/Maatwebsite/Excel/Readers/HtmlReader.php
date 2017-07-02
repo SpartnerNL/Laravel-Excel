@@ -743,7 +743,7 @@ class Html extends PHPExcel_Reader_HTML {
     protected function insertImageBySrc($sheet, $column, $row, $attributes)
     {
         // Get attributes
-        $src = $attributes->getAttribute('src');
+        $src = urldecode($attributes->getAttribute('src'));
         $width = (float) $attributes->getAttribute('width');
         $height = (float) $attributes->getAttribute('height');
         $alt = $attributes->getAttribute('alt');
