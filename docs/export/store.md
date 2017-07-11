@@ -4,7 +4,7 @@ To store the created file on the server, use `->store($ext, $path = false, $retu
 
 ### Normal export to default storage path
 
-By default the file will be stored inside the `app/storage/exports` folder, which has been defined in the `export.php` config file.
+By default the file will be stored inside the `storage/exports` folder, which has been defined in the `export.php` config file.
 
     Excel::create('Filename', function($excel) {
 
