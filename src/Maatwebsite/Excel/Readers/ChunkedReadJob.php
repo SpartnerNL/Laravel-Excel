@@ -81,7 +81,7 @@ class ChunkedReadJob implements ShouldQueue
         $this->callback    = $shouldQueue ? (new Serializer)->serialize($callback) : $callback;
         $this->sheets      = $sheets;
         $this->shouldQueue = $shouldQueue;
-        $this->delimiter =
+        $this->delimiter   = $delimiter ? $delimiter : config('excel.csv.delimiter');
     }
 
     /***
