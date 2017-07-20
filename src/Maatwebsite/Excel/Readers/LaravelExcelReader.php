@@ -1247,7 +1247,7 @@ class LaravelExcelReader
                 $index = $key;
             }
         }
-        if( $index == null )
+        if( $index === null )
         {
             throw new LaravelExcelException('Active sheet not found (active sheet name: "'.$this->getActiveSheet()->getTitle().'")');
         }
