@@ -32,7 +32,7 @@
     "phpseclib/phpseclib": "~1.0",
     "phpunit/phpunit": "~4.0",
     "mockery/mockery": "~0.9",
-    "orchestra/testbench": "3.1.*"
+    "orchestra/testbench": "3.1.*|3.2.*|3.3.*|3.4.*|3.5.*"
   },
   "suggest": {
     "illuminate/http": "5.0.*|5.1.*|5.2.*|5.3.*|5.4.*",
