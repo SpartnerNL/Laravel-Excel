@@ -13,7 +13,8 @@ use Maatwebsite\Excel\Classes\LaravelExcelWorksheet;
  * @author     Maatwebsite <info@maatwebsite.nl>
  * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
  */
-class CellWriter {
+class CellWriter
+{
 
     /**
      * Current $sheet
@@ -46,9 +47,23 @@ class CellWriter {
     public function setValue($value)
     {
         // Only set cell value for single cells
-        if (!str_contains($this->cells, ':'))
-        {
+        if (!str_contains($this->cells, ':')) {
             $this->sheet->setCellValue($this->cells, $value);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Set cell url
+     * @param [type] $url
+     * @return  CellWriter
+     */
+    public function setUrl($url)
+    {
+        // Only set cell value for single cells
+        if (!str_contains($this->cells, ':')) {
+            $this->sheet->getCell($this->cells)->getHyperlink()->setUrl($url);
         }
 
         return $this;
@@ -95,7 +110,7 @@ class CellWriter {
     public function setFontFamily($family)
     {
         return $this->setStyle('font', [
-            'name' => $family
+            'name' => $family,
         ]);
     }
 
@@ -107,7 +122,7 @@ class CellWriter {
     public function setFontSize($size)
     {
         return $this->setStyle('font', [
-            'size' => $size
+            'size' => $size,
         ]);
     }
 
@@ -119,7 +134,7 @@ class CellWriter {
     public function setFontWeight($bold = true)
     {
         return $this->setStyle('font', [
-            'bold' => ($bold === 'bold' || $bold === true)
+            'bold' => ($bold === 'bold' || $bold === true),
         ]);
     }
 
@@ -136,7 +151,7 @@ class CellWriter {
         // Set the border styles
         $styles = is_array($top) ? $top : [
             'top'    => [
-                'style' => $top
+                'style' => $top,
             ],
             'left'   => [
                 'style' => $left,
@@ -146,7 +161,7 @@ class CellWriter {
             ],
             'bottom' => [
                 'style' => $bottom,
-            ]
+            ],
         ];
 
         return $this->setStyle('borders', $styles);
@@ -159,8 +174,8 @@ class CellWriter {
      */
     public function setTextRotation($degrees)
     {
-      $style = $this->getCellStyle()->getAlignment()->setTextRotation($degrees);
-      return $this;
+        $style = $this->getCellStyle()->getAlignment()->setTextRotation($degrees);
+        return $this;
     }
 
     /**
@@ -171,7 +186,7 @@ class CellWriter {
     public function setAlignment($alignment)
     {
         return $this->setStyle('alignment', [
-            'horizontal' => $alignment
+            'horizontal' => $alignment,
         ]);
     }
 
@@ -183,7 +198,7 @@ class CellWriter {
     public function setValignment($alignment)
     {
         return $this->setStyle('alignment', [
-            'vertical' => $alignment
+            'vertical' => $alignment,
         ]);
     }
 
@@ -194,8 +209,8 @@ class CellWriter {
      */
     public function setTextIndent($indent)
     {
-      $style = $this->getCellStyle()->getAlignment()->setIndent((int)$indent);
-      return $this;
+        $style = $this->getCellStyle()->getAlignment()->setIndent((int) $indent);
+        return $this;
     }
 
     /**
@@ -211,7 +226,7 @@ class CellWriter {
         // Set the styles
         $styles = is_array($color) ? $color : [
             'type'  => $type,
-            'color' => [$colorType => str_replace('#', '', $color)]
+            'color' => [$colorType => str_replace('#', '', $color)],
         ];
 
         return $this->setStyle($styleType, $styles);
@@ -230,7 +245,7 @@ class CellWriter {
 
         // Apply style from array
         $style->applyFromArray([
-            $styleType => $styles
+            $styleType => $styles,
         ]);
 
         return $this;
