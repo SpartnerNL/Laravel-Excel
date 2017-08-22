@@ -44,10 +44,16 @@ class CellWriter
      * @param [type] $value
      * @return  CellWriter
      */
-    public function setValue($value)
+    public function setValue($value, $isFormula = false)
     {
         // Only set cell value for single cells
         if (!str_contains($this->cells, ':')) {
+            // fix frequently error due to value starting with equal sign
+            if (!$isFormula && strpos($value, '=') === 0) {
+                // just insert spacing
+                $value = ' ' . $value;
+            }
+
             $this->sheet->setCellValue($this->cells, $value);
         }
 
