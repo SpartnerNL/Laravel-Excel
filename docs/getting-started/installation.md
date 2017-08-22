@@ -12,11 +12,11 @@ Require this package in your `composer.json` and update composer. This will down
 
 After updating composer, add the ServiceProvider to the providers array in `app/config/app.php`
 
-    'Maatwebsite\Excel\ExcelServiceProvider',
+    Maatwebsite\Excel\ExcelServiceProvider::class,
 
 You can use the facade for shorter code. Add this to your aliasses:
 
-    'Excel' => 'Maatwebsite\Excel\Facades\Excel',
+    'Excel' => Maatwebsite\Excel\Facades\Excel::class,
 
 The class is binded to the ioC as `excel`
 
