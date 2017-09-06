@@ -6,6 +6,7 @@ use Maatwebsite\Excel\Readers\Html;
 use Maatwebsite\Excel\Classes\Cache;
 use Maatwebsite\Excel\Classes\PHPExcel;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Response;
 use Maatwebsite\Excel\Parsers\CssParser;
 use Maatwebsite\Excel\Parsers\ViewParser;
@@ -56,6 +57,16 @@ class ExcelServiceProvider extends ServiceProvider {
 
         //Set the autosizing settings
         $this->setAutoSizingSettings();
+        
+        //Enable an "export" method on Eloquent collections. ie: model::all()->export('file');
+        Collection::macro('export', function($filename, $type = 'xlsx', $method = 'download') {
+	        $model = $this;
+	        Facades\Excel::create($filename, function($excel) use ($model, $filename) {
+		        $excel->sheet($filename, function($sheet) use ($model) {
+			        $sheet->fromModel($model);
+		        });
+	        })->$method($type);
+        });
     }
 
     /**
