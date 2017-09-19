@@ -308,4 +308,19 @@ class ExcelWriterTest extends TestCase {
         $this->setExpectedException(InvalidArgumentException::class);
         $file->string('invalid file extension');
     }
+
+    public function testLoadViewWithDataArray()
+    {
+        View::addLocation(realpath(__DIR__.'/views'));
+
+        $info = Excel::create('numbers', function ($writer)
+        {
+            $writer->sheet('test', function ($sheet)
+            {
+                $sheet->loadView('test')->with(['foo' => 'bar']);
+            });
+        })->store('csv', __DIR__ . '/exports', true);
+
+        $this->assertTrue(file_exists($info['full']));
+    }
 }

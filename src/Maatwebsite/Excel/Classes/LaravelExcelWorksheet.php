@@ -627,6 +627,10 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet {
                 }
             }
         }
+        else
+        {
+            $data = $array;
+        }
 
         // Add results
         if (!empty($data))
