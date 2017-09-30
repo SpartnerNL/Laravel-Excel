@@ -1016,7 +1016,7 @@ class LaravelExcelReader
      *
      * @param  boolean $boolean
      *
-     * @return LaraveExcelReader
+     * @return LaravelExcelReader
      */
     public function ignoreEmpty($boolean = true)
     {
