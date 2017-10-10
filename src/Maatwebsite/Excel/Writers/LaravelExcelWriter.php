@@ -235,7 +235,7 @@ class LaravelExcelWriter {
         $this->sheet->setDefaultPageSetup();
 
         // Do the callback
-        if ($callback instanceof Closure)
+        if (is_callable($callback))
             call_user_func($callback, $this->sheet);
 
         // Autosize columns when no user didn't change anything about column sizing
