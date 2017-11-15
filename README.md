@@ -49,13 +49,15 @@ Require this package in your `composer.json` and update composer. This will down
 composer require "maatwebsite/excel:~2.1.0"
 ```
 
-After updating composer, add the ServiceProvider to the providers array in `config/app.php`
+In Laravel 5.5 or higher, this package will be automatically discovered and you can safely skip the following two steps.
+
+If using Laravel 5.4 or lower, after updating composer, add the ServiceProvider to the providers array in `config/app.php`
 
 ```php
 Maatwebsite\Excel\ExcelServiceProvider::class,
 ```
 
-You can use the facade for shorter code. Add this to your aliases:
+You can use the facade for shorter code; if using Laravel 5.4 or lower, add this to your aliases:
 
 ```php
 'Excel' => Maatwebsite\Excel\Facades\Excel::class,
