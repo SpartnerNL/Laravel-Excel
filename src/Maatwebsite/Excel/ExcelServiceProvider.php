@@ -57,16 +57,23 @@ class ExcelServiceProvider extends ServiceProvider {
 
         //Set the autosizing settings
         $this->setAutoSizingSettings();
-        
+		
+		//Enable an "export" method on Eloquent collections. ie: model::all()->export('file');
+        global $app;
+        $version = explode(".", $app::VERSION);
         //Enable an "export" method on Eloquent collections. ie: model::all()->export('file');
-        Collection::macro('export', function($filename, $type = 'xlsx', $method = 'download') {
-	        $model = $this;
-	        Facades\Excel::create($filename, function($excel) use ($model, $filename) {
-		        $excel->sheet($filename, function($sheet) use ($model) {
-			        $sheet->fromModel($model);
-		        });
-	        })->$method($type);
-        });
+        if(intval($version[0])>=5){
+            if(intval($version[0])==5 && intval($version[1])>=2){
+                Collection::macro('export', function($filename, $type = 'xlsx', $method = 'download') {
+                    $model = $this;
+                    Facades\Excel::create($filename, function($excel) use ($model, $filename) {
+                        $excel->sheet($filename, function($sheet) use ($model) {
+                            $sheet->fromModel($model);
+                        });
+                    })->$method($type);
+                });
+            }
+        }
     }
 
     /**
