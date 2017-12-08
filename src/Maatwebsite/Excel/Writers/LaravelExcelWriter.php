@@ -376,7 +376,7 @@ class LaravelExcelWriter {
      * @param  string  $ext
      * @param  boolean $path
      * @param  boolean $returnInfo
-     * @return LaravelExcelWriter
+     * @return LaravelExcelWriter|array
      */
     public function store($ext = 'xls', $path = false, $returnInfo = false)
     {
