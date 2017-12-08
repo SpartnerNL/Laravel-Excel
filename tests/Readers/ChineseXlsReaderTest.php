@@ -46,7 +46,7 @@ class ChineseXlsReaderTest extends TestCase {
     public function testloadChineseXls()
     {
         $this->assertEquals($this->reader, $this->loadedXls);
-        $this->assertInstanceOf('PHPExcel', $this->reader->getExcel());
+        $this->assertInstanceOf(\PHPExcel::class, $this->reader->getExcel());
     }
 
     /**
@@ -56,7 +56,7 @@ class ChineseXlsReaderTest extends TestCase {
     public function testGet()
     {
         $got = $this->loadedXls->get();
-        $this->assertInstanceOf('Maatwebsite\Excel\Collections\RowCollection', $got);
+        $this->assertInstanceOf(\Maatwebsite\Excel\Collections\RowCollection::class, $got);
         $this->assertCount(2, $got);
     }
 

@@ -6,7 +6,7 @@ trait SingleImportTestingTrait {
     public function testGet()
     {
         $got = $this->loadedFile->get();
-        $this->assertInstanceOf('Maatwebsite\Excel\Collections\RowCollection', $got);
+        $this->assertInstanceOf(\Maatwebsite\Excel\Collections\RowCollection::class, $got);
         $this->assertCount(5, $got);
     }
 
@@ -16,7 +16,7 @@ trait SingleImportTestingTrait {
         $columns = ['heading_one', 'heading_two'];
         $got = $this->loadedFile->get($columns);
 
-        $this->assertInstanceOf('Maatwebsite\Excel\Collections\RowCollection', $got);
+        $this->assertInstanceOf(\Maatwebsite\Excel\Collections\RowCollection::class, $got);
         $this->assertCount(5, $got);
     }
 
@@ -24,7 +24,7 @@ trait SingleImportTestingTrait {
     public function testAll()
     {
         $all = $this->loadedFile->all();
-        $this->assertInstanceOf('Maatwebsite\Excel\Collections\RowCollection', $all);
+        $this->assertInstanceOf(\Maatwebsite\Excel\Collections\RowCollection::class, $all);
         $this->assertCount(5, $all);
     }
 
@@ -32,7 +32,7 @@ trait SingleImportTestingTrait {
     public function testFirst()
     {
         $first = $this->loadedFile->first();
-        $this->assertInstanceOf('Maatwebsite\Excel\Collections\CellCollection', $first);
+        $this->assertInstanceOf(\Maatwebsite\Excel\Collections\CellCollection::class, $first);
 
         // 3 columns
         $this->assertCount(3, $first);
@@ -44,7 +44,7 @@ trait SingleImportTestingTrait {
         $columns = ['heading_one', 'heading_two'];
         $first = $this->loadedFile->first($columns);
 
-        $this->assertInstanceOf('Maatwebsite\Excel\Collections\CellCollection', $first);
+        $this->assertInstanceOf(\Maatwebsite\Excel\Collections\CellCollection::class, $first);
         $this->assertCount(count($columns), $first);
     }
 
@@ -55,7 +55,7 @@ trait SingleImportTestingTrait {
 
         $this->loadedFile->each(function($cells) use($me) {
 
-            $me->assertInstanceOf('Maatwebsite\Excel\Collections\CellCollection', $cells);
+            $me->assertInstanceOf(\Maatwebsite\Excel\Collections\CellCollection::class, $cells);
 
         });
     }
@@ -173,7 +173,7 @@ trait SingleImportTestingTrait {
     public function testByConfig()
     {
         $config = $this->loadedFile->byConfig('excel.import.sheets');
-        $this->assertInstanceOf('Maatwebsite\Excel\Collections\SheetCollection', $config);
+        $this->assertInstanceOf(\Maatwebsite\Excel\Collections\SheetCollection::class, $config);
     }
 
 
@@ -183,10 +183,10 @@ trait SingleImportTestingTrait {
 
         $config = $this->loadedFile->byConfig('excel.import.sheets', function($config) use($me)
         {
-            $me->assertInstanceOf('Maatwebsite\Excel\Readers\ConfigReader', $config);
+            $me->assertInstanceOf(\Maatwebsite\Excel\Readers\ConfigReader::class, $config);
         });
 
-        $this->assertInstanceOf('Maatwebsite\Excel\Collections\SheetCollection', $config);
+        $this->assertInstanceOf(\Maatwebsite\Excel\Collections\SheetCollection::class, $config);
     }
 
 

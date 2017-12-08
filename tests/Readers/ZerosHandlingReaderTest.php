@@ -27,7 +27,7 @@ class ZerosHandlingReaderTest extends TestCase {
     public function testDefaultGet()
     {
         $got = $this->loadedFile->get();
-        $this->assertInstanceOf('Maatwebsite\Excel\Collections\RowCollection', $got);
+        $this->assertInstanceOf(\Maatwebsite\Excel\Collections\RowCollection::class, $got);
         $this->assertCount(6, $got);
     }
 
