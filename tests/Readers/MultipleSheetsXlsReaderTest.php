@@ -26,7 +26,7 @@ class MultipleSheetsXlsReaderTest extends TestCase {
     public function testGet()
     {
         $got = $this->loadedFile->get();
-        $this->assertInstanceOf('Maatwebsite\Excel\Collections\SheetCollection', $got);
+        $this->assertInstanceOf(\Maatwebsite\Excel\Collections\SheetCollection::class, $got);
         $this->assertCount(2, $got);
     }
 
@@ -56,7 +56,7 @@ class MultipleSheetsXlsReaderTest extends TestCase {
         $sheet = $this->loadedFile->get();
 
         $this->assertEquals('Sheet2', $sheet->getTitle());
-        $this->assertInstanceOf('Maatwebsite\Excel\Collections\RowCollection', $sheet);
+        $this->assertInstanceOf(\Maatwebsite\Excel\Collections\RowCollection::class, $sheet);
         $this->assertCount(5, $sheet);
     }
 
@@ -68,7 +68,7 @@ class MultipleSheetsXlsReaderTest extends TestCase {
         $sheet = $this->loadedFile->get();
 
         $this->assertEquals('Sheet2', $sheet->getTitle());
-        $this->assertInstanceOf('Maatwebsite\Excel\Collections\RowCollection', $sheet);
+        $this->assertInstanceOf(\Maatwebsite\Excel\Collections\RowCollection::class, $sheet);
         $this->assertCount(5, $sheet);
     }
 
@@ -78,7 +78,7 @@ class MultipleSheetsXlsReaderTest extends TestCase {
         $this->reload();
 
         $got = $this->loadedFile->get();
-        $this->assertInstanceOf('Maatwebsite\Excel\Collections\SheetCollection', $got);
+        $this->assertInstanceOf(\Maatwebsite\Excel\Collections\SheetCollection::class, $got);
         $this->assertCount(2, $got);
 
         // get first sheet
@@ -86,7 +86,7 @@ class MultipleSheetsXlsReaderTest extends TestCase {
 
         // assert sheet title
         $this->assertEquals('Sheet1', $sheet->getTitle());
-        $this->assertInstanceOf('Maatwebsite\Excel\Collections\RowCollection', $sheet);
+        $this->assertInstanceOf(\Maatwebsite\Excel\Collections\RowCollection::class, $sheet);
         $this->assertCount(5, $sheet);
     }
 
@@ -96,7 +96,7 @@ class MultipleSheetsXlsReaderTest extends TestCase {
         $this->reload();
 
         $got = $this->loadedFile->get();
-        $this->assertInstanceOf('Maatwebsite\Excel\Collections\SheetCollection', $got);
+        $this->assertInstanceOf(\Maatwebsite\Excel\Collections\SheetCollection::class, $got);
         $this->assertCount(2, $got);
 
         // get first sheet
@@ -104,7 +104,7 @@ class MultipleSheetsXlsReaderTest extends TestCase {
 
         // assert sheet title
         $this->assertEquals('Sheet1', $sheet->getTitle());
-        $this->assertInstanceOf('Maatwebsite\Excel\Collections\RowCollection', $sheet);
+        $this->assertInstanceOf(\Maatwebsite\Excel\Collections\RowCollection::class, $sheet);
         $this->assertCount(5, $sheet);
     }
 

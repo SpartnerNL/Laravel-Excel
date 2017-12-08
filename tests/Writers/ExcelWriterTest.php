@@ -185,7 +185,7 @@ class ExcelWriterTest extends TestCase {
             });
         })->store('csv', __DIR__ . '/exports', true);
 
-        $this->assertTrue(file_exists($info['full']));
+        $this->assertFileExists($info['full']);
     }
 
     public function testCreateSheetFromArray()
@@ -198,7 +198,7 @@ class ExcelWriterTest extends TestCase {
             });
         })->store('csv', __DIR__ . '/exports', true);
 
-        $this->assertTrue(file_exists($info['full']));
+        $this->assertFileExists($info['full']);
     }
 
     public function testCreateSheetFromArrayThrowsException()
@@ -231,7 +231,7 @@ class ExcelWriterTest extends TestCase {
             });
         })->store('xls', __DIR__ . '/exports', true);
 
-        $this->assertTrue(file_exists($info['full']));
+        $this->assertFileExists($info['full']);
 
         $results = Excel::load($info['full'], null, false, true)->calculate()->toArray();
 
@@ -240,16 +240,16 @@ class ExcelWriterTest extends TestCase {
         $this->assertEquals('01234HelloWorld', $results[2]['number']);
         $this->assertEquals('12345678901234567890', $results[3]['number']);
 
-        $this->assertTrue(is_double($results[4]['number']));
+        $this->assertInternalType('double', $results[4]['number']);
         $this->assertEquals((double) 1234, $results[4]['number']);
 
-        $this->assertTrue(is_double($results[5]['number']));
+        $this->assertInternalType('double', $results[5]['number']);
         $this->assertEquals('1234.02', $results[5]['number']);
 
-        $this->assertTrue(is_double($results[6]['number']));
+        $this->assertInternalType('double', $results[6]['number']);
         $this->assertEquals('0.0231231234423', $results[6]['number']);
 
-        $this->assertTrue(is_double($results[7]['number']));
+        $this->assertInternalType('double', $results[7]['number']);
         $this->assertEquals(4195.99253472222, $results[7]['number']);
 
         $this->assertEquals(1234 + 1234, $results[8]['number']);
@@ -321,6 +321,6 @@ class ExcelWriterTest extends TestCase {
             });
         })->store('csv', __DIR__ . '/exports', true);
 
-        $this->assertTrue(file_exists($info['full']));
+        $this->assertFileExists($info['full']);
     }
 }

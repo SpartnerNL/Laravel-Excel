@@ -55,8 +55,8 @@ class CellCollectionTest extends TestCase {
 
     public function testEmpty()
     {
-        $this->assertFalse(empty($this->collection->two));
-        $this->assertTrue(empty($this->collection->nonexisting));
+        $this->assertNotEmpty($this->collection->two);
+        $this->assertEmpty($this->collection->nonexisting);
     }
 
 

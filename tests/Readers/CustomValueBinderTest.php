@@ -37,7 +37,7 @@ class CustomValuBinderTest extends TestCase {
     public function testDefaultGet()
     {
         $got = $this->loadedFile->get();
-        $this->assertInstanceOf('Maatwebsite\Excel\Collections\RowCollection', $got);
+        $this->assertInstanceOf(\Maatwebsite\Excel\Collections\RowCollection::class, $got);
         $this->assertCount(5, $got);
     }
 
@@ -45,7 +45,7 @@ class CustomValuBinderTest extends TestCase {
     {
         $got = $this->loadedFile->toArray();
 
-        $this->assertTrue(is_string($got[0][0]));
+        $this->assertInternalType('string', $got[0][0]);
         $this->assertEquals('00123', $got[0][0]);
     }
 
@@ -53,7 +53,7 @@ class CustomValuBinderTest extends TestCase {
     {
         $got = $this->loadedFile->toArray();
 
-        $this->assertTrue(is_null($got[1][0]));
+        $this->assertNull($got[1][0]);
         $this->assertEquals('', $got[1][0]);
     }
 
@@ -61,7 +61,7 @@ class CustomValuBinderTest extends TestCase {
     {
         $got = $this->loadedFile->toArray();
 
-        $this->assertTrue(is_string($got[2][0]));
+        $this->assertInternalType('string', $got[2][0]);
         $this->assertEquals('null', $got[2][0]);
     }
 
@@ -69,7 +69,7 @@ class CustomValuBinderTest extends TestCase {
     {
         $got = $this->loadedFile->toArray();
 
-        $this->assertTrue(is_string($got[3][0]));
+        $this->assertInternalType('string', $got[3][0]);
         $this->assertEquals('=1+2', $got[3][0]);
     }
 
@@ -77,7 +77,7 @@ class CustomValuBinderTest extends TestCase {
     {
         $got = $this->loadedFile->toArray();
 
-        $this->assertTrue(is_string($got[4][0]));
+        $this->assertInternalType('string', $got[4][0]);
         $this->assertEquals('true', $got[4][0]);
     }
 

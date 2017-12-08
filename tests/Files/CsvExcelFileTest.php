@@ -8,7 +8,7 @@ class CsvExcelFileTest extends TestCase {
     public function testInit()
     {
         $importer = app('CsvTestImport');
-        $this->assertInstanceOf('Maatwebsite\Excel\Files\ExcelFile', $importer);
+        $this->assertInstanceOf(\Maatwebsite\Excel\Files\ExcelFile::class, $importer);
     }
 
 
@@ -17,7 +17,7 @@ class CsvExcelFileTest extends TestCase {
         $importer = app('TestImport');
         $results = $importer->get();
 
-        $this->assertInstanceOf('Maatwebsite\Excel\Collections\RowCollection', $results);
+        $this->assertInstanceOf(\Maatwebsite\Excel\Collections\RowCollection::class, $results);
         $this->assertCount(5, $results);
     }
 

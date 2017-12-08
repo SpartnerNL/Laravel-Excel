@@ -36,7 +36,7 @@ class ExcelTestCase extends PHPUnit_Framework_TestCase {
      */
     public function testConstructor()
     {
-        $this->assertInstanceOf('Maatwebsite\Excel\Excel', $this->excel);
+        $this->assertInstanceOf(\Maatwebsite\Excel\Excel::class, $this->excel);
     }
 
     /**
