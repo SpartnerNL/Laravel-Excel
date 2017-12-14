@@ -239,6 +239,10 @@ class ExcelParser {
                 return $this->getHashedIndex($value);
                 break;
 
+            case 'hashed_with_lower':
+                return $this->getHashedIndex(strtolower(trim($value)));
+                break;
+
             case 'trans':
                 return $this->getTranslatedIndex($value);
                 break;
