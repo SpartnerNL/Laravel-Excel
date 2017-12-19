@@ -108,6 +108,8 @@ class ExcelServiceProvider extends ServiceProvider {
             $excel->setDefaultProperties();
             return $excel;
         });
+
+        $this->app->alias('phpexcel', PHPExcel::class);
     }
 
     /**
@@ -201,8 +203,8 @@ class ExcelServiceProvider extends ServiceProvider {
 
             return $excel;
         });
-        
-        $this->app->alias('phpexcel', PHPExcel::class);
+
+        $this->app->alias('excel', Excel::class);
     }
 
     /**
