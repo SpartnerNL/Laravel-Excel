@@ -203,6 +203,8 @@ class ExcelServiceProvider extends ServiceProvider {
 
             return $excel;
         });
+
+        $this->app->alias('excel', Excel::class);
     }
 
     /**
