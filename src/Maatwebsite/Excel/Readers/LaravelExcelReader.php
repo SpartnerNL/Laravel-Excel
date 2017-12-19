@@ -849,7 +849,7 @@ class LaravelExcelReader
     protected function _setFile($file, $noBasePath = false)
     {
         // check if we have a correct path
-        if (!$noBasePath && !realpath($file)) {
+        if (!is_file($file) && !$noBasePath && !realpath($file)) {
             $file = base_path($file);
         }
 
