@@ -395,7 +395,7 @@ class LaravelExcelReader
             return true;
         }
 
-        return in_array($index, $selectedSheets) ? true : false;
+        return in_array($index, $selectedSheets);
     }
 
     /**
