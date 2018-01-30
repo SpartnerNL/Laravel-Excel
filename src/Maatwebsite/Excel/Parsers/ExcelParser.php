@@ -95,7 +95,7 @@ class ExcelParser {
         $this->reader = $reader;
         $this->excel = $reader->excel;
 
-        $this->defaultStartRow = $this->currentRow = config('excel.import.startRow', 1);
+        $this->defaultStartRow = $this->currentRow = $reader->getHeaderRow();
 
         // Reset
         $this->reset();
