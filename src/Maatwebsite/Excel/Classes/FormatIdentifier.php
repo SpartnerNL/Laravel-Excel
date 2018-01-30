@@ -1,6 +1,6 @@
 <?php namespace Maatwebsite\Excel\Classes;
 
-use PHPExcel_IOFactory;
+use \PhpOffice\PhpSpreadsheet\IOFactory;
 use Illuminate\Filesystem\Filesystem;
 use Maatwebsite\Excel\Exceptions\LaravelExcelException;
 
@@ -255,11 +255,11 @@ class FormatIdentifier {
     /**
      * Init the reader based on the format
      * @param  string $format
-     * @return \PHPExcel_Reader_IReader
+     * @return \PhpOffice\PhpSpreadsheet\Reader\IReader
      */
     protected function initReader($format)
     {
-        return PHPExcel_IOFactory::createReader($format);
+        return \PhpOffice\PhpSpreadsheet\IOFactory::createReader($format);
     }
 
     /**

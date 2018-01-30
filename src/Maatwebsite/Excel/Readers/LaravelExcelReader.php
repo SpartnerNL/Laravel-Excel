@@ -4,10 +4,10 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Contracts\Bus\Dispatcher;
 use Illuminate\Support\Facades\Queue;
 use Maatwebsite\Excel\Classes\PHPExcel;
-use PHPExcel_Cell;
-use PHPExcel_IOFactory;
-use PHPExcel_Cell_IValueBinder;
-use PHPExcel_Cell_DefaultValueBinder;
+use \PhpOffice\PhpSpreadsheet\Cell\Cell as PHPExcel_Cell;
+use \PhpOffice\PhpSpreadsheet\IOFactory as PHPExcel_IOFactory;
+use \PhpOffice\PhpSpreadsheet\Cell\IValueBinder as PHPExcel_Cell_IValueBinder;
+use \PhpOffice\PhpSpreadsheet\Cell\DefaultValueBinder as PHPExcel_Cell_DefaultValueBinder;
 use Illuminate\Filesystem\Filesystem;
 use Maatwebsite\Excel\Parsers\ExcelParser;
 use Maatwebsite\Excel\Classes\FormatIdentifier;
@@ -28,7 +28,7 @@ class LaravelExcelReader
     /**
      * Excel object
      *
-     * @var \PHPExcel
+     * @var \PhpOffice\PhpSpreadsheet\Spreadsheet
      */
     public $excel;
 
@@ -203,7 +203,7 @@ class LaravelExcelReader
     /**
      * Active filter
      *
-     * @var PHPExcel_Reader_IReadFilter
+     * @var \PhpOffice\PhpSpreadsheet\Reader\IReadFilter
      */
     protected $filter;
 
@@ -237,7 +237,7 @@ class LaravelExcelReader
     protected $enclosure;
 
     /**
-     * @var \PHPExcel
+     * @var \PhpOffice\PhpSpreadsheet\Spreadsheet
      */
     protected $original;
 
@@ -295,15 +295,15 @@ class LaravelExcelReader
      * @param null                    $callback
      *
      * @return $this
-     * @throws \PHPExcel_Exception
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
      */
     public function sheet($sheetID, $callback = null)
     {
         // Default
         $isCallable = false;
 
-        // Init a new PHPExcel instance without any worksheets
-        if (!$this->excel instanceof PHPExcel) {
+        // Init a new \PhpOffice\PhpSpreadsheet\Spreadsheet instance without any worksheets
+        if (!$this->excel instanceof \PhpOffice\PhpSpreadsheet\Spreadsheet) {
             $this->original = $this->excel;
             $this->initClonedExcelObject($this->excel);
 
@@ -783,7 +783,7 @@ class LaravelExcelReader
     /**
      * Inject the excel object
      *
-     * @param  PHPExcel $excel
+     * @param  \PhpOffice\PhpSpreadsheet\Spreadsheet $excel
      *
      * @return void
      */
@@ -804,7 +804,7 @@ class LaravelExcelReader
     }
 
     /**
-     * @return PHPExcel_Reader_IReadFilter
+     * @return \PhpOffice\PhpSpreadsheet\Reader\IReadFilter
      */
     public function getFilter()
     {
@@ -893,9 +893,9 @@ class LaravelExcelReader
      *
      * @return void
      */
-    public function setValueBinder(PHPExcel_Cell_IValueBinder $binder)
+    public function setValueBinder(\PhpOffice\PhpSpreadsheet\Cell\IValueBinder $binder)
     {
-        PHPExcel_Cell::setValueBinder($binder);
+        \PhpOffice\PhpSpreadsheet\Cell\Cell::setValueBinder($binder);
 
         return $this;
     }
@@ -907,7 +907,7 @@ class LaravelExcelReader
      */
     public function resetValueBinder()
     {
-        PHPExcel_Cell::setValueBinder(new PHPExcel_Cell_DefaultValueBinder);
+        \PhpOffice\PhpSpreadsheet\Cell\Cell::setValueBinder(new \PhpOffice\PhpSpreadsheet\Cell\DefaultValueBinder);
 
         return $this;
     }
@@ -1261,7 +1261,7 @@ class LaravelExcelReader
      */
     protected function initClonedExcelObject($clone)
     {
-        $this->excel = new PHPExcel();
+        $this->excel = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
         $this->excel->cloneParent(clone $clone);
         $this->excel->disconnectWorksheets();
     }
@@ -1271,7 +1271,7 @@ class LaravelExcelReader
      *
      * @param callable|integer|string $sheetID
      *
-     * @return \PHPExcel_Worksheet
+     * @return \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet
      */
     protected function getSheetByIdOrName($sheetID)
     {
@@ -1368,7 +1368,7 @@ class LaravelExcelReader
     protected function _setReader()
     {
         // Init the reader
-        $this->reader = PHPExcel_IOFactory::createReader($this->format);
+        $this->reader = \PhpOffice\PhpSpreadsheet\IOFactory::createReader($this->format);
         $this->_setReaderDefaults();
 
         return $this;
@@ -1449,7 +1449,7 @@ class LaravelExcelReader
     /**
      * Get excel object
      *
-     * @return PHPExcel
+     * @return \PhpOffice\PhpSpreadsheet\Spreadsheet
      */
     public function getExcel()
     {

@@ -46,7 +46,7 @@ class ChineseXlsReaderTest extends TestCase {
     public function testloadChineseXls()
     {
         $this->assertEquals($this->reader, $this->loadedXls);
-        $this->assertInstanceOf(\PHPExcel::class, $this->reader->getExcel());
+        $this->assertInstanceOf(\PhpOffice\PhpSpreadsheet\Spreadsheet::class, $this->reader->getExcel());
     }
 
     /**

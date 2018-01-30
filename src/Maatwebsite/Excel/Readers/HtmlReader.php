@@ -1,19 +1,19 @@
 <?php namespace Maatwebsite\Excel\Readers;
 
-use PHPExcel;
+use \PhpOffice\PhpSpreadsheet\Spreadsheet;
 use DOMNode;
 use DOMText;
 use DOMElement;
 use DOMDocument;
-use PHPExcel_Cell;
-use PHPExcel_Settings;
-use PHPExcel_Reader_HTML;
-use PHPExcel_Style_Color;
-use PHPExcel_Style_Fill;
-use PHPExcel_Style_Font;
-use PHPExcel_Style_Border;
-use PHPExcel_Worksheet_Drawing;
-use PHPExcel_Style_Alignment;
+use \PhpOffice\PhpSpreadsheet\Cell\Cell;
+use \PhpOffice\PhpSpreadsheet\Settings;
+use \PhpOffice\PhpSpreadsheet\Reader\Html;
+use \PhpOffice\PhpSpreadsheet\Style\Color;
+use \PhpOffice\PhpSpreadsheet\Style\Fill;
+use \PhpOffice\PhpSpreadsheet\Style\Font;
+use \PhpOffice\PhpSpreadsheet\Style\Border;
+use \PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
+use \PhpOffice\PhpSpreadsheet\Style\Alignment;
 use Maatwebsite\Excel\Parsers\CssParser;
 use Maatwebsite\Excel\Classes\LaravelExcelWorksheet;
 
@@ -25,11 +25,11 @@ use Maatwebsite\Excel\Classes\LaravelExcelWorksheet;
  * @version    2.0.0
  * @package    maatwebsite/excel
  * @copyright  Copyright (c) 2013 - 2014 Maatwebsite (http://www.maatwebsite.nl)
- * @copyright  Original Copyright (c) 2006 - 2014 PHPExcel (http://www.codeplex.com/PHPExcel)
+ * @copyright  Original Copyright (c) 2006 - 2014 \PhpOffice\PhpSpreadsheet\Spreadsheet (http://www.codeplex.com/\PhpOffice\PhpSpreadsheet\Spreadsheet)
  * @author     Maatwebsite <info@maatwebsite.nl>
  * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
  */
-class Html extends PHPExcel_Reader_HTML {
+class Html extends \PhpOffice\PhpSpreadsheet\Reader\Html {
 
     /**
      * Style per range
@@ -91,12 +91,12 @@ class Html extends PHPExcel_Reader_HTML {
     }
 
     /**
-     * Loads PHPExcel from file
+     * Loads \PhpOffice\PhpSpreadsheet\Spreadsheet from file
      *
      * @param   string                                 $pFilename
      * @param   boolean                                $isString
-     * @param bool|LaravelExcelWorksheet|null|PHPExcel $obj
-     * @throws \PHPExcel_Reader_Exception
+     * @param bool|LaravelExcelWorksheet|null|\PhpOffice\PhpSpreadsheet\Spreadsheet $obj
+     * @throws \PhpOffice\PhpSpreadsheet\Reader\Exception
      * @return  LaravelExcelWorksheet
      */
     public function load($pFilename, $isString = false, $obj = false)
@@ -104,7 +104,7 @@ class Html extends PHPExcel_Reader_HTML {
         // Set the default style formats
         $this->setStyleFormats();
 
-        if ( $obj instanceof PHPExcel )
+        if ( $obj instanceof \PhpOffice\PhpSpreadsheet\Spreadsheet )
         {
             // Load into this instance
             return $this->loadIntoExisting($pFilename, $obj, $isString);
@@ -115,9 +115,9 @@ class Html extends PHPExcel_Reader_HTML {
             return $this->loadIntoExistingSheet($pFilename, $obj, $isString);
         }
 
-        $objPHPExcel = $obj ? $obj : new PHPExcel();
+        $obj\PhpOffice\PhpSpreadsheet\Spreadsheet = $obj ? $obj : new \PhpOffice\PhpSpreadsheet\Spreadsheet();
 
-        return $this->loadIntoExisting($pFilename, $objPHPExcel, $isString);
+        return $this->loadIntoExisting($pFilename, $obj\PhpOffice\PhpSpreadsheet\Spreadsheet, $isString);
     }
 
     /**
@@ -136,7 +136,7 @@ class Html extends PHPExcel_Reader_HTML {
      * @param   LaravelExcelWorksheet $sheet
      * @param   boolean               $isString
      * @return  LaravelExcelWorksheet
-     * @throws  PHPExcel_Reader_Exception
+     * @throws  \PhpOffice\PhpSpreadsheet\Reader\Exception
      */
     public function loadIntoExistingSheet($pFilename, LaravelExcelWorksheet $sheet, $isString = false)
     {
@@ -154,7 +154,7 @@ class Html extends PHPExcel_Reader_HTML {
                 if ( !$this->_isValidFormat() )
                 {
                     fclose($this->_fileHandle);
-                    throw new PHPExcel_Reader_Exception($pFilename . " is an Invalid HTML file.");
+                    throw new \PhpOffice\PhpSpreadsheet\Reader\Exception($pFilename . " is an Invalid HTML file.");
                 }
 
                 fclose($this->_fileHandle);
@@ -170,7 +170,7 @@ class Html extends PHPExcel_Reader_HTML {
             // Load HTML from file
             if ( (version_compare(PHP_VERSION, '5.4.0') >= 0) && defined(LIBXML_DTDLOAD) )
             {
-                $loaded = @$dom->loadHTMLFile($pFilename, PHPExcel_Settings::getLibXmlLoaderOptions());
+                $loaded = @$dom->loadHTMLFile($pFilename, \PhpOffice\PhpSpreadsheet\Settings::getLibXmlLoaderOptions());
             }
             else
             {
@@ -197,7 +197,7 @@ class Html extends PHPExcel_Reader_HTML {
 
         if ( $loaded === false )
         {
-            throw new PHPExcel_Reader_Exception('Failed to load ' . $pFilename . ' as a DOM Document');
+            throw new \PhpOffice\PhpSpreadsheet\Reader\Exception('Failed to load ' . $pFilename . ' as a DOM Document');
         }
 
         //  Discard white space
@@ -716,7 +716,7 @@ class Html extends PHPExcel_Reader_HTML {
      * @param  string                $row
      * @param  integer               $column
      * @param                        $cellContent
-     * @throws \PHPExcel_Exception
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
      * @return LaravelExcelWorksheet
      */
     protected function _processHeadings($child, $sheet, $row, $column, $cellContent)
@@ -749,7 +749,7 @@ class Html extends PHPExcel_Reader_HTML {
         $alt = $attributes->getAttribute('alt');
 
         // init drawing
-        $drawing = new PHPExcel_Worksheet_Drawing();
+        $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
 
         // Set image
         $drawing->setPath($src);
@@ -902,19 +902,19 @@ class Html extends PHPExcel_Reader_HTML {
         switch ($value)
         {
             case 'center':
-                $horizontal = PHPExcel_Style_Alignment::HORIZONTAL_CENTER;
+                $horizontal = \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER;
                 break;
 
             case 'left':
-                $horizontal = PHPExcel_Style_Alignment::HORIZONTAL_LEFT;
+                $horizontal = \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT;
                 break;
 
             case 'right':
-                $horizontal = PHPExcel_Style_Alignment::HORIZONTAL_RIGHT;
+                $horizontal = \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_RIGHT;
                 break;
 
             case 'justify':
-                $horizontal = PHPExcel_Style_Alignment::HORIZONTAL_JUSTIFY;
+                $horizontal = \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_JUSTIFY;
                 break;
         }
 
@@ -941,19 +941,19 @@ class Html extends PHPExcel_Reader_HTML {
         switch ($value)
         {
             case 'top':
-                $vertical = PHPExcel_Style_Alignment::VERTICAL_TOP;
+                $vertical = \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_TOP;
                 break;
 
             case 'middle':
-                $vertical = PHPExcel_Style_Alignment::VERTICAL_CENTER;
+                $vertical = \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER;
                 break;
 
             case 'bottom':
-                $vertical = PHPExcel_Style_Alignment::VERTICAL_BOTTOM;
+                $vertical = \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_BOTTOM;
                 break;
 
             case 'justify':
-                $vertical = PHPExcel_Style_Alignment::VERTICAL_JUSTIFY;
+                $vertical = \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_JUSTIFY;
                 break;
         }
 
@@ -1033,7 +1033,7 @@ class Html extends PHPExcel_Reader_HTML {
 
                 $cells->getFill()->applyFromArray(
                     [
-                        'type'  => PHPExcel_Style_Fill::FILL_SOLID,
+                        'type'  => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
                         'color' => ['rgb' => $value]
                     ]
                 );
@@ -1077,7 +1077,7 @@ class Html extends PHPExcel_Reader_HTML {
                 switch ($value)
                 {
                     case 'underline':
-                        $cells->getFont()->setUnderline(PHPExcel_Style_Font::UNDERLINE_SINGLE);
+                        $cells->getFont()->setUnderline(\PhpOffice\PhpSpreadsheet\Style\Font::UNDERLINE_SINGLE);
                         break;
 
                     case 'line-through':
@@ -1094,19 +1094,19 @@ class Html extends PHPExcel_Reader_HTML {
                 switch ($value)
                 {
                     case 'center':
-                        $horizontal = PHPExcel_Style_Alignment::HORIZONTAL_CENTER;
+                        $horizontal = \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER;
                         break;
 
                     case 'left':
-                        $horizontal = PHPExcel_Style_Alignment::HORIZONTAL_LEFT;
+                        $horizontal = \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT;
                         break;
 
                     case 'right':
-                        $horizontal = PHPExcel_Style_Alignment::HORIZONTAL_RIGHT;
+                        $horizontal = \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_RIGHT;
                         break;
 
                     case 'justify':
-                        $horizontal = PHPExcel_Style_Alignment::HORIZONTAL_JUSTIFY;
+                        $horizontal = \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_JUSTIFY;
                         break;
                 }
 
@@ -1125,19 +1125,19 @@ class Html extends PHPExcel_Reader_HTML {
                 switch ($value)
                 {
                     case 'top':
-                        $vertical = PHPExcel_Style_Alignment::VERTICAL_TOP;
+                        $vertical = \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_TOP;
                         break;
 
                     case 'middle':
-                        $vertical = PHPExcel_Style_Alignment::VERTICAL_CENTER;
+                        $vertical = \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER;
                         break;
 
                     case 'bottom':
-                        $vertical = PHPExcel_Style_Alignment::VERTICAL_BOTTOM;
+                        $vertical = \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_BOTTOM;
                         break;
 
                     case 'justify':
-                        $vertical = PHPExcel_Style_Alignment::VERTICAL_JUSTIFY;
+                        $vertical = \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_JUSTIFY;
                         break;
                 }
 
@@ -1269,59 +1269,59 @@ class Html extends PHPExcel_Reader_HTML {
         switch ($style)
         {
             case 'solid';
-                return PHPExcel_Style_Border::BORDER_THIN;
+                return \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN;
                 break;
 
             case 'dashed':
-                return PHPExcel_Style_Border::BORDER_DASHED;
+                return \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_DASHED;
                 break;
 
             case 'dotted':
-                return PHPExcel_Style_Border::BORDER_DOTTED;
+                return \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_DOTTED;
                 break;
 
             case 'medium':
-                return PHPExcel_Style_Border::BORDER_MEDIUM;
+                return \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_MEDIUM;
                 break;
 
             case 'thick':
-                return PHPExcel_Style_Border::BORDER_THICK;
+                return \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THICK;
                 break;
 
             case 'none':
-                return PHPExcel_Style_Border::BORDER_NONE;
+                return \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_NONE;
                 break;
 
             case 'dash-dot':
-                return PHPExcel_Style_Border::BORDER_DASHDOT;
+                return \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_DASHDOT;
                 break;
 
             case 'dash-dot-dot':
-                return PHPExcel_Style_Border::BORDER_DASHDOTDOT;
+                return \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_DASHDOTDOT;
                 break;
 
             case 'double':
-                return PHPExcel_Style_Border::BORDER_DOUBLE;
+                return \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_DOUBLE;
                 break;
 
             case 'hair':
-                return PHPExcel_Style_Border::BORDER_HAIR;
+                return \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_HAIR;
                 break;
 
             case 'medium-dash-dot':
-                return PHPExcel_Style_Border::BORDER_MEDIUMDASHDOT;
+                return \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_MEDIUMDASHDOT;
                 break;
 
             case 'medium-dash-dot-dot':
-                return PHPExcel_Style_Border::BORDER_MEDIUMDASHDOTDOT;
+                return \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_MEDIUMDASHDOTDOT;
                 break;
 
             case 'medium-dashed':
-                return PHPExcel_Style_Border::BORDER_MEDIUMDASHED;
+                return \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_MEDIUMDASHED;
                 break;
 
             case 'slant-dash-dot':
-                return PHPExcel_Style_Border::BORDER_SLANTDASHDOT;
+                return \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_SLANTDASHDOT;
                 break;
 
             default:
@@ -1335,7 +1335,7 @@ class Html extends PHPExcel_Reader_HTML {
      * @param $column
      * @param $row
      * @param $cellContent
-     * @throws \PHPExcel_Exception
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
      * @return array
      */
     private function processMergedCells($sheet, &$column, $row, $cellContent)
@@ -1355,8 +1355,8 @@ class Html extends PHPExcel_Reader_HTML {
                 // skip the first item in the merge
                 if ( $matches[1] != $column . $row )
                 {
-                    $newCol = PHPExcel_Cell::stringFromColumnIndex(
-                        (PHPExcel_Cell::columnIndexFromString($column) + 1) - 1
+                    $newCol = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex(
+                        (\PhpOffice\PhpSpreadsheet\Cell\Coordinate::columnIndexFromString($column) + 1) - 1
                     );
 
                     $column = $newCol;

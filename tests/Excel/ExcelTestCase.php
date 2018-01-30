@@ -51,7 +51,7 @@ class ExcelTestCase extends PHPUnit_Framework_TestCase {
     }
 
     /**
-     * Mock PHPExcel class
+     * Mock \PhpOffice\PhpSpreadsheet\Spreadsheet class
      * @return [type] [description]
      */
     public function mockPHPExcel()

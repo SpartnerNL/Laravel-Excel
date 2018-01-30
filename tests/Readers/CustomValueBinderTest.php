@@ -95,11 +95,11 @@ class CustomValuBinderTest extends TestCase {
     }
 }
 
-class StubValueBinder extends PHPExcel_Cell_DefaultValueBinder implements PHPExcel_Cell_IValueBinder
+class StubValueBinder extends \PhpOffice\PhpSpreadsheet\Cell\DefaultValueBinder implements \PhpOffice\PhpSpreadsheet\Cell\IValueBinder
 {
-    public function bindValue(PHPExcel_Cell $cell, $value = null)
+    public function bindValue(\PhpOffice\PhpSpreadsheet\Cell\Cell $cell, $value = null)
     {
-        $cell->setValueExplicit($value, PHPExcel_Cell_DataType::TYPE_STRING);
+        $cell->setValueExplicit($value, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
 
         return true;
     }

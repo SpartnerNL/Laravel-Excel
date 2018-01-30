@@ -1,15 +1,15 @@
 <?php namespace Maatwebsite\Excel\Classes;
 
-use PHPExcel_Settings;
-use PHPExcel_CachedObjectStorageFactory;
+use \PhpOffice\PhpSpreadsheet\Settings;
+use \PhpOffice\PhpSpreadsheet\Collection\CellsFactory;
 
 class Cache {
 
     /**
-     * PHPExcel cache class
+     * \PhpOffice\PhpSpreadsheet\Spreadsheet cache class
      * @var string
      */
-    protected $class = 'PHPExcel_CachedObjectStorageFactory';
+    protected $class = '\PhpOffice\PhpSpreadsheet\Collection\CellsFactory';
 
     /**
      * Available caching drivers
@@ -59,7 +59,7 @@ class Cache {
         $this->findDriver();
 
         // Set the storage driver
-        PHPExcel_Settings::setCacheStorageMethod($this->method, $this->settings);
+        \PhpOffice\PhpSpreadsheet\Settings::setCacheStorageMethod($this->method, $this->settings);
     }
 
     /**
