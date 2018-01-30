@@ -2,13 +2,13 @@
 
 use Carbon\Carbon;
 use Maatwebsite\Excel\Classes\LaravelExcelWorksheet;
-use Maatwebsite\Excel\Classes\PHPExcel;
+use Maatwebsite\Excel\Classes\PhpOffice\PhpSpreadsheet\Spreadsheet;
 use Maatwebsite\Excel\Readers\LaravelExcelReader;
-use PHPExcel_Cell;
-use PHPExcel_Exception;
-use PHPExcel_Shared_Date;
+use \PhpOffice\PhpSpreadsheet\Cell\Cell;
+use \PhpOffice\PhpSpreadsheet\Exception;
+use \PhpOffice\PhpSpreadsheet\Shared\Date;
 use Illuminate\Support\Str;
-use PHPExcel_Style_NumberFormat;
+use \PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 use Maatwebsite\Excel\Collections\RowCollection;
 use Maatwebsite\Excel\Collections\CellCollection;
 use Maatwebsite\Excel\Collections\SheetCollection;
@@ -41,7 +41,7 @@ class ExcelParser {
 
     /**
      * Excel object
-     * @var PHPExcel
+     * @var \PhpOffice\PhpSpreadsheet\Spreadsheet
      */
     protected $excel;
 
@@ -53,13 +53,13 @@ class ExcelParser {
 
     /**
      * Row object
-     * @var \PHPExcel_Worksheet_Row
+     * @var \PhpOffice\PhpSpreadsheet\Worksheet\Row
      */
     protected $row;
 
     /**
      * Cell object
-     * @var PHPExcel_Cell
+     * @var \PhpOffice\PhpSpreadsheet\Cell\Cell
      */
     protected $cell;
 
@@ -367,7 +367,7 @@ class ExcelParser {
 
         try {
             $rows = $this->worksheet->getRowIterator($startRow);
-        } catch(PHPExcel_Exception $e) {
+        } catch(\PhpOffice\PhpSpreadsheet\Exception $e) {
             $rows = [];
         }
 
@@ -452,7 +452,7 @@ class ExcelParser {
             {
                 // Check how we need to save the parsed array
                 // Use the index from column as the initial position
-                // Or else PHPExcel skips empty cells (even between non-empty) cells and it will cause
+                // Or else \PhpOffice\PhpSpreadsheet\Spreadsheet skips empty cells (even between non-empty) cells and it will cause
                 // data to end up in the result object
                 $index = $this->getIndexFromColumn() - 1;
                 $index = ($this->reader->hasHeading() && isset($this->indices[$index])) ? $this->indices[$index] : $index;
@@ -465,7 +465,7 @@ class ExcelParser {
                 }
             }
 
-        } catch (PHPExcel_Exception $e) {
+        } catch (\PhpOffice\PhpSpreadsheet\Exception $e) {
             // silently ignore the 'No cells exist within the specified range' error, but rethrow any others
             if ($e->getMessage() != 'No cells exist within the specified range') {
                 throw $e;
@@ -583,7 +583,7 @@ class ExcelParser {
             try
             {
                 // Convert excel time to php date object
-                $date = PHPExcel_Shared_Date::ExcelToPHPObject($this->cell->getCalculatedValue())->format('Y-m-d H:i:s');
+                $date = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($this->cell->getCalculatedValue())->format('Y-m-d H:i:s');
             }
             catch( \ErrorException $ex )
             {
@@ -607,7 +607,7 @@ class ExcelParser {
     protected function parseDateAsString()
     {
         //Format the date to a formatted string
-        return (string) PHPExcel_Style_NumberFormat::toFormattedString(
+        return (string) \PhpOffice\PhpSpreadsheet\Style\NumberFormat::toFormattedString(
             $this->cell->getCalculatedValue(),
             $this->cell->getWorksheet()->getParent()
                        ->getCellXfByIndex($this->cell->getXfIndex())
@@ -630,7 +630,7 @@ class ExcelParser {
         }
         else
         {
-            return PHPExcel_Shared_Date::isDateTime($this->cell);
+            return \PhpOffice\PhpSpreadsheet\Shared\Date::isDateTime($this->cell);
         }
     }
 
@@ -650,7 +650,7 @@ class ExcelParser {
      */
     protected function getIndexFromColumn()
     {
-        return PHPExcel_Cell::columnIndexFromString($this->cell->getColumn());
+        return \PhpOffice\PhpSpreadsheet\Cell\Coordinate::columnIndexFromString($this->cell->getColumn());
     }
 
     /**

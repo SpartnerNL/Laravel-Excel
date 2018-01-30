@@ -253,7 +253,7 @@ class CellWriter
 
     /**
      * Get the cell style
-     * @return \PHPExcel_Style
+     * @return \PhpOffice\PhpSpreadsheet\Style\Style
      */
     protected function getCellStyle()
     {

@@ -2,7 +2,7 @@
 
 use Closure;
 use Carbon\Carbon;
-use PHPExcel_IOFactory;
+use \PhpOffice\PhpSpreadsheet\IOFactory;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Response;
 use Maatwebsite\Excel\Classes\FormatIdentifier;
@@ -37,7 +37,7 @@ class LaravelExcelWriter {
 
     /**
      * Excel object
-     * @var \PHPExcel
+     * @var \PhpOffice\PhpSpreadsheet\Spreadsheet
      */
     public $excel;
 
@@ -120,7 +120,7 @@ class LaravelExcelWriter {
 
     /**
      * Inject the excel object
-     * @param  PHPExcel $excel
+     * @param  \PhpOffice\PhpSpreadsheet\Spreadsheet $excel
      * @param bool      $reset
      * @return void
      */
@@ -479,7 +479,7 @@ class LaravelExcelWriter {
 
     /**
      * Get the excel object
-     * @return PHPExcel
+     * @return \PhpOffice\PhpSpreadsheet\Spreadsheet
      */
     public function getExcel()
     {
@@ -556,7 +556,7 @@ class LaravelExcelWriter {
 
     /**
      * Set the writer
-     * @return PHPExcel_***_Writer
+     * @return \PhpOffice\PhpSpreadsheet\Spreadsheet_***_Writer
      */
     protected function _setWriter()
     {
@@ -570,7 +570,7 @@ class LaravelExcelWriter {
         }
 
         // Create the writer
-        $this->writer = PHPExcel_IOFactory::createWriter($this->excel, $this->format);
+        $this->writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($this->excel, $this->format);
 
         // Set CSV delimiter
         if ($this->format == 'CSV')
@@ -612,7 +612,7 @@ class LaravelExcelWriter {
         }
 
         // Set the pdf renderer
-        if (!\PHPExcel_Settings::setPdfRenderer($driver, $path))
+        if (!\PhpOffice\PhpSpreadsheet\Settings::setPdfRenderer($driver, $path))
             throw new \Exception("{$driver} could not be found. Make sure you've included it in your composer.json");
     }
 

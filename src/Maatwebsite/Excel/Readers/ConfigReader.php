@@ -1,7 +1,7 @@
 <?php namespace Maatwebsite\Excel\Readers;
 
 use Closure;
-use PHPExcel;
+use \PhpOffice\PhpSpreadsheet\Spreadsheet;
 use Maatwebsite\Excel\Excel;
 use Maatwebsite\Excel\Collections\SheetCollection;
 use Maatwebsite\Excel\Exceptions\LaravelExcelException;
@@ -21,7 +21,7 @@ class ConfigReader {
 
     /**
      * Excel object
-     * @var PHPExcel
+     * @var \PhpOffice\PhpSpreadsheet\Spreadsheet
      */
     public $excel;
 
@@ -45,11 +45,11 @@ class ConfigReader {
 
     /**
      * Constructor
-     * @param PHPExcel $excel
+     * @param \PhpOffice\PhpSpreadsheet\Spreadsheet $excel
      * @param string   $config
      * @param callback $callback
      */
-    public function __construct(PHPExcel $excel, $config = 'excel.import', $callback = null)
+    public function __construct(\PhpOffice\PhpSpreadsheet\Spreadsheet $excel, $config = 'excel.import', $callback = null)
     {
         // Set excel object
         $this->excel = $excel;
@@ -64,7 +64,7 @@ class ConfigReader {
     /**
      * Start the import
      * @param bool|callable $callback $callback
-     * @throws \PHPExcel_Exception
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
      * @return void
      */
     public function start($callback = false)

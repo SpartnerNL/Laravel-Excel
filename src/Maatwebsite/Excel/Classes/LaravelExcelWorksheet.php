@@ -1,31 +1,31 @@
 <?php namespace Maatwebsite\Excel\Classes;
 
 use Closure;
-use PHPExcel_Cell;
-use PHPExcel_Exception;
-use PHPExcel_Worksheet;
+use \PhpOffice\PhpSpreadsheet\Cell\Cell;
+use \PhpOffice\PhpSpreadsheet\Exception;
+use \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Writers\CellWriter;
 use Maatwebsite\Excel\Exceptions\LaravelExcelException;
-use PHPExcel_Worksheet_PageSetup;
+use \PhpOffice\PhpSpreadsheet\Worksheet\PageSetup;
 
 /**
  *
- * Laravel wrapper for PHPExcel_Worksheet
+ * Laravel wrapper for \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet
  *
  * @category   Laravel Excel
  * @version    1.0.0
  * @package    maatwebsite/excel
  * @copyright  Copyright (c) 2013 - 2014 Maatwebsite (http://www.maatwebsite.nl)
- * @copyright  Original Copyright (c) 2006 - 2014 PHPExcel (http://www.codeplex.com/PHPExcel)
+ * @copyright  Original Copyright (c) 2006 - 2014 \PhpOffice\PhpSpreadsheet\Spreadsheet (http://www.codeplex.com/\PhpOffice\PhpSpreadsheet\Spreadsheet)
  * @author     Maatwebsite <info@maatwebsite.nl>
  * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
  */
-class LaravelExcelWorksheet extends PHPExcel_Worksheet {
+class LaravelExcelWorksheet extends \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet {
 
     /**
      * Parent
-     * @var PHPExcel
+     * @var \PhpOffice\PhpSpreadsheet\Spreadsheet
      */
     public $_parent;
 
@@ -102,10 +102,10 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet {
     /**
      * Create a new worksheet
      *
-     * @param PHPExcel $pParent
+     * @param \PhpOffice\PhpSpreadsheet\Spreadsheet $pParent
      * @param string   $pTitle
      */
-    public function __construct(PHPExcel $pParent = null, $pTitle = 'Worksheet')
+    public function __construct(\PhpOffice\PhpSpreadsheet\Spreadsheet $pParent = null, $pTitle = 'Worksheet')
     {
         parent::__construct($pParent, $pTitle);
         $this->setParent($pParent);
@@ -460,7 +460,7 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet {
      * @param bool|string $startCell            Insert array starting from this cell address as the top left coordinate
      * @param boolean     $strictNullComparison Apply strict comparison when testing for null values in the array
      * @param bool        $headingGeneration
-     * @throws PHPExcel_Exception
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
      * @return LaravelExcelWorksheet
      */
     public function fromArray($source = null, $nullValue = null, $startCell = 'A1', $strictNullComparison = false, $headingGeneration = true)
@@ -485,13 +485,13 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet {
      * @param null        $nullValue
      * @param bool|string $startCell
      * @param bool        $strictNullComparison
-     * @throws PHPExcel_Exception
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
      * @return $this
      */
     public function createSheetFromArray($source = null, $nullValue = null, $startCell = 'A1', $strictNullComparison = false)
     {
         if (!is_array($source))
-            throw new PHPExcel_Exception("Parameter \$source should be an array.");
+            throw new \PhpOffice\PhpSpreadsheet\Exception("Parameter \$source should be an array.");
 
         //    Convert a 1-D array to 2-D (for ease of looping)
         if (!is_array(end($source)))
@@ -500,14 +500,14 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet {
         }
 
         // start coordinate
-        list ($startColumn, $startRow) = PHPExcel_Cell::coordinateFromString($startCell);
+        list ($startColumn, $startRow) = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::coordinateFromString($startCell);
 
         $currentRow = $startRow;
         // Loop through $source
         foreach ($source as $rowData)
         {
             if (!is_array($rowData))
-                throw new PHPExcel_Exception("Row `$rowData` must be array.");
+                throw new \PhpOffice\PhpSpreadsheet\Exception("Row `$rowData` must be array.");
 
             $currentColumn = $startColumn;
             foreach ($rowData as $cellValue)
@@ -543,7 +543,7 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet {
      * @param null        $nullValue
      * @param bool|string $startCell
      * @param bool        $strictNullComparison
-     * @throws PHPExcel_Exception
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
      * @return void|$this
      */
     protected function _addVars($key, $value = false, $nullValue = null, $startCell = 'A1', $strictNullComparison = false)
@@ -678,7 +678,7 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet {
      * @param              $setter
      * @param array|string $params
      * @throws LaravelExcelException
-     * @return  void|PHPExcel_Worksheet_PageSetup
+     * @return  void|\PhpOffice\PhpSpreadsheet\Worksheet\PageSetup
      */
     public function _setAttributes($setter, $params)
     {
@@ -711,7 +711,7 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet {
      * @param string       $setter
      * @param string       $key
      * @param array|string $params
-     * @return PHPExcel_Style
+     * @return \PhpOffice\PhpSpreadsheet\Style\Style
      */
     protected function setDefaultStyles($setter, $key, $params)
     {
@@ -756,7 +756,7 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet {
      * @param string       $caller
      * @param string       $key
      * @param array|string $params
-     * @return  PHPExcel_Style
+     * @return  \PhpOffice\PhpSpreadsheet\Style\Style
      */
     protected function setFontStyle($caller, $setter, $key, $params)
     {
@@ -796,7 +796,7 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet {
 
     /**
      * Set the parent (excel object)
-     * @param PHPExcel $parent
+     * @param \PhpOffice\PhpSpreadsheet\Spreadsheet $parent
      */
     public function setParent($parent)
     {
@@ -805,7 +805,7 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet {
 
     /**
      * Get the parent excel obj
-     * @return PHPExcel
+     * @return \PhpOffice\PhpSpreadsheet\Spreadsheet
      */
     public function getParent()
     {
@@ -1085,7 +1085,7 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet {
      * Merge cells
      * @param  string $pRange
      * @param bool    $alignment
-     * @throws PHPExcel_Exception
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
      * @return LaravelExcelWorksheet
      */
     public function mergeCells($pRange = 'A1:A1', $alignment = false)
@@ -1193,10 +1193,10 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet {
 
     /**
      * load info from parent obj
-     * @param \PHPExcel_Worksheet $sheet
+     * @param \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet $sheet
      * @return $this
      */
-    function cloneParent(PHPExcel_Worksheet $sheet)
+    function cloneParent(\PhpOffice\PhpSpreadsheet\Worksheet\Worksheet $sheet)
     {
         // Init new reflection object
         $class = new \ReflectionClass(get_class($sheet));
@@ -1257,8 +1257,8 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet {
      * @param string     $cellValue
      * @param mixed|null $currentColumn
      * @param bool       $startRow
-     * @return \PHPExcel_Cell|\PHPExcel_Worksheet|void
-     * @throws PHPExcel_Exception
+     * @return \PhpOffice\PhpSpreadsheet\Cell\Cell|\PhpOffice\PhpSpreadsheet\Worksheet\Worksheet|void
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
      */
     public function setValueOfCell($cellValue, $currentColumn, $startRow)
     {

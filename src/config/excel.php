@@ -163,7 +163,7 @@ return array(
         | Autosize method
         |--------------------------------------------------------------------------
         |
-        | --> PHPExcel_Shared_Font::AUTOSIZE_METHOD_APPROX
+        | --> \PhpOffice\PhpSpreadsheet\Shared\Font::AUTOSIZE_METHOD_APPROX
         | The default is based on an estimate, which does its calculation based
         | on the number of characters in the cell value (applying any calculation
         | and format mask, and allowing for wordwrap and rotation) and with an
@@ -171,7 +171,7 @@ return array(
         | defaulting to Calibri if any other font is used) and a proportional
         | adjustment for the font size.
         |
-        | --> PHPExcel_Shared_Font::AUTOSIZE_METHOD_EXACT
+        | --> \PhpOffice\PhpSpreadsheet\Shared\Font::AUTOSIZE_METHOD_EXACT
         | The second method is more accurate, based on actual style formatting as
         | well (bold, italic, etc), and is calculated by generating a gd2 imagettf
         | bounding box and using its dimensions to determine the size; but this
@@ -179,7 +179,7 @@ return array(
         | having the appropriate fonts installed.
         |
         */
-        'autosize-method'             => PHPExcel_Shared_Font::AUTOSIZE_METHOD_APPROX,
+        'autosize-method'             => \PhpOffice\PhpSpreadsheet\Shared\Font::AUTOSIZE_METHOD_APPROX,
 
         /*
         |--------------------------------------------------------------------------

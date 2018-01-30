@@ -46,7 +46,7 @@ trait ImportTrait {
     public function testLoadFile()
     {
         $this->assertEquals($this->reader, $this->loadedFile);
-        $this->assertInstanceOf(\PHPExcel::class, $this->reader->getExcel());
+        $this->assertInstanceOf(\PhpOffice\PhpSpreadsheet\Spreadsheet::class, $this->reader->getExcel());
     }
 
     /**

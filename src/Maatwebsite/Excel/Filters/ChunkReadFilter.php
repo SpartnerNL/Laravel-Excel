@@ -1,8 +1,8 @@
 <?php namespace Maatwebsite\Excel\Filters;
 
-use PHPExcel_Reader_IReadFilter;
+use \PhpOffice\PhpSpreadsheet\Reader\IReadFilter;
 
-class ChunkReadFilter implements PHPExcel_Reader_IReadFilter
+class ChunkReadFilter implements \PhpOffice\PhpSpreadsheet\Reader\IReadFilter
 {
     /**
      * Start row

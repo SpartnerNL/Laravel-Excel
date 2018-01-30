@@ -1,10 +1,10 @@
 <?php namespace Maatwebsite\Excel;
 
-use PHPExcel_Settings;
-use PHPExcel_Shared_Font;
+use \PhpOffice\PhpSpreadsheet\Settings;
+use \PhpOffice\PhpSpreadsheet\Shared\Font;
 use Maatwebsite\Excel\Readers\Html;
 use Maatwebsite\Excel\Classes\Cache;
-use Maatwebsite\Excel\Classes\PHPExcel;
+use Maatwebsite\Excel\Classes\PhpOffice\PhpSpreadsheet\Spreadsheet;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Response;
@@ -80,21 +80,21 @@ class ExcelServiceProvider extends ServiceProvider {
         $this->bindCssParser();
         $this->bindReaders();
         $this->bindParsers();
-        $this->bindPHPExcelClass();
+        $this->bind\PhpOffice\PhpSpreadsheet\SpreadsheetClass();
         $this->bindWriters();
         $this->bindExcel();
     }
 
     /**
-     * Bind PHPExcel classes
+     * Bind \PhpOffice\PhpSpreadsheet\Spreadsheet classes
      * @return void
      */
-    protected function bindPHPExcelClass()
+    protected function bind\PhpOffice\PhpSpreadsheet\SpreadsheetClass()
     {
         // Set object
         $me = $this;
 
-        // Bind the PHPExcel class
+        // Bind the \PhpOffice\PhpSpreadsheet\Spreadsheet class
         $this->app->singleton('phpexcel', function () use ($me)
         {
             // Set locale
@@ -104,12 +104,12 @@ class ExcelServiceProvider extends ServiceProvider {
             $me->setCacheSettings();
 
             // Init phpExcel
-            $excel = new PHPExcel();
+            $excel = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
             $excel->setDefaultProperties();
             return $excel;
         });
 
-        $this->app->alias('phpexcel', PHPExcel::class);
+        $this->app->alias('phpexcel', \PhpOffice\PhpSpreadsheet\Spreadsheet::class);
     }
 
     /**
@@ -235,7 +235,7 @@ class ExcelServiceProvider extends ServiceProvider {
     public function setLocale()
     {
         $locale = config('app.locale', 'en_us');
-        PHPExcel_Settings::setLocale($locale);
+        \PhpOffice\PhpSpreadsheet\Settings::setLocale($locale);
     }
 
     /**
@@ -243,8 +243,8 @@ class ExcelServiceProvider extends ServiceProvider {
      */
     public function setAutoSizingSettings()
     {
-        $method = config('excel.export.autosize-method', PHPExcel_Shared_Font::AUTOSIZE_METHOD_APPROX);
-        PHPExcel_Shared_Font::setAutoSizeMethod($method);
+        $method = config('excel.export.autosize-method', \PhpOffice\PhpSpreadsheet\Shared\Font::AUTOSIZE_METHOD_APPROX);
+        \PhpOffice\PhpSpreadsheet\Shared\Font::setAutoSizeMethod($method);
     }
 
     /**

@@ -205,7 +205,7 @@ class ExcelWriterTest extends TestCase {
     {
         Excel::create('test', function ($writer) {
             $writer->sheet('test', function ($sheet) {
-                $this->setExpectedException(PHPExcel_Exception::class);
+                $this->setExpectedException(\PhpOffice\PhpSpreadsheet\Exception::class);
                 $sheet->createSheetFromArray('test data');
             });
         })->store('csv', __DIR__ . '/exports', true);
