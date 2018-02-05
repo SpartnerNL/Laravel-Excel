@@ -601,8 +601,8 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet {
                 foreach ($array as $key1 => &$row)
                 {
                     $data[$key1] = [];
-                    array_walk($row, function($cell, $key2) use ($key1) {
-                        $data[$key1][$key2] = !is_array($cell) ?: $cell;
+                    array_walk($row, function($cell, $key2) use ($key1, &$data) {
+                        $data[$key1][$key2] = is_array($cell) ? '': $cell;
                     });
                 }
             }
