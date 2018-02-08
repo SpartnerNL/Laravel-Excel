@@ -1,7 +1,7 @@
 {
   "name": "maatwebsite/excel",
   "description": "An eloquent way of importing and exporting Excel and CSV in Laravel 4 with the power of PHPExcel",
-  "license": "LGPL",
+  "license": "MIT",
   "keywords": [
     "laravel",
     "phpexcel",
