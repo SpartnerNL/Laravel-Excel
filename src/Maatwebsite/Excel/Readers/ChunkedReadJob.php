@@ -47,6 +47,11 @@ class ChunkedReadJob implements ShouldQueue
     private $shouldQueue;
 
     /**
+     * @var
+     */
+    private $delimiter;
+
+    /**
      * ChunkedReadJob constructor.
      *
      * @param          $file
@@ -56,6 +61,7 @@ class ChunkedReadJob implements ShouldQueue
      * @param          $chunkSize
      * @param callable $callback
      * @param bool     $shouldQueue
+     * @param          $delimiter
      */
     public function __construct(
         $file,
@@ -64,7 +70,8 @@ class ChunkedReadJob implements ShouldQueue
         $startIndex,
         $chunkSize,
         callable $callback,
-        $shouldQueue = true
+        $shouldQueue = true,
+        $delimiter = false
     ) {
         $this->startRow   = $startRow;
         $this->chunkSize  = $chunkSize;
@@ -74,6 +81,7 @@ class ChunkedReadJob implements ShouldQueue
         $this->callback    = $shouldQueue ? (new Serializer)->serialize($callback) : $callback;
         $this->sheets      = $sheets;
         $this->shouldQueue = $shouldQueue;
+        $this->delimiter   = $delimiter ? $delimiter : config('excel.csv.delimiter');
     }
 
     /***
@@ -81,7 +89,7 @@ class ChunkedReadJob implements ShouldQueue
      */
     public function handle()
     {
-        $reader = app('excel.reader');
+        $reader = app('excel.reader')->setDelimiter($this->delimiter);
         $reader->injectExcel(app('phpexcel'));
         $reader->_init($this->file);
 
