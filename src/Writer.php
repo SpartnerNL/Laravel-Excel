@@ -9,5 +9,5 @@ interface Writer
      *
      * @return Writer
      */
-    public function create(callable $callback = null): Writer;
+    public function create(callable $callback = null): self;
 }

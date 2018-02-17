@@ -71,7 +71,7 @@ class Configuration
      *
      * @return Configuration
      */
-    public function setReaderConfiguration(ReaderConfiguration $reader): Configuration
+    public function setReaderConfiguration(ReaderConfiguration $reader): self
     {
         $this->reader = $reader;
 
@@ -91,7 +91,7 @@ class Configuration
      *
      * @return Configuration
      */
-    public function setWriterConfiguration(WriterConfiguration $writer): Configuration
+    public function setWriterConfiguration(WriterConfiguration $writer): self
     {
         $this->writer = $writer;
 

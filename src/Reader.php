@@ -17,7 +17,7 @@ interface Reader
      *
      * @return Reader
      */
-    public function setLoader(callable $spreadsheetLoader): Reader;
+    public function setLoader(callable $spreadsheetLoader): self;
 
     /**
      * @return callable

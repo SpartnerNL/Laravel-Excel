@@ -18,14 +18,14 @@ interface Column extends IteratorAggregate
      *
      * @return Column
      */
-    public function setStartRow(int $rowNumber = 1): Column;
+    public function setStartRow(int $rowNumber = 1): self;
 
     /**
      * @param int|null $rowNumber
      *
      * @return Column
      */
-    public function setEndRow(int $rowNumber = null): Column;
+    public function setEndRow(int $rowNumber = null): self;
 
     /**
      * @param int  $row

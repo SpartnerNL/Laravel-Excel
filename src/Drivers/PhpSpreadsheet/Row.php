@@ -146,7 +146,7 @@ class Row implements RowInterface
 
             $cells[$heading] = (string) $cell;
 
-            ++$index;
+            $index++;
         }
 
         return $cells;

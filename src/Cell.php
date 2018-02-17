@@ -34,10 +34,10 @@ interface Cell
      *
      * @return Cell
      */
-    public function setValue($value): Cell;
+    public function setValue($value): self;
 
     /**
      * @return Cell
      */
-    public function removeValue(): Cell;
+    public function removeValue(): self;
 }

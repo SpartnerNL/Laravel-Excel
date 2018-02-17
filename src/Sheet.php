@@ -23,26 +23,26 @@ interface Sheet extends IteratorAggregate, Countable
      *
      * @return Sheet
      */
-    public function setStartRow(int $rowNumber = 1): Sheet;
+    public function setStartRow(int $rowNumber = 1): self;
 
     /**
      * @param int|null $rowNumber
      *
      * @return Sheet
      */
-    public function setEndRow(int $rowNumber = null): Sheet;
+    public function setEndRow(int $rowNumber = null): self;
 
     /**
      * @param int|false $headingRow
      *
      * @return Sheet
      */
-    public function useRowAsHeading($headingRow): Sheet;
+    public function useRowAsHeading($headingRow): self;
 
     /**
      * @return Sheet
      */
-    public function useFirstRowAsHeading(): Sheet;
+    public function useFirstRowAsHeading(): self;
 
     /**
      * @param int      $startRow
