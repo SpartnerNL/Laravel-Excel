@@ -75,6 +75,8 @@ class Writer
      */
     protected function addSheet(object $sheet)
     {
+        $this->hasAppended = false;
+        
         $worksheet = $this->spreadsheet->createSheet();
 
         if ($sheet instanceof WithTitle) {
@@ -150,6 +152,8 @@ class Writer
         }
 
         $worksheet->fromArray($rows, null, 'A' . $row);
+        
+        $this->hasAppended = true;
     }
 
     /**
