@@ -2,8 +2,8 @@
 
 namespace Maatwebsite\Excel;
 
-use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Contracts\Routing\ResponseFactory;
 
 class ExcelServiceProvider extends ServiceProvider
 {

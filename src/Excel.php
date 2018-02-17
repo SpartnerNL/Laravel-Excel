@@ -2,8 +2,8 @@
 
 namespace Maatwebsite\Excel;
 
-use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Filesystem\FilesystemManager;
+use Illuminate\Contracts\Routing\ResponseFactory;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class Excel
@@ -27,17 +27,17 @@ class Excel
     /**
      * @var Writer
      */
-    private $writer;
+    protected $writer;
 
     /**
      * @var ResponseFactory
      */
-    private $response;
+    protected $response;
 
     /**
      * @var FilesystemManager
      */
-    private $filesystem;
+    protected $filesystem;
 
     /**
      * @param Writer            $writer
@@ -87,7 +87,7 @@ class Excel
      *
      * @return string
      */
-    private function export(object $export, string $fileName, string $writerType = null)
+    protected function export(object $export, string $fileName, string $writerType = null)
     {
         if (null === $writerType) {
             $writerType = $this->findTypeByExtension($fileName);
@@ -101,7 +101,7 @@ class Excel
      *
      * @return string|null
      */
-    private function findTypeByExtension(string $fileName)
+    protected function findTypeByExtension(string $fileName)
     {
         $pathinfo = pathinfo($fileName);
         if (!isset($pathinfo['extension'])) {

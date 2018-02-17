@@ -2,20 +2,20 @@
 
 namespace Maatwebsite\Excel;
 
-use Illuminate\Contracts\Support\Arrayable;
 use LogicException;
-use Maatwebsite\Excel\Concerns\FromQuery;
-use Maatwebsite\Excel\Concerns\FromView;
-use Maatwebsite\Excel\Concerns\InteractsWithExport;
-use Maatwebsite\Excel\Concerns\InteractsWithSheet;
-use Maatwebsite\Excel\Concerns\WithHeadings;
-use Maatwebsite\Excel\Concerns\WithMapping;
-use Maatwebsite\Excel\Concerns\WithMultipleSheets;
-use Maatwebsite\Excel\Concerns\WithTitle;
 use PhpOffice\PhpSpreadsheet\IOFactory;
+use Maatwebsite\Excel\Concerns\FromView;
+use Maatwebsite\Excel\Concerns\FromQuery;
+use Maatwebsite\Excel\Concerns\WithTitle;
 use PhpOffice\PhpSpreadsheet\Reader\Html;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use Illuminate\Contracts\Support\Arrayable;
+use Maatwebsite\Excel\Concerns\WithMapping;
+use Maatwebsite\Excel\Concerns\WithHeadings;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
+use Maatwebsite\Excel\Concerns\InteractsWithSheet;
+use Maatwebsite\Excel\Concerns\WithMultipleSheets;
+use Maatwebsite\Excel\Concerns\InteractsWithExport;
 
 class Writer
 {
@@ -73,7 +73,7 @@ class Writer
     /**
      * @param object $sheet
      */
-    private function addSheet(object $sheet)
+    protected function addSheet(object $sheet)
     {
         $worksheet = $this->spreadsheet->createSheet();
 
@@ -103,24 +103,9 @@ class Writer
     }
 
     /**
-     * @param Worksheet $worksheet
-     * @param array     $rows
-     */
-    private function append(Worksheet $worksheet, array $rows)
-    {
-        $row = $worksheet->getHighestRow();
-
-        if ($this->hasAppended) {
-            $row++;
-        }
-
-        $worksheet->fromArray($rows, null, 'A' . $row);
-    }
-
-    /**
      * @param object $sheet
      */
-    private function fromView(object $sheet): void
+    protected function fromView(object $sheet): void
     {
         $tempFile = $this->tempFile();
         file_put_contents($tempFile, $sheet->view()->render());
@@ -132,25 +117,10 @@ class Writer
     }
 
     /**
-     * @param string $writerType
-     *
-     * @return string: string
+     * @param object    $sheet
+     * @param Worksheet $worksheet
      */
-    private function write(string $writerType)
-    {
-        $fileName = $this->tempFile();
-
-        $writer = IOFactory::createWriter($this->spreadsheet, $writerType);
-        $writer->save($fileName);
-
-        return $fileName;
-    }
-
-    /**
-     * @param object $sheet
-     * @param        $worksheet
-     */
-    private function fromQuery(object $sheet, $worksheet): void
+    protected function fromQuery(object $sheet, Worksheet $worksheet): void
     {
         $sheet->query()->chunk($this->chunkSize, function ($chunk) use ($sheet, $worksheet) {
             foreach ($chunk as $row) {
@@ -165,6 +135,36 @@ class Writer
                 $this->append($worksheet, [$row]);
             }
         });
+    }
+
+    /**
+     * @param Worksheet $worksheet
+     * @param array     $rows
+     */
+    protected function append(Worksheet $worksheet, array $rows)
+    {
+        $row = $worksheet->getHighestRow();
+
+        if ($this->hasAppended) {
+            $row++;
+        }
+
+        $worksheet->fromArray($rows, null, 'A' . $row);
+    }
+
+    /**
+     * @param string $writerType
+     *
+     * @return string: string
+     */
+    protected function write(string $writerType)
+    {
+        $fileName = $this->tempFile();
+
+        $writer = IOFactory::createWriter($this->spreadsheet, $writerType);
+        $writer->save($fileName);
+
+        return $fileName;
     }
 
     /**
