@@ -27,6 +27,16 @@ upgrade your export code. 2.1 will keep receiving security fixes and community p
 | 2.1 | <=5.6 | - | <=7.0 | Security fixes and community fixes |
 | 3.0 | ^5.6 | ^1.1 | ^7.1 | New features |
 
+## Installation
+
+Install via composer:
+
+```
+composer require "maatwebsite/excel:~3.0"
+```
+
+The ServiceProvider and Facade will be auto-discovered by Laravel.
+
 ## Exports
 
 ### Simple exports
