@@ -102,7 +102,10 @@ class InvoicesExport implements FromView
 
 ### Formatting columns
 
-Unlike version 2.1, 3.0 is able to store files on any filesystem that Laravel supports.
+You can easily format an entire column, by using WithColumnFormatting.
+In case you want something more complicated, it's suggested to use the InteractsWithSheet concern.
+
+In case of working with dates, it's recommended to use `\PhpOffice\PhpSpreadsheet\Shared\Date::dateTimeToExcel()` in your mapping.
 
 ```php
 // e.g. app/Exports/InvoicesExport.php
@@ -246,16 +249,16 @@ public function download()
 
 | Class | Explanation |
 |---- |----|
-| Maatwebsite\Excel\Concerns\FromQuery | Will use an Eloquent query to populate the export. | 
-| Maatwebsite\Excel\Concerns\FromView | Will use a (blade) view to to populate the export. |
-| Maatwebsite\Excel\Concerns\WithTitle | Will set the Workbook or Worksheet title |
-| Maatwebsite\Excel\Concerns\WithHeadings | Will prepend given heading row. |
-| Maatwebsite\Excel\Concerns\WithMapping | Gives you the possibility to format the row before it's written to the file. |
-| Maatwebsite\Excel\Concerns\WithColumnFormatting | Gives you the ability to format certain columns. |
-| Maatwebsite\Excel\Concerns\WithMultipleSheets | Enables multi-sheet support. Each sheet can have its own concerns (expect the this one) |
-| Maatwebsite\Excel\Concerns\ShouldAutoSize | Auto-sizes the columns in the worksheet |
-| Maatwebsite\Excel\Concerns\InteractsWithExport | Gives you a hook into the PhpSpreadsheet Spreadsheet class. |
-| Maatwebsite\Excel\Concerns\InteractsWithSheet | Gives you a hook into the PhpSpreadsheet Worksheet class. |
+|`Maatwebsite\Excel\Concerns\FromQuery` | Will use an Eloquent query to populate the export. | 
+| `Maatwebsite\Excel\Concerns\FromView` | Will use a (blade) view to to populate the export. |
+| `Maatwebsite\Excel\Concerns\WithTitle` | Will set the Workbook or Worksheet title |
+| `Maatwebsite\Excel\Concerns\WithHeadings` | Will prepend given heading row. |
+| `Maatwebsite\Excel\Concerns\WithMapping` | Gives you the possibility to format the row before it's written to the file. |
+| `Maatwebsite\Excel\Concerns\WithColumnFormatting` | Gives you the ability to format certain columns. |
+| `Maatwebsite\Excel\Concerns\WithMultipleSheets` | Enables multi-sheet support. Each sheet can have its own concerns (expect the this one) |
+| `Maatwebsite\Excel\Concerns\ShouldAutoSize` | Auto-sizes the columns in the worksheet |
+| `Maatwebsite\Excel\Concerns\InteractsWithExport` | Gives you a hook into the PhpSpreadsheet Spreadsheet class. |
+| `Maatwebsite\Excel\Concerns\InteractsWithSheet` | Gives you a hook into the PhpSpreadsheet Worksheet class. |
 
 ## Support
 
