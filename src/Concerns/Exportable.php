@@ -2,8 +2,8 @@
 
 namespace Maatwebsite\Excel\Concerns;
 
-use InvalidArgumentException;
 use Maatwebsite\Excel\Excel;
+use InvalidArgumentException;
 
 trait Exportable
 {
