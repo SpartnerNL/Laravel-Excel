@@ -8,7 +8,19 @@ use Illuminate\Contracts\Routing\ResponseFactory;
 class ExcelServiceProvider extends ServiceProvider
 {
     /**
-     * Register services.
+     * @inheritdoc
+     */
+    public function boot()
+    {
+        if ($this->app->runningInConsole()) {
+            $this->publishes([
+                $this->getConfigFile() => config_path('excel.php'),
+            ], 'config');
+        }
+    }
+
+    /**
+     * @inheritdoc
      */
     public function register()
     {

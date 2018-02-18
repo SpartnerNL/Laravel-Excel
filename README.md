@@ -69,7 +69,7 @@ class InvoicesExport implements FromQuery, WithMapping, WithHeadings
     {
         return [
             $row->invoice_number,
-            $row->created_at->format('Y-m-d'),
+            \PhpOffice\PhpSpreadsheet\Shared\Date::dateTimeToExcel($invoice->created_at),
         ];
     }
 }
@@ -96,6 +96,36 @@ class InvoicesExport implements FromView
         return view('exports.invoices', [
             'invoices' => Invoice::all()
         ]);
+    }
+}
+```
+
+### Formatting columns
+
+Unlike version 2.1, 3.0 is able to store files on any filesystem that Laravel supports.
+
+```php
+// e.g. app/Exports/InvoicesExport.php
+class InvoicesExport implements WithColumnFormatting, WithMapping
+{
+    public function map($invoice): array
+    {
+        return [
+            $invoice->invoice_number,
+            \PhpOffice\PhpSpreadsheet\Shared\Date::dateTimeToExcel($invoice->created_at),
+            $invoice->total
+        ];
+    }
+    
+    /**
+     * @return array
+     */
+    public function columnFormats(): array
+    {
+        return [
+            'B' => \PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_DATE_DDMMYYYY,
+            'C' => \PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_CURRENCY_EUR_SIMPLE,
+        ];
     }
 }
 ```
@@ -221,7 +251,9 @@ public function download()
 | Maatwebsite\Excel\Concerns\WithTitle | Will set the Workbook or Worksheet title |
 | Maatwebsite\Excel\Concerns\WithHeadings | Will prepend given heading row. |
 | Maatwebsite\Excel\Concerns\WithMapping | Gives you the possibility to format the row before it's written to the file. |
+| Maatwebsite\Excel\Concerns\WithColumnFormatting | Gives you the ability to format certain columns. |
 | Maatwebsite\Excel\Concerns\WithMultipleSheets | Enables multi-sheet support. Each sheet can have its own concerns (expect the this one) |
+| Maatwebsite\Excel\Concerns\ShouldAutoSize | Auto-sizes the columns in the worksheet |
 | Maatwebsite\Excel\Concerns\InteractsWithExport | Gives you a hook into the PhpSpreadsheet Spreadsheet class. |
 | Maatwebsite\Excel\Concerns\InteractsWithSheet | Gives you a hook into the PhpSpreadsheet Worksheet class. |
 

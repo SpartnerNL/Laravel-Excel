@@ -3,6 +3,8 @@
 namespace Maatwebsite\Excel;
 
 use LogicException;
+use Maatwebsite\Excel\Concerns\ShouldAutoSize;
+use Maatwebsite\Excel\Concerns\WithColumnFormatting;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use Maatwebsite\Excel\Concerns\FromView;
 use Maatwebsite\Excel\Concerns\FromQuery;
@@ -99,6 +101,16 @@ class Writer
             }
         }
 
+        if ($sheet instanceof WithColumnFormatting) {
+            foreach ($sheet->columnFormats() as $column => $format) {
+                $this->formatColumn($worksheet, $column, $format);
+            }
+        }
+
+        if ($sheet instanceof ShouldAutoSize) {
+            $this->autoSize($worksheet);
+        }
+
         if ($sheet instanceof InteractsWithSheet) {
             $sheet->interactWithSheet($worksheet);
         }
@@ -177,5 +189,27 @@ class Writer
     protected function tempFile(): string
     {
         return tempnam(sys_get_temp_dir(), 'laravel-excel');
+    }
+
+    /**
+     * @param Worksheet $worksheet
+     */
+    protected function autoSize(Worksheet $worksheet): void
+    {
+        foreach (range('A', $worksheet->getHighestDataColumn()) as $col) {
+            $worksheet->getColumnDimension($col)->setAutoSize(true);
+        }
+    }
+
+    /**
+     * @param Worksheet $worksheet
+     * @param string    $column
+     * @param string    $format
+     */
+    protected function formatColumn(Worksheet $worksheet, string $column, string $format): void
+    {
+        $worksheet->getStyle($column . '1:' . $column . $worksheet->getHighestRow())
+                  ->getNumberFormat()
+                  ->setFormatCode($format);
     }
 }
