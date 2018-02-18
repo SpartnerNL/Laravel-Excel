@@ -7,14 +7,34 @@ use Maatwebsite\Excel\Excel;
 trait Exportable
 {
     /**
+     * @var string|null
+     */
+    protected $fileName;
+
+    /**
+     * @var string|null
+     */
+    protected $writerType;
+
+    /**
+     * @var string|null
+     */
+    protected $filePath;
+
+    /**
+     * @var string|null
+     */
+    protected $disk;
+
+    /**
      * @param string      $fileName
      * @param string|null $writerType
      *
      * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
      */
-    public function download(string $fileName, string $writerType = null)
+    public function download(string $fileName = null, string $writerType = null)
     {
-        return resolve(Excel::class)->download($this, $fileName, $writerType);
+        return resolve(Excel::class)->download($this, $fileName ?? $this->fileName, $writerType ?? $this->writerType);
     }
 
     /**
@@ -24,8 +44,8 @@ trait Exportable
      *
      * @return bool
      */
-    public function store(string $filePath, string $disk = null, string $writerType = null)
+    public function store(string $filePath = null, string $disk = null, string $writerType = null)
     {
-        return resolve(Excel::class)->store($this, $filePath, $disk, $writerType);
+        return resolve(Excel::class)->store($this, $filePath ?? $this->filePath, $disk ?? $this->disk, $writerType ?? $this->writerType);
     }
 }
