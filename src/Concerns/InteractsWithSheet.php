@@ -2,12 +2,12 @@
 
 namespace Maatwebsite\Excel\Concerns;
 
-use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
+use Maatwebsite\Excel\Sheet;
 
 interface InteractsWithSheet
 {
     /**
-     * @param Worksheet $sheet
+     * @param Sheet $sheet
      */
-    public function interactWithSheet(Worksheet $sheet);
+    public function interactWithSheet(Sheet $sheet);
 }

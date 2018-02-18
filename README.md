@@ -211,14 +211,14 @@ No need to use convenience methods like "query" or "view", if you need full cont
 
 ```php
 // e.g. app/Exports/InvoicesExport.php
-class InvoicesExport implements InteractsWithExport, InteractsWithSheet
+class InvoicesExport implements InteractsWithWriter, InteractsWithSheet
 {
-    public function interact(Spreadsheet $spreadsheet)
+    public function interact(Writer $writer)
     {
-        $spreadsheet->getProperties()->setCreator('Patrick');
+        $writer->getProperties()->setCreator('Patrick');
     }
     
-    public function interactWithSheet(Worksheet $sheet)
+    public function interactWithSheet(Sheet $sheet)
     {
         $sheet->getPageSetup()
               ->setOrientation(PageSetup::ORIENTATION_LANDSCAPE);
@@ -371,6 +371,35 @@ public function download(InvoiceExport $export)
 }
 ```
 
+### Macroable classes
+
+```php
+// e.g. app/Providers/AppServiceProvider.php
+Writer::macro('setCreator', function (Writer $writer, string $creator) {
+    $writer->getProperties()->setCreator($creator);
+});
+
+Sheet::macro('setOrientation', function (Sheet $sheet, $orientation) {
+    return $sheet->getPageSetup()->setOrientation($orientation);
+});
+```
+
+```php
+// e.g. app/Exports/InvoicesExport.php
+class InvoicesExport implements InteractsWithWriter, InteractsWithSheet
+{
+    public function interact(Writer $writer)
+    {
+        $writer->setCreator('Patrick');
+    }
+    
+    public function interactWithSheet(Sheet $sheet)
+    {
+        $sheet->setOrientation(PageSetup::ORIENTATION_LANDSCAPE);
+    }
+}
+```
+
 ### Export concerns overview
 
 | Interface | Explanation |
@@ -383,8 +412,8 @@ public function download(InvoiceExport $export)
 | `Maatwebsite\Excel\Concerns\WithColumnFormatting` | Gives you the ability to format certain columns. |
 | `Maatwebsite\Excel\Concerns\WithMultipleSheets` | Enables multi-sheet support. Each sheet can have its own concerns (expect the this one) |
 | `Maatwebsite\Excel\Concerns\ShouldAutoSize` | Auto-sizes the columns in the worksheet |
-| `Maatwebsite\Excel\Concerns\InteractsWithExport` | Gives you a hook into the PhpSpreadsheet Spreadsheet class. |
-| `Maatwebsite\Excel\Concerns\InteractsWithSheet` | Gives you a hook into the PhpSpreadsheet Worksheet class. |
+| `Maatwebsite\Excel\Concerns\InteractsWithWriter` | Gives you a hook into the Writer class. |
+| `Maatwebsite\Excel\Concerns\InteractsWithSheet` | Gives you a hook into the Sheet class. |
 
 | Trait | Explanation |
 |---- |----|

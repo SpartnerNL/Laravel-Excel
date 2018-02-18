@@ -2,25 +2,16 @@
 
 namespace Maatwebsite\Excel;
 
-use LogicException;
 use PhpOffice\PhpSpreadsheet\IOFactory;
-use Maatwebsite\Excel\Concerns\FromView;
-use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\WithTitle;
-use PhpOffice\PhpSpreadsheet\Reader\Html;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use Illuminate\Contracts\Support\Arrayable;
-use Maatwebsite\Excel\Concerns\WithMapping;
-use Maatwebsite\Excel\Concerns\WithHeadings;
-use Maatwebsite\Excel\Concerns\ShouldAutoSize;
-use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
-use Maatwebsite\Excel\Concerns\InteractsWithSheet;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
-use Maatwebsite\Excel\Concerns\InteractsWithExport;
-use Maatwebsite\Excel\Concerns\WithColumnFormatting;
+use Maatwebsite\Excel\Concerns\InteractsWithWriter;
 
 class Writer
 {
+    use DelegatedMacroable;
+
     /**
      * @var Spreadsheet
      */
@@ -30,16 +21,6 @@ class Writer
      * @var object
      */
     protected $export;
-
-    /**
-     * @var int
-     */
-    protected $chunkSize = 100;
-
-    /**
-     * @var bool
-     */
-    protected $hasAppended = false;
 
     /**
      * @param object $export
@@ -56,116 +37,31 @@ class Writer
             $this->spreadsheet->getProperties()->setTitle($export->title());
         }
 
-        $sheets = [$export];
+        $sheetExports = [$export];
         if ($export instanceof WithMultipleSheets) {
-            $sheets = $export->sheets();
+            $sheetExports = $export->sheets();
         }
 
-        foreach ($sheets as $sheet) {
-            $this->addSheet($sheet);
+        foreach ($sheetExports as $sheetExportExport) {
+            $this->addSheet($sheetExportExport);
         }
 
-        if ($export instanceof InteractsWithExport) {
-            $export->interact($this->spreadsheet);
+        if ($export instanceof InteractsWithWriter) {
+            $export->interact($this);
         }
 
         return $this->write($writerType);
     }
 
     /**
-     * @param object $sheet
+     * @param object $sheetExport
      */
-    protected function addSheet(object $sheet)
+    protected function addSheet(object $sheetExport)
     {
-        $this->hasAppended = false;
-
         $worksheet = $this->spreadsheet->createSheet();
 
-        if ($sheet instanceof WithTitle) {
-            $worksheet->setTitle($sheet->title());
-        }
-
-        if ($sheet instanceof FromQuery && $sheet instanceof FromView) {
-            throw new LogicException('Cannot use FromQuery and FromView on the same sheet');
-        }
-
-        if ($sheet instanceof FromView) {
-            $this->fromView($sheet);
-        } else {
-            if ($sheet instanceof WithHeadings) {
-                $this->append($worksheet, [$sheet->headings()]);
-            }
-
-            if ($sheet instanceof FromQuery) {
-                $this->fromQuery($sheet, $worksheet);
-            }
-        }
-
-        if ($sheet instanceof WithColumnFormatting) {
-            foreach ($sheet->columnFormats() as $column => $format) {
-                $this->formatColumn($worksheet, $column, $format);
-            }
-        }
-
-        if ($sheet instanceof ShouldAutoSize) {
-            $this->autoSize($worksheet);
-        }
-
-        if ($sheet instanceof InteractsWithSheet) {
-            $sheet->interactWithSheet($worksheet);
-        }
-    }
-
-    /**
-     * @param object $sheet
-     */
-    protected function fromView(object $sheet): void
-    {
-        $tempFile = $this->tempFile();
-        file_put_contents($tempFile, $sheet->view()->render());
-
-        /** @var Html $reader */
-        $reader = IOFactory::createReader('Html');
-        $reader->setSheetIndex($this->spreadsheet->getActiveSheetIndex());
-        $this->spreadsheet = $reader->loadIntoExisting($tempFile, $this->spreadsheet);
-    }
-
-    /**
-     * @param object    $sheet
-     * @param Worksheet $worksheet
-     */
-    protected function fromQuery(object $sheet, Worksheet $worksheet): void
-    {
-        $sheet->query()->chunk($this->chunkSize, function ($chunk) use ($sheet, $worksheet) {
-            foreach ($chunk as $row) {
-                if ($sheet instanceof WithMapping) {
-                    $row = $sheet->map($row);
-                }
-
-                if ($row instanceof Arrayable) {
-                    $row = $row->toArray();
-                }
-
-                $this->append($worksheet, [$row]);
-            }
-        });
-    }
-
-    /**
-     * @param Worksheet $worksheet
-     * @param array     $rows
-     */
-    protected function append(Worksheet $worksheet, array $rows)
-    {
-        $row = $worksheet->getHighestRow();
-
-        if ($this->hasAppended) {
-            $row++;
-        }
-
-        $worksheet->fromArray($rows, null, 'A' . $row);
-
-        $this->hasAppended = true;
+        $sheet = new Sheet($worksheet);
+        $sheet->export($sheetExport);
     }
 
     /**
@@ -192,24 +88,14 @@ class Writer
     }
 
     /**
-     * @param Worksheet $worksheet
+     * @return Spreadsheet
      */
-    protected function autoSize(Worksheet $worksheet): void
+    public function getDelegate()
     {
-        foreach (range('A', $worksheet->getHighestDataColumn()) as $col) {
-            $worksheet->getColumnDimension($col)->setAutoSize(true);
-        }
+        return $this->spreadsheet;
     }
 
-    /**
-     * @param Worksheet $worksheet
-     * @param string    $column
-     * @param string    $format
-     */
-    protected function formatColumn(Worksheet $worksheet, string $column, string $format): void
+    public function setCreator($creator)
     {
-        $worksheet->getStyle($column . '1:' . $column . $worksheet->getHighestRow())
-                  ->getNumberFormat()
-                  ->setFormatCode($format);
     }
 }
