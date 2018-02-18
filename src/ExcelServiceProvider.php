@@ -8,7 +8,7 @@ use Illuminate\Contracts\Routing\ResponseFactory;
 class ExcelServiceProvider extends ServiceProvider
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function boot()
     {
@@ -20,7 +20,7 @@ class ExcelServiceProvider extends ServiceProvider
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function register()
     {
