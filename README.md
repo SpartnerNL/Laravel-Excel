@@ -297,9 +297,32 @@ class InvoicesExport
 }
 
 // Controller
-public function download(InvoiceExport $export) 
+public function download() 
 {
     return (new InvoicesExport(2018))->store();
+}
+```
+
+### Responsable interface
+
+When using Laravel's Responable interface im combination with the Exportable trait, you can return your export directly.
+
+```php
+class InvoicesExport implements Responable
+{
+    use Exportable;
+
+    public function __construct(int $year)
+    {
+        $this->year     = $year;
+        $this->filePath = 'invoices_' . $year ' . '.xlsx';
+    }
+}
+
+// Controller
+public function download() 
+{
+    return new InvoicesExport(2018);
 }
 ```
 

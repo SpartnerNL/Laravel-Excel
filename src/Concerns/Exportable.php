@@ -2,6 +2,7 @@
 
 namespace Maatwebsite\Excel\Concerns;
 
+use InvalidArgumentException;
 use Maatwebsite\Excel\Excel;
 
 trait Exportable
@@ -30,11 +31,18 @@ trait Exportable
      * @param string      $fileName
      * @param string|null $writerType
      *
-     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
+     * @throws InvalidArgumentException
+     * @return \Illuminate\Http\Response|\Symfony\Component\HttpFoundation\BinaryFileResponse
      */
     public function download(string $fileName = null, string $writerType = null)
     {
-        return resolve(Excel::class)->download($this, $fileName ?? $this->fileName, $writerType ?? $this->writerType);
+        $fileName = $fileName ?? $this->fileName;
+
+        if (null === $fileName) {
+            throw new InvalidArgumentException('A file name needs to be passed in order to download the export');
+        }
+
+        return resolve(Excel::class)->download($this, $fileName, $writerType ?? $this->writerType);
     }
 
     /**
@@ -42,10 +50,35 @@ trait Exportable
      * @param string|null $disk
      * @param string|null $writerType
      *
+     * @throws InvalidArgumentException
      * @return bool
      */
     public function store(string $filePath = null, string $disk = null, string $writerType = null)
     {
-        return resolve(Excel::class)->store($this, $filePath ?? $this->filePath, $disk ?? $this->disk, $writerType ?? $this->writerType);
+        $filePath = $filePath ?? $this->filePath;
+
+        if (null === $filePath) {
+            throw new InvalidArgumentException('A file name needs to be passed in order to download the export');
+        }
+
+        return resolve(Excel::class)->store(
+            $this,
+            $filePath,
+            $disk ?? $this->disk,
+            $writerType ?? $this->writerType
+        );
+    }
+
+    /**
+     * Create an HTTP response that represents the object.
+     *
+     * @param  \Illuminate\Http\Request $request
+     *
+     * @throws InvalidArgumentException
+     * @return \Illuminate\Http\Response
+     */
+    public function toResponse($request)
+    {
+        return $this->download();
     }
 }
