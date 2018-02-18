@@ -327,6 +327,11 @@ class InvoicesExport implements WithQuery
         return $this;
     }
     
+    public function forCurrentYear(): self
+    {
+        return $this->year(date('Y');
+    }
+    
     public function query()
     {
         return $this->repository->queryForYear($this->year);
@@ -337,6 +342,9 @@ class InvoicesExport implements WithQuery
 public function download(InvoiceExport $export) 
 {
     return $export->forYear(2018)->download('invoices.xlsx');
+    
+    // Or using self-defined convenience methods.
+    return $export->forCurrentYear()->download('invoices.xlsx');
 }
 ```
 
