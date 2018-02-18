@@ -54,6 +54,18 @@ class Writer
     }
 
     /**
+     * @return Spreadsheet
+     */
+    public function getDelegate()
+    {
+        return $this->spreadsheet;
+    }
+
+    public function setCreator($creator)
+    {
+    }
+
+    /**
      * @param object $sheetExport
      */
     protected function addSheet(object $sheetExport)
@@ -85,17 +97,5 @@ class Writer
     protected function tempFile(): string
     {
         return tempnam(sys_get_temp_dir(), 'laravel-excel');
-    }
-
-    /**
-     * @return Spreadsheet
-     */
-    public function getDelegate()
-    {
-        return $this->spreadsheet;
-    }
-
-    public function setCreator($creator)
-    {
     }
 }

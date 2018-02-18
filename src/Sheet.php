@@ -2,28 +2,23 @@
 
 namespace Maatwebsite\Excel;
 
-use Illuminate\Contracts\Support\Arrayable;
 use LogicException;
-use Maatwebsite\Excel\Concerns\FromQuery;
-use Maatwebsite\Excel\Concerns\FromView;
-use Maatwebsite\Excel\Concerns\InteractsWithSheet;
-use Maatwebsite\Excel\Concerns\ShouldAutoSize;
-use Maatwebsite\Excel\Concerns\WithColumnFormatting;
-use Maatwebsite\Excel\Concerns\WithHeadings;
-use Maatwebsite\Excel\Concerns\WithMapping;
-use Maatwebsite\Excel\Concerns\WithTitle;
 use PhpOffice\PhpSpreadsheet\IOFactory;
+use Maatwebsite\Excel\Concerns\FromView;
+use Maatwebsite\Excel\Concerns\FromQuery;
+use Maatwebsite\Excel\Concerns\WithTitle;
 use PhpOffice\PhpSpreadsheet\Reader\Html;
+use Illuminate\Contracts\Support\Arrayable;
+use Maatwebsite\Excel\Concerns\WithMapping;
+use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
+use Maatwebsite\Excel\Concerns\InteractsWithSheet;
+use Maatwebsite\Excel\Concerns\WithColumnFormatting;
 
 class Sheet
 {
     use DelegatedMacroable;
-
-    /**
-     * @var Worksheet
-     */
-    private $worksheet;
 
     /**
      * @var bool
@@ -34,6 +29,11 @@ class Sheet
      * @var int
      */
     protected $chunkSize = 100;
+
+    /**
+     * @var Worksheet
+     */
+    private $worksheet;
 
     /**
      * @param Worksheet $worksheet
