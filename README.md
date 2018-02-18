@@ -245,9 +245,64 @@ public function download()
 }
 ```
 
+### Self exportable Exports
+
+It's also possible to turn it into a one-liner. Add the Exportable trait to your export. This will allow you to call the
+`download` and `store` method right on the export, instead of needing to use the facade / inject the Excel class.
+
+```php
+class InvoicesExport
+{
+    use Exportable;
+}
+
+// Controller
+public function download() 
+{
+    return (new InvoicesExport(2018))->download('invoices.xlsx');
+}
+```
+
+### More complex exports with dependencies
+
+In case your export needs dependencies (repositories / query classes), you can easily inject those dependencies in your Export class.
+
+```php
+class InvoicesExport implements WithQuery
+{
+    use Exportable;
+
+    protected $year;
+    protected $repository;
+
+    public function __construct(InvoiceRepository $repository)
+    {
+        $this->repository = $repository;
+    }
+    
+    public function forYear(int $year): self
+    {
+        $this->year = $year;
+    
+        return $this;
+    }
+    
+    public function query()
+    {
+        return $this->repository->queryForYeary($this->year);
+    }
+}
+
+// Controller
+public function download(InvoiceExport $export) 
+{
+    return $export->forYear(2018)->download('invoices.xlsx');
+}
+```
+
 ### Export concerns overview
 
-| Class | Explanation |
+| Interface | Explanation |
 |---- |----|
 |`Maatwebsite\Excel\Concerns\FromQuery` | Will use an Eloquent query to populate the export. | 
 | `Maatwebsite\Excel\Concerns\FromView` | Will use a (blade) view to to populate the export. |
@@ -259,6 +314,10 @@ public function download()
 | `Maatwebsite\Excel\Concerns\ShouldAutoSize` | Auto-sizes the columns in the worksheet |
 | `Maatwebsite\Excel\Concerns\InteractsWithExport` | Gives you a hook into the PhpSpreadsheet Spreadsheet class. |
 | `Maatwebsite\Excel\Concerns\InteractsWithSheet` | Gives you a hook into the PhpSpreadsheet Worksheet class. |
+
+| Trait | Explanation |
+|---- |----|
+|`Maatwebsite\Excel\Concerns\Exportable` | Will add download/store abilities right on the export class itself. | 
 
 ## Support
 
