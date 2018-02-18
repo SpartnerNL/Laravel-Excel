@@ -263,6 +263,46 @@ public function download()
 }
 ```
 
+### Define exportable settings 
+
+It's possible to configure the following from side the export class, when using the Exportable trait.
+This will add support for e.g. not having to pass the fileName when calling `download()`.
+```php
+// Used for download()
+protected $fileName;
+
+// Used for store()
+protected $filePath;
+protected $disk;
+
+// Used for both download() and store()
+protected $writerType;
+```
+
+```php
+class InvoicesExport
+{
+    use Exportable;
+
+    protected $year;
+    protected $filePath;
+    protected $disk = 's3';
+    protected $writerType = 'Xlsx';
+        
+    public function __construct(int $year)
+    {
+        $this->year     = $year;
+        $this->filePath = 'invoices_' . $year ' . '.xlsx';
+    }
+}
+
+// Controller
+public function download(InvoiceExport $export) 
+{
+    return (new InvoicesExport(2018))->store();
+}
+```
+
 ### More complex exports with dependencies
 
 In case your export needs dependencies (repositories / query classes), you can easily inject those dependencies in your Export class.
@@ -289,7 +329,7 @@ class InvoicesExport implements WithQuery
     
     public function query()
     {
-        return $this->repository->queryForYeary($this->year);
+        return $this->repository->queryForYear($this->year);
     }
 }
 
