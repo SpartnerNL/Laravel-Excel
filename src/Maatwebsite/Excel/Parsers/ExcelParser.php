@@ -590,8 +590,12 @@ class ExcelParser {
                 return null ;
             }
 
-            // Parse with carbon
-            $date = Carbon::parse($date);
+	        // Parse with carbon
+	        if (strtotime($date)) {
+		        $date = Carbon::parse($date);
+	        } else {
+		        $date = Carbon::now();
+	        }
 
             // Format the date if wanted
             return $this->reader->getDateFormat() ? $date->format($this->reader->getDateFormat()) : $date;
