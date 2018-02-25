@@ -685,8 +685,8 @@ class LaravelExcelReader
         for ($startRow = 0; $startRow < $totalRows; $startRow += $chunkSize) {
 
             // Set start index
-            $startIndex = ($startRow == 0) ? $startRow : $startRow - 1;
-            $chunkSize  = ($startRow == 0) ? $size + 1 : $size;
+            $startIndex = ($startRow == 0 || !$this->hasHeading()) ? $startRow : $startRow - 1;
+            $chunkSize  = ($startRow == 0 && $this->hasHeading()) ? $size + 1 : $size;
 
             $job = new ChunkedReadJob(
                 $this->file,
