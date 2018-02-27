@@ -52,13 +52,13 @@ class Excel
     }
 
     /**
-     * @param object      $export
+     * @param stdClass      $export
      * @param string      $writerType
      * @param string|null $fileName
      *
      * @return BinaryFileResponse
      */
-    public function download(object $export, string $fileName, string $writerType = null)
+    public function download(stdClass $export, string $fileName, string $writerType = null)
     {
         $file = $this->export($export, $fileName, $writerType);
 
@@ -66,14 +66,14 @@ class Excel
     }
 
     /**
-     * @param object      $export
+     * @param stdClass      $export
      * @param string      $filePath
      * @param string|null $disk
      * @param string      $writerType
      *
      * @return bool
      */
-    public function store(object $export, string $filePath, string $disk = null, string $writerType = null)
+    public function store(stdClass $export, string $filePath, string $disk = null, string $writerType = null)
     {
         $file = $this->export($export, $filePath, $writerType);
 
@@ -81,13 +81,13 @@ class Excel
     }
 
     /**
-     * @param object      $export
+     * @param stdClass      $export
      * @param string      $writerType
      * @param string|null $fileName
      *
      * @return string
      */
-    protected function export(object $export, string $fileName, string $writerType = null)
+    protected function export(stdClass $export, string $fileName, string $writerType = null)
     {
         if (null === $writerType) {
             $writerType = $this->findTypeByExtension($fileName);
