@@ -58,7 +58,7 @@ class Excel
      *
      * @return BinaryFileResponse
      */
-    public function download(object $export, string $fileName, string $writerType = null)
+    public function download($export, string $fileName, string $writerType = null)
     {
         $file = $this->export($export, $fileName, $writerType);
 
@@ -73,7 +73,7 @@ class Excel
      *
      * @return bool
      */
-    public function store(object $export, string $filePath, string $disk = null, string $writerType = null)
+    public function store($export, string $filePath, string $disk = null, string $writerType = null)
     {
         $file = $this->export($export, $filePath, $writerType);
 
@@ -87,7 +87,7 @@ class Excel
      *
      * @return string
      */
-    protected function export(object $export, string $fileName, string $writerType = null)
+    protected function export($export, string $fileName, string $writerType = null)
     {
         if (null === $writerType) {
             $writerType = $this->findTypeByExtension($fileName);

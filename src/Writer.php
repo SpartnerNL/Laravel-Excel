@@ -28,7 +28,7 @@ class Writer
      *
      * @return string
      */
-    public function export(object $export, string $writerType): string
+    public function export($export, string $writerType): string
     {
         $this->spreadsheet = new Spreadsheet;
         $this->spreadsheet->disconnectWorksheets();
@@ -68,7 +68,7 @@ class Writer
     /**
      * @param object $sheetExport
      */
-    protected function addSheet(object $sheetExport)
+    protected function addSheet($sheetExport)
     {
         $worksheet = $this->spreadsheet->createSheet();
 

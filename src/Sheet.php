@@ -48,7 +48,7 @@ class Sheet
      *
      * @throws LogicException
      */
-    public function export(object $sheetExport)
+    public function export($sheetExport)
     {
         if ($sheetExport instanceof WithTitle) {
             $this->worksheet->setTitle($sheetExport->title());
@@ -88,7 +88,7 @@ class Sheet
     /**
      * @param object $sheetExport
      */
-    public function fromView(object $sheetExport): void
+    public function fromView($sheetExport): void
     {
         $tempFile = $this->tempFile();
         file_put_contents($tempFile, $sheetExport->view()->render());
@@ -105,7 +105,7 @@ class Sheet
      * @param object    $sheetExport
      * @param Worksheet $worksheet
      */
-    public function fromQuery(object $sheetExport, Worksheet $worksheet): void
+    public function fromQuery($sheetExport, Worksheet $worksheet): void
     {
         $sheetExport->query()->chunk($this->chunkSize, function ($chunk) use ($sheetExport, $worksheet) {
             foreach ($chunk as $row) {
