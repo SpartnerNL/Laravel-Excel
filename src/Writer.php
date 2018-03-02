@@ -61,12 +61,10 @@ class Writer
         return $this->spreadsheet;
     }
 
-    public function setCreator($creator)
-    {
-    }
-
     /**
      * @param object $sheetExport
+     *
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
      */
     protected function addSheet($sheetExport)
     {
@@ -79,6 +77,7 @@ class Writer
     /**
      * @param string $writerType
      *
+     * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
      * @return string: string
      */
     protected function write(string $writerType)

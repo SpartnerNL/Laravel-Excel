@@ -28,7 +28,8 @@
     "phpunit/phpunit": "~7.0",
     "illuminate/http": "^5.6",
     "illuminate/database": "^5.6",
-    "illuminate/filesystem": "^5.6"
+    "illuminate/filesystem": "^5.6",
+    "orchestra/testbench": "^3.6"
   },
   "suggests": {
     "illuminate/http": "^5.6",
