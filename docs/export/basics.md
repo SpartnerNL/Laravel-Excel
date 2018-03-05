@@ -24,3 +24,31 @@ public function export()
     return Excel::download(new InvoicesExport, 'invoices.xlsx');
 }
 ```
+
+### Dependency injection
+
+In case your export needs dependencies, you can inject the export class:
+
+```php
+namespace App\Exports;
+
+class InvoicesExport implements FromCollection
+{
+    public function __construct(InvoicesRepository $invoices)
+    {
+        $this->invoices = $invoices;
+    }
+
+    public function collection()
+    {
+        return $this->invoices->all();
+    }
+}
+```
+
+```php
+public function export(Excel $excel, InvoicesExport $export) 
+{
+    return $excel->download($export, 'invoices.xlsx');
+}
+```
