@@ -103,7 +103,7 @@ class InvoicesExport implements FromView
 ### Formatting columns
 
 You can easily format an entire column, by using WithColumnFormatting.
-In case you want something more complicated, it's suggested to use the InteractsWithSheet concern.
+In case you want something more complicated, it's suggested to use the `AfterSheet` event.
 
 In case of working with dates, it's recommended to use `\PhpOffice\PhpSpreadsheet\Shared\Date::dateTimeToExcel()` in your mapping.
 
@@ -206,22 +206,63 @@ public function download()
 Instead of providing a wrapper method for each function PhpSpreadsheet offers, we make sure you can 
 easily use them directly. 
 
-An export can completely be executed by only using these "interactions". 
+You are able to hook into the parent package by using events.
 No need to use convenience methods like "query" or "view", if you need full control over the export.
 
 ```php
 // e.g. app/Exports/InvoicesExport.php
-class InvoicesExport implements InteractsWithWriter, InteractsWithSheet
+class InvoicesExport implements WithEvents
 {
-    public function interact(Writer $writer)
+    /**
+     * @return array
+     */
+    public function registerEvents(): array
     {
-        $writer->getProperties()->setCreator('Patrick');
+        return [
+            BeforeExport::class  => function(BeforeExport $event) {
+                $event->writer->getProperties()->setCreator('Patrick');
+            },
+            BeforeWriting::class => function(BeforeWriting $event) {
+                $event->writer->getProperties()->setDescription('An awesome Excel export!');
+            },
+            BeforeSheet::class   => function(BeforeSheet $event) {
+                $event->sheet->getPageSetup()
+                      ->setOrientation(PageSetup::ORIENTATION_LANDSCAPE);
+            },
+            AfterSheet::class    => function(AfterSheet $event) {
+                $event->sheet->getPageSetup()
+                      ->setOrientation(PageSetup::ORIENTATION_LANDSCAPE);
+            },
+        ];
     }
-    
-    public function interactWithSheet(Sheet $sheet)
+}
+```
+
+You can also use invokable classes as listener:
+
+```php
+class BeforeExportListener
+{
+    public function __invoke(BeforeExport $event)
     {
-        $sheet->getPageSetup()
-              ->setOrientation(PageSetup::ORIENTATION_LANDSCAPE);
+        //
+    }
+}
+
+```
+
+```php
+// e.g. app/Exports/InvoicesExport.php
+class InvoicesExport implements WithEvents
+{
+    /**
+     * @return array
+     */
+    public function registerEvents(): array
+    {
+        return [
+            BeforeExport::class  => new BeforeExportListener,
+        ];
     }
 }
 ```
@@ -386,16 +427,21 @@ Sheet::macro('setOrientation', function (Sheet $sheet, $orientation) {
 
 ```php
 // e.g. app/Exports/InvoicesExport.php
-class InvoicesExport implements InteractsWithWriter, InteractsWithSheet
+class InvoicesExport implements WithEvents
 {
-    public function interact(Writer $writer)
+    /**
+     * @return array
+     */
+    public function registerEvents(): array
     {
-        $writer->setCreator('Patrick');
-    }
-    
-    public function interactWithSheet(Sheet $sheet)
-    {
-        $sheet->setOrientation(PageSetup::ORIENTATION_LANDSCAPE);
+        return [
+            BeforeExport::class  => function(BeforeExport $event) {
+                $event->writer->setCreator('Patrick');
+            },
+            AfterSheet::class    => function(AfterSheet $event) {
+                $event->sheet->setOrientation(PageSetup::ORIENTATION_LANDSCAPE);
+            },
+        ];
     }
 }
 ```
@@ -412,12 +458,20 @@ class InvoicesExport implements InteractsWithWriter, InteractsWithSheet
 | `Maatwebsite\Excel\Concerns\WithColumnFormatting` | Gives you the ability to format certain columns. |
 | `Maatwebsite\Excel\Concerns\WithMultipleSheets` | Enables multi-sheet support. Each sheet can have its own concerns (expect the this one) |
 | `Maatwebsite\Excel\Concerns\ShouldAutoSize` | Auto-sizes the columns in the worksheet |
-| `Maatwebsite\Excel\Concerns\InteractsWithWriter` | Gives you a hook into the Writer class. |
-| `Maatwebsite\Excel\Concerns\InteractsWithSheet` | Gives you a hook into the Sheet class. |
+| `Maatwebsite\Excel\Concerns\WithEvents` | Allows you to register events to hook into the PhpSpreadsheet process. |
 
 | Trait | Explanation |
 |---- |----|
 |`Maatwebsite\Excel\Concerns\Exportable` | Will add download/store abilities right on the export class itself. | 
+
+## Events
+
+| Event name | Payload | Explanation |
+|---- |----| ----|
+|`Maatwebsite\Excel\Events\BeforeExport` | `$event->writer : Writer` | Event gets raised at the start of the process. | 
+| `Maatwebsite\Excel\Events\BeforeWriting` | `$event->writer : Writer` | Event gets raised before the download/store starts. |
+| `Maatwebsite\Excel\Events\BeforeSheet` | `$event->sheet : Sheet` | Event gets raised just after the sheet is created. |
+| `Maatwebsite\Excel\Events\BeforeWriting` | `$event->sheet : Sheet` | Event gets raised at the end of the sheet process. |
 
 ## Support
 

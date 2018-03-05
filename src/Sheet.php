@@ -3,6 +3,8 @@
 namespace Maatwebsite\Excel;
 
 use LogicException;
+use Maatwebsite\Excel\Events\AfterSheet;
+use Maatwebsite\Excel\Events\BeforeSheet;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use Maatwebsite\Excel\Concerns\FromView;
 use Maatwebsite\Excel\Concerns\FromQuery;
@@ -13,12 +15,11 @@ use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
-use Maatwebsite\Excel\Concerns\InteractsWithSheet;
 use Maatwebsite\Excel\Concerns\WithColumnFormatting;
 
 class Sheet
 {
-    use DelegatedMacroable;
+    use DelegatedMacroable, HasEventBus;
 
     /**
      * @var bool
@@ -46,10 +47,13 @@ class Sheet
     /**
      * @param object $sheetExport
      *
-     * @throws LogicException
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
+     * @throws \PhpOffice\PhpSpreadsheet\Reader\Exception
      */
     public function export($sheetExport)
     {
+        $this->raise(new BeforeSheet($this));
+
         if ($sheetExport instanceof WithTitle) {
             $this->worksheet->setTitle($sheetExport->title());
         }
@@ -80,13 +84,13 @@ class Sheet
             $this->autoSize();
         }
 
-        if ($sheetExport instanceof InteractsWithSheet) {
-            $sheetExport->interactWithSheet($this);
-        }
+        $this->raise(new AfterSheet($this));
     }
 
     /**
      * @param object $sheetExport
+     *
+     * @throws \PhpOffice\PhpSpreadsheet\Reader\Exception
      */
     public function fromView($sheetExport): void
     {
@@ -124,6 +128,8 @@ class Sheet
 
     /**
      * @param array $rows
+     *
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
      */
     public function append(array $rows)
     {
@@ -151,6 +157,8 @@ class Sheet
     /**
      * @param string $column
      * @param string $format
+     *
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
      */
     public function formatColumn(string $column, string $format): void
     {

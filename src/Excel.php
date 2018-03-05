@@ -53,9 +53,11 @@ class Excel
 
     /**
      * @param object      $export
-     * @param string      $writerType
      * @param string|null $fileName
+     * @param string      $writerType
      *
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
+     * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
      * @return BinaryFileResponse
      */
     public function download($export, string $fileName, string $writerType = null)
@@ -71,6 +73,8 @@ class Excel
      * @param string|null $disk
      * @param string      $writerType
      *
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
+     * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
      * @return bool
      */
     public function store($export, string $filePath, string $disk = null, string $writerType = null)
@@ -82,9 +86,11 @@ class Excel
 
     /**
      * @param object      $export
-     * @param string      $writerType
      * @param string|null $fileName
+     * @param string      $writerType
      *
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
+     * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
      * @return string
      */
     protected function export($export, string $fileName, string $writerType = null)

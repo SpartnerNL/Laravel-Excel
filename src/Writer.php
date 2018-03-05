@@ -2,15 +2,17 @@
 
 namespace Maatwebsite\Excel;
 
+use Maatwebsite\Excel\Concerns\WithEvents;
+use Maatwebsite\Excel\Events\BeforeExport;
+use Maatwebsite\Excel\Events\BeforeWriting;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use Maatwebsite\Excel\Concerns\WithTitle;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
-use Maatwebsite\Excel\Concerns\InteractsWithWriter;
 
 class Writer
 {
-    use DelegatedMacroable;
+    use DelegatedMacroable, HasEventBus;
 
     /**
      * @var Spreadsheet
@@ -26,12 +28,20 @@ class Writer
      * @param object $export
      * @param string $writerType
      *
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
+     * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
      * @return string
      */
     public function export($export, string $writerType): string
     {
+        if ($export instanceof WithEvents) {
+            $this->registerListeners($export->registerEvents());
+        }
+
         $this->spreadsheet = new Spreadsheet;
         $this->spreadsheet->disconnectWorksheets();
+
+        $this->raise(new BeforeExport($this));
 
         if ($export instanceof WithTitle) {
             $this->spreadsheet->getProperties()->setTitle($export->title());
@@ -46,11 +56,18 @@ class Writer
             $this->addSheet($sheetExportExport);
         }
 
-        if ($export instanceof InteractsWithWriter) {
-            $export->interact($this);
-        }
+        $this->raise(new BeforeWriting($this));
 
         return $this->write($writerType);
+    }
+
+    /**
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
+     * @return Sheet
+     */
+    public function addNewSheet()
+    {
+        return new Sheet($this->spreadsheet->createSheet());
     }
 
     /**
@@ -68,10 +85,7 @@ class Writer
      */
     protected function addSheet($sheetExport)
     {
-        $worksheet = $this->spreadsheet->createSheet();
-
-        $sheet = new Sheet($worksheet);
-        $sheet->export($sheetExport);
+        $this->addNewSheet()->export($sheetExport);
     }
 
     /**
