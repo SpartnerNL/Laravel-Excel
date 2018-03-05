@@ -57,7 +57,7 @@ class InvoicesExport implements FromQuery
 The year can now be passed as dependency to the export class:
 
 ```php
-return (new InvoicesExport(2018)->download('invoices.xlsx');
+return (new InvoicesExport(2018))->download('invoices.xlsx');
 ```
 
 #### As setter
