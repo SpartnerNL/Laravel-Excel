@@ -97,7 +97,7 @@ class ChunkedReadJob implements ShouldQueue
         $reader->excel = $reader->reader->load($this->file);
 
         // Slice the results
-        $results = $reader->get()->slice($this->startIndex, $this->chunkSize);
+        $results = $reader->limitRows($this->chunkSize, $this->startIndex)->get();
 
         $callback = $this->shouldQueue ? (new Serializer)->unserialize($this->callback) : $this->callback;
 
