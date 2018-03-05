@@ -1,20 +1,21 @@
 <?php
 
-namespace Maatwebsite\Excel\Macros;
+namespace Maatwebsite\Excel\Mixins;
 
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromCollection;
 
-class DownloadCollection
+class StoreCollection
 {
     /**
      * @return callable
      */
-    public function downloadExcel()
+    public function storeExcel()
     {
-        return function (string $fileName, string $writerType = null) {
+        return function (string $filePath, string $disk = null, string $writerType = null) {
             $export = new class($this) implements FromCollection
+
             {
                 use Exportable;
 
@@ -40,7 +41,7 @@ class DownloadCollection
                 }
             };
 
-            return $export->download($fileName, $writerType);
+            return $export->store($filePath, $disk, $writerType);
         };
     }
 }

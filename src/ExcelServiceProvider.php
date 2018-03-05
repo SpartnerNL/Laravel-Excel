@@ -2,14 +2,11 @@
 
 namespace Maatwebsite\Excel;
 
-use Illuminate\Contracts\Support\Responsable;
 use Illuminate\Support\Collection;
 use Illuminate\Support\ServiceProvider;
+use Maatwebsite\Excel\Mixins\StoreCollection;
+use Maatwebsite\Excel\Mixins\DownloadCollection;
 use Illuminate\Contracts\Routing\ResponseFactory;
-use Maatwebsite\Excel\Concerns\Exportable;
-use Maatwebsite\Excel\Concerns\FromCollection;
-use Maatwebsite\Excel\Macros\DownloadCollection;
-use Maatwebsite\Excel\Macros\StoreCollection;
 
 class ExcelServiceProvider extends ServiceProvider
 {
