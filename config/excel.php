@@ -24,5 +24,5 @@ return [
         |
         */
         'temp_path'  => sys_get_temp_dir(),
-    ]
+    ],
 ];
