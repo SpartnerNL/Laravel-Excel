@@ -1,6 +1,6 @@
 <?php
 
-namespace Maatwebsite\Excel\Tests\Macros;
+namespace Maatwebsite\Excel\Tests\Mixins;
 
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Tests\TestCase;
