@@ -45,13 +45,8 @@ class ExcelServiceProvider extends ServiceProvider
 
         $this->app->alias('excel', Excel::class);
 
-        Collection::macro('downloadExcel', function() {
-            return (new DownloadCollection($this))(...func_get_args());
-        });
-
-        Collection::macro('storeExcel', function() {
-            return (new StoreCollection($this))(...func_get_args());
-        });
+        Collection::mixin(new DownloadCollection);
+        Collection::mixin(new StoreCollection);
     }
 
     /**
