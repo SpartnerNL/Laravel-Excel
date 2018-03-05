@@ -14,9 +14,7 @@ class StoreCollection
     public function storeExcel()
     {
         return function (string $filePath, string $disk = null, string $writerType = null) {
-            $export = new class($this) implements FromCollection
-
-            {
+            $export = new class($this) implements FromCollection {
                 use Exportable;
 
                 /**
