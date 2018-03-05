@@ -41,5 +41,5 @@ return [
             'include_separator_line' => false,
             'excel_compatibility'    => false,
         ],
-    ]
+    ],
 ];
