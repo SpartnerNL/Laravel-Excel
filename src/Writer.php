@@ -25,6 +25,19 @@ class Writer
     protected $export;
 
     /**
+     * @var string
+     */
+    protected $tmpPath;
+
+    /**
+     * New Writer instance.
+     */
+    public function __construct()
+    {
+        $this->tmpPath = config('excel.exports.temp_path', sys_get_temp_dir());
+    }
+
+    /**
      * @param object $export
      * @param string $writerType
      *
@@ -109,6 +122,6 @@ class Writer
      */
     protected function tempFile(): string
     {
-        return tempnam(sys_get_temp_dir(), 'laravel-excel');
+        return tempnam($this->tmpPath, 'laravel-excel');
     }
 }

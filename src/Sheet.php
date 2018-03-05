@@ -30,7 +30,12 @@ class Sheet
     /**
      * @var int
      */
-    protected $chunkSize = 100;
+    protected $chunkSize;
+
+    /**
+     * @var string
+     */
+    protected $tmpPath;
 
     /**
      * @var Worksheet
@@ -43,6 +48,8 @@ class Sheet
     public function __construct(Worksheet $worksheet)
     {
         $this->worksheet = $worksheet;
+        $this->chunkSize = config('excel.exports.chunk_size', 100);
+        $this->tmpPath   = config('excel.exports.temp_path', sys_get_temp_dir());
     }
 
     /**
@@ -222,6 +229,6 @@ class Sheet
      */
     protected function tempFile(): string
     {
-        return tempnam(sys_get_temp_dir(), 'laravel-excel');
+        return tempnam($this->tmpPath, 'laravel-excel');
     }
 }
