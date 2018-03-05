@@ -30,8 +30,7 @@ class DownloadCollection
      */
     public function __invoke(string $fileName, string $disk = null, string $writerType = null)
     {
-        $export = new class($this->collection) implements FromCollection
-        {
+        $export = new class($this->collection) implements FromCollection {
             use Exportable;
 
             /**

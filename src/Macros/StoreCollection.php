@@ -30,8 +30,7 @@ class StoreCollection
      */
     public function __invoke(string $filePath, string $disk = null, string $writerType = null)
     {
-        $export = new class($this->collection) implements FromCollection
-        {
+        $export = new class($this->collection) implements FromCollection {
             use Exportable;
 
             /**
