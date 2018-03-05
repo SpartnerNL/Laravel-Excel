@@ -24,6 +24,8 @@ class Excel
 
     const HTML     = 'Html';
 
+    const Pdf      = 'Pdf';
+
     /**
      * @var Writer
      */
@@ -137,6 +139,8 @@ class Excel
                 return self::HTML;
             case 'csv':
                 return self::CSV;
+            case 'pdf':
+                return self::Pdf;
             default:
                 return null;
         }
