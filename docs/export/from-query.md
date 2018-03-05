@@ -1,7 +1,7 @@
 # From Query
 
 In the previous example, we did the query inside the export class. 
-While this is a good solution of small exports, 
+While this is a good solution for small exports, 
 for bigger exports this will quickly become badly performant.
 
 By using the `FromQuery` concern, we can prepare a query for an export. Behind the scenes this query is executed in chunks.
@@ -83,7 +83,7 @@ class InvoicesExport implements FromQuery
 }
 ```
 
-We can adjust the year no by using the `forYear` method.
+We can adjust the year now by using the `forYear` method.
 
 ```php
 return (new InvoicesExport)->forYear(2018)->download('invoices.xlsx');
