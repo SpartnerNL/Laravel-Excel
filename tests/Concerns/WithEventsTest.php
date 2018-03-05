@@ -2,16 +2,16 @@
 
 namespace Maatwebsite\Excel\Tests\Concerns;
 
-use Maatwebsite\Excel\Events\AfterSheet;
-use Maatwebsite\Excel\Events\BeforeExport;
-use Maatwebsite\Excel\Events\BeforeSheet;
-use Maatwebsite\Excel\Events\BeforeWriting;
 use Maatwebsite\Excel\Sheet;
-use Maatwebsite\Excel\Tests\Data\Stubs\BeforeExportListener;
-use Maatwebsite\Excel\Tests\Data\Stubs\ExportWithEvents;
-use Maatwebsite\Excel\Tests\TestCase;
 use Maatwebsite\Excel\Writer;
+use Maatwebsite\Excel\Tests\TestCase;
+use Maatwebsite\Excel\Events\AfterSheet;
+use Maatwebsite\Excel\Events\BeforeSheet;
+use Maatwebsite\Excel\Events\BeforeExport;
+use Maatwebsite\Excel\Events\BeforeWriting;
+use Maatwebsite\Excel\Tests\Data\Stubs\ExportWithEvents;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Maatwebsite\Excel\Tests\Data\Stubs\BeforeExportListener;
 
 class WithEventsTest extends TestCase
 {
@@ -52,7 +52,7 @@ class WithEventsTest extends TestCase
     {
         $event = new ExportWithEvents();
 
-        $event->beforeExport = new BeforeExportListener(function($event) {
+        $event->beforeExport = new BeforeExportListener(function ($event) {
             $this->assertInstanceOf(BeforeExport::class, $event);
             $this->assertInstanceOf(Writer::class, $event->writer);
         });

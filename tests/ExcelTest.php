@@ -4,7 +4,6 @@ namespace Maatwebsite\Excel\Tests;
 
 use Maatwebsite\Excel\Excel;
 use Maatwebsite\Excel\Tests\Data\Stubs\EmptyExport;
-use Maatwebsite\Excel\Tests\Data\Stubs\ExportWithEvents;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class ExcelTest extends TestCase
