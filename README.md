@@ -39,8 +39,6 @@ Excel::create('Laravel Excel', function($excel) {
 [![Monthly Downloads](https://poser.pugx.org/maatwebsite/excel/d/monthly.png)](https://packagist.org/packages/maatwebsite/excel)
 [![Daily Downloads](https://poser.pugx.org/maatwebsite/excel/d/daily.png)](https://packagist.org/packages/maatwebsite/excel)
 
-[![Help the project](http://www.pledgie.com/campaigns/30385.png?skin_name=chrome)](http://pledgie.com/campaigns/30385)
-
 # Installation
 
 Require this package in your `composer.json` and update composer. This will download the package and PHPExcel of PHPOffice.
@@ -79,7 +77,7 @@ This will add an `excel.php` config file to your config folder.
 
 # Documentation
 
-The complete documentation can be found at: [http://www.maatwebsite.nl/laravel-excel/docs](http://www.maatwebsite.nl/laravel-excel/docs)
+The complete documentation can be found at: [https://laravel-excel.maatwebsite.nl/docs](https://laravel-excel.maatwebsite.nl/docs)
 
 # Support
 
@@ -89,7 +87,7 @@ Support only through Github. Please don't mail us about issues, make a Github is
 
 **ALL** bug fixes should be made to appropriate branch (e.g. `2.0` for 2.0.* bug fixes). Bug fixes should never be sent to the `master` branch.
 
-More about contributing can be found at: [http://www.maatwebsite.nl/laravel-excel/docs/getting-started#contributing](http://www.maatwebsite.nl/laravel-excel/docs/getting-started#contributing)
+More about contributing can be found at: [https://laravel-excel.maatwebsite.nl/docs/2.1/getting-started/installation](https://laravel-excel.maatwebsite.nl/docs/2.1/getting-started/installation)
 
 # License
 
