@@ -3,13 +3,13 @@
 namespace Maatwebsite\Excel;
 
 use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Writer\Csv;
 use Maatwebsite\Excel\Concerns\WithTitle;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Events\BeforeExport;
 use Maatwebsite\Excel\Events\BeforeWriting;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
-use PhpOffice\PhpSpreadsheet\Writer\Csv;
 
 class Writer
 {
@@ -129,41 +129,6 @@ class Writer
     }
 
     /**
-     * @param object $sheetExport
-     *
-     * @throws \PhpOffice\PhpSpreadsheet\Exception
-     */
-    protected function addSheet($sheetExport)
-    {
-        $this->addNewSheet()->export($sheetExport);
-    }
-
-    /**
-     * @param string $writerType
-     *
-     * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
-     * @return string: string
-     */
-    protected function write(string $writerType)
-    {
-        $fileName = $this->tempFile();
-
-        $writer = IOFactory::createWriter($this->spreadsheet, $writerType);
-
-        if ($writer instanceof Csv) {
-            $writer->setDelimiter($this->delimiter);
-            $writer->setEnclosure($this->enclosure);
-            $writer->setLineEnding($this->lineEnding);
-            $writer->setIncludeSeparatorLine($this->includeSeparatorLine);
-            $writer->setExcelCompatibility($this->excelCompatibility);
-        }
-
-        $writer->save($fileName);
-
-        return $fileName;
-    }
-
-    /**
      * @param string $delimiter
      *
      * @return Writer
@@ -221,6 +186,41 @@ class Writer
         $this->excelCompatibility = $excelCompatibility;
 
         return $this;
+    }
+
+    /**
+     * @param object $sheetExport
+     *
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
+     */
+    protected function addSheet($sheetExport)
+    {
+        $this->addNewSheet()->export($sheetExport);
+    }
+
+    /**
+     * @param string $writerType
+     *
+     * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
+     * @return string: string
+     */
+    protected function write(string $writerType)
+    {
+        $fileName = $this->tempFile();
+
+        $writer = IOFactory::createWriter($this->spreadsheet, $writerType);
+
+        if ($writer instanceof Csv) {
+            $writer->setDelimiter($this->delimiter);
+            $writer->setEnclosure($this->enclosure);
+            $writer->setLineEnding($this->lineEnding);
+            $writer->setIncludeSeparatorLine($this->includeSeparatorLine);
+            $writer->setExcelCompatibility($this->excelCompatibility);
+        }
+
+        $writer->save($fileName);
+
+        return $fileName;
     }
 
     /**
