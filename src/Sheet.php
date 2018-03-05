@@ -59,7 +59,7 @@ class Sheet
             $this->worksheet->setTitle($sheetExport->title());
         }
 
-        if ($sheetExport instanceof FromQuery && $sheetExport instanceof FromView) {
+        if (($sheetExport instanceof FromQuery || $sheetExport instanceof FromCollection) && $sheetExport instanceof FromView) {
             throw new LogicException('Cannot use FromQuery and FromView on the same sheet');
         }
 
@@ -176,6 +176,18 @@ class Sheet
             ->getStyle($column . '1:' . $column . $this->worksheet->getHighestRow())
             ->getNumberFormat()
             ->setFormatCode($format);
+    }
+
+    /**
+     * @param int $chunkSize
+     *
+     * @return Sheet
+     */
+    public function chunkSize(int $chunkSize)
+    {
+        $this->chunkSize = $chunkSize;
+
+        return $this;
     }
 
     /**
