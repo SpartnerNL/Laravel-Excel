@@ -16,4 +16,16 @@ class TestCase extends OrchestraTestCase
     {
         return [ExcelServiceProvider::class];
     }
+
+    /**
+     * @param \Illuminate\Foundation\Application $app
+     */
+    protected function getEnvironmentSetUp($app)
+    {
+        $app['config']->set('filesystems.disks.local.root', __DIR__ . '/Data/Disks/Local');
+        $app['config']->set('filesystems.disks.test', [
+            'driver' => 'local',
+            'root'   => __DIR__ . '/Data/Disks/Test',
+        ]);
+    }
 }

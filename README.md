@@ -450,6 +450,7 @@ class InvoicesExport implements WithEvents
 
 | Interface | Explanation |
 |---- |----|
+|`Maatwebsite\Excel\Concerns\FromCollection` | Will use a Laravel Collection to populate the export. |
 |`Maatwebsite\Excel\Concerns\FromQuery` | Will use an Eloquent query to populate the export. | 
 | `Maatwebsite\Excel\Concerns\FromView` | Will use a (blade) view to to populate the export. |
 | `Maatwebsite\Excel\Concerns\WithTitle` | Will set the Workbook or Worksheet title |
@@ -472,6 +473,14 @@ class InvoicesExport implements WithEvents
 | `Maatwebsite\Excel\Events\BeforeWriting` | `$event->writer : Writer` | Event gets raised before the download/store starts. |
 | `Maatwebsite\Excel\Events\BeforeSheet` | `$event->sheet : Sheet` | Event gets raised just after the sheet is created. |
 | `Maatwebsite\Excel\Events\BeforeWriting` | `$event->sheet : Sheet` | Event gets raised at the end of the sheet process. |
+
+## Available Macro's
+
+| Usage |
+|---- |
+|`$collection->storeExcel($filePath, $disk = null, $writerType = null)`| 
+|`$collection->downloadExcel($filePath, $writerType = null)`|
+
 
 ## Support
 

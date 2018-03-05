@@ -2,8 +2,14 @@
 
 namespace Maatwebsite\Excel;
 
+use Illuminate\Contracts\Support\Responsable;
+use Illuminate\Support\Collection;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Contracts\Routing\ResponseFactory;
+use Maatwebsite\Excel\Concerns\Exportable;
+use Maatwebsite\Excel\Concerns\FromCollection;
+use Maatwebsite\Excel\Macros\DownloadCollection;
+use Maatwebsite\Excel\Macros\StoreCollection;
 
 class ExcelServiceProvider extends ServiceProvider
 {
@@ -38,6 +44,14 @@ class ExcelServiceProvider extends ServiceProvider
         });
 
         $this->app->alias('excel', Excel::class);
+
+        Collection::macro('downloadExcel', function() {
+            return (new DownloadCollection($this))(...func_get_args());
+        });
+
+        Collection::macro('storeExcel', function() {
+            return (new StoreCollection($this))(...func_get_args());
+        });
     }
 
     /**

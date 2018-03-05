@@ -58,16 +58,4 @@ class ExcelTest extends TestCase
         $this->assertTrue($response);
         $this->assertFileExists(__DIR__ . '/Data/Disks/Test/filename.xlsx');
     }
-
-    /**
-     * @param \Illuminate\Foundation\Application $app
-     */
-    protected function getEnvironmentSetUp($app)
-    {
-        $app['config']->set('filesystems.disks.local.root', __DIR__ . '/Data/Disks/Local');
-        $app['config']->set('filesystems.disks.test', [
-            'driver' => 'local',
-            'root'   => __DIR__ . '/Data/Disks/Test',
-        ]);
-    }
 }

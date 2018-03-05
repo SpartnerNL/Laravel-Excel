@@ -3,6 +3,7 @@
 namespace Maatwebsite\Excel;
 
 use LogicException;
+use Maatwebsite\Excel\Concerns\FromCollection;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use Maatwebsite\Excel\Concerns\FromView;
 use Maatwebsite\Excel\Events\AfterSheet;
@@ -72,6 +73,10 @@ class Sheet
             if ($sheetExport instanceof FromQuery) {
                 $this->fromQuery($sheetExport, $this->worksheet);
             }
+
+            if ($sheetExport instanceof FromCollection) {
+                $this->fromCollection($sheetExport, $this->worksheet);
+            }
         }
 
         if ($sheetExport instanceof WithColumnFormatting) {
@@ -88,11 +93,11 @@ class Sheet
     }
 
     /**
-     * @param object $sheetExport
+     * @param FromView $sheetExport
      *
      * @throws \PhpOffice\PhpSpreadsheet\Reader\Exception
      */
-    public function fromView($sheetExport): void
+    public function fromView(FromView $sheetExport): void
     {
         $tempFile = $this->tempFile();
         file_put_contents($tempFile, $sheetExport->view()->render());
@@ -106,24 +111,29 @@ class Sheet
     }
 
     /**
-     * @param object    $sheetExport
+     * @param FromQuery $sheetExport
      * @param Worksheet $worksheet
      */
-    public function fromQuery($sheetExport, Worksheet $worksheet): void
+    public function fromQuery(FromQuery $sheetExport, Worksheet $worksheet): void
     {
         $sheetExport->query()->chunk($this->chunkSize, function ($chunk) use ($sheetExport, $worksheet) {
             foreach ($chunk as $row) {
-                if ($sheetExport instanceof WithMapping) {
-                    $row = $sheetExport->map($row);
-                }
-
-                if ($row instanceof Arrayable) {
-                    $row = $row->toArray();
-                }
-
-                $this->append([$row]);
+                $this->appendRow($row, $sheetExport);
             }
         });
+    }
+
+    /**
+     * @param FromCollection $sheetExport
+     * @param Worksheet      $worksheet
+     */
+    public function fromCollection(FromCollection $sheetExport, Worksheet $worksheet)
+    {
+        $sheetExport
+            ->collection()
+            ->each(function ($row) use ($sheetExport, $worksheet) {
+                $this->appendRow($row, $sheetExport);
+            });
     }
 
     /**
@@ -174,6 +184,25 @@ class Sheet
     public function getDelegate()
     {
         return $this->worksheet;
+    }
+
+    /**
+     * @param iterable $row
+     * @param object   $sheetExport
+     *
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
+     */
+    protected function appendRow($row, $sheetExport)
+    {
+        if ($sheetExport instanceof WithMapping) {
+            $row = $sheetExport->map($row);
+        }
+
+        if ($row instanceof Arrayable) {
+            $row = $row->toArray();
+        }
+
+        $this->append([$row]);
     }
 
     /**
