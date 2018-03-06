@@ -12,6 +12,15 @@
 ##### PHP version support
 Support for PHP versions will only be maintained for a period of six months beyond the end-of-life of that PHP version
 
+### Supported Versions
+
+Versions will be supported for a limited amount of time.
+
+| Version | Laravel Version | Php Version | Support |
+|---- |----|----|----|
+| 2.1 | <=5.6 | <=7.0 | EOL since xx-xx-2018 |
+| 3.0 | ^5.6 |  ^7.1 | New features |
+
 ### Composer
 
 Require this package in the `composer.json` of your Laravel project. This will download the package and PhpSpreadsheet.

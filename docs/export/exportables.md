@@ -24,6 +24,12 @@ We can now download the export without the need for the facade:
 return (new InvoicesExport)->download('invoices.xlsx');
 ```
 
+Or store it on a disk:
+
+```php
+return (new InvoicesExport)->store('invoices.xlsx', 's3');
+```
+
 ### Responsable
 
 The previous example can be made even shorter. Add Laravel's `Responsable` interface to the export class.

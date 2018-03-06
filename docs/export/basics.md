@@ -25,6 +25,15 @@ public function export()
 }
 ```
 
+Or store it on a (e.g. s3) disk:
+
+```php
+public function storeExcel() 
+{
+    return Excel::store(new InvoicesExport, 'invoices.xlsx', 's3');
+}
+```
+
 ### Dependency injection
 
 In case your export needs dependencies, you can inject the export class:
