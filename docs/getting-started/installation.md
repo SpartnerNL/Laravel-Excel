@@ -9,8 +9,7 @@
 * PHP extension php_xml enabled
 * PHP extension php_gd2 enabled
 
-**PHP version support**
-
+##### PHP version support
 Support for PHP versions will only be maintained for a period of six months beyond the end-of-life of that PHP version
 
 ### Composer
