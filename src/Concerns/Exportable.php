@@ -2,6 +2,7 @@
 
 namespace Maatwebsite\Excel\Concerns;
 
+use Illuminate\Foundation\Bus\PendingDispatch;
 use Maatwebsite\Excel\Excel;
 use InvalidArgumentException;
 
@@ -62,6 +63,29 @@ trait Exportable
         }
 
         return resolve(Excel::class)->store(
+            $this,
+            $filePath,
+            $disk ?? $this->disk,
+            $writerType ?? $this->writerType
+        );
+    }
+
+    /**
+     * @param string|null $filePath
+     * @param string|null $disk
+     * @param string|null $writerType
+     *
+     * @return PendingDispatch
+     */
+    public function queue(string $filePath = null, string $disk = null, string $writerType = null)
+    {
+        $filePath = $filePath ?? $this->filePath;
+
+        if (null === $filePath) {
+            throw new InvalidArgumentException('A file name needs to be passed in order to download the export');
+        }
+
+        return resolve(Excel::class)->queue(
             $this,
             $filePath,
             $disk ?? $this->disk,

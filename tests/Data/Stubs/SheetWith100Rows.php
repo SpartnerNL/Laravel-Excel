@@ -1,0 +1,49 @@
+<?php
+
+namespace Maatwebsite\Excel\Tests\Data\Stubs;
+
+use Illuminate\Support\Collection;
+use Maatwebsite\Excel\Concerns\FromCollection;
+use Maatwebsite\Excel\Concerns\WithTitle;
+
+class SheetWith100Rows implements FromCollection, WithTitle
+{
+    /**
+     * @var string
+     */
+    private $title;
+
+    /**
+     * @param string $title
+     */
+    public function __construct(string $title)
+    {
+        $this->title = $title;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function collection()
+    {
+        $collection = new Collection;
+        for ($i = 0; $i < 100; $i++) {
+            $row = [];
+            for ($j = 0; $j < 5; $j++) {
+                $row[] = $this->title() . '-' . $i . '-' . $j;
+            }
+
+            $collection->push($row);
+        }
+
+        return $collection;
+    }
+
+    /**
+     * @return string
+     */
+    public function title(): string
+    {
+        return $this->title;
+    }
+}

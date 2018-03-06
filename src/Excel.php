@@ -4,6 +4,7 @@ namespace Maatwebsite\Excel;
 
 use Illuminate\Filesystem\FilesystemManager;
 use Illuminate\Contracts\Routing\ResponseFactory;
+use Illuminate\Foundation\Bus\PendingDispatch;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class Excel
@@ -32,6 +33,11 @@ class Excel
     protected $writer;
 
     /**
+     * @var QueuedWriter
+     */
+    protected $queuedWriter;
+
+    /**
      * @var ResponseFactory
      */
     protected $response;
@@ -43,14 +49,20 @@ class Excel
 
     /**
      * @param Writer            $writer
+     * @param QueuedWriter      $queuedWriter
      * @param ResponseFactory   $response
      * @param FilesystemManager $filesystem
      */
-    public function __construct(Writer $writer, ResponseFactory $response, FilesystemManager $filesystem)
-    {
-        $this->writer     = $writer;
-        $this->response   = $response;
-        $this->filesystem = $filesystem;
+    public function __construct(
+        Writer $writer,
+        QueuedWriter $queuedWriter,
+        ResponseFactory $response,
+        FilesystemManager $filesystem
+    ) {
+        $this->writer       = $writer;
+        $this->response     = $response;
+        $this->filesystem   = $filesystem;
+        $this->queuedWriter = $queuedWriter;
     }
 
     /**
@@ -83,7 +95,24 @@ class Excel
     {
         $file = $this->export($export, $filePath, $writerType);
 
-        return $this->filesystem->disk($disk)->put($filePath, file_get_contents($file));
+        return $this->filesystem->disk($disk)->put($filePath, fopen($file, 'r+'));
+    }
+
+    /**
+     * @param object      $export
+     * @param string      $filePath
+     * @param string|null $disk
+     * @param string      $writerType
+     *
+     * @return PendingDispatch
+     */
+    public function queue($export, string $filePath, string $disk = null, string $writerType = null)
+    {
+        if (null === $writerType) {
+            $writerType = $this->findTypeByExtension($filePath);
+        }
+
+        return $this->queuedWriter->store($export, $filePath, $disk, $writerType);
     }
 
     /**

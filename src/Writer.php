@@ -61,6 +61,11 @@ class Writer
     protected $excelCompatibility;
 
     /**
+     * @var string
+     */
+    protected $file;
+
+    /**
      * New Writer instance.
      */
     public function __construct()
@@ -84,6 +89,29 @@ class Writer
      */
     public function export($export, string $writerType): string
     {
+        $this->open($export);
+
+        $sheetExports = [$export];
+        if ($export instanceof WithMultipleSheets) {
+            $sheetExports = $export->sheets();
+        }
+
+        foreach ($sheetExports as $sheetExport) {
+            $this->addNewSheet()->export($sheetExport);
+        }
+
+        $this->raise(new BeforeWriting($this));
+
+        return $this->write($this->tempFile(), $writerType);
+    }
+
+    /**
+     * @param object $export
+     *
+     * @return $this
+     */
+    public function open($export)
+    {
         if ($export instanceof WithEvents) {
             $this->registerListeners($export->registerEvents());
         }
@@ -97,35 +125,58 @@ class Writer
             $this->spreadsheet->getProperties()->setTitle($export->title());
         }
 
-        $sheetExports = [$export];
-        if ($export instanceof WithMultipleSheets) {
-            $sheetExports = $export->sheets();
-        }
-
-        foreach ($sheetExports as $sheetExportExport) {
-            $this->addSheet($sheetExportExport);
-        }
-
-        $this->raise(new BeforeWriting($this));
-
-        return $this->write($writerType);
+        return $this;
     }
 
     /**
+     * @param string $tempFile
+     * @param string $writerType
+     *
+     * @throws \PhpOffice\PhpSpreadsheet\Reader\Exception
+     * @return Writer
+     */
+    public function reopen(string $tempFile, string $writerType)
+    {
+        $reader            = IOFactory::createReader($writerType);
+        $this->spreadsheet = $reader->load($tempFile);
+
+        return $this;
+    }
+
+
+    /**
+     * @param string $fileName
+     * @param string $writerType
+     *
+     * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
+     * @return string: string
+     */
+    public function write(string $fileName, string $writerType)
+    {
+        $writer = IOFactory::createWriter($this->spreadsheet, $writerType);
+
+        if ($writer instanceof Csv) {
+            $writer->setDelimiter($this->delimiter);
+            $writer->setEnclosure($this->enclosure);
+            $writer->setLineEnding($this->lineEnding);
+            $writer->setIncludeSeparatorLine($this->includeSeparatorLine);
+            $writer->setExcelCompatibility($this->excelCompatibility);
+        }
+
+        $writer->save($fileName);
+
+        return $fileName;
+    }
+
+    /**
+     * @param int|null $sheetIndex
+     *
      * @throws \PhpOffice\PhpSpreadsheet\Exception
      * @return Sheet
      */
-    public function addNewSheet()
+    public function addNewSheet(int $sheetIndex = null)
     {
-        return new Sheet($this->spreadsheet->createSheet());
-    }
-
-    /**
-     * @return Spreadsheet
-     */
-    public function getDelegate()
-    {
-        return $this->spreadsheet;
+        return new Sheet($this->spreadsheet->createSheet($sheetIndex));
     }
 
     /**
@@ -189,45 +240,50 @@ class Writer
     }
 
     /**
-     * @param object $sheetExport
-     *
-     * @throws \PhpOffice\PhpSpreadsheet\Exception
+     * @return Spreadsheet
      */
-    protected function addSheet($sheetExport)
+    public function getDelegate()
     {
-        $this->addNewSheet()->export($sheetExport);
-    }
-
-    /**
-     * @param string $writerType
-     *
-     * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
-     * @return string: string
-     */
-    protected function write(string $writerType)
-    {
-        $fileName = $this->tempFile();
-
-        $writer = IOFactory::createWriter($this->spreadsheet, $writerType);
-
-        if ($writer instanceof Csv) {
-            $writer->setDelimiter($this->delimiter);
-            $writer->setEnclosure($this->enclosure);
-            $writer->setLineEnding($this->lineEnding);
-            $writer->setIncludeSeparatorLine($this->includeSeparatorLine);
-            $writer->setExcelCompatibility($this->excelCompatibility);
-        }
-
-        $writer->save($fileName);
-
-        return $fileName;
+        return $this->spreadsheet;
     }
 
     /**
      * @return string
      */
-    protected function tempFile(): string
+    public function tempFile(): string
     {
         return tempnam($this->tmpPath, 'laravel-excel');
+    }
+
+    /**
+     * @param string $tmpPath
+     *
+     * @return Writer
+     */
+    public function setTmpPath(string $tmpPath)
+    {
+        $this->tmpPath = $tmpPath;
+
+        return $this;
+    }
+
+    /**
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
+     * @return Sheet
+     */
+    public function getActiveSheet(): Sheet
+    {
+        return new Sheet($this->getDelegate()->getActiveSheet());
+    }
+
+    /**
+     * @param int $sheetIndex
+     *
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
+     * @return Sheet
+     */
+    public function getSheetByIndex(int $sheetIndex)
+    {
+        return new Sheet($this->getDelegate()->getSheet($sheetIndex));
     }
 }

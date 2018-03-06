@@ -3,6 +3,7 @@
 namespace Maatwebsite\Excel;
 
 use LogicException;
+use Maatwebsite\Excel\Concerns\WithEvents;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use Maatwebsite\Excel\Concerns\FromView;
 use Maatwebsite\Excel\Events\AfterSheet;
@@ -56,10 +57,13 @@ class Sheet
      * @param object $sheetExport
      *
      * @throws \PhpOffice\PhpSpreadsheet\Exception
-     * @throws \PhpOffice\PhpSpreadsheet\Reader\Exception
      */
-    public function export($sheetExport)
+    public function open($sheetExport)
     {
+        if ($sheetExport instanceof WithEvents) {
+            $this->registerListeners($sheetExport->registerEvents());
+        }
+
         $this->raise(new BeforeSheet($this));
 
         if ($sheetExport instanceof WithTitle) {
@@ -70,13 +74,24 @@ class Sheet
             throw new LogicException('Cannot use FromQuery and FromView on the same sheet');
         }
 
+        if (!$sheetExport instanceof FromView && $sheetExport instanceof WithHeadings) {
+            $this->append([$sheetExport->headings()]);
+        }
+    }
+
+    /**
+     * @param object $sheetExport
+     *
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
+     * @throws \PhpOffice\PhpSpreadsheet\Reader\Exception
+     */
+    public function export($sheetExport)
+    {
+        $this->open($sheetExport);
+
         if ($sheetExport instanceof FromView) {
             $this->fromView($sheetExport);
         } else {
-            if ($sheetExport instanceof WithHeadings) {
-                $this->append([$sheetExport->headings()]);
-            }
-
             if ($sheetExport instanceof FromQuery) {
                 $this->fromQuery($sheetExport, $this->worksheet);
             }
@@ -86,6 +101,16 @@ class Sheet
             }
         }
 
+        $this->close($sheetExport);
+    }
+
+    /**
+     * @param object $sheetExport
+     *
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
+     */
+    public function close($sheetExport)
+    {
         if ($sheetExport instanceof WithColumnFormatting) {
             foreach ($sheetExport->columnFormats() as $column => $format) {
                 $this->formatColumn($column, $format);
