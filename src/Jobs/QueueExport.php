@@ -2,10 +2,10 @@
 
 namespace Maatwebsite\Excel\Jobs;
 
+use Maatwebsite\Excel\Writer;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
-use Maatwebsite\Excel\Writer;
 
 class QueueExport implements ShouldQueue
 {

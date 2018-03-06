@@ -3,9 +3,9 @@
 namespace Maatwebsite\Excel\Jobs;
 
 use Illuminate\Bus\Queueable;
+use Maatwebsite\Excel\Writer;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Events\BeforeWriting;
-use Maatwebsite\Excel\Writer;
 
 class QueuedExportEvents
 {

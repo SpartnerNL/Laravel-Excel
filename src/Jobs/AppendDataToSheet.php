@@ -3,9 +3,9 @@
 namespace Maatwebsite\Excel\Jobs;
 
 use Illuminate\Bus\Queueable;
+use Maatwebsite\Excel\Writer;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Maatwebsite\Excel\Writer;
 
 class AppendDataToSheet implements ShouldQueue
 {

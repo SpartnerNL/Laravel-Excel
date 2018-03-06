@@ -17,7 +17,7 @@ class QueuedExport implements WithMultipleSheets
         return [
             new SheetWith100Rows('A'),
             new SheetWith100Rows('B'),
-            new SheetWith100Rows('C')
+            new SheetWith100Rows('C'),
         ];
     }
 }

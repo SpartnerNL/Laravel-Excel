@@ -2,9 +2,9 @@
 
 namespace Maatwebsite\Excel\Concerns;
 
-use Illuminate\Foundation\Bus\PendingDispatch;
 use Maatwebsite\Excel\Excel;
 use InvalidArgumentException;
+use Illuminate\Foundation\Bus\PendingDispatch;
 
 trait Exportable
 {

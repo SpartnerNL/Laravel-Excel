@@ -3,9 +3,9 @@
 namespace Maatwebsite\Excel\Tests\Concerns;
 
 use Illuminate\Bus\Queueable;
+use Maatwebsite\Excel\Tests\TestCase;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Maatwebsite\Excel\Tests\Data\Stubs\QueuedExport;
-use Maatwebsite\Excel\Tests\TestCase;
 
 class QueuedExportTest extends TestCase
 {
@@ -17,7 +17,7 @@ class QueuedExportTest extends TestCase
         $export = new QueuedExport();
 
         $export->queue('queued-export.xlsx')->chain([
-            new AfterQueueExportJob(__DIR__ . '/../Data/Disks/Local/queued-export.xlsx')
+            new AfterQueueExportJob(__DIR__ . '/../Data/Disks/Local/queued-export.xlsx'),
         ]);
     }
 
@@ -29,7 +29,7 @@ class QueuedExportTest extends TestCase
         $export = new QueuedExport();
 
         $export->queue('queued-export.xlsx', 'test')->chain([
-            new AfterQueueExportJob(__DIR__ . '/../Data/Disks/Test/queued-export.xlsx')
+            new AfterQueueExportJob(__DIR__ . '/../Data/Disks/Test/queued-export.xlsx'),
         ]);
     }
 }

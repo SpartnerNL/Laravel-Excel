@@ -143,7 +143,6 @@ class Writer
         return $this;
     }
 
-
     /**
      * @param string $fileName
      * @param string $writerType

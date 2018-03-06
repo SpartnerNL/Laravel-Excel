@@ -2,18 +2,18 @@
 
 namespace Maatwebsite\Excel;
 
-use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Collection;
-use Maatwebsite\Excel\Concerns\FromCollection;
+use Maatwebsite\Excel\Jobs\CloseSheet;
+use Maatwebsite\Excel\Jobs\QueueExport;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\WithEvents;
-use Maatwebsite\Excel\Concerns\WithMultipleSheets;
+use Illuminate\Contracts\Support\Arrayable;
 use Maatwebsite\Excel\Events\BeforeWriting;
 use Maatwebsite\Excel\Jobs\AppendDataToSheet;
-use Maatwebsite\Excel\Jobs\CloseSheet;
-use Maatwebsite\Excel\Jobs\QueuedExportEvents;
-use Maatwebsite\Excel\Jobs\QueueExport;
 use Maatwebsite\Excel\Jobs\StoreQueuedExport;
+use Maatwebsite\Excel\Concerns\FromCollection;
+use Maatwebsite\Excel\Jobs\QueuedExportEvents;
+use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 
 class QueuedWriter
 {
