@@ -3,9 +3,8 @@
 namespace Maatwebsite\Excel\Jobs;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Database\Query\Builder;
-use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Writer;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 

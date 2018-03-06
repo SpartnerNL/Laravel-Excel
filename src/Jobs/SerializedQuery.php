@@ -3,11 +3,9 @@
 namespace Maatwebsite\Excel\Jobs;
 
 use Illuminate\Database\Connection;
-use Illuminate\Database\ConnectionInterface;
-use Illuminate\Database\Connectors\ConnectionFactory;
-use Illuminate\Database\Events\StatementPrepared;
-use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Database\Query\Builder;
+use Illuminate\Database\Events\StatementPrepared;
 
 class SerializedQuery
 {

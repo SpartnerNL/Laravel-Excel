@@ -231,25 +231,6 @@ class Sheet
     }
 
     /**
-     * @param iterable $row
-     * @param object   $sheetExport
-     *
-     * @throws \PhpOffice\PhpSpreadsheet\Exception
-     */
-    protected function appendRow($row, $sheetExport)
-    {
-        if ($sheetExport instanceof WithMapping) {
-            $row = $sheetExport->map($row);
-        }
-
-        if ($row instanceof Arrayable) {
-            $row = $row->toArray();
-        }
-
-        $this->append([$row]);
-    }
-
-    /**
      * @param iterable $rows
      * @param object   $sheetExport
      *
@@ -271,6 +252,25 @@ class Sheet
         }
 
         $this->append($append);
+    }
+
+    /**
+     * @param iterable $row
+     * @param object   $sheetExport
+     *
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
+     */
+    protected function appendRow($row, $sheetExport)
+    {
+        if ($sheetExport instanceof WithMapping) {
+            $row = $sheetExport->map($row);
+        }
+
+        if ($row instanceof Arrayable) {
+            $row = $row->toArray();
+        }
+
+        $this->append([$row]);
     }
 
     /**
