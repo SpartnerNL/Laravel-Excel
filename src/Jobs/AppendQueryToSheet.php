@@ -3,18 +3,20 @@
 namespace Maatwebsite\Excel\Jobs;
 
 use Illuminate\Bus\Queueable;
+use Illuminate\Database\Query\Builder;
+use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Writer;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 
-class AppendDataToSheet implements ShouldQueue
+class AppendQueryToSheet implements ShouldQueue
 {
     use Queueable, Dispatchable;
 
     /**
-     * @var array
+     * @var SerializedQuery
      */
-    public $data = [];
+    public $query;
 
     /**
      * @var string
@@ -40,13 +42,18 @@ class AppendDataToSheet implements ShouldQueue
      * @param object $sheetExport
      * @param string $filePath
      * @param string $writerType
-     * @param int    $sheetIndex
-     * @param array  $data
+     * @param int $sheetIndex
+     * @param Builder $query
      */
-    public function __construct($sheetExport, string $filePath, string $writerType, int $sheetIndex, array $data)
-    {
+    public function __construct(
+        $sheetExport,
+        string $filePath,
+        string $writerType,
+        int $sheetIndex,
+        SerializedQuery $query
+    ) {
         $this->sheetExport = $sheetExport;
-        $this->data        = $data;
+        $this->query       = $query;
         $this->filePath    = $filePath;
         $this->writerType  = $writerType;
         $this->sheetIndex  = $sheetIndex;
@@ -65,7 +72,7 @@ class AppendDataToSheet implements ShouldQueue
 
         $sheet = $writer->getSheetByIndex($this->sheetIndex);
 
-        $sheet->appendRows($this->data, $this->sheetExport);
+        $sheet->appendRows($this->query->execute(), $this->sheetExport);
 
         $writer->write($this->filePath, $this->writerType);
     }

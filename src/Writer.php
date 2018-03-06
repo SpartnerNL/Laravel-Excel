@@ -164,6 +164,9 @@ class Writer
 
         $writer->save($fileName);
 
+        $this->spreadsheet->disconnectWorksheets();
+        unset($this->spreadsheet);
+
         return $fileName;
     }
 

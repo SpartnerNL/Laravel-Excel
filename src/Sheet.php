@@ -250,6 +250,30 @@ class Sheet
     }
 
     /**
+     * @param iterable $rows
+     * @param object   $sheetExport
+     *
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
+     */
+    public function appendRows($rows, $sheetExport)
+    {
+        $append = [];
+        foreach ($rows as $row) {
+            if ($sheetExport instanceof WithMapping) {
+                $row = $sheetExport->map($row);
+            }
+
+            if ($row instanceof Arrayable) {
+                $row = $row->toArray();
+            }
+
+            $append[] = $row;
+        }
+
+        $this->append($append);
+    }
+
+    /**
      * @return string
      */
     protected function tempFile(): string

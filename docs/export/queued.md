@@ -24,6 +24,8 @@ It's as easy as calling `->queue()` now.
 return (new InvoicesExport)->queue('invoices.xlsx');
 ```
 
+Behind the scenes the query will be chunked and multiple jobs will be chained. 
+
 ### Appending jobs
 
 The `queue()` method returns an instance of Laravel's `PendingDispatch`. This means you can chain extra jobs.
