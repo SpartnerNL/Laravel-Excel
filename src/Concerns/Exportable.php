@@ -9,26 +9,6 @@ use Illuminate\Foundation\Bus\PendingDispatch;
 trait Exportable
 {
     /**
-     * @var string|null
-     */
-    protected $fileName;
-
-    /**
-     * @var string|null
-     */
-    protected $writerType;
-
-    /**
-     * @var string|null
-     */
-    protected $filePath;
-
-    /**
-     * @var string|null
-     */
-    protected $disk;
-
-    /**
      * @param string      $fileName
      * @param string|null $writerType
      *
@@ -37,13 +17,13 @@ trait Exportable
      */
     public function download(string $fileName = null, string $writerType = null)
     {
-        $fileName = $fileName ?? $this->fileName;
+        $fileName = $fileName ?? $this->fileName ?? null;
 
         if (null === $fileName) {
-            throw new InvalidArgumentException('A file name needs to be passed in order to download the export');
+            throw new InvalidArgumentException('A filename needs to be passed in order to download the export');
         }
 
-        return resolve(Excel::class)->download($this, $fileName, $writerType ?? $this->writerType);
+        return resolve(Excel::class)->download($this, $fileName, $writerType ?? $this->writerType ?? null);
     }
 
     /**
@@ -56,17 +36,17 @@ trait Exportable
      */
     public function store(string $filePath = null, string $disk = null, string $writerType = null)
     {
-        $filePath = $filePath ?? $this->filePath;
+        $filePath = $filePath ?? $this->filePath ?? null;
 
         if (null === $filePath) {
-            throw new InvalidArgumentException('A file name needs to be passed in order to download the export');
+            throw new InvalidArgumentException('A filepath needs to be passed in order to store the export');
         }
 
         return resolve(Excel::class)->store(
             $this,
             $filePath,
-            $disk ?? $this->disk,
-            $writerType ?? $this->writerType
+            $disk ?? $this->disk ?? null,
+            $writerType ?? $this->writerType ?? null
         );
     }
 
@@ -79,7 +59,7 @@ trait Exportable
      */
     public function queue(string $filePath = null, string $disk = null, string $writerType = null)
     {
-        $filePath = $filePath ?? $this->filePath;
+        $filePath = $filePath ?? $this->filePath ?? null;
 
         if (null === $filePath) {
             throw new InvalidArgumentException('A file name needs to be passed in order to download the export');
@@ -88,8 +68,8 @@ trait Exportable
         return resolve(Excel::class)->queue(
             $this,
             $filePath,
-            $disk ?? $this->disk,
-            $writerType ?? $this->writerType
+            $disk ?? $this->disk ?? null,
+            $writerType ?? $this->writerType ?? null
         );
     }
 

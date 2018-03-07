@@ -3,13 +3,17 @@
 namespace Maatwebsite\Excel\Tests\Data\Stubs;
 
 use Illuminate\Support\Collection;
+use Illuminate\Support\Fluent;
+use Maatwebsite\Excel\Concerns\RegistersEventListeners;
+use Maatwebsite\Excel\Concerns\ShouldAutoSize;
+use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\WithTitle;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromCollection;
 
-class SheetWith100Rows implements FromCollection, WithTitle
+class SheetWith100Rows implements FromCollection, WithTitle, ShouldAutoSize, WithEvents
 {
-    use Exportable;
+    use Exportable, RegistersEventListeners;
 
     /**
      * @var string
@@ -31,7 +35,7 @@ class SheetWith100Rows implements FromCollection, WithTitle
     {
         $collection = new Collection;
         for ($i = 0; $i < 100; $i++) {
-            $row = [];
+            $row = new Collection();
             for ($j = 0; $j < 5; $j++) {
                 $row[] = $this->title() . '-' . $i . '-' . $j;
             }

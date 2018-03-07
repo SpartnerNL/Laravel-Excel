@@ -66,7 +66,7 @@ class Sheet
         }
 
         if (($sheetExport instanceof FromQuery || $sheetExport instanceof FromCollection) && $sheetExport instanceof FromView) {
-            throw new LogicException('Cannot use FromQuery and FromView on the same sheet');
+            throw new LogicException('Cannot use FromQuery or FromCollection and FromView on the same sheet');
         }
 
         if (!$sheetExport instanceof FromView && $sheetExport instanceof WithHeadings) {

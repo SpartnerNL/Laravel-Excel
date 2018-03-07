@@ -26,25 +26,25 @@ class WithEventsTest extends TestCase
 
         $event->beforeExport = function ($event) use (&$eventsTriggered) {
             $this->assertInstanceOf(BeforeExport::class, $event);
-            $this->assertInstanceOf(Writer::class, $event->writer);
+            $this->assertInstanceOf(Writer::class, $event->getWriter());
             $eventsTriggered++;
         };
 
         $event->beforeWriting = function ($event) use (&$eventsTriggered) {
             $this->assertInstanceOf(BeforeWriting::class, $event);
-            $this->assertInstanceOf(Writer::class, $event->writer);
+            $this->assertInstanceOf(Writer::class, $event->getWriter());
             $eventsTriggered++;
         };
 
         $event->beforeSheet = function ($event) use (&$eventsTriggered) {
             $this->assertInstanceOf(BeforeSheet::class, $event);
-            $this->assertInstanceOf(Sheet::class, $event->sheet);
+            $this->assertInstanceOf(Sheet::class, $event->getSheet());
             $eventsTriggered++;
         };
 
         $event->afterSheet = function ($event) use (&$eventsTriggered) {
             $this->assertInstanceOf(AfterSheet::class, $event);
-            $this->assertInstanceOf(Sheet::class, $event->sheet);
+            $this->assertInstanceOf(Sheet::class, $event->getSheet());
             $eventsTriggered++;
         };
 
@@ -61,7 +61,7 @@ class WithEventsTest extends TestCase
 
         $event->beforeExport = new BeforeExportListener(function ($event) {
             $this->assertInstanceOf(BeforeExport::class, $event);
-            $this->assertInstanceOf(Writer::class, $event->writer);
+            $this->assertInstanceOf(Writer::class, $event->getWriter());
         });
 
         $this->assertInstanceOf(BinaryFileResponse::class, $event->download('filename.xlsx'));

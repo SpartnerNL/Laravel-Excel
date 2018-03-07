@@ -9,9 +9,29 @@ use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Events\BeforeExport;
 use Maatwebsite\Excel\Concerns\RegistersEventListeners;
+use PhpOffice\PhpSpreadsheet\Document\Properties;
 
-class MacroableTest extends TestCase
+class DelegatedMacroableTest extends TestCase
 {
+    /**
+     * @test
+     */
+    public function can_call_methods_from_delegate()
+    {
+        $export = new class implements WithEvents
+        {
+            use RegistersEventListeners, Exportable;
+
+            public static function beforeExport(BeforeExport $event)
+            {
+                // ->getProperties() will be called via __call on the ->getDelegate()
+                TestCase::assertInstanceOf(Properties::class, $event->writer->getProperties());
+            }
+        };
+
+        $export->download('some-file.xlsx');
+    }
+
     /**
      * @test
      */
@@ -22,7 +42,8 @@ class MacroableTest extends TestCase
             $called = true;
         });
 
-        $export = new class implements WithEvents {
+        $export = new class implements WithEvents
+        {
             use RegistersEventListeners, Exportable;
 
             public static function beforeExport(BeforeExport $event)
@@ -47,7 +68,8 @@ class MacroableTest extends TestCase
             $called = true;
         });
 
-        $export = new class implements WithEvents {
+        $export = new class implements WithEvents
+        {
             use RegistersEventListeners, Exportable;
 
             public static function beforeSheet(BeforeSheet $event)

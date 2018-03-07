@@ -258,27 +258,6 @@ class Writer
     }
 
     /**
-     * @param string $tmpPath
-     *
-     * @return Writer
-     */
-    public function setTmpPath(string $tmpPath)
-    {
-        $this->tmpPath = $tmpPath;
-
-        return $this;
-    }
-
-    /**
-     * @throws \PhpOffice\PhpSpreadsheet\Exception
-     * @return Sheet
-     */
-    public function getActiveSheet(): Sheet
-    {
-        return new Sheet($this->getDelegate()->getActiveSheet());
-    }
-
-    /**
      * @param int $sheetIndex
      *
      * @throws \PhpOffice\PhpSpreadsheet\Exception
