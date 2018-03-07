@@ -6,15 +6,12 @@ use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Jobs\CloseSheet;
 use Maatwebsite\Excel\Jobs\QueueExport;
 use Maatwebsite\Excel\Concerns\FromQuery;
-use Maatwebsite\Excel\Concerns\WithEvents;
 use Illuminate\Contracts\Support\Arrayable;
-use Maatwebsite\Excel\Events\BeforeWriting;
 use Maatwebsite\Excel\Jobs\SerializedQuery;
 use Maatwebsite\Excel\Jobs\AppendDataToSheet;
 use Maatwebsite\Excel\Jobs\StoreQueuedExport;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Jobs\AppendQueryToSheet;
-use Maatwebsite\Excel\Jobs\QueuedExportEvents;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 
 class QueuedWriter
@@ -51,10 +48,6 @@ class QueuedWriter
         $tempFile = $this->writer->tempFile();
 
         $jobs = $this->buildExportJobs($export, $tempFile, $writerType);
-
-        if ($export instanceof WithEvents && isset($export->registerEvents()[BeforeWriting::class])) {
-            $jobs->push(new QueuedExportEvents($export, $tempFile, $writerType));
-        }
 
         $jobs->push(new StoreQueuedExport($tempFile, $filePath, $disk));
 

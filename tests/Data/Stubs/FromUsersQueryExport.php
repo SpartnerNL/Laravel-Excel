@@ -44,10 +44,7 @@ class FromUsersQueryExport implements FromQuery, WithMapping, WithEvents
         return [
             BeforeSheet::class   => function (BeforeSheet $event) {
                 $event->sheet->chunkSize(10);
-            },
-            BeforeWriting::class => function (BeforeWriting $event) {
-                //
-            },
+            }
         ];
     }
 }
