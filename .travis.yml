@@ -25,10 +25,7 @@ before_install:
 install:
   - travis_retry composer install --no-suggest --no-interaction
 
-script:
-  - vendor/bin/phpunit --verbose --configuration phpunit.xml.dist --coverage-clover=coverage.xml
-
-script: vendor/bin/phpunit
+script: vendor/bin/phpunit --verbose --configuration phpunit.xml.dist --coverage-clover=coverage.xml
 
 matrix:
   fast_finish: true
