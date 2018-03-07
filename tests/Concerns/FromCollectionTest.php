@@ -36,12 +36,15 @@ class FromCollectionTest extends TestCase
         $this->assertTrue($response);
 
         foreach ($export->sheets() as $sheetIndex => $sheet) {
-            $contents = $this->readAsArray(
+            $spreadsheet = $this->read(
                 __DIR__ . '/../Data/Disks/Local/multiple-sheets-collection-store.xlsx',
-                'Xlsx',
-                $sheetIndex
+                'Xlsx'
             );
-            $this->assertEquals($sheet->collection()->toArray(), $contents);
+
+            $worksheet = $spreadsheet->getSheet($sheetIndex);
+
+            $this->assertEquals($sheet->collection()->toArray(), $worksheet->toArray());
+            $this->assertEquals($sheet->title(), $worksheet->getTitle());
         }
     }
 }

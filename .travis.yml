@@ -26,9 +26,12 @@ install:
   - travis_retry composer install --no-suggest --no-interaction
 
 script:
-  - vendor/bin/phpunit --verbose --configuration phpunit.xml.dist --coverage-clover tests/clover.xml
+  - vendor/bin/phpunit --verbose --configuration phpunit.xml.dist --coverage-clover=coverage.xml
 
 script: vendor/bin/phpunit
 
 matrix:
   fast_finish: true
+
+after_success:
+    - bash <(curl -s https://codecov.io/bash)

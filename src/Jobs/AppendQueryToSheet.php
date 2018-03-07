@@ -38,11 +38,11 @@ class AppendQueryToSheet implements ShouldQueue
     public $sheetExport;
 
     /**
-     * @param object $sheetExport
-     * @param string $filePath
-     * @param string $writerType
-     * @param int $sheetIndex
-     * @param Builder $query
+     * @param object          $sheetExport
+     * @param string          $filePath
+     * @param string          $writerType
+     * @param int             $sheetIndex
+     * @param SerializedQuery $query
      */
     public function __construct(
         $sheetExport,

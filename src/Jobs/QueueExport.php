@@ -9,7 +9,7 @@ use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 
 class QueueExport implements ShouldQueue
 {
-    use Queueable, Dispatchable;
+    use ExtendedQueueable, Dispatchable;
 
     /**
      * @var object

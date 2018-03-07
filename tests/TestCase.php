@@ -73,5 +73,9 @@ class TestCase extends OrchestraTestCase
             'username' => env('DB_USERNAME'),
             'password' => env('DB_PASSWORD'),
         ]);
+
+        $app['config']->set('view.paths', [
+            __DIR__ . '/Data/Stubs/Views',
+        ]);
     }
 }

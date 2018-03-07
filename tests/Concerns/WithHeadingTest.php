@@ -14,12 +14,18 @@ class WithHeadingTest extends TestCase
     {
         $export = new WithHeadingExport();
 
-        $response = $export->store('from-collection-store.xlsx');
+        $response = $export->store('with-heading-store.xlsx');
 
         $this->assertTrue($response);
 
-        $contents = $this->readAsArray(__DIR__ . '/../Data/Disks/Local/from-collection-store.xlsx', 'Xlsx');
+        $actual = $this->readAsArray(__DIR__ . '/../Data/Disks/Local/with-heading-store.xlsx', 'Xlsx');
 
-        $this->assertEquals($export->collection()->prepend($export->headings())->toArray(), $contents);
+        $expected = [
+            ['A', 'B', 'C'],
+            ['A1', 'B1', 'C1',],
+            ['A2', 'B2', 'C2',]
+        ];
+
+        $this->assertEquals($expected, $actual);
     }
 }

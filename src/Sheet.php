@@ -24,11 +24,6 @@ class Sheet
     use DelegatedMacroable, HasEventBus;
 
     /**
-     * @var bool
-     */
-    protected $hasAppended = false;
-
-    /**
      * @var int
      */
     protected $chunkSize;
@@ -169,21 +164,21 @@ class Sheet
     }
 
     /**
-     * @param array $rows
+     * @param array    $rows
+     * @param int|null $row
      *
      * @throws \PhpOffice\PhpSpreadsheet\Exception
      */
-    public function append(array $rows)
+    public function append(array $rows, int $row = null)
     {
-        $row = $this->worksheet->getHighestRow();
-
-        if ($this->hasAppended) {
-            $row++;
+        if (!$row) {
+            $row = 1;
+            if ($this->hasRows()) {
+                $row = $this->worksheet->getHighestRow() + 1;
+            }
         }
 
         $this->worksheet->fromArray($rows, null, 'A' . $row);
-
-        $this->hasAppended = true;
     }
 
     /**
@@ -279,5 +274,14 @@ class Sheet
     protected function tempFile(): string
     {
         return tempnam($this->tmpPath, 'laravel-excel');
+    }
+
+    /**
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
+     * @return bool
+     */
+    private function hasRows(): bool
+    {
+        return $this->worksheet->cellExists('A1');
     }
 }

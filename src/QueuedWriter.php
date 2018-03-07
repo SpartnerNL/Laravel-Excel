@@ -122,10 +122,10 @@ class QueuedWriter
     }
 
     /**
-     * @param FromCollection $export
-     * @param string         $filePath
-     * @param string         $writerType
-     * @param int            $sheetIndex
+     * @param FromQuery $export
+     * @param string    $filePath
+     * @param string    $writerType
+     * @param int       $sheetIndex
      *
      * @return Collection
      */
@@ -137,23 +137,22 @@ class QueuedWriter
     ) {
         $query = $export->query();
 
-        $i          = 0;
-        $page       = 1;
-        $jobs       = new Collection();
-        $totalCount = $query->count();
+        $jobs  = new Collection();
+        $spins = ceil($query->count() / $this->chunkSize);
 
-        do {
+        for ($page = 1; $page <= $spins; $page++) {
+            $serializedQuery = new SerializedQuery(
+                $query->forPage($page, $this->chunkSize)
+            );
+
             $jobs->push(new AppendQueryToSheet(
                 $export,
                 $filePath,
                 $writerType,
                 $sheetIndex,
-                new SerializedQuery($query->forPage($page, $this->chunkSize))
+                $serializedQuery
             ));
-
-            $page++;
-            $i += $this->chunkSize;
-        } while ($i < $totalCount);
+        }
 
         return $jobs;
     }

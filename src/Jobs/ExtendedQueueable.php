@@ -2,9 +2,11 @@
 
 namespace Maatwebsite\Excel\Jobs;
 
-trait Queueable
+use Illuminate\Bus\Queueable;
+
+trait ExtendedQueueable
 {
-    use \Illuminate\Bus\Queueable {
+    use Queueable {
         chain as originalChain;
     }
 

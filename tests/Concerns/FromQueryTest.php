@@ -24,7 +24,7 @@ class FromQueryTest extends TestCase
     /**
      * @test
      */
-    public function can_export_from_collection()
+    public function can_export_from_query()
     {
         $export = new FromUsersQueryExport;
 
