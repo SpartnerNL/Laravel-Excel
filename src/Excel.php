@@ -25,7 +25,11 @@ class Excel
 
     const HTML     = 'Html';
 
-    const Pdf      = 'Pdf';
+    const MPDF     = 'Mpdf';
+
+    const DOMPDF   = 'Dompdf';
+
+    const TCPDF    = 'Tcpdf';
 
     /**
      * @var Writer
@@ -145,33 +149,6 @@ class Excel
             return null;
         }
 
-        switch (strtolower($pathinfo['extension'])) {
-            case 'xlsx': // Excel (OfficeOpenXML) Spreadsheet
-            case 'xlsm': // Excel (OfficeOpenXML) Macro Spreadsheet (macros will be discarded)
-            case 'xltx': // Excel (OfficeOpenXML) Template
-            case 'xltm': // Excel (OfficeOpenXML) Macro Template (macros will be discarded)
-                return self::XLSX;
-            case 'xls': // Excel (BIFF) Spreadsheet
-            case 'xlt': // Excel (BIFF) Template
-                return self::XLS;
-            case 'ods': // Open/Libre Offic Calc
-            case 'ots': // Open/Libre Offic Calc Template
-                return self::ODS;
-            case 'slk':
-                return self::SLK;
-            case 'xml': // Excel 2003 SpreadSheetML
-                return self::XML;
-            case 'gnumeric':
-                return self::GNUMERIC;
-            case 'htm':
-            case 'html':
-                return self::HTML;
-            case 'csv':
-                return self::CSV;
-            case 'pdf':
-                return self::Pdf;
-            default:
-                return null;
-        }
+        return config('excel.extension_detector.' . strtolower($pathinfo['extension']));
     }
 }

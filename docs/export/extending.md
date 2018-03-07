@@ -126,19 +126,3 @@ class InvoicesExport implements WithEvents
     }
 }
 ```
-
-### Collection macro's
-
-The package provides a macro to Laravel's collection class to easily download or store a collection.
-
-#### Storing a collecting on disk
-
-```php
-$collection->storeExcel($filePath, $disk = null, $writerType = null)
-```
-
-#### Downloading a collection as excel
-
-```php
-$collection->downloadExcel($filePath, $writerType = null)
-```

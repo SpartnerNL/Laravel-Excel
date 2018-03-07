@@ -61,3 +61,19 @@ public function export(Excel $excel, InvoicesExport $export)
     return $excel->download($export, 'invoices.xlsx');
 }
 ```
+
+### Collection macro's
+
+The package provides some macro to Laravel's collection class to easily download or store a collection.
+
+#### Downloading a collection as excel
+
+```php
+(new Collection([[1, 2, 3], [1, 2, 3]))->downloadExcel($filePath, $writerType = null)
+```
+
+#### Storing a collection on disk
+
+```php
+(new Collection([[1, 2, 3], [1, 2, 3]))->storeExcel($filePath, $disk = null, $writerType = null)
+```
