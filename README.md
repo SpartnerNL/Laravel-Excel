@@ -1,6 +1,7 @@
 # Laravel Excel 3.0
 
 [![Build Status](https://travis-ci.org/Maatwebsite/Laravel-Excel.svg?branch=3.0)](https://travis-ci.org/Maatwebsite/Laravel-Excel)
+[![codecov](https://codecov.io/gh/Maatwebsite/Laravel-Excel/branch/3.0/graph/badge.svg)](https://codecov.io/gh/Maatwebsite/Laravel-Excel)
 [![StyleCI](https://styleci.io/repos/14259390/shield?branch=3.0)](https://styleci.io/repos/14259390)
 [![Latest Stable Version](https://poser.pugx.org/maatwebsite/excel/v/stable.png)](https://packagist.org/packages/maatwebsite/excel)
 [![Total Downloads](https://poser.pugx.org/maatwebsite/excel/downloads.png)](https://packagist.org/packages/maatwebsite/excel)
