@@ -9,7 +9,6 @@ use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Illuminate\Contracts\Support\Arrayable;
 use Maatwebsite\Excel\Concerns\WithMapping;
-use Maatwebsite\Excel\Events\BeforeWriting;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
 
 class FromUsersQueryExport implements FromQuery, WithMapping, WithEvents
@@ -42,7 +41,7 @@ class FromUsersQueryExport implements FromQuery, WithMapping, WithEvents
         return [
             BeforeSheet::class   => function (BeforeSheet $event) {
                 $event->sheet->chunkSize(10);
-            }
+            },
         ];
     }
 }
