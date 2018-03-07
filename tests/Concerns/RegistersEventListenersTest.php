@@ -3,7 +3,6 @@
 namespace Maatwebsite\Excel\Tests\Concerns;
 
 use Maatwebsite\Excel\Sheet;
-use Maatwebsite\Excel\Tests\Data\Stubs\ExportWithRegistersEventListeners;
 use Maatwebsite\Excel\Writer;
 use Maatwebsite\Excel\Tests\TestCase;
 use Maatwebsite\Excel\Events\AfterSheet;
@@ -13,6 +12,7 @@ use Maatwebsite\Excel\Events\BeforeWriting;
 use Maatwebsite\Excel\Tests\Data\Stubs\ExportWithEvents;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Maatwebsite\Excel\Tests\Data\Stubs\BeforeExportListener;
+use Maatwebsite\Excel\Tests\Data\Stubs\ExportWithRegistersEventListeners;
 
 class RegistersEventListenersTest extends TestCase
 {
