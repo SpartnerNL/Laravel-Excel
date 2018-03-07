@@ -239,10 +239,6 @@ class Sheet
                 $row = $sheetExport->map($row);
             }
 
-            if ($row instanceof Arrayable) {
-                $row = $row->toArray();
-            }
-
             $append[] = $row;
         }
 

@@ -41,6 +41,20 @@ class ExportableTest extends TestCase
     /**
      * @test
      * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage A filepath needs to be passed in order to store the export
+     */
+    public function needs_to_have_a_file_name_when_queuing()
+    {
+        $export = new class {
+            use Exportable;
+        };
+
+        $export->queue();
+    }
+
+    /**
+     * @test
+     * @expectedException \InvalidArgumentException
      * @expectedExceptionMessage A filename needs to be passed in order to download the export
      */
     public function responsable_needs_to_have_file_name_configured_inside_the_export()

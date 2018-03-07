@@ -62,7 +62,7 @@ trait Exportable
         $filePath = $filePath ?? $this->filePath ?? null;
 
         if (null === $filePath) {
-            throw new InvalidArgumentException('A file name needs to be passed in order to download the export');
+            throw new InvalidArgumentException('A filepath needs to be passed in order to store the export');
         }
 
         return resolve(Excel::class)->queue(

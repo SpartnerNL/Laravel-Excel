@@ -39,7 +39,7 @@ More about support can be found at: [https://laravel-excel.maatwebsite.nl/docs/3
 
 More about contributing can be found at: [https://laravel-excel.maatwebsite.nl/docs/3.0/getting-started/contributing](https://laravel-excel.maatwebsite.nl/docs/3.0/getting-started/contributing)
 
-## License
+## License & Postcardware
 
 If you use the software in your production environment we would appreciate to receive a postcard of your hometown. Please send it to:
 

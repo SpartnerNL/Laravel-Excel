@@ -9,6 +9,9 @@ use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\RegistersEventListeners;
+use Maatwebsite\Excel\Events\BeforeWriting;
+use Maatwebsite\Excel\Tests\TestCase;
+use Maatwebsite\Excel\Writer;
 
 class SheetWith100Rows implements FromCollection, WithTitle, ShouldAutoSize, WithEvents
 {
@@ -51,5 +54,13 @@ class SheetWith100Rows implements FromCollection, WithTitle, ShouldAutoSize, Wit
     public function title(): string
     {
         return $this->title;
+    }
+
+    /**
+     * @param BeforeWriting $event
+     */
+    public static function beforeWriting(BeforeWriting $event)
+    {
+        TestCase::assertInstanceOf(Writer::class, $event->writer);
     }
 }

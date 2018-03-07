@@ -36,14 +36,4 @@ class QueuedQueryExportTest extends TestCase
 
         $this->assertCount(100, $actual);
     }
-
-    /**
-     * @param \Illuminate\Foundation\Application $app
-     */
-    protected function getEnvironmentSetUp($app)
-    {
-        parent::getEnvironmentSetUp($app);
-
-        $app['config']->set('excel.exports.chunk_size', 10);
-    }
 }
