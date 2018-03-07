@@ -145,7 +145,7 @@ class Excel
     protected function findTypeByExtension(string $fileName)
     {
         $pathinfo = pathinfo($fileName);
-        
+
         return config('excel.extension_detector.' . strtolower($pathinfo['extension'] ?? ''));
     }
 }
