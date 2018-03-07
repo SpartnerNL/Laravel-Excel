@@ -2,6 +2,8 @@
 
 namespace Maatwebsite\Excel\Tests\Data\Stubs;
 
+use Maatwebsite\Excel\Writer;
+use Maatwebsite\Excel\Tests\TestCase;
 use Illuminate\Database\Query\Builder;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Events\BeforeSheet;
@@ -11,8 +13,6 @@ use Illuminate\Contracts\Support\Arrayable;
 use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Events\BeforeWriting;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
-use Maatwebsite\Excel\Tests\TestCase;
-use Maatwebsite\Excel\Writer;
 
 class FromUsersQueryExport implements FromQuery, WithMapping, WithEvents
 {
@@ -47,7 +47,7 @@ class FromUsersQueryExport implements FromQuery, WithMapping, WithEvents
             },
             BeforeWriting::class => function (BeforeWriting $event) {
                 TestCase::assertInstanceOf(Writer::class, $event->writer);
-            }
+            },
         ];
     }
 }
