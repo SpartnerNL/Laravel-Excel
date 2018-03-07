@@ -46,7 +46,7 @@ class FromUsersQueryExport implements FromQuery, WithMapping, WithEvents
                 $event->sheet->chunkSize(10);
             },
             BeforeWriting::class => function (BeforeWriting $event) {
-                TestCase::assertInstanceOf(Writer::class, $event->writer);
+                //
             },
         ];
     }
