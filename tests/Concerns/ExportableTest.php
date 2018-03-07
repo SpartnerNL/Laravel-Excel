@@ -2,10 +2,10 @@
 
 namespace Maatwebsite\Excel\Tests\Concerns;
 
-use Illuminate\Contracts\Support\Responsable;
 use Illuminate\Http\Request;
-use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Tests\TestCase;
+use Maatwebsite\Excel\Concerns\Exportable;
+use Illuminate\Contracts\Support\Responsable;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class ExportableTest extends TestCase
@@ -17,8 +17,7 @@ class ExportableTest extends TestCase
      */
     public function needs_to_have_a_file_name_when_downloading()
     {
-        $export = new class
-        {
+        $export = new class {
             use Exportable;
         };
 
@@ -32,8 +31,7 @@ class ExportableTest extends TestCase
      */
     public function needs_to_have_a_file_name_when_storing()
     {
-        $export = new class
-        {
+        $export = new class {
             use Exportable;
         };
 
@@ -47,8 +45,7 @@ class ExportableTest extends TestCase
      */
     public function responsable_needs_to_have_file_name_configured_inside_the_export()
     {
-        $export = new class implements Responsable
-        {
+        $export = new class implements Responsable {
             use Exportable;
         };
 
@@ -60,8 +57,7 @@ class ExportableTest extends TestCase
      */
     public function is_responsable()
     {
-        $export = new class implements Responsable
-        {
+        $export = new class implements Responsable {
             use Exportable;
 
             protected $fileName = 'export.xlsx';
