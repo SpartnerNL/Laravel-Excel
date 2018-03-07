@@ -10,6 +10,13 @@
          stopOnFailure="false"
          syntaxCheck="true"
 >
+    <php>
+        <env name="DB_HOST" value="127.0.0.1" />
+        <env name="DB_PORT" value="3306" />
+        <env name="DB_DATABASE" value="laravel_excel" />
+        <env name="DB_USERNAME" value="root" />
+        <env name="DB_PASSWORD" value="" />
+    </php>
     <testsuites>
         <testsuite name="Package Test Suite">
             <directory suffix="Test.php">./tests/</directory>

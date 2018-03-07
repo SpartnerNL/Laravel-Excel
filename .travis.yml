@@ -6,6 +6,9 @@ cache:
   directories:
     - $HOME/.composer/cache
 
+services:
+  - mysql
+
 php:
   - 7.1
   - 7.2
@@ -17,6 +20,7 @@ env:
 before_install:
   - composer self-update --stable --no-interaction
   - composer require orchestra/testbench:$TESTBENCH phpunit/phpunit:$PHPUNIT --no-update --no-interaction --dev
+  - mysql -e 'CREATE DATABASE IF NOT EXISTS laravel_excel;'
 
 install:
   - travis_retry composer install --no-suggest --no-interaction

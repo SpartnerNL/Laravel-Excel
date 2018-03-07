@@ -10,7 +10,7 @@ class QueuedExport implements WithMultipleSheets
     use Exportable;
 
     /**
-     * @return array
+     * @return SheetWith100Rows[]
      */
     public function sheets(): array
     {
