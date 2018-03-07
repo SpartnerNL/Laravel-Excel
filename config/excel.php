@@ -82,5 +82,5 @@ return [
         |
         */
         'pdf'      => Excel::DOMPDF,
-    ]
+    ],
 ];
