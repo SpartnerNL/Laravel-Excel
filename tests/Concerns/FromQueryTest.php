@@ -2,9 +2,9 @@
 
 namespace Maatwebsite\Excel\Tests\Concerns;
 
+use Maatwebsite\Excel\Tests\TestCase;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
 use Maatwebsite\Excel\Tests\Data\Stubs\FromUsersQueryExport;
-use Maatwebsite\Excel\Tests\TestCase;
 
 class FromQueryTest extends TestCase
 {
@@ -34,7 +34,7 @@ class FromQueryTest extends TestCase
 
         $contents = $this->readAsArray(__DIR__ . '/../Data/Disks/Local/from-query-store.xlsx', 'Xlsx');
 
-        $allUsers = $export->query()->get()->map(function(User $user) {
+        $allUsers = $export->query()->get()->map(function (User $user) {
             return array_values($user->toArray());
         })->toArray();
 

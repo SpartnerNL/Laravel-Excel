@@ -2,9 +2,9 @@
 
 namespace Maatwebsite\Excel\Tests;
 
+use PhpOffice\PhpSpreadsheet\IOFactory;
 use Maatwebsite\Excel\ExcelServiceProvider;
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
-use PhpOffice\PhpSpreadsheet\IOFactory;
 
 class TestCase extends OrchestraTestCase
 {
