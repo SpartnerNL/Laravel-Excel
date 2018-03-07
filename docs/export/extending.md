@@ -12,8 +12,6 @@ The events will be activated by adding the `WithEvents` concern. Inside the `reg
 will have to return an array of events. The key is the event FQN and the value is a callable event listener.
 This can either be a closure, array-callable  or invokable class.
 
-Do note that using a `Closure` will not be possible in combination with queued exports, as PHP cannot serialize the closure.
-
 ```php
 class InvoicesExport implements WithEvents
 {
@@ -42,6 +40,9 @@ class InvoicesExport implements WithEvents
     }
 }
 ```
+
+Do note that using a `Closure` will not be possible in combination with queued exports, as PHP cannot serialize the closure.
+In those cases it might be better to use the `RegistersEventListeners` trait.
 
 #### Auto register event listeners
 
@@ -82,7 +83,7 @@ class InvoicesExport implements WithEvents
 |`Maatwebsite\Excel\Events\BeforeExport` | `$event->writer : Writer` | Event gets raised at the start of the process. | 
 | `Maatwebsite\Excel\Events\BeforeWriting` | `$event->writer : Writer` | Event gets raised before the download/store starts. |
 | `Maatwebsite\Excel\Events\BeforeSheet` | `$event->sheet : Sheet` | Event gets raised just after the sheet is created. |
-| `Maatwebsite\Excel\Events\BeforeWriting` | `$event->sheet : Sheet` | Event gets raised at the end of the sheet process. |
+| `Maatwebsite\Excel\Events\AfterSheet` | `$event->sheet : Sheet` | Event gets raised at the end of the sheet process. |
 
 
 ### Macroable
@@ -101,7 +102,7 @@ Writer::macro('setCreator', function (Writer $writer, string $creator) {
 
 ```php
 Sheet::macro('setOrientation', function (Sheet $sheet, $orientation) {
-    return $sheet->getPageSetup()->setOrientation($orientation);
+    $sheet->getPageSetup()->setOrientation($orientation);
 });
 ```
 

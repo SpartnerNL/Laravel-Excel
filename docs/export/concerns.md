@@ -17,4 +17,5 @@
 
 | Trait | Explanation |
 |---- |----|
-|`Maatwebsite\Excel\Concerns\Exportable` | Will add download/store abilities right on the export class itself. | 
+|`Maatwebsite\Excel\Concerns\Exportable` | Will add download/store abilities right on the export class itself
+|`Maatwebsite\Excel\Concerns\RegistersEventListeners` | Will auto register the available event listeners. | 

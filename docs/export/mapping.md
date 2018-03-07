@@ -8,10 +8,13 @@ In case of using the Eloquent query builder,
 ```php
 class InvoicesExport implements FromQuery, WithMapping
     
-    public function map($row): array
+    /**
+    * @var Invoice $invoice
+    */
+    public function map($invoice): array
     {
         return [
-            $row->invoice_number,
+            $invoice->invoice_number,
             Date::dateTimeToExcel($invoice->created_at),
         ];
     }
@@ -20,12 +23,13 @@ class InvoicesExport implements FromQuery, WithMapping
 
 ### Adding a heading row
 
-A heading row can easily be added by adding the `WithHeadings` concern.
+A heading row can easily be added by adding the `WithHeadings` concern. The heading row will be added
+as very first row of the sheet.
 
 ```php
 class InvoicesExport implements FromQuery, WithHeadings
     
-    public function map($row): array
+    public function headings(): array
     {
         return [
             '#',

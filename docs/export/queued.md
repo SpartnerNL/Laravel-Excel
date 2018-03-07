@@ -24,7 +24,8 @@ It's as easy as calling `->queue()` now.
 return (new InvoicesExport)->queue('invoices.xlsx');
 ```
 
-Behind the scenes the query will be chunked and multiple jobs will be chained. 
+Behind the scenes the query will be chunked and multiple jobs will be chained. These jobs will be executed in the correct order,
+and will only execute if non of the previous have failed. 
 
 ### Appending jobs
 
@@ -54,4 +55,17 @@ Because `PendingDispatch` is returned, we can also change the queue that should 
 
 ```php
 return (new InvoicesExport)->queue('invoices.xlsx')->allOnQueue('exports');
+```
+
+### Chaining jobs
+
+It's also possible to chain extra jobs, that will be added to the end of the queue and only 
+executed if all export jobs are correctly executed.
+
+```php
+return (new InvoicesExport)
+    ->queue('invoices.xlsx')
+    ->chain([
+        new NotifyUserOfCompletedExport(request()->user())
+    ]);
 ```
