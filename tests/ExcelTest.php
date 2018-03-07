@@ -102,20 +102,21 @@ class ExcelTest extends TestCase
 
             public static function beforeWriting(BeforeWriting $event)
             {
-                $event->writer->setLineEnding("\n");
+                $event->writer->setLineEnding(PHP_EOL);
                 $event->writer->setEnclosure('');
                 $event->writer->setDelimiter(';');
                 $event->writer->setIncludeSeparatorLine(true);
-                $event->writer->setExcelCompatibility(true);
+                $event->writer->setExcelCompatibility(false);
             }
         };
 
         $this->SUT->store($export, 'filename.csv');
 
-        $this->assertFileEquals(
-            __DIR__ . '/Data/Stubs/Files/expected-csv.csv',
-            __DIR__ . '/Data/Disks/Local/filename.csv'
-        );
+        $contents = file_get_contents(__DIR__ . '/Data/Disks/Local/filename.csv');
+
+        $this->assertContains('sep=;', $contents);
+        $this->assertContains('A1;B1', $contents);
+        $this->assertContains('A2;B2', $contents);
     }
 
     /**
