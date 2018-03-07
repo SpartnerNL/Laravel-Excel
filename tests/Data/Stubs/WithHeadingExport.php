@@ -4,8 +4,8 @@ namespace Maatwebsite\Excel\Tests\Data\Stubs;
 
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\Exportable;
-use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Concerns\FromCollection;
 
 class WithHeadingExport implements FromCollection, WithHeadings
 {
@@ -17,8 +17,8 @@ class WithHeadingExport implements FromCollection, WithHeadings
     public function collection()
     {
         return collect([
-           ['A1', 'B1' ,'C1'],
-           ['A2', 'B2', 'C2']
+           ['A1', 'B1', 'C1'],
+           ['A2', 'B2', 'C2'],
         ]);
     }
 

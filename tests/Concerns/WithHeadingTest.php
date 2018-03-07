@@ -2,8 +2,8 @@
 
 namespace Maatwebsite\Excel\Tests\Concerns;
 
-use Maatwebsite\Excel\Tests\Data\Stubs\WithHeadingExport;
 use Maatwebsite\Excel\Tests\TestCase;
+use Maatwebsite\Excel\Tests\Data\Stubs\WithHeadingExport;
 
 class WithHeadingTest extends TestCase
 {
