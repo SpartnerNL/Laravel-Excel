@@ -11,6 +11,7 @@ use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Events\BeforeWriting;
 use Maatwebsite\Excel\Concerns\FromCollection;
+use Maatwebsite\Excel\Facades\Excel as ExcelFacade;
 use Maatwebsite\Excel\Tests\Data\Stubs\EmptyExport;
 use Maatwebsite\Excel\Concerns\RegistersEventListeners;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
@@ -27,6 +28,19 @@ class ExcelTest extends TestCase
         parent::setUp();
 
         $this->SUT = $this->app->make(Excel::class);
+    }
+
+    /**
+     * @test
+     */
+    public function can_download_an_export_object_with_facade()
+    {
+        $export = new EmptyExport();
+
+        $response = ExcelFacade::download($export, 'filename.xlsx');
+
+        $this->assertInstanceOf(BinaryFileResponse::class, $response);
+        $this->assertEquals('attachment; filename="filename.xlsx"', $response->headers->get('Content-Disposition'));
     }
 
     /**

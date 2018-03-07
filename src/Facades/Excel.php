@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 /**
  * @method static BinaryFileResponse download(object $export, string $fileName, string $writerType = null)
  * @method static bool store(object $export, string $filePath, string $disk = null, string $writerType = null)
+ * @method static bool queue(object $export, string $filePath, string $disk = null, string $writerType = null)
  */
 class Excel extends Facade
 {
