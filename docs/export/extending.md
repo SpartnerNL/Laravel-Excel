@@ -43,6 +43,38 @@ class InvoicesExport implements WithEvents
 }
 ```
 
+#### Auto register event listeners
+
+By using the `RegistersEventListeners` trait you can auto-register the event listeners,
+without the need of using the `registerEvents`. The listener will only be registered if the method is created. 
+
+```php
+class InvoicesExport implements WithEvents
+{
+    use Exportable, RegistersEventListeners;
+    
+    public static function beforeExport(BeforeExport $event)
+    {
+        //
+    }
+
+    public static function beforeWriting(BeforeWriting $event)
+    {
+        //
+    }
+
+    public static function beforeSheet(BeforeSheet $event)
+    {
+        //
+    }
+
+    public static function afterSheet(AfterSheet $event)
+    {
+        //
+    }
+}
+```
+
 #### Available events
 
 | Event name | Payload | Explanation |

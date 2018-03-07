@@ -40,4 +40,11 @@ More about contributing can be found at: [https://laravel-excel.maatwebsite.nl/d
 
 ## License
 
+If you use the software in your production environment we would appreciate to receive a postcard of your hometown. Please send it to:
+
+**Maatwebsite**  
+Florijnruwe 111-2  
+6218 CA Maastricht  
+The Netherlands  
+
 More about the license can be found at: [https://laravel-excel.maatwebsite.nl/docs/3.0/getting-started/license](https://laravel-excel.maatwebsite.nl/docs/3.0/getting-started/license)
