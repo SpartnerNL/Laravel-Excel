@@ -4,13 +4,13 @@ namespace Maatwebsite\Excel\Tests\Concerns;
 
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
-use Maatwebsite\Excel\Concerns\Exportable;
-use Maatwebsite\Excel\Concerns\FromCollection;
-use Maatwebsite\Excel\Concerns\WithColumnFormatting;
-use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Tests\TestCase;
 use PhpOffice\PhpSpreadsheet\Shared\Date;
+use Maatwebsite\Excel\Concerns\Exportable;
+use Maatwebsite\Excel\Concerns\WithMapping;
+use Maatwebsite\Excel\Concerns\FromCollection;
 use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
+use Maatwebsite\Excel\Concerns\WithColumnFormatting;
 
 class WithColumnFormattingTest extends TestCase
 {
@@ -19,8 +19,7 @@ class WithColumnFormattingTest extends TestCase
      */
     public function can_export_with_heading()
     {
-        $export = new class() implements FromCollection, WithMapping, WithColumnFormatting
-        {
+        $export = new class() implements FromCollection, WithMapping, WithColumnFormatting {
             use Exportable;
 
             /**
@@ -31,7 +30,7 @@ class WithColumnFormattingTest extends TestCase
                 return collect([
                     [Carbon::createFromDate(2018, 3, 6)],
                     [Carbon::createFromDate(2018, 3, 7)],
-                    [Carbon::createFromDate(2018, 3, 8)]
+                    [Carbon::createFromDate(2018, 3, 8)],
                 ]);
             }
 
@@ -53,7 +52,7 @@ class WithColumnFormattingTest extends TestCase
             public function columnFormats(): array
             {
                 return [
-                    'A' => NumberFormat::FORMAT_DATE_DDMMYYYY
+                    'A' => NumberFormat::FORMAT_DATE_DDMMYYYY,
                 ];
             }
         };

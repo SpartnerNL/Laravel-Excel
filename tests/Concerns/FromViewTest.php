@@ -2,12 +2,12 @@
 
 namespace Maatwebsite\Excel\Tests\Concerns;
 
-use Illuminate\Contracts\View\View;
 use Illuminate\Support\Collection;
-use Maatwebsite\Excel\Concerns\Exportable;
-use Maatwebsite\Excel\Concerns\FromView;
-use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
+use Illuminate\Contracts\View\View;
 use Maatwebsite\Excel\Tests\TestCase;
+use Maatwebsite\Excel\Concerns\FromView;
+use Maatwebsite\Excel\Concerns\Exportable;
+use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
 
 class FromViewTest extends TestCase
 {
@@ -29,8 +29,7 @@ class FromViewTest extends TestCase
         /** @var Collection|User[] $users */
         $users = factory(User::class)->times(100)->make();
 
-        $export = new class($users) implements FromView
-        {
+        $export = new class($users) implements FromView {
             use Exportable;
 
             /**
@@ -52,7 +51,7 @@ class FromViewTest extends TestCase
             public function view(): View
             {
                 return view('users', [
-                    'users' => $this->users
+                    'users' => $this->users,
                 ]);
             }
         };

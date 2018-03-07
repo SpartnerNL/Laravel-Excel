@@ -2,8 +2,8 @@
 
 namespace Maatwebsite\Excel\Tests\Concerns;
 
-use Maatwebsite\Excel\Tests\Data\Stubs\WithMappingExport;
 use Maatwebsite\Excel\Tests\TestCase;
+use Maatwebsite\Excel\Tests\Data\Stubs\WithMappingExport;
 
 class WithMappingTest extends TestCase
 {
@@ -30,7 +30,7 @@ class WithMappingTest extends TestCase
                 'mapped-A2',
                 'mapped-B2',
                 'mapped-C2',
-            ]
+            ],
         ];
 
         $this->assertEquals($expected, $actual);

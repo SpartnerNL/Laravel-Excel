@@ -22,8 +22,8 @@ class WithHeadingTest extends TestCase
 
         $expected = [
             ['A', 'B', 'C'],
-            ['A1', 'B1', 'C1',],
-            ['A2', 'B2', 'C2',]
+            ['A1', 'B1', 'C1'],
+            ['A2', 'B2', 'C2'],
         ];
 
         $this->assertEquals($expected, $actual);

@@ -2,8 +2,8 @@
 
 namespace Maatwebsite\Excel\Tests;
 
-use Maatwebsite\Excel\Tests\Data\Stubs\AfterQueueExportJob;
 use Maatwebsite\Excel\Tests\Data\Stubs\QueuedExport;
+use Maatwebsite\Excel\Tests\Data\Stubs\AfterQueueExportJob;
 
 class QueuedExportTest extends TestCase
 {

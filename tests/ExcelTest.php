@@ -2,10 +2,8 @@
 
 namespace Maatwebsite\Excel\Tests;
 
-use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Excel;
 use Maatwebsite\Excel\Tests\Data\Stubs\EmptyExport;
-use Maatwebsite\Excel\Writer;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class ExcelTest extends TestCase
