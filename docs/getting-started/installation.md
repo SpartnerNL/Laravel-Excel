@@ -86,6 +86,21 @@ public function export()
 
 ```
 
+Via `Exporter` interface:
+
+```php
+public function __construct(\Maatwebsite\Excel\Exporter $excel)
+{
+    $this->excel = $excel;
+}
+
+public function export()
+{
+    return $this->excel->export(new Export);
+}
+
+```
+
 Via the Facade
 
 ```php

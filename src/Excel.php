@@ -3,11 +3,9 @@
 namespace Maatwebsite\Excel;
 
 use Illuminate\Filesystem\FilesystemManager;
-use Illuminate\Foundation\Bus\PendingDispatch;
 use Illuminate\Contracts\Routing\ResponseFactory;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
-class Excel
+class Excel implements Exporter
 {
     const XLSX     = 'Xlsx';
 
@@ -70,13 +68,7 @@ class Excel
     }
 
     /**
-     * @param object      $export
-     * @param string|null $fileName
-     * @param string      $writerType
-     *
-     * @throws \PhpOffice\PhpSpreadsheet\Exception
-     * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
-     * @return BinaryFileResponse
+     * {@inheritdoc}
      */
     public function download($export, string $fileName, string $writerType = null)
     {
@@ -86,14 +78,7 @@ class Excel
     }
 
     /**
-     * @param object      $export
-     * @param string      $filePath
-     * @param string|null $disk
-     * @param string      $writerType
-     *
-     * @throws \PhpOffice\PhpSpreadsheet\Exception
-     * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
-     * @return bool
+     * {@inheritdoc}
      */
     public function store($export, string $filePath, string $disk = null, string $writerType = null)
     {
@@ -103,12 +88,7 @@ class Excel
     }
 
     /**
-     * @param object      $export
-     * @param string      $filePath
-     * @param string|null $disk
-     * @param string      $writerType
-     *
-     * @return PendingDispatch
+     * {@inheritdoc}
      */
     public function queue($export, string $filePath, string $disk = null, string $writerType = null)
     {
@@ -144,9 +124,9 @@ class Excel
      */
     protected function findTypeByExtension(string $fileName)
     {
-        $pathinfo = pathinfo($fileName);
+        $pathInfo = pathinfo($fileName);
 
-        return config('excel.extension_detector.' . strtolower($pathinfo['extension'] ?? ''));
+        return config('excel.extension_detector.' . strtolower($pathInfo['extension'] ?? ''));
     }
 
     /**

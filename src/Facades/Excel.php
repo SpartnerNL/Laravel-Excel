@@ -4,12 +4,28 @@ namespace Maatwebsite\Excel\Facades;
 
 use Illuminate\Support\Facades\Facade;
 use Maatwebsite\Excel\Fakes\ExcelFake;
-use Maatwebsite\Excel\Fakes\WriterFake;
-use Maatwebsite\Excel\Fakes\QueuedWriterFake;
-use Illuminate\Contracts\Routing\ResponseFactory;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
+/**
+ * @method static BinaryFileResponse download(object $export, string $fileName, string $writerType = null)
+ * @method static bool store(object $export, string $filePath, string $disk = null, string $writerType = null)
+ * @method static bool queue(object $export, string $filePath, string $disk = null, string $writerType = null)
+ * @method static void assertDownloaded(string $fileName)
+ * @method static void assertStored(string $filePath, string $disk = null)
+ * @method static void assertQueued(string $filePath, string $disk = null)
+ */
 class Excel extends Facade
 {
+    /**
+     * Replace the bound instance with a fake.
+     *
+     * @return void
+     */
+    public static function fake()
+    {
+        static::swap(new ExcelFake());
+    }
+
     /**
      * Get the registered name of the component.
      *
@@ -18,20 +34,5 @@ class Excel extends Facade
     protected static function getFacadeAccessor()
     {
         return 'excel';
-    }
-
-    /**
-     * Replace the bound instance with a fake.
-     *
-     * @return void
-     */
-    public static function fake()
-    {
-        static::swap(new ExcelFake(
-            app()->make(WriterFake::class),
-            app()->make(QueuedWriterFake::class),
-            app()->make(ResponseFactory::class),
-            app()->make('filesystem')
-        ));
     }
 }
