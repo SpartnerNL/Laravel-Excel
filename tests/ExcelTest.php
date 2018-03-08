@@ -5,11 +5,14 @@ namespace Maatwebsite\Excel\Tests;
 use Maatwebsite\Excel\Excel;
 use Illuminate\Support\Collection;
 use Illuminate\Contracts\View\View;
+use Maatwebsite\Excel\Fakes\ExcelFake;
+use Maatwebsite\Excel\Fakes\WriterFake;
 use Maatwebsite\Excel\Concerns\FromView;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Events\BeforeWriting;
+use Maatwebsite\Excel\Fakes\QueuedWriterFake;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Facades\Excel as ExcelFacade;
 use Maatwebsite\Excel\Tests\Data\Stubs\EmptyExport;
@@ -41,6 +44,20 @@ class ExcelTest extends TestCase
 
         $this->assertInstanceOf(BinaryFileResponse::class, $response);
         $this->assertEquals('attachment; filename="filename.xlsx"', $response->headers->get('Content-Disposition'));
+    }
+
+    /**
+     * @test
+     */
+    public function can_fake_an_export_object()
+    {
+        ExcelFacade::fake();
+
+        $excel = $this->app->make(Excel::class);
+
+        $this->assertInstanceOf(ExcelFake::class, $excel);
+        $this->assertInstanceOf(WriterFake::class, $excel->getWritter());
+        $this->assertInstanceOf(QueuedWriterFake::class, $excel->getQueuedWritter());
     }
 
     /**

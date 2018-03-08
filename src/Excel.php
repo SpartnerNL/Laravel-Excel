@@ -148,4 +148,24 @@ class Excel
 
         return config('excel.extension_detector.' . strtolower($pathinfo['extension'] ?? ''));
     }
+
+    /**
+     * Get the writer.
+     *
+     * @return Writer
+     */
+    public function getWritter()
+    {
+        return $this->writer;
+    }
+
+    /**
+     * Get the queued writer.
+     *
+     * @return QueuedWriter
+     */
+    public function getQueuedWritter()
+    {
+        return $this->queuedWriter;
+    }
 }
