@@ -5,6 +5,7 @@ namespace Maatwebsite\Excel\Tests;
 use Maatwebsite\Excel\Excel;
 use Illuminate\Support\Collection;
 use Illuminate\Contracts\View\View;
+use Maatwebsite\Excel\Exporter;
 use Maatwebsite\Excel\Fakes\ExcelFake;
 use Maatwebsite\Excel\Fakes\WriterFake;
 use Maatwebsite\Excel\Concerns\FromView;
@@ -49,15 +50,13 @@ class ExcelTest extends TestCase
     /**
      * @test
      */
-    public function can_fake_an_export_object()
+    public function can_fake_an_export()
     {
         ExcelFacade::fake();
 
-        $excel = $this->app->make(Excel::class);
+        $excel = $this->app->make('excel');
 
         $this->assertInstanceOf(ExcelFake::class, $excel);
-        $this->assertInstanceOf(WriterFake::class, $excel->getWritter());
-        $this->assertInstanceOf(QueuedWriterFake::class, $excel->getQueuedWritter());
     }
 
     /**

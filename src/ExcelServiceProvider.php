@@ -42,6 +42,7 @@ class ExcelServiceProvider extends ServiceProvider
         });
 
         $this->app->alias('excel', Excel::class);
+        $this->app->alias('excel', Exporter::class);
 
         Collection::mixin(new DownloadCollection);
         Collection::mixin(new StoreCollection);
@@ -52,6 +53,6 @@ class ExcelServiceProvider extends ServiceProvider
      */
     protected function getConfigFile(): string
     {
-        return __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'config/excel.php';
+        return __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'excel.php';
     }
 }
