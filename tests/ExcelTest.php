@@ -2,6 +2,7 @@
 
 namespace Maatwebsite\Excel\Tests;
 
+use Illuminate\Foundation\Bus\PendingDispatch;
 use Maatwebsite\Excel\Excel;
 use Illuminate\Support\Collection;
 use Illuminate\Contracts\View\View;
@@ -51,9 +52,24 @@ class ExcelTest extends TestCase
     {
         ExcelFacade::fake();
 
-        $excel = $this->app->make('excel');
+        // Excel instance should be swapped to the fake now.
+        $this->assertInstanceOf(ExcelFake::class, $this->app->make('excel'));
 
-        $this->assertInstanceOf(ExcelFake::class, $excel);
+        $export = new class
+        {
+        };
+
+        $response = ExcelFacade::download($export, 'downloaded-filename.csv');
+        $this->assertInstanceOf(BinaryFileResponse::class, $response);
+        ExcelFacade::assertDownloaded('downloaded-filename.csv');
+
+        $response = ExcelFacade::store($export, 'stored-filename.csv');
+        $this->assertTrue($response);
+        ExcelFacade::assertStored('stored-filename.csv');
+
+        $response = ExcelFacade::queue($export, 'queued-filename.csv');
+        $this->assertInstanceOf(PendingDispatch::class, $response);
+        ExcelFacade::assertQueued('queued-filename.csv');
     }
 
     /**
@@ -113,7 +129,8 @@ class ExcelTest extends TestCase
      */
     public function can_store_csv_export_with_custom_settings()
     {
-        $export = new class implements WithEvents, FromCollection {
+        $export = new class implements WithEvents, FromCollection
+        {
             use RegistersEventListeners;
 
             /**
@@ -153,7 +170,8 @@ class ExcelTest extends TestCase
      */
     public function cannot_use_from_collection_and_from_view_on_same_export()
     {
-        $export = new class implements FromCollection, FromView {
+        $export = new class implements FromCollection, FromView
+        {
             use Exportable;
 
             /**
