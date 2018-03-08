@@ -6,5 +6,4 @@ use Maatwebsite\Excel\Excel;
 
 class ExcelFake extends Excel
 {
-
 }

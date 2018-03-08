@@ -11,16 +11,6 @@ use Illuminate\Contracts\Routing\ResponseFactory;
 class Excel extends Facade
 {
     /**
-     * Get the registered name of the component.
-     *
-     * @return string
-     */
-    protected static function getFacadeAccessor()
-    {
-        return 'excel';
-    }
-
-    /**
      * Replace the bound instance with a fake.
      *
      * @return void
@@ -33,5 +23,15 @@ class Excel extends Facade
             app()->make(ResponseFactory::class),
             app()->make('filesystem')
         ));
+    }
+
+    /**
+     * Get the registered name of the component.
+     *
+     * @return string
+     */
+    protected static function getFacadeAccessor()
+    {
+        return 'excel';
     }
 }
