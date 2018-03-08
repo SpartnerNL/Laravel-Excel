@@ -134,7 +134,7 @@ class Excel implements Exporter
      *
      * @return Writer
      */
-    public function getWritter()
+    public function getWriter()
     {
         return $this->writer;
     }
@@ -144,7 +144,7 @@ class Excel implements Exporter
      *
      * @return QueuedWriter
      */
-    public function getQueuedWritter()
+    public function getQueuedWriter()
     {
         return $this->queuedWriter;
     }
