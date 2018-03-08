@@ -3,10 +3,10 @@
 namespace Maatwebsite\Excel\Fakes;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Foundation\Bus\PendingDispatch;
-use Illuminate\Support\Facades\Queue;
-use Maatwebsite\Excel\Exporter;
 use PHPUnit\Framework\Assert;
+use Maatwebsite\Excel\Exporter;
+use Illuminate\Support\Facades\Queue;
+use Illuminate\Foundation\Bus\PendingDispatch;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class ExcelFake implements Exporter
@@ -55,8 +55,7 @@ class ExcelFake implements Exporter
 
         $this->queued[$disk ?? 'default'][] = $filePath;
 
-        return new PendingDispatch(new class
-        {
+        return new PendingDispatch(new class {
             use Queueable;
 
             public function handle()
