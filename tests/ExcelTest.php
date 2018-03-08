@@ -3,15 +3,12 @@
 namespace Maatwebsite\Excel\Tests;
 
 use Maatwebsite\Excel\Excel;
-use Illuminate\Support\Collection;
 use Illuminate\Contracts\View\View;
-use Maatwebsite\Excel\Fakes\ExcelFake;
 use Maatwebsite\Excel\Concerns\FromView;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Events\BeforeWriting;
-use Illuminate\Foundation\Bus\PendingDispatch;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Facades\Excel as ExcelFacade;
 use Maatwebsite\Excel\Tests\Data\Stubs\EmptyExport;
@@ -43,32 +40,6 @@ class ExcelTest extends TestCase
 
         $this->assertInstanceOf(BinaryFileResponse::class, $response);
         $this->assertEquals('attachment; filename="filename.xlsx"', $response->headers->get('Content-Disposition'));
-    }
-
-    /**
-     * @test
-     */
-    public function can_fake_an_export()
-    {
-        ExcelFacade::fake();
-
-        // Excel instance should be swapped to the fake now.
-        $this->assertInstanceOf(ExcelFake::class, $this->app->make('excel'));
-
-        $export = new class {
-        };
-
-        $response = ExcelFacade::download($export, 'downloaded-filename.csv');
-        $this->assertInstanceOf(BinaryFileResponse::class, $response);
-        ExcelFacade::assertDownloaded('downloaded-filename.csv');
-
-        $response = ExcelFacade::store($export, 'stored-filename.csv');
-        $this->assertTrue($response);
-        ExcelFacade::assertStored('stored-filename.csv');
-
-        $response = ExcelFacade::queue($export, 'queued-filename.csv');
-        $this->assertInstanceOf(PendingDispatch::class, $response);
-        ExcelFacade::assertQueued('queued-filename.csv');
     }
 
     /**
