@@ -3,9 +3,7 @@
 namespace Maatwebsite\Excel;
 
 use Illuminate\Filesystem\FilesystemManager;
-use Illuminate\Foundation\Bus\PendingDispatch;
 use Illuminate\Contracts\Routing\ResponseFactory;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class Excel implements Exporter
 {
