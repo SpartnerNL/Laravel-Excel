@@ -3,9 +3,9 @@
 namespace Maatwebsite\Excel\Tests;
 
 use Illuminate\Support\Collection;
-use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Fakes\ExcelFake;
 use Illuminate\Foundation\Bus\PendingDispatch;
+use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Facades\Excel as ExcelFacade;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
@@ -112,8 +112,7 @@ class ExcelFakeTest extends TestCase
      */
     private function givenExport()
     {
-        return new class implements FromCollection
-        {
+        return new class implements FromCollection {
             /**
              * @return Collection
              */
