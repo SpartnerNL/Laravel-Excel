@@ -5,7 +5,6 @@ namespace Maatwebsite\Excel\Fakes;
 use Illuminate\Bus\Queueable;
 use PHPUnit\Framework\Assert;
 use Maatwebsite\Excel\Exporter;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Foundation\Bus\PendingDispatch;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
@@ -56,8 +55,7 @@ class ExcelFake implements Exporter
 
         $this->queued[$disk ?? 'default'][$filePath] = $export;
 
-        return new PendingDispatch(new class
-        {
+        return new PendingDispatch(new class {
             use Queueable;
 
             public function handle()
