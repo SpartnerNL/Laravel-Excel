@@ -32,7 +32,7 @@ class ExcelFake implements Exporter
      */
     public function download($export, string $fileName, string $writerType = null)
     {
-        $this->downloads[$fileName] = $this->export($export);
+        $this->downloads[$fileName] = $export;
 
         return new BinaryFileResponse(__DIR__ . '/fake_file');
     }
@@ -42,7 +42,7 @@ class ExcelFake implements Exporter
      */
     public function store($export, string $filePath, string $disk = null, string $writerType = null)
     {
-        $this->stored[$disk ?? 'default'][$filePath] = $this->export($export);
+        $this->stored[$disk ?? 'default'][$filePath] = $export;
 
         return true;
     }
@@ -54,9 +54,10 @@ class ExcelFake implements Exporter
     {
         Queue::fake();
 
-        $this->queued[$disk ?? 'default'][$filePath] = $this->export($export);
+        $this->queued[$disk ?? 'default'][$filePath] = $export;
 
-        return new PendingDispatch(new class {
+        return new PendingDispatch(new class
+        {
             use Queueable;
 
             public function handle()
@@ -67,16 +68,7 @@ class ExcelFake implements Exporter
     }
 
     /**
-     * @param  object  $export
-     * @return \Illuminate\Support\Collection
-     */
-    public function export($export)
-    {
-        return new Collection($export);
-    }
-
-    /**
-     * @param string $fileName
+     * @param string        $fileName
      * @param callable|null $callback
      */
     public function assertDownloaded(string $fileName, $callback = null)
@@ -94,18 +86,18 @@ class ExcelFake implements Exporter
     }
 
     /**
-     * @param string $filePath
+     * @param string               $filePath
      * @param string|callable|null $disk
-     * @param callable|null $callback
+     * @param callable|null        $callback
      */
     public function assertStored(string $filePath, $disk = null, $callback = null)
     {
         if (is_callable($disk)) {
             $callback = $disk;
-            $disk = null;
+            $disk     = null;
         }
 
-        $disk = $disk ?? 'default';
+        $disk         = $disk ?? 'default';
         $storedOnDisk = $this->stored[$disk] ?? [];
 
         Assert::assertArrayHasKey(
@@ -125,18 +117,18 @@ class ExcelFake implements Exporter
     }
 
     /**
-     * @param string $filePath
+     * @param string               $filePath
      * @param string|callable|null $disk
-     * @param callable|null $callback
+     * @param callable|null        $callback
      */
     public function assertQueued(string $filePath, $disk = null, $callback = null)
     {
         if (is_callable($disk)) {
             $callback = $disk;
-            $disk = null;
+            $disk     = null;
         }
 
-        $disk = $disk ?? 'default';
+        $disk          = $disk ?? 'default';
         $queuedForDisk = $this->queued[$disk] ?? [];
 
         Assert::assertArrayHasKey(

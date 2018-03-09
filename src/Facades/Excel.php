@@ -10,9 +10,9 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
  * @method static BinaryFileResponse download(object $export, string $fileName, string $writerType = null)
  * @method static bool store(object $export, string $filePath, string $disk = null, string $writerType = null)
  * @method static bool queue(object $export, string $filePath, string $disk = null, string $writerType = null)
- * @method static void assertDownloaded(string $fileName)
- * @method static void assertStored(string $filePath, string $disk = null)
- * @method static void assertQueued(string $filePath, string $disk = null)
+ * @method static void assertDownloaded(string $fileName, callable $callback = null)
+ * @method static void assertStored(string $filePath, string $disk = null, callable $callback = null)
+ * @method static void assertQueued(string $filePath, string $disk = null, callable $callback = null)
  */
 class Excel extends Facade
 {

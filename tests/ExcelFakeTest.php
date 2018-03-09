@@ -3,6 +3,7 @@
 namespace Maatwebsite\Excel\Tests;
 
 use Illuminate\Support\Collection;
+use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Fakes\ExcelFake;
 use Illuminate\Foundation\Bus\PendingDispatch;
 use Maatwebsite\Excel\Facades\Excel as ExcelFacade;
@@ -28,12 +29,13 @@ class ExcelFakeTest extends TestCase
     {
         ExcelFacade::fake();
 
-        $response = ExcelFacade::download(new class{}, 'downloaded-filename.csv');
+        $response = ExcelFacade::download($this->givenExport(), 'downloaded-filename.csv');
 
         $this->assertInstanceOf(BinaryFileResponse::class, $response);
 
-        ExcelFacade::assertDownloaded('downloaded-filename.csv', function ($export) {
-            return $export instanceof Collection;
+        ExcelFacade::assertDownloaded('downloaded-filename.csv');
+        ExcelFacade::assertDownloaded('downloaded-filename.csv', function (FromCollection $export) {
+            return $export->collection()->contains('foo');
         });
     }
 
@@ -44,12 +46,13 @@ class ExcelFakeTest extends TestCase
     {
         ExcelFacade::fake();
 
-        $response = ExcelFacade::store(new class{}, 'stored-filename.csv', 's3');
+        $response = ExcelFacade::store($this->givenExport(), 'stored-filename.csv', 's3');
 
         $this->assertTrue($response);
 
-        ExcelFacade::assertStored('stored-filename.csv', 's3', function ($export) {
-            return $export instanceof Collection;
+        ExcelFacade::assertStored('stored-filename.csv', 's3');
+        ExcelFacade::assertStored('stored-filename.csv', 's3', function (FromCollection $export) {
+            return $export->collection()->contains('foo');
         });
     }
 
@@ -60,12 +63,13 @@ class ExcelFakeTest extends TestCase
     {
         ExcelFacade::fake();
 
-        $response = ExcelFacade::store(new class{}, 'stored-filename.csv');
+        $response = ExcelFacade::store($this->givenExport(), 'stored-filename.csv');
 
         $this->assertTrue($response);
 
-        ExcelFacade::assertStored('stored-filename.csv', function ($export) {
-            return $export instanceof Collection;
+        ExcelFacade::assertStored('stored-filename.csv');
+        ExcelFacade::assertStored('stored-filename.csv', function (FromCollection $export) {
+            return $export->collection()->contains('foo');
         });
     }
 
@@ -76,12 +80,13 @@ class ExcelFakeTest extends TestCase
     {
         ExcelFacade::fake();
 
-        $response = ExcelFacade::queue(new class{}, 'queued-filename.csv', 's3');
+        $response = ExcelFacade::queue($this->givenExport(), 'queued-filename.csv', 's3');
 
         $this->assertInstanceOf(PendingDispatch::class, $response);
 
-        ExcelFacade::assertQueued('queued-filename.csv', 's3', function ($export) {
-            return $export instanceof Collection;
+        ExcelFacade::assertQueued('queued-filename.csv', 's3');
+        ExcelFacade::assertQueued('queued-filename.csv', 's3', function (FromCollection $export) {
+            return $export->collection()->contains('foo');
         });
     }
 
@@ -92,12 +97,30 @@ class ExcelFakeTest extends TestCase
     {
         ExcelFacade::fake();
 
-        $response = ExcelFacade::queue(new class{}, 'queued-filename.csv');
+        $response = ExcelFacade::queue($this->givenExport(), 'queued-filename.csv');
 
         $this->assertInstanceOf(PendingDispatch::class, $response);
 
-        ExcelFacade::assertQueued('queued-filename.csv', function ($export) {
-            return $export instanceof Collection;
+        ExcelFacade::assertQueued('queued-filename.csv');
+        ExcelFacade::assertQueued('queued-filename.csv', function (FromCollection $export) {
+            return $export->collection()->contains('foo');
         });
+    }
+
+    /**
+     * @return FromCollection
+     */
+    private function givenExport()
+    {
+        return new class implements FromCollection
+        {
+            /**
+             * @return Collection
+             */
+            public function collection()
+            {
+                return collect(['foo', 'bar']);
+            }
+        };
     }
 }
