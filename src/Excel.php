@@ -128,4 +128,24 @@ class Excel implements Exporter
 
         return config('excel.extension_detector.' . strtolower($pathInfo['extension'] ?? ''));
     }
+
+    /**
+     * Get the writer.
+     *
+     * @return Writer
+     */
+    public function getWriter()
+    {
+        return $this->writer;
+    }
+
+    /**
+     * Get the queued writer.
+     *
+     * @return QueuedWriter
+     */
+    public function getQueuedWriter()
+    {
+        return $this->queuedWriter;
+    }
 }

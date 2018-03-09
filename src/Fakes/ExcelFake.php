@@ -5,6 +5,7 @@ namespace Maatwebsite\Excel\Fakes;
 use Illuminate\Bus\Queueable;
 use PHPUnit\Framework\Assert;
 use Maatwebsite\Excel\Exporter;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Foundation\Bus\PendingDispatch;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
@@ -31,7 +32,7 @@ class ExcelFake implements Exporter
      */
     public function download($export, string $fileName, string $writerType = null)
     {
-        $this->downloads[] = $fileName;
+        $this->downloads[$fileName] = $this->export($export);
 
         return new BinaryFileResponse(__DIR__ . '/fake_file');
     }
@@ -41,7 +42,7 @@ class ExcelFake implements Exporter
      */
     public function store($export, string $filePath, string $disk = null, string $writerType = null)
     {
-        $this->stored[$disk ?? 'default'][] = $filePath;
+        $this->stored[$disk ?? 'default'][$filePath] = $this->export($export);
 
         return true;
     }
@@ -53,7 +54,7 @@ class ExcelFake implements Exporter
     {
         Queue::fake();
 
-        $this->queued[$disk ?? 'default'][] = $filePath;
+        $this->queued[$disk ?? 'default'][$filePath] = $this->export($export);
 
         return new PendingDispatch(new class {
             use Queueable;
@@ -66,38 +67,91 @@ class ExcelFake implements Exporter
     }
 
     /**
-     * @param string $fileName
+     * @param  object  $export
+     * @return \Illuminate\Support\Collection
      */
-    public function assertDownloaded(string $fileName)
+    public function export($export)
     {
-        Assert::assertContains($fileName, $this->downloads, sprintf('%s is not downloaded', $fileName));
+        return new Collection($export);
     }
 
     /**
-     * @param string      $filePath
-     * @param string|null $disk
+     * @param string $fileName
+     * @param callable|null $callback
      */
-    public function assertStored(string $filePath, string $disk = null)
+    public function assertDownloaded(string $fileName, $callback = null)
     {
-        $disk         = $disk ?? 'default';
+        Assert::assertArrayHasKey($fileName, $this->downloads, sprintf('%s is not downloaded', $fileName));
+
+        $callback = $callback ?: function () {
+            return true;
+        };
+
+        Assert::assertTrue(
+            $callback($this->downloads[$fileName]),
+            "The file [{$fileName}] was not downloaded with the expected data."
+        );
+    }
+
+    /**
+     * @param string $filePath
+     * @param string|callable|null $disk
+     * @param callable|null $callback
+     */
+    public function assertStored(string $filePath, $disk = null, $callback = null)
+    {
+        if (is_callable($disk)) {
+            $callback = $disk;
+            $disk = null;
+        }
+
+        $disk = $disk ?? 'default';
         $storedOnDisk = $this->stored[$disk] ?? [];
 
-        Assert::assertContains($filePath, $storedOnDisk, sprintf('%s is not stored on disk %s', $filePath, $disk));
+        Assert::assertArrayHasKey(
+            $filePath,
+            $storedOnDisk,
+            sprintf('%s is not stored on disk %s', $filePath, $disk)
+        );
+
+        $callback = $callback ?: function () {
+            return true;
+        };
+
+        Assert::assertTrue(
+            $callback($storedOnDisk[$filePath]),
+            "The file [{$filePath}] was not stored with the expected data."
+        );
     }
 
     /**
-     * @param string      $filePath
-     * @param string|null $disk
+     * @param string $filePath
+     * @param string|callable|null $disk
+     * @param callable|null $callback
      */
-    public function assertQueued(string $filePath, string $disk = null)
+    public function assertQueued(string $filePath, $disk = null, $callback = null)
     {
-        $disk          = $disk ?? 'default';
+        if (is_callable($disk)) {
+            $callback = $disk;
+            $disk = null;
+        }
+
+        $disk = $disk ?? 'default';
         $queuedForDisk = $this->queued[$disk] ?? [];
 
-        Assert::assertContains(
+        Assert::assertArrayHasKey(
             $filePath,
             $queuedForDisk,
             sprintf('%s is not queued for export on disk %s', $filePath, $disk)
+        );
+
+        $callback = $callback ?: function () {
+            return true;
+        };
+
+        Assert::assertTrue(
+            $callback($queuedForDisk[$filePath]),
+            "The file [{$filePath}] was not stored with the expected data."
         );
     }
 }
