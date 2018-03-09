@@ -98,7 +98,7 @@ class Excel implements Exporter
 
         return $this->queuedWriter->store($export, $filePath, $disk, $writerType);
     }
-    
+
     /**
      * @param object      $export
      * @param string|null $fileName
