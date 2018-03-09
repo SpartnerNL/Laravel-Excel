@@ -2,10 +2,10 @@
 
 namespace Maatwebsite\Excel\Tests;
 
+use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Excel;
 use Illuminate\Contracts\View\View;
 use Maatwebsite\Excel\Concerns\FromView;
-use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Events\BeforeWriting;
@@ -113,6 +113,9 @@ class ExcelTest extends TestCase
                 ]);
             }
 
+            /**
+             * @param BeforeWriting $event
+             */
             public static function beforeWriting(BeforeWriting $event)
             {
                 $event->writer->setLineEnding(PHP_EOL);
