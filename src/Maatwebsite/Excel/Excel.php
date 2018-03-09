@@ -83,7 +83,7 @@ class Excel {
         $writer->setTitle($filename);
 
         // Do the callback
-        if ($callback instanceof Closure)
+         if (is_callable($callback))
             call_user_func($callback, $writer);
 
         // Return the writer object
