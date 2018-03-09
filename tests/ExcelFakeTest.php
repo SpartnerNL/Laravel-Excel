@@ -28,7 +28,8 @@ class ExcelFakeTest extends TestCase
     {
         ExcelFacade::fake();
 
-        $response = ExcelFacade::download(new class{}, 'downloaded-filename.csv');
+        $response = ExcelFacade::download(new class {
+        }, 'downloaded-filename.csv');
 
         $this->assertInstanceOf(BinaryFileResponse::class, $response);
 
@@ -44,7 +45,8 @@ class ExcelFakeTest extends TestCase
     {
         ExcelFacade::fake();
 
-        $response = ExcelFacade::store(new class{}, 'stored-filename.csv', 's3');
+        $response = ExcelFacade::store(new class {
+        }, 'stored-filename.csv', 's3');
 
         $this->assertTrue($response);
 
@@ -60,7 +62,8 @@ class ExcelFakeTest extends TestCase
     {
         ExcelFacade::fake();
 
-        $response = ExcelFacade::store(new class{}, 'stored-filename.csv');
+        $response = ExcelFacade::store(new class {
+        }, 'stored-filename.csv');
 
         $this->assertTrue($response);
 
@@ -76,7 +79,8 @@ class ExcelFakeTest extends TestCase
     {
         ExcelFacade::fake();
 
-        $response = ExcelFacade::queue(new class{}, 'queued-filename.csv', 's3');
+        $response = ExcelFacade::queue(new class {
+        }, 'queued-filename.csv', 's3');
 
         $this->assertInstanceOf(PendingDispatch::class, $response);
 
@@ -92,7 +96,8 @@ class ExcelFakeTest extends TestCase
     {
         ExcelFacade::fake();
 
-        $response = ExcelFacade::queue(new class{}, 'queued-filename.csv');
+        $response = ExcelFacade::queue(new class {
+        }, 'queued-filename.csv');
 
         $this->assertInstanceOf(PendingDispatch::class, $response);
 

@@ -100,6 +100,26 @@ class Excel implements Exporter
     }
 
     /**
+     * Get the writer.
+     *
+     * @return Writer
+     */
+    public function getWriter()
+    {
+        return $this->writer;
+    }
+
+    /**
+     * Get the queued writer.
+     *
+     * @return QueuedWriter
+     */
+    public function getQueuedWriter()
+    {
+        return $this->queuedWriter;
+    }
+
+    /**
      * @param object      $export
      * @param string|null $fileName
      * @param string      $writerType
@@ -127,25 +147,5 @@ class Excel implements Exporter
         $pathInfo = pathinfo($fileName);
 
         return config('excel.extension_detector.' . strtolower($pathInfo['extension'] ?? ''));
-    }
-
-    /**
-     * Get the writer.
-     *
-     * @return Writer
-     */
-    public function getWriter()
-    {
-        return $this->writer;
-    }
-
-    /**
-     * Get the queued writer.
-     *
-     * @return QueuedWriter
-     */
-    public function getQueuedWriter()
-    {
-        return $this->queuedWriter;
     }
 }

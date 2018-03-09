@@ -102,10 +102,10 @@ class ExcelFake implements Exporter
     {
         if (is_callable($disk)) {
             $callback = $disk;
-            $disk = null;
+            $disk     = null;
         }
 
-        $disk = $disk ?? 'default';
+        $disk         = $disk ?? 'default';
         $storedOnDisk = $this->stored[$disk] ?? [];
 
         Assert::assertArrayHasKey(
@@ -133,10 +133,10 @@ class ExcelFake implements Exporter
     {
         if (is_callable($disk)) {
             $callback = $disk;
-            $disk = null;
+            $disk     = null;
         }
 
-        $disk = $disk ?? 'default';
+        $disk          = $disk ?? 'default';
         $queuedForDisk = $this->queued[$disk] ?? [];
 
         Assert::assertArrayHasKey(
