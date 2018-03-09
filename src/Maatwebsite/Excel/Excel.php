@@ -67,7 +67,7 @@ class Excel {
      * @param  callable|null $callback
      * @return LaravelExcelWriter
      */
-    public function create($filename, callable $callback = null)
+    public function create($filename, $callback = null)
     {
         // Writer instance
         $writer = clone $this->writer;
@@ -83,7 +83,8 @@ class Excel {
         $writer->setTitle($filename);
 
         // Do the callback
-        call_user_func($callback, $writer);
+         if (is_callable($callback))
+            call_user_func($callback, $writer);
 
         // Return the writer object
         return $writer;
