@@ -2,8 +2,8 @@
 
 namespace Maatwebsite\Excel\Tests;
 
-use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Excel;
+use Illuminate\Support\Collection;
 use Illuminate\Contracts\View\View;
 use Maatwebsite\Excel\Concerns\FromView;
 use Maatwebsite\Excel\Concerns\Exportable;
