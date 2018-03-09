@@ -100,6 +100,26 @@ class Excel implements Exporter
     }
 
     /**
+     * Get the writer.
+     *
+     * @return Writer
+     */
+    public function getWriter()
+    {
+        return $this->writer;
+    }
+
+    /**
+     * Get the queued writer.
+     *
+     * @return QueuedWriter
+     */
+    public function getQueuedWriter()
+    {
+        return $this->queuedWriter;
+    }
+
+    /**
      * @param object      $export
      * @param string|null $fileName
      * @param string      $writerType
