@@ -254,6 +254,17 @@ class Html extends PHPExcel_Reader_HTML {
      */
     protected function _processDomElement(DOMNode $element, $sheet, &$row, &$column, &$cellContent, $format = null)
     {
+        //fix merge colspan and rowspan
+        do {
+            $cell = $sheet->getCell(($column) . $row);
+            $isMerged = false;
+            if ($cell->isInMergeRange() && !$cell->isMergeRangeValueCell()) {
+                ++$column;
+                $isMerged = true;
+            }
+        } while ($isMerged);
+        //end fix
+        
         foreach ($element->childNodes as $child)
         {
             // If is text
