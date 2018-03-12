@@ -137,7 +137,7 @@ class ExcelTest extends TestCase
 
     /**
      * @test
-     * @expectedException \LogicException
+     * @expectedException \Maatwebsite\Excel\Exceptions\ConcernConflictException
      * @expectedExceptionMessage Cannot use FromQuery or FromCollection and FromView on the same sheet
      */
     public function cannot_use_from_collection_and_from_view_on_same_export()

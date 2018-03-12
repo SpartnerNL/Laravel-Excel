@@ -12,7 +12,7 @@ class ExportableTest extends TestCase
 {
     /**
      * @test
-     * @expectedException \InvalidArgumentException
+     * @expectedException \Maatwebsite\Excel\Exceptions\NoFilenameGivenException
      * @expectedExceptionMessage A filename needs to be passed in order to download the export
      */
     public function needs_to_have_a_file_name_when_downloading()
@@ -26,7 +26,7 @@ class ExportableTest extends TestCase
 
     /**
      * @test
-     * @expectedException \InvalidArgumentException
+     * @expectedException \Maatwebsite\Excel\Exceptions\NoFilePathGivenException
      * @expectedExceptionMessage A filepath needs to be passed in order to store the export
      */
     public function needs_to_have_a_file_name_when_storing()
@@ -40,7 +40,7 @@ class ExportableTest extends TestCase
 
     /**
      * @test
-     * @expectedException \InvalidArgumentException
+     * @expectedException \Maatwebsite\Excel\Exceptions\NoFilePathGivenException
      * @expectedExceptionMessage A filepath needs to be passed in order to store the export
      */
     public function needs_to_have_a_file_name_when_queuing()
@@ -54,7 +54,7 @@ class ExportableTest extends TestCase
 
     /**
      * @test
-     * @expectedException \InvalidArgumentException
+     * @expectedException \Maatwebsite\Excel\Exceptions\NoFilenameGivenException
      * @expectedExceptionMessage A filename needs to be passed in order to download the export
      */
     public function responsable_needs_to_have_file_name_configured_inside_the_export()

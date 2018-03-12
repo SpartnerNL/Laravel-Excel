@@ -5,6 +5,8 @@ namespace Maatwebsite\Excel\Concerns;
 use Maatwebsite\Excel\Excel;
 use InvalidArgumentException;
 use Illuminate\Foundation\Bus\PendingDispatch;
+use Maatwebsite\Excel\Exceptions\NoFilenameGivenException;
+use Maatwebsite\Excel\Exceptions\NoFilePathGivenException;
 
 trait Exportable
 {
@@ -12,7 +14,7 @@ trait Exportable
      * @param string      $fileName
      * @param string|null $writerType
      *
-     * @throws InvalidArgumentException
+     * @throws NoFilenameGivenException
      * @return \Illuminate\Http\Response|\Symfony\Component\HttpFoundation\BinaryFileResponse
      */
     public function download(string $fileName = null, string $writerType = null)
@@ -20,7 +22,7 @@ trait Exportable
         $fileName = $fileName ?? $this->fileName ?? null;
 
         if (null === $fileName) {
-            throw new InvalidArgumentException('A filename needs to be passed in order to download the export');
+            throw new NoFilenameGivenException();
         }
 
         return resolve(Excel::class)->download($this, $fileName, $writerType ?? $this->writerType ?? null);
@@ -31,7 +33,7 @@ trait Exportable
      * @param string|null $disk
      * @param string|null $writerType
      *
-     * @throws InvalidArgumentException
+     * @throws NoFilePathGivenException
      * @return bool|PendingDispatch
      */
     public function store(string $filePath = null, string $disk = null, string $writerType = null)
@@ -39,7 +41,7 @@ trait Exportable
         $filePath = $filePath ?? $this->filePath ?? null;
 
         if (null === $filePath) {
-            throw new InvalidArgumentException('A filepath needs to be passed in order to store the export');
+            throw new NoFilePathGivenException();
         }
 
         return resolve(Excel::class)->store(
@@ -55,6 +57,7 @@ trait Exportable
      * @param string|null $disk
      * @param string|null $writerType
      *
+     * @throws NoFilePathGivenException
      * @return PendingDispatch
      */
     public function queue(string $filePath = null, string $disk = null, string $writerType = null)
@@ -62,7 +65,7 @@ trait Exportable
         $filePath = $filePath ?? $this->filePath ?? null;
 
         if (null === $filePath) {
-            throw new InvalidArgumentException('A filepath needs to be passed in order to store the export');
+            throw new NoFilePathGivenException();
         }
 
         return resolve(Excel::class)->queue(
@@ -78,7 +81,7 @@ trait Exportable
      *
      * @param  \Illuminate\Http\Request $request
      *
-     * @throws InvalidArgumentException
+     * @throws NoFilenameGivenException
      * @return \Illuminate\Http\Response
      */
     public function toResponse($request)

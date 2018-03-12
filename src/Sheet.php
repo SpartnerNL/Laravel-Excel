@@ -3,6 +3,7 @@
 namespace Maatwebsite\Excel;
 
 use LogicException;
+use Maatwebsite\Excel\Exceptions\ConcernConflictException;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use Maatwebsite\Excel\Concerns\FromView;
 use Maatwebsite\Excel\Events\AfterSheet;
@@ -66,7 +67,7 @@ class Sheet
         }
 
         if (($sheetExport instanceof FromQuery || $sheetExport instanceof FromCollection) && $sheetExport instanceof FromView) {
-            throw new LogicException('Cannot use FromQuery or FromCollection and FromView on the same sheet');
+            throw ConcernConflictException::queryOrCollectionAndView();
         }
 
         if (!$sheetExport instanceof FromView && $sheetExport instanceof WithHeadings) {
