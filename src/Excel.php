@@ -2,6 +2,7 @@
 
 namespace Maatwebsite\Excel;
 
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Filesystem\FilesystemManager;
 use Illuminate\Contracts\Routing\ResponseFactory;
 
@@ -82,6 +83,10 @@ class Excel implements Exporter
      */
     public function store($export, string $filePath, string $disk = null, string $writerType = null)
     {
+        if ($export instanceof ShouldQueue) {
+            return $this->queue($export, $filePath, $disk, $writerType);
+        }
+
         $file = $this->export($export, $filePath, $writerType);
 
         return $this->filesystem->disk($disk)->put($filePath, fopen($file, 'r+'));

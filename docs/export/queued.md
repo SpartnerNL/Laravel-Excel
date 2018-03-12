@@ -27,6 +27,31 @@ return (new InvoicesExport)->queue('invoices.xlsx');
 Behind the scenes the query will be chunked and multiple jobs will be chained. These jobs will be executed in the correct order,
 and will only execute if non of the previous have failed. 
 
+### Implicit Export queueing
+
+You can also mark an export implicitly as a queued export. You can do this by using Laravel's `ShouldQueue` contract.
+
+```php
+namespace App\Exports;
+
+class InvoicesExport implements FromQuery, ShouldQueue
+{
+    use Exportable;
+
+    public function query()
+    {
+        return Invoice::query();
+    }
+}
+```
+
+In your controller you can now call the normal `->store()` method. 
+Based on the presence of the `ShouldQueue` contract, the export will be queued.
+
+```php
+return (new InvoicesExport)->store('invoices.xlsx');
+```
+
 ### Appending jobs
 
 The `queue()` method returns an instance of Laravel's `PendingDispatch`. This means you can chain extra jobs.

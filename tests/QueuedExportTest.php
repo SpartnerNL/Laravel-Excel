@@ -4,6 +4,7 @@ namespace Maatwebsite\Excel\Tests;
 
 use Maatwebsite\Excel\Tests\Data\Stubs\QueuedExport;
 use Maatwebsite\Excel\Tests\Data\Stubs\AfterQueueExportJob;
+use Maatwebsite\Excel\Tests\Data\Stubs\ShouldQueueExport;
 
 class QueuedExportTest extends TestCase
 {
@@ -27,6 +28,18 @@ class QueuedExportTest extends TestCase
         $export = new QueuedExport();
 
         $export->queue('queued-export.xlsx', 'test')->chain([
+            new AfterQueueExportJob(__DIR__ . '/Data/Disks/Test/queued-export.xlsx'),
+        ]);
+    }
+
+    /**
+     * @test
+     */
+    public function can_implicitly_queue_an_export()
+    {
+        $export = new ShouldQueueExport();
+
+        $export->store('queued-export.xlsx', 'test')->chain([
             new AfterQueueExportJob(__DIR__ . '/Data/Disks/Test/queued-export.xlsx'),
         ]);
     }

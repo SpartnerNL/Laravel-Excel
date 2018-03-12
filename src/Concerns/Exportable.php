@@ -32,7 +32,7 @@ trait Exportable
      * @param string|null $writerType
      *
      * @throws InvalidArgumentException
-     * @return bool
+     * @return bool|PendingDispatch
      */
     public function store(string $filePath = null, string $disk = null, string $writerType = null)
     {
