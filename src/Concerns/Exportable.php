@@ -3,7 +3,6 @@
 namespace Maatwebsite\Excel\Concerns;
 
 use Maatwebsite\Excel\Excel;
-use InvalidArgumentException;
 use Illuminate\Foundation\Bus\PendingDispatch;
 use Maatwebsite\Excel\Exceptions\NoFilenameGivenException;
 use Maatwebsite\Excel\Exceptions\NoFilePathGivenException;

@@ -2,8 +2,6 @@
 
 namespace Maatwebsite\Excel;
 
-use LogicException;
-use Maatwebsite\Excel\Exceptions\ConcernConflictException;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use Maatwebsite\Excel\Concerns\FromView;
 use Maatwebsite\Excel\Events\AfterSheet;
@@ -19,6 +17,7 @@ use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use Maatwebsite\Excel\Concerns\WithColumnFormatting;
+use Maatwebsite\Excel\Exceptions\ConcernConflictException;
 
 class Sheet
 {
