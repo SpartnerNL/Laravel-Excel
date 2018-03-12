@@ -2,8 +2,8 @@
 
 namespace Maatwebsite\Excel\Tests\Data\Stubs;
 
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Maatwebsite\Excel\Concerns\Exportable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 
 class ShouldQueueExport implements WithMultipleSheets, ShouldQueue
