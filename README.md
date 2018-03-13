@@ -1,3 +1,6 @@
+![Laravel-Excel 3.0](https://user-images.githubusercontent.com/7728097/37357058-b96e8d98-26e7-11e8-94a7-68f1f6fab99a.jpg)
+
+
 # Laravel Excel 3.0
 
 [![Build Status](https://travis-ci.org/Maatwebsite/Laravel-Excel.svg?branch=3.0)](https://travis-ci.org/Maatwebsite/Laravel-Excel)
