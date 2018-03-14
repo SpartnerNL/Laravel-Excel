@@ -18,7 +18,7 @@ Versions will be supported for a limited amount of time.
 
 | Version | Laravel Version | Php Version | Support |
 |---- |----|----|----|
-| 2.1 | <=5.6 | <=7.0 | EOL since xx-xx-2018 |
+| 2.1 | <=5.6 | <=7.0 | EOL on 15-05-2018 |
 | 3.0 | ^5.6 |  ^7.1 | New features |
 
 ### Composer
