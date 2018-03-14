@@ -36,7 +36,7 @@ whether or not your feature is likely to be used by other users of the project.
 - Check to make sure your feature suggestion isn't already present within the project.
 - Check the pull requests tab to ensure that the bug doesn't have a fix in progress.
 - Check the pull requests tab to ensure that the feature isn't already in progress.
-- Use the [issue template](https://github.com/Maatwebsite/Laravel-Excel/blob/3.0/.github/ISSUE_TEMPLATE.md)
+- Use the [issue template](https://github.com/Maatwebsite/Laravel-Excel/blob/3.0/.github/ISSUE_TEMPLATE.md).
 
 ## Requirements
 
