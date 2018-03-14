@@ -4,9 +4,9 @@ Please read and understand the contribution guide before creating an issue or pu
 
 ## Links
 
-- Docs: [https://laravel-excel.maatwebsite.nl]
-- Issue tracker: [https://github.com/Maatwebsite/Laravel-Excel/issues]
-- Support: [https://laravel-excel-docs.nl/docs/3.0/getting-started/support]
+- [Docs](https://laravel-excel.maatwebsite.nl)
+- [Issue tracker](https://github.com/Maatwebsite/Laravel-Excel/issues)
+- [Support](https://laravel-excel.maatwebsite.nl/docs/3.0/getting-started/support)
 
 ## Etiquette
 
