@@ -3,7 +3,7 @@
 ### Mapping rows
 
 By adding `WithMapping` you map the data that needs to be added as row. 
-In case of using the Eloquent query builder, 
+In case of using the Eloquent query builder: 
 
 ```php
 class InvoicesExport implements FromQuery, WithMapping
