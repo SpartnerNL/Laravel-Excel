@@ -1,6 +1,6 @@
 # Storing exports on disk
 
-Exports can easily be stored on any filesystem that Laravel supports.
+Exports can easily be stored on any [filesystem](https://laravel.com/docs/5.6/filesystem) that Laravel supports.
 
 ```php
 public function storeExcel() 

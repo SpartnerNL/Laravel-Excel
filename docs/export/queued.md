@@ -25,7 +25,7 @@ return (new InvoicesExport)->queue('invoices.xlsx');
 ```
 
 Behind the scenes the query will be chunked and multiple jobs will be chained. These jobs will be executed in the correct order,
-and will only execute if non of the previous have failed. 
+and will only execute if none of the previous have failed. 
 
 ### Implicit Export queueing
 
