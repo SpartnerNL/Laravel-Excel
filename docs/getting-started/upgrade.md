@@ -1,4 +1,4 @@
-# Upgrade
+# Upgrade Guide
 
 ### Upgrading to 3.0 from 2.*
 
