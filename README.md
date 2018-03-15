@@ -24,6 +24,8 @@ Laravel Excel features:
 * Queue exports for better performance
 * Easily export Blade views to Excel
 
+Read more about Laravel Excel 3.0 on our blog: https://medium.com/@maatwebsite/laravel-excel-lessons-learned-7fee2812551
+
 ## Supported Versions
 
 Versions will be supported for a limited amount of time.
