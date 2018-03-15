@@ -11,4 +11,4 @@ You are free to use the software as you like. The code can be forked and modifie
 
 We hold no liability and will provide support on a best effort basis. For more information about support please see [support](https://laravel-excel.maatwebsite.nl/docs/3.0/getting-started/support).
 
-If you use the software commercially and need support urgently, we can offer this on a commercial basis. Please contact <info@maatwebsite.nl> or via phone +31 10 744 9312. 
+If you use the software commercially and need support urgently, we can offer this on a commercial basis. Please contact <info@maatwebsite.nl> or via phone +31 (0)10 744 9312. 
