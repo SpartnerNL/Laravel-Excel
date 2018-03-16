@@ -46,7 +46,7 @@ Add the ServiceProvider in `app/config/app.php`
 
 ### Facade
 
-The `Excel` facade is also auto-discovered. In case you want to add it manually:
+The `Excel` facade is also auto-discovered, but if you want to add it manually:
 
 Add the Facade in `app/config/app.php`
 
@@ -65,7 +65,7 @@ To publish the config, run the vendor publish command:
 php artisan vendor:publish
 ```
 
-The config file should now exists as `config/excel.php`.
+This will create a new config file named `config/excel.php`.
 
 ### Usage
 
@@ -112,7 +112,7 @@ public function export()
 
 Via container binding:
 
-```
+```php
 $this->app->bind(Exporter::class, function() {
     return new Exporter($this->app['excel']);
 });
