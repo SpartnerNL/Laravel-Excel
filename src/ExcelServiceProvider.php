@@ -36,6 +36,7 @@ class ExcelServiceProvider extends ServiceProvider
             return new Excel(
                 $this->app->make(Writer::class),
                 $this->app->make(QueuedWriter::class),
+                $this->app->make(Reader::class),
                 $this->app->make(ResponseFactory::class),
                 $this->app->make('filesystem')
             );

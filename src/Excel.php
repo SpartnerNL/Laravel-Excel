@@ -5,8 +5,9 @@ namespace Maatwebsite\Excel;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Filesystem\FilesystemManager;
 use Illuminate\Contracts\Routing\ResponseFactory;
+use Illuminate\Foundation\Bus\PendingDispatch;
 
-class Excel implements Exporter
+class Excel implements Exporter, Importer
 {
     const XLSX     = 'Xlsx';
 
@@ -41,6 +42,11 @@ class Excel implements Exporter
     protected $queuedWriter;
 
     /**
+     * @var Reader
+     */
+    private $reader;
+
+    /**
      * @var ResponseFactory
      */
     protected $response;
@@ -53,16 +59,19 @@ class Excel implements Exporter
     /**
      * @param Writer            $writer
      * @param QueuedWriter      $queuedWriter
+     * @param Reader            $reader
      * @param ResponseFactory   $response
      * @param FilesystemManager $filesystem
      */
     public function __construct(
         Writer $writer,
         QueuedWriter $queuedWriter,
+        Reader $reader,
         ResponseFactory $response,
         FilesystemManager $filesystem
     ) {
         $this->writer       = $writer;
+        $this->reader       = $reader;
         $this->response     = $response;
         $this->filesystem   = $filesystem;
         $this->queuedWriter = $queuedWriter;
@@ -102,6 +111,32 @@ class Excel implements Exporter
         }
 
         return $this->queuedWriter->store($export, $filePath, $disk, $writerType);
+    }
+
+    /**
+     * @param object      $import
+     * @param string      $filePath
+     * @param string|null $disk
+     * @param string|null $readerType
+     *
+     * @return bool
+     */
+    public function import($import, string $filePath, string $disk = null, string $readerType = null)
+    {
+        return $this->reader->read($import, $filePath, $disk, $readerType);
+    }
+
+    /**
+     * @param object      $import
+     * @param string      $filePath
+     * @param string|null $disk
+     * @param string      $readerType
+     *
+     * @return PendingDispatch
+     */
+    public function queuedImport($import, string $filePath, string $disk = null, string $readerType = null)
+    {
+        // TODO
     }
 
     /**
