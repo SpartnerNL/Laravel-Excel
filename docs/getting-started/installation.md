@@ -3,7 +3,7 @@
 ### Requirements
 
 * PHP: ^7.1
-* Laravel: ^5.6
+* Laravel: ^5.5
 * PhpSpreadsheet: ^1.1
 * PHP extension php_zip enabled
 * PHP extension php_xml enabled
@@ -19,7 +19,7 @@ Versions will be supported for a limited amount of time.
 | Version | Laravel Version | Php Version | Support |
 |---- |----|----|----|
 | 2.1 | <=5.6 | <=7.0 | EOL on 15-05-2018 |
-| 3.0 | ^5.6 |  ^7.1 | New features |
+| 3.0 | ^5.5 |  ^7.0 | New features |
 
 ### Composer
 

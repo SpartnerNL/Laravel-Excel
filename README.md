@@ -1,6 +1,5 @@
 ![Laravel-Excel 3.0](https://user-images.githubusercontent.com/7728097/37357058-b96e8d98-26e7-11e8-94a7-68f1f6fab99a.jpg)
 
-
 # Laravel Excel 3.0
 
 [![Build Status](https://travis-ci.org/Maatwebsite/Laravel-Excel.svg?branch=3.0)](https://travis-ci.org/Maatwebsite/Laravel-Excel)
@@ -33,7 +32,7 @@ Versions will be supported for a limited amount of time.
 | Version | Laravel Version | Php Version | Support |
 |---- |----|----|----|
 | 2.1 | <=5.6 | <=7.0 | EOL on 15-5-2018 |
-| 3.0 | ^5.6 |  ^7.1 | New features |
+| 3.0 | ^5.5 |  ^7.0 | New features |
 
 ## Installation
 
