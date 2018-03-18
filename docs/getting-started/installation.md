@@ -4,7 +4,7 @@
 
 * PHP: ^7.1
 * Laravel: ^5.5
-* PhpSpreadsheet: ^1.1
+* PhpSpreadsheet: ^1.2
 * PHP extension php_zip enabled
 * PHP extension php_xml enabled
 * PHP extension php_gd2 enabled
