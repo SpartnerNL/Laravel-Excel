@@ -124,7 +124,7 @@ class Sheet
      *
      * @throws \PhpOffice\PhpSpreadsheet\Reader\Exception
      */
-    public function fromView(FromView $sheetExport): void
+    public function fromView(FromView $sheetExport)
     {
         $tempFile = $this->tempFile();
         file_put_contents($tempFile, $sheetExport->view()->render());
@@ -141,7 +141,7 @@ class Sheet
      * @param FromQuery $sheetExport
      * @param Worksheet $worksheet
      */
-    public function fromQuery(FromQuery $sheetExport, Worksheet $worksheet): void
+    public function fromQuery(FromQuery $sheetExport, Worksheet $worksheet)
     {
         $sheetExport->query()->chunk($this->chunkSize, function ($chunk) use ($sheetExport, $worksheet) {
             foreach ($chunk as $row) {
@@ -184,7 +184,7 @@ class Sheet
     /**
      * @return void
      */
-    public function autoSize(): void
+    public function autoSize()
     {
         foreach (range('A', $this->worksheet->getHighestDataColumn()) as $col) {
             $this->worksheet->getColumnDimension($col)->setAutoSize(true);
@@ -197,7 +197,7 @@ class Sheet
      *
      * @throws \PhpOffice\PhpSpreadsheet\Exception
      */
-    public function formatColumn(string $column, string $format): void
+    public function formatColumn(string $column, string $format)
     {
         $this->worksheet
             ->getStyle($column . '1:' . $column . $this->worksheet->getHighestRow())
