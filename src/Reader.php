@@ -2,9 +2,9 @@
 
 namespace Maatwebsite\Excel;
 
-use Illuminate\Filesystem\FilesystemManager;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use Illuminate\Filesystem\FilesystemManager;
 
 class Reader
 {
@@ -46,7 +46,7 @@ class Reader
         file_put_contents($tmp, $file);
 
         $readerType = $readerType ?? IOFactory::identify($tmp);
-        $reader = IOFactory::createReader($readerType);
+        $reader     = IOFactory::createReader($readerType);
 
         if (!$reader->canRead($tmp)) {
             dd('nope');

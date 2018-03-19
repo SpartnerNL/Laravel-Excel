@@ -4,8 +4,8 @@ namespace Maatwebsite\Excel;
 
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Filesystem\FilesystemManager;
-use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Foundation\Bus\PendingDispatch;
+use Illuminate\Contracts\Routing\ResponseFactory;
 
 class Excel implements Exporter, Importer
 {
@@ -42,11 +42,6 @@ class Excel implements Exporter, Importer
     protected $queuedWriter;
 
     /**
-     * @var Reader
-     */
-    private $reader;
-
-    /**
      * @var ResponseFactory
      */
     protected $response;
@@ -55,6 +50,11 @@ class Excel implements Exporter, Importer
      * @var FilesystemManager
      */
     protected $filesystem;
+
+    /**
+     * @var Reader
+     */
+    private $reader;
 
     /**
      * @param Writer            $writer

@@ -3,7 +3,6 @@
 namespace Maatwebsite\Excel;
 
 use Illuminate\Foundation\Bus\PendingDispatch;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 interface Importer
 {

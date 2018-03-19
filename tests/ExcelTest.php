@@ -99,8 +99,7 @@ class ExcelTest extends TestCase
      */
     public function can_store_csv_export_with_custom_settings()
     {
-        $export = new class implements WithEvents, FromCollection
-        {
+        $export = new class implements WithEvents, FromCollection {
             use RegistersEventListeners;
 
             /**
@@ -143,8 +142,7 @@ class ExcelTest extends TestCase
      */
     public function cannot_use_from_collection_and_from_view_on_same_export()
     {
-        $export = new class implements FromCollection, FromView
-        {
+        $export = new class implements FromCollection, FromView {
             use Exportable;
 
             /**
@@ -172,9 +170,7 @@ class ExcelTest extends TestCase
      */
     public function can_import_a_simple_xlsx_file()
     {
-        $import = new class
-        {
-
+        $import = new class {
         };
 
         $this->assertTrue($this->SUT->import($import, 'import.xlsx'));
