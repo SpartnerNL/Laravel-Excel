@@ -10,7 +10,7 @@
 * PHP extension php_gd2 enabled
 
 ##### PHP version support
-Support for PHP versions will only be maintained for a period of six months beyond the end-of-life of that PHP version
+Support for PHP versions will only be maintained for a period of six months beyond the end-of-life of that PHP version.
 
 ### Supported Versions
 
@@ -101,7 +101,7 @@ public function export()
 
 ```
 
-Via the Facade
+Via the Facade:
 
 ```php
 public function export()

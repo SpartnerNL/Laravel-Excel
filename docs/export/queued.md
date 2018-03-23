@@ -54,11 +54,11 @@ return (new InvoicesExport)->store('invoices.xlsx');
 
 ### Appending jobs
 
-The `queue()` method returns an instance of Laravel's `PendingDispatch`. This means you can chain extra jobs.
+The `queue()` method returns an instance of Laravel's `PendingDispatch`. This means you can chain extra jobs that will be added to the end of the queue and only executed if all export jobs are correctly executed.
 
 ```php
 return (new InvoicesExport)->queue('invoices.xlsx')->chain([
-    new InvoiceExportCompletedJob(),
+    new NotifyUserOfCompletedExport(request()->user()),
 ]);
 ```
 
@@ -80,17 +80,4 @@ Because `PendingDispatch` is returned, we can also change the queue that should 
 
 ```php
 return (new InvoicesExport)->queue('invoices.xlsx')->allOnQueue('exports');
-```
-
-### Chaining jobs
-
-It's also possible to chain extra jobs, that will be added to the end of the queue and only 
-executed if all export jobs are correctly executed.
-
-```php
-return (new InvoicesExport)
-    ->queue('invoices.xlsx')
-    ->chain([
-        new NotifyUserOfCompletedExport(request()->user())
-    ]);
 ```

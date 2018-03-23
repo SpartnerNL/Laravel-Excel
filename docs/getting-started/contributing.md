@@ -28,12 +28,12 @@ whether or not your feature is likely to be used by other users of the project.
 
 - Check the codebase to ensure that your feature doesn't already exist.
 - Check the pull requests to ensure that another person hasn't already submitted the feature or fix.
-- Use the [pull request template](https://github.com/Maatwebsite/Laravel-Excel/blob/3.0/.github/PULL_REQUEST_TEMPLATE.md)
+- Use the [pull request template](https://github.com/Maatwebsite/Laravel-Excel/blob/3.0/.github/PULL_REQUEST_TEMPLATE.md).
 
 ## How to report a bug?
 
 - Attempt to replicate the problem, to ensure that it wasn't a coincidental incident.
-- Check to make sure your feature suggestion isn't already present within the project.
+- Check to make sure your bug report isn't already present within the project.
 - Check the pull requests tab to ensure that the bug doesn't have a fix in progress.
 - Check the pull requests tab to ensure that the feature isn't already in progress.
 - Use the [issue template](https://github.com/Maatwebsite/Laravel-Excel/blob/3.0/.github/ISSUE_TEMPLATE.md).

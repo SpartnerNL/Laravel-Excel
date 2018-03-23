@@ -1,6 +1,6 @@
 <!--
 
-PLEASE READ: FILLING OUT THE TEMPLATE IS REQUIRED!
+PLEASE READ: FILLING IN THE TEMPLATE IS REQUIRED!
 Issues that do not include enough information might not be picked up.
 
 Have you read Laravel-Excel's 
@@ -36,7 +36,7 @@ Put an X between the brackets if you have done the following:
 
 ### Steps to Reproduce
 
-<!-- How can this issue be reproduced? Provide an excel file or reproduction repository to help us reproduce the issue easily.  -->
+<!-- How can this issue be reproduced? Provide an Excel file or reproduction repository to help us reproduce the issue easily.  -->
 
 **Expected behavior:**
 
