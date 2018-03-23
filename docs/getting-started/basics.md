@@ -15,7 +15,7 @@ Laravel Excel features:
 
 ## We're hiring!!!
 
-For our Maastricht (NL) office we are looking for a Medior/Senior PHP Developer.
+Location: Maastricht (NL).
 
 ![wanted_small](https://user-images.githubusercontent.com/15018570/37833295-3a335bb4-2eab-11e8-8a0b-12f5689d1a14.jpg)
 
