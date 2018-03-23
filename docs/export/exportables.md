@@ -32,7 +32,7 @@ return (new InvoicesExport)->store('invoices.xlsx', 's3');
 
 ### Responsable
 
-The previous example can be made even shorter. Add Laravel's `Responsable` interface to the export class.
+The previous example can be made even shorter when adding Laravel's `Responsable` interface to the export class:
 
 ```php
 namespace App\Exports;
@@ -54,7 +54,7 @@ class InvoicesExport implements FromCollection, Responsable
 }
 ```
 
-You can now easily return the export class, without the need of calling `->download()`
+You can now easily return the export class, without the need of calling `->download()`.
 
 ```php
 return new InvoicesExport();

@@ -6,7 +6,7 @@
 |`Maatwebsite\Excel\Concerns\FromQuery`| Use an Eloquent query to populate the export. | 
 |`Maatwebsite\Excel\Concerns\FromView`| Use a (Blade) view to to populate the export. |
 |`Maatwebsite\Excel\Concerns\WithTitle`| Set the Workbook or Worksheet title. |
-|`Maatwebsite\Excel\Concerns\WithHeadings`| Prepend given heading row. |
+|`Maatwebsite\Excel\Concerns\WithHeadings`| Prepend a heading row. |
 |`Maatwebsite\Excel\Concerns\WithMapping`| Format the row before it's written to the file. |
 |`Maatwebsite\Excel\Concerns\WithColumnFormatting`| Format certain columns. |
 |`Maatwebsite\Excel\Concerns\WithMultipleSheets`| Enable multi-sheet support. Each sheet can have its own concerns (except this one). |

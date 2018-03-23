@@ -9,8 +9,8 @@ You are able to hook into the parent package by using events.
 No need to use convenience methods like "query" or "view", if you need full control over the export.
 
 The events will be activated by adding the `WithEvents` concern. Inside the `registerEvents` method, you 
-will have to return an array of events. The key is the FQN of the event and the value is a callable event listener.
-This can either be a closure, array-callable  or invokable class.
+will have to return an array of events. The key is the Fully Qualified Name (FQN) of the event and the value is a callable event listener.
+This can either be a closure, array-callable or invokable class.
 
 ```php
 class InvoicesExport implements WithEvents

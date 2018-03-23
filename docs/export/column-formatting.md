@@ -1,7 +1,7 @@
 # Formatting columns
 
 You can easily format an entire column, by using `WithColumnFormatting`.
-In case you want something more complicated, it's suggested to use the `AfterSheet` event to directly interact with the underlying `Worksheet` class.
+In case you want something more custom, it's suggested to use the `AfterSheet` event to directly interact with the underlying `Worksheet` class.
 
 ```php
 
@@ -34,5 +34,5 @@ class InvoicesExport implements WithColumnFormatting, WithMapping
 
 ### Dates
 
-In case of working with dates, it's recommended to use `\PhpOffice\PhpSpreadsheet\Shared\Date::dateTimeToExcel()` in your mapping
+When working with dates, it's recommended to use `\PhpOffice\PhpSpreadsheet\Shared\Date::dateTimeToExcel()` in your mapping
 to ensure correct parsing of dates.

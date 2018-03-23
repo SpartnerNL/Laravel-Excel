@@ -1,6 +1,6 @@
 # Basics
 
-The easiest way to start an export is by creating a custom export class. We'll use an invoices export as example.
+The easiest way to start an export is to create a custom export class. We'll use an invoices export as example.
 
 Create a new class called `InvoicesExport` in `App/Exports`:
 
@@ -16,7 +16,7 @@ class InvoicesExport implements FromCollection
 }
 ```
 
-In your controller we can now download this export.
+In your controller we can now download this export:
 
 ```php
 public function export() 

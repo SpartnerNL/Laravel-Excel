@@ -5,10 +5,10 @@ Filling out the template is required. Any pull request that does not include eno
 
 Mark the following tasks as done:
 
-* [ ] Check the codebase to ensure that your feature doesn't already exist.
-* [ ] Check the pull requests to ensure that another person hasn't already submitted the feature or fix.
-* [ ] Documentation was adjusted
-* [ ] Tests were added to ensure against regression.
+* [ ] Checked the codebase to ensure that your feature doesn't already exist.
+* [ ] Checked the pull requests to ensure that another person hasn't already submitted the feature or fix.
+* [ ] Adjusted the Documentation.
+* [ ] Added tests to ensure against regression.
 
 ### Description of the Change
 
