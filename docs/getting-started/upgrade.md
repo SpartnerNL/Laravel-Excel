@@ -12,7 +12,7 @@ Version 3.0 will not be backwards compatible with 2.*. It's not possible to prov
 
 ### Deprecations
 
-ALL Laravel Excel 2.1 are deprecated and will not be able to use in 3.0 . 
+ALL Laravel Excel 2.* methods are deprecated and will not be able to use in 3.0 . 
 
 - Excel::load() is removed and will not be re-added until 3.1
 - Excel::create() is removed and replaced by Excel::download/Excel::store($yourExport);
