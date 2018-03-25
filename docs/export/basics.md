@@ -7,6 +7,8 @@ Create a new class called `InvoicesExport` in `App/Exports`:
 ```php
 namespace App\Exports;
 
+use Maatwebsite\Excel\Concerns\FromCollection;
+
 class InvoicesExport implements FromCollection
 {
     public function collection()
@@ -40,6 +42,8 @@ In case your export needs dependencies, you can inject the export class:
 
 ```php
 namespace App\Exports;
+
+use Maatwebsite\Excel\Concerns\FromCollection;
 
 class InvoicesExport implements FromCollection
 {
