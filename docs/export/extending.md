@@ -118,10 +118,10 @@ class InvoicesExport implements WithEvents
     {
         return [
             BeforeExport::class  => function(BeforeExport $event) {
-                $event->writer->setCreator('Patrick');
+                $event->writer->getProperties()->setCreator('Patrick');
             },
             AfterSheet::class    => function(AfterSheet $event) {
-                $event->sheet->setOrientation(PageSetup::ORIENTATION_LANDSCAPE);
+                $event->sheet->getPageSetup()->setOrientation(PageSetup::ORIENTATION_LANDSCAPE);
             },
         ];
     }
