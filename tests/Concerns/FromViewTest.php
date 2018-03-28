@@ -117,6 +117,18 @@ class FromViewTest extends TestCase
 
         $contents = $this->readAsArray(__DIR__ . '/../Data/Disks/Local/from-view.xlsx', 'Xlsx', 0);
 
+        $expected = $users->forPage(1, 100)->map(function (User $user) {
+            return [
+                $user->name,
+                $user->email,
+            ];
+        })->prepend(['Name', 'Email'])->toArray();
+
+        $this->assertEquals(101, sizeof($contents));
+        $this->assertEquals($expected, $contents);
+
+        $contents = $this->readAsArray(__DIR__ . '/../Data/Disks/Local/from-view.xlsx', 'Xlsx', 2);
+
         $expected = $users->forPage(3, 100)->map(function (User $user) {
             return [
                 $user->name,
