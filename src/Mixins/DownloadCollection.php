@@ -15,7 +15,7 @@ class DownloadCollection
     public function downloadExcel()
     {
         return function (string $fileName, string $writerType = null, $withHeadings = false) {
-            $export = new class($this)  implements FromCollection, WithHeadings  {
+            $export = new class($this) implements FromCollection, WithHeadings  {
                 use Exportable;
 
                 /**
