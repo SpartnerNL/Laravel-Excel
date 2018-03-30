@@ -85,8 +85,7 @@ class StoreCollectionTest extends TestCase
         $this->assertTrue($response);
         $this->assertFileExists($file);
 
-        if (is_file($file))
-        {
+        if (is_file($file)) {
             $array = $this->readAsArray($file, Excel::XLSX);
 
             $firstRow = collect($array)->first();
@@ -96,7 +95,7 @@ class StoreCollectionTest extends TestCase
 
             $this->assertEquals([
                 ['test', 'test'],
-                ['test', 'test']
+                ['test', 'test'],
             ], collect($array)->values()->all());
         }
     }
