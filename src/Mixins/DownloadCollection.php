@@ -15,13 +15,13 @@ class DownloadCollection
     public function downloadExcel()
     {
         return function (string $fileName, string $writerType = null, $withHeadings = false) {
-            $export = new class($this) implements FromCollection, WithHeadings {
+            $export = new class($this, $withHeadings) implements FromCollection, WithHeadings {
                 use Exportable;
 
                 /**
                  * @var bool
                  */
-                public $withHeadings = false;
+                private $withHeadings;
 
                 /**
                  * @var Collection
@@ -30,10 +30,13 @@ class DownloadCollection
 
                 /**
                  * @param Collection $collection
+                 * @param $withHeading
                  */
-                public function __construct(Collection $collection)
+                public function __construct(Collection $collection, $withHeading = false)
                 {
                     $this->collection = $collection->toBase();
+
+                    $this->withHeadings = $withHeading;
                 }
 
                 /**
@@ -52,8 +55,6 @@ class DownloadCollection
                     return $this->withHeadings ? $this->collection->collapse()->keys()->all() : [];
                 }
             };
-
-            $export->withHeadings = $withHeadings;
 
             return $export->download($fileName, $writerType);
         };
