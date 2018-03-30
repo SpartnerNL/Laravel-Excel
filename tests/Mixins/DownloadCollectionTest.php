@@ -42,7 +42,7 @@ class DownloadCollectionTest extends TestCase
 
         $array = $this->readAsArray($response->getFile()->getPathName(), Excel::XLSX);
 
-        $this->assertEquals($collection->collapse()->keys()->all(), collect($array)->first());
+        $this->assertEquals(['column_1', 'column_2'], collect($array)->first());
         $this->assertInstanceOf(BinaryFileResponse::class, $response);
         $this->assertEquals(
             'attachment; filename="collection-headers-download.xlsx"',

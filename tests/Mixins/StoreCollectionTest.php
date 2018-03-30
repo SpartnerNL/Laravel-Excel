@@ -56,9 +56,17 @@ class StoreCollectionTest extends TestCase
 
         $this->assertTrue($response);
         $this->assertFileExists($file);
-        if (is_file($file)) {
+
+        if (is_file($file))
+        {
             $array = $this->readAsArray($file, Excel::XLSX);
-            $this->assertEquals($collection->collapse()->keys()->all(), collect($array)->first());
+            $this->assertEquals(['column_1', 'column_2'], collect($array)->first());
+
+
+            $this->assertEquals([
+                ['test', 'test'],
+                ['test', 'test']
+            ], collect($array)->except(0)->values()->all());
         }
     }
 }
