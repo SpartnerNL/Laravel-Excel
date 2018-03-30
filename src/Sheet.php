@@ -133,10 +133,9 @@ class Sheet
 
         /** @var Html $reader */
         $reader = IOFactory::createReader('Html');
-        // dump($spreadsheet->getActiveSheetIndex()); // Implementation bug: always return 0
-        $reader->setSheetIndex($spreadsheet->getSheetCount() - 1); // Insert content into the last sheet
+        // Insert content into the last sheet
+        $reader->setSheetIndex($spreadsheet->getSheetCount() - 1);
         $reader->loadIntoExisting($tempFile, $spreadsheet);
-        $reader->setSheetIndex(0); // return to the first sheet as active
     }
 
     /**
