@@ -2,13 +2,13 @@
 
 namespace Maatwebsite\Excel\Tests\Concerns;
 
-use Maatwebsite\Excel\Tests\TestCase;
-use Maatwebsite\Excel\Tests\Data\Stubs\SheetWith100Rows;
 use Illuminate\Support\Collection;
-use Maatwebsite\Excel\Concerns\WithMultipleSheets;
+use Maatwebsite\Excel\Tests\TestCase;
 use Maatwebsite\Excel\Concerns\Exportable;
-use Maatwebsite\Excel\Tests\Data\Stubs\SheetForUsersFromView;
+use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
+use Maatwebsite\Excel\Tests\Data\Stubs\SheetWith100Rows;
+use Maatwebsite\Excel\Tests\Data\Stubs\SheetForUsersFromView;
 
 class WithMultipleSheetsTest extends TestCase
 {
