@@ -75,7 +75,7 @@ class StoreCollectionTest extends TestCase
     {
         $collection = new Collection([
             ['column_1' => 'test', 'column_2' => 'test'],
-            ['column_1' => 'test', 'column_2' => 'test'],
+            ['column_1' => 'test2', 'column_2' => 'test2'],
         ]);
 
         $response = $collection->storeExcel('collection-without-headers-store.xlsx', null, Excel::XLSX, false);
@@ -89,9 +89,7 @@ class StoreCollectionTest extends TestCase
             $array = $this->readAsArray($file, Excel::XLSX);
 
             $firstRow = collect($array)->first();
-            $this->assertNotEquals(['column_1', 'column_2'], $firstRow);
-            $this->assertNotEquals([], $firstRow);
-            $this->assertNotNull($firstRow);
+            $this->assertEquals(['test', 'test'], $firstRow);
 
             $this->assertEquals([
                 ['test', 'test'],
