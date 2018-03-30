@@ -93,7 +93,7 @@ class StoreCollectionTest extends TestCase
 
             $this->assertEquals([
                 ['test', 'test'],
-                ['test', 'test'],
+                ['test2', 'test2'],
             ], collect($array)->values()->all());
         }
     }
