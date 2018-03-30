@@ -4,8 +4,8 @@ namespace Maatwebsite\Excel\Mixins;
 
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\Exportable;
-use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Concerns\FromCollection;
 
 class DownloadCollection
 {
@@ -15,7 +15,7 @@ class DownloadCollection
     public function downloadExcel()
     {
         return function (string $fileName, string $writerType = null, $withHeadings = false) {
-            $export = new class($this) implements FromCollection, WithHeadings  {
+            $export = new class($this) implements FromCollection, WithHeadings {
                 use Exportable;
 
                 /**

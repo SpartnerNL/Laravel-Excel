@@ -2,8 +2,8 @@
 
 namespace Maatwebsite\Excel\Tests\Mixins;
 
-use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Excel;
+use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Tests\TestCase;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
@@ -34,8 +34,8 @@ class DownloadCollectionTest extends TestCase
     public function can_store_a_collection_with_headers_as_excel()
     {
         $collection = new Collection([
-            ['column_1' => 'test','column_2' => 'test'],
-            ['column_1' => 'test','column_2' => 'test'],
+            ['column_1' => 'test', 'column_2' => 'test'],
+            ['column_1' => 'test', 'column_2' => 'test'],
         ]);
 
         $response = $collection->downloadExcel('collection-headers-download.xlsx', Excel::XLSX, true);
