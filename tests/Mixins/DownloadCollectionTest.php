@@ -49,4 +49,30 @@ class DownloadCollectionTest extends TestCase
             $response->headers->get('Content-Disposition')
         );
     }
+
+    /**
+     * @test
+     */
+    public function can_store_a_collection_without_headers_as_excel()
+    {
+        $collection = new Collection([
+            ['column_1' => 'test', 'column_2' => 'test'],
+            ['column_1' => 'test', 'column_2' => 'test'],
+        ]);
+
+        $response = $collection->downloadExcel('collection-without-headers-download.xlsx', Excel::XLSX, false);
+
+        $array = $this->readAsArray($response->getFile()->getPathName(), Excel::XLSX);
+
+        $firstRow = collect($array)->first();
+        $this->assertNotEquals(['column_1', 'column_2'], $firstRow);
+        $this->assertNotEquals([], $firstRow);
+        $this->assertNotNull($firstRow);
+
+        $this->assertInstanceOf(BinaryFileResponse::class, $response);
+        $this->assertEquals(
+            'attachment; filename="collection-without-headers-download.xlsx"',
+            $response->headers->get('Content-Disposition')
+        );
+    }
 }

@@ -57,16 +57,47 @@ class StoreCollectionTest extends TestCase
         $this->assertTrue($response);
         $this->assertFileExists($file);
 
-        if (is_file($file))
-        {
+        if (is_file($file)) {
             $array = $this->readAsArray($file, Excel::XLSX);
             $this->assertEquals(['column_1', 'column_2'], collect($array)->first());
 
+            $this->assertEquals([
+                ['test', 'test'],
+                ['test', 'test'],
+            ], collect($array)->except(0)->values()->all());
+        }
+    }
+
+    /**
+     * @test
+     */
+    public function can_store_a_collection_without_headings_as_excel()
+    {
+        $collection = new Collection([
+            ['column_1' => 'test', 'column_2' => 'test'],
+            ['column_1' => 'test', 'column_2' => 'test'],
+        ]);
+
+        $response = $collection->storeExcel('collection-without-headers-store.xlsx', null, Excel::XLSX, false);
+
+        $file = __DIR__ . '/../Data/Disks/Local/collection-without-headers-store.xlsx';
+
+        $this->assertTrue($response);
+        $this->assertFileExists($file);
+
+        if (is_file($file))
+        {
+            $array = $this->readAsArray($file, Excel::XLSX);
+
+            $firstRow = collect($array)->first();
+            $this->assertNotEquals(['column_1', 'column_2'], $firstRow);
+            $this->assertNotEquals([], $firstRow);
+            $this->assertNotNull($firstRow);
 
             $this->assertEquals([
                 ['test', 'test'],
                 ['test', 'test']
-            ], collect($array)->except(0)->values()->all());
+            ], collect($array)->values()->all());
         }
     }
 }
