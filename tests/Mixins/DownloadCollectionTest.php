@@ -57,7 +57,7 @@ class DownloadCollectionTest extends TestCase
     {
         $collection = new Collection([
             ['column_1' => 'test', 'column_2' => 'test'],
-            ['column_1' => 'test', 'column_2' => 'test'],
+            ['column_1' => 'test2', 'column_2' => 'test2'],
         ]);
 
         $response = $collection->downloadExcel('collection-without-headers-download.xlsx', Excel::XLSX, false);
@@ -65,9 +65,7 @@ class DownloadCollectionTest extends TestCase
         $array = $this->readAsArray($response->getFile()->getPathName(), Excel::XLSX);
 
         $firstRow = collect($array)->first();
-        $this->assertNotEquals(['column_1', 'column_2'], $firstRow);
-        $this->assertNotEquals([], $firstRow);
-        $this->assertNotNull($firstRow);
+        $this->assertEquals(['test', 'test'], $firstRow);
 
         $this->assertInstanceOf(BinaryFileResponse::class, $response);
         $this->assertEquals(
