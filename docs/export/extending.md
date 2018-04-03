@@ -137,11 +137,13 @@ class InvoicesExport implements WithEvents
 
                 $event->sheet->styleCells(
                     'B2:G8',
-                    'borders' => [
-                        'outline' => [
-                            'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THICK,
-                            'color' => ['argb' => 'FFFF0000'],
-                        ],
+                    [
+                        'borders' => [
+                            'outline' => [
+                                'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THICK,
+                                'color' => ['argb' => 'FFFF0000'],
+                            ],
+                        ]
                     ]
                 );
             },
