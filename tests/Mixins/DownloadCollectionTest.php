@@ -15,11 +15,17 @@ class DownloadCollectionTest extends TestCase
     public function can_store_a_collection_as_excel()
     {
         $collection = new Collection([
-            ['test', 'test'],
-            ['test', 'test'],
+            ['column_1' => 'test', 'column_2' => 'test'],
+            ['column_1' => 'test2', 'column_2' => 'test2'],
         ]);
 
-        $response = $collection->downloadExcel('collection-download.xlsx');
+        $response = $collection->downloadExcel('collection-download.xlsx', Excel::XLSX);
+
+        $array = $this->readAsArray($response->getFile()->getPathName(), Excel::XLSX);
+
+        // First row are not headings
+        $firstRow = collect($array)->first();
+        $this->assertEquals(['test', 'test'], $firstRow);
 
         $this->assertInstanceOf(BinaryFileResponse::class, $response);
         $this->assertEquals(
@@ -46,30 +52,6 @@ class DownloadCollectionTest extends TestCase
         $this->assertInstanceOf(BinaryFileResponse::class, $response);
         $this->assertEquals(
             'attachment; filename="collection-headers-download.xlsx"',
-            $response->headers->get('Content-Disposition')
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function can_store_a_collection_without_headers_as_excel()
-    {
-        $collection = new Collection([
-            ['column_1' => 'test', 'column_2' => 'test'],
-            ['column_1' => 'test2', 'column_2' => 'test2'],
-        ]);
-
-        $response = $collection->downloadExcel('collection-without-headers-download.xlsx', Excel::XLSX, false);
-
-        $array = $this->readAsArray($response->getFile()->getPathName(), Excel::XLSX);
-
-        $firstRow = collect($array)->first();
-        $this->assertEquals(['test', 'test'], $firstRow);
-
-        $this->assertInstanceOf(BinaryFileResponse::class, $response);
-        $this->assertEquals(
-            'attachment; filename="collection-without-headers-download.xlsx"',
             $response->headers->get('Content-Disposition')
         );
     }

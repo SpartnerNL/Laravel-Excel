@@ -15,7 +15,8 @@ class StoreCollection
     public function storeExcel()
     {
         return function (string $filePath, string $disk = null, string $writerType = null, $withHeadings = false) {
-            $export = new class($this, $withHeadings) implements FromCollection, WithHeadings {
+            $export = new class($this, $withHeadings) implements FromCollection, WithHeadings
+            {
                 use Exportable;
 
                 /**
@@ -30,12 +31,11 @@ class StoreCollection
 
                 /**
                  * @param Collection $collection
-                 * @param $withHeadings = false
+                 * @param bool       $withHeadings
                  */
-                public function __construct(Collection $collection, $withHeadings = false)
+                public function __construct(Collection $collection, bool $withHeadings = false)
                 {
-                    $this->collection = $collection->toBase();
-
+                    $this->collection   = $collection->toBase();
                     $this->withHeadings = $withHeadings;
                 }
 
