@@ -133,6 +133,7 @@ class Sheet
 
         /** @var Html $reader */
         $reader = IOFactory::createReader('Html');
+
         // Insert content into the last sheet
         $reader->setSheetIndex($spreadsheet->getSheetCount() - 1);
         $reader->loadIntoExisting($tempFile, $spreadsheet);

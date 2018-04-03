@@ -81,7 +81,7 @@ class FromViewTest extends TestCase
     {
         /** @var Collection|User[] $users */
         $users = factory(User::class)->times(300)->make();
-
+        
         $export = new class($users) implements WithMultipleSheets {
             use Exportable;
 
@@ -111,11 +111,11 @@ class FromViewTest extends TestCase
             }
         };
 
-        $response = $export->store('from-view.xlsx');
+        $response = $export->store('from-multiple-view.xlsx');
 
         $this->assertTrue($response);
 
-        $contents = $this->readAsArray(__DIR__ . '/../Data/Disks/Local/from-view.xlsx', 'Xlsx', 0);
+        $contents = $this->readAsArray(__DIR__ . '/../Data/Disks/Local/from-multiple-view.xlsx', 'Xlsx', 0);
 
         $expected = $users->forPage(1, 100)->map(function (User $user) {
             return [
@@ -127,7 +127,7 @@ class FromViewTest extends TestCase
         $this->assertEquals(101, sizeof($contents));
         $this->assertEquals($expected, $contents);
 
-        $contents = $this->readAsArray(__DIR__ . '/../Data/Disks/Local/from-view.xlsx', 'Xlsx', 2);
+        $contents = $this->readAsArray(__DIR__ . '/../Data/Disks/Local/from-multiple-view.xlsx', 'Xlsx', 2);
 
         $expected = $users->forPage(3, 100)->map(function (User $user) {
             return [
