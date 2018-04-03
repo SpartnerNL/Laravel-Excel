@@ -27,8 +27,7 @@ class WithMultipleSheetsTest extends TestCase
      */
     public function can_export_with_multiple_sheets_using_collections()
     {
-        $export = new class implements WithMultipleSheets
-        {
+        $export = new class implements WithMultipleSheets {
             use Exportable;
 
             /**
@@ -59,8 +58,7 @@ class WithMultipleSheetsTest extends TestCase
         /** @var Collection|User[] $users */
         $users = factory(User::class)->times(300)->make();
 
-        $export = new class($users) implements WithMultipleSheets
-        {
+        $export = new class($users) implements WithMultipleSheets {
             use Exportable;
 
             /**
