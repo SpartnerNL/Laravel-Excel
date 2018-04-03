@@ -88,13 +88,17 @@ class InvoicesExport implements WithEvents
 
 ### Macroable
 
-Both `Writer` and `Sheet` are macroable which means they can easily be extended to fit your needs.
+Both `Writer` and `Sheet` are macroable which means they can easily be extended to fit your needs. 
+Both Writer and Sheet have a `->getDelegate()` method which returns the underlying PhpSpreadsheet class. 
+This will allow you to add shortcuts to PhpSpreadsheets method that are not available in this package. 
+
+
 
 #### Writer
 
 ```php
 Writer::macro('setCreator', function (Writer $writer, string $creator) {
-    $writer->getProperties()->setCreator($creator);
+    $writer->getDelegate()->getProperties()->setCreator($creator);
 });
 ```
 
@@ -102,7 +106,15 @@ Writer::macro('setCreator', function (Writer $writer, string $creator) {
 
 ```php
 Sheet::macro('setOrientation', function (Sheet $sheet, $orientation) {
-    $sheet->getPageSetup()->setOrientation($orientation);
+    $sheet->getDelegate()->getPageSetup()->setOrientation($orientation);
+});
+```
+
+You could also add some shortcut to style cells. Feel free to use this macro, or be creative and invent your own syntax!
+
+```php
+Sheet::macro('styleCells', function (Sheet $sheet, string $cellRange, array style) {
+    $sheet->getDelegate()->getStyle($cellRange)->applyFromArray;
 });
 ```
 
@@ -122,8 +134,20 @@ class InvoicesExport implements WithEvents
             },
             AfterSheet::class    => function(AfterSheet $event) {
                 $event->sheet->setOrientation(PageSetup::ORIENTATION_LANDSCAPE);
+
+                $event->sheet->styleCells(
+                    'B2:G8',
+                    'borders' => [
+                        'outline' => [
+                            'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THICK,
+                            'color' => ['argb' => 'FFFF0000'],
+                        ],
+                    ]
+                );
             },
         ];
     }
 }
 ```
+
+For PhpSpreadsheet methods, please refer to their documentation: https://phpspreadsheet.readthedocs.io/
