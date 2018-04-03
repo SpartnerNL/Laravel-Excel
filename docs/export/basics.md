@@ -73,12 +73,20 @@ The package provides some macro to Laravel's collection class to easily download
 #### Downloading a collection as Excel
 
 ```php
-(new Collection([[1, 2, 3], [1, 2, 3]))
-->downloadExcel($filePath, $writerType = null, $headings = false)
+(new Collection([[1, 2, 3], [1, 2, 3]))->downloadExcel(
+    $filePath,
+    $writerType = null,
+    $headings = false
+)
 ```
 
 #### Storing a collection on disk
 
 ```php
-(new Collection([[1, 2, 3], [1, 2, 3]))->storeExcel($filePath, $disk = null, $writerType = null, $headings = false)
+(new Collection([[1, 2, 3], [1, 2, 3]))->storeExcel(
+    $filePath,
+    $disk = null,
+    $writerType = null,
+    $headings = false
+)
 ```

@@ -114,7 +114,7 @@ You could also add some shortcut to style cells. Feel free to use this macro, or
 
 ```php
 Sheet::macro('styleCells', function (Sheet $sheet, string $cellRange, array style) {
-    $sheet->getDelegate()->getStyle($cellRange)->applyFromArray;
+    $sheet->getDelegate()->getStyle($cellRange)->applyFromArray($style);
 });
 ```
 
