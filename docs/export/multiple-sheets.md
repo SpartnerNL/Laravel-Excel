@@ -1,7 +1,7 @@
 # Multiple Sheets
 
 To allow the export to have multiple sheets, the `WithMultipleSheets` concern should be used. 
-The `sheets()` method expect an array of sheet export objects to be returned.
+The `sheets()` method expects an array of sheet export objects to be returned.
 
 ```php
 class InvoicesExport implements WithMultipleSheets

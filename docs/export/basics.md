@@ -1,11 +1,13 @@
 # Basics
 
-The easiest way to start an export is by creating a custom export class. We'll use an invoices export as example.
+The easiest way to start an export is to create a custom export class. We'll use an invoices export as example.
 
 Create a new class called `InvoicesExport` in `App/Exports`:
 
 ```php
 namespace App\Exports;
+
+use Maatwebsite\Excel\Concerns\FromCollection;
 
 class InvoicesExport implements FromCollection
 {
@@ -16,7 +18,7 @@ class InvoicesExport implements FromCollection
 }
 ```
 
-In your controller we can now download this export.
+In your controller we can now download this export:
 
 ```php
 public function export() 
@@ -40,6 +42,8 @@ In case your export needs dependencies, you can inject the export class:
 
 ```php
 namespace App\Exports;
+
+use Maatwebsite\Excel\Concerns\FromCollection;
 
 class InvoicesExport implements FromCollection
 {
@@ -69,11 +73,20 @@ The package provides some macro to Laravel's collection class to easily download
 #### Downloading a collection as Excel
 
 ```php
-(new Collection([[1, 2, 3], [1, 2, 3]))->downloadExcel($filePath, $writerType = null)
+(new Collection([[1, 2, 3], [1, 2, 3]))->downloadExcel(
+    $filePath,
+    $writerType = null,
+    $headings = false
+)
 ```
 
 #### Storing a collection on disk
 
 ```php
-(new Collection([[1, 2, 3], [1, 2, 3]))->storeExcel($filePath, $disk = null, $writerType = null)
+(new Collection([[1, 2, 3], [1, 2, 3]))->storeExcel(
+    $filePath,
+    $disk = null,
+    $writerType = null,
+    $headings = false
+)
 ```

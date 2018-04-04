@@ -4,6 +4,7 @@ namespace Maatwebsite\Excel\Mixins;
 
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\Exportable;
+use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\FromCollection;
 
 class DownloadCollection
@@ -13,9 +14,14 @@ class DownloadCollection
      */
     public function downloadExcel()
     {
-        return function (string $fileName, string $writerType = null) {
-            $export = new class($this) implements FromCollection {
+        return function (string $fileName, string $writerType = null, $withHeadings = false) {
+            $export = new class($this, $withHeadings) implements FromCollection, WithHeadings {
                 use Exportable;
+
+                /**
+                 * @var bool
+                 */
+                private $withHeadings;
 
                 /**
                  * @var Collection
@@ -24,10 +30,12 @@ class DownloadCollection
 
                 /**
                  * @param Collection $collection
+                 * @param bool       $withHeading
                  */
-                public function __construct(Collection $collection)
+                public function __construct(Collection $collection, bool $withHeading = false)
                 {
-                    $this->collection = $collection->toBase();
+                    $this->collection   = $collection->toBase();
+                    $this->withHeadings = $withHeading;
                 }
 
                 /**
@@ -36,6 +44,14 @@ class DownloadCollection
                 public function collection()
                 {
                     return $this->collection;
+                }
+
+                /**
+                 * @return array
+                 */
+                public function headings(): array
+                {
+                    return $this->withHeadings ? $this->collection->collapse()->keys()->all() : [];
                 }
             };
 

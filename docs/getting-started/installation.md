@@ -3,14 +3,14 @@
 ### Requirements
 
 * PHP: ^7.1
-* Laravel: ^5.6
-* PhpSpreadsheet: ^1.1
+* Laravel: ^5.5
+* PhpSpreadsheet: ^1.2
 * PHP extension php_zip enabled
 * PHP extension php_xml enabled
 * PHP extension php_gd2 enabled
 
 ##### PHP version support
-Support for PHP versions will only be maintained for a period of six months beyond the end-of-life of that PHP version
+Support for PHP versions will only be maintained for a period of six months beyond the end-of-life of that PHP version.
 
 ### Supported Versions
 
@@ -19,7 +19,7 @@ Versions will be supported for a limited amount of time.
 | Version | Laravel Version | Php Version | Support |
 |---- |----|----|----|
 | 2.1 | <=5.6 | <=7.0 | EOL on 15-05-2018 |
-| 3.0 | ^5.6 |  ^7.1 | New features |
+| 3.0 | ^5.5 |  ^7.0 | New features |
 
 ### Composer
 
@@ -46,7 +46,7 @@ Add the ServiceProvider in `app/config/app.php`
 
 ### Facade
 
-The `Excel` facade is also auto-discovered. In case you want to add it manually:
+The `Excel` facade is also auto-discovered, but if you want to add it manually:
 
 Add the Facade in `app/config/app.php`
 
@@ -65,7 +65,7 @@ To publish the config, run the vendor publish command:
 php artisan vendor:publish
 ```
 
-The config file should now exists as `config/excel.php`.
+This will create a new config file named `config/excel.php`.
 
 ### Usage
 
@@ -101,7 +101,7 @@ public function export()
 
 ```
 
-Via the Facade
+Via the Facade:
 
 ```php
 public function export()
@@ -112,7 +112,7 @@ public function export()
 
 Via container binding:
 
-```
+```php
 $this->app->bind(Exporter::class, function() {
     return new Exporter($this->app['excel']);
 });
