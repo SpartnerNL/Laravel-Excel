@@ -18,7 +18,7 @@ class WithStrictNullComparisonExport implements FromCollection, WithHeadings, Wi
     public function collection()
     {
         return collect([
-            ['0', 0, 0.0]
+            ['0', 0, 0.0],
         ]);
     }
 

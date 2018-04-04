@@ -22,7 +22,7 @@ class WithStrictNullComparisonTest extends TestCase
 
         $expected = [
             [0.0, 0.0, 0.0],
-            [0.0, 0.0, 0.0]
+            [0.0, 0.0, 0.0],
         ];
 
         $this->assertEquals($expected, $actual);
