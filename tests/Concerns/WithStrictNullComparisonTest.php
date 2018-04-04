@@ -21,6 +21,7 @@ class WithStrictNullComparisonTest extends TestCase
         $actual = $this->readAsArray(__DIR__ . '/../Data/Disks/Local/with-strict-null-comparison-store.xlsx', 'Xlsx');
 
         $expected = [
+            [0.0, 0.0, 0.0],
             [0.0, 0.0, 0.0]
         ];
 
