@@ -11,6 +11,7 @@
 |`Maatwebsite\Excel\Concerns\WithColumnFormatting`| Format certain columns. |
 |`Maatwebsite\Excel\Concerns\WithMultipleSheets`| Enable multi-sheet support. Each sheet can have its own concerns (except this one). |
 |`Maatwebsite\Excel\Concerns\ShouldAutoSize`| Auto-size the columns in the worksheet. |
+|`Maatwebsite\Excel\Concerns\WithStrictNullComparison`| Uses strict comparisions when testing cells for null value. |
 |`Maatwebsite\Excel\Concerns\WithEvents`| Register events to hook into the PhpSpreadsheet process. |
 
 ### Traits

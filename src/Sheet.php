@@ -17,6 +17,7 @@ use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use Maatwebsite\Excel\Concerns\WithColumnFormatting;
+use Maatwebsite\Excel\Concerns\WithStrictNullComparison;
 use Maatwebsite\Excel\Exceptions\ConcernConflictException;
 
 class Sheet
@@ -70,7 +71,7 @@ class Sheet
         }
 
         if (!$sheetExport instanceof FromView && $sheetExport instanceof WithHeadings) {
-            $this->append([$sheetExport->headings()]);
+            $this->append([$sheetExport->headings()], null, $this->hasStrictNullComparison($sheetExport));
         }
     }
 
@@ -168,15 +169,12 @@ class Sheet
     /**
      * @param array    $rows
      * @param int|null $row
+     * @param bool  $strictNullComparison
      *
      * @throws \PhpOffice\PhpSpreadsheet\Exception
      */
-    public function append(array $rows, int $row = null)
+    public function append(array $rows, int $row = null, bool $strictNullComparison = false)
     {
-        if (empty($rows)) {
-            return;
-        }
-
         if (!$row) {
             $row = 1;
             if ($this->hasRows()) {
@@ -184,7 +182,7 @@ class Sheet
             }
         }
 
-        $this->worksheet->fromArray($rows, null, 'A' . $row);
+        $this->worksheet->fromArray($rows, null, 'A' . $row, $strictNullComparison);
     }
 
     /**
@@ -248,7 +246,7 @@ class Sheet
             $append[] = $row;
         }
 
-        $this->append($append);
+        $this->append($append, null, $this->hasStrictNullComparison($sheetExport));
     }
 
     /**
@@ -267,7 +265,7 @@ class Sheet
             $row = $row->toArray();
         }
 
-        $this->append([$row]);
+        $this->append([$row], null, $this->hasStrictNullComparison($sheetExport));
     }
 
     /**
@@ -285,5 +283,15 @@ class Sheet
     private function hasRows(): bool
     {
         return $this->worksheet->cellExists('A1');
+    }
+
+    /**
+     * @param object $sheetExport
+     *
+     * @return bool
+     */
+    private function hasStrictNullComparison($sheetExport): bool
+    {
+        return $sheetExport instanceof WithStrictNullComparison;
     }
 }
