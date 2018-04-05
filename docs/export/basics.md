@@ -66,6 +66,29 @@ public function export(Excel $excel, InvoicesExport $export)
 }
 ```
 
+### Strict null comparisons
+
+If you want your `0` values to be actual `0` values in your excel sheet instead of `null` (empty cells), you can use `WithStrictNullComparison`.
+
+```php
+namespace App\Exports;
+
+use Maatwebsite\Excel\Concerns\FromCollection;
+
+class InvoicesExport implements FromCollection, WithStrictNullComparison
+{
+    public function __construct(InvoicesRepository $invoices)
+    {
+        $this->invoices = $invoices;
+    }
+
+    public function collection()
+    {
+        return $this->invoices->all();
+    }
+}
+```
+
 ### Collection macros
 
 The package provides some macro to Laravel's collection class to easily download or store a collection.

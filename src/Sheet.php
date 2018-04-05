@@ -71,8 +71,7 @@ class Sheet
         }
 
         if (!$sheetExport instanceof FromView && $sheetExport instanceof WithHeadings) {
-            $strictNullComparison = $sheetExport instanceof WithStrictNullComparison;
-            $this->append([$sheetExport->headings()], null, $strictNullComparison);
+            $this->append([$sheetExport->headings()], null, $this->hasStrictNullComparison($sheetExport));
         }
     }
 
@@ -251,9 +250,7 @@ class Sheet
             $append[] = $row;
         }
 
-        $strictNullComparison = $sheetExport instanceof WithStrictNullComparison;
-
-        $this->append($append, null, $strictNullComparison);
+        $this->append($append, null, $this->hasStrictNullComparison($sheetExport));
     }
 
     /**
@@ -272,9 +269,7 @@ class Sheet
             $row = $row->toArray();
         }
 
-        $strictNullComparison = $sheetExport instanceof WithStrictNullComparison;
-
-        $this->append([$row], null, $strictNullComparison);
+        $this->append([$row], null, $this->hasStrictNullComparison($sheetExport));
     }
 
     /**
@@ -292,5 +287,15 @@ class Sheet
     private function hasRows(): bool
     {
         return $this->worksheet->cellExists('A1');
+    }
+
+    /**
+     * @param object $sheetExport
+     *
+     * @return bool
+     */
+    private function hasStrictNullComparison($sheetExport): bool
+    {
+        return $sheetExport instanceof WithStrictNullComparison;
     }
 }
