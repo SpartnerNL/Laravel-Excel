@@ -17,6 +17,7 @@ use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use Maatwebsite\Excel\Concerns\WithColumnFormatting;
+use Maatwebsite\Excel\Concerns\WithStrictNullComparison;
 use Maatwebsite\Excel\Exceptions\ConcernConflictException;
 
 class Sheet
@@ -70,7 +71,8 @@ class Sheet
         }
 
         if (!$sheetExport instanceof FromView && $sheetExport instanceof WithHeadings) {
-            $this->append([$sheetExport->headings()]);
+            $strictNullComparison = $sheetExport instanceof WithStrictNullComparison;
+            $this->append([$sheetExport->headings()], null, $strictNullComparison);
         }
     }
 
@@ -168,10 +170,11 @@ class Sheet
     /**
      * @param array    $rows
      * @param int|null $row
+     * @param bool  $strictNullComparison
      *
      * @throws \PhpOffice\PhpSpreadsheet\Exception
      */
-    public function append(array $rows, int $row = null)
+    public function append(array $rows, int $row = null, bool $strictNullComparison = false)
     {
         if (empty($rows)) {
             return;
@@ -184,7 +187,7 @@ class Sheet
             }
         }
 
-        $this->worksheet->fromArray($rows, null, 'A' . $row);
+        $this->worksheet->fromArray($rows, null, 'A' . $row, $strictNullComparison);
     }
 
     /**
@@ -248,7 +251,9 @@ class Sheet
             $append[] = $row;
         }
 
-        $this->append($append);
+        $strictNullComparison = $sheetExport instanceof WithStrictNullComparison;
+
+        $this->append($append, null, $strictNullComparison);
     }
 
     /**
@@ -267,7 +272,9 @@ class Sheet
             $row = $row->toArray();
         }
 
-        $this->append([$row]);
+        $strictNullComparison = $sheetExport instanceof WithStrictNullComparison;
+
+        $this->append([$row], null, $strictNullComparison);
     }
 
     /**
