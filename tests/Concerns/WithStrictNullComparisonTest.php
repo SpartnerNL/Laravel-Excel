@@ -3,11 +3,11 @@
 namespace Maatwebsite\Excel\Tests\Concerns;
 
 use Illuminate\Support\Collection;
-use Maatwebsite\Excel\Concerns\Exportable;
-use Maatwebsite\Excel\Concerns\FromCollection;
-use Maatwebsite\Excel\Concerns\WithHeadings;
-use Maatwebsite\Excel\Concerns\WithStrictNullComparison;
 use Maatwebsite\Excel\Tests\TestCase;
+use Maatwebsite\Excel\Concerns\Exportable;
+use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Concerns\FromCollection;
+use Maatwebsite\Excel\Concerns\WithStrictNullComparison;
 
 class WithStrictNullComparisonTest extends TestCase
 {
@@ -16,8 +16,7 @@ class WithStrictNullComparisonTest extends TestCase
      */
     public function exported_zero_values_are_not_null_when_exporting_with_strict_null_comparison()
     {
-        $export = new class implements FromCollection, WithHeadings, WithStrictNullComparison
-        {
+        $export = new class implements FromCollection, WithHeadings, WithStrictNullComparison {
             use Exportable;
 
             /**
@@ -58,8 +57,7 @@ class WithStrictNullComparisonTest extends TestCase
      */
     public function exported_zero_values_are_null_when_not_exporting_with_strict_null_comparison()
     {
-        $export = new class implements FromCollection, WithHeadings
-        {
+        $export = new class implements FromCollection, WithHeadings {
             use Exportable;
 
             /**
@@ -86,7 +84,7 @@ class WithStrictNullComparisonTest extends TestCase
         $this->assertTrue($response);
 
         $actual = $this->readAsArray(__DIR__ . '/../Data/Disks/Local/without-strict-null-comparison-store.xlsx', 'Xlsx');
-        
+
         $expected = [
             ['string', null, null, 'string'],
             ['string', null, null, 'string'],
