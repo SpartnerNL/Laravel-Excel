@@ -3,9 +3,9 @@
 namespace Maatwebsite\Excel\Tests\Concerns;
 
 use Illuminate\Support\Collection;
+use Maatwebsite\Excel\Tests\TestCase;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromCollection;
-use Maatwebsite\Excel\Tests\TestCase;
 use Maatwebsite\Excel\Tests\Data\Stubs\QueuedExport;
 use Maatwebsite\Excel\Tests\Data\Stubs\SheetWith100Rows;
 
@@ -57,7 +57,6 @@ class FromCollectionTest extends TestCase
     public function empty_rows_in_collection_will_be_ignored()
     {
         $export = new class implements FromCollection {
-
             use Exportable;
 
             /**
