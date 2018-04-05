@@ -175,10 +175,6 @@ class Sheet
      */
     public function append(array $rows, int $row = null, bool $strictNullComparison = false)
     {
-        if (empty($rows)) {
-            return;
-        }
-
         if (!$row) {
             $row = 1;
             if ($this->hasRows()) {
