@@ -33,7 +33,7 @@ composer require maatwebsite/excel
 
 The `Maatwebsite\Excel\ExcelServiceProvider` is auto-discovered and registered by default, but if you want to register it yourself:
 
-Add the ServiceProvider in `app/config/app.php`
+Add the ServiceProvider in `config/app.php`
 
 ```php
 'providers' => [
@@ -48,7 +48,7 @@ Add the ServiceProvider in `app/config/app.php`
 
 The `Excel` facade is also auto-discovered, but if you want to add it manually:
 
-Add the Facade in `app/config/app.php`
+Add the Facade in `config/app.php`
 
 ```php
 'aliases' => [
