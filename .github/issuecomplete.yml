@@ -11,7 +11,5 @@ checkCheckboxes: false
 
 # Keywords to look for in the body of the issue
 keywords:
-  - steps to reproduce
-  - versions
-  - actual behaviour
-  - expected behaviour
+  - Steps to Reproduce
+  - Versions
