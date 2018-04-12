@@ -23,8 +23,6 @@ Laravel Excel features:
 * Queue exports for better performance
 * Easily export Blade views to Excel
 
-> Imports are currently not supported by 3.0. This functionality will be re-added in 3.1.
-
 Read more about Laravel Excel 3.0 on our blog: https://medium.com/@maatwebsite/laravel-excel-lessons-learned-7fee2812551
 
 ## Supported Versions
@@ -35,6 +33,10 @@ Versions will be supported for a limited amount of time.
 |---- |----|----|----|
 | 2.1 | <=5.6 | <=7.0 | EOL on 15-5-2018 |
 | 3.0 | ^5.5 |  ^7.0 | New features |
+
+## Roadmap
+
+Imports are currently not supported by 3.0. This functionality will be re-added in 3.1.
 
 ## Installation
 
