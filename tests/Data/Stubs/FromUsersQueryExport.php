@@ -24,13 +24,13 @@ class FromUsersQueryExport implements FromQuery, WithMapping, WithEvents
     }
 
     /**
-     * @param mixed $row
+     * @param User $row
      *
      * @return array
      */
     public function map($row): array
     {
-        return $row instanceof Arrayable ? $row->toArray() : $row;
+        return $row->toArray();
     }
 
     /**
