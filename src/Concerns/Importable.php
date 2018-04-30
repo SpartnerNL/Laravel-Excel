@@ -2,10 +2,10 @@
 
 namespace Maatwebsite\Excel\Concerns;
 
-use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Excel;
-use Maatwebsite\Excel\Exceptions\NoFilePathGivenException;
 use Maatwebsite\Excel\Reader;
+use Illuminate\Support\Collection;
+use Maatwebsite\Excel\Exceptions\NoFilePathGivenException;
 
 trait Importable
 {

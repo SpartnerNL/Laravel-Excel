@@ -3,11 +3,11 @@
 namespace Maatwebsite\Excel;
 
 use Illuminate\Support\Collection;
-use Maatwebsite\Excel\Concerns\ToCollection;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use PhpOffice\PhpSpreadsheet\Reader\IReader;
 use Illuminate\Filesystem\FilesystemManager;
+use Maatwebsite\Excel\Concerns\ToCollection;
+use PhpOffice\PhpSpreadsheet\Reader\IReader;
 use Maatwebsite\Excel\Exceptions\UnreadableFileException;
 
 class Reader
@@ -86,6 +86,14 @@ class Reader
     }
 
     /**
+     * @return object
+     */
+    public function getDelegate()
+    {
+        return $this->spreadsheet;
+    }
+
+    /**
      * @param string      $filePath
      * @param string|null $disk
      *
@@ -132,13 +140,5 @@ class Reader
         $tmp = $this->tmpPath . DIRECTORY_SEPARATOR . str_random(16) . '.' . pathinfo($filePath)['extension'];
 
         return $tmp;
-    }
-
-    /**
-     * @return object
-     */
-    public function getDelegate()
-    {
-        return $this->spreadsheet;
     }
 }

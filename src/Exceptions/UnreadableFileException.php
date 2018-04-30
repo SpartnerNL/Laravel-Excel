@@ -2,8 +2,8 @@
 
 namespace Maatwebsite\Excel\Exceptions;
 
-use Throwable;
 use Exception;
+use Throwable;
 
 class UnreadableFileException extends Exception implements LaravelExcelException
 {
