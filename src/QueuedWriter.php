@@ -13,6 +13,7 @@ use Maatwebsite\Excel\Jobs\StoreQueuedExport;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Jobs\AppendQueryToSheet;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
+use Traversable;
 
 class QueuedWriter
 {
@@ -100,8 +101,8 @@ class QueuedWriter
             ->collection()
             ->chunk($this->chunkSize)
             ->map(function ($rows) use ($writerType, $filePath, $sheetIndex, $export) {
-                if ($rows instanceof Arrayable) {
-                    $rows = $rows->toArray();
+                if ($rows instanceof Traversable) {
+                    $rows = iterator_to_array($rows);
                 }
 
                 return new AppendDataToSheet(
