@@ -178,7 +178,7 @@ class ExcelTest extends TestCase
         $this->assertEquals([
             [
                 ['test', 'test'],
-                ['test', 'test']
+                ['test', 'test'],
             ],
         ], $array);
     }
