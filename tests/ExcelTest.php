@@ -173,6 +173,13 @@ class ExcelTest extends TestCase
         $import = new class {
         };
 
-        $this->assertTrue($this->SUT->import($import, 'import.xlsx'));
+        $array = $this->SUT->import($import, 'import.xlsx')->toArray();
+
+        $this->assertEquals([
+            [
+                ['test', 'test'],
+                ['test', 'test']
+            ],
+        ], $array);
     }
 }
