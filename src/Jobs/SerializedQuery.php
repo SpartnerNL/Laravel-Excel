@@ -3,11 +3,11 @@
 namespace Maatwebsite\Excel\Jobs;
 
 use Illuminate\Database\Connection;
-use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Database\Query\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Events\StatementPrepared;
+use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 
 class SerializedQuery
 {

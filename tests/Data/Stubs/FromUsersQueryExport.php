@@ -7,7 +7,6 @@ use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Events\BeforeSheet;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\WithEvents;
-use Illuminate\Contracts\Support\Arrayable;
 use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
 
