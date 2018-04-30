@@ -73,9 +73,9 @@ class SerializedQuery
             return $items;
         }
 
-        return $instance->newCollection(array_map(function ($item) use ($instance) {
+        return array_map(function ($item) use ($instance) {
             return $instance->newFromBuilder($item);
-        }, $items));
+        }, $items);
     }
 
     /**
