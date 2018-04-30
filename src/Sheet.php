@@ -2,9 +2,6 @@
 
 namespace Maatwebsite\Excel;
 
-use PhpOffice\PhpSpreadsheet\Cell\Cell;
-use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
-use PhpOffice\PhpSpreadsheet\Collection\Cells;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use Maatwebsite\Excel\Concerns\FromView;
 use Maatwebsite\Excel\Events\AfterSheet;
@@ -279,8 +276,8 @@ class Sheet
      */
     protected function buildColumnRange(string $lower, string $upper)
     {
-        ++$upper;
-        for ($i = $lower; $i !== $upper; ++$i) {
+        $upper++;
+        for ($i = $lower; $i !== $upper; $i++) {
             yield $i;
         }
     }
