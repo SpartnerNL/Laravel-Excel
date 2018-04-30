@@ -2,15 +2,10 @@
 
 namespace Maatwebsite\Excel\Tests;
 
-use Illuminate\Support\Collection;
-use Maatwebsite\Excel\Concerns\Exportable;
-use Maatwebsite\Excel\Concerns\FromCollection;
-use Maatwebsite\Excel\Concerns\WithMapping;
-use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
-use Maatwebsite\Excel\Tests\Data\Stubs\EloquentCollectionWithMappingExport;
 use Maatwebsite\Excel\Tests\Data\Stubs\QueuedExport;
 use Maatwebsite\Excel\Tests\Data\Stubs\ShouldQueueExport;
 use Maatwebsite\Excel\Tests\Data\Stubs\AfterQueueExportJob;
+use Maatwebsite\Excel\Tests\Data\Stubs\EloquentCollectionWithMappingExport;
 
 class QueuedExportTest extends TestCase
 {
@@ -64,7 +59,7 @@ class QueuedExportTest extends TestCase
         $actual = $this->readAsArray(__DIR__ . '/Data/Disks/Local/queued-export.xlsx', 'Xlsx');
 
         $this->assertEquals([
-            ['Patrick', 'Brouwers']
+            ['Patrick', 'Brouwers'],
         ], $actual);
     }
 }

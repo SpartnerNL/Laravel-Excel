@@ -2,18 +2,17 @@
 
 namespace Maatwebsite\Excel;
 
+use Traversable;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Jobs\CloseSheet;
 use Maatwebsite\Excel\Jobs\QueueExport;
 use Maatwebsite\Excel\Concerns\FromQuery;
-use Illuminate\Contracts\Support\Arrayable;
 use Maatwebsite\Excel\Jobs\SerializedQuery;
 use Maatwebsite\Excel\Jobs\AppendDataToSheet;
 use Maatwebsite\Excel\Jobs\StoreQueuedExport;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Jobs\AppendQueryToSheet;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
-use Traversable;
 
 class QueuedWriter
 {
