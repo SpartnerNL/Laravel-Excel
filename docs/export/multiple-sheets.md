@@ -71,6 +71,6 @@ This will now download an xlsx of all invoices in 2018, with 12 worksheets repre
 ```php
 public function download() 
 {
-    return (new InvoicesExport(2018))->download('xlsx');
+    return (new InvoicesExport(2018))->download('invoices.xlsx');
 }
 ```

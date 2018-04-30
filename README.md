@@ -11,10 +11,10 @@
 
 ## Introduction
 
-Laravel Excel is intended at being Laravel-flavoured PhpSpreadsheet: a simple, but elegant wrapper around PhpSpreadsheet with the goal of simplifying
+💎 Laravel Excel is intended at being Laravel-flavoured PhpSpreadsheet: a simple, but elegant wrapper around PhpSpreadsheet with the goal of simplifying
 exports. 
 
-[PhpSpreadsheet](https://phpspreadsheet.readthedocs.io/) is a library written in pure PHP and providing a set of classes that allow you to read from and to write to different spreadsheet file formats, like Excel and LibreOffice Calc.
+🔥 [PhpSpreadsheet](https://phpspreadsheet.readthedocs.io/) is a library written in pure PHP and providing a set of classes that allow you to read from and to write to different spreadsheet file formats, like Excel and LibreOffice Calc.
 
 Laravel Excel features:
 
@@ -33,6 +33,10 @@ Versions will be supported for a limited amount of time.
 |---- |----|----|----|
 | 2.1 | <=5.6 | <=7.0 | EOL on 15-5-2018 |
 | 3.0 | ^5.5 |  ^7.0 | New features |
+
+## Roadmap
+
+Imports are currently not supported by 3.0. This functionality will be re-added in 3.1.
 
 ## Installation
 

@@ -2,11 +2,11 @@
 
 namespace Maatwebsite\Excel;
 
+use Traversable;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Jobs\CloseSheet;
 use Maatwebsite\Excel\Jobs\QueueExport;
 use Maatwebsite\Excel\Concerns\FromQuery;
-use Illuminate\Contracts\Support\Arrayable;
 use Maatwebsite\Excel\Jobs\SerializedQuery;
 use Maatwebsite\Excel\Jobs\AppendDataToSheet;
 use Maatwebsite\Excel\Jobs\StoreQueuedExport;
@@ -100,8 +100,8 @@ class QueuedWriter
             ->collection()
             ->chunk($this->chunkSize)
             ->map(function ($rows) use ($writerType, $filePath, $sheetIndex, $export) {
-                if ($rows instanceof Arrayable) {
-                    $rows = $rows->toArray();
+                if ($rows instanceof Traversable) {
+                    $rows = iterator_to_array($rows);
                 }
 
                 return new AppendDataToSheet(
