@@ -2,9 +2,13 @@
 
 namespace Maatwebsite\Excel;
 
+use Illuminate\Support\Collection;
+use Maatwebsite\Excel\Concerns\ToCollection;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Reader\IReader;
 use Illuminate\Filesystem\FilesystemManager;
+use Maatwebsite\Excel\Exceptions\UnreadableFileException;
 
 class Reader
 {
@@ -26,6 +30,8 @@ class Reader
     public function __construct(FilesystemManager $filesystem)
     {
         $this->filesystem = $filesystem;
+
+        $this->tmpPath = config('excel.exports.temp_path', sys_get_temp_dir());
     }
 
     /**
@@ -36,27 +42,96 @@ class Reader
      *
      * @return bool
      */
-    public function read($import, $filePath, $disk = null, $readerType = null)
+    public function read($import, string $filePath, string $disk = null, string $readerType = null)
     {
-        $pathinfo = pathinfo($filePath);
+        $file = $this->copyToFileSystem($filePath, $disk);
 
-        $file = $this->filesystem->disk($disk)->get($filePath);
-        $tmp  = sys_get_temp_dir() . '/' . str_random(16) . '.' . $pathinfo['extension'];
+        $this->spreadsheet = $this
+            ->getReader($file, $readerType)
+            ->load($file);
 
-        file_put_contents($tmp, $file);
-
-        $readerType = $readerType ?? IOFactory::identify($tmp);
-        $reader     = IOFactory::createReader($readerType);
-
-        if (!$reader->canRead($tmp)) {
-            dd('nope');
+        if ($import instanceof ToCollection) {
+            $import->collection($this->toCollection());
         }
 
-        $this->spreadsheet = $reader->load($tmp);
+        return $this;
+    }
 
-        dd($this->spreadsheet->getActiveSheet()->toArray());
+    /**
+     * @return array
+     */
+    public function toArray($nullValue = null, $calculateFormulas = true, $formatData = true, $returnCellRef = false)
+    {
+        $sheets = [];
+        foreach ($this->spreadsheet->getAllSheets() as $sheet) {
+            $sheets[] = $sheet->toArray($nullValue, $calculateFormulas, $formatData, $returnCellRef);
+        }
 
-        return true;
+        return $sheets;
+    }
+
+    /**
+     * @return array
+     */
+    public function toCollection($nullValue = null, $calculateFormulas = true, $formatData = true, $returnCellRef = false)
+    {
+        $sheets = new Collection();
+        foreach ($this->spreadsheet->getAllSheets() as $sheet) {
+            $sheets->push(new Collection(array_map(function (array $row) {
+                return new Collection($row);
+            }, $sheet->toArray($nullValue, $calculateFormulas, $formatData, $returnCellRef))));
+        }
+
+        return $sheets;
+    }
+
+    /**
+     * @param string      $filePath
+     * @param string|null $disk
+     *
+     * @return string
+     */
+    protected function copyToFileSystem(string $filePath, string $disk = null)
+    {
+        $tempFilePath = $this->getTmpFile($filePath);
+        $tmpStream    = fopen($tempFilePath, 'w+');
+
+        $file = $this->filesystem->disk($disk)->readStream($filePath);
+
+        stream_copy_to_stream($file, $tmpStream);
+        fclose($tmpStream);
+
+        return $tempFilePath;
+    }
+
+    /**
+     * @param string|null $readerType
+     * @param string      $tmp
+     *
+     * @return IReader
+     */
+    protected function getReader(string $filePath, string $readerType = null): IReader
+    {
+        $readerType = $readerType ?? IOFactory::identify($filePath);
+        $reader     = IOFactory::createReader($readerType);
+
+        if (!$reader->canRead($filePath)) {
+            throw new UnreadableFileException;
+        }
+
+        return $reader;
+    }
+
+    /**
+     * @param string $filePath
+     *
+     * @return string
+     */
+    protected function getTmpFile(string $filePath): string
+    {
+        $tmp = $this->tmpPath . DIRECTORY_SEPARATOR . str_random(16) . '.' . pathinfo($filePath)['extension'];
+
+        return $tmp;
     }
 
     /**
