@@ -2,6 +2,9 @@
 
 namespace Maatwebsite\Excel;
 
+use PhpOffice\PhpSpreadsheet\Cell\Cell;
+use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
+use PhpOffice\PhpSpreadsheet\Collection\Cells;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use Maatwebsite\Excel\Concerns\FromView;
 use Maatwebsite\Excel\Events\AfterSheet;
@@ -190,7 +193,7 @@ class Sheet
      */
     public function autoSize()
     {
-        foreach (range('A', $this->worksheet->getHighestDataColumn()) as $col) {
+        foreach ($this->buildColumnRange('A', $this->worksheet->getHighestDataColumn()) as $col) {
             $this->worksheet->getColumnDimension($col)->setAutoSize(true);
         }
     }
@@ -266,6 +269,20 @@ class Sheet
         }
 
         $this->append([$row], null, $this->hasStrictNullComparison($sheetExport));
+    }
+
+    /**
+     * @param string $lower
+     * @param string $upper
+     *
+     * @return \Generator
+     */
+    protected function buildColumnRange(string $lower, string $upper)
+    {
+        ++$upper;
+        for ($i = $lower; $i !== $upper; ++$i) {
+            yield $i;
+        }
     }
 
     /**
