@@ -4,9 +4,12 @@ You can easily format an entire column, by using `WithColumnFormatting`.
 In case you want something more custom, it's suggested to use the `AfterSheet` event to directly interact with the underlying `Worksheet` class.
 
 ```php
+namespace App\Exports;
 
 use PhpOffice\PhpSpreadsheet\Shared\Date;
 use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
+use Maatwebsite\Excel\Concerns\WithColumnFormatting;
+use Maatwebsite\Excel\Concerns\WithMapping;
 
 class InvoicesExport implements WithColumnFormatting, WithMapping
 {

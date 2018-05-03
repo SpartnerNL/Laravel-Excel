@@ -6,6 +6,10 @@ By adding `WithMapping` you map the data that needs to be added as row. This way
 In case of using the Eloquent query builder: 
 
 ```php
+
+use Maatwebsite\Excel\Concerns\FromQuery;
+use Maatwebsite\Excel\Concerns\WithMapping;
+
 class InvoicesExport implements FromQuery, WithMapping
     
     /**
@@ -27,6 +31,10 @@ A heading row can easily be added by adding the `WithHeadings` concern. The head
 as very first row of the sheet.
 
 ```php
+
+use Maatwebsite\Excel\Concerns\FromQuery;
+use Maatwebsite\Excel\Concerns\WithHeadings;
+
 class InvoicesExport implements FromQuery, WithHeadings
     
     public function headings(): array

@@ -4,6 +4,11 @@ To allow the export to have multiple sheets, the `WithMultipleSheets` concern sh
 The `sheets()` method expects an array of sheet export objects to be returned.
 
 ```php
+namespace App\Exports;
+
+use Maatwebsite\Excel\Concerns\Exportable;
+use Maatwebsite\Excel\Concerns\WithMultipleSheets;
+
 class InvoicesExport implements WithMultipleSheets
 {
     use Exportable;
@@ -34,6 +39,11 @@ class InvoicesExport implements WithMultipleSheets
 The `InvoicesPerMonthSheet` can implement concerns like `FromQuery`, `FromCollection`, ... 
 
 ```php
+namespace App\Exports;
+
+use Maatwebsite\Excel\Concerns\FromQuery;
+use Maatwebsite\Excel\Concerns\WithTitle;
+
 class InvoicesPerMonthSheet implements FromQuery, WithTitle
 {
     private $month;

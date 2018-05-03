@@ -74,6 +74,7 @@ If you want your `0` values to be actual `0` values in your excel sheet instead 
 namespace App\Exports;
 
 use Maatwebsite\Excel\Concerns\FromCollection;
+use Maatwebsite\Excel\Concerns\WithStrictNullComparison;
 
 class InvoicesExport implements FromCollection, WithStrictNullComparison
 {

@@ -7,6 +7,9 @@ Given we have the following export class:
 ```php
 namespace App\Exports;
 
+use Maatwebsite\Excel\Concerns\Exportable;
+use Maatwebsite\Excel\Concerns\FromQuery;
+
 class InvoicesExport implements FromQuery
 {
     use Exportable;
@@ -33,6 +36,10 @@ You can also mark an export implicitly as a queued export. You can do this by us
 
 ```php
 namespace App\Exports;
+
+use Maatwebsite\Excel\Concerns\Exportable;
+use Maatwebsite\Excel\Concerns\FromQuery;
+use Illuminate\Contracts\Queue\ShouldQueue;
 
 class InvoicesExport implements FromQuery, ShouldQueue
 {
@@ -63,6 +70,11 @@ return (new InvoicesExport)->queue('invoices.xlsx')->chain([
 ```
 
 ```php
+namespace App\Jobs;
+
+use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
+
 class InvoiceExportCompletedJob implements ShouldQueue
 {
     use Queueable;
