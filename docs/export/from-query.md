@@ -11,6 +11,9 @@ In the `InvoicesExport` class, add the `FromQuery` concern, and return a query. 
 ```php
 namespace App\Exports;
 
+use Maatwebsite\Excel\Concerns\FromQuery;
+use Maatwebsite\Excel\Concerns\Exportable;
+
 class InvoicesExport implements FromQuery
 {
     use Exportable;
@@ -38,6 +41,9 @@ by simply passing them as dependencies to the export class.
 ```php
 namespace App\Exports;
 
+use Maatwebsite\Excel\Concerns\FromQuery;
+use Maatwebsite\Excel\Concerns\Exportable;
+
 class InvoicesExport implements FromQuery
 {
     use Exportable;
@@ -64,6 +70,9 @@ return (new InvoicesExport(2018))->download('invoices.xlsx');
 
 ```php
 namespace App\Exports;
+
+use Maatwebsite\Excel\Concerns\FromQuery;
+use Maatwebsite\Excel\Concerns\Exportable;
 
 class InvoicesExport implements FromQuery
 {

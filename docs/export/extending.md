@@ -13,6 +13,13 @@ will have to return an array of events. The key is the Fully Qualified Name (FQN
 This can either be a closure, array-callable or invokable class.
 
 ```php
+namespace App\Exports;
+
+use Maatwebsite\Excel\Concerns\WithEvents;
+use Maatwebsite\Excel\Events\BeforeExport;
+use Maatwebsite\Excel\Events\BeforeWriting;
+use Maatwebsite\Excel\Events\BeforeSheet;
+
 class InvoicesExport implements WithEvents
 {
     /**
@@ -50,6 +57,15 @@ By using the `RegistersEventListeners` trait you can auto-register the event lis
 without the need of using the `registerEvents`. The listener will only be registered if the method is created. 
 
 ```php
+namespace App\Exports;
+
+use Maatwebsite\Excel\Concerns\WithEvents;
+use Maatwebsite\Excel\Concerns\RegistersEventListeners;
+use Maatwebsite\Excel\Events\BeforeExport;
+use Maatwebsite\Excel\Events\BeforeWriting;
+use Maatwebsite\Excel\Events\BeforeSheet;
+use Maatwebsite\Excel\Events\AfterSheet;
+
 class InvoicesExport implements WithEvents
 {
     use Exportable, RegistersEventListeners;
@@ -97,6 +113,8 @@ This will allow you to add shortcuts to PhpSpreadsheets method that are not avai
 #### Writer
 
 ```php
+use \Maatwebsite\Excel\Writer;
+
 Writer::macro('setCreator', function (Writer $writer, string $creator) {
     $writer->getDelegate()->getProperties()->setCreator($creator);
 });
@@ -105,6 +123,8 @@ Writer::macro('setCreator', function (Writer $writer, string $creator) {
 #### Sheet
 
 ```php
+use \Maatwebsite\Excel\Sheet;
+
 Sheet::macro('setOrientation', function (Sheet $sheet, $orientation) {
     $sheet->getDelegate()->getPageSetup()->setOrientation($orientation);
 });
@@ -113,6 +133,8 @@ Sheet::macro('setOrientation', function (Sheet $sheet, $orientation) {
 You could also add some shortcut to style cells. Feel free to use this macro, or be creative and invent your own syntax!
 
 ```php
+use \Maatwebsite\Excel\Sheet;
+
 Sheet::macro('styleCells', function (Sheet $sheet, string $cellRange, array style) {
     $sheet->getDelegate()->getStyle($cellRange)->applyFromArray($style);
 });
@@ -121,6 +143,12 @@ Sheet::macro('styleCells', function (Sheet $sheet, string $cellRange, array styl
 Above examples could be used as:
 
 ```php
+namespace App\Exports;
+
+use Maatwebsite\Excel\Concerns\WithEvents;
+use Maatwebsite\Excel\Events\BeforeExport;
+use Maatwebsite\Excel\Events\AfterSheet;
+
 class InvoicesExport implements WithEvents
 {
     /**
@@ -133,7 +161,7 @@ class InvoicesExport implements WithEvents
                 $event->writer->setCreator('Patrick');
             },
             AfterSheet::class    => function(AfterSheet $event) {
-                $event->sheet->setOrientation(PageSetup::ORIENTATION_LANDSCAPE);
+                $event->sheet->setOrientation(\PhpOffice\PhpSpreadsheet\Worksheet\PageSetup::ORIENTATION_LANDSCAPE);
 
                 $event->sheet->styleCells(
                     'B2:G8',
