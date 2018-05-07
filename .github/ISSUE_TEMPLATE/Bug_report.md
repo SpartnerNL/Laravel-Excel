@@ -1,35 +1,53 @@
----
-name: Bug report
-about: Create a report to help us improve
+<!--
 
----
+PLEASE READ: FILLING IN THE TEMPLATE IS REQUIRED!
+Issues that do not include enough information might not be picked up.
 
-**Describe the bug**
-A clear and concise description of what the bug is.
+Have you read Laravel-Excel's 
+contributing guidelines (https://laravel-excel.maatwebsite.nl/docs/3.0/getting-started/contributing)
+and Code Of Conduct (https://github.com/Maatwebsite/Laravel-Excel/blob/3.0/CODE_OF_CONDUCT.md)?
+By filing an Issue, you are expected to comply with it, including treating everyone with respect.
 
-**To Reproduce**
-Steps to reproduce the behavior:
-1. Go to '...'
-2. Click on '....'
-3. Scroll down to '....'
-4. See error
+Please prefix your issue with one of the following: [BUG] [PROPOSAL] [QUESTION].
 
-**Expected behavior**
-A clear and concise description of what you expected to happen.
+-->
 
-**Screenshots**
-If applicable, add screenshots to help explain your problem.
+### Prerequisites
 
-**Desktop (please complete the following information):**
- - OS: [e.g. iOS]
- - Browser [e.g. chrome, safari]
- - Version [e.g. 22]
+<!--
 
-**Smartphone (please complete the following information):**
- - Device: [e.g. iPhone6]
- - OS: [e.g. iOS8.1]
- - Browser [e.g. stock browser, safari]
- - Version [e.g. 22]
+Put an X between the brackets if you have done the following:
 
-**Additional context**
-Add any other context about the problem here.
+-->
+
+* [ ] Able to reproduce the behaviour outside of your code, the problem is isolated to Laravel Excel.
+* [ ] Checked that your issue isn't already filed.
+* [ ] Checked if no PR was submitted that fixes this problem.
+
+### Versions
+
+<!-- Please be as exact and complete as possible when proving version numbers -->
+
+* PHP version: <!-- put your PHP version here -->
+* Laravel version: <!-- put your Laravel version here -->
+* Package version: <!-- put Laravel Excel package version here -->
+
+### Description
+
+<!-- Describe the issue -->
+
+### Steps to Reproduce
+
+<!-- How can this issue be reproduced? Provide an Excel file or reproduction repository to help us reproduce the issue easily.  -->
+
+**Expected behavior:**
+
+<!-- What you expect to happen -->
+
+**Actual behavior:** 
+
+<!-- What actually happens. Please include screenshots, strack traces and anything that can help us understand the issue. -->
+
+### Additional Information
+
+Any additional information, configuration or data that might be necessary to reproduce the issue.
