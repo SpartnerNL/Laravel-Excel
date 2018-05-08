@@ -45,6 +45,11 @@ class ChunkedReadJob implements ShouldQueue
      * @var bool
      */
     private $shouldQueue;
+    
+    /**
+     * @var string|null
+     */
+    private $encoding;
 
     /**
      * ChunkedReadJob constructor.
@@ -64,7 +69,8 @@ class ChunkedReadJob implements ShouldQueue
         $startIndex,
         $chunkSize,
         callable $callback,
-        $shouldQueue = true
+        $shouldQueue = true,
+        $encoding = null
     ) {
         $this->startRow   = $startRow;
         $this->chunkSize  = $chunkSize;
@@ -74,6 +80,7 @@ class ChunkedReadJob implements ShouldQueue
         $this->callback    = $shouldQueue ? (new Serializer)->serialize($callback) : $callback;
         $this->sheets      = $sheets;
         $this->shouldQueue = $shouldQueue;
+        $this->encoding    = $encoding;
     }
 
     /***
@@ -89,6 +96,11 @@ class ChunkedReadJob implements ShouldQueue
         $reader->reader->setLoadSheetsOnly($this->sheets);
         $reader->reader->setReadFilter($filter);
         $reader->reader->setReadDataOnly(true);
+        
+        // Set encoding
+        if (! is_null($this->encoding)) {
+            $reader->reader->setInputEncoding($this->encoding);
+        }
 
         // Set the rows for the chunking
         $filter->setRows($this->startRow, $this->chunkSize);
