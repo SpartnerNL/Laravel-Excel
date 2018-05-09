@@ -688,6 +688,12 @@ class LaravelExcelReader
             $startIndex = ($startRow == 0 || !$this->hasHeading()) ? $startRow : $startRow - 1;
             $chunkSize  = ($startRow == 0 && $this->hasHeading()) ? $size + 1 : $size;
 
+            $encoding = null;
+            
+            if ($this->format == 'CSV') {
+                $encoding = $this->reader->getInputEncoding($encoding);
+            }
+
             $job = new ChunkedReadJob(
                 $this->file,
                 $this->reader->getLoadSheetsOnly(),
@@ -695,7 +701,8 @@ class LaravelExcelReader
                 $startIndex,
                 $chunkSize,
                 $callback,
-                $shouldQueue
+                $shouldQueue,
+                $encoding
             );
 
             if ($shouldQueue) {
