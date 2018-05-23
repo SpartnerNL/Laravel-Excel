@@ -13,6 +13,7 @@ use Maatwebsite\Excel\Jobs\StoreQueuedExport;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Jobs\AppendQueryToSheet;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
+use Maatwebsite\Excel\Concerns\WithCount;
 
 class QueuedWriter
 {
@@ -130,8 +131,13 @@ class QueuedWriter
     ) {
         $query = $export->query();
 
+        if ($export instanceof WithCount) {
+            $spins = ceil($export->count() / $this->chunkSize);
+        } else {
+            $spins = ceil($query->count() / $this->chunkSize);
+        }
+
         $jobs  = new Collection();
-        $spins = ceil($query->count() / $this->chunkSize);
 
         for ($page = 1; $page <= $spins; $page++) {
             $serializedQuery = new SerializedQuery(
