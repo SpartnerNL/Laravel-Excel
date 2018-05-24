@@ -16,3 +16,5 @@ disabled:
 finder:
   not-name:
     - "*.md"
+  not-path:
+    - ".github"
