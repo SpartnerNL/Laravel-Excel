@@ -131,11 +131,8 @@ class QueuedWriter
     ) {
         $query = $export->query();
 
-        if ($export instanceof WithCount) {
-            $spins = ceil($export->count() / $this->chunkSize);
-        } else {
-            $spins = ceil($query->count() / $this->chunkSize);
-        }
+        $count = $export instanceof WithCount ? $export->count() : $query->count();
+        $spins = ceil($count / $this->chunkSize);
 
         $jobs  = new Collection();
 
