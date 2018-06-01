@@ -29,13 +29,27 @@ class WithCountTest extends TestCase
     }
 
     /**
+     * {@inheritdoc}
+     */
+    protected function getPackageProviders($app)
+    {
+        if (class_exists(\Orchestra\Database\ConsoleServiceProvider::class)) {
+            return [
+                \Orchestra\Database\ConsoleServiceProvider::class,
+            ];
+        }
+
+        return parent::getPackageAliases($app);
+    }
+
+    /**
      * @test
      */
     public function can_export_with_custom_count()
     {
         $export = new FromQueryWithCount();
 
-        $export->queue('export-from-query-with-count.xlsx')->chain([
+        $export->queue('export-from-query-with-count.xlsx', null, 'Xlsx')->chain([
             new AfterQueueExportJob(dirname(__DIR__) . '/Data/Disks/Local/export-from-query-with-count.xlsx'),
         ]);
 
