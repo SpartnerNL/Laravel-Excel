@@ -2,7 +2,7 @@
 
 namespace Maatwebsite\Excel\Concerns;
 
-interface WithCount
+interface WithCustomQuerySize
 {
     /**
      * @return int

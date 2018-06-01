@@ -5,7 +5,7 @@ namespace Maatwebsite\Excel\Tests\Concerns;
 use Maatwebsite\Excel\Tests\Data\Stubs\AfterQueueExportJob;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\Group;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
-use Maatwebsite\Excel\Tests\Data\Stubs\FromQueryWithCount;
+use Maatwebsite\Excel\Tests\Data\Stubs\FromQueryWithCustomQuerySize;
 use Maatwebsite\Excel\Tests\TestCase;
 
 class WithCountTest extends TestCase
@@ -47,7 +47,7 @@ class WithCountTest extends TestCase
      */
     public function can_export_with_custom_count()
     {
-        $export = new FromQueryWithCount();
+        $export = new FromQueryWithCustomQuerySize();
 
         $export->queue('export-from-query-with-count.xlsx', null, 'Xlsx')->chain([
             new AfterQueueExportJob(dirname(__DIR__) . '/Data/Disks/Local/export-from-query-with-count.xlsx'),
