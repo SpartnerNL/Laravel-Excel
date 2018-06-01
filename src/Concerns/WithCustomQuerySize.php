@@ -7,5 +7,5 @@ interface WithCustomQuerySize
     /**
      * @return int
      */
-    public function count(): int;
+    public function querySize(): int;
 }

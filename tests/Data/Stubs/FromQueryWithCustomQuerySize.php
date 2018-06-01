@@ -32,7 +32,7 @@ class FromQueryWithCustomQuerySize implements FromQuery, WithCustomQuerySize, Wi
     /**
      * @return int
      */
-    public function count(): int
+    public function querySize(): int
     {
         return Group::has('users')->count();
     }
