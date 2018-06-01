@@ -49,11 +49,9 @@ class WithCustomQuerySizeTest extends TestCase
      */
     protected function getPackageProviders($app)
     {
-        if (class_exists(\Orchestra\Database\ConsoleServiceProvider::class)) {
-            return [
-                \Orchestra\Database\ConsoleServiceProvider::class,
-            ];
-        }
+        return [
+            \Orchestra\Database\ConsoleServiceProvider::class,
+        ];
 
         return parent::getPackageAliases($app);
     }
