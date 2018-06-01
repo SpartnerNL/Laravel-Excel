@@ -2,13 +2,13 @@
 
 namespace Maatwebsite\Excel\Tests\Concerns;
 
-use Maatwebsite\Excel\Tests\Data\Stubs\AfterQueueExportJob;
-use Maatwebsite\Excel\Tests\Data\Stubs\Database\Group;
-use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
-use Maatwebsite\Excel\Tests\Data\Stubs\FromQueryWithCustomQuerySize;
 use Maatwebsite\Excel\Tests\TestCase;
+use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
+use Maatwebsite\Excel\Tests\Data\Stubs\Database\Group;
+use Maatwebsite\Excel\Tests\Data\Stubs\AfterQueueExportJob;
+use Maatwebsite\Excel\Tests\Data\Stubs\FromQueryWithCustomQuerySize;
 
-class WithCountTest extends TestCase
+class WithCustomQuerySizeTest extends TestCase
 {
     /**
      * Setup the test environment.
@@ -29,20 +29,6 @@ class WithCountTest extends TestCase
     }
 
     /**
-     * {@inheritdoc}
-     */
-    protected function getPackageProviders($app)
-    {
-        if (class_exists(\Orchestra\Database\ConsoleServiceProvider::class)) {
-            return [
-                \Orchestra\Database\ConsoleServiceProvider::class,
-            ];
-        }
-
-        return parent::getPackageAliases($app);
-    }
-
-    /**
      * @test
      */
     public function can_export_with_custom_count()
@@ -56,5 +42,19 @@ class WithCountTest extends TestCase
         $actual = $this->readAsArray(dirname(__DIR__) . '/Data/Disks/Local/export-from-query-with-count.xlsx', 'Xlsx');
 
         $this->assertCount(Group::count(), $actual);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getPackageProviders($app)
+    {
+        if (class_exists(\Orchestra\Database\ConsoleServiceProvider::class)) {
+            return [
+                \Orchestra\Database\ConsoleServiceProvider::class,
+            ];
+        }
+
+        return parent::getPackageAliases($app);
     }
 }
