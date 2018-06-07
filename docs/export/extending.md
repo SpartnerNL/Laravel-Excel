@@ -135,7 +135,7 @@ You could also add some shortcut to style cells. Feel free to use this macro, or
 ```php
 use \Maatwebsite\Excel\Sheet;
 
-Sheet::macro('styleCells', function (Sheet $sheet, string $cellRange, array style) {
+Sheet::macro('styleCells', function (Sheet $sheet, string $cellRange, array $style) {
     $sheet->getDelegate()->getStyle($cellRange)->applyFromArray($style);
 });
 ```
