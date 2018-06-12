@@ -29,7 +29,7 @@ class DownloadCollectionTest extends TestCase
 
         $this->assertInstanceOf(BinaryFileResponse::class, $response);
         $this->assertEquals(
-            'attachment; filename="collection-download.xlsx"',
+            'attachment; filename=collection-download.xlsx',
             $response->headers->get('Content-Disposition')
         );
     }
@@ -51,7 +51,7 @@ class DownloadCollectionTest extends TestCase
         $this->assertEquals(['column_1', 'column_2'], collect($array)->first());
         $this->assertInstanceOf(BinaryFileResponse::class, $response);
         $this->assertEquals(
-            'attachment; filename="collection-headers-download.xlsx"',
+            'attachment; filename=collection-headers-download.xlsx',
             $response->headers->get('Content-Disposition')
         );
     }

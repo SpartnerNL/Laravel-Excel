@@ -39,7 +39,7 @@ class ExcelTest extends TestCase
         $response = ExcelFacade::download($export, 'filename.xlsx');
 
         $this->assertInstanceOf(BinaryFileResponse::class, $response);
-        $this->assertEquals('attachment; filename="filename.xlsx"', $response->headers->get('Content-Disposition'));
+        $this->assertEquals('attachment; filename=filename.xlsx', $response->headers->get('Content-Disposition'));
     }
 
     /**
@@ -52,7 +52,7 @@ class ExcelTest extends TestCase
         $response = $this->SUT->download($export, 'filename.xlsx');
 
         $this->assertInstanceOf(BinaryFileResponse::class, $response);
-        $this->assertEquals('attachment; filename="filename.xlsx"', $response->headers->get('Content-Disposition'));
+        $this->assertEquals('attachment; filename=filename.xlsx', $response->headers->get('Content-Disposition'));
     }
 
     /**
