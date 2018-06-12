@@ -30,7 +30,7 @@ class DownloadCollectionTest extends TestCase
         $this->assertInstanceOf(BinaryFileResponse::class, $response);
         $this->assertEquals(
             'attachment; filename=collection-download.xlsx',
-            $response->headers->get('Content-Disposition')
+            str_replace('"', '', $response->headers->get('Content-Disposition'))
         );
     }
 
@@ -52,7 +52,7 @@ class DownloadCollectionTest extends TestCase
         $this->assertInstanceOf(BinaryFileResponse::class, $response);
         $this->assertEquals(
             'attachment; filename=collection-headers-download.xlsx',
-            $response->headers->get('Content-Disposition')
+            str_replace('"', '', $response->headers->get('Content-Disposition'))
         );
     }
 }
