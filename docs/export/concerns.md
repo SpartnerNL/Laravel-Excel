@@ -13,6 +13,7 @@
 |`Maatwebsite\Excel\Concerns\ShouldAutoSize`| Auto-size the columns in the worksheet. |
 |`Maatwebsite\Excel\Concerns\WithStrictNullComparison`| Uses strict comparisions when testing cells for null value. |
 |`Maatwebsite\Excel\Concerns\WithEvents`| Register events to hook into the PhpSpreadsheet process. |
+|`Maatwebsite\Excel\Concerns\WithCustomQuerySize`| Allows Exportables that implement the FromQuery concern, to provide their own custom query size. |
 
 ### Traits
 
