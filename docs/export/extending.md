@@ -104,9 +104,9 @@ class InvoicesExport implements WithEvents
 
 ### Macroable
 
-Both `Writer` and `Sheet` are macroable which means they can easily be extended to fit your needs. 
+Both `Writer` and `Sheet` are "macroable" which means they can easily be extended to fit your needs. 
 Both Writer and Sheet have a `->getDelegate()` method which returns the underlying PhpSpreadsheet class. 
-This will allow you to add shortcuts to PhpSpreadsheets method that are not available in this package. 
+This will allow you to add custom macros as shortcuts to PhpSpreadsheet methods that are not available in this package. 
 
 
 
@@ -130,7 +130,11 @@ Sheet::macro('setOrientation', function (Sheet $sheet, $orientation) {
 });
 ```
 
-You could also add some shortcut to style cells. Feel free to use this macro, or be creative and invent your own syntax!
+#### Customize  
+You can create your own macro to add custom methods to a spreadsheet instance. 
+
+For example, to add styling to a cell, we first create a macro, let's call it `styleCells`:
+
 
 ```php
 use \Maatwebsite\Excel\Sheet;
@@ -140,7 +144,7 @@ Sheet::macro('styleCells', function (Sheet $sheet, string $cellRange, array $sty
 });
 ```
 
-Above examples could be used as:
+Once the macro is created, it can be used inside the `registerEvents()` method as such:
 
 ```php
 namespace App\Exports;
@@ -179,5 +183,7 @@ class InvoicesExport implements WithEvents
     }
 }
 ```
+
+Feel free to use the above macro, or be creative and invent your own!
 
 For PhpSpreadsheet methods, please refer to their documentation: https://phpspreadsheet.readthedocs.io/
