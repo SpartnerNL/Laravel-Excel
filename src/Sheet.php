@@ -46,7 +46,7 @@ class Sheet
     {
         $this->worksheet = $worksheet;
         $this->chunkSize = config('excel.exports.chunk_size', 100);
-        $this->tmpPath = config('excel.exports.temp_path', sys_get_temp_dir());
+        $this->tmpPath   = config('excel.exports.temp_path', sys_get_temp_dir());
     }
 
     /**
@@ -155,7 +155,7 @@ class Sheet
 
     /**
      * @param FromCollection $sheetExport
-     * @param Worksheet $worksheet
+     * @param Worksheet      $worksheet
      */
     public function fromCollection(FromCollection $sheetExport, Worksheet $worksheet)
     {
@@ -167,9 +167,9 @@ class Sheet
     }
 
     /**
-     * @param array $rows
+     * @param array    $rows
      * @param int|null $row
-     * @param bool $strictNullComparison
+     * @param bool  $strictNullComparison
      *
      * @throws \PhpOffice\PhpSpreadsheet\Exception
      */
@@ -231,7 +231,7 @@ class Sheet
 
     /**
      * @param iterable $rows
-     * @param object $sheetExport
+     * @param object   $sheetExport
      *
      * @throws \PhpOffice\PhpSpreadsheet\Exception
      */
@@ -251,7 +251,7 @@ class Sheet
 
     /**
      * @param iterable $row
-     * @param object $sheetExport
+     * @param object   $sheetExport
      *
      * @throws \PhpOffice\PhpSpreadsheet\Exception
      */
