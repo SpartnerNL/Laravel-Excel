@@ -265,7 +265,11 @@ class Sheet
             $row = $row->toArray();
         }
 
-        $this->append([$row], null, $this->hasStrictNullComparison($sheetExport));
+        if (isset($row[0]) && is_array($row[0])) {
+            $this->append($row, null, $this->hasStrictNullComparison($sheetExport));
+        } else {
+            $this->append([$row], null, $this->hasStrictNullComparison($sheetExport));
+        }
     }
 
     /**
