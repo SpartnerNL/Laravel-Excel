@@ -84,7 +84,7 @@ class LaravelExcelReader
     /**
      * The parsed file
      *
-     * @var SheetCollection|RowCollection
+     * @var \Maatwebsite\Excel\Collections\RowCollection|\Maatwebsite\Excel\Collections\SheetCollection
      */
     public $parsed;
 
