@@ -13,9 +13,3 @@ Laravel Excel features:
 * Easily export Blade views to Excel
 
 
-## We're hiring!!!
-
-Location: Maastricht (NL).
-
-![wanted_small](https://user-images.githubusercontent.com/15018570/37833295-3a335bb4-2eab-11e8-8a0b-12f5689d1a14.jpg)
-
