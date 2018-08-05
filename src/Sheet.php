@@ -2,6 +2,8 @@
 
 namespace Maatwebsite\Excel;
 
+use Maatwebsite\Excel\Concerns\WithDrawings;
+use PhpOffice\PhpSpreadsheet\Chart\Chart;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use Maatwebsite\Excel\Concerns\FromView;
 use Maatwebsite\Excel\Events\AfterSheet;
@@ -16,6 +18,7 @@ use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
+use PhpOffice\PhpSpreadsheet\Worksheet\BaseDrawing;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use Maatwebsite\Excel\Concerns\WithColumnFormatting;
 use Maatwebsite\Excel\Concerns\WithStrictNullComparison;
@@ -76,12 +79,11 @@ class Sheet
         }
 
         if ($sheetExport instanceof WithCharts) {
-            $charts = $sheetExport->charts();
-            $charts = \is_array($charts) ? $charts : [$charts];
+            $this->addCharts($sheetExport->charts());
+        }
 
-            foreach ($charts as $chart) {
-                $this->worksheet->addChart($chart);
-            }
+        if ($sheetExport instanceof WithDrawings) {
+            $this->addDrawings($sheetExport->drawings());
         }
     }
 
@@ -237,6 +239,30 @@ class Sheet
     public function getDelegate()
     {
         return $this->worksheet;
+    }
+
+    /**
+     * @param Chart|Chart[] $charts
+     */
+    public function addCharts($charts)
+    {
+        $charts = \is_array($charts) ? $charts : [$charts];
+
+        foreach ($charts as $chart) {
+            $this->worksheet->addChart($chart);
+        }
+    }
+
+    /**
+     * @param BaseDrawing|BaseDrawing[] $drawings
+     */
+    public function addDrawings($drawings)
+    {
+        $drawings = \is_array($drawings) ? $drawings : [$drawings];
+
+        foreach ($drawings as $drawing) {
+            $drawing->setWorksheet($this->worksheet);
+        }
     }
 
     /**
