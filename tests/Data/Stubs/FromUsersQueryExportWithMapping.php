@@ -10,7 +10,7 @@ use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
 
-class FromUsersQueryExport implements FromQuery, WithEvents
+class FromUsersQueryExportWithMapping implements FromQuery, WithMapping, WithEvents
 {
     use Exportable;
 
@@ -31,6 +31,18 @@ class FromUsersQueryExport implements FromQuery, WithEvents
             BeforeSheet::class   => function (BeforeSheet $event) {
                 $event->sheet->chunkSize(10);
             },
+        ];
+    }
+
+    /**
+     * @param User $row
+     *
+     * @return array
+     */
+    public function map($row): array
+    {
+        return [
+            'name' => $row->name,
         ];
     }
 }
