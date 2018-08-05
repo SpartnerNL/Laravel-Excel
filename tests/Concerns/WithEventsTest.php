@@ -2,6 +2,7 @@
 
 namespace Maatwebsite\Excel\Tests\Concerns;
 
+use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Sheet;
 use Maatwebsite\Excel\Writer;
 use Maatwebsite\Excel\Tests\TestCase;
@@ -65,5 +66,43 @@ class WithEventsTest extends TestCase
         });
 
         $this->assertInstanceOf(BinaryFileResponse::class, $event->download('filename.xlsx'));
+    }
+
+    /**
+     * @test
+     */
+    public function can_have_global_event_listeners()
+    {
+        $event = new class
+        {
+            use Exportable;
+        };
+
+        $beforeExport = false;
+        Writer::listen(BeforeExport::class, function () use (&$beforeExport) {
+            $beforeExport = true;
+        });
+
+        $beforeWriting = false;
+        Writer::listen(BeforeWriting::class, function () use (&$beforeWriting) {
+            $beforeWriting = true;
+        });
+
+        $beforeSheet = false;
+        Sheet::listen(BeforeSheet::class, function () use (&$beforeSheet) {
+            $beforeSheet = true;
+        });
+
+        $afterSheet = false;
+        Sheet::listen(AfterSheet::class, function () use (&$afterSheet) {
+            $afterSheet = true;
+        });
+
+        $this->assertInstanceOf(BinaryFileResponse::class, $event->download('filename.xlsx'));
+
+        $this->assertTrue($beforeExport, 'Before export event not triggered');
+        $this->assertTrue($beforeWriting, 'Before writing event not triggered');
+        $this->assertTrue($beforeSheet, 'Before sheet event not triggered');
+        $this->assertTrue($afterSheet, 'After sheet event not triggered');
     }
 }

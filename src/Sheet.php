@@ -62,7 +62,7 @@ class Sheet
     public function open($sheetExport)
     {
         if ($sheetExport instanceof WithEvents) {
-            $this->registerListeners($sheetExport->registerEvents());
+            static::registerListeners($sheetExport->registerEvents());
         }
 
         $this->raise(new BeforeSheet($this));

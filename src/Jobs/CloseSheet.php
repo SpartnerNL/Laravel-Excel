@@ -59,7 +59,7 @@ class CloseSheet implements ShouldQueue
         $sheet = $writer->getSheetByIndex($this->sheetIndex);
 
         if ($this->sheetExport instanceof WithEvents) {
-            $sheet->registerListeners($this->sheetExport->registerEvents());
+            $sheet::registerListeners($this->sheetExport->registerEvents());
         }
 
         $sheet->close($this->sheetExport);

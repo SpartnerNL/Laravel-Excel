@@ -108,7 +108,7 @@ class Writer
     public function open($export)
     {
         if ($export instanceof WithEvents) {
-            $this->registerListeners($export->registerEvents());
+            static::registerListeners($export->registerEvents());
         }
 
         $this->spreadsheet = new Spreadsheet;
