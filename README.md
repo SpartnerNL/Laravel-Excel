@@ -112,6 +112,12 @@ class UsersController extends Controller
 
 More installation instructions can be found at: [https://laravel-excel.maatwebsite.nl/docs/3.0/getting-started/installation](https://laravel-excel.maatwebsite.nl/docs/3.0/getting-started/installation)
 
+## 🎓 Learning Laravel Excel
+
+You can find the full documentation of Laravel Excel [on the website](https://laravel-excel.maatwebsite.nl/).
+
+We welcome suggestions for improving our docs. The documentation repository can be found at [https://github.com/Maatwebsite/laravel-excel-docs](https://github.com/Maatwebsite/laravel-excel-docs).
+
 ## :wrench: Supported Versions
 
 Versions will be supported for a limited amount of time.
