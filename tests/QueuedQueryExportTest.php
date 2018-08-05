@@ -36,6 +36,9 @@ class QueuedQueryExportTest extends TestCase
         $actual = $this->readAsArray(__DIR__ . '/Data/Disks/Local/queued-query-export.xlsx', 'Xlsx');
 
         $this->assertCount(100, $actual);
+
+        // 6 of the 7 columns in export, excluding the "hidden" password column.
+        $this->assertCount(6, $actual[0]);
     }
 
     /**

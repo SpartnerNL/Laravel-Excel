@@ -279,11 +279,7 @@ class Sheet
                 $row = $sheetExport->map($row);
             }
 
-            if ($row instanceof Arrayable) {
-                $row = $row->toArray();
-            }
-
-            $append[] = $row;
+            $append[] = $this->map($row);
         }
 
         $this->append($append, null, $this->hasStrictNullComparison($sheetExport));
@@ -301,9 +297,7 @@ class Sheet
             $row = $sheetExport->map($row);
         }
 
-        if ($row instanceof Arrayable) {
-            $row = $row->toArray();
-        }
+        $row = $this->map($row);
 
         if (isset($row[0]) && is_array($row[0])) {
             $this->append($row, null, $this->hasStrictNullComparison($sheetExport));
@@ -351,5 +345,30 @@ class Sheet
     private function hasStrictNullComparison($sheetExport): bool
     {
         return $sheetExport instanceof WithStrictNullComparison;
+    }
+
+    /**
+     * @param mixed $row
+     *
+     * @return array
+     */
+    private function map($row): array
+    {
+        // When dealing with eloquent models, we'll skip the relations
+        // as we won't be able to display them anyway.
+        if (method_exists($row, 'attributesToArray')) {
+            return $row->attributesToArray();
+        }
+
+        if ($row instanceof Arrayable) {
+            return $row->toArray();
+        }
+
+        // Convert StdObjects to arrays
+        if (is_object($row)) {
+            return json_decode(json_encode($row),true);
+        }
+
+        return $row;
     }
 }
