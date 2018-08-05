@@ -2,7 +2,6 @@
 
 namespace Maatwebsite\Excel;
 
-use Maatwebsite\Excel\Concerns\WithCustomStartCell;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use Maatwebsite\Excel\Concerns\FromView;
 use Maatwebsite\Excel\Events\AfterSheet;
@@ -20,6 +19,7 @@ use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
+use Maatwebsite\Excel\Concerns\WithCustomStartCell;
 use PhpOffice\PhpSpreadsheet\Worksheet\BaseDrawing;
 use Maatwebsite\Excel\Concerns\WithColumnFormatting;
 use Maatwebsite\Excel\Concerns\WithStrictNullComparison;
@@ -189,9 +189,10 @@ class Sheet
     {
         if (!$startCell) {
             $startCell = 'A1';
-            if ($this->hasRows()) {
-                $startCell = 'A' . ($this->worksheet->getHighestRow() + 1);
-            }
+        }
+
+        if ($this->hasRows()) {
+            $startCell = 'A' . ($this->worksheet->getHighestRow() + 1);
         }
 
         $this->worksheet->fromArray($rows, null, $startCell, $strictNullComparison);
