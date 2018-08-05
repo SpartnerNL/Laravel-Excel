@@ -54,7 +54,7 @@ exports.
   <a href="https://laravel-excel.maatwebsite.nl/docs/3.0/getting-started/contributing">Contributing</a>
   <span> · </span>
   <a href="https://laravel-excel.maatwebsite.nl/docs/3.0/getting-started/support">Support</a>
-</h3>
+</h4>
 
 - **Easily export collections to Excel.** Supercharge your Laravel collections and export them directly to an Excel or CSV document. Exporting has never been so easy.
 
@@ -63,6 +63,54 @@ exports.
 - **Queue exports.** Exporting even larger datasets? No worries, Laravel Excel has your back. You can queue your exports so all of this happens in the background.
 
 - **Export blade views.** Want to have a custom layout in your spreadsheet? Use a HTML table in a blade view and export that to Excel.
+
+## 5 minutes quick start
+
+:bulb: Require this package in the `composer.json` of your Laravel project. This will download the package and PhpSpreadsheet.
+
+```
+composer require maatwebsite/excel
+```
+
+:muscle: Create an export class in `app/Exports`
+
+```php
+<?php
+
+namespace App\Exports;
+
+use App\User;
+use Maatwebsite\Excel\Concerns\FromCollection;
+
+class UsersExport implements FromCollection
+{
+    public function collection()
+    {
+        return User::all();
+    }
+}
+```
+
+:fire: In your controller you can call this export now:
+
+```php
+
+use App\UsersExport;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Http\Controllers\Controller;
+
+class UsersController extends Controller 
+{
+    public function export 
+    {
+        return Excel::download(new UsersExport, 'users.xlsx');
+    }
+}
+```
+
+:page_facing_up: Find your `users.xlsx` in your downloads folder!
+
+More installation instructions can be found at: [https://laravel-excel.maatwebsite.nl/docs/3.0/getting-started/installation](https://laravel-excel.maatwebsite.nl/docs/3.0/getting-started/installation)
 
 ## Supported Versions
 
@@ -76,24 +124,6 @@ Versions will be supported for a limited amount of time.
 ## Roadmap
 
 Imports are currently not supported by 3.0. This functionality will be re-added in 3.1.
-
-## Installation
-
-Require this package in the `composer.json` of your Laravel project. This will download the package and PhpSpreadsheet.
-
-```
-composer require maatwebsite/excel
-```
-
-More installation instructions can be found at: [https://laravel-excel.maatwebsite.nl/docs/3.0/getting-started/installation](https://laravel-excel.maatwebsite.nl/docs/3.0/getting-started/installation)
-
-## Support
-
-More about support can be found at: [https://laravel-excel.maatwebsite.nl/docs/3.0/getting-started/support](https://laravel-excel.maatwebsite.nl/docs/3.0/getting-started/support)
-
-## Contributing
-
-More about contributing can be found at: [https://laravel-excel.maatwebsite.nl/docs/3.0/getting-started/contributing](https://laravel-excel.maatwebsite.nl/docs/3.0/getting-started/contributing)
 
 ## License & Postcardware
 
