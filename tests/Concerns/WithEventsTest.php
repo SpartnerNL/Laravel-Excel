@@ -2,8 +2,6 @@
 
 namespace Maatwebsite\Excel\Tests\Concerns;
 
-use Maatwebsite\Excel\Concerns\Exportable;
-use Maatwebsite\Excel\Events\Event;
 use Maatwebsite\Excel\Excel;
 use Maatwebsite\Excel\Sheet;
 use Maatwebsite\Excel\Tests\Data\Stubs\CustomConcern;
@@ -12,6 +10,7 @@ use Maatwebsite\Excel\Writer;
 use Maatwebsite\Excel\Tests\TestCase;
 use Maatwebsite\Excel\Events\AfterSheet;
 use Maatwebsite\Excel\Events\BeforeSheet;
+use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Events\BeforeExport;
 use Maatwebsite\Excel\Events\BeforeWriting;
 use Maatwebsite\Excel\Tests\Data\Stubs\ExportWithEvents;
@@ -77,8 +76,7 @@ class WithEventsTest extends TestCase
      */
     public function can_have_global_event_listeners()
     {
-        $event = new class
-        {
+        $event = new class {
             use Exportable;
         };
 
