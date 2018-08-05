@@ -64,6 +64,6 @@ class CloseSheet implements ShouldQueue
 
         $sheet->close($this->sheetExport);
 
-        $writer->write($this->filePath, $this->writerType);
+        $writer->write($this->sheetExport, $this->filePath, $this->writerType);
     }
 }
