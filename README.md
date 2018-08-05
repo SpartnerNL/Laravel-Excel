@@ -58,9 +58,7 @@ exports.
 
 - **Easily export collections to Excel.** Supercharge your Laravel collections and export them directly to an Excel or CSV document. Exporting has never been so easy.
 
-- **Performant exports.** Export queries with automatic chunking for better peformance. You provide us the query, we handle the performance.
-
-- **Queue exports.** Exporting even larger datasets? No worries, Laravel Excel has your back. You can queue your exports so all of this happens in the background.
+- **Supercharged exports.** Export queries with automatic chunking for better peformance. You provide us the query, we handle the performance. Exporting even larger datasets? No worries, Laravel Excel has your back. You can queue your exports so all of this happens in the background.
 
 - **Export blade views.** Want to have a custom layout in your spreadsheet? Use a HTML table in a blade view and export that to Excel.
 
