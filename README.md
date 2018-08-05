@@ -23,10 +23,6 @@ exports.
     <img src="https://travis-ci.org/Maatwebsite/Laravel-Excel.svg?branch=3.0" alt="Build Status">
   </a> 
   
-  <a href="https://codecov.io/gh/Maatwebsite/Laravel-Excel">
-    <img src="https://codecov.io/gh/Maatwebsite/Laravel-Excel/branch/3.0/graph/badge.svg" alt="codecov">
-  </a> 
-  
   <a href="https://styleci.io/repos/14259390">
     <img src="https://styleci.io/repos/14259390/shield?branch=3.0" alt="StyleCI">
   </a> 

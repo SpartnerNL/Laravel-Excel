@@ -2,6 +2,7 @@
 
 namespace Maatwebsite\Excel;
 
+use Maatwebsite\Excel\Concerns\WithCharts;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Writer\Csv;
 use Maatwebsite\Excel\Concerns\WithTitle;
@@ -153,6 +154,10 @@ class Writer
         }
 
         $writer = IOFactory::createWriter($this->spreadsheet, $writerType);
+
+        if ($export instanceof WithCharts) {
+            $writer->setIncludeCharts(true);
+        }
 
         if ($writer instanceof Csv) {
             $writer->setDelimiter($this->delimiter);

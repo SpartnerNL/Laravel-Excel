@@ -2,6 +2,7 @@
 
 namespace Maatwebsite\Excel;
 
+use Maatwebsite\Excel\Concerns\WithCharts;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use Maatwebsite\Excel\Concerns\FromView;
 use Maatwebsite\Excel\Events\AfterSheet;
@@ -72,6 +73,15 @@ class Sheet
 
         if (!$sheetExport instanceof FromView && $sheetExport instanceof WithHeadings) {
             $this->append([$sheetExport->headings()], null, $this->hasStrictNullComparison($sheetExport));
+        }
+
+        if ($sheetExport instanceof WithCharts) {
+            $charts = $sheetExport->charts();
+            $charts = \is_array($charts) ? $charts : [$charts];
+
+            foreach ($charts as $chart) {
+                $this->worksheet->addChart($chart);
+            }
         }
     }
 
@@ -169,7 +179,7 @@ class Sheet
     /**
      * @param array    $rows
      * @param int|null $row
-     * @param bool  $strictNullComparison
+     * @param bool     $strictNullComparison
      *
      * @throws \PhpOffice\PhpSpreadsheet\Exception
      */
