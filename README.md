@@ -64,7 +64,7 @@ exports.
 
 - **Export blade views.** Want to have a custom layout in your spreadsheet? Use a HTML table in a blade view and export that to Excel.
 
-## 5 minutes quick start
+## :rocket: 5 minutes quick start
 
 :bulb: Require this package in the `composer.json` of your Laravel project. This will download the package and PhpSpreadsheet.
 
@@ -112,7 +112,7 @@ class UsersController extends Controller
 
 More installation instructions can be found at: [https://laravel-excel.maatwebsite.nl/docs/3.0/getting-started/installation](https://laravel-excel.maatwebsite.nl/docs/3.0/getting-started/installation)
 
-## Supported Versions
+## :wrench: Supported Versions
 
 Versions will be supported for a limited amount of time.
 
@@ -121,11 +121,11 @@ Versions will be supported for a limited amount of time.
 | 2.1 | <=5.6 | <=7.0 | EOL on 15-5-2018 |
 | 3.0 | ^5.5 |  ^7.0 | New features |
 
-## Roadmap
+## :mag_right: Roadmap
 
 Imports are currently not supported by 3.0. This functionality will be re-added in 3.1. There's currently no ETA on this release. 
 
-## License & Postcardware
+## :mailbox_with_mail: License & Postcardware
 
 Our software is open source and licensed under the MIT license.
 
