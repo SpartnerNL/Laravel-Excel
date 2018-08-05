@@ -10,7 +10,6 @@ use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Events\BeforeExport;
 use Maatwebsite\Excel\Events\BeforeWriting;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
-use PhpOffice\PhpSpreadsheet\Writer\IWriter;
 
 class Writer
 {
@@ -138,7 +137,7 @@ class Writer
     {
         $reader            = IOFactory::createReader($writerType);
         $this->spreadsheet = $reader->load($tempFile);
-        
+
         return $this;
     }
 
