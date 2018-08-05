@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://laravel-excel.maatwebsite.nl">
-    <img alt="Gatsby" src="https://user-images.githubusercontent.com/7728097/43683637-5822baf8-9890-11e8-8fa1-a41511257e17.png" width="60" />
+    <img alt="Laravel Excel" src="https://user-images.githubusercontent.com/7728097/43685313-ff1e2110-98b0-11e8-8b50-900a2b262f0f.png" />
   </a>
 </p>
 
