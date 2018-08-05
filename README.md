@@ -123,7 +123,7 @@ Versions will be supported for a limited amount of time.
 
 ## Roadmap
 
-Imports are currently not supported by 3.0. This functionality will be re-added in 3.1.
+Imports are currently not supported by 3.0. This functionality will be re-added in 3.1. There's currently no ETA on this release. 
 
 ## License & Postcardware
 
