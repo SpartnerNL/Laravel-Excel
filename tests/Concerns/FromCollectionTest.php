@@ -50,38 +50,4 @@ class FromCollectionTest extends TestCase
             $this->assertEquals($sheet->title(), $worksheet->getTitle());
         }
     }
-
-    /**
-     * @test
-     */
-    public function empty_rows_in_collection_will_be_ignored()
-    {
-        $export = new class implements FromCollection {
-            use Exportable;
-
-            /**
-             * @return Collection
-             */
-            public function collection()
-            {
-                return new Collection([
-                    [],
-                    ['test', 'test'],
-                    [],
-                    ['test', 'test'],
-                ]);
-            }
-        };
-
-        $response = $export->store('from-collection-empty-rows-store.xlsx');
-
-        $this->assertTrue($response);
-
-        $contents = $this->readAsArray(__DIR__ . '/../Data/Disks/Local/from-collection-empty-rows-store.xlsx', 'Xlsx');
-
-        $this->assertEquals([
-            ['test', 'test'],
-            ['test', 'test'],
-        ], $contents);
-    }
 }

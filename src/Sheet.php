@@ -2,6 +2,7 @@
 
 namespace Maatwebsite\Excel;
 
+use Maatwebsite\Excel\Concerns\WithCustomStartCell;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use Maatwebsite\Excel\Concerns\FromView;
 use Maatwebsite\Excel\Events\AfterSheet;
@@ -75,7 +76,11 @@ class Sheet
         }
 
         if (!$sheetExport instanceof FromView && $sheetExport instanceof WithHeadings) {
-            $this->append([$sheetExport->headings()], null, $this->hasStrictNullComparison($sheetExport));
+            if ($sheetExport instanceof WithCustomStartCell) {
+                $startCell = $sheetExport->startCell();
+            }
+
+            $this->append([$sheetExport->headings()], $startCell ?? null, $this->hasStrictNullComparison($sheetExport));
         }
 
         if ($sheetExport instanceof WithCharts) {
@@ -105,7 +110,7 @@ class Sheet
             }
 
             if ($sheetExport instanceof FromCollection) {
-                $this->fromCollection($sheetExport, $this->worksheet);
+                $this->fromCollection($sheetExport);
             }
         }
 
@@ -167,34 +172,29 @@ class Sheet
 
     /**
      * @param FromCollection $sheetExport
-     * @param Worksheet      $worksheet
      */
-    public function fromCollection(FromCollection $sheetExport, Worksheet $worksheet)
+    public function fromCollection(FromCollection $sheetExport)
     {
-        $sheetExport
-            ->collection()
-            ->each(function ($row) use ($sheetExport, $worksheet) {
-                $this->appendRow($row, $sheetExport);
-            });
+        $this->appendRows($sheetExport->collection()->all(), $sheetExport);
     }
 
     /**
-     * @param array    $rows
-     * @param int|null $row
-     * @param bool     $strictNullComparison
+     * @param array       $rows
+     * @param string|null $startCell
+     * @param bool        $strictNullComparison
      *
      * @throws \PhpOffice\PhpSpreadsheet\Exception
      */
-    public function append(array $rows, int $row = null, bool $strictNullComparison = false)
+    public function append(array $rows, string $startCell = null, bool $strictNullComparison = false)
     {
-        if (!$row) {
-            $row = 1;
+        if (!$startCell) {
+            $startCell = 'A1';
             if ($this->hasRows()) {
-                $row = $this->worksheet->getHighestRow() + 1;
+                $startCell = 'A' . ($this->worksheet->getHighestRow() + 1);
             }
         }
 
-        $this->worksheet->fromArray($rows, null, 'A' . $row, $strictNullComparison);
+        $this->worksheet->fromArray($rows, null, $startCell, $strictNullComparison);
     }
 
     /**
@@ -282,7 +282,11 @@ class Sheet
             $append[] = static::mapArraybleRow($row);
         }
 
-        $this->append($append, null, $this->hasStrictNullComparison($sheetExport));
+        if ($sheetExport instanceof WithCustomStartCell) {
+            $startCell = $sheetExport->startCell();
+        }
+
+        $this->append($append, $startCell ?? null, $this->hasStrictNullComparison($sheetExport));
     }
 
     /**
@@ -324,10 +328,14 @@ class Sheet
 
         $row = static::mapArraybleRow($row);
 
+        if ($sheetExport instanceof WithCustomStartCell) {
+            $startCell = $sheetExport->startCell();
+        }
+
         if (isset($row[0]) && is_array($row[0])) {
-            $this->append($row, null, $this->hasStrictNullComparison($sheetExport));
+            $this->append($row, $startCell ?? null, $this->hasStrictNullComparison($sheetExport));
         } else {
-            $this->append([$row], null, $this->hasStrictNullComparison($sheetExport));
+            $this->append([$row], $startCell ?? null, $this->hasStrictNullComparison($sheetExport));
         }
     }
 
