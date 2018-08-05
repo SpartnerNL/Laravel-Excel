@@ -45,15 +45,15 @@ exports.
 </p>
 
 <h4 align="center">
-  <a href="https://laravel-excel.maatwebsite.nl/docs/3.0/getting-started/installation">Quickstart</a>
+  <a href="https://laravel-excel.maatwebsite.nl/3.0/exports/">Quickstart</a>
   <span> · </span>
-  <a href="https://laravel-excel.maatwebsite.nl/docs/3.0/export/basics">Documentation</a>
+  <a href="https://laravel-excel.maatwebsite.nl/3.0/getting-started/">Documentation</a>
   <span> · </span>
   <a href="https://medium.com/@maatwebsite/laravel-excel-lessons-learned-7fee2812551">Blog</a>
   <span> · </span>
-  <a href="https://laravel-excel.maatwebsite.nl/docs/3.0/getting-started/contributing">Contributing</a>
+  <a href="https://laravel-excel.maatwebsite.nl/3.0/getting-started/contributing.html">Contributing</a>
   <span> · </span>
-  <a href="https://laravel-excel.maatwebsite.nl/docs/3.0/getting-started/support">Support</a>
+  <a href="https://laravel-excel.maatwebsite.nl/3.0/getting-started/support.html">Support</a>
 </h4>
 
 - **Easily export collections to Excel.** Supercharge your Laravel collections and export them directly to an Excel or CSV document. Exporting has never been so easy.
@@ -108,7 +108,7 @@ class UsersController extends Controller
 
 :page_facing_up: Find your `users.xlsx` in your downloads folder!
 
-More installation instructions can be found at: [https://laravel-excel.maatwebsite.nl/docs/3.0/getting-started/installation](https://laravel-excel.maatwebsite.nl/docs/3.0/getting-started/installation)
+More installation instructions can be found at: [https://laravel-excel.maatwebsite.nl/3.0/getting-started/installation.html](https://laravel-excel.maatwebsite.nl/3.0/getting-started/installation.html)
 
 ## 🎓 Learning Laravel Excel
 
@@ -140,4 +140,4 @@ Florijnruwe 111-2
 6218 CA Maastricht  
 The Netherlands  
 
-More about the license can be found at: [https://laravel-excel.maatwebsite.nl/docs/3.0/getting-started/license](https://laravel-excel.maatwebsite.nl/docs/3.0/getting-started/license)
+More about the license can be found at: [https://laravel-excel.maatwebsite.nl/3.0/getting-started/license.html](https://laravel-excel.maatwebsite.nl/3.0/getting-started/license.html)
