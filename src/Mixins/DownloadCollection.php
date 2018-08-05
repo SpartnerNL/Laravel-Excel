@@ -2,14 +2,12 @@
 
 namespace Maatwebsite\Excel\Mixins;
 
-use Illuminate\Contracts\Support\Arrayable;
-use Illuminate\Database\Eloquent\Model;
+use Maatwebsite\Excel\Sheet;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\Exportable;
+use Illuminate\Contracts\Support\Arrayable;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\FromCollection;
-use Maatwebsite\Excel\Sheet;
-use PhpParser\Node\Expr\AssignOp\Mod;
 
 class DownloadCollection
 {
@@ -19,8 +17,7 @@ class DownloadCollection
     public function downloadExcel()
     {
         return function (string $fileName, string $writerType = null, $withHeadings = false) {
-            $export = new class($this, $withHeadings) implements FromCollection, WithHeadings
-            {
+            $export = new class($this, $withHeadings) implements FromCollection, WithHeadings {
                 use Exportable;
 
                 /**
@@ -68,7 +65,6 @@ class DownloadCollection
 
                     return $this->collection->collapse()->keys()->all();
                 }
-
             };
 
             return $export->download($fileName, $writerType);

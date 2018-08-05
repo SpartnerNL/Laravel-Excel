@@ -286,6 +286,31 @@ class Sheet
     }
 
     /**
+     * @param mixed $row
+     *
+     * @return array
+     */
+    public static function mapArraybleRow($row): array
+    {
+        // When dealing with eloquent models, we'll skip the relations
+        // as we won't be able to display them anyway.
+        if (method_exists($row, 'attributesToArray')) {
+            return $row->attributesToArray();
+        }
+
+        if ($row instanceof Arrayable) {
+            return $row->toArray();
+        }
+
+        // Convert StdObjects to arrays
+        if (is_object($row)) {
+            return json_decode(json_encode($row), true);
+        }
+
+        return $row;
+    }
+
+    /**
      * @param iterable $row
      * @param object   $sheetExport
      *
@@ -345,30 +370,5 @@ class Sheet
     private function hasStrictNullComparison($sheetExport): bool
     {
         return $sheetExport instanceof WithStrictNullComparison;
-    }
-
-    /**
-     * @param mixed $row
-     *
-     * @return array
-     */
-    public static function mapArraybleRow($row): array
-    {
-        // When dealing with eloquent models, we'll skip the relations
-        // as we won't be able to display them anyway.
-        if (method_exists($row, 'attributesToArray')) {
-            return $row->attributesToArray();
-        }
-
-        if ($row instanceof Arrayable) {
-            return $row->toArray();
-        }
-
-        // Convert StdObjects to arrays
-        if (is_object($row)) {
-            return json_decode(json_encode($row), true);
-        }
-
-        return $row;
     }
 }

@@ -4,8 +4,8 @@ namespace Maatwebsite\Excel\Tests\Mixins;
 
 use Maatwebsite\Excel\Excel;
 use Illuminate\Support\Collection;
-use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
 use Maatwebsite\Excel\Tests\TestCase;
+use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class DownloadCollectionTest extends TestCase
@@ -77,7 +77,7 @@ class DownloadCollectionTest extends TestCase
         $user->makeVisible(['password']);
 
         $collection = new Collection([
-            $user
+            $user,
         ]);
 
         $response = $collection->downloadExcel('collection-headers-download.xlsx', Excel::XLSX, true);
