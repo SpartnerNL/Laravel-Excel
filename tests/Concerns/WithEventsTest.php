@@ -4,8 +4,6 @@ namespace Maatwebsite\Excel\Tests\Concerns;
 
 use Maatwebsite\Excel\Excel;
 use Maatwebsite\Excel\Sheet;
-use Maatwebsite\Excel\Tests\Data\Stubs\CustomConcern;
-use Maatwebsite\Excel\Tests\Data\Stubs\CustomSheetConcern;
 use Maatwebsite\Excel\Writer;
 use Maatwebsite\Excel\Tests\TestCase;
 use Maatwebsite\Excel\Events\AfterSheet;
@@ -13,8 +11,10 @@ use Maatwebsite\Excel\Events\BeforeSheet;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Events\BeforeExport;
 use Maatwebsite\Excel\Events\BeforeWriting;
+use Maatwebsite\Excel\Tests\Data\Stubs\CustomConcern;
 use Maatwebsite\Excel\Tests\Data\Stubs\ExportWithEvents;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Maatwebsite\Excel\Tests\Data\Stubs\CustomSheetConcern;
 use Maatwebsite\Excel\Tests\Data\Stubs\BeforeExportListener;
 
 class WithEventsTest extends TestCase
@@ -120,13 +120,13 @@ class WithEventsTest extends TestCase
             );
         });
 
-        $exportWithConcern = new class implements CustomConcern
-        {
+        $exportWithConcern = new class implements CustomConcern {
             use Exportable;
 
-            public function custom() {
+            public function custom()
+            {
                 return [
-                    ['a', 'b']
+                    ['a', 'b'],
                 ];
             }
         };
@@ -134,11 +134,10 @@ class WithEventsTest extends TestCase
         $exportWithConcern->store('with-custom-concern.xlsx');
         $actual = $this->readAsArray(__DIR__ . '/../Data/Disks/Local/with-custom-concern.xlsx', 'Xlsx');
         $this->assertEquals([
-            ['a', 'b']
+            ['a', 'b'],
         ], $actual);
 
-        $exportWithoutConcern = new class
-        {
+        $exportWithoutConcern = new class {
             use Exportable;
         };
 
@@ -160,13 +159,13 @@ class WithEventsTest extends TestCase
             );
         }, AfterSheet::class);
 
-        $exportWithConcern = new class implements CustomSheetConcern
-        {
+        $exportWithConcern = new class implements CustomSheetConcern {
             use Exportable;
 
-            public function custom() {
+            public function custom()
+            {
                 return [
-                    ['c', 'd']
+                    ['c', 'd'],
                 ];
             }
         };
@@ -174,11 +173,10 @@ class WithEventsTest extends TestCase
         $exportWithConcern->store('with-custom-concern.xlsx');
         $actual = $this->readAsArray(__DIR__ . '/../Data/Disks/Local/with-custom-concern.xlsx', 'Xlsx');
         $this->assertEquals([
-            ['c', 'd']
+            ['c', 'd'],
         ], $actual);
 
-        $exportWithoutConcern = new class
-        {
+        $exportWithoutConcern = new class {
             use Exportable;
         };
 

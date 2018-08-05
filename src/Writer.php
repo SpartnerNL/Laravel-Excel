@@ -113,7 +113,7 @@ class Writer
             static::registerListeners($export->registerEvents());
         }
 
-        $this->exportable = $export;
+        $this->exportable  = $export;
         $this->spreadsheet = new Spreadsheet;
         $this->spreadsheet->disconnectWorksheets();
 

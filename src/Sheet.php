@@ -40,14 +40,14 @@ class Sheet
     protected $tmpPath;
 
     /**
-     * @var Worksheet
-     */
-    private $worksheet;
-
-    /**
      * @var object
      */
     protected $exportable;
+
+    /**
+     * @var Worksheet
+     */
+    private $worksheet;
 
     /**
      * @param Worksheet $worksheet

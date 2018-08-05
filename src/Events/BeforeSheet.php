@@ -23,7 +23,7 @@ class BeforeSheet extends Event
     public function __construct(Sheet $sheet, $exportable)
     {
         $this->sheet       = $sheet;
-        $this->exportable = $exportable;
+        $this->exportable  = $exportable;
     }
 
     /**
