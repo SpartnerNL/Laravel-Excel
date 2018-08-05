@@ -97,6 +97,19 @@ class ExcelTest extends TestCase
     /**
      * @test
      */
+    public function can_store_tsv_export_with_default_settings()
+    {
+        $export = new EmptyExport;
+
+        $response = $this->SUT->store($export, 'filename.tsv');
+
+        $this->assertTrue($response);
+        $this->assertFileExists(__DIR__ . '/Data/Disks/Local/filename.tsv');
+    }
+
+    /**
+     * @test
+     */
     public function can_store_csv_export_with_custom_settings()
     {
         $export = new class implements WithEvents, FromCollection {
