@@ -13,7 +13,7 @@
 </h3>
 
 <p align="center">
-  <strong>Laravel Flavoured PhpSpreadsheet</strong><br>
+  <strong>Supercharged Excel exports</strong><br>
   A simple, but elegant wrapper around <a href="https://phpspreadsheet.readthedocs.io/">PhpSpreadsheet</a> with the goal of simplifying
 exports. 
 </p>
