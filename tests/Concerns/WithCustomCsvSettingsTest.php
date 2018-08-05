@@ -2,11 +2,11 @@
 
 namespace Maatwebsite\Excel\Tests\Concerns;
 
+use Maatwebsite\Excel\Excel;
 use Illuminate\Support\Collection;
+use Maatwebsite\Excel\Tests\TestCase;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithCustomCsvSettings;
-use Maatwebsite\Excel\Excel;
-use Maatwebsite\Excel\Tests\TestCase;
 
 class WithCustomCsvSettingsTest extends TestCase
 {
@@ -27,9 +27,7 @@ class WithCustomCsvSettingsTest extends TestCase
      */
     public function can_store_csv_export_with_custom_settings()
     {
-        $export = new class implements FromCollection, WithCustomCsvSettings
-        {
-
+        $export = new class implements FromCollection, WithCustomCsvSettings {
             /**
              * @return Collection
              */

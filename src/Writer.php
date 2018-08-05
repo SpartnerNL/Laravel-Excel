@@ -2,7 +2,6 @@
 
 namespace Maatwebsite\Excel;
 
-use Maatwebsite\Excel\Concerns\WithCustomCsvSettings;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Writer\Csv;
 use Maatwebsite\Excel\Concerns\WithTitle;
@@ -11,6 +10,7 @@ use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Events\BeforeExport;
 use Maatwebsite\Excel\Events\BeforeWriting;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
+use Maatwebsite\Excel\Concerns\WithCustomCsvSettings;
 
 class Writer
 {
