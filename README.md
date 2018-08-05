@@ -44,16 +44,25 @@ exports.
   </a>
 </p>
 
-## Introduction
+<h4 align="center">
+  <a href="https://laravel-excel.maatwebsite.nl/docs/3.0/getting-started/installation">Quickstart</a>
+  <span> · </span>
+  <a href="https://laravel-excel.maatwebsite.nl/docs/3.0/export/basics">Documentation</a>
+  <span> · </span>
+  <a href="https://medium.com/@maatwebsite/laravel-excel-lessons-learned-7fee2812551">Blog</a>
+  <span> · </span>
+  <a href="https://laravel-excel.maatwebsite.nl/docs/3.0/getting-started/contributing">Contributing</a>
+  <span> · </span>
+  <a href="https://laravel-excel.maatwebsite.nl/docs/3.0/getting-started/support">Support</a>
+</h3>
 
-Laravel Excel features:
+- **Easily export collections to Excel.** Supercharge your Laravel collections and export them directly to an Excel or CSV document. Exporting has never been so easy.
 
-* Easily export collections to Excel
-* Export queries with automatic chunking for better performance
-* Queue exports for better performance
-* Easily export Blade views to Excel
+- **Performant exports.** Export queries with automatic chunking for better peformance. You provide us the query, we handle the performance.
 
-Read more about Laravel Excel 3.0 on our blog: https://medium.com/@maatwebsite/laravel-excel-lessons-learned-7fee2812551
+- **Queue exports.** Exporting even larger datasets? No worries, Laravel Excel has your back. You can queue your exports so all of this happens in the background.
+
+- **Export blade views.** Want to have a custom layout in your spreadsheet? Use a HTML table in a blade view and export that to Excel.
 
 ## Supported Versions
 
