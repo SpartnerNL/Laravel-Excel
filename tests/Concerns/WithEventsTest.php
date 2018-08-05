@@ -3,7 +3,11 @@
 namespace Maatwebsite\Excel\Tests\Concerns;
 
 use Maatwebsite\Excel\Concerns\Exportable;
+use Maatwebsite\Excel\Events\Event;
+use Maatwebsite\Excel\Excel;
 use Maatwebsite\Excel\Sheet;
+use Maatwebsite\Excel\Tests\Data\Stubs\CustomConcern;
+use Maatwebsite\Excel\Tests\Data\Stubs\CustomSheetConcern;
 use Maatwebsite\Excel\Writer;
 use Maatwebsite\Excel\Tests\TestCase;
 use Maatwebsite\Excel\Events\AfterSheet;
@@ -104,5 +108,85 @@ class WithEventsTest extends TestCase
         $this->assertTrue($beforeWriting, 'Before writing event not triggered');
         $this->assertTrue($beforeSheet, 'Before sheet event not triggered');
         $this->assertTrue($afterSheet, 'After sheet event not triggered');
+    }
+
+    /**
+     * @test
+     */
+    public function can_have_custom_concern_handlers()
+    {
+        // Add a custom concern handler for the given concern.
+        Excel::extend(CustomConcern::class, function (CustomConcern $exportable, Writer $writer) {
+            $writer->getSheetByIndex(0)->append(
+                $exportable->custom()
+            );
+        });
+
+        $exportWithConcern = new class implements CustomConcern
+        {
+            use Exportable;
+
+            public function custom() {
+                return [
+                    ['a', 'b']
+                ];
+            }
+        };
+
+        $exportWithConcern->store('with-custom-concern.xlsx');
+        $actual = $this->readAsArray(__DIR__ . '/../Data/Disks/Local/with-custom-concern.xlsx', 'Xlsx');
+        $this->assertEquals([
+            ['a', 'b']
+        ], $actual);
+
+        $exportWithoutConcern = new class
+        {
+            use Exportable;
+        };
+
+        $exportWithoutConcern->store('without-custom-concern.xlsx');
+        $actual = $this->readAsArray(__DIR__ . '/../Data/Disks/Local/without-custom-concern.xlsx', 'Xlsx');
+
+        $this->assertEquals([[null]], $actual);
+    }
+
+    /**
+     * @test
+     */
+    public function can_have_custom_sheet_concern_handlers()
+    {
+        // Add a custom concern handler for the given concern.
+        Excel::extend(CustomSheetConcern::class, function (CustomSheetConcern $exportable, Sheet $sheet) {
+            $sheet->append(
+                $exportable->custom()
+            );
+        }, AfterSheet::class);
+
+        $exportWithConcern = new class implements CustomSheetConcern
+        {
+            use Exportable;
+
+            public function custom() {
+                return [
+                    ['c', 'd']
+                ];
+            }
+        };
+
+        $exportWithConcern->store('with-custom-concern.xlsx');
+        $actual = $this->readAsArray(__DIR__ . '/../Data/Disks/Local/with-custom-concern.xlsx', 'Xlsx');
+        $this->assertEquals([
+            ['c', 'd']
+        ], $actual);
+
+        $exportWithoutConcern = new class
+        {
+            use Exportable;
+        };
+
+        $exportWithoutConcern->store('without-custom-concern.xlsx');
+        $actual = $this->readAsArray(__DIR__ . '/../Data/Disks/Local/without-custom-concern.xlsx', 'Xlsx');
+
+        $this->assertEquals([[null]], $actual);
     }
 }

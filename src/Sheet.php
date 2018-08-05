@@ -45,6 +45,11 @@ class Sheet
     private $worksheet;
 
     /**
+     * @var object
+     */
+    protected $exportable;
+
+    /**
      * @param Worksheet $worksheet
      */
     public function __construct(Worksheet $worksheet)
@@ -61,11 +66,13 @@ class Sheet
      */
     public function open($sheetExport)
     {
+        $this->exportable = $sheetExport;
+
         if ($sheetExport instanceof WithEvents) {
             static::registerListeners($sheetExport->registerEvents());
         }
 
-        $this->raise(new BeforeSheet($this));
+        $this->raise(new BeforeSheet($this, $this->exportable));
 
         if ($sheetExport instanceof WithTitle) {
             $this->worksheet->setTitle($sheetExport->title());
@@ -124,6 +131,8 @@ class Sheet
      */
     public function close($sheetExport)
     {
+        $this->exportable = $sheetExport;
+
         if ($sheetExport instanceof WithColumnFormatting) {
             foreach ($sheetExport->columnFormats() as $column => $format) {
                 $this->formatColumn($column, $format);
@@ -134,7 +143,7 @@ class Sheet
             $this->autoSize();
         }
 
-        $this->raise(new AfterSheet($this));
+        $this->raise(new AfterSheet($this, $this->exportable));
     }
 
     /**
@@ -264,6 +273,16 @@ class Sheet
         foreach ($drawings as $drawing) {
             $drawing->setWorksheet($this->worksheet);
         }
+    }
+
+    /**
+     * @param string $concern
+     *
+     * @return string
+     */
+    public function hasConcern(string $concern): string
+    {
+        return $this->exportable instanceof $concern;
     }
 
     /**

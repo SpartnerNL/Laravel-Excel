@@ -25,7 +25,7 @@ class Writer
     /**
      * @var object
      */
-    protected $export;
+    protected $exportable;
 
     /**
      * @var string
@@ -107,14 +107,17 @@ class Writer
      */
     public function open($export)
     {
+        $this->exportable = $export;
+
         if ($export instanceof WithEvents) {
             static::registerListeners($export->registerEvents());
         }
 
+        $this->exportable = $export;
         $this->spreadsheet = new Spreadsheet;
         $this->spreadsheet->disconnectWorksheets();
 
-        $this->raise(new BeforeExport($this));
+        $this->raise(new BeforeExport($this, $this->exportable));
 
         if ($export instanceof WithTitle) {
             $this->spreadsheet->getProperties()->setTitle($export->title());
@@ -147,7 +150,9 @@ class Writer
      */
     public function write($export, string $fileName, string $writerType)
     {
-        $this->raise(new BeforeWriting($this));
+        $this->exportable = $export;
+
+        $this->raise(new BeforeWriting($this, $this->exportable));
 
         if ($export instanceof WithCustomCsvSettings) {
             $this->applyCsvSettings($export->getCsvSettings());
@@ -285,5 +290,15 @@ class Writer
         $this->useBom               = array_get($config, 'use_bom', $this->useBom);
         $this->includeSeparatorLine = array_get($config, 'include_separator_line', $this->includeSeparatorLine);
         $this->excelCompatibility   = array_get($config, 'excel_compatibility', $this->excelCompatibility);
+    }
+
+    /**
+     * @param string $concern
+     *
+     * @return bool
+     */
+    public function hasConcern($concern): bool
+    {
+        return $this->exportable instanceof $concern;
     }
 }

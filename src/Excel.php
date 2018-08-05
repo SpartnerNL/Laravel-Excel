@@ -8,6 +8,8 @@ use Illuminate\Contracts\Routing\ResponseFactory;
 
 class Excel implements Exporter
 {
+    use RegistersCustomConcerns;
+
     const XLSX     = 'Xlsx';
 
     const CSV      = 'Csv';
