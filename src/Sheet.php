@@ -279,7 +279,7 @@ class Sheet
                 $row = $sheetExport->map($row);
             }
 
-            $append[] = $this->map($row);
+            $append[] = static::mapArraybleRow($row);
         }
 
         $this->append($append, null, $this->hasStrictNullComparison($sheetExport));
@@ -297,7 +297,7 @@ class Sheet
             $row = $sheetExport->map($row);
         }
 
-        $row = $this->map($row);
+        $row = static::mapArraybleRow($row);
 
         if (isset($row[0]) && is_array($row[0])) {
             $this->append($row, null, $this->hasStrictNullComparison($sheetExport));
@@ -352,7 +352,7 @@ class Sheet
      *
      * @return array
      */
-    private function map($row): array
+    public static function mapArraybleRow($row): array
     {
         // When dealing with eloquent models, we'll skip the relations
         // as we won't be able to display them anyway.
