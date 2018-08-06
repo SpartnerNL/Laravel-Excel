@@ -143,3 +143,211 @@ Florijnruwe 111-2
 The Netherlands  
 
 More about the license can be found at: [https://laravel-excel.maatwebsite.nl/3.0/getting-started/license.html](https://laravel-excel.maatwebsite.nl/3.0/getting-started/license.html)
+
+## Imports (beta)
+
+### ToArray
+
+```php
+Excel::import(new UsersImport, 'users.xlxs')->toArray();
+Excel::import(new UsersImport, 'users.xlxs')->toCollection();
+
+// using "use Importable"
+(new UsersImport)->toArray('users.xlsx');
+```
+
+### ToCollection
+
+```php
+class UsersImport implements ToCollection {
+
+    public function collection(Collection $sheets)
+    {
+        foreach ($sheets as $sheet)
+        {
+            foreach ($sheet as $row)
+            {
+                User::create([
+                    'name' => $row[0],
+                ]);
+            }
+        }
+    }
+}
+```
+
+### OnRow
+
+Handle each row however wanted. (In case of no Eloquent e.g.)
+
+```php
+class UsersImport implements OnRow {
+
+    public function onRow(array $row): Model
+    {
+        User::create([
+            'name' => $row[0],
+        ]);
+    }
+}
+```
+
+### ToModel
+
+One save per row, keeps model events
+
+```php
+class UsersImport implements ToModel {
+
+    public function model(array $row): Model
+    {
+        return new User([
+            'name' => $row[0],
+        ]);
+    }
+}
+```
+
+### ToModel
+
+Will inserts in batch, no model events
+
+```php
+class UsersImport implements ToModel, WithBatchInserts {
+
+    public function model(array $row): Model
+    {
+        return new User([
+            'name' => $row[0],
+        ]);
+    }
+    
+    public function batchSize(): int 
+    {
+        return 1000;
+    }
+}
+```
+
+### WithChunkReading
+
+Will Read data in chunks, but insert each row separate in the db (with model events)
+
+```php
+class UsersImport implements ToModel, WithChunkReading {
+
+    public function model(array $row): Model
+    {
+        return new User([
+            'name' => $row[0],
+        ]);
+    }
+    
+    public function chunkSize(): int
+    {
+        return 1000;
+    }
+    
+    public function batchSize(): int 
+        {
+            return 1000;
+        }
+}
+```
+
+### WithChunkReading and WithBatchInserts
+
+Will insert the chunks in batches (no model events)
+
+```php
+class UsersImport implements ToModel, WithChunkReading, WithBatchInserts {
+
+    public function model(array $row): Model
+    {
+        return new User([
+            'name' => $row[0],
+        ]);
+    }
+    
+    public function chunkSize(): int
+    {
+        return 1000;
+    }
+}
+```
+
+### ShouldQueue with ToModel
+
+Will queue each model insert (keeps model events)
+
+```php
+class UsersImport implements ToModel, ShouldQueue {
+
+    public function model(array $row): Model
+    {
+        return new User([
+            'name' => $row[0],
+        ]);
+    }
+}
+```
+
+### ShouldQueue with ToModel and WithChunkReading
+
+Will queue each chunk and then queue each model insert (with model events)
+
+```php
+class UsersImport implements ToModel, WithChunkReading, ShouldQueue {
+
+    public function model(array $row): Model
+    {
+        return new User([
+            'name' => $row[0],
+        ]);
+    }
+    
+    ...
+}
+```
+
+### ShouldQueue with ToModel and WithBatchInserts
+
+Will queue each batch insert (no model events)
+
+```php
+class UsersImport implements ToModel, WithBatchInserts, ShouldQueue {
+
+    public function model(array $row): Model
+    {
+        return new User([
+            'name' => $row[0],
+        ]);
+    }
+    
+    ...
+}
+```
+
+### WithMappedCells
+
+```php
+class UsersImport implements ToModel, WithMappedCells {
+
+    public function mapping(): Model
+    {
+        return [
+            'name' => 'A1',
+        ];
+    }
+    
+    public function handle(array $sheet)
+    {
+        User::create([
+            'name' => $sheet['name'],
+        ]);
+        
+        // or even
+        User::create($sheet);
+    }
+}
+```
