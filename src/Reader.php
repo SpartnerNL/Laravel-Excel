@@ -3,11 +3,14 @@
 namespace Maatwebsite\Excel;
 
 use Illuminate\Support\Collection;
+use PhpOffice\PhpSpreadsheet\Cell\Cell;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use Illuminate\Filesystem\FilesystemManager;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use PhpOffice\PhpSpreadsheet\Reader\IReader;
+use Maatwebsite\Excel\Concerns\CustomValueBinder;
+use PhpOffice\PhpSpreadsheet\Cell\DefaultValueBinder;
 use Maatwebsite\Excel\Exceptions\UnreadableFileException;
 
 class Reader
@@ -32,6 +35,8 @@ class Reader
         $this->filesystem = $filesystem;
 
         $this->tmpPath = config('excel.exports.temp_path', sys_get_temp_dir());
+
+        $this->setDefaultValueBinder();
     }
 
     /**
@@ -44,11 +49,15 @@ class Reader
      */
     public function read($import, string $filePath, string $disk = null, string $readerType = null)
     {
+        if ($import instanceof CustomValueBinder) {
+            Cell::setValueBinder($import);
+        }
+
         $file = $this->copyToFileSystem($filePath, $disk);
 
-        $this->spreadsheet = $this
-            ->getReader($file, $readerType)
-            ->load($file);
+        $reader = $this->getReader($file, $readerType);
+
+        $this->spreadsheet = $reader->load($file);
 
         if ($import instanceof ToCollection) {
             $import->collection($this->toCollection());
@@ -91,6 +100,16 @@ class Reader
     public function getDelegate()
     {
         return $this->spreadsheet;
+    }
+
+    /**
+     * @return $this
+     */
+    public function setDefaultValueBinder()
+    {
+        Cell::setValueBinder(new DefaultValueBinder);
+
+        return $this;
     }
 
     /**
