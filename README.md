@@ -392,3 +392,46 @@ class UsersImport implements WithCustomValueBinder {
     
 }
 ```
+
+### WithCalculatedFormulas
+
+Will calculate formulas. (Disabled by default)
+
+```php
+class UsersImport implements WithCalculatedFormulas 
+{
+    
+}
+```
+
+### WithMultipleSheets
+
+Handle multiple sheets. Note that the array is indexed, so first object will handle first sheet, etc.
+
+```php
+class UsersImport implements WithMultipleSheets 
+{
+    public function sheets(): array
+    {
+        return [
+            new FirstSheetImport(),
+            new SecondSheetImport()
+        ];
+    }
+}
+```
+
+Only use certain sheets. Select them by index or name.
+
+```php
+class UsersImport implements WithMultipleSheets 
+{
+    public function sheets(): array
+    {
+        return [
+            0                  => new FirstSheetImport(), // by index
+            'Third Sheet Name' => new ThirdSheetImport() // by name
+        ];
+    }
+}
+```
