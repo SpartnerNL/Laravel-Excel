@@ -5,17 +5,20 @@ namespace Maatwebsite\Excel;
 use Illuminate\Support\Collection;
 use PhpOffice\PhpSpreadsheet\Cell\Cell;
 use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Reader\Csv;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use Illuminate\Filesystem\FilesystemManager;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use PhpOffice\PhpSpreadsheet\Reader\IReader;
-use Maatwebsite\Excel\Concerns\CustomValueBinder;
+use Maatwebsite\Excel\Concerns\MapsCsvSettings;
+use Maatwebsite\Excel\Concerns\WithCustomValueBinder;
+use Maatwebsite\Excel\Concerns\WithCustomCsvSettings;
 use PhpOffice\PhpSpreadsheet\Cell\DefaultValueBinder;
 use Maatwebsite\Excel\Exceptions\UnreadableFileException;
 
 class Reader
 {
-    use DelegatedMacroable, HasEventBus;
+    use DelegatedMacroable, HasEventBus, MapsCsvSettings;
 
     /**
      * @var Spreadsheet
@@ -49,13 +52,25 @@ class Reader
      */
     public function read($import, string $filePath, string $disk = null, string $readerType = null)
     {
-        if ($import instanceof CustomValueBinder) {
+        if ($import instanceof WithCustomValueBinder) {
             Cell::setValueBinder($import);
+        }
+
+        if ($import instanceof WithCustomCsvSettings) {
+            $this->applyCsvSettings($import->getCsvSettings());
         }
 
         $file = $this->copyToFileSystem($filePath, $disk);
 
         $reader = $this->getReader($file, $readerType);
+
+        if ($reader instanceof Csv) {
+            $reader->setDelimiter($this->delimiter);
+            $reader->setEnclosure($this->enclosure);
+            $reader->setEscapeCharacter($this->escapeCharacter);
+            $reader->setContiguous($this->contiguous);
+            $reader->setInputEncoding($this->inputEncoding);
+        }
 
         $this->spreadsheet = $reader->load($file);
 

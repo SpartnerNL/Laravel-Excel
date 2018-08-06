@@ -5,16 +5,16 @@ namespace Maatwebsite\Excel\Tests\Concerns;
 use Maatwebsite\Excel\Excel;
 use Maatwebsite\Excel\Tests\TestCase;
 use PhpOffice\PhpSpreadsheet\Cell\Cell;
-use Maatwebsite\Excel\Concerns\CustomValueBinder;
+use Maatwebsite\Excel\Concerns\WithCustomValueBinder;
 
-class CustomValueBinderTest extends TestCase
+class WithCustomValueBinderTest extends TestCase
 {
     /**
      * @test
      */
     public function can_set_a_value_binder()
     {
-        $import = new Class implements CustomValueBinder {
+        $import = new Class implements WithCustomValueBinder {
             public function bindValue(Cell $cell, $value) {}
         };
 
