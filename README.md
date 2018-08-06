@@ -435,3 +435,9 @@ class UsersImport implements WithMultipleSheets
     }
 }
 ```
+
+### Chaining exports
+
+```php
+Excel::import(new Usersimport, 'users.xlsx)->import(new InvoicesImport, 'invoices.xlsx');
+```
