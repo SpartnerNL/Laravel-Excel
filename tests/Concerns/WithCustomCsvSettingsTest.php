@@ -63,4 +63,45 @@ class WithCustomCsvSettingsTest extends TestCase
         $this->assertContains('A1;B1', $contents);
         $this->assertContains('A2;B2', $contents);
     }
+
+    /**
+     * @test
+     */
+    public function can_read_csv_import_with_custom_settings()
+    {
+        $import = new class implements FromCollection, WithCustomCsvSettings {
+            /**
+             * @return Collection
+             */
+            public function collection()
+            {
+                return collect([
+                    ['A1', 'B1'],
+                    ['A2', 'B2'],
+                ]);
+            }
+
+            /**
+             * @return array
+             */
+            public function getCsvSettings(): array
+            {
+                return [
+                    'delimiter'        => ';',
+                    'enclosure'        => '',
+                    'escape_character' => '#',
+                    'contiguous'       => false,
+                    'input_encoding'   => 'UTF-8',
+                ];
+            }
+        };
+
+        $this->SUT->import($import, 'custom-csv.csv');
+
+        $contents = file_get_contents(__DIR__ . '/../Data/Disks/Local/custom-csv.csv');
+
+        $this->assertContains('sep=;', $contents);
+        $this->assertContains('A1;B1', $contents);
+        $this->assertContains('A2;B2', $contents);
+    }
 }

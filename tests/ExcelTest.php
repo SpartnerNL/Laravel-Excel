@@ -177,4 +177,22 @@ class ExcelTest extends TestCase
 
         $export->download('filename.csv');
     }
+
+    /**
+     * @test
+     */
+    public function can_import_a_simple_xlsx_file()
+    {
+        $import = new class {
+        };
+
+        $array = $this->SUT->import($import, 'import.xlsx')->toArray();
+
+        $this->assertEquals([
+            [
+                ['test', 'test'],
+                ['test', 'test'],
+            ],
+        ], $array);
+    }
 }
