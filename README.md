@@ -68,6 +68,12 @@ composer require maatwebsite/excel
 
 :muscle: Create an export class in `app/Exports`
 
+```
+php artisan make:export UsersExport --model=User
+```
+
+This should have created:
+
 ```php
 <?php
 
