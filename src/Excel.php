@@ -9,9 +9,13 @@ use Illuminate\Contracts\Routing\ResponseFactory;
 
 class Excel implements Exporter, Importer
 {
+    use RegistersCustomConcerns;
+
     const XLSX     = 'Xlsx';
 
     const CSV      = 'Csv';
+
+    const TSV      = 'Csv';
 
     const ODS      = 'Ods';
 

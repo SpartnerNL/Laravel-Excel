@@ -39,7 +39,7 @@ class ExcelTest extends TestCase
         $response = ExcelFacade::download($export, 'filename.xlsx');
 
         $this->assertInstanceOf(BinaryFileResponse::class, $response);
-        $this->assertEquals('attachment; filename="filename.xlsx"', $response->headers->get('Content-Disposition'));
+        $this->assertEquals('attachment; filename=filename.xlsx', str_replace('"', '', $response->headers->get('Content-Disposition')));
     }
 
     /**
@@ -52,7 +52,7 @@ class ExcelTest extends TestCase
         $response = $this->SUT->download($export, 'filename.xlsx');
 
         $this->assertInstanceOf(BinaryFileResponse::class, $response);
-        $this->assertEquals('attachment; filename="filename.xlsx"', $response->headers->get('Content-Disposition'));
+        $this->assertEquals('attachment; filename=filename.xlsx', str_replace('"', '', $response->headers->get('Content-Disposition')));
     }
 
     /**
@@ -92,6 +92,19 @@ class ExcelTest extends TestCase
 
         $this->assertTrue($response);
         $this->assertFileExists(__DIR__ . '/Data/Disks/Local/filename.csv');
+    }
+
+    /**
+     * @test
+     */
+    public function can_store_tsv_export_with_default_settings()
+    {
+        $export = new EmptyExport;
+
+        $response = $this->SUT->store($export, 'filename.tsv');
+
+        $this->assertTrue($response);
+        $this->assertFileExists(__DIR__ . '/Data/Disks/Local/filename.tsv');
     }
 
     /**

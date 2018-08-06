@@ -5,6 +5,7 @@ namespace Maatwebsite\Excel;
 use Illuminate\Support\Collection;
 use Illuminate\Support\ServiceProvider;
 use Maatwebsite\Excel\Mixins\StoreCollection;
+use Maatwebsite\Excel\Console\ExportMakeCommand;
 use Maatwebsite\Excel\Mixins\DownloadCollection;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Laravel\Lumen\Application as LumenApplication;
@@ -52,6 +53,10 @@ class ExcelServiceProvider extends ServiceProvider
 
         Collection::mixin(new DownloadCollection);
         Collection::mixin(new StoreCollection);
+
+        $this->commands([
+            ExportMakeCommand::class,
+        ]);
     }
 
     /**
