@@ -351,3 +351,44 @@ class UsersImport implements ToModel, WithMappedCells {
     }
 }
 ```
+
+### WithCustomValueBinder
+
+// Implement a value binder (with fallback to the default if you want!)
+
+```php
+class UsersImport extends DefaultValueBinder implements WithCustomValueBinder {
+    
+    public function bindValue(Cell $cell, $value)
+    {
+        if (is_numeric($value))
+        {
+            $cell->setValueExplicit($value, PHPExcel_Cell_DataType::TYPE_NUMERIC);
+
+            return true;
+        }
+        
+        // Else return default behavior
+        return parent::bindValue($cell, $value);
+    }
+}
+```
+
+Use the advanced value binder
+
+```php
+class UsersImport extends AdvancedValueBinder implements WithCustomValueBinder {
+    
+    
+}
+```
+
+Share value binders along imports (with traits or class extensions if you want).
+
+```php
+class UsersImport implements WithCustomValueBinder {
+    
+    use YourValueBinder;
+    
+}
+```
