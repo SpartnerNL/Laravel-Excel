@@ -6,5 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class User extends Model
 {
+    /**
+     * @var array
+     */
     protected $guarded = [];
+
+    /**
+     * @var array
+     */
+    protected $hidden = ['password'];
 }

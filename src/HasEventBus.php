@@ -7,15 +7,15 @@ trait HasEventBus
     /**
      * @var array
      */
-    protected $events = [];
+    protected static $events = [];
 
     /**
      * @param array $listeners
      */
-    public function registerListeners(array $listeners)
+    public static function registerListeners(array $listeners)
     {
         foreach ($listeners as $event => $listener) {
-            $this->listen($event, $listener);
+            static::listen($event, $listener);
         }
     }
 
@@ -23,9 +23,9 @@ trait HasEventBus
      * @param string   $event
      * @param callable $listener
      */
-    public function listen(string $event, callable $listener)
+    public static function listen(string $event, callable $listener)
     {
-        $this->events[$event][] = $listener;
+        static::$events[$event][] = $listener;
     }
 
     /**
@@ -33,7 +33,7 @@ trait HasEventBus
      */
     public function raise($event)
     {
-        $listeners = $this->events[get_class($event)] ?? [];
+        $listeners = static::$events[\get_class($event)] ?? [];
 
         foreach ($listeners as $listener) {
             $listener($event);

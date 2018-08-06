@@ -70,6 +70,7 @@ return [
         'htm'      => Excel::HTML,
         'html'     => Excel::HTML,
         'csv'      => Excel::CSV,
+        'tsv'      => Excel::TSV,
 
         /*
         |--------------------------------------------------------------------------
