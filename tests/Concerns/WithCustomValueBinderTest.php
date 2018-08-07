@@ -6,8 +6,8 @@ use Maatwebsite\Excel\Excel;
 use Maatwebsite\Excel\Reader;
 use Maatwebsite\Excel\Tests\TestCase;
 use PhpOffice\PhpSpreadsheet\Cell\Cell;
-use Maatwebsite\Excel\Concerns\WithCustomValueBinder;
 use PhpOffice\PhpSpreadsheet\Cell\DataType;
+use Maatwebsite\Excel\Concerns\WithCustomValueBinder;
 use PhpOffice\PhpSpreadsheet\Cell\DefaultValueBinder;
 
 class WithCustomValueBinderTest extends TestCase
@@ -17,10 +17,9 @@ class WithCustomValueBinderTest extends TestCase
      */
     public function can_set_a_value_binder()
     {
-        $import = new class extends DefaultValueBinder implements WithCustomValueBinder
-        {
+        $import = new class extends DefaultValueBinder implements WithCustomValueBinder {
             /**
-             * @inheritdoc
+             * {@inheritdoc}
              */
             public function bindValue(Cell $cell, $value)
             {
@@ -61,8 +60,8 @@ class WithCustomValueBinderTest extends TestCase
                 [
                     true, // Forced to be a boolean
                     true, // Forced to be a boolean
-                ]
-            ]
+                ],
+            ],
         ], $reader->toArray());
     }
 }
