@@ -49,7 +49,7 @@ class Writer
         $this->tmpPath = config('excel.exports.temp_path', sys_get_temp_dir());
         $this->applyCsvSettings(config('excel.exports.csv', []));
 
-        Cell::setValueBinder(new DefaultValueBinder());
+        $this->setDefaultValueBinder();
     }
 
     /**
@@ -238,6 +238,16 @@ class Writer
     public function getDelegate()
     {
         return $this->spreadsheet;
+    }
+
+    /**
+     * @return $this
+     */
+    public function setDefaultValueBinder()
+    {
+        Cell::setValueBinder(new DefaultValueBinder);
+
+        return $this;
     }
 
     /**
