@@ -2,6 +2,9 @@
 
 namespace Maatwebsite\Excel;
 
+use Maatwebsite\Excel\Concerns\WithCustomValueBinder;
+use PhpOffice\PhpSpreadsheet\Cell\Cell;
+use PhpOffice\PhpSpreadsheet\Cell\DefaultValueBinder;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Writer\Csv;
 use Maatwebsite\Excel\Concerns\WithTitle;
@@ -45,6 +48,8 @@ class Writer
     {
         $this->tmpPath = config('excel.exports.temp_path', sys_get_temp_dir());
         $this->applyCsvSettings(config('excel.exports.csv', []));
+        
+        Cell::setValueBinder(new DefaultValueBinder());
     }
 
     /**
@@ -87,6 +92,10 @@ class Writer
         $this->exportable  = $export;
         $this->spreadsheet = new Spreadsheet;
         $this->spreadsheet->disconnectWorksheets();
+
+        if ($export instanceof WithCustomValueBinder) {
+            Cell::setValueBinder($export);
+        }
 
         $this->raise(new BeforeExport($this, $this->exportable));
 

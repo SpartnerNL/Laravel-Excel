@@ -2,6 +2,8 @@
 
 namespace Maatwebsite\Excel;
 
+use Maatwebsite\Excel\Concerns\WithCustomValueBinder;
+use PhpOffice\PhpSpreadsheet\Cell\Cell;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use Maatwebsite\Excel\Concerns\FromView;
 use Maatwebsite\Excel\Events\AfterSheet;
@@ -67,6 +69,10 @@ class Sheet
     public function open($sheetExport)
     {
         $this->exportable = $sheetExport;
+
+        if ($sheetExport instanceof WithCustomValueBinder) {
+            Cell::setValueBinder($sheetExport);
+        }
 
         if ($sheetExport instanceof WithEvents) {
             $this->registerListeners($sheetExport->registerEvents());
