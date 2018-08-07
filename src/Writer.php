@@ -10,12 +10,13 @@ use Maatwebsite\Excel\Concerns\WithCharts;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Events\BeforeExport;
 use Maatwebsite\Excel\Events\BeforeWriting;
+use Maatwebsite\Excel\Concerns\MapsCsvSettings;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 use Maatwebsite\Excel\Concerns\WithCustomCsvSettings;
 
 class Writer
 {
-    use DelegatedMacroable, HasEventBus;
+    use DelegatedMacroable, HasEventBus, MapsCsvSettings;
 
     /**
      * @var Spreadsheet
@@ -31,36 +32,6 @@ class Writer
      * @var string
      */
     protected $tmpPath;
-
-    /**
-     * @var string
-     */
-    protected $delimiter = ',';
-
-    /**
-     * @var string
-     */
-    protected $enclosure = '"';
-
-    /**
-     * @var string
-     */
-    protected $lineEnding = PHP_EOL;
-
-    /**
-     * @var bool
-     */
-    protected $useBom = false;
-
-    /**
-     * @var bool
-     */
-    protected $includeSeparatorLine = false;
-
-    /**
-     * @var bool
-     */
-    protected $excelCompatibility = false;
 
     /**
      * @var string
@@ -277,19 +248,6 @@ class Writer
     public function getSheetByIndex(int $sheetIndex)
     {
         return new Sheet($this->getDelegate()->getSheet($sheetIndex));
-    }
-
-    /**
-     * @param array $config
-     */
-    public function applyCsvSettings(array $config)
-    {
-        $this->delimiter            = array_get($config, 'delimiter', $this->delimiter);
-        $this->enclosure            = array_get($config, 'enclosure', $this->enclosure);
-        $this->lineEnding           = array_get($config, 'line_ending', $this->lineEnding);
-        $this->useBom               = array_get($config, 'use_bom', $this->useBom);
-        $this->includeSeparatorLine = array_get($config, 'include_separator_line', $this->includeSeparatorLine);
-        $this->excelCompatibility   = array_get($config, 'excel_compatibility', $this->excelCompatibility);
     }
 
     /**

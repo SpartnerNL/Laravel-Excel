@@ -3,16 +3,22 @@
 namespace Maatwebsite\Excel;
 
 use Illuminate\Support\Collection;
+use PhpOffice\PhpSpreadsheet\Cell\Cell;
 use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Reader\Csv;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use Illuminate\Filesystem\FilesystemManager;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use PhpOffice\PhpSpreadsheet\Reader\IReader;
+use Maatwebsite\Excel\Concerns\MapsCsvSettings;
+use Maatwebsite\Excel\Concerns\WithCustomValueBinder;
+use Maatwebsite\Excel\Concerns\WithCustomCsvSettings;
+use PhpOffice\PhpSpreadsheet\Cell\DefaultValueBinder;
 use Maatwebsite\Excel\Exceptions\UnreadableFileException;
 
 class Reader
 {
-    use DelegatedMacroable, HasEventBus;
+    use DelegatedMacroable, HasEventBus, MapsCsvSettings;
 
     /**
      * @var Spreadsheet
@@ -32,6 +38,8 @@ class Reader
         $this->filesystem = $filesystem;
 
         $this->tmpPath = config('excel.exports.temp_path', sys_get_temp_dir());
+
+        $this->setDefaultValueBinder();
     }
 
     /**
@@ -44,11 +52,27 @@ class Reader
      */
     public function read($import, string $filePath, string $disk = null, string $readerType = null)
     {
+        if ($import instanceof WithCustomValueBinder) {
+            Cell::setValueBinder($import);
+        }
+
+        if ($import instanceof WithCustomCsvSettings) {
+            $this->applyCsvSettings($import->getCsvSettings());
+        }
+
         $file = $this->copyToFileSystem($filePath, $disk);
 
-        $this->spreadsheet = $this
-            ->getReader($file, $readerType)
-            ->load($file);
+        $reader = $this->getReader($file, $readerType);
+
+        if ($reader instanceof Csv) {
+            $reader->setDelimiter($this->delimiter);
+            $reader->setEnclosure($this->enclosure);
+            $reader->setEscapeCharacter($this->escapeCharacter);
+            $reader->setContiguous($this->contiguous);
+            $reader->setInputEncoding($this->inputEncoding);
+        }
+
+        $this->spreadsheet = $reader->load($file);
 
         if ($import instanceof ToCollection) {
             $import->collection($this->toCollection());
@@ -91,6 +115,16 @@ class Reader
     public function getDelegate()
     {
         return $this->spreadsheet;
+    }
+
+    /**
+     * @return $this
+     */
+    public function setDefaultValueBinder()
+    {
+        Cell::setValueBinder(new DefaultValueBinder);
+
+        return $this;
     }
 
     /**
