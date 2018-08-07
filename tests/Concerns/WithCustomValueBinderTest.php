@@ -14,8 +14,10 @@ class WithCustomValueBinderTest extends TestCase
      */
     public function can_set_a_value_binder()
     {
-        $import = new Class implements WithCustomValueBinder {
-            public function bindValue(Cell $cell, $value) {}
+        $import = new class implements WithCustomValueBinder {
+            public function bindValue(Cell $cell, $value)
+            {
+            }
         };
 
         $reader = $this->app->make(Excel::class)->import($import, 'import.xlsx');
