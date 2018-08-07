@@ -26,6 +26,11 @@ class Reader
     protected $spreadsheet;
 
     /**
+     * @var string
+     */
+    protected $tmpPath;
+
+    /**
      * @var FilesystemManager
      */
     private $filesystem;
@@ -38,6 +43,7 @@ class Reader
         $this->filesystem = $filesystem;
 
         $this->tmpPath = config('excel.exports.temp_path', sys_get_temp_dir());
+        $this->applyCsvSettings(config('excel.exports.csv', []));
 
         $this->setDefaultValueBinder();
     }
@@ -95,9 +101,9 @@ class Reader
     }
 
     /**
-     * @return array
+     * @return Collection
      */
-    public function toCollection($nullValue = null, $calculateFormulas = true, $formatData = true, $returnCellRef = false)
+    public function toCollection($nullValue = null, $calculateFormulas = true, $formatData = true, $returnCellRef = false): Collection
     {
         $sheets = new Collection();
         foreach ($this->spreadsheet->getAllSheets() as $sheet) {
