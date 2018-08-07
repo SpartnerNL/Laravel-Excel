@@ -1,4 +1,5 @@
 *
 !.gitignore
 !import.xlsx
+!value-binder-import.xlsx
 !csv-with-other-delimiter.csv

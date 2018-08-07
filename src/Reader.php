@@ -88,9 +88,14 @@ class Reader
     }
 
     /**
+     * @param null $nullValue
+     * @param bool $calculateFormulas
+     * @param bool $formatData
+     * @param bool $returnCellRef
+     *
      * @return array
      */
-    public function toArray($nullValue = null, $calculateFormulas = true, $formatData = true, $returnCellRef = false)
+    public function toArray($nullValue = null, $calculateFormulas = false, $formatData = false, $returnCellRef = false)
     {
         $sheets = [];
         foreach ($this->spreadsheet->getAllSheets() as $sheet) {
@@ -101,9 +106,14 @@ class Reader
     }
 
     /**
+     * @param null $nullValue
+     * @param bool $calculateFormulas
+     * @param bool $formatData
+     * @param bool $returnCellRef
+     *
      * @return Collection
      */
-    public function toCollection($nullValue = null, $calculateFormulas = true, $formatData = true, $returnCellRef = false): Collection
+    public function toCollection($nullValue = null, $calculateFormulas = false, $formatData = false, $returnCellRef = false): Collection
     {
         $sheets = new Collection();
         foreach ($this->spreadsheet->getAllSheets() as $sheet) {
