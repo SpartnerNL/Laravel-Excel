@@ -69,7 +69,7 @@ class Sheet
         $this->exportable = $sheetExport;
 
         if ($sheetExport instanceof WithEvents) {
-            static::registerListeners($sheetExport->registerEvents());
+            $this->registerListeners($sheetExport->registerEvents());
         }
 
         $this->raise(new BeforeSheet($this, $this->exportable));
@@ -378,7 +378,7 @@ class Sheet
      */
     protected function tempFile(): string
     {
-        return tempnam($this->tmpPath, 'laravel-excel');
+        return $this->tmpPath . DIRECTORY_SEPARATOR . 'laravel-excel-' . str_random(16);
     }
 
     /**

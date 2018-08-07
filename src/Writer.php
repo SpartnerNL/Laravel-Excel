@@ -110,7 +110,7 @@ class Writer
         $this->exportable = $export;
 
         if ($export instanceof WithEvents) {
-            static::registerListeners($export->registerEvents());
+            $this->registerListeners($export->registerEvents());
         }
 
         $this->exportable  = $export;
@@ -265,7 +265,7 @@ class Writer
      */
     public function tempFile(): string
     {
-        return tempnam($this->tmpPath, 'laravel-excel');
+        return $this->tmpPath . DIRECTORY_SEPARATOR . 'laravel-excel-' . str_random(16);
     }
 
     /**
