@@ -2,9 +2,7 @@
 
 namespace Maatwebsite\Excel;
 
-use Maatwebsite\Excel\Concerns\WithCustomValueBinder;
 use PhpOffice\PhpSpreadsheet\Cell\Cell;
-use PhpOffice\PhpSpreadsheet\Cell\DefaultValueBinder;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Writer\Csv;
 use Maatwebsite\Excel\Concerns\WithTitle;
@@ -16,6 +14,8 @@ use Maatwebsite\Excel\Events\BeforeWriting;
 use Maatwebsite\Excel\Concerns\MapsCsvSettings;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 use Maatwebsite\Excel\Concerns\WithCustomCsvSettings;
+use Maatwebsite\Excel\Concerns\WithCustomValueBinder;
+use PhpOffice\PhpSpreadsheet\Cell\DefaultValueBinder;
 
 class Writer
 {
@@ -48,7 +48,7 @@ class Writer
     {
         $this->tmpPath = config('excel.exports.temp_path', sys_get_temp_dir());
         $this->applyCsvSettings(config('excel.exports.csv', []));
-        
+
         Cell::setValueBinder(new DefaultValueBinder());
     }
 

@@ -3,18 +3,18 @@
 namespace Maatwebsite\Excel\Tests\Concerns;
 
 use Carbon\Carbon;
-use Illuminate\Support\Collection;
-use Maatwebsite\Excel\Concerns\Exportable;
-use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Excel;
 use Maatwebsite\Excel\Reader;
+use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Tests\TestCase;
 use PhpOffice\PhpSpreadsheet\Cell\Cell;
-use Maatwebsite\Excel\Concerns\WithCustomValueBinder;
-use PhpOffice\PhpSpreadsheet\Cell\DataType;
-use PhpOffice\PhpSpreadsheet\Cell\DefaultValueBinder;
 use PhpOffice\PhpSpreadsheet\Shared\Date;
+use Maatwebsite\Excel\Concerns\Exportable;
+use PhpOffice\PhpSpreadsheet\Cell\DataType;
+use Maatwebsite\Excel\Concerns\FromCollection;
 use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
+use Maatwebsite\Excel\Concerns\WithCustomValueBinder;
+use PhpOffice\PhpSpreadsheet\Cell\DefaultValueBinder;
 
 class WithCustomValueBinderTest extends TestCase
 {
@@ -25,8 +25,7 @@ class WithCustomValueBinderTest extends TestCase
     {
         Carbon::setTestNow(new Carbon('2018-08-07 18:00:00'));
 
-        $export = new class extends DefaultValueBinder implements FromCollection, WithCustomValueBinder
-        {
+        $export = new class extends DefaultValueBinder implements FromCollection, WithCustomValueBinder {
             use Exportable;
 
             /**
@@ -40,7 +39,7 @@ class WithCustomValueBinderTest extends TestCase
             }
 
             /**
-             * @inheritdoc
+             * {@inheritdoc}
              */
             public function bindValue(Cell $cell, $value)
             {
@@ -102,10 +101,9 @@ class WithCustomValueBinderTest extends TestCase
      */
     public function can_set_a_value_binder_on_import()
     {
-        $import = new class extends DefaultValueBinder implements WithCustomValueBinder
-        {
+        $import = new class extends DefaultValueBinder implements WithCustomValueBinder {
             /**
-             * @inheritdoc
+             * {@inheritdoc}
              */
             public function bindValue(Cell $cell, $value)
             {
@@ -146,9 +144,9 @@ class WithCustomValueBinderTest extends TestCase
                 ],
                 [
                     '2018-08-06 18:31:46', // Convert Excel datetime to datetime strings
-                    '2018-08-07 00:00:00'// Convert Excel date to datetime strings
-                ]
-            ]
+                    '2018-08-07 00:00:00', // Convert Excel date to datetime strings
+                ],
+            ],
         ], $reader->toArray());
     }
 }
