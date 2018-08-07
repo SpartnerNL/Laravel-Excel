@@ -2,6 +2,7 @@
 
 namespace Maatwebsite\Excel;
 
+use PhpOffice\PhpSpreadsheet\Cell\Cell;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Writer\Csv;
 use Maatwebsite\Excel\Concerns\WithTitle;
@@ -13,6 +14,8 @@ use Maatwebsite\Excel\Events\BeforeWriting;
 use Maatwebsite\Excel\Concerns\MapsCsvSettings;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 use Maatwebsite\Excel\Concerns\WithCustomCsvSettings;
+use Maatwebsite\Excel\Concerns\WithCustomValueBinder;
+use PhpOffice\PhpSpreadsheet\Cell\DefaultValueBinder;
 
 class Writer
 {
@@ -45,6 +48,8 @@ class Writer
     {
         $this->tmpPath = config('excel.exports.temp_path', sys_get_temp_dir());
         $this->applyCsvSettings(config('excel.exports.csv', []));
+
+        Cell::setValueBinder(new DefaultValueBinder());
     }
 
     /**
@@ -81,12 +86,16 @@ class Writer
         $this->exportable = $export;
 
         if ($export instanceof WithEvents) {
-            static::registerListeners($export->registerEvents());
+            $this->registerListeners($export->registerEvents());
         }
 
         $this->exportable  = $export;
         $this->spreadsheet = new Spreadsheet;
         $this->spreadsheet->disconnectWorksheets();
+
+        if ($export instanceof WithCustomValueBinder) {
+            Cell::setValueBinder($export);
+        }
 
         $this->raise(new BeforeExport($this, $this->exportable));
 
@@ -236,7 +245,7 @@ class Writer
      */
     public function tempFile(): string
     {
-        return tempnam($this->tmpPath, 'laravel-excel');
+        return $this->tmpPath . DIRECTORY_SEPARATOR . 'laravel-excel-' . str_random(16);
     }
 
     /**

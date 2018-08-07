@@ -11,8 +11,8 @@ use Illuminate\Filesystem\FilesystemManager;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use PhpOffice\PhpSpreadsheet\Reader\IReader;
 use Maatwebsite\Excel\Concerns\MapsCsvSettings;
-use Maatwebsite\Excel\Concerns\WithCustomValueBinder;
 use Maatwebsite\Excel\Concerns\WithCustomCsvSettings;
+use Maatwebsite\Excel\Concerns\WithCustomValueBinder;
 use PhpOffice\PhpSpreadsheet\Cell\DefaultValueBinder;
 use Maatwebsite\Excel\Exceptions\UnreadableFileException;
 
@@ -24,6 +24,11 @@ class Reader
      * @var Spreadsheet
      */
     protected $spreadsheet;
+
+    /**
+     * @var string
+     */
+    protected $tmpPath;
 
     /**
      * @var FilesystemManager
@@ -38,6 +43,7 @@ class Reader
         $this->filesystem = $filesystem;
 
         $this->tmpPath = config('excel.exports.temp_path', sys_get_temp_dir());
+        $this->applyCsvSettings(config('excel.exports.csv', []));
 
         $this->setDefaultValueBinder();
     }
@@ -82,9 +88,14 @@ class Reader
     }
 
     /**
+     * @param null $nullValue
+     * @param bool $calculateFormulas
+     * @param bool $formatData
+     * @param bool $returnCellRef
+     *
      * @return array
      */
-    public function toArray($nullValue = null, $calculateFormulas = true, $formatData = true, $returnCellRef = false)
+    public function toArray($nullValue = null, $calculateFormulas = false, $formatData = false, $returnCellRef = false)
     {
         $sheets = [];
         foreach ($this->spreadsheet->getAllSheets() as $sheet) {
@@ -95,9 +106,14 @@ class Reader
     }
 
     /**
-     * @return array
+     * @param null $nullValue
+     * @param bool $calculateFormulas
+     * @param bool $formatData
+     * @param bool $returnCellRef
+     *
+     * @return Collection
      */
-    public function toCollection($nullValue = null, $calculateFormulas = true, $formatData = true, $returnCellRef = false)
+    public function toCollection($nullValue = null, $calculateFormulas = false, $formatData = false, $returnCellRef = false): Collection
     {
         $sheets = new Collection();
         foreach ($this->spreadsheet->getAllSheets() as $sheet) {

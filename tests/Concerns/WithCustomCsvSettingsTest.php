@@ -85,9 +85,40 @@ class WithCustomCsvSettingsTest extends TestCase
             }
         };
 
-        $array = $this->SUT->import($import, 'custom-csv.csv')->toArray();
+        $array = $this->SUT->import($import, 'csv-with-other-delimiter.csv')->toArray();
 
-        $this->assertArraySubset([[['A1']]], $array);
-        $this->assertArraySubset([[['A2']]], $array);
+        $this->assertEquals([
+            [
+                ['A1', 'B1'],
+                ['A2', 'B2'],
+            ],
+        ], $array);
+    }
+
+    /**
+     * @test
+     */
+    public function cannot_read_with_wrong_delimiter()
+    {
+        $import = new class implements WithCustomCsvSettings {
+            /**
+             * @return array
+             */
+            public function getCsvSettings(): array
+            {
+                return [
+                    'delimiter' => ',',
+                ];
+            }
+        };
+
+        $array = $this->SUT->import($import, 'csv-with-other-delimiter.csv')->toArray();
+
+        $this->assertEquals([
+            [
+                ['A1;B1'],
+                ['A2;B2'],
+            ],
+        ], $array);
     }
 }

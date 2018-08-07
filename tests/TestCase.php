@@ -15,7 +15,7 @@ class TestCase extends OrchestraTestCase
      * @throws \PhpOffice\PhpSpreadsheet\Reader\Exception
      * @return \PhpOffice\PhpSpreadsheet\Spreadsheet
      */
-    protected function read(string $filePath, string $writerType)
+    public function read(string $filePath, string $writerType)
     {
         $reader = IOFactory::createReader($writerType);
 
