@@ -69,7 +69,7 @@ class Sheet
         $this->exportable = $sheetExport;
 
         if ($sheetExport instanceof WithEvents) {
-            static::registerListeners($sheetExport->registerEvents());
+            $this->registerListeners($sheetExport->registerEvents());
         }
 
         $this->raise(new BeforeSheet($this, $this->exportable));

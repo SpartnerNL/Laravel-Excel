@@ -110,7 +110,7 @@ class Writer
         $this->exportable = $export;
 
         if ($export instanceof WithEvents) {
-            static::registerListeners($export->registerEvents());
+            $this->registerListeners($export->registerEvents());
         }
 
         $this->exportable  = $export;
