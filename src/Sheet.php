@@ -2,6 +2,7 @@
 
 namespace Maatwebsite\Excel;
 
+use Maatwebsite\Excel\Concerns\WithCustomChunkSize;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use Maatwebsite\Excel\Concerns\FromView;
 use Maatwebsite\Excel\Events\AfterSheet;
@@ -172,7 +173,7 @@ class Sheet
      */
     public function fromQuery(FromQuery $sheetExport, Worksheet $worksheet)
     {
-        $sheetExport->query()->chunk($this->chunkSize, function ($chunk) use ($sheetExport, $worksheet) {
+        $sheetExport->query()->chunk($this->getChunkSize($sheetExport), function ($chunk) use ($sheetExport, $worksheet) {
             foreach ($chunk as $row) {
                 $this->appendRow($row, $sheetExport);
             }
@@ -398,5 +399,19 @@ class Sheet
     private function hasStrictNullComparison($sheetExport): bool
     {
         return $sheetExport instanceof WithStrictNullComparison;
+    }
+
+    /**
+     * @param object|WithCustomChunkSize $export
+     *
+     * @return int
+     */
+    private function getChunkSize($export): int
+    {
+        if ($export instanceof WithCustomChunkSize) {
+            return $export->chunkSize();
+        }
+
+        return $this->chunkSize;
     }
 }
