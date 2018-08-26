@@ -2,7 +2,6 @@
 
 namespace Maatwebsite\Excel;
 
-use Maatwebsite\Excel\Concerns\WithCustomChunkSize;
 use Traversable;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Jobs\CloseSheet;
@@ -14,6 +13,7 @@ use Maatwebsite\Excel\Jobs\StoreQueuedExport;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Jobs\AppendQueryToSheet;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
+use Maatwebsite\Excel\Concerns\WithCustomChunkSize;
 use Maatwebsite\Excel\Concerns\WithCustomQuerySize;
 
 class QueuedWriter
