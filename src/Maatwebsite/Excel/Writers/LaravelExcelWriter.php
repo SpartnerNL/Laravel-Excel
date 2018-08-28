@@ -351,7 +351,7 @@ class LaravelExcelWriter {
             $headers,
             [
                 'Content-Type'        => $this->contentType,
-                'Content-Disposition' => 'attachment; filename="' . $this->filename . '.' . $this->ext . '"',
+                'Content-Disposition' => 'attachment; filename="' . rawurlencode($this->filename) . '.' . $this->ext . '"',
                 'Expires'             => 'Mon, 26 Jul 1997 05:00:00 GMT', // Date in the past
                 'Last-Modified'       => Carbon::now()->format('D, d M Y H:i:s'),
                 'Cache-Control'       => 'cache, must-revalidate',
