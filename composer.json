@@ -1,6 +1,6 @@
 {
   "name": "maatwebsite/excel",
-  "description": "Supercharged Laravel Excel exports",
+  "description": "Supercharged Excel exports in Laravel",
   "license": "MIT",
   "keywords": [
     "laravel",
