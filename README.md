@@ -97,7 +97,7 @@ class UsersExport implements FromCollection
 
 ```php
 
-use App\UsersExport;
+use App\Exports\UsersExport;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Http\Controllers\Controller;
 
