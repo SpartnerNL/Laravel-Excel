@@ -20,6 +20,7 @@ use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
+use Maatwebsite\Excel\Concerns\WithCustomChunkSize;
 use Maatwebsite\Excel\Concerns\WithCustomStartCell;
 use PhpOffice\PhpSpreadsheet\Worksheet\BaseDrawing;
 use Maatwebsite\Excel\Concerns\WithColumnFormatting;
@@ -178,7 +179,7 @@ class Sheet
      */
     public function fromQuery(FromQuery $sheetExport, Worksheet $worksheet)
     {
-        $sheetExport->query()->chunk($this->chunkSize, function ($chunk) use ($sheetExport, $worksheet) {
+        $sheetExport->query()->chunk($this->getChunkSize($sheetExport), function ($chunk) use ($sheetExport, $worksheet) {
             foreach ($chunk as $row) {
                 $this->appendRow($row, $sheetExport);
             }
@@ -404,5 +405,19 @@ class Sheet
     private function hasStrictNullComparison($sheetExport): bool
     {
         return $sheetExport instanceof WithStrictNullComparison;
+    }
+
+    /**
+     * @param object|WithCustomChunkSize $export
+     *
+     * @return int
+     */
+    private function getChunkSize($export): int
+    {
+        if ($export instanceof WithCustomChunkSize) {
+            return $export->chunkSize();
+        }
+
+        return $this->chunkSize;
     }
 }

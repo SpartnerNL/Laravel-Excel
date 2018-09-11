@@ -4,12 +4,11 @@ namespace Maatwebsite\Excel\Tests\Data\Stubs;
 
 use Illuminate\Database\Query\Builder;
 use Maatwebsite\Excel\Concerns\FromQuery;
-use Maatwebsite\Excel\Events\BeforeSheet;
 use Maatwebsite\Excel\Concerns\Exportable;
-use Maatwebsite\Excel\Concerns\WithEvents;
+use Maatwebsite\Excel\Concerns\WithCustomChunkSize;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
 
-class FromUsersQueryExport implements FromQuery, WithEvents
+class FromUsersQueryExport implements FromQuery, WithCustomChunkSize
 {
     use Exportable;
 
@@ -22,14 +21,10 @@ class FromUsersQueryExport implements FromQuery, WithEvents
     }
 
     /**
-     * @return array
+     * @return int
      */
-    public function registerEvents(): array
+    public function chunkSize(): int
     {
-        return [
-            BeforeSheet::class   => function (BeforeSheet $event) {
-                $event->sheet->chunkSize(10);
-            },
-        ];
+        return 10;
     }
 }

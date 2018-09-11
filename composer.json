@@ -1,6 +1,6 @@
 {
   "name": "maatwebsite/excel",
-  "description": "An eloquent way of importing and exporting Excel and CSV",
+  "description": "Supercharged Excel exports in Laravel",
   "license": "MIT",
   "keywords": [
     "laravel",

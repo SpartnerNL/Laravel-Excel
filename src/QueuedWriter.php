@@ -13,6 +13,7 @@ use Maatwebsite\Excel\Jobs\StoreQueuedExport;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Jobs\AppendQueryToSheet;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
+use Maatwebsite\Excel\Concerns\WithCustomChunkSize;
 use Maatwebsite\Excel\Concerns\WithCustomQuerySize;
 
 class QueuedWriter
@@ -99,7 +100,7 @@ class QueuedWriter
     ) {
         return $export
             ->collection()
-            ->chunk($this->chunkSize)
+            ->chunk($this->getChunkSize($export))
             ->map(function ($rows) use ($writerType, $filePath, $sheetIndex, $export) {
                 if ($rows instanceof Traversable) {
                     $rows = iterator_to_array($rows);
@@ -132,13 +133,13 @@ class QueuedWriter
         $query = $export->query();
 
         $count = $export instanceof WithCustomQuerySize ? $export->querySize() : $query->count();
-        $spins = ceil($count / $this->chunkSize);
+        $spins = ceil($count / $this->getChunkSize($export));
 
-        $jobs  = new Collection();
+        $jobs = new Collection();
 
         for ($page = 1; $page <= $spins; $page++) {
             $serializedQuery = new SerializedQuery(
-                $query->forPage($page, $this->chunkSize)
+                $query->forPage($page, $this->getChunkSize($export))
             );
 
             $jobs->push(new AppendQueryToSheet(
@@ -151,5 +152,19 @@ class QueuedWriter
         }
 
         return $jobs;
+    }
+
+    /**
+     * @param object|WithCustomChunkSize $export
+     *
+     * @return int
+     */
+    private function getChunkSize($export): int
+    {
+        if ($export instanceof WithCustomChunkSize) {
+            return $export->chunkSize();
+        }
+
+        return $this->chunkSize;
     }
 }
