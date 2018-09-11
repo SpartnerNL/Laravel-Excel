@@ -2,10 +2,10 @@
 
 namespace Maatwebsite\Excel\Tests\Concerns;
 
-use Maatwebsite\Excel\Concerns\Importable;
-use Maatwebsite\Excel\Concerns\ToArray;
-use Maatwebsite\Excel\Tests\TestCase;
 use PHPUnit\Framework\Assert;
+use Maatwebsite\Excel\Tests\TestCase;
+use Maatwebsite\Excel\Concerns\ToArray;
+use Maatwebsite\Excel\Concerns\Importable;
 
 class ToArrayTest extends TestCase
 {
@@ -14,8 +14,7 @@ class ToArrayTest extends TestCase
      */
     public function can_import_to_array()
     {
-        $import = new class implements ToArray
-        {
+        $import = new class implements ToArray {
             use Importable;
 
             public $called = false;
@@ -30,8 +29,8 @@ class ToArrayTest extends TestCase
                 Assert::assertEquals([
                     [
                         ['test', 'test'],
-                        ['test', 'test']
-                    ]
+                        ['test', 'test'],
+                    ],
                 ], $array);
             }
         };

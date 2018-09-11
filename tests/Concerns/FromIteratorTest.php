@@ -2,11 +2,11 @@
 
 namespace Maatwebsite\Excel\Tests\Concerns;
 
-use ArrayIterator;
 use Iterator;
+use ArrayIterator;
+use Maatwebsite\Excel\Tests\TestCase;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromIterator;
-use Maatwebsite\Excel\Tests\TestCase;
 
 class FromIteratorTest extends TestCase
 {
@@ -15,8 +15,7 @@ class FromIteratorTest extends TestCase
      */
     public function can_export_from_iterator()
     {
-        $export = new class implements FromIterator
-        {
+        $export = new class implements FromIterator {
             use Exportable;
 
             /**

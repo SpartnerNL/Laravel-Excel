@@ -2,22 +2,11 @@
 
 namespace Maatwebsite\Excel\Tests\Concerns;
 
-use Carbon\Carbon;
-use Maatwebsite\Excel\Concerns\Importable;
-use Maatwebsite\Excel\Concerns\ToCollection;
-use Maatwebsite\Excel\Excel;
-use Maatwebsite\Excel\Reader;
+use PHPUnit\Framework\Assert;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Tests\TestCase;
-use PhpOffice\PhpSpreadsheet\Cell\Cell;
-use PhpOffice\PhpSpreadsheet\Shared\Date;
-use Maatwebsite\Excel\Concerns\Exportable;
-use PhpOffice\PhpSpreadsheet\Cell\DataType;
-use Maatwebsite\Excel\Concerns\FromCollection;
-use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
-use Maatwebsite\Excel\Concerns\WithCustomValueBinder;
-use PhpOffice\PhpSpreadsheet\Cell\DefaultValueBinder;
-use PHPUnit\Framework\Assert;
+use Maatwebsite\Excel\Concerns\Importable;
+use Maatwebsite\Excel\Concerns\ToCollection;
 
 class ToCollectionTest extends TestCase
 {
@@ -26,8 +15,7 @@ class ToCollectionTest extends TestCase
      */
     public function can_import_to_collection()
     {
-        $import = new class implements ToCollection
-        {
+        $import = new class implements ToCollection {
             use Importable;
 
             public $called = false;
@@ -42,8 +30,8 @@ class ToCollectionTest extends TestCase
                 Assert::assertEquals([
                     [
                         ['test', 'test'],
-                        ['test', 'test']
-                    ]
+                        ['test', 'test'],
+                    ],
                 ], $collection->toArray());
             }
         };
