@@ -3,6 +3,7 @@
 namespace Maatwebsite\Excel;
 
 use Maatwebsite\Excel\Concerns\FromArray;
+use Maatwebsite\Excel\Concerns\FromIterator;
 use PhpOffice\PhpSpreadsheet\Cell\Cell;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use Maatwebsite\Excel\Concerns\FromView;
@@ -131,6 +132,10 @@ class Sheet
             if ($sheetExport instanceof FromArray) {
                 $this->fromArray($sheetExport);
             }
+
+            if ($sheetExport instanceof FromIterator) {
+                $this->fromIterator($sheetExport);
+            }
         }
 
         $this->close($sheetExport);
@@ -205,6 +210,14 @@ class Sheet
     public function fromArray(FromArray $sheetExport)
     {
         $this->appendRows($sheetExport->array(), $sheetExport);
+    }
+
+    /**
+     * @param FromIterator $sheetExport
+     */
+    public function fromIterator(FromIterator $sheetExport)
+    {
+        $this->appendRows($sheetExport->iterator(), $sheetExport);
     }
 
     /**
