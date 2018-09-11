@@ -2,6 +2,7 @@
 
 namespace Maatwebsite\Excel;
 
+use Maatwebsite\Excel\Concerns\FromArray;
 use PhpOffice\PhpSpreadsheet\Cell\Cell;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use Maatwebsite\Excel\Concerns\FromView;
@@ -85,7 +86,7 @@ class Sheet
             $this->worksheet->setTitle($sheetExport->title());
         }
 
-        if (($sheetExport instanceof FromQuery || $sheetExport instanceof FromCollection) && $sheetExport instanceof FromView) {
+        if (($sheetExport instanceof FromQuery || $sheetExport instanceof FromCollection || $sheetExport instanceof FromArray) && $sheetExport instanceof FromView) {
             throw ConcernConflictException::queryOrCollectionAndView();
         }
 
@@ -125,6 +126,10 @@ class Sheet
 
             if ($sheetExport instanceof FromCollection) {
                 $this->fromCollection($sheetExport);
+            }
+
+            if ($sheetExport instanceof FromArray) {
+                $this->fromArray($sheetExport);
             }
         }
 
@@ -192,6 +197,14 @@ class Sheet
     public function fromCollection(FromCollection $sheetExport)
     {
         $this->appendRows($sheetExport->collection()->all(), $sheetExport);
+    }
+
+    /**
+     * @param FromArray $sheetExport
+     */
+    public function fromArray(FromArray $sheetExport)
+    {
+        $this->appendRows($sheetExport->array(), $sheetExport);
     }
 
     /**

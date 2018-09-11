@@ -11,6 +11,6 @@ class ConcernConflictException extends LogicException implements LaravelExcelExc
      */
     public static function queryOrCollectionAndView()
     {
-        return new static('Cannot use FromQuery or FromCollection and FromView on the same sheet.');
+        return new static('Cannot use FromQuery, FromArray or FromCollection and FromView on the same sheet.');
     }
 }

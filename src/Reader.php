@@ -3,6 +3,8 @@
 namespace Maatwebsite\Excel;
 
 use Illuminate\Support\Collection;
+use Maatwebsite\Excel\Concerns\ToArray;
+use Maatwebsite\Excel\Tests\Concerns\ToArrayTest;
 use PhpOffice\PhpSpreadsheet\Cell\Cell;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Reader\Csv;
@@ -82,6 +84,10 @@ class Reader
 
         if ($import instanceof ToCollection) {
             $import->collection($this->toCollection());
+        }
+
+        if ($import instanceof ToArray) {
+            $import->array($this->toArray());
         }
 
         return $this;
