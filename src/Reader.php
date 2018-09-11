@@ -3,6 +3,7 @@
 namespace Maatwebsite\Excel;
 
 use Illuminate\Support\Collection;
+use Maatwebsite\Excel\Concerns\OnEachRow;
 use Maatwebsite\Excel\Concerns\ToArray;
 use Maatwebsite\Excel\Tests\Concerns\ToArrayTest;
 use PhpOffice\PhpSpreadsheet\Cell\Cell;
@@ -17,6 +18,7 @@ use Maatwebsite\Excel\Concerns\WithCustomCsvSettings;
 use Maatwebsite\Excel\Concerns\WithCustomValueBinder;
 use PhpOffice\PhpSpreadsheet\Cell\DefaultValueBinder;
 use Maatwebsite\Excel\Exceptions\UnreadableFileException;
+use PhpOffice\PhpSpreadsheet\Worksheet\Row;
 
 class Reader
 {
@@ -88,6 +90,14 @@ class Reader
 
         if ($import instanceof ToArray) {
             $import->array($this->toArray());
+        }
+
+        if ($import instanceof OnEachRow) {
+            foreach ($this->spreadsheet->getWorksheetIterator() as $sheet) {
+                foreach ($sheet->getRowIterator() as $row) {
+                    $import->onRow($row);
+                }
+            }
         }
 
         return $this;
