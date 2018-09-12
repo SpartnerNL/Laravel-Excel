@@ -3,12 +3,15 @@
 namespace Maatwebsite\Excel\Tests\Concerns;
 
 use Illuminate\Support\Collection;
+use Maatwebsite\Excel\Concerns\Importable;
+use Maatwebsite\Excel\Concerns\ToArray;
 use Maatwebsite\Excel\Tests\TestCase;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
 use Maatwebsite\Excel\Tests\Data\Stubs\SheetWith100Rows;
 use Maatwebsite\Excel\Tests\Data\Stubs\SheetForUsersFromView;
+use PHPUnit\Framework\Assert;
 
 class WithMultipleSheetsTest extends TestCase
 {
@@ -92,5 +95,83 @@ class WithMultipleSheetsTest extends TestCase
         $this->assertCount(101, $this->readAsArray(__DIR__ . '/../Data/Disks/Local/from-view.xlsx', 'Xlsx', 0));
         $this->assertCount(101, $this->readAsArray(__DIR__ . '/../Data/Disks/Local/from-view.xlsx', 'Xlsx', 1));
         $this->assertCount(101, $this->readAsArray(__DIR__ . '/../Data/Disks/Local/from-view.xlsx', 'Xlsx', 2));
+    }
+
+    /**
+     * @test
+     */
+    public function can_import_multiple_sheets()
+    {
+        $import = new class implements WithMultipleSheets
+        {
+            use Importable;
+
+            public function sheets(): array
+            {
+                return [
+                    new class implements ToArray
+                    {
+                        public function array(array $array)
+                        {
+                            Assert::assertEquals([
+                                ['1.A1', '1.B1'],
+                                ['1.A2', '1.B2'],
+                            ], $array);
+                        }
+                    },
+                    new class implements ToArray
+                    {
+                        public function array(array $array)
+                        {
+                            Assert::assertEquals([
+                                ['2.A1', '2.B1'],
+                                ['2.A2', '2.B2'],
+                            ], $array);
+                        }
+                    }
+                ];
+            }
+        };
+
+        $import->import('import-multiple-sheets.xlsx');
+    }
+
+    /**
+     * @test
+     */
+    public function can_import_multiple_sheets_by_sheet_name()
+    {
+        $import = new class implements WithMultipleSheets
+        {
+            use Importable;
+
+            public function sheets(): array
+            {
+                return [
+                    'Sheet2' => new class implements ToArray
+                    {
+                        public function array(array $array)
+                        {
+                            Assert::assertEquals([
+                                ['2.A1', '2.B1'],
+                                ['2.A2', '2.B2'],
+                            ], $array);
+                        }
+                    },
+                    'Sheet1' => new class implements ToArray
+                    {
+                        public function array(array $array)
+                        {
+                            Assert::assertEquals([
+                                ['1.A1', '1.B1'],
+                                ['1.A2', '1.B2'],
+                            ], $array);
+                        }
+                    },
+                ];
+            }
+        };
+
+        $import->import('import-multiple-sheets.xlsx');
     }
 }

@@ -2,6 +2,10 @@
 
 namespace Maatwebsite\Excel;
 
+use Illuminate\Support\Collection;
+use Maatwebsite\Excel\Concerns\OnEachRow;
+use Maatwebsite\Excel\Concerns\ToArray;
+use Maatwebsite\Excel\Concerns\ToCollection;
 use PhpOffice\PhpSpreadsheet\Cell\Cell;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use Maatwebsite\Excel\Concerns\FromView;
@@ -139,6 +143,54 @@ class Sheet
         }
 
         $this->close($sheetExport);
+    }
+
+    /**
+     * @param object $import
+     */
+    public function import($import)
+    {
+        if ($import instanceof ToCollection) {
+            $import->collection($this->toCollection());
+        }
+
+        if ($import instanceof ToArray) {
+            $import->array($this->toArray());
+        }
+
+        if ($import instanceof OnEachRow) {
+            foreach ($this->worksheet->getRowIterator() as $row) {
+                $import->onRow($row);
+            }
+        }
+    }
+
+    /**
+     * @param null $nullValue
+     * @param bool $calculateFormulas
+     * @param bool $formatData
+     * @param bool $returnCellRef
+     *
+     * @return array
+     */
+    public function toArray($nullValue = null, $calculateFormulas = false, $formatData = false, $returnCellRef = false)
+    {
+        return $this->worksheet->toArray($nullValue, $calculateFormulas, $formatData, $returnCellRef);
+    }
+
+    /**
+     * @param null $nullValue
+     * @param bool $calculateFormulas
+     * @param bool $formatData
+     * @param bool $returnCellRef
+     *
+     * @return Collection
+     */
+    public function toCollection($nullValue = null, $calculateFormulas = false, $formatData = false, $returnCellRef = false): Collection
+    {
+        return new Collection(array_map(function (array $row) {
+            return new Collection($row);
+        }, $this->worksheet->toArray($nullValue, $calculateFormulas, $formatData, $returnCellRef)));
     }
 
     /**

@@ -4,6 +4,7 @@ namespace Maatwebsite\Excel;
 
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToArray;
+use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 use PhpOffice\PhpSpreadsheet\Cell\Cell;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Reader\Csv;
@@ -82,23 +83,32 @@ class Reader
 
         $this->spreadsheet = $reader->load($file);
 
-        if ($import instanceof ToCollection) {
-            $import->collection($this->toCollection());
+        $sheetExports = array_fill(0, $this->spreadsheet->getSheetCount(), $import);
+        if ($import instanceof WithMultipleSheets) {
+            $sheetExports = $import->sheets();
         }
 
-        if ($import instanceof ToArray) {
-            $import->array($this->toArray());
-        }
-
-        if ($import instanceof OnEachRow) {
-            foreach ($this->spreadsheet->getWorksheetIterator() as $sheet) {
-                foreach ($sheet->getRowIterator() as $row) {
-                    $import->onRow($row);
-                }
-            }
+        foreach ($sheetExports as $index => $sheetExport) {
+            $this->loadSheet($index)->import($sheetExport);
         }
 
         return $this;
+    }
+
+    /**
+     * @param string|int $index
+     *
+     * @return Sheet
+     */
+    private function loadSheet($index): Sheet
+    {
+        if (is_numeric($index)) {
+            $sheet = $this->spreadsheet->getSheet($index);
+        } else {
+            $sheet = $this->spreadsheet->getSheetByName($index);
+        }
+
+        return new Sheet($sheet);
     }
 
     /**
@@ -113,7 +123,7 @@ class Reader
     {
         $sheets = [];
         foreach ($this->spreadsheet->getAllSheets() as $sheet) {
-            $sheets[] = $sheet->toArray($nullValue, $calculateFormulas, $formatData, $returnCellRef);
+            $sheets[] = (new Sheet($sheet))->toArray($nullValue, $calculateFormulas, $formatData, $returnCellRef);
         }
 
         return $sheets;
@@ -131,9 +141,7 @@ class Reader
     {
         $sheets = new Collection();
         foreach ($this->spreadsheet->getAllSheets() as $sheet) {
-            $sheets->push(new Collection(array_map(function (array $row) {
-                return new Collection($row);
-            }, $sheet->toArray($nullValue, $calculateFormulas, $formatData, $returnCellRef))));
+            $sheets->push((new Sheet($sheet))->toCollection($nullValue, $calculateFormulas, $formatData, $returnCellRef));
         }
 
         return $sheets;

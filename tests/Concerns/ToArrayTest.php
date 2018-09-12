@@ -14,7 +14,8 @@ class ToArrayTest extends TestCase
      */
     public function can_import_to_array()
     {
-        $import = new class implements ToArray {
+        $import = new class implements ToArray
+        {
             use Importable;
 
             public $called = false;
@@ -27,10 +28,8 @@ class ToArrayTest extends TestCase
                 $this->called = true;
 
                 Assert::assertEquals([
-                    [
-                        ['test', 'test'],
-                        ['test', 'test'],
-                    ],
+                    ['test', 'test'],
+                    ['test', 'test'],
                 ], $array);
             }
         };
@@ -38,5 +37,37 @@ class ToArrayTest extends TestCase
         $import->import('import.xlsx');
 
         $this->assertTrue($import->called);
+    }
+
+    /**
+     * @test
+     */
+    public function can_import_multiple_sheets_to_array()
+    {
+        $import = new class implements ToArray
+        {
+            use Importable;
+
+            public $called = 0;
+
+            /**
+             * @param array $array
+             */
+            public function array(array $array)
+            {
+                ++$this->called;
+
+                $sheetNumber = $this->called;
+
+                Assert::assertEquals([
+                    [$sheetNumber . '.A1', $sheetNumber . '.B1'],
+                    [$sheetNumber . '.A2', $sheetNumber . '.B2'],
+                ], $array);
+            }
+        };
+
+        $import->import('import-multiple-sheets.xlsx');
+
+        $this->assertEquals(2, $import->called);
     }
 }

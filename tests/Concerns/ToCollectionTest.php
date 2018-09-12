@@ -15,7 +15,8 @@ class ToCollectionTest extends TestCase
      */
     public function can_import_to_collection()
     {
-        $import = new class implements ToCollection {
+        $import = new class implements ToCollection
+        {
             use Importable;
 
             public $called = false;
@@ -28,10 +29,8 @@ class ToCollectionTest extends TestCase
                 $this->called = true;
 
                 Assert::assertEquals([
-                    [
-                        ['test', 'test'],
-                        ['test', 'test'],
-                    ],
+                    ['test', 'test'],
+                    ['test', 'test'],
                 ], $collection->toArray());
             }
         };
@@ -39,5 +38,37 @@ class ToCollectionTest extends TestCase
         $import->import('import.xlsx');
 
         $this->assertTrue($import->called);
+    }
+
+    /**
+     * @test
+     */
+    public function can_import_multiple_sheets_to_collection()
+    {
+        $import = new class implements ToCollection
+        {
+            use Importable;
+
+            public $called = 0;
+
+            /**
+             * @param Collection $collection
+             */
+            public function collection(Collection $collection)
+            {
+                ++$this->called;
+
+                $sheetNumber = $this->called;
+
+                Assert::assertEquals([
+                    [$sheetNumber. '.A1', $sheetNumber. '.B1'],
+                    [$sheetNumber. '.A2', $sheetNumber. '.B2'],
+                ], $collection->toArray());
+            }
+        };
+
+        $import->import('import-multiple-sheets.xlsx');
+
+        $this->assertEquals(2, $import->called);
     }
 }
