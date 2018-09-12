@@ -2,7 +2,7 @@
 
 namespace Maatwebsite\Excel\Concerns;
 
-use PhpOffice\PhpSpreadsheet\Worksheet\Row;
+use Maatwebsite\Excel\Row;
 
 interface OnEachRow
 {

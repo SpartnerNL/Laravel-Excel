@@ -4,6 +4,8 @@ namespace Maatwebsite\Excel;
 
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToArray;
+use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Row;
 use PhpOffice\PhpSpreadsheet\Cell\Cell;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use Maatwebsite\Excel\Concerns\FromView;
@@ -150,6 +152,14 @@ class Sheet
      */
     public function import($import)
     {
+        if ($import instanceof ToModel) {
+            foreach ($this->worksheet->getRowIterator() as $row) {
+                $import
+                    ->model((new Row($row))->toArray())
+                    ->saveOrFail();
+            }
+        }
+
         if ($import instanceof ToCollection) {
             $import->collection($this->toCollection());
         }
@@ -160,7 +170,7 @@ class Sheet
 
         if ($import instanceof OnEachRow) {
             foreach ($this->worksheet->getRowIterator() as $row) {
-                $import->onRow($row);
+                $import->onRow(new Row($row));
             }
         }
     }
@@ -467,7 +477,6 @@ class Sheet
     }
 
     /**
-     * @throws \PhpOffice\PhpSpreadsheet\Exception
      * @return bool
      */
     private function hasRows(): bool

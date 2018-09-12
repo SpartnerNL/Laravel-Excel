@@ -2,11 +2,11 @@
 
 namespace Maatwebsite\Excel\Tests\Concerns;
 
+use Maatwebsite\Excel\Row;
 use PHPUnit\Framework\Assert;
 use Maatwebsite\Excel\Tests\TestCase;
 use Maatwebsite\Excel\Concerns\OnEachRow;
 use Maatwebsite\Excel\Concerns\Importable;
-use PhpOffice\PhpSpreadsheet\Worksheet\Row;
 
 class OnEachRowTest extends TestCase
 {
