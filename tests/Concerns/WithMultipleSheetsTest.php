@@ -2,16 +2,16 @@
 
 namespace Maatwebsite\Excel\Tests\Concerns;
 
+use PHPUnit\Framework\Assert;
 use Illuminate\Support\Collection;
-use Maatwebsite\Excel\Concerns\Importable;
-use Maatwebsite\Excel\Concerns\ToArray;
 use Maatwebsite\Excel\Tests\TestCase;
+use Maatwebsite\Excel\Concerns\ToArray;
 use Maatwebsite\Excel\Concerns\Exportable;
+use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
 use Maatwebsite\Excel\Tests\Data\Stubs\SheetWith100Rows;
 use Maatwebsite\Excel\Tests\Data\Stubs\SheetForUsersFromView;
-use PHPUnit\Framework\Assert;
 
 class WithMultipleSheetsTest extends TestCase
 {
@@ -102,15 +102,13 @@ class WithMultipleSheetsTest extends TestCase
      */
     public function can_import_multiple_sheets()
     {
-        $import = new class implements WithMultipleSheets
-        {
+        $import = new class implements WithMultipleSheets {
             use Importable;
 
             public function sheets(): array
             {
                 return [
-                    new class implements ToArray
-                    {
+                    new class implements ToArray {
                         public function array(array $array)
                         {
                             Assert::assertEquals([
@@ -119,8 +117,7 @@ class WithMultipleSheetsTest extends TestCase
                             ], $array);
                         }
                     },
-                    new class implements ToArray
-                    {
+                    new class implements ToArray {
                         public function array(array $array)
                         {
                             Assert::assertEquals([
@@ -128,7 +125,7 @@ class WithMultipleSheetsTest extends TestCase
                                 ['2.A2', '2.B2'],
                             ], $array);
                         }
-                    }
+                    },
                 ];
             }
         };
@@ -141,15 +138,13 @@ class WithMultipleSheetsTest extends TestCase
      */
     public function can_import_multiple_sheets_by_sheet_name()
     {
-        $import = new class implements WithMultipleSheets
-        {
+        $import = new class implements WithMultipleSheets {
             use Importable;
 
             public function sheets(): array
             {
                 return [
-                    'Sheet2' => new class implements ToArray
-                    {
+                    'Sheet2' => new class implements ToArray {
                         public function array(array $array)
                         {
                             Assert::assertEquals([
@@ -158,8 +153,7 @@ class WithMultipleSheetsTest extends TestCase
                             ], $array);
                         }
                     },
-                    'Sheet1' => new class implements ToArray
-                    {
+                    'Sheet1' => new class implements ToArray {
                         public function array(array $array)
                         {
                             Assert::assertEquals([

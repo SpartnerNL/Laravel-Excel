@@ -14,8 +14,7 @@ class ToArrayTest extends TestCase
      */
     public function can_import_to_array()
     {
-        $import = new class implements ToArray
-        {
+        $import = new class implements ToArray {
             use Importable;
 
             public $called = false;
@@ -44,8 +43,7 @@ class ToArrayTest extends TestCase
      */
     public function can_import_multiple_sheets_to_array()
     {
-        $import = new class implements ToArray
-        {
+        $import = new class implements ToArray {
             use Importable;
 
             public $called = 0;
@@ -55,7 +53,7 @@ class ToArrayTest extends TestCase
              */
             public function array(array $array)
             {
-                ++$this->called;
+                $this->called++;
 
                 $sheetNumber = $this->called;
 

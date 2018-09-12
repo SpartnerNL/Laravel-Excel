@@ -4,16 +4,15 @@ namespace Maatwebsite\Excel;
 
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToArray;
-use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 use PhpOffice\PhpSpreadsheet\Cell\Cell;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Reader\Csv;
-use Maatwebsite\Excel\Concerns\OnEachRow;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use Illuminate\Filesystem\FilesystemManager;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use PhpOffice\PhpSpreadsheet\Reader\IReader;
 use Maatwebsite\Excel\Concerns\MapsCsvSettings;
+use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 use Maatwebsite\Excel\Concerns\WithCustomCsvSettings;
 use Maatwebsite\Excel\Concerns\WithCustomValueBinder;
 use PhpOffice\PhpSpreadsheet\Cell\DefaultValueBinder;
@@ -93,22 +92,6 @@ class Reader
         }
 
         return $this;
-    }
-
-    /**
-     * @param string|int $index
-     *
-     * @return Sheet
-     */
-    private function loadSheet($index): Sheet
-    {
-        if (is_numeric($index)) {
-            $sheet = $this->spreadsheet->getSheet($index);
-        } else {
-            $sheet = $this->spreadsheet->getSheetByName($index);
-        }
-
-        return new Sheet($sheet);
     }
 
     /**
@@ -212,5 +195,21 @@ class Reader
         $tmp = $this->tmpPath . DIRECTORY_SEPARATOR . str_random(16) . '.' . pathinfo($filePath)['extension'];
 
         return $tmp;
+    }
+
+    /**
+     * @param string|int $index
+     *
+     * @return Sheet
+     */
+    private function loadSheet($index): Sheet
+    {
+        if (is_numeric($index)) {
+            $sheet = $this->spreadsheet->getSheet($index);
+        } else {
+            $sheet = $this->spreadsheet->getSheetByName($index);
+        }
+
+        return new Sheet($sheet);
     }
 }
