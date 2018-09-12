@@ -5,6 +5,7 @@ namespace Maatwebsite\Excel;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToArray;
 use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Imports\ModelImporter;
 use PhpOffice\PhpSpreadsheet\Cell\Cell;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use Maatwebsite\Excel\Concerns\FromView;
@@ -152,11 +153,7 @@ class Sheet
     public function import($import)
     {
         if ($import instanceof ToModel) {
-            foreach ($this->worksheet->getRowIterator() as $row) {
-                $import
-                    ->model((new Row($row))->toArray())
-                    ->saveOrFail();
-            }
+            resolve(ModelImporter::class)->import($this->worksheet, $import);
         }
 
         if ($import instanceof ToCollection) {
