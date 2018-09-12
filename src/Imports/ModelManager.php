@@ -2,9 +2,9 @@
 
 namespace Maatwebsite\Excel\Imports;
 
-use Illuminate\Database\DatabaseManager;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\DatabaseManager;
 
 class ModelManager
 {

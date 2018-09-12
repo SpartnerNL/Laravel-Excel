@@ -2,8 +2,8 @@
 
 namespace Maatwebsite\Excel\Imports;
 
-use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Row;
+use Maatwebsite\Excel\Concerns\ToModel;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
 class ModelImporter
