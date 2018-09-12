@@ -2,11 +2,11 @@
 
 namespace Maatwebsite\Excel\Tests\Concerns;
 
+use Maatwebsite\Excel\Tests\TestCase;
 use Illuminate\Database\Eloquent\Model;
 use Maatwebsite\Excel\Concerns\ToModel;
-use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
-use Maatwebsite\Excel\Tests\TestCase;
 use Maatwebsite\Excel\Concerns\Importable;
+use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
 
 class ToModelTest extends TestCase
 {
@@ -25,8 +25,7 @@ class ToModelTest extends TestCase
      */
     public function can_import_each_row_to_model()
     {
-        $import = new class implements ToModel
-        {
+        $import = new class implements ToModel {
             use Importable;
 
             /**
@@ -46,12 +45,12 @@ class ToModelTest extends TestCase
         $import->import('import-users.xlsx');
 
         $this->assertDatabaseHas('users', [
-            'name' => 'Patrick Brouwers',
+            'name'  => 'Patrick Brouwers',
             'email' => 'patrick@maatwebsite.nl',
         ]);
 
         $this->assertDatabaseHas('users', [
-            'name' => 'Taylor Otwell',
+            'name'  => 'Taylor Otwell',
             'email' => 'taylor@laravel.com',
         ]);
     }
