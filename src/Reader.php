@@ -91,6 +91,9 @@ class Reader
             $this->loadSheet($index)->import($sheetExport);
         }
 
+        $this->spreadsheet->disconnectWorksheets();
+        unset($this->spreadsheet);
+
         return $this;
     }
 
