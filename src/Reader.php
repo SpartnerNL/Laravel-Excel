@@ -55,8 +55,6 @@ class Reader
      * @param string      $filePath
      * @param string|null $disk
      * @param string|null $readerType
-     *
-     * @return bool
      */
     public function read($import, string $filePath, string $disk = null, string $readerType = null)
     {
@@ -88,50 +86,14 @@ class Reader
         }
 
         foreach ($sheetExports as $index => $sheetExport) {
-            $this->loadSheet($index)->import($sheetExport);
+            $sheet = $this->loadSheet($index);
+            $sheet->import($sheetExport);
+            $sheet->disconnect();
         }
 
         $this->setDefaultValueBinder();
-        $this->spreadsheet->disconnectWorksheets();
-        unset($this->spreadsheet);
-
-        return $this;
-    }
-
-    /**
-     * @param null $nullValue
-     * @param bool $calculateFormulas
-     * @param bool $formatData
-     * @param bool $returnCellRef
-     *
-     * @return array
-     */
-    public function toArray($nullValue = null, $calculateFormulas = false, $formatData = false, $returnCellRef = false)
-    {
-        $sheets = [];
-        foreach ($this->spreadsheet->getAllSheets() as $sheet) {
-            $sheets[] = (new Sheet($sheet))->toArray($nullValue, $calculateFormulas, $formatData, $returnCellRef);
-        }
-
-        return $sheets;
-    }
-
-    /**
-     * @param null $nullValue
-     * @param bool $calculateFormulas
-     * @param bool $formatData
-     * @param bool $returnCellRef
-     *
-     * @return Collection
-     */
-    public function toCollection($nullValue = null, $calculateFormulas = false, $formatData = false, $returnCellRef = false): Collection
-    {
-        $sheets = new Collection();
-        foreach ($this->spreadsheet->getAllSheets() as $sheet) {
-            $sheets->push((new Sheet($sheet))->toCollection($nullValue, $calculateFormulas, $formatData, $returnCellRef));
-        }
-
-        return $sheets;
+        unset($sheetExports, $this->spreadsheet);
+        unlink($file);
     }
 
     /**

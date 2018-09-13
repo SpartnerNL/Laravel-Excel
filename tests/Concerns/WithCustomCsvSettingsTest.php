@@ -2,11 +2,13 @@
 
 namespace Maatwebsite\Excel\Tests\Concerns;
 
+use Maatwebsite\Excel\Concerns\ToArray;
 use Maatwebsite\Excel\Excel;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Tests\TestCase;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithCustomCsvSettings;
+use PHPUnit\Framework\Assert;
 
 class WithCustomCsvSettingsTest extends TestCase
 {
@@ -27,7 +29,8 @@ class WithCustomCsvSettingsTest extends TestCase
      */
     public function can_store_csv_export_with_custom_settings()
     {
-        $export = new class implements FromCollection, WithCustomCsvSettings {
+        $export = new class implements FromCollection, WithCustomCsvSettings
+        {
             /**
              * @return Collection
              */
@@ -69,7 +72,8 @@ class WithCustomCsvSettingsTest extends TestCase
      */
     public function can_read_csv_import_with_custom_settings()
     {
-        $import = new class implements WithCustomCsvSettings {
+        $import = new class implements WithCustomCsvSettings, ToArray
+        {
             /**
              * @return array
              */
@@ -83,16 +87,20 @@ class WithCustomCsvSettingsTest extends TestCase
                     'input_encoding'   => 'UTF-8',
                 ];
             }
+
+            /**
+             * @param array $array
+             */
+            public function array(array $array)
+            {
+                Assert::assertEquals([
+                    ['A1', 'B1'],
+                    ['A2', 'B2'],
+                ], $array);
+            }
         };
 
-        $array = $this->SUT->import($import, 'csv-with-other-delimiter.csv')->toArray();
-
-        $this->assertEquals([
-            [
-                ['A1', 'B1'],
-                ['A2', 'B2'],
-            ],
-        ], $array);
+        $this->SUT->import($import, 'csv-with-other-delimiter.csv');
     }
 
     /**
@@ -100,7 +108,8 @@ class WithCustomCsvSettingsTest extends TestCase
      */
     public function cannot_read_with_wrong_delimiter()
     {
-        $import = new class implements WithCustomCsvSettings {
+        $import = new class implements WithCustomCsvSettings, ToArray
+        {
             /**
              * @return array
              */
@@ -110,15 +119,19 @@ class WithCustomCsvSettingsTest extends TestCase
                     'delimiter' => ',',
                 ];
             }
+
+            /**
+             * @param array $array
+             */
+            public function array(array $array)
+            {
+                Assert::assertEquals([
+                    ['A1;B1'],
+                    ['A2;B2'],
+                ], $array);
+            }
         };
 
-        $array = $this->SUT->import($import, 'csv-with-other-delimiter.csv')->toArray();
-
-        $this->assertEquals([
-            [
-                ['A1;B1'],
-                ['A2;B2'],
-            ],
-        ], $array);
+        $this->SUT->import($import, 'csv-with-other-delimiter.csv');
     }
 }

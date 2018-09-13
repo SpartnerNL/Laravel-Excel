@@ -123,11 +123,13 @@ class Excel implements Exporter, Importer
      * @param string|null $disk
      * @param string|null $readerType
      *
-     * @return bool
+     * @return Excel
      */
     public function import($import, string $filePath, string $disk = null, string $readerType = null)
     {
-        return $this->reader->read($import, $filePath, $disk, $readerType);
+        $this->reader->read($import, $filePath, $disk, $readerType);
+
+        return $this;
     }
 
     /**

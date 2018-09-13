@@ -503,4 +503,13 @@ class Sheet
 
         return $this->chunkSize;
     }
+
+    /**
+     * Disconnect the sheet.
+     */
+    public function disconnect()
+    {
+        $this->worksheet->disconnectCells();
+        unset($this->worksheet);
+    }
 }

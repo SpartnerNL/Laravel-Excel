@@ -3,6 +3,7 @@
 namespace Maatwebsite\Excel\Tests\Concerns;
 
 use Carbon\Carbon;
+use Maatwebsite\Excel\Concerns\ToArray;
 use Maatwebsite\Excel\Excel;
 use Maatwebsite\Excel\Reader;
 use Illuminate\Support\Collection;
@@ -15,6 +16,7 @@ use Maatwebsite\Excel\Concerns\FromCollection;
 use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 use Maatwebsite\Excel\Concerns\WithCustomValueBinder;
 use PhpOffice\PhpSpreadsheet\Cell\DefaultValueBinder;
+use PHPUnit\Framework\Assert;
 
 class WithCustomValueBinderTest extends TestCase
 {
@@ -25,7 +27,8 @@ class WithCustomValueBinderTest extends TestCase
     {
         Carbon::setTestNow(new Carbon('2018-08-07 18:00:00'));
 
-        $export = new class extends DefaultValueBinder implements FromCollection, WithCustomValueBinder {
+        $export = new class extends DefaultValueBinder implements FromCollection, WithCustomValueBinder
+        {
             use Exportable;
 
             /**
@@ -101,7 +104,8 @@ class WithCustomValueBinderTest extends TestCase
      */
     public function can_set_a_value_binder_on_import()
     {
-        $import = new class extends DefaultValueBinder implements WithCustomValueBinder {
+        $import = new class extends DefaultValueBinder implements WithCustomValueBinder, ToArray
+        {
             /**
              * {@inheritdoc}
              */
@@ -122,31 +126,29 @@ class WithCustomValueBinderTest extends TestCase
 
                 return parent::bindValue($cell, $value);
             }
+
+            /**
+             * @param array $array
+             */
+            public function array(array $array)
+            {
+                Assert::assertSame([
+                    [
+                        'col1',
+                        'col2',
+                    ],
+                    [
+                        1.0, // by default PhpSpreadsheet will convert numbers to float
+                        '2', // Forced to be a string
+                    ],
+                    [
+                        '2018-08-06 18:31:46', // Convert Excel datetime to datetime strings
+                        '2018-08-07 00:00:00', // Convert Excel date to datetime strings
+                    ],
+                ], $array);
+            }
         };
 
-        /** @var Reader $reader */
-        $reader = $this->app->make(Excel::class)->import($import, 'value-binder-import.xlsx');
-
-        $this->assertSame(
-            $import,
-            $reader->getDelegate()->getActiveSheet()->getCell('A1')->getValueBinder()
-        );
-
-        $this->assertSame([
-            [
-                [
-                    'col1',
-                    'col2',
-                ],
-                [
-                    1.0, // by default PhpSpreadsheet will convert numbers to float
-                    '2', // Forced to be a string
-                ],
-                [
-                    '2018-08-06 18:31:46', // Convert Excel datetime to datetime strings
-                    '2018-08-07 00:00:00', // Convert Excel date to datetime strings
-                ],
-            ],
-        ], $reader->toArray());
+        $this->app->make(Excel::class)->import($import, 'value-binder-import.xlsx');
     }
 }
