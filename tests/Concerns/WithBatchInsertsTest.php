@@ -8,14 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\Group;
 
 class WithBatchInsertsTest extends TestCase
 {
-    use RefreshDatabase;
-
     /**
      * Setup the test environment.
      */
