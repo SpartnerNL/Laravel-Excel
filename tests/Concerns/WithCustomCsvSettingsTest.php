@@ -2,13 +2,13 @@
 
 namespace Maatwebsite\Excel\Tests\Concerns;
 
-use Maatwebsite\Excel\Concerns\ToArray;
 use Maatwebsite\Excel\Excel;
+use PHPUnit\Framework\Assert;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Tests\TestCase;
+use Maatwebsite\Excel\Concerns\ToArray;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithCustomCsvSettings;
-use PHPUnit\Framework\Assert;
 
 class WithCustomCsvSettingsTest extends TestCase
 {
@@ -29,8 +29,7 @@ class WithCustomCsvSettingsTest extends TestCase
      */
     public function can_store_csv_export_with_custom_settings()
     {
-        $export = new class implements FromCollection, WithCustomCsvSettings
-        {
+        $export = new class implements FromCollection, WithCustomCsvSettings {
             /**
              * @return Collection
              */
@@ -72,8 +71,7 @@ class WithCustomCsvSettingsTest extends TestCase
      */
     public function can_read_csv_import_with_custom_settings()
     {
-        $import = new class implements WithCustomCsvSettings, ToArray
-        {
+        $import = new class implements WithCustomCsvSettings, ToArray {
             /**
              * @return array
              */
@@ -108,8 +106,7 @@ class WithCustomCsvSettingsTest extends TestCase
      */
     public function cannot_read_with_wrong_delimiter()
     {
-        $import = new class implements WithCustomCsvSettings, ToArray
-        {
+        $import = new class implements WithCustomCsvSettings, ToArray {
             /**
              * @return array
              */

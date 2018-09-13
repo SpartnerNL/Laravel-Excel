@@ -432,6 +432,15 @@ class Sheet
     }
 
     /**
+     * Disconnect the sheet.
+     */
+    public function disconnect()
+    {
+        $this->worksheet->disconnectCells();
+        unset($this->worksheet);
+    }
+
+    /**
      * @param iterable $row
      * @param object   $sheetExport
      *
@@ -508,14 +517,5 @@ class Sheet
         }
 
         return $this->chunkSize;
-    }
-
-    /**
-     * Disconnect the sheet.
-     */
-    public function disconnect()
-    {
-        $this->worksheet->disconnectCells();
-        unset($this->worksheet);
     }
 }

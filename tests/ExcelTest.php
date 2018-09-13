@@ -2,10 +2,11 @@
 
 namespace Maatwebsite\Excel\Tests;
 
-use Maatwebsite\Excel\Concerns\ToArray;
 use Maatwebsite\Excel\Excel;
+use PHPUnit\Framework\Assert;
 use Illuminate\Support\Collection;
 use Illuminate\Contracts\View\View;
+use Maatwebsite\Excel\Concerns\ToArray;
 use Maatwebsite\Excel\Concerns\FromView;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\WithEvents;
@@ -14,7 +15,6 @@ use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Facades\Excel as ExcelFacade;
 use Maatwebsite\Excel\Tests\Data\Stubs\EmptyExport;
 use Maatwebsite\Excel\Concerns\RegistersEventListeners;
-use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class ExcelTest extends TestCase
@@ -114,8 +114,7 @@ class ExcelTest extends TestCase
      */
     public function can_store_csv_export_with_custom_settings()
     {
-        $export = new class implements WithEvents, FromCollection
-        {
+        $export = new class implements WithEvents, FromCollection {
             use RegistersEventListeners;
 
             /**
@@ -158,8 +157,7 @@ class ExcelTest extends TestCase
      */
     public function cannot_use_from_collection_and_from_view_on_same_export()
     {
-        $export = new class implements FromCollection, FromView
-        {
+        $export = new class implements FromCollection, FromView {
             use Exportable;
 
             /**
@@ -187,8 +185,7 @@ class ExcelTest extends TestCase
      */
     public function can_import_a_simple_xlsx_file()
     {
-        $import = new class implements ToArray
-        {
+        $import = new class implements ToArray {
             /**
              * @param array $array
              */

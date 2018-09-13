@@ -3,17 +3,15 @@
 namespace Maatwebsite\Excel\Tests\Concerns;
 
 use Illuminate\Support\Facades\DB;
-use Maatwebsite\Excel\Concerns\Exportable;
-use Maatwebsite\Excel\Concerns\FromArray;
-use Maatwebsite\Excel\Concerns\WithBatchInserts;
-use Maatwebsite\Excel\Concerns\WithChunkReading;
-use Maatwebsite\Excel\Concerns\WithMultipleSheets;
-use Maatwebsite\Excel\Tests\Data\Stubs\Database\Group;
-use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
 use Maatwebsite\Excel\Tests\TestCase;
 use Illuminate\Database\Eloquent\Model;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\Importable;
+use Maatwebsite\Excel\Concerns\WithBatchInserts;
+use Maatwebsite\Excel\Concerns\WithChunkReading;
+use Maatwebsite\Excel\Concerns\WithMultipleSheets;
+use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
+use Maatwebsite\Excel\Tests\Data\Stubs\Database\Group;
 
 class WithChunkReadingTest extends TestCase
 {
@@ -35,8 +33,7 @@ class WithChunkReadingTest extends TestCase
     {
         DB::connection()->enableQueryLog();
 
-        $import = new class implements ToModel, WithChunkReading
-        {
+        $import = new class implements ToModel, WithChunkReading {
             use Importable;
 
             /**
@@ -47,7 +44,7 @@ class WithChunkReadingTest extends TestCase
             public function model(array $row): Model
             {
                 return new User([
-                    'name'  => $row[0],
+                    'name'   => $row[0],
                     'email'  => $row[1],
                 ]);
             }
@@ -74,8 +71,7 @@ class WithChunkReadingTest extends TestCase
     {
         DB::connection()->enableQueryLog();
 
-        $import = new class implements ToModel, WithChunkReading, WithBatchInserts
-        {
+        $import = new class implements ToModel, WithChunkReading, WithBatchInserts {
             use Importable;
 
             /**
@@ -120,8 +116,7 @@ class WithChunkReadingTest extends TestCase
     {
         DB::connection()->enableQueryLog();
 
-        $import = new class implements ToModel, WithChunkReading, WithBatchInserts
-        {
+        $import = new class implements ToModel, WithChunkReading, WithBatchInserts {
             use Importable;
 
             /**
@@ -166,8 +161,7 @@ class WithChunkReadingTest extends TestCase
     {
         DB::connection()->enableQueryLog();
 
-        $import = new class implements ToModel, WithChunkReading, WithBatchInserts
-        {
+        $import = new class implements ToModel, WithChunkReading, WithBatchInserts {
             use Importable;
 
             /**
@@ -212,8 +206,7 @@ class WithChunkReadingTest extends TestCase
     {
         DB::connection()->enableQueryLog();
 
-        $import = new class implements WithMultipleSheets, WithChunkReading
-        {
+        $import = new class implements WithMultipleSheets, WithChunkReading {
             use Importable;
 
             /**
@@ -272,7 +265,7 @@ class WithChunkReadingTest extends TestCase
                         {
                             return 2000;
                         }
-                    }
+                    },
                 ];
             }
         };

@@ -2,14 +2,13 @@
 
 namespace Maatwebsite\Excel;
 
+use PhpOffice\PhpSpreadsheet\Reader\IReader;
+use Maatwebsite\Excel\Filters\ChunkReadFilter;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
-use Maatwebsite\Excel\Filters\ChunkReadFilter;
-use PhpOffice\PhpSpreadsheet\Reader\IReader;
 
 class ChunkReader
 {
-
     /**
      * @param WithChunkReading $import
      * @param IReader          $reader
