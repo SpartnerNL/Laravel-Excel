@@ -1,5 +1,7 @@
 *
 !.gitignore
 !import.xlsx
+!import-multiple-sheets.xlsx
+!import-users.xlsx
 !value-binder-import.xlsx
 !csv-with-other-delimiter.csv
