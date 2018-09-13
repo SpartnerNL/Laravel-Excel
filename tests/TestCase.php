@@ -2,6 +2,7 @@
 
 namespace Maatwebsite\Excel\Tests;
 
+use Orchestra\Database\ConsoleServiceProvider;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use Maatwebsite\Excel\ExcelServiceProvider;
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
@@ -50,7 +51,10 @@ class TestCase extends OrchestraTestCase
      */
     protected function getPackageProviders($app)
     {
-        return [ExcelServiceProvider::class];
+        return [
+            ConsoleServiceProvider::class,
+            ExcelServiceProvider::class
+        ];
     }
 
     /**
