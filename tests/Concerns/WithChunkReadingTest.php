@@ -3,6 +3,8 @@
 namespace Maatwebsite\Excel\Tests\Concerns;
 
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Concerns\Exportable;
+use Maatwebsite\Excel\Concerns\FromArray;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
@@ -106,6 +108,52 @@ class WithChunkReadingTest extends TestCase
         };
 
         $import->import('import-batches.xlsx');
+
+        $this->assertCount(10000 / $import->batchSize(), DB::getQueryLog());
+        DB::connection()->disableQueryLog();
+    }
+
+    /**
+     * @test
+     */
+    public function can_import_csv_in_chunks_and_insert_in_batches()
+    {
+        DB::connection()->enableQueryLog();
+
+        $import = new class implements ToModel, WithChunkReading, WithBatchInserts
+        {
+            use Importable;
+
+            /**
+             * @param array $row
+             *
+             * @return Model
+             */
+            public function model(array $row): Model
+            {
+                return new Group([
+                    'name'  => $row[0],
+                ]);
+            }
+
+            /**
+             * @return int
+             */
+            public function chunkSize(): int
+            {
+                return 1000;
+            }
+
+            /**
+             * @return int
+             */
+            public function batchSize(): int
+            {
+                return 1000;
+            }
+        };
+
+        $import->import('import-batches.csv');
 
         $this->assertCount(10000 / $import->batchSize(), DB::getQueryLog());
         DB::connection()->disableQueryLog();

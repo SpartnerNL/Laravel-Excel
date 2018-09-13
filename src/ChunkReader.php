@@ -17,12 +17,11 @@ class ChunkReader
      */
     public function read(WithChunkReading $import, IReader $reader, string $file)
     {
+        $totalRows  = $this->getTotalRows($reader, $file);
         $worksheets = $this->getWorksheets($import, $reader, $file);
 
         foreach ($worksheets as $name => $sheetImport) {
-            $totalRows = $this->getTotalRows($reader, $file, $name);
-
-            for ($startRow = 1; $startRow <= $totalRows; $startRow += $import->chunkSize()) {
+            for ($startRow = 1; $startRow <= $totalRows[$name]; $startRow += $import->chunkSize()) {
                 $reader->setReadDataOnly(true);
                 $reader->setReadEmptyCells(false);
                 $reader->setReadFilter(new ChunkReadFilter($startRow, $import->chunkSize(), $name));
@@ -32,6 +31,7 @@ class ChunkReader
                 $sheet = new Sheet($spreadsheet->getSheetByName($name));
                 $sheet->import($sheetImport, $startRow, $startRow + $import->chunkSize());
                 $sheet->disconnect();
+                unset($sheet, $spreadsheet);
             }
         }
     }
@@ -46,7 +46,7 @@ class ChunkReader
     private function getWorksheets(WithChunkReading $import, IReader $reader, string $file): array
     {
         if (!method_exists($reader, 'listWorksheetNames')) {
-            return ['' => $import];
+            return ['Worksheet' => $import];
         }
 
         $worksheets     = [];
@@ -80,20 +80,18 @@ class ChunkReader
     /**
      * @param IReader $reader
      * @param string  $file
-     * @param string  $name
      *
-     * @return int|null
+     * @return array
      */
-    private function getTotalRows(IReader $reader, string $file, string $name)
+    private function getTotalRows(IReader $reader, string $file): array
     {
         $info = $reader->listWorksheetInfo($file);
 
+        $totalRows = [];
         foreach ($info as $sheet) {
-            if ($sheet['worksheetName'] ?? '' === $name) {
-                return $sheet['totalRows'] ?? null;
-            }
+            $totalRows[$sheet['worksheetName']] = $sheet['totalRows'];
         }
 
-        return null;
+        return $totalRows;
     }
 }

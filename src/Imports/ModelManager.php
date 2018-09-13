@@ -59,7 +59,6 @@ class ModelManager
                 $this->singleFlush();
             }
 
-            unset($this->models);
             $this->models = new Collection();
         });
     }
