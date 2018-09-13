@@ -14,5 +14,5 @@ class User extends Model
     /**
      * @var array
      */
-    protected $hidden = ['password'];
+    protected $hidden = ['password', 'email_verified_at'];
 }
