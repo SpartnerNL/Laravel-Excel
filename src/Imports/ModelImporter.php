@@ -2,6 +2,7 @@
 
 namespace Maatwebsite\Excel\Imports;
 
+use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Row;
 use Maatwebsite\Excel\Concerns\ToModel;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
@@ -29,8 +30,7 @@ class ModelImporter
      */
     public function import(Worksheet $worksheet, ToModel $import)
     {
-        // TODO: get proper batch size.
-        $batchSize = 1;
+        $batchSize = $import instanceof WithBatchInserts ? $import->batchSize() : 1;
 
         $i = 0;
         foreach ($worksheet->getRowIterator() as $row) {

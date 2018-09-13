@@ -3,13 +3,14 @@
 namespace Maatwebsite\Excel\Tests\Concerns;
 
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Tests\TestCase;
 use Illuminate\Database\Eloquent\Model;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
 
-class ToModelTest extends TestCase
+class WithBatchInsertsTest extends TestCase
 {
     /**
      * Setup the test environment.
@@ -24,11 +25,11 @@ class ToModelTest extends TestCase
     /**
      * @test
      */
-    public function can_import_each_row_to_model()
+    public function can_import_to_model_in_batches()
     {
         DB::connection()->enableQueryLog();
 
-        $import = new class implements ToModel {
+        $import = new class implements ToModel, WithBatchInserts {
             use Importable;
 
             /**
@@ -43,11 +44,19 @@ class ToModelTest extends TestCase
                     'email' => $row[1],
                 ]);
             }
+
+            /**
+             * @return int
+             */
+            public function batchSize(): int
+            {
+                return 2;
+            }
         };
 
         $import->import('import-users.xlsx');
 
-        $this->assertCount(2, DB::getQueryLog());
+        $this->assertCount(1, DB::getQueryLog());
         DB::connection()->disableQueryLog();
 
         $this->assertDatabaseHas('users', [
@@ -59,5 +68,6 @@ class ToModelTest extends TestCase
             'name'  => 'Taylor Otwell',
             'email' => 'taylor@laravel.com',
         ]);
+
     }
 }
