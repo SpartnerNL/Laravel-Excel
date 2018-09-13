@@ -21,14 +21,14 @@
   ],
   "require": {
     "php": "^7.0",
-    "phpoffice/phpspreadsheet": "^1.2",
+    "phpoffice/phpspreadsheet": "^1.4",
     "illuminate/support": "^5.5"
   },
   "require-dev": {
-    "phpunit/phpunit": "~7.0",
+    "phpunit/phpunit": "^6.0|^7.0",
     "mockery/mockery": "^1.1",
-    "orchestra/testbench": "^3.6",
-    "orchestra/database": "^3.6"
+    "orchestra/testbench": "^3.5",
+    "orchestra/database": "^3.5"
   },
   "autoload": {
     "psr-4": {
