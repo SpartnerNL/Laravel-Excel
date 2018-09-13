@@ -28,9 +28,9 @@ matrix:
 
   # Laravel 5.7
   - php: 7.1
-    env: LARAVEL=5.7.* TESTBENCH=3.7.* ORCHESTRA_DATABASE=3.7.* PHPUNIT=~7.0
+    env: LARAVEL=5.7.* TESTBENCH=3.7.* ORCHESTRA_DATABASE=3.7.*@dev PHPUNIT=~7.0
   - php: 7.2
-    env: LARAVEL=5.7.* TESTBENCH=3.7.* ORCHESTRA_DATABASE=3.7.* PHPUNIT=~7.0
+    env: LARAVEL=5.7.* TESTBENCH=3.7.* ORCHESTRA_DATABASE=3.7.*@dev PHPUNIT=~7.0
 
 before_install:
   - composer self-update --stable --no-interaction
