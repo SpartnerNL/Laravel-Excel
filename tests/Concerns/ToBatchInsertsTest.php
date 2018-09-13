@@ -4,6 +4,7 @@ namespace Maatwebsite\Excel\Tests\Concerns;
 
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
+use Maatwebsite\Excel\Tests\Data\Stubs\Database\Group;
 use Maatwebsite\Excel\Tests\TestCase;
 use Illuminate\Database\Eloquent\Model;
 use Maatwebsite\Excel\Concerns\ToModel;
@@ -20,6 +21,7 @@ class WithBatchInsertsTest extends TestCase
         parent::setUp();
 
         $this->loadLaravelMigrations(['--database' => 'testing']);
+        $this->loadMigrationsFrom(dirname(__DIR__) . '/Data/Stubs/Database/Migrations');
     }
 
     /**
@@ -69,5 +71,42 @@ class WithBatchInsertsTest extends TestCase
             'email' => 'taylor@laravel.com',
         ]);
 
+    }
+
+    /**
+     * @test
+     */
+    public function can_import_to_model_in_batches_bigger_file()
+    {
+        DB::connection()->enableQueryLog();
+
+        $import = new class implements ToModel, WithBatchInserts {
+            use Importable;
+
+            /**
+             * @param array $row
+             *
+             * @return Model
+             */
+            public function model(array $row): Model
+            {
+                return new Group([
+                    'name'  => $row[0],
+                ]);
+            }
+
+            /**
+             * @return int
+             */
+            public function batchSize(): int
+            {
+                return 100;
+            }
+        };
+
+        $import->import('import-batches.xlsx');
+
+        $this->assertCount(10000 / $import->batchSize(), DB::getQueryLog());
+        DB::connection()->disableQueryLog();
     }
 }
