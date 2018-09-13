@@ -2,6 +2,7 @@
 
 namespace Maatwebsite\Excel\Tests\Concerns;
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\Group;
@@ -13,6 +14,8 @@ use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
 
 class WithBatchInsertsTest extends TestCase
 {
+    use RefreshDatabase;
+
     /**
      * Setup the test environment.
      */
@@ -100,7 +103,7 @@ class WithBatchInsertsTest extends TestCase
              */
             public function batchSize(): int
             {
-                return 100;
+                return 1000;
             }
         };
 

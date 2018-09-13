@@ -148,55 +148,61 @@ class Sheet
     }
 
     /**
-     * @param object $import
+     * @param object   $import
+     * @param int $startRow
+     * @param int|null $endRow
      */
-    public function import($import)
+    public function import($import, int $startRow = 1, int $endRow = null)
     {
         if ($import instanceof ToModel) {
-            resolve(ModelImporter::class)->import($this->worksheet, $import);
+            resolve(ModelImporter::class)->import($this->worksheet, $import, $startRow);
         }
 
         if ($import instanceof ToCollection) {
-            $import->collection($this->toCollection());
+            $import->collection($this->toCollection($startRow, $endRow));
         }
 
         if ($import instanceof ToArray) {
-            $import->array($this->toArray());
+            $import->array($this->toArray($startRow, $endRow));
         }
 
         if ($import instanceof OnEachRow) {
-            foreach ($this->worksheet->getRowIterator() as $row) {
+            foreach ($this->worksheet->getRowIterator()->resetStart($startRow ?? 1) as $row) {
                 $import->onRow(new Row($row));
             }
         }
     }
 
     /**
-     * @param null $nullValue
-     * @param bool $calculateFormulas
-     * @param bool $formatData
-     * @param bool $returnCellRef
+     * @param int|null $startRow
+     * @param int|null $endRow
+     * @param null     $nullValue
+     * @param bool     $calculateFormulas
+     * @param bool     $formatData
+     * @param bool     $returnCellRef
      *
      * @return array
      */
-    public function toArray($nullValue = null, $calculateFormulas = false, $formatData = false, $returnCellRef = false)
+    public function toArray(int $startRow = null, int $endRow = null, $nullValue = null, $calculateFormulas = false, $formatData = false, $returnCellRef = false)
     {
         return $this->worksheet->toArray($nullValue, $calculateFormulas, $formatData, $returnCellRef);
     }
 
     /**
-     * @param null $nullValue
-     * @param bool $calculateFormulas
-     * @param bool $formatData
-     * @param bool $returnCellRef
+     * @param int|null $startRow
+     * @param int|null $endRow
+     * @param null     $nullValue
+     * @param bool     $calculateFormulas
+     * @param bool     $formatData
+     * @param bool     $returnCellRef
      *
      * @return Collection
      */
-    public function toCollection($nullValue = null, $calculateFormulas = false, $formatData = false, $returnCellRef = false): Collection
+    public function toCollection(int $startRow = null, int $endRow = null, $nullValue = null, $calculateFormulas = false, $formatData = false, $returnCellRef = false): Collection
     {
         return new Collection(array_map(function (array $row) {
             return new Collection($row);
-        }, $this->worksheet->toArray($nullValue, $calculateFormulas, $formatData, $returnCellRef)));
+        }, $this->toArray($startRow, $endRow, $nullValue, $calculateFormulas, $formatData, $returnCellRef)));
     }
 
     /**

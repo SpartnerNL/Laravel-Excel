@@ -4,6 +4,8 @@ namespace Maatwebsite\Excel;
 
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToArray;
+use Maatwebsite\Excel\Concerns\WithChunkReading;
+use Maatwebsite\Excel\Filters\ChunkReadFilter;
 use PhpOffice\PhpSpreadsheet\Cell\Cell;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Reader\Csv;
@@ -78,21 +80,34 @@ class Reader
             $reader->setInputEncoding($this->inputEncoding);
         }
 
-        $this->spreadsheet = $reader->load($file);
+        if ($import instanceof WithChunkReading) {
+            (new ChunkReader)->read($import, $reader, $file);
+        } else {
+            $sheetExports = [];
+            if ($import instanceof WithMultipleSheets) {
+                $sheetExports = $import->sheets();
 
-        $sheetExports = array_fill(0, $this->spreadsheet->getSheetCount(), $import);
-        if ($import instanceof WithMultipleSheets) {
-            $sheetExports = $import->sheets();
-        }
+                if (method_exists($reader, 'setLoadSheetsOnly')) {
+                    $reader->setLoadSheetsOnly(array_keys($sheetExports));
+                }
+            }
 
-        foreach ($sheetExports as $index => $sheetExport) {
-            $sheet = $this->loadSheet($index);
-            $sheet->import($sheetExport);
-            $sheet->disconnect();
+            $this->spreadsheet = $reader->load($file);
+
+            if (!$import instanceof WithMultipleSheets) {
+                $sheetExports = array_fill(0, $this->spreadsheet->getSheetCount(), $import);
+            }
+
+            foreach ($sheetExports as $index => $sheetExport) {
+                $sheet = $this->loadSheet($index);
+                $sheet->import($sheetExport);
+                $sheet->disconnect();
+            }
+
+            unset($sheetExports, $this->spreadsheet);
         }
 
         $this->setDefaultValueBinder();
-        unset($sheetExports, $this->spreadsheet);
         unlink($file);
     }
 
@@ -134,8 +149,8 @@ class Reader
     }
 
     /**
+     * @param string      $filePath
      * @param string|null $readerType
-     * @param string      $tmp
      *
      * @return IReader
      */
