@@ -26,6 +26,12 @@ matrix:
   - php: 7.2
     env: LARAVEL=5.6.* TESTBENCH=3.6.* ORCHESTRA_DATABASE=3.6.* PHPUNIT=~7.0
 
+  # Laravel 5.7
+  - php: 7.1
+    env: LARAVEL=5.7.* TESTBENCH=3.7.* ORCHESTRA_DATABASE=3.7.* PHPUNIT=~7.0
+  - php: 7.0
+    env: LARAVEL=5.7.* TESTBENCH=3.7.* ORCHESTRA_DATABASE=3.7.* PHPUNIT=~7.0
+
 before_install:
   - composer self-update --stable --no-interaction
   - composer require orchestra/testbench:$TESTBENCH orchestra/database:$ORCHESTRA_DATABASE phpunit/phpunit:$PHPUNIT --no-update --no-interaction --dev
