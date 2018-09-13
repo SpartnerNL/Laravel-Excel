@@ -26,7 +26,6 @@ class ModelImporter
      * @param Worksheet $worksheet
      * @param ToModel   $import
      * @param int|null  $startRow
-     * @param int|null  $endRow
      *
      * @throws \PhpOffice\PhpSpreadsheet\Exception
      * @throws \Throwable

@@ -5,6 +5,7 @@ namespace Maatwebsite\Excel\Tests\Concerns;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
+use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\Group;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
 use Maatwebsite\Excel\Tests\TestCase;
@@ -107,6 +108,130 @@ class WithChunkReadingTest extends TestCase
         $import->import('import-batches.xlsx');
 
         $this->assertCount(10000 / $import->batchSize(), DB::getQueryLog());
+        DB::connection()->disableQueryLog();
+    }
+
+    /**
+     * @test
+     */
+    public function can_import_to_model_in_chunks_and_insert_in_batches_with_multiple_sheets()
+    {
+        DB::connection()->enableQueryLog();
+
+        $import = new class implements ToModel, WithChunkReading, WithBatchInserts
+        {
+            use Importable;
+
+            /**
+             * @param array $row
+             *
+             * @return Model
+             */
+            public function model(array $row): Model
+            {
+                return new Group([
+                    'name'  => $row[0],
+                ]);
+            }
+
+            /**
+             * @return int
+             */
+            public function chunkSize(): int
+            {
+                return 1000;
+            }
+
+            /**
+             * @return int
+             */
+            public function batchSize(): int
+            {
+                return 1000;
+            }
+        };
+
+        $import->import('import-batches-multiple-sheets.xlsx');
+
+        $this->assertCount(20000 / $import->batchSize(), DB::getQueryLog());
+        DB::connection()->disableQueryLog();
+    }
+
+    /**
+     * @test
+     */
+    public function can_import_to_model_in_chunks_and_insert_in_batches_with_multiple_sheets_objects()
+    {
+        DB::connection()->enableQueryLog();
+
+        $import = new class implements WithMultipleSheets, WithChunkReading
+        {
+            use Importable;
+
+            /**
+             * @return int
+             */
+            public function chunkSize(): int
+            {
+                return 1000;
+            }
+
+            /**
+             * @return array
+             */
+            public function sheets(): array
+            {
+                return [
+                    new class implements ToModel, WithBatchInserts {
+                        /**
+                         * @param array $row
+                         *
+                         * @return Model
+                         */
+                        public function model(array $row): Model
+                        {
+                            return new Group([
+                                'name'  => $row[0],
+                            ]);
+                        }
+
+                        /**
+                         * @return int
+                         */
+                        public function batchSize(): int
+                        {
+                            return 1000;
+                        }
+                    },
+
+                    new class implements ToModel, WithBatchInserts {
+                        /**
+                         * @param array $row
+                         *
+                         * @return Model
+                         */
+                        public function model(array $row): Model
+                        {
+                            return new Group([
+                                'name'  => $row[0],
+                            ]);
+                        }
+
+                        /**
+                         * @return int
+                         */
+                        public function batchSize(): int
+                        {
+                            return 2000;
+                        }
+                    }
+                ];
+            }
+        };
+
+        $import->import('import-batches-multiple-sheets.xlsx');
+
+        $this->assertCount(10010, DB::getQueryLog());
         DB::connection()->disableQueryLog();
     }
 }
