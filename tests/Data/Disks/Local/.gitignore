@@ -1,6 +1,7 @@
 *
 !.gitignore
 !import.xlsx
+!import-formulas.xlsx
 !import-multiple-sheets.xlsx
 !import-users.xlsx
 !import-batches.xlsx

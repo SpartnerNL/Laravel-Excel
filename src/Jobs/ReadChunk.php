@@ -84,8 +84,7 @@ class ReadChunk implements ShouldQueue
 
         $sheet->import(
             $this->sheetImport,
-            $this->startRow,
-            $this->startRow + $this->chunkSize
+            $this->startRow
         );
 
         $sheet->disconnect();

@@ -2,6 +2,7 @@
 
 namespace Maatwebsite\Excel\Imports;
 
+use Maatwebsite\Excel\Concerns\WithCalculatedFormulas;
 use Maatwebsite\Excel\Row;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
@@ -39,7 +40,13 @@ class ModelImporter
             $i++;
 
             $row = new Row($spreadSheetRow);
-            $this->manager->add($import->model($row->toArray()));
+
+            $model = $import->model($row->toArray(null, $import instanceof WithCalculatedFormulas));
+
+            // Skip rows that the user explicitly returned null for
+            if (null !== $model) {
+                $this->manager->add($model);
+            }
 
             // Flush each batch.
             if (($i % $batchSize) === 0) {

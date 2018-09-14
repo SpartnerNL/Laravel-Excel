@@ -5,6 +5,7 @@ namespace Maatwebsite\Excel;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToArray;
 use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Concerns\WithCalculatedFormulas;
 use PhpOffice\PhpSpreadsheet\Cell\Cell;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use Maatwebsite\Excel\Concerns\FromView;
@@ -189,20 +190,21 @@ class Sheet
     /**
      * @param object   $import
      * @param int      $startRow
-     * @param int|null $endRow
      */
-    public function import($import, int $startRow = 1, int $endRow = null)
+    public function import($import, int $startRow = 1)
     {
+        $calculatesFormulas = $import instanceof WithCalculatedFormulas;
+
         if ($import instanceof ToModel) {
             resolve(ModelImporter::class)->import($this->worksheet, $import, $startRow);
         }
 
         if ($import instanceof ToCollection) {
-            $import->collection($this->toCollection($startRow, $endRow));
+            $import->collection($this->toCollection($startRow, null, $calculatesFormulas));
         }
 
         if ($import instanceof ToArray) {
-            $import->array($this->toArray($startRow, $endRow));
+            $import->array($this->toArray($startRow, null, $calculatesFormulas));
         }
 
         if ($import instanceof OnEachRow) {
@@ -214,7 +216,6 @@ class Sheet
 
     /**
      * @param int|null $startRow
-     * @param int|null $endRow
      * @param null     $nullValue
      * @param bool     $calculateFormulas
      * @param bool     $formatData
@@ -222,14 +223,19 @@ class Sheet
      *
      * @return array
      */
-    public function toArray(int $startRow = null, int $endRow = null, $nullValue = null, $calculateFormulas = false, $formatData = false, $returnCellRef = false)
+    public function toArray(int $startRow = null, $nullValue = null, $calculateFormulas = false, $formatData = false, $returnCellRef = false)
     {
+        if (null !== $startRow) {
+            $range = 'A' . $startRow . ':' . $this->worksheet->getHighestDataColumn() . $this->worksheet->getHighestDataRow();
+
+            return $this->worksheet->rangeToArray($range, $nullValue, $calculateFormulas, $formatData, $returnCellRef);
+        }
+
         return $this->worksheet->toArray($nullValue, $calculateFormulas, $formatData, $returnCellRef);
     }
 
     /**
      * @param int|null $startRow
-     * @param int|null $endRow
      * @param null     $nullValue
      * @param bool     $calculateFormulas
      * @param bool     $formatData
@@ -237,11 +243,11 @@ class Sheet
      *
      * @return Collection
      */
-    public function toCollection(int $startRow = null, int $endRow = null, $nullValue = null, $calculateFormulas = false, $formatData = false, $returnCellRef = false): Collection
+    public function toCollection(int $startRow = null, $nullValue = null, $calculateFormulas = false, $formatData = false, $returnCellRef = false): Collection
     {
         return new Collection(array_map(function (array $row) {
             return new Collection($row);
-        }, $this->toArray($startRow, $endRow, $nullValue, $calculateFormulas, $formatData, $returnCellRef)));
+        }, $this->toArray($startRow, $nullValue, $calculateFormulas, $formatData, $returnCellRef)));
     }
 
     /**

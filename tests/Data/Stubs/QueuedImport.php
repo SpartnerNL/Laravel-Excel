@@ -17,9 +17,9 @@ class QueuedImport implements ShouldQueue, ToModel, WithChunkReading, WithBatchI
     /**
      * @param array $row
      *
-     * @return Model
+     * @return Model|null
      */
-    public function model(array $row): Model
+    public function model(array $row)
     {
         return new Group([
             'name' => $row[0],

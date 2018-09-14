@@ -3,6 +3,7 @@
 namespace Maatwebsite\Excel\Tests\Concerns;
 
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Concerns\ToArray;
 use Maatwebsite\Excel\Tests\TestCase;
 use Illuminate\Database\Eloquent\Model;
 use Maatwebsite\Excel\Concerns\ToModel;
@@ -12,6 +13,7 @@ use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\Group;
+use PHPUnit\Framework\Assert;
 
 class WithChunkReadingTest extends TestCase
 {
@@ -39,9 +41,9 @@ class WithChunkReadingTest extends TestCase
             /**
              * @param array $row
              *
-             * @return Model
+             * @return Model|null
              */
-            public function model(array $row): Model
+            public function model(array $row)
             {
                 return new User([
                     'name'   => $row[0],
@@ -77,9 +79,9 @@ class WithChunkReadingTest extends TestCase
             /**
              * @param array $row
              *
-             * @return Model
+             * @return Model|null
              */
-            public function model(array $row): Model
+            public function model(array $row)
             {
                 return new Group([
                     'name'  => $row[0],
@@ -122,9 +124,9 @@ class WithChunkReadingTest extends TestCase
             /**
              * @param array $row
              *
-             * @return Model
+             * @return Model|null
              */
-            public function model(array $row): Model
+            public function model(array $row)
             {
                 return new Group([
                     'name'  => $row[0],
@@ -167,9 +169,9 @@ class WithChunkReadingTest extends TestCase
             /**
              * @param array $row
              *
-             * @return Model
+             * @return Model|null
              */
-            public function model(array $row): Model
+            public function model(array $row)
             {
                 return new Group([
                     'name'  => $row[0],
@@ -202,6 +204,40 @@ class WithChunkReadingTest extends TestCase
     /**
      * @test
      */
+    public function can_import_to_array_in_chunks()
+    {
+        $import = new class implements ToArray, WithChunkReading {
+            use Importable;
+
+            public $called = 0;
+
+            /**
+             * @param array $array
+             */
+            public function array(array $array)
+            {
+                ++$this->called;
+
+                Assert::assertCount(100, $array);
+            }
+
+            /**
+             * @return int
+             */
+            public function chunkSize(): int
+            {
+                return 100;
+            }
+        };
+
+        $import->import('import-batches.xlsx');
+
+        $this->assertEquals(50, $import->called);
+    }
+
+    /**
+     * @test
+     */
     public function can_import_to_model_in_chunks_and_insert_in_batches_with_multiple_sheets_objects()
     {
         DB::connection()->enableQueryLog();
@@ -227,9 +263,9 @@ class WithChunkReadingTest extends TestCase
                         /**
                          * @param array $row
                          *
-                         * @return Model
+                         * @return Model|null
                          */
-                        public function model(array $row): Model
+                        public function model(array $row)
                         {
                             return new Group([
                                 'name'  => $row[0],
@@ -249,9 +285,9 @@ class WithChunkReadingTest extends TestCase
                         /**
                          * @param array $row
                          *
-                         * @return Model
+                         * @return Model|null
                          */
-                        public function model(array $row): Model
+                        public function model(array $row)
                         {
                             return new Group([
                                 'name'  => $row[0],
