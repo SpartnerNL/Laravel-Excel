@@ -33,6 +33,7 @@ matrix:
     env: LARAVEL=5.7.* TESTBENCH=3.7.* ORCHESTRA_DATABASE=3.7.*@dev PHPUNIT=~7.0
 
 before_install:
+  - phpenv config-rm xdebug.ini
   - composer self-update --stable --no-interaction
   - composer require orchestra/testbench:$TESTBENCH orchestra/database:$ORCHESTRA_DATABASE phpunit/phpunit:$PHPUNIT --no-update --no-interaction --dev
   - mysql -e 'CREATE DATABASE IF NOT EXISTS laravel_excel;'

@@ -48,6 +48,7 @@ class WithChunkReadingTest extends TestCase
                 return new User([
                     'name'   => $row[0],
                     'email'  => $row[1],
+                    'password' => 'secret',
                 ]);
             }
 

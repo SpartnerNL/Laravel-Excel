@@ -28,7 +28,8 @@ class ToModelTest extends TestCase
     {
         DB::connection()->enableQueryLog();
 
-        $import = new class implements ToModel {
+        $import = new class implements ToModel
+        {
             use Importable;
 
             /**
@@ -39,8 +40,9 @@ class ToModelTest extends TestCase
             public function model(array $row): Model
             {
                 return new User([
-                    'name'  => $row[0],
-                    'email' => $row[1],
+                    'name'     => $row[0],
+                    'email'    => $row[1],
+                    'password' => 'secret',
                 ]);
             }
         };

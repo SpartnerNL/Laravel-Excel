@@ -31,7 +31,8 @@ class WithBatchInsertsTest extends TestCase
     {
         DB::connection()->enableQueryLog();
 
-        $import = new class implements ToModel, WithBatchInserts {
+        $import = new class implements ToModel, WithBatchInserts
+        {
             use Importable;
 
             /**
@@ -42,8 +43,9 @@ class WithBatchInsertsTest extends TestCase
             public function model(array $row)
             {
                 return new User([
-                    'name'  => $row[0],
-                    'email' => $row[1],
+                    'name'     => $row[0],
+                    'email'    => $row[1],
+                    'password' => 'secret',
                 ]);
             }
 
@@ -79,7 +81,8 @@ class WithBatchInsertsTest extends TestCase
     {
         DB::connection()->enableQueryLog();
 
-        $import = new class implements ToModel, WithBatchInserts {
+        $import = new class implements ToModel, WithBatchInserts
+        {
             use Importable;
 
             /**
@@ -90,7 +93,7 @@ class WithBatchInsertsTest extends TestCase
             public function model(array $row)
             {
                 return new Group([
-                    'name'  => $row[0],
+                    'name' => $row[0],
                 ]);
             }
 
