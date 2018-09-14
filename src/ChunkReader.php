@@ -2,8 +2,11 @@
 
 namespace Maatwebsite\Excel;
 
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Support\Collection;
+use Maatwebsite\Excel\Jobs\QueueImport;
+use Maatwebsite\Excel\Jobs\ReadChunk;
 use PhpOffice\PhpSpreadsheet\Reader\IReader;
-use Maatwebsite\Excel\Filters\ChunkReadFilter;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 
@@ -13,26 +16,36 @@ class ChunkReader
      * @param WithChunkReading $import
      * @param IReader          $reader
      * @param string           $file
+     *
+     * @return \Illuminate\Foundation\Bus\PendingDispatch|null
      */
     public function read(WithChunkReading $import, IReader $reader, string $file)
     {
+        $chunkSize  = $import->chunkSize();
         $totalRows  = $this->getTotalRows($reader, $file);
         $worksheets = $this->getWorksheets($import, $reader, $file);
 
+        $jobs = new Collection();
         foreach ($worksheets as $name => $sheetImport) {
-            for ($startRow = 1; $startRow <= $totalRows[$name]; $startRow += $import->chunkSize()) {
-                $reader->setReadDataOnly(true);
-                $reader->setReadEmptyCells(false);
-                $reader->setReadFilter(new ChunkReadFilter($startRow, $import->chunkSize(), $name));
-
-                $spreadsheet = $reader->load($file);
-
-                $sheet = new Sheet($spreadsheet->getSheetByName($name));
-                $sheet->import($sheetImport, $startRow, $startRow + $import->chunkSize());
-                $sheet->disconnect();
-                unset($sheet, $spreadsheet);
+            for ($startRow = 1; $startRow <= $totalRows[$name]; $startRow += $chunkSize) {
+                $jobs->push(new ReadChunk(
+                    $reader,
+                    $file,
+                    $name,
+                    $sheetImport,
+                    $startRow,
+                    $chunkSize
+                ));
             }
         }
+
+        if ($import instanceof ShouldQueue) {
+            return QueueImport::withChain($jobs->toArray())->dispatch();
+        }
+
+        $jobs->each(function (ReadChunk $job) {
+            dispatch_now($job);
+        });
     }
 
     /**

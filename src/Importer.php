@@ -12,7 +12,7 @@ interface Importer
      * @param string|null $disk
      * @param string|null $writerType
      *
-     * @return bool
+     * @return PendingDispatch|Importer
      */
     public function import($import, string $filePath, string $disk = null, string $writerType = null);
 
@@ -24,5 +24,5 @@ interface Importer
      *
      * @return PendingDispatch
      */
-    public function queuedImport($import, string $filePath, string $disk = null, string $writerType = null);
+    public function queueImport($import, string $filePath, string $disk = null, string $writerType = null);
 }

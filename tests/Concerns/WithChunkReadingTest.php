@@ -105,7 +105,7 @@ class WithChunkReadingTest extends TestCase
 
         $import->import('import-batches.xlsx');
 
-        $this->assertCount(10000 / $import->batchSize(), DB::getQueryLog());
+        $this->assertCount(5000 / $import->batchSize(), DB::getQueryLog());
         DB::connection()->disableQueryLog();
     }
 
@@ -150,7 +150,7 @@ class WithChunkReadingTest extends TestCase
 
         $import->import('import-batches.csv');
 
-        $this->assertCount(10000 / $import->batchSize(), DB::getQueryLog());
+        $this->assertCount(10, DB::getQueryLog());
         DB::connection()->disableQueryLog();
     }
 
@@ -195,7 +195,7 @@ class WithChunkReadingTest extends TestCase
 
         $import->import('import-batches-multiple-sheets.xlsx');
 
-        $this->assertCount(20000 / $import->batchSize(), DB::getQueryLog());
+        $this->assertCount(1008, DB::getQueryLog());
         DB::connection()->disableQueryLog();
     }
 
@@ -272,7 +272,7 @@ class WithChunkReadingTest extends TestCase
 
         $import->import('import-batches-multiple-sheets.xlsx');
 
-        $this->assertCount(10010, DB::getQueryLog());
+        $this->assertCount(5004, DB::getQueryLog());
         DB::connection()->disableQueryLog();
     }
 }

@@ -28,7 +28,8 @@
     "phpunit/phpunit": "^7.0",
     "mockery/mockery": "^1.1",
     "orchestra/testbench": "^3.6",
-    "orchestra/database": "^3.6"
+    "orchestra/database": "^3.6",
+    "predis/predis": "^1.1"
   },
   "autoload": {
     "psr-4": {

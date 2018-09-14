@@ -6,6 +6,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Filesystem\FilesystemManager;
 use Illuminate\Foundation\Bus\PendingDispatch;
 use Illuminate\Contracts\Routing\ResponseFactory;
+use InvalidArgumentException;
 
 class Excel implements Exporter, Importer
 {
@@ -123,11 +124,15 @@ class Excel implements Exporter, Importer
      * @param string|null $disk
      * @param string|null $readerType
      *
-     * @return Excel
+     * @return Excel|PendingDispatch
      */
     public function import($import, string $filePath, string $disk = null, string $readerType = null)
     {
-        $this->reader->read($import, $filePath, $disk, $readerType);
+        $response = $this->reader->read($import, $filePath, $disk, $readerType);
+
+        if ($response instanceof PendingDispatch) {
+            return $response;
+        }
 
         return $this;
     }
@@ -140,9 +145,13 @@ class Excel implements Exporter, Importer
      *
      * @return PendingDispatch
      */
-    public function queuedImport($import, string $filePath, string $disk = null, string $readerType = null)
+    public function queueImport($import, string $filePath, string $disk = null, string $readerType = null)
     {
-        // TODO
+        if (!$this instanceof ShouldQueue) {
+            throw new InvalidArgumentException('Importable should implement ShouldQueue to be queued.');
+        }
+
+        return $this->import($import, $filePath, $disk, $readerType);
     }
 
     /**

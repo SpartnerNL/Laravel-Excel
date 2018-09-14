@@ -2,20 +2,21 @@
 
 namespace Maatwebsite\Excel\Concerns;
 
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Foundation\Bus\PendingDispatch;
+use InvalidArgumentException;
 use Maatwebsite\Excel\Excel;
-use Maatwebsite\Excel\Reader;
-use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Exceptions\NoFilePathGivenException;
 
 trait Importable
 {
     /**
-     * @param string      $fileName
-     * @param string|null $writerType
+     * @param string|null $filePath
+     * @param string|null $disk
      * @param string|null $readerType
      *
-     * @throws NoFilenameGivenException
-     * @return Reader
+     * @throws NoFilePathGivenException
+     * @return Excel|PendingDispatch
      */
     public function import(string $filePath = null, string $disk = null, string $readerType = null)
     {
@@ -29,7 +30,7 @@ trait Importable
             $this,
             $filePath,
             $disk ?? $this->disk ?? null,
-            $writerType ?? $this->writerType ?? null
+            $readerType ?? $this->readerType ?? null
         );
     }
 
@@ -38,22 +39,16 @@ trait Importable
      * @param string|null $disk
      * @param string|null $readerType
      *
-     * @return array
+     * @throws NoFilePathGivenException
+     * @throws InvalidArgumentException
+     * @return PendingDispatch
      */
-    public function toArray(string $filePath = null, string $disk = null, string $readerType = null)
+    public function queue(string $filePath = null, string $disk = null, string $readerType = null)
     {
-        return $this->import($filePath, $disk, $readerType)->toArray();
-    }
+        if (!$this instanceof ShouldQueue) {
+            throw new InvalidArgumentException('Importable should implement ShouldQueue to be queued.');
+        }
 
-    /**
-     * @param string|null $filePath
-     * @param string|null $disk
-     * @param string|null $readerType
-     *
-     * @return Collection
-     */
-    public function toCollection(string $filePath = null, string $disk = null, string $readerType = null)
-    {
-        return $this->import($filePath, $disk, $readerType)->toCollection();
+        return $this->import($filePath, $disk, $readerType);
     }
 }

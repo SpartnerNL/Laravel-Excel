@@ -2,6 +2,8 @@
 
 namespace Maatwebsite\Excel;
 
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Maatwebsite\Excel\Factories\ReaderFactory;
 use PhpOffice\PhpSpreadsheet\Cell\Cell;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Reader\Csv;
@@ -53,9 +55,15 @@ class Reader
      * @param string      $filePath
      * @param string|null $disk
      * @param string|null $readerType
+     *
+     * @return \Illuminate\Foundation\Bus\PendingDispatch|null
      */
     public function read($import, string $filePath, string $disk = null, string $readerType = null)
     {
+        if ($import instanceof ShouldQueue && !$import instanceof WithChunkReading) {
+            throw new InvalidArgumentException('ShouldQueue is only supported in combination with WithChunkReading.');
+        }
+
         if ($import instanceof WithCustomValueBinder) {
             Cell::setValueBinder($import);
         }
@@ -66,7 +74,7 @@ class Reader
 
         $file = $this->copyToFileSystem($filePath, $disk);
 
-        $reader = $this->getReader($file, $readerType);
+        $reader = ReaderFactory::make($file, $readerType);
 
         if ($reader instanceof Csv) {
             $reader->setDelimiter($this->delimiter);
@@ -77,31 +85,31 @@ class Reader
         }
 
         if ($import instanceof WithChunkReading) {
-            (new ChunkReader)->read($import, $reader, $file);
-        } else {
-            $sheetExports = [];
-            if ($import instanceof WithMultipleSheets) {
-                $sheetExports = $import->sheets();
-
-                if (method_exists($reader, 'setLoadSheetsOnly')) {
-                    $reader->setLoadSheetsOnly(array_keys($sheetExports));
-                }
-            }
-
-            $this->spreadsheet = $reader->load($file);
-
-            if (!$import instanceof WithMultipleSheets) {
-                $sheetExports = array_fill(0, $this->spreadsheet->getSheetCount(), $import);
-            }
-
-            foreach ($sheetExports as $index => $sheetExport) {
-                $sheet = $this->loadSheet($index);
-                $sheet->import($sheetExport);
-                $sheet->disconnect();
-            }
-
-            unset($sheetExports, $this->spreadsheet);
+            return (new ChunkReader)->read($import, $reader, $file);
         }
+
+        $sheetExports = [];
+        if ($import instanceof WithMultipleSheets) {
+            $sheetExports = $import->sheets();
+
+            if (method_exists($reader, 'setLoadSheetsOnly')) {
+                $reader->setLoadSheetsOnly(array_keys($sheetExports));
+            }
+        }
+
+        $this->spreadsheet = $reader->load($file);
+
+        if (!$import instanceof WithMultipleSheets) {
+            $sheetExports = array_fill(0, $this->spreadsheet->getSheetCount(), $import);
+        }
+
+        foreach ($sheetExports as $index => $sheetExport) {
+            $sheet = $this->loadSheet($index);
+            $sheet->import($sheetExport);
+            $sheet->disconnect();
+        }
+
+        unset($sheetExports, $this->spreadsheet);
 
         $this->setDefaultValueBinder();
         unlink($file);
@@ -142,24 +150,6 @@ class Reader
         fclose($tmpStream);
 
         return $tempFilePath;
-    }
-
-    /**
-     * @param string      $filePath
-     * @param string|null $readerType
-     *
-     * @return IReader
-     */
-    protected function getReader(string $filePath, string $readerType = null): IReader
-    {
-        $readerType = $readerType ?? IOFactory::identify($filePath);
-        $reader     = IOFactory::createReader($readerType);
-
-        if (!$reader->canRead($filePath)) {
-            throw new UnreadableFileException;
-        }
-
-        return $reader;
     }
 
     /**

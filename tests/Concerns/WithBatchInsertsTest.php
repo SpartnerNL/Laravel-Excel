@@ -105,7 +105,7 @@ class WithBatchInsertsTest extends TestCase
 
         $import->import('import-batches.xlsx');
 
-        $this->assertCount(10000 / $import->batchSize(), DB::getQueryLog());
+        $this->assertCount(5000 / $import->batchSize(), DB::getQueryLog());
         DB::connection()->disableQueryLog();
     }
 }

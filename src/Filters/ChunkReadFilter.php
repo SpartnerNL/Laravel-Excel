@@ -10,6 +10,7 @@ class ChunkReadFilter implements IReadFilter
      * @var int
      */
     private $startRow;
+
     /**
      * @var int
      */
