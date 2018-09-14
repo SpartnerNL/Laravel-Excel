@@ -2,9 +2,9 @@
 
 namespace Maatwebsite\Excel\Facades;
 
-use Illuminate\Foundation\Bus\PendingDispatch;
 use Illuminate\Support\Facades\Facade;
 use Maatwebsite\Excel\Fakes\ExcelFake;
+use Illuminate\Foundation\Bus\PendingDispatch;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 /**
