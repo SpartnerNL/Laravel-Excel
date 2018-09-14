@@ -72,7 +72,7 @@ class ModelManager
         $model = get_class($this->models[0]);
 
         $model::query()->insert(
-            collect($this->models)->map->attributesToArray()->toArray()
+            collect($this->models)->map->getAttributes()->toArray()
         );
     }
 
