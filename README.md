@@ -5,7 +5,7 @@
 </p>
 
 <h1 align="center">
-  Laravel Excel 3.0
+  Laravel Excel 3.1
 </h1>
 
 <h3 align="center">
@@ -13,18 +13,18 @@
 </h3>
 
 <p align="center">
-  <strong>Supercharged Excel exports</strong><br>
+  <strong>Supercharged Excel exports and imports</strong><br>
   A simple, but elegant wrapper around <a href="https://phpspreadsheet.readthedocs.io/">PhpSpreadsheet</a> with the goal of simplifying
-exports. 
+exports and imports. 
 </p>
 
 <p align="center">
   <a href="https://travis-ci.org/Maatwebsite/Laravel-Excel">
-    <img src="https://travis-ci.org/Maatwebsite/Laravel-Excel.svg?branch=3.0" alt="Build Status">
+    <img src="https://travis-ci.org/Maatwebsite/Laravel-Excel.svg?branch=3.1" alt="Build Status">
   </a> 
   
   <a href="https://styleci.io/repos/14259390">
-    <img src="https://styleci.io/repos/14259390/shield?branch=3.0" alt="StyleCI">
+    <img src="https://styleci.io/repos/14259390/shield?branch=3.1" alt="StyleCI">
   </a> 
   
    <a href="https://packagist.org/packages/maatwebsite/excel">
@@ -41,22 +41,24 @@ exports.
 </p>
 
 <h4 align="center">
-  <a href="https://laravel-excel.maatwebsite.nl/3.0/exports/">Quickstart</a>
+  <a href="https://laravel-excel.maatwebsite.nl/3.1/exports/">Quickstart</a>
   <span> · </span>
-  <a href="https://laravel-excel.maatwebsite.nl/3.0/getting-started/">Documentation</a>
+  <a href="https://laravel-excel.maatwebsite.nl/3.1/getting-started/">Documentation</a>
   <span> · </span>
   <a href="https://github.com/Maatwebsite/Laravel-Nova-Excel">Nova</a>
   <span> · </span>
   <a href="https://laravel-excel.maatwebsite.nl/blog/">Blog</a>
   <span> · </span>
-  <a href="https://laravel-excel.maatwebsite.nl/3.0/getting-started/contributing.html">Contributing</a>
+  <a href="https://laravel-excel.maatwebsite.nl/3.1/getting-started/contributing.html">Contributing</a>
   <span> · </span>
-  <a href="https://laravel-excel.maatwebsite.nl/3.0/getting-started/support.html">Support</a>
+  <a href="https://laravel-excel.maatwebsite.nl/3.1/getting-started/support.html">Support</a>
 </h4>
 
 - **Easily export collections to Excel.** Supercharge your Laravel collections and export them directly to an Excel or CSV document. Exporting has never been so easy.
 
-- **Supercharged exports.** Export queries with automatic chunking for better peformance. You provide us the query, we handle the performance. Exporting even larger datasets? No worries, Laravel Excel has your back. You can queue your exports so all of this happens in the background.
+- **Supercharged exports.** Export queries with automatic chunking for better performance. You provide us the query, we handle the performance. Exporting even larger datasets? No worries, Laravel Excel has your back. You can queue your exports so all of this happens in the background.
+
+- **Supercharged imports.** Import workbooks and worksheets to Eloquent models with chunk reading and batch inserts! Have large files? You can queue every chunk of a file! Your entire import will happen in the background.
 
 - **Export blade views.** Want to have a custom layout in your spreadsheet? Use a HTML table in a blade view and export that to Excel.
 
@@ -112,7 +114,7 @@ class UsersController extends Controller
 
 :page_facing_up: Find your `users.xlsx` in your downloads folder!
 
-More installation instructions can be found at: [https://laravel-excel.maatwebsite.nl/3.0/getting-started/installation.html](https://laravel-excel.maatwebsite.nl/3.0/getting-started/installation.html)
+More installation instructions can be found at: [https://laravel-excel.maatwebsite.nl/3.1/getting-started/installation.html](https://laravel-excel.maatwebsite.nl/3.1/getting-started/installation.html)
 
 ## 🎓 Learning Laravel Excel
 
@@ -127,11 +129,8 @@ Versions will be supported for a limited amount of time.
 | Version | Laravel Version | Php Version | Support |
 |---- |----|----|----|
 | 2.1 | <=5.6 | <=7.0 | EOL on 15-5-2018 |
-| 3.0 | ^5.5 |  ^7.0 | New features |
-
-## :mag_right: Roadmap
-
-Imports are currently not supported by 3.0. This functionality will be re-added in 3.1. There's currently no ETA on this release. 
+| 3.0 | ^5.5 |  ^7.0 | EOL on ... |
+| 3.1 | ^5.5 |  ^7.0 | New features |
 
 ## :mailbox_with_mail: License & Postcardware
 
@@ -144,7 +143,7 @@ Florijnruwe 111-2
 6218 CA Maastricht  
 The Netherlands  
 
-More about the license can be found at: [https://laravel-excel.maatwebsite.nl/3.0/getting-started/license.html](https://laravel-excel.maatwebsite.nl/3.0/getting-started/license.html)
+More about the license can be found at: [https://laravel-excel.maatwebsite.nl/3.1/getting-started/license.html](https://laravel-excel.maatwebsite.nl/3.1/getting-started/license.html)
 
 ## Imports (beta)
 
