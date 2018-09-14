@@ -27,6 +27,7 @@ use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Imports\ModelImporter;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use Maatwebsite\Excel\Concerns\WithCustomChunkSize;
 use Maatwebsite\Excel\Concerns\WithCustomStartCell;
@@ -68,6 +69,44 @@ class Sheet
         $this->worksheet = $worksheet;
         $this->chunkSize = config('excel.exports.chunk_size', 100);
         $this->tmpPath   = config('excel.exports.temp_path', sys_get_temp_dir());
+    }
+
+    /**
+     * @param Spreadsheet $spreadsheet
+     * @param string|int  $index
+     *
+     * @return Sheet
+     */
+    public static function make(Spreadsheet $spreadsheet, $index)
+    {
+        if (is_numeric($index)) {
+            return Sheet::byIndex($spreadsheet, $index);
+        }
+
+        return Sheet::byName($spreadsheet,  $index);
+    }
+
+    /**
+     * @param Spreadsheet $spreadsheet
+     * @param int         $index
+     *
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
+     * @return Sheet
+     */
+    public static function byIndex(Spreadsheet $spreadsheet, int $index)
+    {
+        return new static($spreadsheet->getSheet($index));
+    }
+
+    /**
+     * @param Spreadsheet $spreadsheet
+     * @param string      $name
+     *
+     * @return Sheet
+     */
+    public static function byName(Spreadsheet $spreadsheet, string $name)
+    {
+        return new static($spreadsheet->getSheetByName($name));
     }
 
     /**
@@ -149,7 +188,7 @@ class Sheet
 
     /**
      * @param object   $import
-     * @param int $startRow
+     * @param int      $startRow
      * @param int|null $endRow
      */
     public function import($import, int $startRow = 1, int $endRow = null)

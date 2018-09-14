@@ -56,8 +56,6 @@ class Writer
      * @param object $export
      * @param string $writerType
      *
-     * @throws \PhpOffice\PhpSpreadsheet\Exception
-     * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
      * @return string
      */
     public function export($export, string $writerType): string

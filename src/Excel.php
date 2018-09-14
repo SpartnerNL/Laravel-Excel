@@ -138,14 +138,14 @@ class Excel implements Exporter, Importer
     }
 
     /**
-     * @param object      $import
+     * @param ShouldQueue $import
      * @param string      $filePath
      * @param string|null $disk
      * @param string      $readerType
      *
      * @return PendingDispatch
      */
-    public function queueImport($import, string $filePath, string $disk = null, string $readerType = null)
+    public function queueImport(ShouldQueue $import, string $filePath, string $disk = null, string $readerType = null)
     {
         if (!$this instanceof ShouldQueue) {
             throw new InvalidArgumentException('Importable should implement ShouldQueue to be queued.');

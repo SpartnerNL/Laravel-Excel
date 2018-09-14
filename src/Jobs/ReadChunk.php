@@ -77,8 +77,9 @@ class ReadChunk implements ShouldQueue
 
         $spreadsheet = $this->reader->load($this->file);
 
-        $sheet = new Sheet(
-            $spreadsheet->getSheetByName($this->sheetName)
+        $sheet = Sheet::byName(
+            $spreadsheet,
+            $this->sheetName
         );
 
         $sheet->import(

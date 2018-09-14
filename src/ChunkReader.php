@@ -46,6 +46,10 @@ class ChunkReader
         $jobs->each(function (ReadChunk $job) {
             dispatch_now($job);
         });
+
+        unset($jobs);
+
+        return null;
     }
 
     /**
@@ -57,6 +61,7 @@ class ChunkReader
      */
     private function getWorksheets(WithChunkReading $import, IReader $reader, string $file): array
     {
+        // Csv doesn't have worksheets.
         if (!method_exists($reader, 'listWorksheetNames')) {
             return ['Worksheet' => $import];
         }
@@ -72,6 +77,7 @@ class ChunkReader
             }
 
             foreach ($sheetImports as $index => $sheetImport) {
+                // Translate index to name.
                 if (is_numeric($index)) {
                     $index = $worksheetNames[$index] ?? $index;
                 }

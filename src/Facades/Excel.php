@@ -2,6 +2,7 @@
 
 namespace Maatwebsite\Excel\Facades;
 
+use Illuminate\Foundation\Bus\PendingDispatch;
 use Illuminate\Support\Facades\Facade;
 use Maatwebsite\Excel\Fakes\ExcelFake;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
@@ -9,7 +10,9 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 /**
  * @method static BinaryFileResponse download(object $export, string $fileName, string $writerType = null)
  * @method static bool store(object $export, string $filePath, string $disk = null, string $writerType = null)
- * @method static bool queue(object $export, string $filePath, string $disk = null, string $writerType = null)
+ * @method static PendingDispatch queue(object $export, string $filePath, string $disk = null, string $writerType = null)
+ * @method static \Maatwebsite\Excel\Excel import(object $import, string $filePath, string $disk = null, string $writerType = null)
+ * @method static PendingDispatch queueImport(object $import, string $filePath, string $disk = null, string $writerType = null)
  * @method static void assertDownloaded(string $fileName, callable $callback = null)
  * @method static void assertStored(string $filePath, string $disk = null, callable $callback = null)
  * @method static void assertQueued(string $filePath, string $disk = null, callable $callback = null)

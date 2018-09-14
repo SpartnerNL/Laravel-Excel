@@ -2,8 +2,10 @@
 
 namespace Maatwebsite\Excel;
 
+use InvalidArgumentException;
 use PhpOffice\PhpSpreadsheet\Cell\Cell;
 use PhpOffice\PhpSpreadsheet\Reader\Csv;
+use PhpOffice\PhpSpreadsheet\Reader\IReader;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Filesystem\FilesystemManager;
@@ -85,31 +87,31 @@ class Reader
             return (new ChunkReader)->read($import, $reader, $file);
         }
 
-        $sheetExports = [];
-        if ($import instanceof WithMultipleSheets) {
-            $sheetExports = $import->sheets();
-
-            if (method_exists($reader, 'setLoadSheetsOnly')) {
-                $reader->setLoadSheetsOnly(array_keys($sheetExports));
-            }
-        }
+        $sheetImports = $this->buildSheetImports($import, $reader);
 
         $this->spreadsheet = $reader->load($file);
 
+        // When no multiple sheets, use the main import object
+        // for each loaded sheet in the spreadsheet
         if (!$import instanceof WithMultipleSheets) {
-            $sheetExports = array_fill(0, $this->spreadsheet->getSheetCount(), $import);
+            $sheetImports = array_fill(0, $this->spreadsheet->getSheetCount(), $import);
         }
 
-        foreach ($sheetExports as $index => $sheetExport) {
-            $sheet = $this->loadSheet($index);
+        foreach ($sheetImports as $index => $sheetExport) {
+            $sheet = Sheet::make($this->spreadsheet, $index);
             $sheet->import($sheetExport);
             $sheet->disconnect();
         }
 
-        unset($sheetExports, $this->spreadsheet);
-
         $this->setDefaultValueBinder();
+
+        // Force garbage collecting
+        unset($sheetImports, $this->spreadsheet);
+
+        // Remove the temporary file.
         unlink($file);
+
+        return null;
     }
 
     /**
@@ -162,18 +164,22 @@ class Reader
     }
 
     /**
-     * @param string|int $index
+     * @param object  $import
+     * @param IReader $reader
      *
-     * @return Sheet
+     * @return array
      */
-    private function loadSheet($index): Sheet
+    private function buildSheetImports($import, IReader $reader): array
     {
-        if (is_numeric($index)) {
-            $sheet = $this->spreadsheet->getSheet($index);
-        } else {
-            $sheet = $this->spreadsheet->getSheetByName($index);
+        $sheetImports = [];
+        if ($import instanceof WithMultipleSheets) {
+            $sheetImports = $import->sheets();
+
+            if (method_exists($reader, 'setLoadSheetsOnly')) {
+                $reader->setLoadSheetsOnly(array_keys($sheetImports));
+            }
         }
 
-        return new Sheet($sheet);
+        return $sheetImports;
     }
 }
