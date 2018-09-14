@@ -2,11 +2,10 @@
 
 namespace Maatwebsite\Excel\Tests;
 
-use Illuminate\Foundation\Bus\PendingDispatch;
-use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\Importable;
-use Maatwebsite\Excel\Tests\Data\Stubs\AfterQueueImportJob;
+use Illuminate\Foundation\Bus\PendingDispatch;
 use Maatwebsite\Excel\Tests\Data\Stubs\QueuedImport;
+use Maatwebsite\Excel\Tests\Data\Stubs\AfterQueueImportJob;
 
 class QueuedImportTest extends TestCase
 {
@@ -32,7 +31,7 @@ class QueuedImportTest extends TestCase
             use Importable;
         };
 
-         $export->queue('import-batches.xlsx');
+        $export->queue('import-batches.xlsx');
     }
 
     /**

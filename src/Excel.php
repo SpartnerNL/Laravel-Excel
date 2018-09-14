@@ -2,11 +2,11 @@
 
 namespace Maatwebsite\Excel;
 
+use InvalidArgumentException;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Filesystem\FilesystemManager;
 use Illuminate\Foundation\Bus\PendingDispatch;
 use Illuminate\Contracts\Routing\ResponseFactory;
-use InvalidArgumentException;
 
 class Excel implements Exporter, Importer
 {

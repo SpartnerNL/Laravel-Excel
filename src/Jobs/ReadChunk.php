@@ -2,11 +2,11 @@
 
 namespace Maatwebsite\Excel\Jobs;
 
+use Maatwebsite\Excel\Sheet;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Maatwebsite\Excel\Filters\ChunkReadFilter;
-use Maatwebsite\Excel\Sheet;
 use PhpOffice\PhpSpreadsheet\Reader\IReader;
+use Maatwebsite\Excel\Filters\ChunkReadFilter;
 
 class ReadChunk implements ShouldQueue
 {

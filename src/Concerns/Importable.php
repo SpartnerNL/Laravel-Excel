@@ -2,10 +2,10 @@
 
 namespace Maatwebsite\Excel\Concerns;
 
+use Maatwebsite\Excel\Excel;
+use InvalidArgumentException;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\PendingDispatch;
-use InvalidArgumentException;
-use Maatwebsite\Excel\Excel;
 use Maatwebsite\Excel\Exceptions\NoFilePathGivenException;
 
 trait Importable

@@ -3,9 +3,9 @@
 namespace Maatwebsite\Excel\Tests\Data\Stubs;
 
 use Illuminate\Bus\Queueable;
+use PHPUnit\Framework\Assert;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use PHPUnit\Framework\Assert;
 
 class AfterQueueImportJob implements ShouldQueue
 {
@@ -26,6 +26,6 @@ class AfterQueueImportJob implements ShouldQueue
 
     public function handle()
     {
-       Assert::assertEquals($this->totalRows, DB::table('groups')->count('id'));
+        Assert::assertEquals($this->totalRows, DB::table('groups')->count('id'));
     }
 }
