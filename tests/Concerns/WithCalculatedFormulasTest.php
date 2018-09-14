@@ -2,13 +2,13 @@
 
 namespace Maatwebsite\Excel\Tests\Concerns;
 
-use Illuminate\Database\Eloquent\Model;
-use Maatwebsite\Excel\Concerns\ToModel;
-use Maatwebsite\Excel\Concerns\WithCalculatedFormulas;
 use PHPUnit\Framework\Assert;
 use Maatwebsite\Excel\Tests\TestCase;
+use Illuminate\Database\Eloquent\Model;
 use Maatwebsite\Excel\Concerns\ToArray;
+use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\Importable;
+use Maatwebsite\Excel\Concerns\WithCalculatedFormulas;
 
 class WithCalculatedFormulasTest extends TestCase
 {
