@@ -31,8 +31,7 @@ class WithBatchInsertsTest extends TestCase
     {
         DB::connection()->enableQueryLog();
 
-        $import = new class implements ToModel, WithBatchInserts
-        {
+        $import = new class implements ToModel, WithBatchInserts {
             use Importable;
 
             /**
@@ -81,8 +80,7 @@ class WithBatchInsertsTest extends TestCase
     {
         DB::connection()->enableQueryLog();
 
-        $import = new class implements ToModel, WithBatchInserts
-        {
+        $import = new class implements ToModel, WithBatchInserts {
             use Importable;
 
             /**

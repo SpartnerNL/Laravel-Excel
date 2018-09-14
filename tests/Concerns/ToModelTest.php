@@ -28,8 +28,7 @@ class ToModelTest extends TestCase
     {
         DB::connection()->enableQueryLog();
 
-        $import = new class implements ToModel
-        {
+        $import = new class implements ToModel {
             use Importable;
 
             /**
