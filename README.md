@@ -131,7 +131,7 @@ Versions will be supported for a limited amount of time.
 
 ## :mag_right: Roadmap
 
-Imports are currently not supported by 3.0. This functionality will be re-added in 3.1. There's currently no ETA on this release. 
+Imports are currently not supported by 3.0. This functionality will be re-added in 3.1. 3.1 is planned to be released in October 2018. 
 
 ## :mailbox_with_mail: License & Postcardware
 
