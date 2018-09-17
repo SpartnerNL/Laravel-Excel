@@ -9,7 +9,7 @@ use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
 class HeadingRowExtractor
 {
-    public const DEFAULT_HEADING_ROW = 1;
+    const DEFAULT_HEADING_ROW = 1;
 
     /**
      * @param WithHeadingRow|mixed $importable
