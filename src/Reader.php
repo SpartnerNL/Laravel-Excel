@@ -3,6 +3,8 @@
 namespace Maatwebsite\Excel;
 
 use InvalidArgumentException;
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use Maatwebsite\Excel\Imports\HeadingRowExtractor;
 use PhpOffice\PhpSpreadsheet\Cell\Cell;
 use PhpOffice\PhpSpreadsheet\Reader\Csv;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -97,9 +99,10 @@ class Reader
             $sheetImports = array_fill(0, $this->spreadsheet->getSheetCount(), $import);
         }
 
-        foreach ($sheetImports as $index => $sheetExport) {
-            $sheet = Sheet::make($this->spreadsheet, $index);
-            $sheet->import($sheetExport);
+        foreach ($sheetImports as $index => $sheetImport) {
+            $sheet    = Sheet::make($this->spreadsheet, $index);
+            $startRow = HeadingRowExtractor::determineStartRow($sheetImport);
+            $sheet->import($sheetImport, $startRow);
             $sheet->disconnect();
         }
 

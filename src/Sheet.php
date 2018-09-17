@@ -5,6 +5,8 @@ namespace Maatwebsite\Excel;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToArray;
 use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use Maatwebsite\Excel\Imports\HeadingRowExtractor;
 use PhpOffice\PhpSpreadsheet\Cell\Cell;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use Maatwebsite\Excel\Concerns\FromView;
@@ -188,8 +190,8 @@ class Sheet
     }
 
     /**
-     * @param object   $import
-     * @param int      $startRow
+     * @param object $import
+     * @param int    $startRow
      */
     public function import($import, int $startRow = 1)
     {
@@ -200,54 +202,56 @@ class Sheet
         }
 
         if ($import instanceof ToCollection) {
-            $import->collection($this->toCollection($startRow, null, $calculatesFormulas));
+            $import->collection($this->toCollection($import, $startRow, null, $calculatesFormulas));
         }
 
         if ($import instanceof ToArray) {
-            $import->array($this->toArray($startRow, null, $calculatesFormulas));
+            $import->array($this->toArray($import, $startRow, null, $calculatesFormulas));
         }
 
         if ($import instanceof OnEachRow) {
+            $headingRow = HeadingRowExtractor::extract($this->worksheet, $import);
             foreach ($this->worksheet->getRowIterator()->resetStart($startRow ?? 1) as $row) {
-                $import->onRow(new Row($row));
+                $import->onRow(new Row($row, $headingRow));
             }
         }
     }
 
     /**
-     * @param int|null $startRow
-     * @param null     $nullValue
-     * @param bool     $calculateFormulas
-     * @param bool     $formatData
-     * @param bool     $returnCellRef
+     * @param ToArray|ToCollection $import
+     * @param int|null             $startRow
+     * @param null                 $nullValue
+     * @param bool                 $calculateFormulas
+     * @param bool                 $formatData
      *
      * @return array
      */
-    public function toArray(int $startRow = null, $nullValue = null, $calculateFormulas = false, $formatData = false, $returnCellRef = false)
+    public function toArray($import, int $startRow = null, $nullValue = null, $calculateFormulas = false, $formatData = false)
     {
-        if (null !== $startRow) {
-            $range = 'A' . $startRow . ':' . $this->worksheet->getHighestDataColumn() . $this->worksheet->getHighestDataRow();
+        $headingRow = HeadingRowExtractor::extract($this->worksheet, $import);
 
-            return $this->worksheet->rangeToArray($range, $nullValue, $calculateFormulas, $formatData, $returnCellRef);
+        $array = [];
+        foreach ($this->worksheet->getRowIterator($startRow) as $row) {
+            $array[] = (new Row($row, $headingRow))->toArray($nullValue, $calculateFormulas, $formatData);
         }
 
-        return $this->worksheet->toArray($nullValue, $calculateFormulas, $formatData, $returnCellRef);
+        return $array;
     }
 
     /**
-     * @param int|null $startRow
-     * @param null     $nullValue
-     * @param bool     $calculateFormulas
-     * @param bool     $formatData
-     * @param bool     $returnCellRef
+     * @param ToCollection $import
+     * @param int|null     $startRow
+     * @param null         $nullValue
+     * @param bool         $calculateFormulas
+     * @param bool         $formatData
      *
      * @return Collection
      */
-    public function toCollection(int $startRow = null, $nullValue = null, $calculateFormulas = false, $formatData = false, $returnCellRef = false): Collection
+    public function toCollection(ToCollection $import, int $startRow = null, $nullValue = null, $calculateFormulas = false, $formatData = false): Collection
     {
         return new Collection(array_map(function (array $row) {
             return new Collection($row);
-        }, $this->toArray($startRow, $nullValue, $calculateFormulas, $formatData, $returnCellRef)));
+        }, $this->toArray($import, $startRow, $nullValue, $calculateFormulas, $formatData)));
     }
 
     /**

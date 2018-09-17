@@ -4,8 +4,11 @@
 !import-formulas.xlsx
 !import-multiple-sheets.xlsx
 !import-users.xlsx
+!import-users-with-headings.xlsx
+!import-users-with-different-heading-row.xlsx
 !import-batches.xlsx
 !import-batches.csv
+!import-batches-with-heading-row.xlsx
 !import-batches-multiple-sheets.xlsx
 !value-binder-import.xlsx
 !csv-with-other-delimiter.csv

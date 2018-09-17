@@ -2,6 +2,7 @@
 
 namespace Maatwebsite\Excel\Tests\Concerns;
 
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use PHPUnit\Framework\Assert;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Tests\TestCase;
@@ -111,6 +112,52 @@ class WithChunkReadingTest extends TestCase
         $this->assertCount(5000 / $import->batchSize(), DB::getQueryLog());
         DB::connection()->disableQueryLog();
     }
+
+    /**
+     * @test
+     */
+    public function can_import_to_model_in_chunks_and_insert_in_batches_with_heading_row()
+    {
+        DB::connection()->enableQueryLog();
+
+        $import = new class implements ToModel, WithChunkReading, WithBatchInserts, WithHeadingRow {
+            use Importable;
+
+            /**
+             * @param array $row
+             *
+             * @return Model|null
+             */
+            public function model(array $row)
+            {
+                return new Group([
+                    'name'  => $row['name'],
+                ]);
+            }
+
+            /**
+             * @return int
+             */
+            public function chunkSize(): int
+            {
+                return 1000;
+            }
+
+            /**
+             * @return int
+             */
+            public function batchSize(): int
+            {
+                return 1000;
+            }
+        };
+
+        $import->import('import-batches-with-heading-row.xlsx');
+
+        $this->assertCount(5000 / $import->batchSize(), DB::getQueryLog());
+        DB::connection()->disableQueryLog();
+    }
+
 
     /**
      * @test

@@ -9,6 +9,11 @@ class ChunkReadFilter implements IReadFilter
     /**
      * @var int
      */
+    private $headingRow;
+
+    /**
+     * @var int
+     */
     private $startRow;
 
     /**
@@ -22,12 +27,14 @@ class ChunkReadFilter implements IReadFilter
     private $worksheetName;
 
     /**
+     * @param int    $headingRow
      * @param int    $startRow
      * @param int    $chunkSize
      * @param string $worksheetName
      */
-    public function __construct(int $startRow, int $chunkSize, string $worksheetName)
+    public function __construct(int $headingRow, int $startRow, int $chunkSize, string $worksheetName)
     {
+        $this->headingRow    = $headingRow;
         $this->startRow      = $startRow;
         $this->endRow        = $startRow + $chunkSize;
         $this->worksheetName = $worksheetName;
@@ -44,6 +51,6 @@ class ChunkReadFilter implements IReadFilter
     {
         //  Only read the heading row, and the rows that are configured in $this->_startRow and $this->_endRow
         return ($worksheetName === $this->worksheetName || $worksheetName === '')
-            && ($row == 1 || ($row >= $this->startRow && $row < $this->endRow));
+            && ($row === $this->headingRow || ($row >= $this->startRow && $row < $this->endRow));
     }
 }

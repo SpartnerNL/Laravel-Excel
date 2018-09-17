@@ -2,6 +2,7 @@
 
 namespace Maatwebsite\Excel\Imports;
 
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Row;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
@@ -33,14 +34,14 @@ class ModelImporter
      */
     public function import(Worksheet $worksheet, ToModel $import, int $startRow = 1)
     {
-        $batchSize = $import instanceof WithBatchInserts ? $import->batchSize() : 1;
+        $headingRow = HeadingRowExtractor::extract($worksheet, $import);
+        $batchSize  = $import instanceof WithBatchInserts ? $import->batchSize() : 1;
 
         $i = 0;
-        foreach ($worksheet->getRowIterator()->resetStart($startRow ?? 1) as $spreadSheetRow) {
+        foreach ($worksheet->getRowIterator()->resetStart($startRow) as $spreadSheetRow) {
             $i++;
 
-            $row = new Row($spreadSheetRow);
-
+            $row = new Row($spreadSheetRow, $headingRow);
             $model = $import->model($row->toArray(null, $import instanceof WithCalculatedFormulas));
 
             // Skip rows that the user explicitly returned null for

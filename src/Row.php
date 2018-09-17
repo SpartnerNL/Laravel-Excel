@@ -2,6 +2,7 @@
 
 namespace Maatwebsite\Excel;
 
+use Illuminate\Support\Collection;
 use PhpOffice\PhpSpreadsheet\Cell\Cell;
 use PhpOffice\PhpSpreadsheet\RichText\RichText;
 use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
@@ -12,6 +13,11 @@ class Row
     use DelegatedMacroable;
 
     /**
+     * @var array
+     */
+    protected $headingRow = [];
+
+    /**
      * @var SpreadsheetRow
      */
     private $row;
@@ -19,9 +25,10 @@ class Row
     /**
      * @param SpreadsheetRow $row
      */
-    public function __construct(SpreadsheetRow $row)
+    public function __construct(SpreadsheetRow $row, array $headingRow = [])
     {
-        $this->row = $row;
+        $this->row        = $row;
+        $this->headingRow = $headingRow;
     }
 
     /**
@@ -37,13 +44,26 @@ class Row
      * @param bool $calculateFormulas
      * @param bool $formatData
      *
+     * @return Collection
+     */
+    public function toCollection($nullValue = null, $calculateFormulas = false, $formatData = true): Collection
+    {
+        return new Collection($this->toArray($nullValue, $calculateFormulas, $formatData));
+    }
+
+    /**
+     * @param null $nullValue
+     * @param bool $calculateFormulas
+     * @param bool $formatData
+     *
      * @return array
      */
-    public function toArray($nullValue = null, $calculateFormulas = true, $formatData = true)
+    public function toArray($nullValue = null, $calculateFormulas = false, $formatData = true)
     {
         $cells = [];
 
         /** @var Cell $cell */
+        $i = 0;
         foreach ($this->row->getCellIterator() as $cell) {
             $value = $nullValue;
             if ($cell->getValue() !== null) {
@@ -66,7 +86,13 @@ class Row
                 }
             }
 
-            $cells[] = $value;
+            if (isset($this->headingRow[$i])) {
+                $cells[$this->headingRow[$i]] = $value;
+            } else {
+                $cells[] = $value;
+            }
+
+            $i++;
         }
 
         return $cells;

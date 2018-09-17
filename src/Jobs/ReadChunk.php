@@ -2,6 +2,7 @@
 
 namespace Maatwebsite\Excel\Jobs;
 
+use Maatwebsite\Excel\Imports\HeadingRowExtractor;
 use Maatwebsite\Excel\Sheet;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -65,7 +66,10 @@ class ReadChunk implements ShouldQueue
      */
     public function handle()
     {
+        $headingRow = HeadingRowExtractor::headingRow($this->sheetImport);
+
         $filter = new ChunkReadFilter(
+            $headingRow,
             $this->startRow,
             $this->chunkSize,
             $this->sheetName

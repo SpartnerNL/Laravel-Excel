@@ -3,6 +3,8 @@
 namespace Maatwebsite\Excel;
 
 use Illuminate\Support\Collection;
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use Maatwebsite\Excel\Imports\HeadingRowExtractor;
 use Maatwebsite\Excel\Jobs\ReadChunk;
 use Maatwebsite\Excel\Jobs\QueueImport;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -27,7 +29,7 @@ class ChunkReader
 
         $jobs = new Collection();
         foreach ($worksheets as $name => $sheetImport) {
-            for ($startRow = 1; $startRow <= $totalRows[$name]; $startRow += $chunkSize) {
+            for ($startRow = HeadingRowExtractor::determineStartRow($sheetImport); $startRow <= $totalRows[$name]; $startRow += $chunkSize) {
                 $jobs->push(new ReadChunk(
                     $reader,
                     $file,
