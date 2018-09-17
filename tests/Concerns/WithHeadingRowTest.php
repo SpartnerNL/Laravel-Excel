@@ -2,15 +2,14 @@
 
 namespace Maatwebsite\Excel\Tests\Concerns;
 
-use Illuminate\Support\Facades\DB;
-use Maatwebsite\Excel\Concerns\ToArray;
-use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use PHPUnit\Framework\Assert;
 use Maatwebsite\Excel\Tests\TestCase;
 use Illuminate\Database\Eloquent\Model;
+use Maatwebsite\Excel\Concerns\ToArray;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\Importable;
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
-use PHPUnit\Framework\Assert;
 
 class WithHeadingRowTest extends TestCase
 {
@@ -29,8 +28,7 @@ class WithHeadingRowTest extends TestCase
      */
     public function can_import_each_row_to_model_with_heading_row()
     {
-        $import = new class implements ToModel, WithHeadingRow
-        {
+        $import = new class implements ToModel, WithHeadingRow {
             use Importable;
 
             /**
@@ -66,8 +64,7 @@ class WithHeadingRowTest extends TestCase
      */
     public function can_import_each_row_to_model_with_different_heading_row()
     {
-        $import = new class implements ToModel, WithHeadingRow
-        {
+        $import = new class implements ToModel, WithHeadingRow {
             use Importable;
 
             /**
@@ -111,8 +108,7 @@ class WithHeadingRowTest extends TestCase
      */
     public function can_import_to_array_with_heading_row()
     {
-        $import = new class implements ToArray, WithHeadingRow
-        {
+        $import = new class implements ToArray, WithHeadingRow {
             use Importable;
 
             /**
@@ -122,13 +118,13 @@ class WithHeadingRowTest extends TestCase
             {
                 Assert::assertEquals([
                     [
-                        'name' => 'Patrick Brouwers',
+                        'name'  => 'Patrick Brouwers',
                         'email' => 'patrick@maatwebsite.nl',
                     ],
                     [
-                        'name' => 'Taylor Otwell',
+                        'name'  => 'Taylor Otwell',
                         'email' => 'taylor@laravel.com',
-                    ]
+                    ],
                 ], $array);
             }
         };

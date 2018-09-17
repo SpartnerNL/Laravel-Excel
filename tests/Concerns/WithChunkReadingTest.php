@@ -2,7 +2,6 @@
 
 namespace Maatwebsite\Excel\Tests\Concerns;
 
-use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use PHPUnit\Framework\Assert;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Tests\TestCase;
@@ -10,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Maatwebsite\Excel\Concerns\ToArray;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\Importable;
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
@@ -157,7 +157,6 @@ class WithChunkReadingTest extends TestCase
         $this->assertCount(5000 / $import->batchSize(), DB::getQueryLog());
         DB::connection()->disableQueryLog();
     }
-
 
     /**
      * @test

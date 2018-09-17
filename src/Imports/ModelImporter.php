@@ -2,7 +2,6 @@
 
 namespace Maatwebsite\Excel\Imports;
 
-use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Row;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
@@ -41,7 +40,7 @@ class ModelImporter
         foreach ($worksheet->getRowIterator()->resetStart($startRow) as $spreadSheetRow) {
             $i++;
 
-            $row = new Row($spreadSheetRow, $headingRow);
+            $row   = new Row($spreadSheetRow, $headingRow);
             $model = $import->model($row->toArray(null, $import instanceof WithCalculatedFormulas));
 
             // Skip rows that the user explicitly returned null for

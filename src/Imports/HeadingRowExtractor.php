@@ -2,10 +2,9 @@
 
 namespace Maatwebsite\Excel\Imports;
 
-use Illuminate\Support\Collection;
-use Maatwebsite\Excel\Concerns\WithHeadingRow;
-use Maatwebsite\Excel\Concerns\WithStartRow;
 use Maatwebsite\Excel\Row;
+use Maatwebsite\Excel\Concerns\WithStartRow;
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
 class HeadingRowExtractor
@@ -56,9 +55,9 @@ class HeadingRowExtractor
         $headingRowNumber = self::headingRow($importable);
 
         foreach ($worksheet->getRowIterator($headingRowNumber, $headingRowNumber + 1) as $row) {
-             return (new Row($row))
+            return (new Row($row))
                 ->toCollection(null, false, false)
-                ->map(function($value) {
+                ->map(function ($value) {
                     return str_slug($value);
                 })
                 ->toArray();
