@@ -2,6 +2,8 @@
 
 namespace Maatwebsite\Excel\Tests;
 
+use Illuminate\Http\Testing\File;
+use Illuminate\Http\UploadedFile;
 use Maatwebsite\Excel\Excel;
 use PHPUnit\Framework\Assert;
 use Illuminate\Support\Collection;
@@ -199,5 +201,44 @@ class ExcelTest extends TestCase
         };
 
         $this->SUT->import($import, 'import.xlsx');
+    }
+
+    /**
+     * @test
+     */
+    public function can_import_a_simple_xlsx_file_from_uploaded_file()
+    {
+        $import = new class implements ToArray {
+            /**
+             * @param array $array
+             */
+            public function array(array $array)
+            {
+                Assert::assertEquals([
+                    ['test', 'test'],
+                    ['test', 'test'],
+                ], $array);
+            }
+        };
+
+        $this->SUT->import($import, $this->givenUploadedFile(__DIR__ . '/Data/Disks/Local/import.xlsx'));
+    }
+
+    /**
+     * @param string $filePath
+     *
+     * @return File
+     */
+    public function givenUploadedFile(string $filePath): File
+    {
+        $fileName = basename($filePath);
+
+        // Create temporary file.
+        $newFilePath = sys_get_temp_dir() . DIRECTORY_SEPARATOR . $fileName;
+
+        // Copy the existing file to a temporary file.
+        copy($filePath, $newFilePath);
+
+        return new File('users.xlsx', fopen($newFilePath, 'r'));
     }
 }

@@ -17,6 +17,7 @@ use Maatwebsite\Excel\Imports\HeadingRowExtractor;
 use Maatwebsite\Excel\Concerns\WithCustomCsvSettings;
 use Maatwebsite\Excel\Concerns\WithCustomValueBinder;
 use PhpOffice\PhpSpreadsheet\Cell\DefaultValueBinder;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class Reader
 {
@@ -51,14 +52,14 @@ class Reader
     }
 
     /**
-     * @param object      $import
-     * @param string      $filePath
-     * @param string|null $disk
-     * @param string|null $readerType
+     * @param object              $import
+     * @param string|UploadedFile $filePath
+     * @param string|null         $disk
+     * @param string|null         $readerType
      *
      * @return \Illuminate\Foundation\Bus\PendingDispatch|null
      */
-    public function read($import, string $filePath, string $disk = null, string $readerType = null)
+    public function read($import, $filePath, string $disk = null, string $readerType = null)
     {
         if ($import instanceof ShouldQueue && !$import instanceof WithChunkReading) {
             throw new InvalidArgumentException('ShouldQueue is only supported in combination with WithChunkReading.');
@@ -135,15 +136,20 @@ class Reader
     }
 
     /**
-     * @param string      $filePath
-     * @param string|null $disk
+     * @param UploadedFile|string $filePath
+     * @param string|null         $disk
      *
      * @return string
      */
-    protected function copyToFileSystem(string $filePath, string $disk = null)
+    protected function copyToFileSystem($filePath, string $disk = null)
     {
         $tempFilePath = $this->getTmpFile($filePath);
-        $tmpStream    = fopen($tempFilePath, 'w+');
+
+        if ($filePath instanceof UploadedFile) {
+            return $filePath->move($tempFilePath)->getRealPath();
+        }
+
+        $tmpStream = fopen($tempFilePath, 'w+');
 
         $file = $this->filesystem->disk($disk)->readStream($filePath);
 
@@ -160,9 +166,7 @@ class Reader
      */
     protected function getTmpFile(string $filePath): string
     {
-        $tmp = $this->tmpPath . DIRECTORY_SEPARATOR . str_random(16) . '.' . pathinfo($filePath)['extension'];
-
-        return $tmp;
+        return $this->tmpPath . DIRECTORY_SEPARATOR . str_random(16) . '.' . pathinfo($filePath)['extension'];
     }
 
     /**

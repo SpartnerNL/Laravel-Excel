@@ -119,14 +119,9 @@ class Excel implements Exporter, Importer
     }
 
     /**
-     * @param object      $import
-     * @param string      $filePath
-     * @param string|null $disk
-     * @param string|null $readerType
-     *
-     * @return Excel|PendingDispatch
+     * {@inheritdoc}
      */
-    public function import($import, string $filePath, string $disk = null, string $readerType = null)
+    public function import($import, $filePath, string $disk = null, string $readerType = null)
     {
         $response = $this->reader->read($import, $filePath, $disk, $readerType);
 
@@ -138,19 +133,10 @@ class Excel implements Exporter, Importer
     }
 
     /**
-     * @param ShouldQueue $import
-     * @param string      $filePath
-     * @param string|null $disk
-     * @param string      $readerType
-     *
-     * @return PendingDispatch
+     * {@inheritdoc}
      */
-    public function queueImport(ShouldQueue $import, string $filePath, string $disk = null, string $readerType = null)
+    public function queueImport(ShouldQueue $import, $filePath, string $disk = null, string $readerType = null)
     {
-        if (!$this instanceof ShouldQueue) {
-            throw new InvalidArgumentException('Importable should implement ShouldQueue to be queued.');
-        }
-
         return $this->import($import, $filePath, $disk, $readerType);
     }
 
