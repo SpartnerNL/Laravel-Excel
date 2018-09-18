@@ -128,8 +128,8 @@ Versions will be supported for a limited amount of time.
 
 | Version | Laravel Version | Php Version | Support |
 |---- |----|----|----|
-| 2.1 | <=5.6 | <=7.0 | EOL on 15-5-2018 |
-| 3.0 | ^5.5 |  ^7.0 | EOL on ... |
+| 2.1 | <=5.6 | <=7.0 | Unsupported since 15-5-2018 |
+| 3.0 | ^5.5 |  ^7.0 | Only security fixes from 01-11-2018 |
 | 3.1 | ^5.5 |  ^7.0 | New features |
 
 ## :mailbox_with_mail: License & Postcardware
