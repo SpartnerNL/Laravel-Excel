@@ -7,7 +7,7 @@ use InvalidArgumentException;
 use Illuminate\Console\GeneratorCommand;
 use Symfony\Component\Console\Input\InputOption;
 
-class ExportMakeCommand extends GeneratorCommand
+class ImportMakeCommand extends GeneratorCommand
 {
     use WithModelStub;
 
@@ -16,21 +16,21 @@ class ExportMakeCommand extends GeneratorCommand
      *
      * @var string
      */
-    protected $name = 'make:export';
+    protected $name = 'make:import';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Create a new export class';
+    protected $description = 'Create a new import class';
 
     /**
      * The type of class being generated.
      *
      * @var string
      */
-    protected $type = 'Export';
+    protected $type = 'Import';
 
     /**
      * Get the stub file for the generator.
@@ -39,15 +39,11 @@ class ExportMakeCommand extends GeneratorCommand
      */
     protected function getStub()
     {
-        if ($this->option('model') && $this->option('query')) {
-            $stub = '/stubs/export.query-model.stub';
-        } elseif ($this->option('model')) {
-            $stub = '/stubs/export.model.stub';
-        } elseif ($this->option('query')) {
-            $stub = '/stubs/export.query.stub';
+        if ($this->option('model')) {
+            $stub = '/stubs/import.model.stub';
         }
 
-        $stub = $stub ?? '/stubs/export.plain.stub';
+        $stub = $stub ?? '/stubs/import.collection.stub';
 
         return __DIR__ . $stub;
     }
@@ -61,7 +57,7 @@ class ExportMakeCommand extends GeneratorCommand
      */
     protected function getDefaultNamespace($rootNamespace)
     {
-        return $rootNamespace . '\Exports';
+        return $rootNamespace . '\Imports';
     }
 
     /**
