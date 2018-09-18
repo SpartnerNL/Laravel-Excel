@@ -29,6 +29,10 @@ class OnEachRowTest extends TestCase
                     Assert::assertEquals('test', $cell->getValue());
                 }
 
+                Assert::assertEquals([
+                    'test', 'test'
+                ], $row->toArray());
+
                 $this->called++;
             }
         };

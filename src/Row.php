@@ -3,9 +3,6 @@
 namespace Maatwebsite\Excel;
 
 use Illuminate\Support\Collection;
-use PhpOffice\PhpSpreadsheet\Cell\Cell;
-use PhpOffice\PhpSpreadsheet\RichText\RichText;
-use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 use PhpOffice\PhpSpreadsheet\Worksheet\Row as SpreadsheetRow;
 
 class Row
@@ -24,6 +21,7 @@ class Row
 
     /**
      * @param SpreadsheetRow $row
+     * @param array          $headingRow
      */
     public function __construct(SpreadsheetRow $row, array $headingRow = [])
     {
@@ -62,29 +60,9 @@ class Row
     {
         $cells = [];
 
-        /** @var Cell $cell */
         $i = 0;
         foreach ($this->row->getCellIterator() as $cell) {
-            $value = $nullValue;
-            if ($cell->getValue() !== null) {
-                if ($cell->getValue() instanceof RichText) {
-                    $value = $cell->getValue()->getPlainText();
-                } else {
-                    if ($calculateFormulas) {
-                        $value = $cell->getCalculatedValue();
-                    } else {
-                        $value = $cell->getValue();
-                    }
-                }
-
-                if ($formatData) {
-                    $style = $this->row->getWorksheet()->getParent()->getCellXfByIndex($cell->getXfIndex());
-                    $value = NumberFormat::toFormattedString(
-                        $value,
-                        ($style && $style->getNumberFormat()) ? $style->getNumberFormat()->getFormatCode() : NumberFormat::FORMAT_GENERAL
-                    );
-                }
-            }
+            $value = (new Cell($cell))->getValue($nullValue, $calculateFormulas, $formatData);
 
             if (isset($this->headingRow[$i])) {
                 $cells[$this->headingRow[$i]] = $value;

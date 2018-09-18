@@ -3,9 +3,11 @@
 namespace Maatwebsite\Excel;
 
 use Illuminate\Support\Collection;
+use Maatwebsite\Excel\Cell;
 use Maatwebsite\Excel\Concerns\ToArray;
 use Maatwebsite\Excel\Concerns\ToModel;
-use PhpOffice\PhpSpreadsheet\Cell\Cell;
+use Maatwebsite\Excel\Concerns\WithMappedCells;
+use PhpOffice\PhpSpreadsheet\Cell\Cell as SpreadsheetCell;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use Maatwebsite\Excel\Concerns\FromView;
 use Maatwebsite\Excel\Events\AfterSheet;
@@ -121,7 +123,7 @@ class Sheet
         $this->exportable = $sheetExport;
 
         if ($sheetExport instanceof WithCustomValueBinder) {
-            Cell::setValueBinder($sheetExport);
+            SpreadsheetCell::setValueBinder($sheetExport);
         }
 
         if ($sheetExport instanceof WithEvents) {
@@ -202,16 +204,20 @@ class Sheet
 
         $calculatesFormulas = $import instanceof WithCalculatedFormulas;
 
-        if ($import instanceof ToModel) {
-            resolve(ModelImporter::class)->import($this->worksheet, $import, $startRow);
-        }
+        if ($import instanceof WithMappedCells) {
+            resolve(MappedReader::class)->map($import, $this->worksheet);
+        } else {
+            if ($import instanceof ToModel) {
+                resolve(ModelImporter::class)->import($this->worksheet, $import, $startRow);
+            }
 
-        if ($import instanceof ToCollection) {
-            $import->collection($this->toCollection($import, $startRow, null, $calculatesFormulas));
-        }
+            if ($import instanceof ToCollection) {
+                $import->collection($this->toCollection($import, $startRow, null, $calculatesFormulas));
+            }
 
-        if ($import instanceof ToArray) {
-            $import->array($this->toArray($import, $startRow, null, $calculatesFormulas));
+            if ($import instanceof ToArray) {
+                $import->array($this->toArray($import, $startRow, null, $calculatesFormulas));
+            }
         }
 
         if ($import instanceof OnEachRow) {
