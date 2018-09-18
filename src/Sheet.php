@@ -194,6 +194,12 @@ class Sheet
      */
     public function import($import, int $startRow = 1)
     {
+        if ($import instanceof WithEvents) {
+            $this->registerListeners($import->registerEvents());
+        }
+
+        $this->raise(new BeforeSheet($this, $this->exportable));
+
         $calculatesFormulas = $import instanceof WithCalculatedFormulas;
 
         if ($import instanceof ToModel) {
@@ -214,6 +220,8 @@ class Sheet
                 $import->onRow(new Row($row, $headingRow));
             }
         }
+
+        $this->raise(new AfterSheet($this, $this->exportable));
     }
 
     /**

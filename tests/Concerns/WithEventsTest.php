@@ -2,8 +2,11 @@
 
 namespace Maatwebsite\Excel\Tests\Concerns;
 
+use Maatwebsite\Excel\Events\BeforeImport;
 use Maatwebsite\Excel\Excel;
+use Maatwebsite\Excel\Reader;
 use Maatwebsite\Excel\Sheet;
+use Maatwebsite\Excel\Tests\Data\Stubs\ImportWithEvents;
 use Maatwebsite\Excel\Writer;
 use Maatwebsite\Excel\Tests\TestCase;
 use Maatwebsite\Excel\Events\AfterSheet;
@@ -22,7 +25,7 @@ class WithEventsTest extends TestCase
     /**
      * @test
      */
-    public function events_get_called()
+    public function export_events_get_called()
     {
         $event = new ExportWithEvents();
 
@@ -55,6 +58,38 @@ class WithEventsTest extends TestCase
         $this->assertInstanceOf(BinaryFileResponse::class, $event->download('filename.xlsx'));
         $this->assertEquals(4, $eventsTriggered);
     }
+
+    /**
+     * @test
+     */
+    public function import_events_get_called()
+    {
+        $event = new ImportWithEvents();
+
+        $eventsTriggered = 0;
+
+        $event->beforeImport = function ($event) use (&$eventsTriggered) {
+            $this->assertInstanceOf(BeforeImport::class, $event);
+            $this->assertInstanceOf(Reader::class, $event->getReader());
+            $eventsTriggered++;
+        };
+
+        $event->beforeSheet = function ($event) use (&$eventsTriggered) {
+            $this->assertInstanceOf(BeforeSheet::class, $event);
+            $this->assertInstanceOf(Sheet::class, $event->getSheet());
+            $eventsTriggered++;
+        };
+
+        $event->afterSheet = function ($event) use (&$eventsTriggered) {
+            $this->assertInstanceOf(AfterSheet::class, $event);
+            $this->assertInstanceOf(Sheet::class, $event->getSheet());
+            $eventsTriggered++;
+        };
+
+        $event->import('import.xlsx');
+        $this->assertEquals(3, $eventsTriggered);
+    }
+
 
     /**
      * @test

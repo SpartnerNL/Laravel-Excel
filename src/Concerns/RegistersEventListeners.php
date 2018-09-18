@@ -3,6 +3,7 @@
 namespace Maatwebsite\Excel\Concerns;
 
 use Maatwebsite\Excel\Events\AfterSheet;
+use Maatwebsite\Excel\Events\BeforeImport;
 use Maatwebsite\Excel\Events\BeforeSheet;
 use Maatwebsite\Excel\Events\BeforeExport;
 use Maatwebsite\Excel\Events\BeforeWriting;
@@ -22,6 +23,10 @@ trait RegistersEventListeners
 
         if (method_exists($this, 'beforeWriting')) {
             $listeners[BeforeWriting::class] = [static::class, 'beforeWriting'];
+        }
+
+        if (method_exists($this, 'beforeImport')) {
+            $listeners[BeforeImport::class] = [static::class, 'beforeImport'];
         }
 
         if (method_exists($this, 'beforeSheet')) {

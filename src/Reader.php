@@ -3,6 +3,8 @@
 namespace Maatwebsite\Excel;
 
 use InvalidArgumentException;
+use Maatwebsite\Excel\Concerns\WithEvents;
+use Maatwebsite\Excel\Events\BeforeImport;
 use PhpOffice\PhpSpreadsheet\Cell\Cell;
 use PhpOffice\PhpSpreadsheet\Reader\Csv;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -65,6 +67,10 @@ class Reader
             throw new InvalidArgumentException('ShouldQueue is only supported in combination with WithChunkReading.');
         }
 
+        if ($import instanceof WithEvents) {
+            $this->registerListeners($import->registerEvents());
+        }
+
         if ($import instanceof WithCustomValueBinder) {
             Cell::setValueBinder($import);
         }
@@ -84,6 +90,8 @@ class Reader
             $reader->setContiguous($this->contiguous);
             $reader->setInputEncoding($this->inputEncoding);
         }
+
+        $this->raise(new BeforeImport($this, $import));
 
         if ($import instanceof WithChunkReading) {
             return (new ChunkReader)->read($import, $reader, $file);
