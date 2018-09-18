@@ -6,8 +6,8 @@ use Maatwebsite\Excel\Excel;
 use InvalidArgumentException;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\PendingDispatch;
-use Maatwebsite\Excel\Exceptions\NoFilePathGivenException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Maatwebsite\Excel\Exceptions\NoFilePathGivenException;
 
 trait Importable
 {

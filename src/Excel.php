@@ -2,7 +2,6 @@
 
 namespace Maatwebsite\Excel;
 
-use InvalidArgumentException;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Filesystem\FilesystemManager;
 use Illuminate\Foundation\Bus\PendingDispatch;
