@@ -3,11 +3,8 @@
 namespace Maatwebsite\Excel;
 
 use Illuminate\Support\Collection;
-use Maatwebsite\Excel\Cell;
 use Maatwebsite\Excel\Concerns\ToArray;
 use Maatwebsite\Excel\Concerns\ToModel;
-use Maatwebsite\Excel\Concerns\WithMappedCells;
-use PhpOffice\PhpSpreadsheet\Cell\Cell as SpreadsheetCell;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use Maatwebsite\Excel\Concerns\FromView;
 use Maatwebsite\Excel\Events\AfterSheet;
@@ -30,6 +27,7 @@ use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Imports\ModelImporter;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
+use Maatwebsite\Excel\Concerns\WithMappedCells;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use Maatwebsite\Excel\Imports\HeadingRowExtractor;
 use Maatwebsite\Excel\Concerns\WithCustomChunkSize;
@@ -40,6 +38,7 @@ use Maatwebsite\Excel\Concerns\WithCustomValueBinder;
 use Maatwebsite\Excel\Concerns\WithCalculatedFormulas;
 use Maatwebsite\Excel\Concerns\WithStrictNullComparison;
 use Maatwebsite\Excel\Exceptions\ConcernConflictException;
+use PhpOffice\PhpSpreadsheet\Cell\Cell as SpreadsheetCell;
 
 class Sheet
 {

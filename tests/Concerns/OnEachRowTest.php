@@ -30,7 +30,7 @@ class OnEachRowTest extends TestCase
                 }
 
                 Assert::assertEquals([
-                    'test', 'test'
+                    'test', 'test',
                 ], $row->toArray());
 
                 $this->called++;
