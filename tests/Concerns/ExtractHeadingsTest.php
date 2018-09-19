@@ -7,7 +7,6 @@ use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\ExtractHeadings;
 
-
 class ExtractHeadingsTest extends TestCase
 {
     /**
