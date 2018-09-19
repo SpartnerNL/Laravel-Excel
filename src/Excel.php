@@ -2,13 +2,13 @@
 
 namespace Maatwebsite\Excel;
 
+use PhpOffice\PhpSpreadsheet\IOFactory;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Filesystem\FilesystemManager;
 use Illuminate\Foundation\Bus\PendingDispatch;
 use Illuminate\Contracts\Routing\ResponseFactory;
-use Maatwebsite\Excel\Exceptions\NoTypeDetectedException;
-use PhpOffice\PhpSpreadsheet\IOFactory;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Maatwebsite\Excel\Exceptions\NoTypeDetectedException;
 
 class Excel implements Exporter, Importer
 {

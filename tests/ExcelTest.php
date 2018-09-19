@@ -2,10 +2,10 @@
 
 namespace Maatwebsite\Excel\Tests;
 
-use Illuminate\Http\UploadedFile;
 use Maatwebsite\Excel\Excel;
 use PHPUnit\Framework\Assert;
 use Illuminate\Http\Testing\File;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
 use Illuminate\Contracts\View\View;
 use Maatwebsite\Excel\Concerns\ToArray;

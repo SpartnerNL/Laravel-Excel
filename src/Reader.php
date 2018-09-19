@@ -3,7 +3,6 @@
 namespace Maatwebsite\Excel;
 
 use InvalidArgumentException;
-use Maatwebsite\Excel\Exceptions\NoTypeDetectedException;
 use PhpOffice\PhpSpreadsheet\Cell\Cell;
 use PhpOffice\PhpSpreadsheet\Reader\Csv;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
