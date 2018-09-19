@@ -3,6 +3,7 @@
 namespace Maatwebsite\Excel;
 
 use InvalidArgumentException;
+use Maatwebsite\Excel\Exceptions\NoTypeDetectedException;
 use PhpOffice\PhpSpreadsheet\Cell\Cell;
 use PhpOffice\PhpSpreadsheet\Reader\Csv;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -56,12 +57,12 @@ class Reader
     /**
      * @param object              $import
      * @param string|UploadedFile $filePath
+     * @param string              $readerType
      * @param string|null         $disk
-     * @param string|null         $readerType
      *
      * @return \Illuminate\Foundation\Bus\PendingDispatch|null
      */
-    public function read($import, $filePath, string $disk = null, string $readerType = null)
+    public function read($import, $filePath, string $readerType, string $disk = null)
     {
         if ($import instanceof ShouldQueue && !$import instanceof WithChunkReading) {
             throw new InvalidArgumentException('ShouldQueue is only supported in combination with WithChunkReading.');
@@ -147,11 +148,12 @@ class Reader
      * @param UploadedFile|string $filePath
      * @param string|null         $disk
      *
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      * @return string
      */
     protected function copyToFileSystem($filePath, string $disk = null)
     {
-        $tempFilePath = $this->getTmpFile($filePath);
+        $tempFilePath = $this->getTmpFile();
 
         if ($filePath instanceof UploadedFile) {
             return $filePath->move($tempFilePath)->getRealPath();
@@ -168,13 +170,11 @@ class Reader
     }
 
     /**
-     * @param string $filePath
-     *
      * @return string
      */
-    protected function getTmpFile(string $filePath): string
+    protected function getTmpFile(): string
     {
-        return $this->tmpPath . DIRECTORY_SEPARATOR . str_random(16) . '.' . pathinfo($filePath)['extension'];
+        return $this->tmpPath . DIRECTORY_SEPARATOR . str_random(16);
     }
 
     /**

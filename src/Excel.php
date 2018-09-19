@@ -6,6 +6,9 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Filesystem\FilesystemManager;
 use Illuminate\Foundation\Bus\PendingDispatch;
 use Illuminate\Contracts\Routing\ResponseFactory;
+use Maatwebsite\Excel\Exceptions\NoTypeDetectedException;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class Excel implements Exporter, Importer
 {
@@ -110,9 +113,7 @@ class Excel implements Exporter, Importer
      */
     public function queue($export, string $filePath, string $disk = null, string $writerType = null)
     {
-        if (null === $writerType) {
-            $writerType = $this->findTypeByExtension($filePath);
-        }
+        $writerType = $this->findTypeByExtension($filePath, $writerType);
 
         return $this->queuedWriter->store($export, $filePath, $disk, $writerType);
     }
@@ -122,7 +123,14 @@ class Excel implements Exporter, Importer
      */
     public function import($import, $filePath, string $disk = null, string $readerType = null)
     {
-        $response = $this->reader->read($import, $filePath, $disk, $readerType);
+        $readerType = $this->findTypeByExtension($filePath, $readerType);
+        $readerType = $readerType ?? IOFactory::identify($filePath);
+
+        if (null === $readerType) {
+            throw new NoTypeDetectedException();
+        }
+
+        $response = $this->reader->read($import, $filePath, $readerType, $disk);
 
         if ($response instanceof PendingDispatch) {
             return $response;
@@ -150,22 +158,34 @@ class Excel implements Exporter, Importer
      */
     protected function export($export, string $fileName, string $writerType = null)
     {
-        if (null === $writerType) {
-            $writerType = $this->findTypeByExtension($fileName);
-        }
+        $writerType = $this->findTypeByExtension($fileName, $writerType);
 
         return $this->writer->export($export, $writerType);
     }
 
     /**
-     * @param string $fileName
+     * @param string|UploadedFile $fileName
+     * @param string|null         $readerType
      *
      * @return string|null
      */
-    protected function findTypeByExtension(string $fileName)
+    protected function findTypeByExtension($fileName, string $readerType = null): string
     {
-        $pathInfo = pathinfo($fileName);
+        if (null !== $readerType) {
+            return $readerType;
+        }
 
-        return config('excel.extension_detector.' . strtolower($pathInfo['extension'] ?? ''));
+        if (!$fileName instanceof UploadedFile) {
+            $pathInfo  = pathinfo($fileName);
+            $extension = $pathInfo['extension'] ?? '';
+        } else {
+            $extension = $fileName->getClientOriginalExtension();
+        }
+
+        if (null === $readerType && trim($extension) === '') {
+            throw new NoTypeDetectedException();
+        }
+
+        return config('excel.extension_detector.' . strtolower($extension));
     }
 }

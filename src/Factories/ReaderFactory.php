@@ -9,15 +9,14 @@ use Maatwebsite\Excel\Exceptions\UnreadableFileException;
 class ReaderFactory
 {
     /**
-     * @param string      $filePath
-     * @param string|null $readerType
+     * @param string $filePath
+     * @param string $readerType
      *
      * @return IReader
      */
-    public static function make(string $filePath, string $readerType = null): IReader
+    public static function make(string $filePath, string $readerType): IReader
     {
-        $readerType = $readerType ?? IOFactory::identify($filePath);
-        $reader     = IOFactory::createReader($readerType);
+        $reader = IOFactory::createReader($readerType);
 
         if (!$reader->canRead($filePath)) {
             throw new UnreadableFileException;

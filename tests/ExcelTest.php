@@ -2,6 +2,7 @@
 
 namespace Maatwebsite\Excel\Tests;
 
+use Illuminate\Http\UploadedFile;
 use Maatwebsite\Excel\Excel;
 use PHPUnit\Framework\Assert;
 use Illuminate\Http\Testing\File;
@@ -224,20 +225,69 @@ class ExcelTest extends TestCase
     }
 
     /**
-     * @param string $filePath
+     * @test
+     * @expectedException \Maatwebsite\Excel\Exceptions\NoTypeDetectedException
+     */
+    public function import_will_throw_error_when_no_reader_type_could_be_detected()
+    {
+        $import = new class implements ToArray {
+            /**
+             * @param array $array
+             */
+            public function array(array $array)
+            {
+                Assert::assertEquals([
+                    ['test', 'test'],
+                    ['test', 'test'],
+                ], $array);
+            }
+        };
+
+        $this->SUT->import($import, UploadedFile::fake()->create('import'));
+    }
+
+    /**
+     * @test
+     */
+    public function can_import_without_extension_with_explicit_reader_type()
+    {
+        $import = new class implements ToArray {
+            /**
+             * @param array $array
+             */
+            public function array(array $array)
+            {
+                Assert::assertEquals([
+                    ['test', 'test'],
+                    ['test', 'test'],
+                ], $array);
+            }
+        };
+
+        $this->SUT->import(
+            $import,
+            $this->givenUploadedFile(__DIR__ . '/Data/Disks/Local/import.xlsx', 'import'),
+            null,
+            Excel::XLSX
+        );
+    }
+
+    /**
+     * @param string      $filePath
+     * @param string|null $filename
      *
      * @return File
      */
-    public function givenUploadedFile(string $filePath): File
+    public function givenUploadedFile(string $filePath, string $filename = null): File
     {
-        $fileName = basename($filePath);
+        $filename = $filename ?? basename($filePath);
 
         // Create temporary file.
-        $newFilePath = sys_get_temp_dir() . DIRECTORY_SEPARATOR . $fileName;
+        $newFilePath = tempnam(sys_get_temp_dir(), 'import-');
 
         // Copy the existing file to a temporary file.
         copy($filePath, $newFilePath);
 
-        return new File('users.xlsx', fopen($newFilePath, 'r'));
+        return new File($filename, fopen($newFilePath, 'r'));
     }
 }
