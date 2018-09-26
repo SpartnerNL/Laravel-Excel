@@ -3,9 +3,6 @@
 namespace Maatwebsite\Excel\Imports;
 
 use Maatwebsite\Excel\Row;
-use Maatwebsite\Excel\Sheet;
-use Illuminate\Support\Collection;
-use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use Maatwebsite\Excel\Concerns\WithStartRow;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
@@ -67,25 +64,5 @@ class HeadingRowExtractor
         }
 
         return [];
-    }
-
-    /**
-     * @param Spreadsheet          $spreadsheet
-     * @param array                $sheetImports
-     * @param WithHeadingRow|mixed $importable
-     *
-     * @return array
-     */
-    public static function extractFromSheets(Spreadsheet $spreadsheet, array $sheetImports, $importable)
-    {
-        $headings = new Collection;
-
-        foreach ($sheetImports as $index => $sheetImport) {
-            $sheet = Sheet::make($spreadsheet, $index);
-            $headings->push(collect(static::extract($sheet->getDelegate(), $importable)));
-            $sheet->disconnect();
-        }
-
-        return $headings;
     }
 }

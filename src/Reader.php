@@ -11,9 +11,7 @@ use Maatwebsite\Excel\Events\BeforeImport;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Filesystem\FilesystemManager;
 use PhpOffice\PhpSpreadsheet\Reader\IReader;
-use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Factories\ReaderFactory;
-use Maatwebsite\Excel\Concerns\ExtractHeadings;
 use Maatwebsite\Excel\Concerns\MapsCsvSettings;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
@@ -69,10 +67,6 @@ class Reader
             throw new InvalidArgumentException('ShouldQueue is only supported in combination with WithChunkReading.');
         }
 
-        if ($import instanceof ExtractHeadings && !$import instanceof WithHeadingRow) {
-            throw new InvalidArgumentException('ExtractHeadings is only supported in combination with WithHeadingRow.');
-        }
-
         if ($import instanceof WithEvents) {
             $this->registerListeners($import->registerEvents());
         }
@@ -111,10 +105,6 @@ class Reader
         // for each loaded sheet in the spreadsheet
         if (!$import instanceof WithMultipleSheets) {
             $sheetImports = array_fill(0, $this->spreadsheet->getSheetCount(), $import);
-        }
-
-        if ($import instanceof ExtractHeadings) {
-            return HeadingRowExtractor::extractFromSheets($this->spreadsheet, $sheetImports, $import);
         }
 
         foreach ($sheetImports as $index => $sheetImport) {

@@ -2,7 +2,6 @@
 
 namespace Maatwebsite\Excel;
 
-use Illuminate\Support\Collection;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Filesystem\FilesystemManager;
@@ -133,7 +132,7 @@ class Excel implements Exporter, Importer
 
         $response = $this->reader->read($import, $filePath, $readerType, $disk);
 
-        if ($response instanceof PendingDispatch || $response instanceof Collection) {
+        if ($response instanceof PendingDispatch) {
             return $response;
         }
 
