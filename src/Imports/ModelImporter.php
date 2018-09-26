@@ -2,7 +2,6 @@
 
 namespace Maatwebsite\Excel\Imports;
 
-use Maatwebsite\Excel\Concerns\WithLimit;
 use Maatwebsite\Excel\Row;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;

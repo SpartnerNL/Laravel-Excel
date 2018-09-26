@@ -2,8 +2,8 @@
 
 namespace Maatwebsite\Excel\Imports;
 
-use Illuminate\Support\Collection;
 use InvalidArgumentException;
+use Illuminate\Support\Collection;
 
 class HeadingRowFormatter
 {

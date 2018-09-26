@@ -18,8 +18,8 @@ class HeadingRowImportTest extends TestCase
 
         $this->assertEquals([
             [
-                ['name', 'email']
-            ]
+                ['name', 'email'],
+            ],
         ], $headings);
     }
 
@@ -28,8 +28,8 @@ class HeadingRowImportTest extends TestCase
      */
     public function can_import_only_heading_row_with_custom_heading_row_formatter()
     {
-        HeadingRowFormatter::extend('custom', function($value) {
-             return 'custom-' . $value;
+        HeadingRowFormatter::extend('custom', function ($value) {
+            return 'custom-' . $value;
         });
 
         HeadingRowFormatter::default('custom');
@@ -40,8 +40,8 @@ class HeadingRowImportTest extends TestCase
 
         $this->assertEquals([
             [
-                ['custom-name', 'custom-email']
-            ]
+                ['custom-name', 'custom-email'],
+            ],
         ], $headings);
 
         // Reset the formatter.
@@ -59,8 +59,8 @@ class HeadingRowImportTest extends TestCase
 
         $this->assertEquals([
             [
-                ['patrick-brouwers', 'patrick-at-maatwebsitenl']
-            ]
+                ['patrick-brouwers', 'patrick-at-maatwebsitenl'],
+            ],
         ], $headings);
     }
 
@@ -75,11 +75,11 @@ class HeadingRowImportTest extends TestCase
 
         $this->assertEquals([
             [
-                ['1a1', '1b1'] // slugged first row of sheet 1
+                ['1a1', '1b1'], // slugged first row of sheet 1
             ],
             [
-                ['2a1', '2b1'] // slugged first row of sheet 2
-            ]
+                ['2a1', '2b1'], // slugged first row of sheet 2
+            ],
         ], $headings);
     }
 
@@ -94,11 +94,11 @@ class HeadingRowImportTest extends TestCase
 
         $this->assertEquals([
             [
-                ['1a2', '1b2'] // slugged 2nd row of sheet 1
+                ['1a2', '1b2'], // slugged 2nd row of sheet 1
             ],
             [
-                ['2a2', '2b2'] // slugged 2nd row of sheet 2
-            ]
+                ['2a2', '2b2'], // slugged 2nd row of sheet 2
+            ],
         ], $headings);
     }
 }
