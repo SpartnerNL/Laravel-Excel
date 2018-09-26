@@ -87,7 +87,7 @@ class Reader
 
         foreach ($this->sheetImports as $index => $sheetImport) {
             $sheet = Sheet::make($this->spreadsheet, $index);
-            $sheet->import($sheetImport, $sheet->getHeadingRow($sheetImport));
+            $sheet->import($sheetImport, $sheet->getStartRow($sheetImport));
             $sheet->disconnect();
         }
 
@@ -115,8 +115,8 @@ class Reader
 
         $sheets = [];
         foreach ($this->sheetImports as $index => $sheetImport) {
-            $sheet    = Sheet::make($this->spreadsheet, $index);
-            $sheets[] = $sheet->toArray($sheetImport, $sheet->getHeadingRow($sheetImport));
+            $sheet          = Sheet::make($this->spreadsheet, $index);
+            $sheets[$index] = $sheet->toArray($sheetImport, $sheet->getStartRow($sheetImport));
             $sheet->disconnect();
         }
 
@@ -145,7 +145,7 @@ class Reader
         $sheets = new Collection();
         foreach ($this->sheetImports as $index => $sheetImport) {
             $sheet = Sheet::make($this->spreadsheet, $index);
-            $sheets->push($sheet->toCollection($sheetImport, $sheet->getHeadingRow($sheetImport)));
+            $sheets->put($index, $sheet->toCollection($sheetImport, $sheet->getStartRow($sheetImport)));
             $sheet->disconnect();
         }
 

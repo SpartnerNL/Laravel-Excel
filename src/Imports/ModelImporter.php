@@ -2,6 +2,7 @@
 
 namespace Maatwebsite\Excel\Imports;
 
+use Maatwebsite\Excel\Concerns\WithLimit;
 use Maatwebsite\Excel\Row;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
@@ -35,9 +36,10 @@ class ModelImporter
     {
         $headingRow = HeadingRowExtractor::extract($worksheet, $import);
         $batchSize  = $import instanceof WithBatchInserts ? $import->batchSize() : 1;
+        $endRow     = EndRowFinder::find($import, $startRow);
 
         $i = 0;
-        foreach ($worksheet->getRowIterator()->resetStart($startRow) as $spreadSheetRow) {
+        foreach ($worksheet->getRowIterator($startRow, $endRow) as $spreadSheetRow) {
             $i++;
 
             $row   = new Row($spreadSheetRow, $headingRow);

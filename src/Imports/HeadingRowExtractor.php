@@ -9,6 +9,9 @@ use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
 class HeadingRowExtractor
 {
+    /**
+     * @const int
+     */
     const DEFAULT_HEADING_ROW = 1;
 
     /**
@@ -37,7 +40,7 @@ class HeadingRowExtractor
         // The start row is the row after the heading row if we have one!
         return $importable instanceof WithHeadingRow
             ? self::headingRow($importable) + 1
-            : 1;
+            : self::DEFAULT_HEADING_ROW;
     }
 
     /**
@@ -53,16 +56,9 @@ class HeadingRowExtractor
         }
 
         $headingRowNumber = self::headingRow($importable);
+        $rows             = iterator_to_array($worksheet->getRowIterator($headingRowNumber, $headingRowNumber));
+        $headingRow       = head($rows);
 
-        foreach ($worksheet->getRowIterator($headingRowNumber, $headingRowNumber + 1) as $row) {
-            return (new Row($row))
-                ->toCollection(null, false, false)
-                ->map(function ($value) {
-                    return str_slug($value);
-                })
-                ->toArray();
-        }
-
-        return [];
+        return HeadingRowFormatter::format((new Row($headingRow))->toArray(null, false, false));
     }
 }

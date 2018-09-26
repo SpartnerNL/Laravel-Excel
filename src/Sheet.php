@@ -5,6 +5,8 @@ namespace Maatwebsite\Excel;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToArray;
 use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Concerns\WithLimit;
+use Maatwebsite\Excel\Imports\EndRowFinder;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use Maatwebsite\Excel\Concerns\FromView;
 use Maatwebsite\Excel\Events\AfterSheet;
@@ -240,14 +242,21 @@ class Sheet
      */
     public function toArray($import, int $startRow = null, $nullValue = null, $calculateFormulas = false, $formatData = false)
     {
+        $endRow     = EndRowFinder::find($import, $startRow);
         $headingRow = HeadingRowExtractor::extract($this->worksheet, $import);
 
-        $array = [];
-        foreach ($this->worksheet->getRowIterator($startRow) as $row) {
-            $array[] = (new Row($row, $headingRow))->toArray($nullValue, $calculateFormulas, $formatData);
+        $rows = [];
+        foreach ($this->worksheet->getRowIterator($startRow, $endRow) as $row) {
+            $row = (new Row($row, $headingRow))->toArray($nullValue, $calculateFormulas, $formatData);
+
+            if ($import instanceof WithMapping) {
+                $row = $import->map($row);
+            }
+
+            $rows[] = $row;
         }
 
-        return $array;
+        return $rows;
     }
 
     /**
@@ -497,7 +506,7 @@ class Sheet
      *
      * @return int
      */
-    public function getHeadingRow($sheetImport): int
+    public function getStartRow($sheetImport): int
     {
         return HeadingRowExtractor::determineStartRow($sheetImport);
     }

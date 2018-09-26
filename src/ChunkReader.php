@@ -3,6 +3,7 @@
 namespace Maatwebsite\Excel;
 
 use Illuminate\Support\Collection;
+use Maatwebsite\Excel\Concerns\WithLimit;
 use Maatwebsite\Excel\Jobs\ReadChunk;
 use Maatwebsite\Excel\Jobs\QueueImport;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -28,13 +29,16 @@ class ChunkReader
 
         $jobs = new Collection();
         foreach ($worksheets as $name => $sheetImport) {
-            for ($startRow = HeadingRowExtractor::determineStartRow($sheetImport); $startRow <= $totalRows[$name]; $startRow += $chunkSize) {
+            $startRow         = HeadingRowExtractor::determineStartRow($sheetImport);
+            $totalRows[$name] = $import instanceof WithLimit ? $import->limit() : $totalRows[$name];
+
+            for ($currentRow = $startRow; $currentRow <= $totalRows[$name]; $currentRow += $chunkSize) {
                 $jobs->push(new ReadChunk(
                     $reader,
                     $file,
                     $name,
                     $sheetImport,
-                    $startRow,
+                    $currentRow,
                     $chunkSize
                 ));
             }
