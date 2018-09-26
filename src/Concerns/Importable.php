@@ -2,10 +2,12 @@
 
 namespace Maatwebsite\Excel\Concerns;
 
+use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Excel;
 use InvalidArgumentException;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\PendingDispatch;
+use Maatwebsite\Excel\Importer;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Maatwebsite\Excel\Exceptions\NoFilePathGivenException;
 
@@ -17,17 +19,53 @@ trait Importable
      * @param string|null              $readerType
      *
      * @throws NoFilePathGivenException
-     * @return Excel|PendingDispatch
+     * @return Importer|PendingDispatch
      */
     public function import($filePath = null, string $disk = null, string $readerType = null)
     {
-        $filePath = $filePath ?? $this->filePath ?? null;
+        $filePath = $this->getFilePath($filePath);
 
-        if (null === $filePath) {
-            throw new NoFilePathGivenException();
-        }
+        return $this->getImporter()->import(
+            $this,
+            $filePath,
+            $disk ?? $this->disk ?? null,
+            $readerType ?? $this->readerType ?? null
+        );
+    }
 
-        return resolve(Excel::class)->import(
+    /**
+     * @param string|UploadedFile|null $filePath
+     * @param string|null              $disk
+     * @param string|null              $readerType
+     *
+     * @throws NoFilePathGivenException
+     * @return array
+     */
+    public function toArray($filePath = null, string $disk = null, string $readerType = null): array
+    {
+        $filePath = $this->getFilePath($filePath);
+
+        return $this->getImporter()->toArray(
+            $this,
+            $filePath,
+            $disk ?? $this->disk ?? null,
+            $readerType ?? $this->readerType ?? null
+        );
+    }
+
+    /**
+     * @param string|UploadedFile|null $filePath
+     * @param string|null              $disk
+     * @param string|null              $readerType
+     *
+     * @throws NoFilePathGivenException
+     * @return Collection
+     */
+    public function toCollection($filePath = null, string $disk = null, string $readerType = null): Collection
+    {
+        $filePath = $this->getFilePath($filePath);
+
+        return $this->getImporter()->toCollection(
             $this,
             $filePath,
             $disk ?? $this->disk ?? null,
@@ -51,5 +89,30 @@ trait Importable
         }
 
         return $this->import($filePath, $disk, $readerType);
+    }
+
+    /**
+     * @param string|null $filePath
+     *
+     * @throws NoFilePathGivenException
+     * @return string
+     */
+    private function getFilePath(string $filePath = null): string
+    {
+        $filePath = $filePath ?? $this->filePath ?? null;
+
+        if (null === $filePath) {
+            throw new NoFilePathGivenException();
+        }
+
+        return $filePath;
+    }
+
+    /**
+     * @return Importer
+     */
+    private function getImporter(): Importer
+    {
+        return resolve(Importer::class);
     }
 }

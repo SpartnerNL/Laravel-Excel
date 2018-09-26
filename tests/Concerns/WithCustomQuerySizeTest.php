@@ -43,16 +43,4 @@ class WithCustomQuerySizeTest extends TestCase
 
         $this->assertCount(Group::count(), $actual);
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getPackageProviders($app)
-    {
-        return [
-            \Orchestra\Database\ConsoleServiceProvider::class,
-        ];
-
-        return parent::getPackageAliases($app);
-    }
 }

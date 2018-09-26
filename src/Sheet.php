@@ -230,11 +230,11 @@ class Sheet
     }
 
     /**
-     * @param ToArray|ToCollection $import
-     * @param int|null             $startRow
-     * @param null                 $nullValue
-     * @param bool                 $calculateFormulas
-     * @param bool                 $formatData
+     * @param object   $import
+     * @param int|null $startRow
+     * @param null     $nullValue
+     * @param bool     $calculateFormulas
+     * @param bool     $formatData
      *
      * @return array
      */
@@ -251,15 +251,15 @@ class Sheet
     }
 
     /**
-     * @param ToCollection $import
-     * @param int|null     $startRow
-     * @param null         $nullValue
-     * @param bool         $calculateFormulas
-     * @param bool         $formatData
+     * @param object   $import
+     * @param int|null $startRow
+     * @param null     $nullValue
+     * @param bool     $calculateFormulas
+     * @param bool     $formatData
      *
      * @return Collection
      */
-    public function toCollection(ToCollection $import, int $startRow = null, $nullValue = null, $calculateFormulas = false, $formatData = false): Collection
+    public function toCollection($import, int $startRow = null, $nullValue = null, $calculateFormulas = false, $formatData = false): Collection
     {
         return new Collection(array_map(function (array $row) {
             return new Collection($row);
@@ -490,6 +490,16 @@ class Sheet
         }
 
         return $row;
+    }
+
+    /**
+     * @param $sheetImport
+     *
+     * @return int
+     */
+    public function getHeadingRow($sheetImport): int
+    {
+        return HeadingRowExtractor::determineStartRow($sheetImport);
     }
 
     /**

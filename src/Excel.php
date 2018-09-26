@@ -2,6 +2,7 @@
 
 namespace Maatwebsite\Excel;
 
+use Illuminate\Support\Collection;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Filesystem\FilesystemManager;
@@ -123,20 +124,35 @@ class Excel implements Exporter, Importer
      */
     public function import($import, $filePath, string $disk = null, string $readerType = null)
     {
-        $readerType = $this->findTypeByExtension($filePath, $readerType);
-        $readerType = $readerType ?? IOFactory::identify($filePath);
+        $readerType = $this->getReaderType($filePath, $readerType);
 
-        if (null === $readerType) {
-            throw new NoTypeDetectedException();
-        }
-
-        $response = $this->reader->read($import, $filePath, $readerType, $disk);
+        $response =  $this->reader->read($import, $filePath, $readerType, $disk);
 
         if ($response instanceof PendingDispatch) {
             return $response;
         }
 
         return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function toArray($import, $filePath, string $disk = null, string $readerType = null): array
+    {
+        $readerType = $this->getReaderType($filePath, $readerType);
+
+        return $this->reader->toArray($import, $filePath, $readerType, $disk);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function toCollection($import, $filePath, string $disk = null, string $readerType = null): Collection
+    {
+        $readerType = $this->getReaderType($filePath, $readerType);
+
+        return $this->reader->toCollection($import, $filePath, $readerType, $disk);
     }
 
     /**
@@ -164,15 +180,34 @@ class Excel implements Exporter, Importer
     }
 
     /**
-     * @param string|UploadedFile $fileName
+     * @param string|UploadedFile $filePath
      * @param string|null         $readerType
+     *
+     * @throws NoTypeDetectedException
+     * @return string
+     */
+    private function getReaderType($filePath, string $readerType = null): string
+    {
+        $readerType = $this->findTypeByExtension($filePath, $readerType);
+        $readerType = $readerType ?? IOFactory::identify($filePath);
+
+        if (null === $readerType) {
+            throw new NoTypeDetectedException();
+        }
+
+        return $readerType;
+    }
+
+    /**
+     * @param string|UploadedFile $fileName
+     * @param string|null         $type
      *
      * @return string|null
      */
-    protected function findTypeByExtension($fileName, string $readerType = null): string
+    protected function findTypeByExtension($fileName, string $type = null): string
     {
-        if (null !== $readerType) {
-            return $readerType;
+        if (null !== $type) {
+            return $type;
         }
 
         if (!$fileName instanceof UploadedFile) {
@@ -182,7 +217,7 @@ class Excel implements Exporter, Importer
             $extension = $fileName->getClientOriginalExtension();
         }
 
-        if (null === $readerType && trim($extension) === '') {
+        if (null === $type && trim($extension) === '') {
             throw new NoTypeDetectedException();
         }
 
