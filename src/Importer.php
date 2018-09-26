@@ -12,19 +12,19 @@ interface Importer
      * @param object              $import
      * @param string|UploadedFile $filePath
      * @param string|null         $disk
-     * @param string|null         $writerType
+     * @param string|null         $readerType
      *
      * @return PendingDispatch|Importer
      */
-    public function import($import, $filePath, string $disk = null, string $writerType = null);
+    public function import($import, $filePath, string $disk = null, string $readerType = null);
 
     /**
      * @param ShouldQueue         $import
      * @param string|UploadedFile $filePath
      * @param string|null         $disk
-     * @param string              $writerType
+     * @param string              $readerType
      *
      * @return PendingDispatch
      */
-    public function queueImport(ShouldQueue $import, $filePath, string $disk = null, string $writerType = null);
+    public function queueImport(ShouldQueue $import, $filePath, string $disk = null, string $readerType = null);
 }
