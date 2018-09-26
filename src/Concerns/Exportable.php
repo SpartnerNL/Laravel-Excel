@@ -2,11 +2,10 @@
 
 namespace Maatwebsite\Excel\Concerns;
 
-use Maatwebsite\Excel\Excel;
+use Maatwebsite\Excel\Exporter;
 use Illuminate\Foundation\Bus\PendingDispatch;
 use Maatwebsite\Excel\Exceptions\NoFilenameGivenException;
 use Maatwebsite\Excel\Exceptions\NoFilePathGivenException;
-use Maatwebsite\Excel\Exporter;
 
 trait Exportable
 {

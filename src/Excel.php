@@ -180,25 +180,6 @@ class Excel implements Exporter, Importer
     }
 
     /**
-     * @param string|UploadedFile $filePath
-     * @param string|null         $readerType
-     *
-     * @throws NoTypeDetectedException
-     * @return string
-     */
-    private function getReaderType($filePath, string $readerType = null): string
-    {
-        $readerType = $this->findTypeByExtension($filePath, $readerType);
-        $readerType = $readerType ?? IOFactory::identify($filePath);
-
-        if (null === $readerType) {
-            throw new NoTypeDetectedException();
-        }
-
-        return $readerType;
-    }
-
-    /**
      * @param string|UploadedFile $fileName
      * @param string|null         $type
      *
@@ -222,5 +203,24 @@ class Excel implements Exporter, Importer
         }
 
         return config('excel.extension_detector.' . strtolower($extension));
+    }
+
+    /**
+     * @param string|UploadedFile $filePath
+     * @param string|null         $readerType
+     *
+     * @throws NoTypeDetectedException
+     * @return string
+     */
+    private function getReaderType($filePath, string $readerType = null): string
+    {
+        $readerType = $this->findTypeByExtension($filePath, $readerType);
+        $readerType = $readerType ?? IOFactory::identify($filePath);
+
+        if (null === $readerType) {
+            throw new NoTypeDetectedException();
+        }
+
+        return $readerType;
     }
 }

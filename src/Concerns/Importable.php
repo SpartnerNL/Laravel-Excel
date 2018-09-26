@@ -2,12 +2,11 @@
 
 namespace Maatwebsite\Excel\Concerns;
 
-use Illuminate\Support\Collection;
-use Maatwebsite\Excel\Excel;
 use InvalidArgumentException;
+use Maatwebsite\Excel\Importer;
+use Illuminate\Support\Collection;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\PendingDispatch;
-use Maatwebsite\Excel\Importer;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Maatwebsite\Excel\Exceptions\NoFilePathGivenException;
 

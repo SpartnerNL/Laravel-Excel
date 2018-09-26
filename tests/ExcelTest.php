@@ -2,10 +2,9 @@
 
 namespace Maatwebsite\Excel\Tests;
 
-use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Excel;
-use Maatwebsite\Excel\Importer;
 use PHPUnit\Framework\Assert;
+use Maatwebsite\Excel\Importer;
 use Illuminate\Http\Testing\File;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
@@ -13,6 +12,7 @@ use Illuminate\Contracts\View\View;
 use Maatwebsite\Excel\Concerns\ToArray;
 use Maatwebsite\Excel\Concerns\FromView;
 use Maatwebsite\Excel\Concerns\Exportable;
+use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Events\BeforeWriting;
 use Maatwebsite\Excel\Concerns\FromCollection;
@@ -118,8 +118,7 @@ class ExcelTest extends TestCase
      */
     public function can_store_csv_export_with_custom_settings()
     {
-        $export = new class implements WithEvents, FromCollection
-        {
+        $export = new class implements WithEvents, FromCollection {
             use RegistersEventListeners;
 
             /**
@@ -162,8 +161,7 @@ class ExcelTest extends TestCase
      */
     public function cannot_use_from_collection_and_from_view_on_same_export()
     {
-        $export = new class implements FromCollection, FromView
-        {
+        $export = new class implements FromCollection, FromView {
             use Exportable;
 
             /**
@@ -191,8 +189,7 @@ class ExcelTest extends TestCase
      */
     public function can_import_a_simple_xlsx_file_to_array()
     {
-        $import = new class
-        {
+        $import = new class {
             use Importable;
         };
 
@@ -200,7 +197,7 @@ class ExcelTest extends TestCase
             [
                 ['test', 'test'],
                 ['test', 'test'],
-            ]
+            ],
         ], $import->toArray('import.xlsx'));
     }
 
@@ -209,8 +206,7 @@ class ExcelTest extends TestCase
      */
     public function can_import_a_simple_xlsx_file_to_collection()
     {
-        $import = new class
-        {
+        $import = new class {
             use Importable;
         };
 
@@ -218,7 +214,7 @@ class ExcelTest extends TestCase
             new Collection([
                 new Collection(['test', 'test']),
                 new Collection(['test', 'test']),
-            ])
+            ]),
         ]), $import->toCollection('import.xlsx'));
     }
 
@@ -227,8 +223,7 @@ class ExcelTest extends TestCase
      */
     public function can_import_a_simple_xlsx_file()
     {
-        $import = new class implements ToArray
-        {
+        $import = new class implements ToArray {
             /**
              * @param array $array
              */
@@ -251,8 +246,7 @@ class ExcelTest extends TestCase
      */
     public function can_chain_imports()
     {
-        $import1 = new class implements ToArray
-        {
+        $import1 = new class implements ToArray {
             /**
              * @param array $array
              */
@@ -265,8 +259,7 @@ class ExcelTest extends TestCase
             }
         };
 
-        $import2 = new class implements ToArray
-        {
+        $import2 = new class implements ToArray {
             /**
              * @param array $array
              */
@@ -291,8 +284,7 @@ class ExcelTest extends TestCase
      */
     public function can_import_a_simple_xlsx_file_from_uploaded_file()
     {
-        $import = new class implements ToArray
-        {
+        $import = new class implements ToArray {
             /**
              * @param array $array
              */
@@ -314,8 +306,7 @@ class ExcelTest extends TestCase
      */
     public function import_will_throw_error_when_no_reader_type_could_be_detected()
     {
-        $import = new class implements ToArray
-        {
+        $import = new class implements ToArray {
             /**
              * @param array $array
              */
@@ -336,8 +327,7 @@ class ExcelTest extends TestCase
      */
     public function can_import_without_extension_with_explicit_reader_type()
     {
-        $import = new class implements ToArray
-        {
+        $import = new class implements ToArray {
             /**
              * @param array $array
              */
