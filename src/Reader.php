@@ -286,10 +286,10 @@ class Reader
     }
 
     /**
-     * @param $import
-     * @param $reader
+     * @param object $import
+     * @param IReader $reader
      */
-    private function beforeReading($import, $reader): void
+    private function beforeReading($import, IReader $reader)
     {
         $this->sheetImports = $this->buildSheetImports($import, $reader);
 
