@@ -2,11 +2,15 @@
 
 namespace Maatwebsite\Excel\Tests;
 
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
+use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Fakes\ExcelFake;
 use Illuminate\Foundation\Bus\PendingDispatch;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Facades\Excel as ExcelFacade;
+use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class ExcelFakeTest extends TestCase
@@ -93,6 +97,38 @@ class ExcelFakeTest extends TestCase
     /**
      * @test
      */
+    public function can_assert_against_a_fake_import()
+    {
+        ExcelFacade::fake();
+
+        ExcelFacade::import($this->givenImport(), 'stored-filename.csv', 's3');
+
+        ExcelFacade::assertImported('stored-filename.csv', 's3');
+        ExcelFacade::assertImported('stored-filename.csv', 's3', function (ToModel $import) {
+            return $import->model([]) instanceof User;
+        });
+    }
+
+    /**
+     * @test
+     */
+    public function can_assert_against_a_fake_queued_import()
+    {
+        ExcelFacade::fake();
+
+        $response = ExcelFacade::queueImport($this->givenImport(), 'queued-filename.csv', 's3');
+
+        $this->assertInstanceOf(PendingDispatch::class, $response);
+
+        ExcelFacade::assertQueued('queued-filename.csv', 's3');
+        ExcelFacade::assertQueued('queued-filename.csv', 's3', function (ToModel $import) {
+            return $import->model([]) instanceof User;
+        });
+    }
+
+    /**
+     * @test
+     */
     public function a_callback_can_be_passed_as_the_second_argument_when_asserting_against_a_faked_queued_export()
     {
         ExcelFacade::fake();
@@ -119,6 +155,25 @@ class ExcelFakeTest extends TestCase
             public function collection()
             {
                 return collect(['foo', 'bar']);
+            }
+        };
+    }
+
+    /**
+     * @return object
+     */
+    private function givenImport()
+    {
+        return new class implements ToModel, ShouldQueue {
+
+            /**
+             * @param array $row
+             *
+             * @return Model|null
+             */
+            public function model(array $row)
+            {
+                return new User([]);
             }
         };
     }

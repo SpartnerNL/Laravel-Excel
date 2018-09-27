@@ -3,13 +3,18 @@
 namespace Maatwebsite\Excel\Fakes;
 
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Support\Collection;
+use Maatwebsite\Excel\Importer;
+use Maatwebsite\Excel\Reader;
 use PHPUnit\Framework\Assert;
 use Maatwebsite\Excel\Exporter;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Foundation\Bus\PendingDispatch;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
-class ExcelFake implements Exporter
+class ExcelFake implements Exporter, Importer
 {
     /**
      * @var array
@@ -25,6 +30,11 @@ class ExcelFake implements Exporter
      * @var array
      */
     protected $queued = [];
+
+    /**
+     * @var array
+     */
+    protected $imported = [];
 
     /**
      * {@inheritdoc}
@@ -54,6 +64,75 @@ class ExcelFake implements Exporter
         Queue::fake();
 
         $this->queued[$disk ?? 'default'][$filePath] = $export;
+
+        return new PendingDispatch(new class {
+            use Queueable;
+
+            public function handle()
+            {
+                //
+            }
+        });
+    }
+
+    /**
+     * @param object              $import
+     * @param string|UploadedFile $filePath
+     * @param string|null         $disk
+     * @param string|null         $readerType
+     *
+     * @return Reader|PendingDispatch
+     */
+    public function import($import, $filePath, string $disk = null, string $readerType = null)
+    {
+        $this->imported[$disk ?? 'default'][$filePath] = $import;
+
+        return $this;
+    }
+
+    /**
+     * @param object              $import
+     * @param string|UploadedFile $filePath
+     * @param string|null         $disk
+     * @param string|null         $readerType
+     *
+     * @return array
+     */
+    public function toArray($import, $filePath, string $disk = null, string $readerType = null): array
+    {
+        $this->imported[$disk ?? 'default'][$filePath] = $import;
+
+        return [];
+    }
+
+    /**
+     * @param object              $import
+     * @param string|UploadedFile $filePath
+     * @param string|null         $disk
+     * @param string|null         $readerType
+     *
+     * @return Collection
+     */
+    public function toCollection($import, $filePath, string $disk = null, string $readerType = null): Collection
+    {
+        $this->imported[$disk ?? 'default'][$filePath] = $import;
+
+        return new Collection();
+    }
+
+    /**
+     * @param ShouldQueue         $import
+     * @param string|UploadedFile $filePath
+     * @param string|null         $disk
+     * @param string              $readerType
+     *
+     * @return PendingDispatch
+     */
+    public function queueImport(ShouldQueue $import, $filePath, string $disk = null, string $readerType = null)
+    {
+        Queue::fake();
+
+        $this->queued[$disk ?? 'default'][$filePath] = $import;
 
         return new PendingDispatch(new class {
             use Queueable;
@@ -142,6 +221,37 @@ class ExcelFake implements Exporter
         Assert::assertTrue(
             $callback($queuedForDisk[$filePath]),
             "The file [{$filePath}] was not stored with the expected data."
+        );
+    }
+
+    /**
+     * @param string               $filePath
+     * @param string|callable|null $disk
+     * @param callable|null        $callback
+     */
+    public function assertImported(string $filePath, $disk = null, $callback = null)
+    {
+        if (is_callable($disk)) {
+            $callback = $disk;
+            $disk     = null;
+        }
+
+        $disk         = $disk ?? 'default';
+        $importedOnDisk = $this->imported[$disk] ?? [];
+
+        Assert::assertArrayHasKey(
+            $filePath,
+            $importedOnDisk,
+            sprintf('%s is not stored on disk %s', $filePath, $disk)
+        );
+
+        $callback = $callback ?: function () {
+            return true;
+        };
+
+        Assert::assertTrue(
+            $callback($importedOnDisk[$filePath]),
+            "The file [{$filePath}] was not imported with the expected data."
         );
     }
 }
