@@ -59,7 +59,7 @@ class HeadingRowImportTest extends TestCase
 
         $this->assertEquals([
             [
-                ['patrick-brouwers', 'patrick-at-maatwebsitenl'],
+                ['patrick_brouwers', 'patrick_at_maatwebsitenl'],
             ],
         ], $headings);
     }

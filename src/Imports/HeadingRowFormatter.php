@@ -84,7 +84,7 @@ class HeadingRowFormatter
 
         switch (static::$formatter) {
             case self::FORMATTER_SLUG:
-                return str_slug($value);
+                return str_slug($value, '_');
         }
 
         // No formatter (FORMATTER_NONE)
