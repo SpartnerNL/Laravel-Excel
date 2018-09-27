@@ -3,16 +3,16 @@
 namespace Maatwebsite\Excel\Fakes;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Support\Collection;
-use Maatwebsite\Excel\Importer;
 use Maatwebsite\Excel\Reader;
 use PHPUnit\Framework\Assert;
 use Maatwebsite\Excel\Exporter;
+use Maatwebsite\Excel\Importer;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Queue;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\PendingDispatch;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class ExcelFake implements Exporter, Importer
 {
@@ -236,7 +236,7 @@ class ExcelFake implements Exporter, Importer
             $disk     = null;
         }
 
-        $disk         = $disk ?? 'default';
+        $disk           = $disk ?? 'default';
         $importedOnDisk = $this->imported[$disk] ?? [];
 
         Assert::assertArrayHasKey(

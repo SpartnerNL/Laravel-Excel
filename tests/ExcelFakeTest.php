@@ -2,11 +2,11 @@
 
 namespace Maatwebsite\Excel\Tests;
 
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
-use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Fakes\ExcelFake;
+use Illuminate\Database\Eloquent\Model;
+use Maatwebsite\Excel\Concerns\ToModel;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\PendingDispatch;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Facades\Excel as ExcelFacade;
@@ -165,7 +165,6 @@ class ExcelFakeTest extends TestCase
     private function givenImport()
     {
         return new class implements ToModel, ShouldQueue {
-
             /**
              * @param array $row
              *
