@@ -31,7 +31,11 @@ class MappedReader
         }
 
         if ($import instanceof ToModel) {
-            $import->model($mapped);
+            $model = $import->model($mapped);
+
+            if ($model) {
+                $model->saveOrFail();
+            }
         }
 
         if ($import instanceof ToCollection) {

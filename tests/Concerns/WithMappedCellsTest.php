@@ -2,6 +2,7 @@
 
 namespace Maatwebsite\Excel\Tests\Concerns;
 
+use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
 use PHPUnit\Framework\Assert;
 use Maatwebsite\Excel\Tests\TestCase;
 use Maatwebsite\Excel\Concerns\ToArray;
@@ -11,6 +12,16 @@ use Maatwebsite\Excel\Concerns\WithMappedCells;
 
 class WithMappedCellsTest extends TestCase
 {
+    /**
+     * Setup the test environment.
+     */
+    protected function setUp()
+    {
+        parent::setUp();
+
+        $this->loadLaravelMigrations(['--database' => 'testing']);
+    }
+
     /**
      * @test
      */
@@ -66,6 +77,8 @@ class WithMappedCellsTest extends TestCase
 
             /**
              * @param array $array
+             *
+             * @return User
              */
             public function model(array $array)
             {
@@ -73,9 +86,16 @@ class WithMappedCellsTest extends TestCase
                     'name'  => 'Patrick Brouwers',
                     'email' => 'patrick@maatwebsite.nl',
                 ], $array);
+
+                return new User($array);
             }
         };
 
         $import->import('mapped-import.xlsx');
+
+        $this->assertDatabaseHas('users', [
+            'name'  => 'Patrick Brouwers',
+            'email' => 'patrick@maatwebsite.nl',
+        ]);
     }
 }
