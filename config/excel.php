@@ -45,6 +45,23 @@ return [
         ],
     ],
 
+    'imports' => [
+
+        'heading_row' => [
+
+            /*
+            |--------------------------------------------------------------------------
+            | Heading Row Formatter
+            |--------------------------------------------------------------------------
+            |
+            | Configure the heading row formatter.
+            | Available options: none|slug|custom
+            |
+            */
+            'formatter' => 'slug',
+        ],
+    ],
+
     /*
     |--------------------------------------------------------------------------
     | Extension detector
@@ -78,7 +95,6 @@ return [
         |--------------------------------------------------------------------------
         |
         | Configure here which Pdf driver should be used by default.
-        |
         | Available options: Excel::MPDF | Excel::TCPDF | Excel::DOMPDF
         |
         */

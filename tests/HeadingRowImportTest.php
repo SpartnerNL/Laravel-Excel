@@ -43,9 +43,6 @@ class HeadingRowImportTest extends TestCase
                 ['custom-name', 'custom-email'],
             ],
         ], $headings);
-
-        // Reset the formatter.
-        HeadingRowFormatter::default();
     }
 
     /**
@@ -100,5 +97,32 @@ class HeadingRowImportTest extends TestCase
                 ['2a2', '2b2'], // slugged 2nd row of sheet 2
             ],
         ], $headings);
+    }
+
+    /**
+     * @test
+     */
+    public function can_import_heading_row_with_custom_formatter_defined_in_config()
+    {
+        HeadingRowFormatter::extend('custom2', function ($value) {
+            return 'custom2-' . $value;
+        });
+
+        config()->set('excel.imports.heading_row.formatter', 'custom2');
+
+        $import = new HeadingRowImport();
+
+        $headings = $import->toArray('import-users-with-headings.xlsx');
+
+        $this->assertEquals([
+            [
+                ['custom2-name', 'custom2-email'],
+            ],
+        ], $headings);
+    }
+
+    public function tearDown()
+    {
+        HeadingRowFormatter::reset();
     }
 }

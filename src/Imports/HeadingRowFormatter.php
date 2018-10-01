@@ -20,7 +20,7 @@ class HeadingRowFormatter
     /**
      * @var string
      */
-    protected static $formatter = self::FORMATTER_SLUG;
+    protected static $formatter;
 
     /**
      * @var callable[]
@@ -50,9 +50,9 @@ class HeadingRowFormatter
     /**
      * @param string $name
      */
-    public static function default(string $name = self::FORMATTER_SLUG)
+    public static function default(string $name = null)
     {
-        if (!isset(static::$customFormatters[$name]) && !in_array($name, static::$defaultFormatters, true)) {
+        if (null !== $name && !isset(static::$customFormatters[$name]) && !in_array($name, static::$defaultFormatters, true)) {
             throw new InvalidArgumentException(sprintf('Formatter "%s" does not exist', $name));
         }
 
@@ -75,6 +75,8 @@ class HeadingRowFormatter
      */
     protected static function callFormatter($value)
     {
+        static::$formatter = static::$formatter ?? config('excel.imports.heading_row.formatter', self::FORMATTER_SLUG);
+
         // Call custom formatter
         if (isset(static::$customFormatters[static::$formatter])) {
             $formatter = static::$customFormatters[static::$formatter];
@@ -89,5 +91,13 @@ class HeadingRowFormatter
 
         // No formatter (FORMATTER_NONE)
         return $value;
+    }
+
+    /**
+     * Reset the formatter.
+     */
+    public static function reset()
+    {
+        static::default(null);
     }
 }
