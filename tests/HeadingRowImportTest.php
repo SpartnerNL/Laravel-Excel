@@ -7,6 +7,11 @@ use Maatwebsite\Excel\Imports\HeadingRowFormatter;
 
 class HeadingRowImportTest extends TestCase
 {
+    public function tearDown()
+    {
+        HeadingRowFormatter::reset();
+    }
+
     /**
      * @test
      */
@@ -119,10 +124,5 @@ class HeadingRowImportTest extends TestCase
                 ['custom2-name', 'custom2-email'],
             ],
         ], $headings);
-    }
-
-    public function tearDown()
-    {
-        HeadingRowFormatter::reset();
     }
 }

@@ -69,6 +69,14 @@ class HeadingRowFormatter
     }
 
     /**
+     * Reset the formatter.
+     */
+    public static function reset()
+    {
+        static::default(null);
+    }
+
+    /**
      * @param mixed $value
      *
      * @return mixed
@@ -91,13 +99,5 @@ class HeadingRowFormatter
 
         // No formatter (FORMATTER_NONE)
         return $value;
-    }
-
-    /**
-     * Reset the formatter.
-     */
-    public static function reset()
-    {
-        static::default(null);
     }
 }
