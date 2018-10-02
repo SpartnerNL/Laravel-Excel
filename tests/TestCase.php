@@ -25,6 +25,25 @@ class TestCase extends OrchestraTestCase
     }
 
     /**
+     * @param string      $filePath
+     * @param string|null $filename
+     *
+     * @return File
+     */
+    public function givenUploadedFile(string $filePath, string $filename = null): File
+    {
+        $filename = $filename ?? basename($filePath);
+
+        // Create temporary file.
+        $newFilePath = tempnam(sys_get_temp_dir(), 'import-');
+
+        // Copy the existing file to a temporary file.
+        copy($filePath, $newFilePath);
+
+        return new File($filename, fopen($newFilePath, 'r'));
+    }
+
+    /**
      * @param string   $filePath
      * @param string   $writerType
      * @param int|null $sheetIndex
@@ -43,25 +62,6 @@ class TestCase extends OrchestraTestCase
         }
 
         return $sheet->toArray();
-    }
-
-    /**
-     * @param string      $filePath
-     * @param string|null $filename
-     *
-     * @return File
-     */
-    public function givenUploadedFile(string $filePath, string $filename = null): File
-    {
-        $filename = $filename ?? basename($filePath);
-
-        // Create temporary file.
-        $newFilePath = tempnam(sys_get_temp_dir(), 'import-');
-
-        // Copy the existing file to a temporary file.
-        copy($filePath, $newFilePath);
-
-        return new File($filename, fopen($newFilePath, 'r'));
     }
 
     /**
