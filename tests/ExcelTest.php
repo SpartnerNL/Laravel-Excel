@@ -5,7 +5,6 @@ namespace Maatwebsite\Excel\Tests;
 use Maatwebsite\Excel\Excel;
 use PHPUnit\Framework\Assert;
 use Maatwebsite\Excel\Importer;
-use Illuminate\Http\Testing\File;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
 use Illuminate\Contracts\View\View;
@@ -346,24 +345,5 @@ class ExcelTest extends TestCase
             null,
             Excel::XLSX
         );
-    }
-
-    /**
-     * @param string      $filePath
-     * @param string|null $filename
-     *
-     * @return File
-     */
-    public function givenUploadedFile(string $filePath, string $filename = null): File
-    {
-        $filename = $filename ?? basename($filePath);
-
-        // Create temporary file.
-        $newFilePath = tempnam(sys_get_temp_dir(), 'import-');
-
-        // Copy the existing file to a temporary file.
-        copy($filePath, $newFilePath);
-
-        return new File($filename, fopen($newFilePath, 'r'));
     }
 }

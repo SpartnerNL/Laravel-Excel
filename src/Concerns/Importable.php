@@ -91,12 +91,12 @@ trait Importable
     }
 
     /**
-     * @param string|null $filePath
+     * @param UploadedFile|string|null $filePath
      *
      * @throws NoFilePathGivenException
-     * @return string
+     * @return UploadedFile|string
      */
-    private function getFilePath(string $filePath = null): string
+    private function getFilePath($filePath = null)
     {
         $filePath = $filePath ?? $this->filePath ?? null;
 

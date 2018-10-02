@@ -2,6 +2,7 @@
 
 namespace Maatwebsite\Excel\Tests;
 
+use Illuminate\Http\Testing\File;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use Maatwebsite\Excel\ExcelServiceProvider;
 use Orchestra\Database\ConsoleServiceProvider;
@@ -42,6 +43,25 @@ class TestCase extends OrchestraTestCase
         }
 
         return $sheet->toArray();
+    }
+
+    /**
+     * @param string      $filePath
+     * @param string|null $filename
+     *
+     * @return File
+     */
+    public function givenUploadedFile(string $filePath, string $filename = null): File
+    {
+        $filename = $filename ?? basename($filePath);
+
+        // Create temporary file.
+        $newFilePath = tempnam(sys_get_temp_dir(), 'import-');
+
+        // Copy the existing file to a temporary file.
+        copy($filePath, $newFilePath);
+
+        return new File($filename, fopen($newFilePath, 'r'));
     }
 
     /**
