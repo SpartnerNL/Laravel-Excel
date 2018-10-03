@@ -47,7 +47,7 @@ exports and imports.
   <span> · </span>
   <a href="https://github.com/Maatwebsite/Laravel-Nova-Excel">Nova</a>
   <span> · </span>
-  <a href="https://medium.com/maatwebsite">Blog</a>
+  <a href="https://medium.com/maatwebsite/laravel-excel/home">Blog</a>
   <span> · </span>
   <a href="https://laravel-excel.maatwebsite.nl/3.1/getting-started/contributing.html">Contributing</a>
   <span> · </span>
