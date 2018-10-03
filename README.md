@@ -62,7 +62,7 @@ exports and imports.
 
 - **Export blade views.** Want to have a custom layout in your spreadsheet? Use a HTML table in a blade view and export that to Excel.
 
-## :rocket: 5 minutes quick start
+## :rocket: 5 minutes quick start for exports
 
 :bulb: Require this package in the `composer.json` of your Laravel project. This will download the package and PhpSpreadsheet.
 
@@ -116,6 +116,66 @@ class UsersController extends Controller
 
 More installation instructions can be found at: [https://laravel-excel.maatwebsite.nl/3.1/getting-started/installation.html](https://laravel-excel.maatwebsite.nl/3.1/getting-started/installation.html)
 
+## :rocket: 5 minutes quick start for imports
+
+:muscle: Create an import class in `App\Imports`
+
+You may do this by using the `make:import` command.
+
+```
+php artisan make:import UsersImport --model=User
+```
+
+If you prefer to create the import manually, you can create the following in `App\Imports`:
+
+```php
+<?php
+
+namespace App\Imports;
+
+use App\User;
+use Illuminate\Support\Facades\Hash;
+use Maatwebsite\Excel\Concerns\ToModel;
+
+class UsersImport implements ToModel
+{
+    /**
+     * @param array $row
+     *
+     * @return User|null
+     */
+    public function model(array $row)
+    {
+        return new User([
+           'name'     => $row[0],
+           'email'    => $row[1], 
+           'password' => Hash::make($row[2]),
+        ]);
+    }
+}
+```
+
+:fire: In your controller you can call this import now:
+
+```php
+
+use App\Imports\UsersImport;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Http\Controllers\Controller;
+
+class UsersController extends Controller 
+{
+    public function import() 
+    {
+        Excel::import(new UsersImport, 'users.xlsx');
+        
+        return redirect('/')->with('success', ''All good!');
+    }
+}
+```
+
+:page_facing_up: Find the imported users in your database!
+
 ## 🎓 Learning Laravel Excel
 
 You can find the full documentation of Laravel Excel [on the website](https://laravel-excel.maatwebsite.nl/).
@@ -129,7 +189,7 @@ Versions will be supported for a limited amount of time.
 | Version | Laravel Version | Php Version | Support |
 |---- |----|----|----|
 | 2.1 | <=5.6 | <=7.0 | Unsupported since 15-5-2018 |
-| 3.0 | ^5.5 |  ^7.0 | Security fixes till 01-04-2019 |
+| 3.0 | ^5.5 |  ^7.0 | Security fixes till 31-12-2018 |
 | 3.1 | ^5.5 |  ^7.0 | New features |
 
 ## :mailbox_with_mail: License & Postcardware
@@ -144,301 +204,3 @@ Florijnruwe 111-2
 The Netherlands  
 
 More about the license can be found at: [https://laravel-excel.maatwebsite.nl/3.1/getting-started/license.html](https://laravel-excel.maatwebsite.nl/3.1/getting-started/license.html)
-
-## Imports (beta)
-
-### ToArray
-
-```php
-Excel::import(new UsersImport, 'users.xlxs')->toArray();
-Excel::import(new UsersImport, 'users.xlxs')->toCollection();
-
-// using "use Importable"
-(new UsersImport)->toArray('users.xlsx');
-```
-
-### ToCollection
-
-```php
-class UsersImport implements ToCollection {
-
-    public function collection(Collection $sheets)
-    {
-        foreach ($sheets as $sheet)
-        {
-            foreach ($sheet as $row)
-            {
-                User::create([
-                    'name' => $row[0],
-                ]);
-            }
-        }
-    }
-}
-```
-
-### OnRow
-
-Handle each row however wanted. (In case of no Eloquent e.g.)
-
-```php
-class UsersImport implements OnRow {
-
-    public function onRow(array $row): Model
-    {
-        User::create([
-            'name' => $row[0],
-        ]);
-    }
-}
-```
-
-### ToModel
-
-One save per row, keeps model events
-
-```php
-class UsersImport implements ToModel {
-
-    public function model(array $row): Model
-    {
-        return new User([
-            'name' => $row[0],
-        ]);
-    }
-}
-```
-
-### ToModel
-
-Will inserts in batch, no model events
-
-```php
-class UsersImport implements ToModel, WithBatchInserts {
-
-    public function model(array $row): Model
-    {
-        return new User([
-            'name' => $row[0],
-        ]);
-    }
-    
-    public function batchSize(): int 
-    {
-        return 1000;
-    }
-}
-```
-
-### WithChunkReading
-
-Will Read data in chunks, but insert each row separate in the db (with model events)
-
-```php
-class UsersImport implements ToModel, WithChunkReading {
-
-    public function model(array $row): Model
-    {
-        return new User([
-            'name' => $row[0],
-        ]);
-    }
-    
-    public function chunkSize(): int
-    {
-        return 1000;
-    }
-    
-    public function batchSize(): int 
-        {
-            return 1000;
-        }
-}
-```
-
-### WithChunkReading and WithBatchInserts
-
-Will insert the chunks in batches (no model events)
-
-```php
-class UsersImport implements ToModel, WithChunkReading, WithBatchInserts {
-
-    public function model(array $row): Model
-    {
-        return new User([
-            'name' => $row[0],
-        ]);
-    }
-    
-    public function chunkSize(): int
-    {
-        return 1000;
-    }
-}
-```
-
-### ShouldQueue with ToModel
-
-Will queue each model insert (keeps model events)
-
-```php
-class UsersImport implements ToModel, ShouldQueue {
-
-    public function model(array $row): Model
-    {
-        return new User([
-            'name' => $row[0],
-        ]);
-    }
-}
-```
-
-### ShouldQueue with ToModel and WithChunkReading
-
-Will queue each chunk and then queue each model insert (with model events)
-
-```php
-class UsersImport implements ToModel, WithChunkReading, ShouldQueue {
-
-    public function model(array $row): Model
-    {
-        return new User([
-            'name' => $row[0],
-        ]);
-    }
-    
-    ...
-}
-```
-
-### ShouldQueue with ToModel and WithBatchInserts
-
-Will queue each batch insert (no model events)
-
-```php
-class UsersImport implements ToModel, WithBatchInserts, ShouldQueue {
-
-    public function model(array $row): Model
-    {
-        return new User([
-            'name' => $row[0],
-        ]);
-    }
-    
-    ...
-}
-```
-
-### WithMappedCells
-
-```php
-class UsersImport implements ToModel, WithMappedCells {
-
-    public function mapping(): Model
-    {
-        return [
-            'name' => 'A1',
-        ];
-    }
-    
-    public function handle(array $sheet)
-    {
-        User::create([
-            'name' => $sheet['name'],
-        ]);
-        
-        // or even
-        User::create($sheet);
-    }
-}
-```
-
-### WithCustomValueBinder
-
-// Implement a value binder (with fallback to the default if you want!)
-
-```php
-class UsersImport extends DefaultValueBinder implements WithCustomValueBinder {
-    
-    public function bindValue(Cell $cell, $value)
-    {
-        if (is_numeric($value))
-        {
-            $cell->setValueExplicit($value, PHPExcel_Cell_DataType::TYPE_NUMERIC);
-
-            return true;
-        }
-        
-        // Else return default behavior
-        return parent::bindValue($cell, $value);
-    }
-}
-```
-
-Use the advanced value binder
-
-```php
-class UsersImport extends AdvancedValueBinder implements WithCustomValueBinder {
-    
-    
-}
-```
-
-Share value binders along imports (with traits or class extensions if you want).
-
-```php
-class UsersImport implements WithCustomValueBinder {
-    
-    use YourValueBinder;
-    
-}
-```
-
-### WithCalculatedFormulas
-
-Will calculate formulas. (Disabled by default)
-
-```php
-class UsersImport implements WithCalculatedFormulas 
-{
-    
-}
-```
-
-### WithMultipleSheets
-
-Handle multiple sheets. Note that the array is indexed, so first object will handle first sheet, etc.
-
-```php
-class UsersImport implements WithMultipleSheets 
-{
-    public function sheets(): array
-    {
-        return [
-            new FirstSheetImport(),
-            new SecondSheetImport()
-        ];
-    }
-}
-```
-
-Only use certain sheets. Select them by index or name.
-
-```php
-class UsersImport implements WithMultipleSheets 
-{
-    public function sheets(): array
-    {
-        return [
-            0                  => new FirstSheetImport(), // by index
-            'Third Sheet Name' => new ThirdSheetImport() // by name
-        ];
-    }
-}
-```
-
-### Chaining imports
-
-```php
-Excel::import(new Usersimport, 'users.xlsx)->import(new InvoicesImport, 'invoices.xlsx');
-```
