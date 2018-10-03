@@ -169,7 +169,7 @@ class UsersController extends Controller
     {
         Excel::import(new UsersImport, 'users.xlsx');
         
-        return redirect('/')->with('success', ''All good!');
+        return redirect('/')->with('success', 'All good!');
     }
 }
 ```
