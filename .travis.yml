@@ -43,6 +43,3 @@ install:
 
 script:
   - vendor/bin/phpunit --verbose --configuration phpunit.xml.dist
-
-after_success:
-    - bash <(curl -s https://codecov.io/bash)
