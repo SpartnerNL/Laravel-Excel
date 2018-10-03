@@ -60,7 +60,7 @@ exports and imports.
 
 - **Supercharged imports.** Import workbooks and worksheets to Eloquent models with chunk reading and batch inserts! Have large files? You can queue every chunk of a file! Your entire import will happen in the background.
 
-- **Export blade views.** Want to have a custom layout in your spreadsheet? Use a HTML table in a blade view and export that to Excel.
+- **Export Blade views.** Want to have a custom layout in your spreadsheet? Use a HTML table in a Blade view and export that to Excel.
 
 ## :rocket: 5 minutes quick start for exports
 
@@ -70,7 +70,7 @@ exports and imports.
 composer require maatwebsite/excel
 ```
 
-:muscle: Create an export class in `app/Exports`
+:muscle: Create an export class in `App/Exports`
 
 ```
 php artisan make:export UsersExport --model=User
