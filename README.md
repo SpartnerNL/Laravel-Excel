@@ -182,6 +182,8 @@ You can find the full documentation of Laravel Excel [on the website](https://la
 
 We welcome suggestions for improving our docs. The documentation repository can be found at [https://github.com/Maatwebsite/laravel-excel-docs](https://github.com/Maatwebsite/laravel-excel-docs).
 
+Read some articles and tutorials can be found on our blog: https://laravel-excel.maatwebsite.nl/blog/
+
 ## :wrench: Supported Versions
 
 Versions will be supported for a limited amount of time.
