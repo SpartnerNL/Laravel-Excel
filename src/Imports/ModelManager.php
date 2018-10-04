@@ -9,9 +9,9 @@ use Illuminate\Database\DatabaseManager;
 class ModelManager
 {
     /**
-     * @var Collection|Model[]
+     * @var Model[][]
      */
-    private $models;
+    private $models = [];
 
     /**
      * @var DatabaseManager
@@ -23,8 +23,7 @@ class ModelManager
      */
     public function __construct(DatabaseManager $db)
     {
-        $this->models = new Collection();
-        $this->db     = $db;
+        $this->db = $db;
     }
 
     /**
@@ -43,7 +42,13 @@ class ModelManager
     public function add(Model ...$models)
     {
         foreach ($models as $model) {
-            $this->models->push($model);
+            $name = get_class($model);
+
+            if (!isset($this->models[$name])) {
+                $this->models[$name] = [];
+            }
+
+            $this->models[$name][] = $model;
         }
     }
 
@@ -61,7 +66,7 @@ class ModelManager
                 $this->singleFlush();
             }
 
-            $this->models = new Collection();
+            $this->models = [];
         });
     }
 
@@ -70,12 +75,11 @@ class ModelManager
      */
     private function massFlush()
     {
-        /** @var Model $model */
-        $model = get_class($this->models[0]);
-
-        $model::query()->insert(
-            collect($this->models)->map->getAttributes()->toArray()
-        );
+        foreach ($this->models as $model => $models) {
+            $model::query()->insert(
+                collect($models)->map->getAttributes()->toArray()
+            );
+        }
     }
 
     /**
@@ -83,6 +87,6 @@ class ModelManager
      */
     private function singleFlush()
     {
-        $this->models->each->saveOrFail();
+        collect($this->models)->flatten()->each->saveOrFail();
     }
 }

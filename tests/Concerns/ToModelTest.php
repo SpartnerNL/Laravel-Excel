@@ -4,6 +4,7 @@ namespace Maatwebsite\Excel\Tests\Concerns;
 
 use Faker\Factory;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Tests\Data\Stubs\Database\Group;
 use Maatwebsite\Excel\Tests\TestCase;
 use Illuminate\Database\Eloquent\Model;
 use Maatwebsite\Excel\Concerns\ToModel;
@@ -20,6 +21,7 @@ class ToModelTest extends TestCase
         parent::setUp();
 
         $this->loadLaravelMigrations(['--database' => 'testing']);
+        $this->loadMigrationsFrom(dirname(__DIR__) . '/Data/Stubs/Database/Migrations');
     }
 
     /**
@@ -29,7 +31,8 @@ class ToModelTest extends TestCase
     {
         DB::connection()->enableQueryLog();
 
-        $import = new class implements ToModel {
+        $import = new class implements ToModel
+        {
             use Importable;
 
             /**
@@ -70,7 +73,8 @@ class ToModelTest extends TestCase
     {
         DB::connection()->enableQueryLog();
 
-        $import = new class implements ToModel {
+        $import = new class implements ToModel
+        {
             use Importable;
 
             /**
@@ -101,6 +105,46 @@ class ToModelTest extends TestCase
         $import->import('import-users.xlsx');
 
         $this->assertCount(4, DB::getQueryLog());
+        DB::connection()->disableQueryLog();
+    }
+
+    /**
+     * @test
+     */
+    public function can_import_multiple_different_types_of_models_in_single_to_model()
+    {
+        DB::connection()->enableQueryLog();
+
+        $import = new class implements ToModel
+        {
+            use Importable;
+
+            /**
+             * @param array $row
+             *
+             * @return Model|Model[]|null
+             */
+            public function model(array $row)
+            {
+                $user = new User([
+                    'name'     => $row[0],
+                    'email'    => $row[1],
+                    'password' => 'secret',
+                ]);
+
+                $group = new Group([
+                    'name' => $row[0],
+                ]);
+
+                return [$user, $group];
+            }
+        };
+
+        $import->import('import-users.xlsx');
+
+        $this->assertCount(4, DB::getQueryLog());
+        $this->assertEquals(2, User::count());
+        $this->assertEquals(2, Group::count());
         DB::connection()->disableQueryLog();
     }
 }
