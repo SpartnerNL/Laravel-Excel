@@ -2,7 +2,6 @@
 
 namespace Maatwebsite\Excel\Imports;
 
-use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\DatabaseManager;
 

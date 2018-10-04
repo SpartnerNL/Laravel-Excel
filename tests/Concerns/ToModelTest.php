@@ -4,12 +4,12 @@ namespace Maatwebsite\Excel\Tests\Concerns;
 
 use Faker\Factory;
 use Illuminate\Support\Facades\DB;
-use Maatwebsite\Excel\Tests\Data\Stubs\Database\Group;
 use Maatwebsite\Excel\Tests\TestCase;
 use Illuminate\Database\Eloquent\Model;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
+use Maatwebsite\Excel\Tests\Data\Stubs\Database\Group;
 
 class ToModelTest extends TestCase
 {
@@ -31,8 +31,7 @@ class ToModelTest extends TestCase
     {
         DB::connection()->enableQueryLog();
 
-        $import = new class implements ToModel
-        {
+        $import = new class implements ToModel {
             use Importable;
 
             /**
@@ -71,8 +70,7 @@ class ToModelTest extends TestCase
      */
     public function has_timestamps_when_imported_single_model()
     {
-        $import = new class implements ToModel
-        {
+        $import = new class implements ToModel {
             use Importable;
 
             /**
@@ -105,8 +103,7 @@ class ToModelTest extends TestCase
     {
         DB::connection()->enableQueryLog();
 
-        $import = new class implements ToModel
-        {
+        $import = new class implements ToModel {
             use Importable;
 
             /**
@@ -147,8 +144,7 @@ class ToModelTest extends TestCase
     {
         DB::connection()->enableQueryLog();
 
-        $import = new class implements ToModel
-        {
+        $import = new class implements ToModel {
             use Importable;
 
             /**
