@@ -46,7 +46,8 @@ class ModelImporter
 
             // Skip rows that the user explicitly returned null for
             if (null !== $model) {
-                $this->manager->add($model);
+                $models = is_array($model) ? $model : [$model];
+                $this->manager->add(...$models);
             }
 
             // Flush each batch.

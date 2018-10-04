@@ -2,6 +2,7 @@
 
 namespace Maatwebsite\Excel\Tests\Concerns;
 
+use Faker\Factory;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Tests\TestCase;
 use Illuminate\Database\Eloquent\Model;
@@ -34,9 +35,9 @@ class ToModelTest extends TestCase
             /**
              * @param array $row
              *
-             * @return Model
+             * @return Model|Model[]|null
              */
-            public function model(array $row): Model
+            public function model(array $row)
             {
                 return new User([
                     'name'     => $row[0],
@@ -60,5 +61,46 @@ class ToModelTest extends TestCase
             'name'  => 'Taylor Otwell',
             'email' => 'taylor@laravel.com',
         ]);
+    }
+
+    /**
+     * @test
+     */
+    public function can_import_multiple_models_in_single_to_model()
+    {
+        DB::connection()->enableQueryLog();
+
+        $import = new class implements ToModel {
+            use Importable;
+
+            /**
+             * @param array $row
+             *
+             * @return Model|Model[]|null
+             */
+            public function model(array $row)
+            {
+                $user1 = new User([
+                    'name'     => $row[0],
+                    'email'    => $row[1],
+                    'password' => 'secret',
+                ]);
+
+                $faker = Factory::create();
+
+                $user2 = new User([
+                    'name'     => $faker->name,
+                    'email'    => $faker->email,
+                    'password' => 'secret',
+                ]);
+
+                return [$user1, $user2];
+            }
+        };
+
+        $import->import('import-users.xlsx');
+
+        $this->assertCount(4, DB::getQueryLog());
+        DB::connection()->disableQueryLog();
     }
 }

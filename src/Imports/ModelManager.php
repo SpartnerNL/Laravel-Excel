@@ -38,11 +38,13 @@ class ModelManager
     }
 
     /**
-     * @param Model $model
+     * @param Model[] $models
      */
-    public function add(Model $model)
+    public function add(Model ...$models)
     {
-        $this->models->push($model);
+        foreach ($models as $model) {
+            $this->models->push($model);
+        }
     }
 
     /**
