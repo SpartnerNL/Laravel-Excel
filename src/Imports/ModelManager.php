@@ -48,7 +48,7 @@ class ModelManager
                 $this->models[$name] = [];
             }
 
-            $this->models[$name][] = $model;
+            $this->models[$name][] = $this->prepare($model);
         }
     }
 
@@ -88,5 +88,33 @@ class ModelManager
     private function singleFlush()
     {
         collect($this->models)->flatten()->each->saveOrFail();
+    }
+
+    /**
+     * @param Model $model
+     *
+     * @return Model
+     */
+    private function prepare(Model $model): Model
+    {
+        if ($model->usesTimestamps()) {
+            $time = $model->freshTimestamp();
+
+            $updatedAtColumn = $model->getUpdatedAtColumn();
+
+            // If model has updated at column and not manually provided.
+            if ($updatedAtColumn && null === $model->{$updatedAtColumn}) {
+                $model->setUpdatedAt($time);
+            }
+
+            $createdAtColumn = $model->getCreatedAtColumn();
+
+            // If model has created at column and not manually provided.
+            if ($createdAtColumn && null === $model->{$createdAtColumn}) {
+                $model->setCreatedAt($time);
+            }
+        }
+
+        return $model;
     }
 }

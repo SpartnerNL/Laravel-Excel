@@ -160,4 +160,44 @@ class WithBatchInsertsTest extends TestCase
 
         DB::connection()->disableQueryLog();
     }
+
+    /**
+     * @test
+     */
+    public function has_timestamps_when_imported_in_batches()
+    {
+        $import = new class implements ToModel, WithBatchInserts
+        {
+            use Importable;
+
+            /**
+             * @param array $row
+             *
+             * @return Model|Model[]|null
+             */
+            public function model(array $row)
+            {
+                return new User([
+                    'name'     => $row[0],
+                    'email'    => $row[1],
+                    'password' => 'secret',
+                ]);
+            }
+
+            /**
+             * @return int
+             */
+            public function batchSize(): int
+            {
+                return 2;
+            }
+        };
+
+        $import->import('import-users.xlsx');
+
+        $user = User::first();
+
+        $this->assertNotNull($user->created_at);
+        $this->assertNotNull($user->updated_at);
+    }
 }
