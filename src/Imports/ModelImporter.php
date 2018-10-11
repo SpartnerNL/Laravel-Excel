@@ -2,6 +2,7 @@
 
 namespace Maatwebsite\Excel\Imports;
 
+use Maatwebsite\Excel\Concerns\WithProgressBar;
 use Maatwebsite\Excel\Row;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
@@ -54,6 +55,10 @@ class ModelImporter
             if (($i % $batchSize) === 0) {
                 $this->manager->flush($batchSize > 1);
                 $i = 0;
+            }
+
+            if ($import instanceof WithProgressBar) {
+                $import->getConsoleOutput()->progressAdvance();
             }
         }
 

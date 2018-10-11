@@ -5,6 +5,7 @@ namespace Maatwebsite\Excel;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToArray;
 use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Concerns\WithProgressBar;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use Maatwebsite\Excel\Concerns\FromView;
 use Maatwebsite\Excel\Events\AfterSheet;
@@ -202,6 +203,10 @@ class Sheet
 
         $this->raise(new BeforeSheet($this, $this->exportable));
 
+        if ($import instanceof WithProgressBar) {
+            $import->getConsoleOutput()->progressStart($this->worksheet->getHighestRow());
+        }
+
         $calculatesFormulas = $import instanceof WithCalculatedFormulas;
 
         if ($import instanceof WithMappedCells) {
@@ -224,10 +229,18 @@ class Sheet
             $headingRow = HeadingRowExtractor::extract($this->worksheet, $import);
             foreach ($this->worksheet->getRowIterator()->resetStart($startRow ?? 1) as $row) {
                 $import->onRow(new Row($row, $headingRow));
+
+                if ($import instanceof WithProgressBar) {
+                    $import->getConsoleOutput()->progressAdvance();
+                }
             }
         }
 
         $this->raise(new AfterSheet($this, $this->exportable));
+
+        if ($import instanceof WithProgressBar) {
+            $import->getConsoleOutput()->progressFinish();
+        }
     }
 
     /**
@@ -253,6 +266,10 @@ class Sheet
             }
 
             $rows[] = $row;
+
+            if ($import instanceof WithProgressBar) {
+                $import->getConsoleOutput()->progressAdvance();
+            }
         }
 
         return $rows;
