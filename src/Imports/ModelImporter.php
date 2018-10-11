@@ -2,9 +2,9 @@
 
 namespace Maatwebsite\Excel\Imports;
 
-use Maatwebsite\Excel\Concerns\WithProgressBar;
 use Maatwebsite\Excel\Row;
 use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Concerns\WithProgressBar;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use Maatwebsite\Excel\Concerns\WithCalculatedFormulas;
