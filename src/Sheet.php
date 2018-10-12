@@ -205,6 +205,7 @@ class Sheet
 
         if ($import instanceof WithProgressBar) {
             $import->getConsoleOutput()->progressStart($this->worksheet->getHighestRow());
+            $import->getConsoleOutput()->progressAdvance($startRow - 1);
         }
 
         $calculatesFormulas = $import instanceof WithCalculatedFormulas;
