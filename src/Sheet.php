@@ -5,6 +5,7 @@ namespace Maatwebsite\Excel;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToArray;
 use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Concerns\WithChunkReading;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use Maatwebsite\Excel\Concerns\FromView;
 use Maatwebsite\Excel\Events\AfterSheet;
@@ -203,7 +204,7 @@ class Sheet
 
         $this->raise(new BeforeSheet($this, $this->exportable));
 
-        if ($import instanceof WithProgressBar) {
+        if ($import instanceof WithProgressBar && !$import instanceof WithChunkReading) {
             $import->getConsoleOutput()->progressStart($this->worksheet->getHighestRow());
         }
 
@@ -238,7 +239,7 @@ class Sheet
 
         $this->raise(new AfterSheet($this, $this->exportable));
 
-        if ($import instanceof WithProgressBar) {
+        if ($import instanceof WithProgressBar && !$import instanceof WithChunkReading) {
             $import->getConsoleOutput()->progressFinish();
         }
     }

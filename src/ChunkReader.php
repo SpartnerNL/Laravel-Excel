@@ -3,6 +3,7 @@
 namespace Maatwebsite\Excel;
 
 use Illuminate\Support\Collection;
+use Maatwebsite\Excel\Concerns\WithProgressBar;
 use Maatwebsite\Excel\Jobs\ReadChunk;
 use Maatwebsite\Excel\Jobs\QueueImport;
 use Illuminate\Contracts\Bus\Dispatcher;
@@ -28,10 +29,14 @@ class ChunkReader
         $totalRows  = $this->getTotalRows($reader, $file);
         $worksheets = $this->getWorksheets($import, $reader, $file);
 
+        if ($import instanceof WithProgressBar) {
+            $import->getConsoleOutput()->progressStart(array_sum($totalRows));
+        }
+
         $jobs = new Collection();
         foreach ($worksheets as $name => $sheetImport) {
             $startRow         = HeadingRowExtractor::determineStartRow($sheetImport);
-            $totalRows[$name] = $import instanceof WithLimit ? $import->limit() : $totalRows[$name];
+            $totalRows[$name] = $sheetImport instanceof WithLimit ? $import->limit() : $totalRows[$name];
 
             for ($currentRow = $startRow; $currentRow <= $totalRows[$name]; $currentRow += $chunkSize) {
                 $jobs->push(new ReadChunk(
@@ -52,6 +57,10 @@ class ChunkReader
         $jobs->each(function (ReadChunk $job) {
             app(Dispatcher::class)->dispatchNow($job);
         });
+
+        if ($import instanceof WithProgressBar) {
+            $import->getConsoleOutput()->progressFinish();
+        }
 
         unset($jobs);
 
