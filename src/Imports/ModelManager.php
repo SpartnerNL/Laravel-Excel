@@ -2,10 +2,10 @@
 
 namespace Maatwebsite\Excel\Imports;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\DatabaseManager;
 use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Model;
 use Maatwebsite\Excel\Concerns\ToModel;
+use Illuminate\Database\DatabaseManager;
 use Maatwebsite\Excel\Concerns\WithValidation;
 use Maatwebsite\Excel\Validators\RowValidator;
 
@@ -74,6 +74,23 @@ class ModelManager
 
     /**
      * @param ToModel $import
+     * @param array   $attributes
+     *
+     * @return Model[]|Collection
+     */
+    public function toModels(ToModel $import, array $attributes): Collection
+    {
+        $model = $import->model($attributes);
+
+        if (null !== $model) {
+            return \is_array($model) ? new Collection($model) : new Collection([$model]);
+        }
+
+        return new Collection([]);
+    }
+
+    /**
+     * @param ToModel $import
      */
     private function massFlush(ToModel $import)
     {
@@ -89,7 +106,7 @@ class ModelManager
             ->mapToGroups(function (Model $model) {
                 return [\get_class($model) => $this->prepare($model)->getAttributes()];
             })->each(function (Collection $models, string $model) {
-                /** @var Model $model */
+                /* @var Model $model */
                 $model::query()->insert($models->toArray());
             });
     }
@@ -106,23 +123,6 @@ class ModelManager
 
             $this->toModels($import, $attributes)->each->saveOrFail();
         });
-    }
-
-    /**
-     * @param ToModel $import
-     * @param array   $attributes
-     *
-     * @return Model[]|Collection
-     */
-    public function toModels(ToModel $import, array $attributes): Collection
-    {
-        $model = $import->model($attributes);
-
-        if (null !== $model) {
-            return \is_array($model) ? new Collection($model) : new Collection([$model]);
-        }
-
-        return new Collection([]);
     }
 
     /**

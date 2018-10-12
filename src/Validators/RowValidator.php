@@ -3,8 +3,8 @@
 namespace Maatwebsite\Excel\Validators;
 
 use Illuminate\Contracts\Validation\Factory;
-use Illuminate\Validation\ValidationException as IlluminateValidationException;
 use Maatwebsite\Excel\Concerns\WithValidation;
+use Illuminate\Validation\ValidationException as IlluminateValidationException;
 
 class RowValidator
 {

@@ -3,12 +3,12 @@
 namespace Maatwebsite\Excel\Tests\Concerns;
 
 use Illuminate\Validation\Rule;
-use Maatwebsite\Excel\Concerns\WithHeadingRow;
-use Maatwebsite\Excel\Concerns\WithValidation;
 use Maatwebsite\Excel\Tests\TestCase;
 use Illuminate\Database\Eloquent\Model;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\Importable;
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use Maatwebsite\Excel\Concerns\WithValidation;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
 use Maatwebsite\Excel\Validators\ValidationException;
@@ -31,8 +31,7 @@ class WithValidationTest extends TestCase
      */
     public function can_validate_rows()
     {
-        $import = new class implements ToModel, WithValidation
-        {
+        $import = new class implements ToModel, WithValidation {
             use Importable;
 
             /**
@@ -64,13 +63,13 @@ class WithValidationTest extends TestCase
             $import->import('import-users.xlsx');
         } catch (ValidationException $e) {
             $this->validateFailure($e, 2, '1', [
-                'The selected 1 is invalid.'
+                'The selected 1 is invalid.',
             ]);
 
             $this->assertEquals([
                 [
-                    'There was an error on row 2. The selected 1 is invalid.'
-                ]
+                    'There was an error on row 2. The selected 1 is invalid.',
+                ],
             ], $e->errors());
         }
 
@@ -82,8 +81,7 @@ class WithValidationTest extends TestCase
      */
     public function can_validate_with_custom_attributes()
     {
-        $import = new class implements ToModel, WithValidation
-        {
+        $import = new class implements ToModel, WithValidation {
             use Importable;
 
             /**
@@ -123,7 +121,7 @@ class WithValidationTest extends TestCase
             $import->import('import-users.xlsx');
         } catch (ValidationException $e) {
             $this->validateFailure($e, 2, 'email', [
-                'The selected email is invalid.'
+                'The selected email is invalid.',
             ]);
         }
 
@@ -135,8 +133,7 @@ class WithValidationTest extends TestCase
      */
     public function can_validate_with_custom_message()
     {
-        $import = new class implements ToModel, WithValidation
-        {
+        $import = new class implements ToModel, WithValidation {
             use Importable;
 
             /**
@@ -178,7 +175,7 @@ class WithValidationTest extends TestCase
             $import->import('import-users.xlsx');
         } catch (ValidationException $e) {
             $this->validateFailure($e, 2, '1', [
-                'Custom message for 1.'
+                'Custom message for 1.',
             ]);
         }
 
@@ -190,8 +187,7 @@ class WithValidationTest extends TestCase
      */
     public function can_validate_rows_with_headings()
     {
-        $import = new class implements ToModel, WithHeadingRow, WithValidation
-        {
+        $import = new class implements ToModel, WithHeadingRow, WithValidation {
             use Importable;
 
             /**
@@ -223,7 +219,7 @@ class WithValidationTest extends TestCase
             $import->import('import-users-with-headings.xlsx');
         } catch (ValidationException $e) {
             $this->validateFailure($e, 3, 'email', [
-                'The selected email is invalid.'
+                'The selected email is invalid.',
             ]);
         }
 
@@ -235,8 +231,7 @@ class WithValidationTest extends TestCase
      */
     public function can_validate_rows_in_batches()
     {
-        $import = new class implements ToModel, WithHeadingRow, WithBatchInserts, WithValidation
-        {
+        $import = new class implements ToModel, WithHeadingRow, WithBatchInserts, WithValidation {
             use Importable;
 
             /**
@@ -276,7 +271,7 @@ class WithValidationTest extends TestCase
             $import->import('import-users-with-headings.xlsx');
         } catch (ValidationException $e) {
             $this->validateFailure($e, 3, 'email', [
-                'The selected email is invalid.'
+                'The selected email is invalid.',
             ]);
         }
 
