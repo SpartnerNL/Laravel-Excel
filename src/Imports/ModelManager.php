@@ -4,11 +4,15 @@ namespace Maatwebsite\Excel\Imports;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\DatabaseManager;
+use Illuminate\Support\Collection;
+use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Concerns\WithValidation;
+use Maatwebsite\Excel\Validators\RowValidator;
 
 class ModelManager
 {
     /**
-     * @var Model[][]
+     * @var array
      */
     private $models = [];
 
@@ -18,11 +22,18 @@ class ModelManager
     private $db;
 
     /**
-     * @param DatabaseManager $db
+     * @var RowValidator
      */
-    public function __construct(DatabaseManager $db)
+    private $validator;
+
+    /**
+     * @param DatabaseManager $db
+     * @param RowValidator    $validator
+     */
+    public function __construct(DatabaseManager $db, RowValidator $validator)
     {
-        $this->db = $db;
+        $this->db        = $db;
+        $this->validator = $validator;
     }
 
     /**
@@ -36,33 +47,25 @@ class ModelManager
     }
 
     /**
-     * @param Model[] $models
+     * @param int   $row
+     * @param array $attributes
      */
-    public function add(Model ...$models)
+    public function add(int $row, array $attributes)
     {
-        foreach ($models as $model) {
-            $name = get_class($model);
-
-            if (!isset($this->models[$name])) {
-                $this->models[$name] = [];
-            }
-
-            $this->models[$name][] = $this->prepare($model);
-        }
+        $this->models[$row] = $attributes;
     }
 
     /**
-     * @param bool $massInsert
-     *
-     * @throws \Throwable
+     * @param ToModel $import
+     * @param bool    $massInsert
      */
-    public function flush(bool $massInsert = false)
+    public function flush(ToModel $import, bool $massInsert = false)
     {
-        $this->transaction(function () use ($massInsert) {
+        $this->transaction(function () use ($import, $massInsert) {
             if ($massInsert) {
-                $this->massFlush();
+                $this->massFlush($import);
             } else {
-                $this->singleFlush();
+                $this->singleFlush($import);
             }
 
             $this->models = [];
@@ -70,23 +73,56 @@ class ModelManager
     }
 
     /**
-     * Flush with a mass insert.
+     * @param ToModel $import
      */
-    private function massFlush()
+    private function massFlush(ToModel $import)
     {
-        foreach ($this->models as $model => $models) {
-            $model::query()->insert(
-                collect($models)->map->getAttributes()->toArray()
-            );
+        if ($import instanceof WithValidation) {
+            $this->validator->validate($this->models, $import);
         }
+
+        collect($this->models)
+            ->map(function (array $attributes) use ($import) {
+                return $this->toModels($import, $attributes);
+            })
+            ->flatten()
+            ->mapToGroups(function (Model $model) {
+                return [\get_class($model) => $this->prepare($model)->getAttributes()];
+            })->each(function (Collection $models, string $model) {
+                /** @var Model $model */
+                $model::query()->insert($models->toArray());
+            });
     }
 
     /**
-     * Flush model per model.
+     * @param ToModel $import
      */
-    private function singleFlush()
+    private function singleFlush(ToModel $import)
     {
-        collect($this->models)->flatten()->each->saveOrFail();
+        collect($this->models)->each(function (array $attributes, $row) use ($import) {
+            if ($import instanceof WithValidation) {
+                $this->validator->validate([$row => $attributes], $import);
+            }
+
+            $this->toModels($import, $attributes)->each->saveOrFail();
+        });
+    }
+
+    /**
+     * @param ToModel $import
+     * @param array   $attributes
+     *
+     * @return Model[]|Collection
+     */
+    public function toModels(ToModel $import, array $attributes): Collection
+    {
+        $model = $import->model($attributes);
+
+        if (null !== $model) {
+            return \is_array($model) ? new Collection($model) : new Collection([$model]);
+        }
+
+        return new Collection([]);
     }
 
     /**
