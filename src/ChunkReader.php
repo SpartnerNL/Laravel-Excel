@@ -2,6 +2,7 @@
 
 namespace Maatwebsite\Excel;
 
+use Illuminate\Contracts\Bus\Dispatcher;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Jobs\ReadChunk;
 use Maatwebsite\Excel\Jobs\QueueImport;
@@ -49,7 +50,7 @@ class ChunkReader
         }
 
         $jobs->each(function (ReadChunk $job) {
-            dispatch_now($job);
+            app(Dispatcher::class)->dispatchNow($job);
         });
 
         unset($jobs);

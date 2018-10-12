@@ -144,6 +144,6 @@ trait Importable
      */
     private function getImporter(): Importer
     {
-        return resolve(Importer::class);
+        return app(Importer::class);
     }
 }

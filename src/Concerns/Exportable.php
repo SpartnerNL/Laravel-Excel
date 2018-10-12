@@ -93,6 +93,6 @@ trait Exportable
      */
     private function getExporter(): Exporter
     {
-        return resolve(Exporter::class);
+        return app(Exporter::class);
     }
 }

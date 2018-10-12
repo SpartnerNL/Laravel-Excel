@@ -210,10 +210,10 @@ class Sheet
         $calculatesFormulas = $import instanceof WithCalculatedFormulas;
 
         if ($import instanceof WithMappedCells) {
-            resolve(MappedReader::class)->map($import, $this->worksheet);
+            app(MappedReader::class)->map($import, $this->worksheet);
         } else {
             if ($import instanceof ToModel) {
-                resolve(ModelImporter::class)->import($this->worksheet, $import, $startRow);
+                app(ModelImporter::class)->import($this->worksheet, $import, $startRow);
             }
 
             if ($import instanceof ToCollection) {
