@@ -2,10 +2,10 @@
 
 namespace Maatwebsite\Excel;
 
-use Illuminate\Contracts\Bus\Dispatcher;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Jobs\ReadChunk;
 use Maatwebsite\Excel\Jobs\QueueImport;
+use Illuminate\Contracts\Bus\Dispatcher;
 use Maatwebsite\Excel\Concerns\WithLimit;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use PhpOffice\PhpSpreadsheet\Reader\IReader;
