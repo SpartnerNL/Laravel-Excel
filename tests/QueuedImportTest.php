@@ -27,11 +27,11 @@ class QueuedImportTest extends TestCase
      */
     public function cannot_queue_import_that_does_not_implement_should_queue()
     {
-        $export = new class {
+        $import = new class {
             use Importable;
         };
 
-        $export->queue('import-batches.xlsx');
+        $import->queue('import-batches.xlsx');
     }
 
     /**
@@ -39,9 +39,9 @@ class QueuedImportTest extends TestCase
      */
     public function can_queue_an_import()
     {
-        $export = new QueuedImport();
+        $import = new QueuedImport();
 
-        $chain = $export->queue('import-batches.xlsx')->chain([
+        $chain = $import->queue('import-batches.xlsx')->chain([
             new AfterQueueImportJob(5000),
         ]);
 
