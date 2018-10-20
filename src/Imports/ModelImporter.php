@@ -6,6 +6,7 @@ use Maatwebsite\Excel\Row;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithProgressBar;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
+use Maatwebsite\Excel\Concerns\WithTransactions;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use Maatwebsite\Excel\Concerns\WithCalculatedFormulas;
 
@@ -37,6 +38,13 @@ class ModelImporter
         $headingRow = HeadingRowExtractor::extract($worksheet, $import);
         $batchSize  = $import instanceof WithBatchInserts ? $import->batchSize() : 1;
         $endRow     = EndRowFinder::find($import, $startRow);
+        $useTransaction = $import instanceof WithTransactions ? $import->useTransaction() : true;
+
+        // 
+        $this->manager->setMassInsert($batchSize > 1);
+
+        // model manager use database transaction on insert
+        $this->manager->setUseTransaction($useTransaction);
 
         $i = 0;
         foreach ($worksheet->getRowIterator($startRow, $endRow) as $spreadSheetRow) {
@@ -53,7 +61,7 @@ class ModelImporter
 
             // Flush each batch.
             if (($i % $batchSize) === 0) {
-                $this->manager->flush($batchSize > 1);
+                $this->manager->flush();
                 $i = 0;
             }
 

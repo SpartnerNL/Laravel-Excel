@@ -18,11 +18,54 @@ class ModelManager
     private $db;
 
     /**
+     * @var [type]
+     */
+    protected $massInsert;
+
+    /**
+     * @var [type]
+     */
+    protected $useTransaction;
+
+    /**
      * @param DatabaseManager $db
      */
-    public function __construct(DatabaseManager $db)
+    public function __construct(
+        DatabaseManager $db, 
+        bool $massInsert = false,
+        bool $useTransaction = true
+    )
     {
         $this->db = $db;
+        $this->massInsert = $massInsert;
+        $this->useTransaction = $useTransaction;
+    }
+
+    /**
+     * 
+     * @return bool
+     */
+    public function getMassInsert()
+    {
+        return $this->massInsert;
+    }
+
+    /**
+     * 
+     * @return void
+     */
+    public function setMassInsert(bool $massInsert)
+    {
+        $this->massInsert = $massInsert;
+    }
+
+    /**
+     * 
+     * @return void
+     */
+    public function setUseTransaction(bool $useTransaction)
+    {
+        $this->useTransaction = $useTransaction;
     }
 
     /**
@@ -52,32 +95,51 @@ class ModelManager
     }
 
     /**
-     * @param bool $massInsert
+     * @param bool | null $massInsert
      *
      * @throws \Throwable
      */
-    public function flush(bool $massInsert = false)
+    public function flush($massInsert = null)
     {
-        $this->transaction(function () use ($massInsert) {
-            if ($massInsert) {
-                $this->massFlush();
-            } else {
-                $this->singleFlush();
-            }
+        // 
+        $massInsert = $massInsert ?? $this->getMassInsert();
+
+        // save callback
+        // 
+        $callback = function () use ($massInsert) {
+
+            $massInsert ? $this->massFlush() : $this->singleFlush();
 
             $this->models = [];
-        });
+
+        };
+        
+        // in case we need to performe transaction
+        // 
+        if( $this->useTransaction )
+        {
+            return $this->transaction($callback);
+        }
+
+        return $callback();        
     }
+
 
     /**
      * Flush with a mass insert.
      */
     private function massFlush()
     {
-        foreach ($this->models as $model => $models) {
-            $model::query()->insert(
-                collect($models)->map->getAttributes()->toArray()
-            );
+        foreach ($this->models as $model => $models) 
+        {
+            try 
+            {
+                $model::query()->insert(
+                    collect($models)->map->getAttributes()->toArray()
+                );
+            } catch (\Exception $e) {
+                
+            }
         }
     }
 
@@ -86,7 +148,14 @@ class ModelManager
      */
     private function singleFlush()
     {
-        collect($this->models)->flatten()->each->saveOrFail();
+        try 
+        {
+            collect($this->models)->flatten()->each->saveOrFail();
+        } 
+        catch (\Exception $e) 
+        {
+            
+        }
     }
 
     /**
