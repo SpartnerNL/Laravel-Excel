@@ -39,12 +39,17 @@ class ExcelServiceProvider extends ServiceProvider
             'excel'
         );
 
+        $this->app->bind(Reader::class, function () {
+            return new Reader(
+                $this->app->make('filesystem')
+            );
+        });
+
         $this->app->bind('excel', function () {
             return new Excel(
                 $this->app->make(Writer::class),
                 $this->app->make(QueuedWriter::class),
                 $this->app->make(Reader::class),
-                $this->app->make(ResponseFactory::class),
                 $this->app->make('filesystem')
             );
         });

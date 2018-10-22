@@ -2,6 +2,7 @@
 
 namespace Maatwebsite\Excel;
 
+use Illuminate\Contracts\Filesystem\Factory;
 use InvalidArgumentException;
 use Illuminate\Support\Collection;
 use PhpOffice\PhpSpreadsheet\Cell\Cell;
@@ -10,7 +11,6 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Events\BeforeImport;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Filesystem\FilesystemManager;
 use PhpOffice\PhpSpreadsheet\Reader\IReader;
 use Maatwebsite\Excel\Factories\ReaderFactory;
 use Maatwebsite\Excel\Concerns\MapsCsvSettings;
@@ -46,14 +46,14 @@ class Reader
     protected $currentFile;
 
     /**
-     * @var FilesystemManager
+     * @var Factory
      */
     private $filesystem;
 
     /**
-     * @param FilesystemManager $filesystem
+     * @param Factory $filesystem
      */
-    public function __construct(FilesystemManager $filesystem)
+    public function __construct(Factory $filesystem)
     {
         $this->filesystem = $filesystem;
 
