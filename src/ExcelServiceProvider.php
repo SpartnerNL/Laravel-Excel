@@ -8,7 +8,6 @@ use Maatwebsite\Excel\Mixins\StoreCollection;
 use Maatwebsite\Excel\Console\ExportMakeCommand;
 use Maatwebsite\Excel\Console\ImportMakeCommand;
 use Maatwebsite\Excel\Mixins\DownloadCollection;
-use Illuminate\Contracts\Routing\ResponseFactory;
 use Laravel\Lumen\Application as LumenApplication;
 
 class ExcelServiceProvider extends ServiceProvider

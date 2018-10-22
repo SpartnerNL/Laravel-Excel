@@ -2,10 +2,10 @@
 
 namespace Maatwebsite\Excel;
 
-use Illuminate\Contracts\Filesystem\Factory;
 use Illuminate\Support\Collection;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Contracts\Filesystem\Factory;
 use Illuminate\Foundation\Bus\PendingDispatch;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Maatwebsite\Excel\Exceptions\NoTypeDetectedException;
