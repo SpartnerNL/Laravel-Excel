@@ -35,20 +35,12 @@ class ImportWithEvents implements WithEvents
     {
         return [
             BeforeImport::class => $this->beforeImport ?? function () {
-
-
             },
             AfterImport::class => $this->afterImport ?? function () {
-
-
             },
             BeforeSheet::class => $this->beforeSheet ?? function () {
-
-
             },
             AfterSheet::class => $this->afterSheet ?? function () {
-
-
             },
         ];
     }

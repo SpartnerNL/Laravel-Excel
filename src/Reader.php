@@ -92,7 +92,6 @@ class Reader
             $sheet->disconnect();
         }
 
-
         $this->afterReading($import);
         $this->garbageCollect();
 
@@ -122,7 +121,6 @@ class Reader
             $sheets[$index] = $sheet->toArray($sheetImport, $sheet->getStartRow($sheetImport));
             $sheet->disconnect();
         }
-
 
         $this->afterReading($import);
         $this->garbageCollect();
@@ -313,7 +311,6 @@ class Reader
      */
     private function afterReading($import)
     {
-
         $this->raise(new AfterImport($this, $import));
     }
 }
