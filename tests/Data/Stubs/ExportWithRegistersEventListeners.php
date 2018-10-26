@@ -18,13 +18,6 @@ class ExportWithRegistersEventListeners implements WithEvents
     /**
      * @var callable
      */
-
-    public static $afterExport;
-
-    /**
-     * @var callable
-     */
-
     public static $beforeWriting;
 
     /**
