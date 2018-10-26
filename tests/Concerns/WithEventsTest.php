@@ -2,13 +2,13 @@
 
 namespace Maatwebsite\Excel\Tests\Concerns;
 
-use Maatwebsite\Excel\Events\AfterImport;
 use Maatwebsite\Excel\Excel;
 use Maatwebsite\Excel\Sheet;
 use Maatwebsite\Excel\Reader;
 use Maatwebsite\Excel\Writer;
 use Maatwebsite\Excel\Tests\TestCase;
 use Maatwebsite\Excel\Events\AfterSheet;
+use Maatwebsite\Excel\Events\AfterImport;
 use Maatwebsite\Excel\Events\BeforeSheet;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Events\BeforeExport;
