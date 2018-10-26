@@ -311,7 +311,8 @@ class Reader
     /**
      * @param object $import
      */
-    private function afterReading($import){
+    private function afterReading($import)
+    {
 
         $this->raise(new AfterImport($this, $import));
     }
