@@ -2,6 +2,7 @@
 
 namespace Maatwebsite\Excel\Tests\Concerns;
 
+use Maatwebsite\Excel\Events\AfterImport;
 use Maatwebsite\Excel\Excel;
 use Maatwebsite\Excel\Sheet;
 use Maatwebsite\Excel\Reader;
@@ -74,6 +75,12 @@ class WithEventsTest extends TestCase
             $eventsTriggered++;
         };
 
+        $event->afterImport = function ($event) use (&$eventsTriggered) {
+            $this->assertInstanceOf(AfterImport::class, $event);
+            $this->assertInstanceOf(Reader::class, $event->getReader());
+            $eventsTriggered++;
+        };
+
         $event->beforeSheet = function ($event) use (&$eventsTriggered) {
             $this->assertInstanceOf(BeforeSheet::class, $event);
             $this->assertInstanceOf(Sheet::class, $event->getSheet());
@@ -87,7 +94,7 @@ class WithEventsTest extends TestCase
         };
 
         $event->import('import.xlsx');
-        $this->assertEquals(3, $eventsTriggered);
+        $this->assertEquals(4, $eventsTriggered);
     }
 
     /**

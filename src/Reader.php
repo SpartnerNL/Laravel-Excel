@@ -4,6 +4,7 @@ namespace Maatwebsite\Excel;
 
 use InvalidArgumentException;
 use Illuminate\Support\Collection;
+use Maatwebsite\Excel\Events\AfterImport;
 use PhpOffice\PhpSpreadsheet\Cell\Cell;
 use PhpOffice\PhpSpreadsheet\Reader\Csv;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -91,6 +92,8 @@ class Reader
             $sheet->disconnect();
         }
 
+
+        $this->afterReading($import);
         $this->garbageCollect();
 
         return $this;
@@ -120,6 +123,8 @@ class Reader
             $sheet->disconnect();
         }
 
+
+        $this->afterReading($import);
         $this->garbageCollect();
 
         return $sheets;
@@ -149,6 +154,7 @@ class Reader
             $sheet->disconnect();
         }
 
+        $this->afterReading($import);
         $this->garbageCollect();
 
         return $sheets;
@@ -300,5 +306,13 @@ class Reader
         }
 
         $this->raise(new BeforeImport($this, $import));
+    }
+
+    /**
+     * @param object $import
+     */
+    private function afterReading($import){
+
+        $this->raise(new AfterImport($this, $import));
     }
 }
