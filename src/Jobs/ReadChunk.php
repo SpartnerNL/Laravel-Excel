@@ -2,9 +2,9 @@
 
 namespace Maatwebsite\Excel\Jobs;
 
-use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Sheet;
 use Illuminate\Bus\Queueable;
+use Illuminate\Support\Facades\DB;
 use PhpOffice\PhpSpreadsheet\Cell\Cell;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use PhpOffice\PhpSpreadsheet\Reader\IReader;

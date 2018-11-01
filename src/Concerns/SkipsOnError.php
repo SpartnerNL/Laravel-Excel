@@ -2,7 +2,6 @@
 
 namespace Maatwebsite\Excel\Concerns;
 
-use Maatwebsite\Excel\Validators\Failure;
 use Throwable;
 
 interface SkipsOnError

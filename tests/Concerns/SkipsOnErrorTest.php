@@ -2,19 +2,15 @@
 
 namespace Maatwebsite\Excel\Tests\Concerns;
 
+use Throwable;
+use PHPUnit\Framework\Assert;
+use Maatwebsite\Excel\Tests\TestCase;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\QueryException;
-use Illuminate\Validation\Rule;
+use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\SkipsOnError;
-use Maatwebsite\Excel\Concerns\SkipsOnFailure;
-use Maatwebsite\Excel\Concerns\ToModel;
-use Maatwebsite\Excel\Concerns\WithValidation;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
-use Maatwebsite\Excel\Tests\TestCase;
-use Maatwebsite\Excel\Validators\Failure;
-use PHPUnit\Framework\Assert;
-use Throwable;
 
 class SkipsOnErrorTest extends TestCase
 {
@@ -33,8 +29,7 @@ class SkipsOnErrorTest extends TestCase
      */
     public function can_skip_on_error()
     {
-        $import = new class implements ToModel, SkipsOnError
-        {
+        $import = new class implements ToModel, SkipsOnError {
             use Importable;
 
             public $errors = 0;
@@ -61,7 +56,7 @@ class SkipsOnErrorTest extends TestCase
                 Assert::assertInstanceOf(QueryException::class, $e);
                 Assert::contains('Duplicate entry \'patrick@maatwebsite.nl\'', $e->getMessage());
 
-                ++$this->errors;
+                $this->errors++;
             }
         };
 
