@@ -151,6 +151,9 @@ class Writer
             $writer->setExcelCompatibility($this->excelCompatibility);
         }
 
+        // Calculation settings
+        $writer->setPreCalculateFormulas(config('excel.exports.calculate', false));
+
         $writer->save($fileName);
 
         $this->spreadsheet->disconnectWorksheets();
