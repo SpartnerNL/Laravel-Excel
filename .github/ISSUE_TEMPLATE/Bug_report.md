@@ -1,7 +1,6 @@
 ---
 name: 🐛 Bug Report
 about: If something isn't working as expected 🤔.
-
 ---
 
 <!--
@@ -14,7 +13,7 @@ contributing guidelines (https://laravel-excel.maatwebsite.nl/docs/3.1/getting-s
 and Code Of Conduct (https://github.com/Maatwebsite/Laravel-Excel/blob/3.1/CODE_OF_CONDUCT.md)?
 By filing an Issue, you are expected to comply with it, including treating everyone with respect.
 
-Please prefix your issue with one of the following: [BUG] [PROPOSAL] [QUESTION].
+Please prefix your issue with: [BUG] .
 
 -->
 
