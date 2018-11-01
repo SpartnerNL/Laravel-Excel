@@ -2,6 +2,7 @@
 
 namespace Maatwebsite\Excel;
 
+use Maatwebsite\Excel\Concerns\WithPreCalculateFormulas;
 use PhpOffice\PhpSpreadsheet\Cell\Cell;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Writer\Csv;
@@ -152,7 +153,11 @@ class Writer
         }
 
         // Calculation settings
-        $writer->setPreCalculateFormulas(config('excel.exports.calculate', false));
+        $writer->setPreCalculateFormulas(
+            $this->exportable instanceof WithPreCalculateFormulas
+                ? true
+                : config('excel.exports.pre_calculate_formulas', false)
+        );
 
         $writer->save($fileName);
 
