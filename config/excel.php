@@ -3,7 +3,7 @@
 use Maatwebsite\Excel\Excel;
 
 return [
-    'exports'            => [
+    'exports' => [
 
         /*
         |--------------------------------------------------------------------------
@@ -45,7 +45,9 @@ return [
         ],
     ],
 
-    'imports' => [
+    'imports'            => [
+
+        'read_only' => true,
 
         'heading_row' => [
 

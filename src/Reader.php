@@ -279,6 +279,10 @@ class Reader
 
         $reader = ReaderFactory::make($this->currentFile, $readerType);
 
+        if (method_exists($reader, 'setReadDataOnly')) {
+            $reader->setReadDataOnly(config('excel.imports.read_only', true));
+        }
+
         if ($reader instanceof Csv) {
             $reader->setDelimiter($this->delimiter);
             $reader->setEnclosure($this->enclosure);
