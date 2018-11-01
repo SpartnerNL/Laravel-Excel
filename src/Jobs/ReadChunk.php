@@ -4,6 +4,7 @@ namespace Maatwebsite\Excel\Jobs;
 
 use Maatwebsite\Excel\Sheet;
 use Illuminate\Bus\Queueable;
+use Illuminate\Support\Facades\DB;
 use PhpOffice\PhpSpreadsheet\Cell\Cell;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use PhpOffice\PhpSpreadsheet\Reader\IReader;
@@ -92,13 +93,13 @@ class ReadChunk implements ShouldQueue
             $this->sheetName
         );
 
-        $sheet->import(
-            $this->sheetImport,
-            $this->startRow
-        );
+        DB::transaction(function () use ($sheet) {
+            $sheet->import(
+                $this->sheetImport,
+                $this->startRow
+            );
 
-        $sheet->disconnect();
-
-        unset($sheet, $spreadsheet);
+            $sheet->disconnect();
+        });
     }
 }
