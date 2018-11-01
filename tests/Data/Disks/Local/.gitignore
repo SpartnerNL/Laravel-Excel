@@ -4,6 +4,7 @@
 !import-formulas.xlsx
 !import-multiple-sheets.xlsx
 !import-users.xlsx
+!import-users-with-duplicates.xlsx
 !import-users-with-headings.xlsx
 !import-users-with-different-heading-row.xlsx
 !import-batches.xlsx

@@ -3,6 +3,7 @@
 namespace Maatwebsite\Excel\Validators;
 
 use Illuminate\Contracts\Validation\Factory;
+use Maatwebsite\Excel\Concerns\SkipsOnFailure;
 use Maatwebsite\Excel\Concerns\WithValidation;
 use Illuminate\Validation\ValidationException as IlluminateValidationException;
 
@@ -49,10 +50,14 @@ class RowValidator
                 );
             }
 
-            throw new ValidationException(
-                $e,
-                $failures
-            );
+            if ($import instanceof SkipsOnFailure) {
+                $import->onFailure(...$failures);
+            } else {
+                throw new ValidationException(
+                    $e,
+                    $failures
+                );
+            }
         }
     }
 

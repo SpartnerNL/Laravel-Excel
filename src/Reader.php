@@ -2,8 +2,10 @@
 
 namespace Maatwebsite\Excel;
 
+use Illuminate\Support\Facades\DB;
 use InvalidArgumentException;
 use Illuminate\Support\Collection;
+use Maatwebsite\Excel\Concerns\InTransaction;
 use PhpOffice\PhpSpreadsheet\Cell\Cell;
 use PhpOffice\PhpSpreadsheet\Reader\Csv;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -85,11 +87,13 @@ class Reader
 
         $this->beforeReading($import, $reader);
 
-        foreach ($this->sheetImports as $index => $sheetImport) {
-            $sheet = Sheet::make($this->spreadsheet, $index);
-            $sheet->import($sheetImport, $sheet->getStartRow($sheetImport));
-            $sheet->disconnect();
-        }
+        DB::transaction(function () {
+            foreach ($this->sheetImports as $index => $sheetImport) {
+                $sheet = Sheet::make($this->spreadsheet, $index);
+                $sheet->import($sheetImport, $sheet->getStartRow($sheetImport));
+                $sheet->disconnect();
+            }
+        });
 
         $this->garbageCollect();
 

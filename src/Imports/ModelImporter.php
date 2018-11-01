@@ -2,6 +2,7 @@
 
 namespace Maatwebsite\Excel\Imports;
 
+use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Row;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithProgressBar;
@@ -39,11 +40,16 @@ class ModelImporter
         foreach ($worksheet->getRowIterator($startRow, $endRow) as $spreadSheetRow) {
             $i++;
 
-            $row = new Row($spreadSheetRow, $headingRow);
+            $row      = new Row($spreadSheetRow, $headingRow);
+            $rowArray = $row->toArray(null, $import instanceof WithCalculatedFormulas);
+
+            if ($import instanceof WithMapping) {
+                $rowArray = $import->map($rowArray);
+            }
 
             $this->manager->add(
                 $row->getIndex(),
-                $row->toArray(null, $import instanceof WithCalculatedFormulas)
+                $rowArray
             );
 
             // Flush each batch.

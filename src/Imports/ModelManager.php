@@ -4,10 +4,11 @@ namespace Maatwebsite\Excel\Imports;
 
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Maatwebsite\Excel\Concerns\SkipsOnError;
 use Maatwebsite\Excel\Concerns\ToModel;
-use Illuminate\Database\DatabaseManager;
 use Maatwebsite\Excel\Concerns\WithValidation;
 use Maatwebsite\Excel\Validators\RowValidator;
+use Throwable;
 
 class ModelManager
 {
@@ -17,33 +18,16 @@ class ModelManager
     private $models = [];
 
     /**
-     * @var DatabaseManager
-     */
-    private $db;
-
-    /**
      * @var RowValidator
      */
     private $validator;
 
     /**
-     * @param DatabaseManager $db
-     * @param RowValidator    $validator
+     * @param RowValidator $validator
      */
-    public function __construct(DatabaseManager $db, RowValidator $validator)
+    public function __construct(RowValidator $validator)
     {
-        $this->db        = $db;
         $this->validator = $validator;
-    }
-
-    /**
-     * @param callable $callback
-     *
-     * @return mixed
-     */
-    public function transaction(callable $callback)
-    {
-        return $this->db->transaction($callback);
     }
 
     /**
@@ -61,15 +45,13 @@ class ModelManager
      */
     public function flush(ToModel $import, bool $massInsert = false)
     {
-        $this->transaction(function () use ($import, $massInsert) {
-            if ($massInsert) {
-                $this->massFlush($import);
-            } else {
-                $this->singleFlush($import);
-            }
+        if ($massInsert) {
+            $this->massFlush($import);
+        } else {
+            $this->singleFlush($import);
+        }
 
-            $this->models = [];
-        });
+        $this->models = [];
     }
 
     /**
@@ -105,9 +87,17 @@ class ModelManager
             ->flatten()
             ->mapToGroups(function (Model $model) {
                 return [\get_class($model) => $this->prepare($model)->getAttributes()];
-            })->each(function (Collection $models, string $model) {
-                /* @var Model $model */
-                $model::query()->insert($models->toArray());
+            })->each(function (Collection $models, string $model) use ($import) {
+                try {
+                    /* @var Model $model */
+                    $model::query()->insert($models->toArray());
+                } catch (Throwable $e) {
+                    if ($import instanceof SkipsOnError) {
+                        $import->onError($e);
+                    } else {
+                        throw $e;
+                    }
+                }
             });
     }
 
@@ -121,7 +111,17 @@ class ModelManager
                 $this->validator->validate([$row => $attributes], $import);
             }
 
-            $this->toModels($import, $attributes)->each->saveOrFail();
+            $this->toModels($import, $attributes)->each(function (Model $model) use ($import) {
+                try {
+                    $model->saveOrFail();
+                } catch (Throwable $e) {
+                    if ($import instanceof SkipsOnError) {
+                        $import->onError($e);
+                    } else {
+                        throw $e;
+                    }
+                }
+            });
         });
     }
 
