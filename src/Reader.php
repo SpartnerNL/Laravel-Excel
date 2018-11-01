@@ -96,7 +96,6 @@ class Reader
         });
 
         $this->afterReading($import);
-        $this->garbageCollect();
 
         return $this;
     }
@@ -126,7 +125,6 @@ class Reader
         }
 
         $this->afterReading($import);
-        $this->garbageCollect();
 
         return $sheets;
     }
@@ -156,7 +154,6 @@ class Reader
         }
 
         $this->afterReading($import);
-        $this->garbageCollect();
 
         return $sheets;
     }
@@ -319,5 +316,6 @@ class Reader
     private function afterReading($import)
     {
         $this->raise(new AfterImport($this, $import));
+        $this->garbageCollect();
     }
 }
