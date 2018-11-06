@@ -185,7 +185,7 @@ class Reader
      */
     protected function copyToFileSystem($filePath, string $disk = null)
     {
-        $tempFilePath = $this->getTmpFile();
+        $tempFilePath = $this->getTmpFile($filePath);
 
         if ($filePath instanceof UploadedFile) {
             return $filePath->move($tempFilePath)->getRealPath();
@@ -204,9 +204,15 @@ class Reader
     /**
      * @return string
      */
-    protected function getTmpFile(): string
+    protected function getTmpFile($filePath): string
     {
-        return $this->tmpPath . DIRECTORY_SEPARATOR . str_random(16);
+        $ext = strtolower(pathinfo($filePath, PATHINFO_EXTENSION));
+        /** 
+         * if $ext == 'tsv', change 'csv'
+         */ 
+        $ext = strlen($ext) > 0 ? '.'.($ext === 'tsv' ? 'csv' : $ext) : '';
+
+        return $this->tmpPath . DIRECTORY_SEPARATOR . str_random(16) . $ext;
     }
 
     /**
