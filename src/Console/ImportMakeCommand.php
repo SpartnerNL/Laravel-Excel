@@ -86,8 +86,8 @@ class ImportMakeCommand extends GeneratorCommand
     protected function getOptions()
     {
         return [
-            ['model', 'm', InputOption::VALUE_OPTIONAL, 'Generate an export for the given model.'],
-            ['query', '', InputOption::VALUE_NONE, 'Generate an export for a query.'],
+            ['model', 'm', InputOption::VALUE_OPTIONAL, 'Generate an import for the given model.'],
+            ['query', '', InputOption::VALUE_NONE, 'Generate an import for a query.'],
         ];
     }
 }
