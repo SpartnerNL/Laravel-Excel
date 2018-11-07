@@ -208,9 +208,9 @@ class Reader
     {
         $ext = strtolower(pathinfo($filePath, PATHINFO_EXTENSION));
         /** 
-         * if $ext == 'tsv', change 'csv'
-         */ 
-        $ext = strlen($ext) > 0 ? '.'.($ext === 'tsv' ? 'csv' : $ext) : '';
+         * if $ext == 'tsv', change 'csv'.
+         */
+        $ext = strlen($ext) > 0 ? '.' . ($ext === 'tsv' ? 'csv' : $ext) : '';
 
         return $this->tmpPath . DIRECTORY_SEPARATOR . str_random(16) . $ext;
     }
