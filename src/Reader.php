@@ -121,8 +121,8 @@ class Reader
         $sheets = [];
         foreach ($this->sheetImports as $index => $sheetImport) {
             $calculatesFormulas = $sheetImport instanceof WithCalculatedFormulas;
-            $sheet          = Sheet::make($this->spreadsheet, $index);
-            $sheets[$index] = $sheet->toArray($sheetImport, $sheet->getStartRow($sheetImport), null, $calculatesFormulas);
+            $sheet              = Sheet::make($this->spreadsheet, $index);
+            $sheets[$index]     = $sheet->toArray($sheetImport, $sheet->getStartRow($sheetImport), null, $calculatesFormulas);
             $sheet->disconnect();
         }
 
@@ -151,7 +151,7 @@ class Reader
         $sheets = new Collection();
         foreach ($this->sheetImports as $index => $sheetImport) {
             $calculatesFormulas = $sheetImport instanceof WithCalculatedFormulas;
-            $sheet = Sheet::make($this->spreadsheet, $index);
+            $sheet              = Sheet::make($this->spreadsheet, $index);
             $sheets->put($index, $sheet->toCollection($sheetImport, $sheet->getStartRow($sheetImport), null, $calculatesFormulas));
             $sheet->disconnect();
         }
