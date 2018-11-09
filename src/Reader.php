@@ -20,6 +20,7 @@ use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 use Maatwebsite\Excel\Concerns\WithCustomCsvSettings;
 use Maatwebsite\Excel\Concerns\WithCustomValueBinder;
+use Maatwebsite\Excel\Concerns\WithCalculatedFormulas;
 use PhpOffice\PhpSpreadsheet\Cell\DefaultValueBinder;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -119,8 +120,9 @@ class Reader
 
         $sheets = [];
         foreach ($this->sheetImports as $index => $sheetImport) {
+            $calculatesFormulas = $sheetImport instanceof WithCalculatedFormulas;
             $sheet          = Sheet::make($this->spreadsheet, $index);
-            $sheets[$index] = $sheet->toArray($sheetImport, $sheet->getStartRow($sheetImport));
+            $sheets[$index] = $sheet->toArray($sheetImport, $sheet->getStartRow($sheetImport), null, $calculatesFormulas);
             $sheet->disconnect();
         }
 
@@ -148,8 +150,9 @@ class Reader
 
         $sheets = new Collection();
         foreach ($this->sheetImports as $index => $sheetImport) {
+            $calculatesFormulas = $sheetImport instanceof WithCalculatedFormulas;
             $sheet = Sheet::make($this->spreadsheet, $index);
-            $sheets->put($index, $sheet->toCollection($sheetImport, $sheet->getStartRow($sheetImport)));
+            $sheets->put($index, $sheet->toCollection($sheetImport, $sheet->getStartRow($sheetImport), null, $calculatesFormulas));
             $sheet->disconnect();
         }
 
