@@ -21,6 +21,7 @@ use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 use Maatwebsite\Excel\Concerns\WithCustomCsvSettings;
 use Maatwebsite\Excel\Concerns\WithCustomValueBinder;
 use PhpOffice\PhpSpreadsheet\Cell\DefaultValueBinder;
+use Maatwebsite\Excel\Concerns\WithCalculatedFormulas;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class Reader
@@ -119,8 +120,9 @@ class Reader
 
         $sheets = [];
         foreach ($this->sheetImports as $index => $sheetImport) {
-            $sheet          = Sheet::make($this->spreadsheet, $index);
-            $sheets[$index] = $sheet->toArray($sheetImport, $sheet->getStartRow($sheetImport));
+            $calculatesFormulas = $sheetImport instanceof WithCalculatedFormulas;
+            $sheet              = Sheet::make($this->spreadsheet, $index);
+            $sheets[$index]     = $sheet->toArray($sheetImport, $sheet->getStartRow($sheetImport), null, $calculatesFormulas);
             $sheet->disconnect();
         }
 
@@ -148,8 +150,9 @@ class Reader
 
         $sheets = new Collection();
         foreach ($this->sheetImports as $index => $sheetImport) {
-            $sheet = Sheet::make($this->spreadsheet, $index);
-            $sheets->put($index, $sheet->toCollection($sheetImport, $sheet->getStartRow($sheetImport)));
+            $calculatesFormulas = $sheetImport instanceof WithCalculatedFormulas;
+            $sheet              = Sheet::make($this->spreadsheet, $index);
+            $sheets->put($index, $sheet->toCollection($sheetImport, $sheet->getStartRow($sheetImport), null, $calculatesFormulas));
             $sheet->disconnect();
         }
 
