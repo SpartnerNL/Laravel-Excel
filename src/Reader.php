@@ -236,7 +236,7 @@ class Reader
     {
         $sheetImports = [];
         if ($import instanceof WithMultipleSheets) {
-            $sheetImports = $import->sheets();
+            $sheetImports = $import->sheets($this->spreadsheet);
 
             if (method_exists($reader, 'setLoadSheetsOnly')) {
                 $reader->setLoadSheetsOnly(array_keys($sheetImports));
@@ -300,9 +300,9 @@ class Reader
      */
     private function beforeReading($import, IReader $reader)
     {
-        $this->sheetImports = $this->buildSheetImports($import, $reader);
-
         $this->spreadsheet = $reader->load($this->currentFile);
+
+        $this->sheetImports = $this->buildSheetImports($import, $reader);
 
         // When no multiple sheets, use the main import object
         // for each loaded sheet in the spreadsheet
