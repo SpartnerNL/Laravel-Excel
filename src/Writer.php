@@ -65,7 +65,7 @@ class Writer
 
         $sheetExports = [$export];
         if ($export instanceof WithMultipleSheets) {
-            $sheetExports = $export->sheets();
+            $sheetExports = $export->sheets($this->spreadsheet->getAllSheets());
         }
 
         foreach ($sheetExports as $sheetExport) {

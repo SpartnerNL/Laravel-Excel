@@ -36,7 +36,7 @@ class WithMultipleSheetsTest extends TestCase
             /**
              * @return SheetWith100Rows[]
              */
-            public function sheets() : array
+            public function sheets(array $worksheetNames) : array
             {
                 return [
                     new SheetWith100Rows('A'),
@@ -80,7 +80,7 @@ class WithMultipleSheetsTest extends TestCase
             /**
              * @return SheetForUsersFromView[]
              */
-            public function sheets() : array
+            public function sheets(array $worksheetNames) : array
             {
                 return [
                     new SheetForUsersFromView($this->users->forPage(1, 100)),
@@ -105,7 +105,7 @@ class WithMultipleSheetsTest extends TestCase
         $import = new class implements WithMultipleSheets {
             use Importable;
 
-            public function sheets(): array
+            public function sheets(array $worksheetNames): array
             {
                 return [
                     new class implements ToArray {
@@ -141,7 +141,7 @@ class WithMultipleSheetsTest extends TestCase
         $import = new class implements WithMultipleSheets {
             use Importable;
 
-            public function sheets(): array
+            public function sheets(array $worksheetNames): array
             {
                 return [
                     'Sheet2' => new class implements ToArray {

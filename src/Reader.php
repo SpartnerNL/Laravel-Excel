@@ -236,7 +236,7 @@ class Reader
     {
         $sheetImports = [];
         if ($import instanceof WithMultipleSheets) {
-            $sheetImports = $import->sheets($this->spreadsheet);
+            $sheetImports = $import->sheets($this->spreadsheet->getAllSheets());
 
             if (method_exists($reader, 'setLoadSheetsOnly')) {
                 $reader->setLoadSheetsOnly(array_keys($sheetImports));

@@ -84,7 +84,7 @@ class ChunkReader
         $worksheets     = [];
         $worksheetNames = $reader->listWorksheetNames($file);
         if ($import instanceof WithMultipleSheets) {
-            $sheetImports = $import->sheets();
+            $sheetImports = $import->sheets($worksheetNames);
 
             // Load specific sheets.
             if (method_exists($reader, 'setLoadSheetsOnly')) {

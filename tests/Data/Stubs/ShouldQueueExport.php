@@ -13,7 +13,7 @@ class ShouldQueueExport implements WithMultipleSheets, ShouldQueue
     /**
      * @return SheetWith100Rows[]
      */
-    public function sheets(): array
+    public function sheets(array $worksheetNames): array
     {
         return [
             new SheetWith100Rows('A'),

@@ -303,7 +303,7 @@ class WithChunkReadingTest extends TestCase
             /**
              * @return array
              */
-            public function sheets(): array
+            public function sheets(array $worksheetNames): array
             {
                 return [
                     new class implements ToModel, WithBatchInserts {

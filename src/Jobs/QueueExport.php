@@ -50,7 +50,7 @@ class QueueExport implements ShouldQueue
 
         $sheetExports = [$this->export];
         if ($this->export instanceof WithMultipleSheets) {
-            $sheetExports = $this->export->sheets();
+            $sheetExports = $this->export->sheets($writer->getDelegate()->getAllSheets());
         }
 
         // Pre-create the worksheets
