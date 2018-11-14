@@ -67,7 +67,8 @@ class QueuedWriter
     {
         $sheetExports = [$export];
         if ($export instanceof WithMultipleSheets) {
-            $sheetExports = $export->sheets($this->writer->getDelegate()->getAllSheets());
+            $worksheetNames = $this->writer->getDelegate() ? $this->writer->getDelegate()->getAllSheets() : [];
+            $sheetExports   = $export->sheets($worksheetNames);
         }
 
         $jobs = new Collection;
