@@ -176,7 +176,7 @@ class Excel implements Exporter, Importer
      *
      * @return string|null
      */
-    protected function findTypeByExtension($fileName, string $type = null): string
+    protected function findTypeByExtension($fileName, string $type = null): ?string
     {
         if (null !== $type) {
             return $type;
