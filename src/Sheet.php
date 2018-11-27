@@ -146,9 +146,9 @@ class Sheet
             if ($sheetExport instanceof WithCustomStartCell) {
                 $startCell = $sheetExport->startCell();
             }
-            if ($sheetExport instanceof ShouldQueue){
+            if ($sheetExport instanceof ShouldQueue) {
                 $this->append($sheetExport->headings(), $startCell ?? null, $this->hasStrictNullComparison($sheetExport));
-            }else{
+            } else {
                 $this->append([$sheetExport->headings()], $startCell ?? null, $this->hasStrictNullComparison($sheetExport));
             }
         }
