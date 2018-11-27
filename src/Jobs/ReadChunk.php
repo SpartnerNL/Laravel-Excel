@@ -93,6 +93,11 @@ class ReadChunk implements ShouldQueue
             $this->sheetName
         );
 
+        if ($sheet->getHighestRow() < $this->startRow) {
+            $sheet->disconnect();
+            return;
+        }
+
         DB::transaction(function () use ($sheet) {
             $sheet->import(
                 $this->sheetImport,
