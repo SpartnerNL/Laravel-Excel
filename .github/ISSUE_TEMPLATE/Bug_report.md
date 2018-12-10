@@ -10,7 +10,7 @@ PLEASE READ: FILLING IN THE TEMPLATE IS REQUIRED!
 Issues that do not include enough information might not be picked up.
 
 Have you read Laravel-Excel's 
-contributing guidelines (https://laravel-excel.maatwebsite.nl/docs/3.0/getting-started/contributing)
+contributing guidelines (https://laravel-excel.maatwebsite.com/docs/3.0/getting-started/contributing)
 and Code Of Conduct (https://github.com/Maatwebsite/Laravel-Excel/blob/3.0/CODE_OF_CONDUCT.md)?
 By filing an Issue, you are expected to comply with it, including treating everyone with respect.
 

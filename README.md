@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="https://laravel-excel.maatwebsite.nl">
+  <a href="https://laravel-excel.maatwebsite.com">
     <img alt="Laravel Excel" src="https://user-images.githubusercontent.com/7728097/43685313-ff1e2110-98b0-11e8-8b50-900a2b262f0f.png" />
   </a>
 </p>
@@ -41,17 +41,17 @@ exports.
 </p>
 
 <h4 align="center">
-  <a href="https://laravel-excel.maatwebsite.nl/3.0/exports/">Quickstart</a>
+  <a href="https://laravel-excel.maatwebsite.com/3.0/exports/">Quickstart</a>
   <span> · </span>
-  <a href="https://laravel-excel.maatwebsite.nl/3.0/getting-started/">Documentation</a>
+  <a href="https://laravel-excel.maatwebsite.com/3.0/getting-started/">Documentation</a>
   <span> · </span>
   <a href="https://github.com/Maatwebsite/Laravel-Nova-Excel">Nova</a>
   <span> · </span>
-  <a href="https://laravel-excel.maatwebsite.nl/blog/">Blog</a>
+  <a href="https://laravel-excel.maatwebsite.com/blog/">Blog</a>
   <span> · </span>
-  <a href="https://laravel-excel.maatwebsite.nl/3.0/getting-started/contributing.html">Contributing</a>
+  <a href="https://laravel-excel.maatwebsite.com/3.0/getting-started/contributing.html">Contributing</a>
   <span> · </span>
-  <a href="https://laravel-excel.maatwebsite.nl/3.0/getting-started/support.html">Support</a>
+  <a href="https://laravel-excel.maatwebsite.com/3.0/getting-started/support.html">Support</a>
 </h4>
 
 - **Easily export collections to Excel.** Supercharge your Laravel collections and export them directly to an Excel or CSV document. Exporting has never been so easy.
@@ -112,11 +112,11 @@ class UsersController extends Controller
 
 :page_facing_up: Find your `users.xlsx` in your downloads folder!
 
-More installation instructions can be found at: [https://laravel-excel.maatwebsite.nl/3.0/getting-started/installation.html](https://laravel-excel.maatwebsite.nl/3.0/getting-started/installation.html)
+More installation instructions can be found at: [https://laravel-excel.maatwebsite.com/3.0/getting-started/installation.html](https://laravel-excel.maatwebsite.com/3.0/getting-started/installation.html)
 
 ## 🎓 Learning Laravel Excel
 
-You can find the full documentation of Laravel Excel [on the website](https://laravel-excel.maatwebsite.nl/).
+You can find the full documentation of Laravel Excel [on the website](https://laravel-excel.maatwebsite.com/).
 
 We welcome suggestions for improving our docs. The documentation repository can be found at [https://github.com/Maatwebsite/laravel-excel-docs](https://github.com/Maatwebsite/laravel-excel-docs).
 
@@ -144,4 +144,4 @@ Florijnruwe 111-2
 6218 CA Maastricht  
 The Netherlands  
 
-More about the license can be found at: [https://laravel-excel.maatwebsite.nl/3.0/getting-started/license.html](https://laravel-excel.maatwebsite.nl/3.0/getting-started/license.html)
+More about the license can be found at: [https://laravel-excel.maatwebsite.com/3.0/getting-started/license.html](https://laravel-excel.maatwebsite.com/3.0/getting-started/license.html)
