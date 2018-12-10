@@ -1,18 +1,22 @@
-<?php namespace Maatwebsite\Excel\Classes;
+<?php
 
-use PHPExcel_Settings;
+namespace Maatwebsite\Excel\Classes;
+
 use PHPExcel_CachedObjectStorageFactory;
+use PHPExcel_Settings;
 
-class Cache {
-
+class Cache
+{
     /**
-     * PHPExcel cache class
+     * PHPExcel cache class.
+     *
      * @var string
      */
     protected $class = 'PHPExcel_CachedObjectStorageFactory';
 
     /**
-     * Available caching drivers
+     * Available caching drivers.
+     *
      * @var array
      */
     protected $available = [
@@ -26,31 +30,34 @@ class Cache {
         'temp'       => 'cache_to_phpTemp',
         'wincache'   => 'cache_to_wincache',
         'sqlite'     => 'cache_to_sqlite',
-        'sqlite3'    => 'cache_to_sqlite3'
+        'sqlite3'    => 'cache_to_sqlite3',
     ];
 
     /**
-     * The name of the config file
+     * The name of the config file.
+     *
      * @var string
      */
     private $configName = 'excel.cache';
 
     /**
-     * Cache constructor
+     * Cache constructor.
      */
     public function __construct()
     {
         // Get driver and settings from the config
-        $this->driver = config($this->configName . '.driver', 'memory');
-        $this->settings = config($this->configName . '.settings', []);
+        $this->driver = config($this->configName.'.driver', 'memory');
+        $this->settings = config($this->configName.'.settings', []);
 
         // Init if caching is enabled
-        if ($this->isEnabled())
+        if ($this->isEnabled()) {
             $this->init();
+        }
     }
 
     /**
-     * Init the cache
+     * Init the cache.
+     *
      * @return void
      */
     public function init()
@@ -63,17 +70,19 @@ class Cache {
     }
 
     /**
-     * Set the right driver
+     * Set the right driver.
+     *
      * @return void
      */
     public function findDriver()
     {
         $property = $this->detect();
-        $this->method = constant($this->class . '::' . $property);
+        $this->method = constant($this->class.'::'.$property);
     }
 
     /**
-     * Detect the caching driver
+     * Detect the caching driver.
+     *
      * @return string $driver
      */
     protected function detect()
@@ -86,19 +95,19 @@ class Cache {
     }
 
     /**
-     * Add additional settings for the current driver
-     * @return  void
+     * Add additional settings for the current driver.
+     *
+     * @return void
      */
     protected function addAdditionalSettings()
     {
-        switch ($this->driver)
-        {
+        switch ($this->driver) {
             case 'memcache':
 
                 // Add extra memcache settings
                 $this->settings = array_merge($this->settings, [
-                    'memcacheServer' => config($this->configName . '.memcache.host', 'localhost'),
-                    'memcachePort'   => config($this->configName . '.memcache.port', 11211)
+                    'memcacheServer' => config($this->configName.'.memcache.host', 'localhost'),
+                    'memcachePort'   => config($this->configName.'.memcache.port', 11211),
                 ]);
 
                 break;
@@ -107,7 +116,7 @@ class Cache {
 
                 // Add dir
                 $this->settings = array_merge($this->settings, [
-                    'dir' => config($this->configName . '.dir', storage_path('cache')),
+                    'dir' => config($this->configName.'.dir', storage_path('cache')),
                 ]);
 
                 break;
@@ -115,11 +124,12 @@ class Cache {
     }
 
     /**
-     * Check if caching is enabled
-     * @return boolean
+     * Check if caching is enabled.
+     *
+     * @return bool
      */
     public function isEnabled()
     {
-        return config($this->configName . '.enable', true) ? true : false;
+        return config($this->configName.'.enable', true) ? true : false;
     }
 }

@@ -1,19 +1,19 @@
 <?php
 
-class CustomValuBinderTest extends TestCase {
-
+class CustomValuBinderTest extends TestCase
+{
     /**
-     * Setup
+     * Setup.
      */
     public function setUp()
     {
         parent::setUp();
 
         // Set excel class
-        $this->excel    = App::make('phpexcel');
+        $this->excel = App::make('phpexcel');
 
         // Set writer class
-        $this->reader   = App::make('excel.reader');
+        $this->reader = App::make('excel.reader');
         $this->reader->injectExcel($this->excel);
         $this->reader->noHeading(true);
 
@@ -26,7 +26,7 @@ class CustomValuBinderTest extends TestCase {
     }
 
     /**
-     * Tear down
+     * Tear down.
      */
     public function tearDown()
     {
@@ -82,13 +82,14 @@ class CustomValuBinderTest extends TestCase {
     }
 
     /**
-     * Load a csv file
+     * Load a csv file.
+     *
      * @return [type] [description]
      */
     protected function loadFile()
     {
         // Set test csv file
-        $file = __DIR__ . '/files/' . 'customBinder.csv';
+        $file = __DIR__.'/files/'.'customBinder.csv';
 
         // Loaded csv
         $this->loadedFile = $this->reader->load($file);

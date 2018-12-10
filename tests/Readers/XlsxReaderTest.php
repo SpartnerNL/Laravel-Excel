@@ -1,23 +1,19 @@
 <?php
 
-require_once('traits/ImportTrait.php');
-require_once('traits/SingleImportTestingTrait.php');
+require_once 'traits/ImportTrait.php';
+require_once 'traits/SingleImportTestingTrait.php';
 
-use Mockery as m;
-use Maatwebsite\Excel\Readers\LaravelExcelReader;
-use Maatwebsite\Excel\Classes;
-
-class XlsxReaderTest extends TestCase {
-
-    /**
+class XlsxReaderTest extends TestCase
+{
+    /*
      * Import trait
      */
     use ImportTrait, SingleImportTestingTrait;
 
     /**
-     * Filename
+     * Filename.
+     *
      * @var string
      */
     protected $fileName = 'files/test.xlsx';
-
 }

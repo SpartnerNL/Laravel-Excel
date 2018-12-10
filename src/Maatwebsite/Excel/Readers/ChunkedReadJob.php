@@ -45,7 +45,7 @@ class ChunkedReadJob implements ShouldQueue
      * @var bool
      */
     private $shouldQueue;
-    
+
     /**
      * @var string|null
      */
@@ -65,7 +65,7 @@ class ChunkedReadJob implements ShouldQueue
      */
     public function __construct(
         $file,
-        $sheets = null,
+        $sheets,
         $startRow,
         $startIndex,
         $chunkSize,
@@ -73,15 +73,15 @@ class ChunkedReadJob implements ShouldQueue
         $shouldQueue = true,
         $encoding = null
     ) {
-        $this->startRow   = $startRow;
-        $this->chunkSize  = $chunkSize;
+        $this->startRow = $startRow;
+        $this->chunkSize = $chunkSize;
         $this->startIndex = $startIndex;
-        $this->file       = $file;
+        $this->file = $file;
 
-        $this->callback    = $shouldQueue ? (new Serializer)->serialize($callback) : $callback;
-        $this->sheets      = $sheets;
+        $this->callback = $shouldQueue ? (new Serializer())->serialize($callback) : $callback;
+        $this->sheets = $sheets;
         $this->shouldQueue = $shouldQueue;
-        $this->encoding    = $encoding;
+        $this->encoding = $encoding;
     }
 
     /***
@@ -97,9 +97,9 @@ class ChunkedReadJob implements ShouldQueue
         $reader->reader->setLoadSheetsOnly($this->sheets);
         $reader->reader->setReadFilter($filter);
         $reader->reader->setReadDataOnly(true);
-        
+
         // Set encoding
-        if (! is_null($this->encoding)) {
+        if (!is_null($this->encoding)) {
             $reader->reader->setInputEncoding($this->encoding);
         }
 
@@ -112,7 +112,7 @@ class ChunkedReadJob implements ShouldQueue
         // Slice the results
         $results = $reader->limitRows($this->chunkSize, $this->startIndex)->get();
 
-        $callback = $this->shouldQueue ? (new Serializer)->unserialize($this->callback) : $this->callback;
+        $callback = $this->shouldQueue ? (new Serializer())->unserialize($this->callback) : $this->callback;
 
         // Do a callback
         if (is_callable($callback)) {

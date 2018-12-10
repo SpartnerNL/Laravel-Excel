@@ -1,41 +1,45 @@
-<?php namespace Maatwebsite\Excel\Parsers;
+<?php
+
+namespace Maatwebsite\Excel\Parsers;
 
 use DOMDocument;
-use Illuminate\Support\Facades\URL;
 use TijsVerkoyen\CssToInlineStyles\CssToInlineStyles;
 
 /**
- *
- * LaravelExcel CSS Parser
+ * LaravelExcel CSS Parser.
  *
  * @category   Laravel Excel
+ *
  * @version    1.0.0
- * @package    maatwebsite/excel
+ *
  * @copyright  Copyright (c) 2013 - 2014 Maatwebsite (http://www.maatwebsite.nl)
  * @author     Maatwebsite <info@maatwebsite.nl>
  * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
  */
-class CssParser {
-
+class CssParser
+{
     /**
      * @var CssToInlineStyles
      */
     protected $cssInliner;
 
     /**
-     * DOM xml
+     * DOM xml.
+     *
      * @var \SimpleXMLElement
      */
     protected $xml;
 
     /**
-     * Style sheet links
+     * Style sheet links.
+     *
      * @var array
      */
     protected $links = [];
 
     /**
-     * Construct the css parser
+     * Construct the css parser.
+     *
      * @param CssToInlineStyles $cssInliner
      */
     public function __construct(CssToInlineStyles $cssInliner)
@@ -44,15 +48,14 @@ class CssParser {
     }
 
     /**
-     * Transform the found css to inline styles
+     * Transform the found css to inline styles.
      */
     public function transformCssToInlineStyles($html)
     {
         $css = '';
 
         // Loop through all stylesheets
-        foreach($this->links as $link)
-        {
+        foreach ($this->links as $link) {
             $css .= file_get_contents($link);
         }
 
@@ -60,8 +63,10 @@ class CssParser {
     }
 
     /**
-     * Find the stylesheets inside the view
+     * Find the stylesheets inside the view.
+     *
      * @param DOMDocument $dom
+     *
      * @return CssParser
      */
     public function findStyleSheets(DOMDocument $dom)
@@ -72,8 +77,7 @@ class CssParser {
         // Get all stylesheet tags
         $tags = $this->getStyleSheetTags();
 
-        foreach ($tags as $node)
-        {
+        foreach ($tags as $node) {
             $this->links[] = $this->getCleanStyleSheetLink($node);
         }
 
@@ -84,7 +88,8 @@ class CssParser {
     }
 
     /**
-     * Import the dom
+     * Import the dom.
+     *
      * @return SimpleXMLElement
      */
     protected function importDom(DOMDocument $dom)
@@ -93,7 +98,8 @@ class CssParser {
     }
 
     /**
-     * Get all stylesheet tags
+     * Get all stylesheet tags.
+     *
      * @return array
      */
     protected function getStyleSheetTags()
@@ -102,8 +108,10 @@ class CssParser {
     }
 
     /**
-     * Get the clean link to the stylesheet
-     * @param  string $node
+     * Get the clean link to the stylesheet.
+     *
+     * @param string $node
+     *
      * @return string
      */
     protected function getCleanStyleSheetLink($node)
@@ -115,9 +123,11 @@ class CssParser {
     }
 
     /**
-     * Get css from link
-     * @param  string $link
-     * @return string|boolean
+     * Get css from link.
+     *
+     * @param string $link
+     *
+     * @return string|bool
      */
     protected function getCssFromLink($link)
     {

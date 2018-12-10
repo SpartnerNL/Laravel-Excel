@@ -1,26 +1,24 @@
 <?php
 
-require_once('traits/ImportTrait.php');
+require_once 'traits/ImportTrait.php';
 
-use Mockery as m;
-use Maatwebsite\Excel\Readers\LaravelExcelReader;
-use Maatwebsite\Excel\Classes;
-
-class MultipleSheetsXlsReaderTest extends TestCase {
-
-    /**
+class MultipleSheetsXlsReaderTest extends TestCase
+{
+    /*
      * Import trait
      */
     use ImportTrait;
 
     /**
-     * Filename
+     * Filename.
+     *
      * @var string
      */
     protected $fileName = 'files/multiple.xls';
 
     /**
-     * Test get
+     * Test get.
+     *
      * @return [type] [description]
      */
     public function testGet()
@@ -31,7 +29,8 @@ class MultipleSheetsXlsReaderTest extends TestCase {
     }
 
     /**
-     * Test get
+     * Test get.
+     *
      * @return [type] [description]
      */
     public function testGetAndGetFirstSheetName()
@@ -92,7 +91,7 @@ class MultipleSheetsXlsReaderTest extends TestCase {
 
     public function testSelectMultipleSheetsByIndex()
     {
-        $this->reader->setSelectedSheetIndices([0,1]);
+        $this->reader->setSelectedSheetIndices([0, 1]);
         $this->reload();
 
         $got = $this->loadedFile->get();
@@ -107,5 +106,4 @@ class MultipleSheetsXlsReaderTest extends TestCase {
         $this->assertInstanceOf(\Maatwebsite\Excel\Collections\RowCollection::class, $sheet);
         $this->assertCount(5, $sheet);
     }
-
 }

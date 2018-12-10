@@ -1,9 +1,8 @@
 <?php
 
-use Mockery as m;
 
-class RegisterFilterTestCase extends TestCase {
-
+class RegisterFilterTestCase extends TestCase
+{
     public function setUp()
     {
         parent::setUp();
@@ -21,7 +20,7 @@ class RegisterFilterTestCase extends TestCase {
     public function testOnlyRegister()
     {
         $toRegister = [
-            'chunk' =>  'ChunkFilter'
+            'chunk' => 'ChunkFilter',
         ];
 
         $excel = $this->excel->registerFilters($toRegister);
@@ -33,19 +32,18 @@ class RegisterFilterTestCase extends TestCase {
     public function testRegisterAndEnabled()
     {
         $toRegister = [
-            'registered'    =>  [
-                'chunk' =>  'ChunkFilter'
+            'registered'    => [
+                'chunk' => 'ChunkFilter',
             ],
-            'enabled'   =>  [
-                'chunk'
-            ]
+            'enabled'   => [
+                'chunk',
+            ],
         ];
 
         $excel = $this->excel->registerFilters($toRegister);
 
         $filters = $this->excel->getFilters();
         $this->assertEquals($toRegister, $filters);
-
     }
 
     public function testEnableOneFilter()
@@ -72,8 +70,7 @@ class RegisterFilterTestCase extends TestCase {
         $registered = $this->excel->getFilters('registered');
         $this->assertEquals(['chunk' => 'ChunkFilter'], $registered);
 
-        $enabled    = $this->excel->getFilters('enabled');
+        $enabled = $this->excel->getFilters('enabled');
         $this->assertContains('chunk', $enabled);
-
     }
 }

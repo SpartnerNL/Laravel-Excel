@@ -2,16 +2,17 @@
 
 use Maatwebsite\Excel\Files\ImportHandler;
 
-class TestFileHandler implements ImportHandler {
-
+class TestFileHandler implements ImportHandler
+{
     /**
-     * Handle
+     * Handle.
+     *
      * @param $file
+     *
      * @return mixed|void
      */
     public function handle($file)
     {
         return $file->get();
     }
-
-} 
+}

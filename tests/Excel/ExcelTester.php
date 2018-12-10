@@ -1,11 +1,11 @@
 <?php
 
-use Mockery as m;
 
-class ExcelTester extends ExcelTestCase {
-
+class ExcelTester extends ExcelTestCase
+{
     /**
-     * Test select sheets
+     * Test select sheets.
+     *
      * @return
      */
     public function testSelectSheets()
@@ -15,7 +15,8 @@ class ExcelTester extends ExcelTestCase {
     }
 
     /**
-     * Test select sheets
+     * Test select sheets.
+     *
      * @return
      */
     public function testSelectSheetsByIndex()
@@ -25,7 +26,8 @@ class ExcelTester extends ExcelTestCase {
     }
 
     /**
-     * Test the share view
+     * Test the share view.
+     *
      * @return
      */
     public function testShareView()
@@ -35,7 +37,8 @@ class ExcelTester extends ExcelTestCase {
     }
 
     /**
-     * Test load view
+     * Test load view.
+     *
      * @return
      */
     public function testLoadView()

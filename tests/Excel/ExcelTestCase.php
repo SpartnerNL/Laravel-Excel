@@ -1,13 +1,13 @@
 <?php
 
-use Mockery as m;
 use Maatwebsite\Excel\Excel;
-use Illuminate\Filesystem\Filesystem;
+use Mockery as m;
 
-class ExcelTestCase extends PHPUnit_Framework_TestCase {
-
+class ExcelTestCase extends PHPUnit_Framework_TestCase
+{
     /**
-     * Mocks
+     * Mocks.
+     *
      * @var [type]
      */
     public $phpexcel;
@@ -17,7 +17,7 @@ class ExcelTestCase extends PHPUnit_Framework_TestCase {
     public $batch;
 
     /**
-     * Setup test case
+     * Setup test case.
      */
     public function setUp()
     {
@@ -31,7 +31,8 @@ class ExcelTestCase extends PHPUnit_Framework_TestCase {
     }
 
     /**
-     * Test the constructor
+     * Test the constructor.
+     *
      * @return [type] [description]
      */
     public function testConstructor()
@@ -40,7 +41,7 @@ class ExcelTestCase extends PHPUnit_Framework_TestCase {
     }
 
     /**
-     * Set the mocks
+     * Set the mocks.
      */
     public function setMocks()
     {
@@ -51,7 +52,8 @@ class ExcelTestCase extends PHPUnit_Framework_TestCase {
     }
 
     /**
-     * Mock PHPExcel class
+     * Mock PHPExcel class.
+     *
      * @return [type] [description]
      */
     public function mockPHPExcel()
@@ -63,7 +65,8 @@ class ExcelTestCase extends PHPUnit_Framework_TestCase {
     }
 
     /**
-     * Mock Reader class
+     * Mock Reader class.
+     *
      * @return [type] [description]
      */
     public function mockReader()
@@ -77,7 +80,8 @@ class ExcelTestCase extends PHPUnit_Framework_TestCase {
     }
 
     /**
-     * Mock Writer class
+     * Mock Writer class.
+     *
      * @return [type] [description]
      */
     public function mockWriter()
@@ -90,7 +94,8 @@ class ExcelTestCase extends PHPUnit_Framework_TestCase {
     }
 
     /**
-     * Mock Writer class
+     * Mock Writer class.
+     *
      * @return [type] [description]
      */
     public function mockBatch()
@@ -100,12 +105,12 @@ class ExcelTestCase extends PHPUnit_Framework_TestCase {
     }
 
     /**
-     * Teardown
+     * Teardown.
+     *
      * @return [type] [description]
      */
     public function tearDown()
     {
         m::close();
     }
-
 }

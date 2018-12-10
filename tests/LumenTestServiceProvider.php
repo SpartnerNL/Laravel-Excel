@@ -5,7 +5,6 @@ use Mockery as m;
 
 class LumenTestServiceProvider extends TestCase
 {
-
     public function setUp()
     {
         parent::setUp();

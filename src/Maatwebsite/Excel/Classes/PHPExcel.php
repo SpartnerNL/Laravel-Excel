@@ -1,22 +1,24 @@
-<?php namespace Maatwebsite\Excel\Classes;
+<?php
+
+namespace Maatwebsite\Excel\Classes;
 
 use PHPExcel as PHPOffice_PHPExcel;
 
 /**
- *
- * Laravel wrapper for PHPExcel
+ * Laravel wrapper for PHPExcel.
  *
  * @category   Laravel Excel
- * @package    maatwebsite/excel
+ *
  * @copyright  Copyright (c) 2013 - 2014 Maatwebsite (http://www.maatwebsite.nl)
  * @copyright  Original Copyright (c) 2006 - 2014 PHPExcel (http://www.codeplex.com/PHPExcel)
  * @author     Maatwebsite <info@maatwebsite.nl>
  * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
  */
-class PHPExcel extends PHPOffice_PHPExcel {
-
+class PHPExcel extends PHPOffice_PHPExcel
+{
     /**
-     * Allowed autofill properties
+     * Allowed autofill properties.
+     *
      * @var array
      */
     public $allowedProperties = [
@@ -27,15 +29,17 @@ class PHPExcel extends PHPOffice_PHPExcel {
         'keywords',
         'category',
         'manager',
-        'company'
+        'company',
     ];
 
     /**
-     * Create sheet and add it to this workbook
+     * Create sheet and add it to this workbook.
      *
-     * @param  int|null   $iSheetIndex Index where sheet should go (0,1,..., or null for last)
+     * @param int|null    $iSheetIndex Index where sheet should go (0,1,..., or null for last)
      * @param bool|string $title
+     *
      * @throws \PHPExcel_Exception
+     *
      * @return LaravelExcelWorksheet
      */
     public function createSheet($iSheetIndex = null, $title = false)
@@ -51,9 +55,11 @@ class PHPExcel extends PHPOffice_PHPExcel {
     }
 
     /**
-     * Check if the user change change the workbook property
-     * @param  string $method
-     * @return boolean
+     * Check if the user change change the workbook property.
+     *
+     * @param string $method
+     *
+     * @return bool
      */
     public function isChangeableProperty($method)
     {
@@ -63,9 +69,11 @@ class PHPExcel extends PHPOffice_PHPExcel {
     }
 
     /**
-     * Set default properties
+     * Set default properties.
+     *
      * @param array $custom
-     * @return  void
+     *
+     * @return void
      */
     public function setDefaultProperties($custom = [])
     {
@@ -73,13 +81,12 @@ class PHPExcel extends PHPOffice_PHPExcel {
         $properties = $this->getProperties();
 
         // Get fillable properties
-        foreach ($this->getAllowedProperties() as $prop)
-        {
+        foreach ($this->getAllowedProperties() as $prop) {
             // Get the method
-            $method = 'set' . ucfirst($prop);
+            $method = 'set'.ucfirst($prop);
 
             // get the value
-            $value = in_array($prop, array_keys($custom)) ? $custom[$prop] : config('excel.properties.' . $prop, null);
+            $value = in_array($prop, array_keys($custom)) ? $custom[$prop] : config('excel.properties.'.$prop, null);
 
             // set the property
             call_user_func_array([$properties, $method], [$value]);
@@ -87,18 +94,19 @@ class PHPExcel extends PHPOffice_PHPExcel {
     }
 
     /**
-     * load info from parent obj
+     * load info from parent obj.
+     *
      * @param \PHPExcel $object
+     *
      * @return $this
      */
-    function cloneParent(\PHPExcel $object)
+    public function cloneParent(\PHPExcel $object)
     {
         // Init new reflection object
         $class = new \ReflectionClass(get_class($object));
 
         // Loop through all properties
-        foreach($class->getProperties() as $property)
-        {
+        foreach ($class->getProperties() as $property) {
             // Make the property public
             $property->setAccessible(true);
 
@@ -113,7 +121,8 @@ class PHPExcel extends PHPOffice_PHPExcel {
     }
 
     /**
-     * Return all allowed properties
+     * Return all allowed properties.
+     *
      * @return array
      */
     public function getAllowedProperties()

@@ -2,10 +2,10 @@
 
 use Maatwebsite\Excel\Facades\Excel;
 
-class ExcelWriterTest extends TestCase {
-
+class ExcelWriterTest extends TestCase
+{
     /**
-     * Setup
+     * Setup.
      */
     public function setUp()
     {
@@ -20,7 +20,8 @@ class ExcelWriterTest extends TestCase {
     }
 
     /**
-     * Test the excel injection
+     * Test the excel injection.
+     *
      * @return [type] [description]
      */
     public function testExcelInjection()
@@ -29,7 +30,8 @@ class ExcelWriterTest extends TestCase {
     }
 
     /**
-     * Test setTitle()
+     * Test setTitle().
+     *
      * @return [type] [description]
      */
     public function testSetTitle()
@@ -39,27 +41,28 @@ class ExcelWriterTest extends TestCase {
         $this->assertEquals($this->writer, $titleSet);
 
         // Test if title was really set
-        $this->assertEquals($this->writer->getTitle(),                  $title);
+        $this->assertEquals($this->writer->getTitle(), $title);
         $this->assertEquals($this->writer->getProperties()->getTitle(), $title);
     }
 
     /**
-     * Test setTitle()
+     * Test setTitle().
+     *
      * @return [type] [description]
      */
     public function testSetFilename()
     {
-        $filename       = 'filename';
-        $filenameSet    = $this->writer->setFileName($filename);
+        $filename = 'filename';
+        $filenameSet = $this->writer->setFileName($filename);
         $this->assertEquals($this->writer, $filenameSet);
 
         // Test if title was really set
         $this->assertEquals($this->writer->getFileName(), $filename);
     }
 
-
     /**
-     * Test the share view
+     * Test the share view.
+     *
      * @return [type] [description]
      */
     public function testShareView()
@@ -76,13 +79,14 @@ class ExcelWriterTest extends TestCase {
         $parser = $this->writer->getParser();
 
         // Test if parse data was set
-        $this->assertEquals($parser->getView(),         $view);
-        $this->assertEquals($parser->getData(),         $data);
-        $this->assertEquals($parser->getMergeData(),    $mergeData);
+        $this->assertEquals($parser->getView(), $view);
+        $this->assertEquals($parser->getData(), $data);
+        $this->assertEquals($parser->getMergeData(), $mergeData);
     }
 
     /**
-     * Test basic sheet creation
+     * Test basic sheet creation.
+     *
      * @return [type] [description]
      */
     public function testSheet()
@@ -97,7 +101,8 @@ class ExcelWriterTest extends TestCase {
     }
 
     /**
-     * Test sheet closure
+     * Test sheet closure.
+     *
      * @return [type] [description]
      */
     public function testSheetClosure()
@@ -105,7 +110,7 @@ class ExcelWriterTest extends TestCase {
         $title = 'Worksheet Title';
         $closureTitle = 'Closure Title';
 
-        $this->writer->sheet($title, function($sheet) use($closureTitle) {
+        $this->writer->sheet($title, function ($sheet) use ($closureTitle) {
             $sheet->setTitle($closureTitle);
         });
 
@@ -114,7 +119,8 @@ class ExcelWriterTest extends TestCase {
     }
 
     /**
-     * Test multiple sheet creation
+     * Test multiple sheet creation.
+     *
      * @return [type] [description]
      */
     public function testMultipleSheets()
@@ -123,12 +129,11 @@ class ExcelWriterTest extends TestCase {
         $sheets = [
             'Worksheet 1 title',
             'Worksheet 2 title',
-            'Worksheet 3 title'
+            'Worksheet 3 title',
         ];
 
         // Create the sheets
-        foreach($sheets as $sheetTitle)
-        {
+        foreach ($sheets as $sheetTitle) {
             $this->writer->sheet($sheetTitle);
         }
 
@@ -136,14 +141,14 @@ class ExcelWriterTest extends TestCase {
         $this->assertEquals(count($sheets), $this->writer->getSheetCount());
 
         // Test if all sheet titles where set correctly
-        foreach($sheets as $sheetTitle)
-        {
+        foreach ($sheets as $sheetTitle) {
             $this->assertContains($sheetTitle, $this->writer->getSheetNames());
         }
     }
 
     /**
-     * Test setting properties (creator, ...)
+     * Test setting properties (creator, ...).
+     *
      * @return [type] [description]
      */
     public function testSetProperties()
@@ -152,14 +157,13 @@ class ExcelWriterTest extends TestCase {
         $properties = $this->excel->getAllowedProperties();
 
         // Loop through them
-        foreach($properties as $prop)
-        {
+        foreach ($properties as $prop) {
             // Set a random value
             $originalValue = rand();
 
             // Set needed set/get methods
-            $method     = 'set' . ucfirst($prop);
-            $getMethod  = 'get' . ucfirst($prop);
+            $method = 'set'.ucfirst($prop);
+            $getMethod = 'get'.ucfirst($prop);
 
             // Set the property with the random value
             call_user_func_array([$this->writer, $method], [$originalValue]);
@@ -168,22 +172,19 @@ class ExcelWriterTest extends TestCase {
             $returnedValue = call_user_func_array([$this->writer->getProperties(), $getMethod], []);
 
             // Check if the properties matches
-            $this->assertEquals($originalValue, $returnedValue, $prop . ' doesn\'t match');
+            $this->assertEquals($originalValue, $returnedValue, $prop.' doesn\'t match');
         }
     }
 
     public function testCreateFromArray()
     {
-        $info = Excel::create('test', function ($writer)
-        {
-
-            $writer->sheet('test', function ($sheet)
-            {
+        $info = Excel::create('test', function ($writer) {
+            $writer->sheet('test', function ($sheet) {
                 $sheet->fromArray([
-                    'test data'
+                    'test data',
                 ]);
             });
-        })->store('csv', __DIR__ . '/exports', true);
+        })->store('csv', __DIR__.'/exports', true);
 
         $this->assertFileExists($info['full']);
     }
@@ -193,10 +194,10 @@ class ExcelWriterTest extends TestCase {
         $info = Excel::create('test', function ($writer) {
             $writer->sheet('test', function ($sheet) {
                 $sheet->createSheetFromArray([
-                    'test data'
+                    'test data',
                 ]);
             });
-        })->store('csv', __DIR__ . '/exports', true);
+        })->store('csv', __DIR__.'/exports', true);
 
         $this->assertFileExists($info['full']);
     }
@@ -208,15 +209,13 @@ class ExcelWriterTest extends TestCase {
                 $this->setExpectedException(PHPExcel_Exception::class);
                 $sheet->createSheetFromArray('test data');
             });
-        })->store('csv', __DIR__ . '/exports', true);
+        })->store('csv', __DIR__.'/exports', true);
     }
 
     public function testNumberPrecision()
     {
-        $info = Excel::create('numbers', function ($writer)
-        {
-            $writer->sheet('test', function ($sheet)
-            {
+        $info = Excel::create('numbers', function ($writer) {
+            $writer->sheet('test', function ($sheet) {
                 $sheet->fromArray([
                     ['number' => '1234'],
                     ['number' => '1234.020'],
@@ -229,7 +228,7 @@ class ExcelWriterTest extends TestCase {
                     ['number' => '= A6 + A6'],
                 ]);
             });
-        })->store('xls', __DIR__ . '/exports', true);
+        })->store('xls', __DIR__.'/exports', true);
 
         $this->assertFileExists($info['full']);
 
@@ -241,7 +240,7 @@ class ExcelWriterTest extends TestCase {
         $this->assertEquals('12345678901234567890', $results[3]['number']);
 
         $this->assertInternalType('double', $results[4]['number']);
-        $this->assertEquals((double) 1234, $results[4]['number']);
+        $this->assertEquals((float) 1234, $results[4]['number']);
 
         $this->assertInternalType('double', $results[5]['number']);
         $this->assertEquals('1234.02', $results[5]['number']);
@@ -261,17 +260,16 @@ class ExcelWriterTest extends TestCase {
      */
     public function testNoSheets()
     {
-        Excel::create('no_sheets', function ($writer) {})->string();
+        Excel::create('no_sheets', function ($writer) {
+        })->string();
     }
 
     public function testInvalidExtensionStore()
     {
-        $file = Excel::create('numbers', function ($writer)
-        {
-            $writer->sheet('test', function ($sheet)
-            {
+        $file = Excel::create('numbers', function ($writer) {
+            $writer->sheet('test', function ($sheet) {
                 $sheet->fromArray([
-                    'number' => 1234
+                    'number' => 1234,
                 ]);
             });
         });
@@ -281,12 +279,10 @@ class ExcelWriterTest extends TestCase {
 
     public function testInvalidExtensionDownloadExport()
     {
-        $file = Excel::create('numbers', function ($writer)
-        {
-            $writer->sheet('test', function ($sheet)
-            {
+        $file = Excel::create('numbers', function ($writer) {
+            $writer->sheet('test', function ($sheet) {
                 $sheet->fromArray([
-                    'number' => 1234
+                    'number' => 1234,
                 ]);
             });
         });
@@ -296,12 +292,10 @@ class ExcelWriterTest extends TestCase {
 
     public function testInvalidExtensionString()
     {
-        $file = Excel::create('numbers', function ($writer)
-        {
-            $writer->sheet('test', function ($sheet)
-            {
+        $file = Excel::create('numbers', function ($writer) {
+            $writer->sheet('test', function ($sheet) {
                 $sheet->fromArray([
-                    'number' => 1234
+                    'number' => 1234,
                 ]);
             });
         });
@@ -313,13 +307,11 @@ class ExcelWriterTest extends TestCase {
     {
         View::addLocation(realpath(__DIR__.'/views'));
 
-        $info = Excel::create('numbers', function ($writer)
-        {
-            $writer->sheet('test', function ($sheet)
-            {
+        $info = Excel::create('numbers', function ($writer) {
+            $writer->sheet('test', function ($sheet) {
                 $sheet->loadView('test')->with(['foo' => 'bar']);
             });
-        })->store('csv', __DIR__ . '/exports', true);
+        })->store('csv', __DIR__.'/exports', true);
 
         $this->assertFileExists($info['full']);
     }

@@ -1,19 +1,18 @@
 <?php
 
-require_once('traits/ImportTrait.php');
-require_once('traits/SingleImportTestingTrait.php');
+require_once 'traits/ImportTrait.php';
+require_once 'traits/SingleImportTestingTrait.php';
 
-use Mockery as m;
-
-class ZerosHandlingReaderTest extends TestCase {
-
-    /**
+class ZerosHandlingReaderTest extends TestCase
+{
+    /*
      * Traits
      */
     use ImportTrait;
 
     /**
-     * Filename
+     * Filename.
+     *
      * @var string
      */
     protected $fileName = 'files/zeros.xls';
@@ -22,7 +21,6 @@ class ZerosHandlingReaderTest extends TestCase {
      * @var bool
      */
     protected $noHeadings = false;
-
 
     public function testDefaultGet()
     {
@@ -48,14 +46,12 @@ class ZerosHandlingReaderTest extends TestCase {
     //    $this->assertContains('000', $got[0]);
     //}
 
-
     public function testMoney()
     {
         $got = $this->loadedFile->toArray();
 
-        $this->assertContains((double) 0, $got[1]);
+        $this->assertContains((float) 0, $got[1]);
     }
-
 
     public function testEmptyCellHandling()
     {
@@ -64,11 +60,10 @@ class ZerosHandlingReaderTest extends TestCase {
         $this->assertContains(null, $got[2]);
     }
 
-
     public function testNormalZeros()
     {
         $got = $this->loadedFile->toArray();
 
-        $this->assertContains((double) 0, $got[5]);
+        $this->assertContains((float) 0, $got[5]);
     }
 }

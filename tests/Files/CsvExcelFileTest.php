@@ -2,15 +2,13 @@
 
 include_once 'classes/CsvTestImport.php';
 
-class CsvExcelFileTest extends TestCase {
-
-
+class CsvExcelFileTest extends TestCase
+{
     public function testInit()
     {
         $importer = app('CsvTestImport');
         $this->assertInstanceOf(\Maatwebsite\Excel\Files\ExcelFile::class, $importer);
     }
-
 
     public function testGetResultsDirectlyWithCustomDelimiterSetAsProperty()
     {
@@ -20,5 +18,4 @@ class CsvExcelFileTest extends TestCase {
         $this->assertInstanceOf(\Maatwebsite\Excel\Collections\RowCollection::class, $results);
         $this->assertCount(5, $results);
     }
-
 }
