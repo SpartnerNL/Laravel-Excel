@@ -107,7 +107,7 @@ class Excel implements Exporter, Importer
     {
         $writerType = $this->findTypeByExtension($filePath, $writerType);
 
-        if(!$writerType) {
+        if (!$writerType) {
             throw new NoTypeDetectedException();
         }
 
@@ -171,7 +171,7 @@ class Excel implements Exporter, Importer
     {
         $writerType = $this->findTypeByExtension($fileName, $writerType);
 
-        if(!$writerType) {
+        if (!$writerType) {
             throw new NoTypeDetectedException();
         }
 
