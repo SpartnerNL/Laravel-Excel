@@ -359,7 +359,7 @@ class ExcelTest extends TestCase
             }
         };
 
-        $this->SUT->import($import, UploadedFile::fake()->create('import'));
+        $this->SUT->import($import, UploadedFile::fake()->create('import.zip'));
     }
 
     /**
