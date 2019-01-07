@@ -176,7 +176,7 @@ class Excel implements Exporter, Importer
      *
      * @return string|null
      */
-    protected function findTypeByExtension($fileName, string $type = null)
+    protected function findTypeByExtension($fileName, string $type = null): string
     {
         if (null !== $type) {
             return $type;
@@ -193,7 +193,13 @@ class Excel implements Exporter, Importer
             throw new NoTypeDetectedException();
         }
 
-        return config('excel.extension_detector.' . strtolower($extension));
+        $extensionDetector = config('excel.extension_detector.' . strtolower($extension));
+
+        if (!$extensionDetector) {
+            throw new NoTypeDetectedException();
+        }
+
+        return $extensionDetector;
     }
 
     /**
