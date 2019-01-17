@@ -131,6 +131,8 @@ class Writer
     {
         $this->exportable = $export;
 
+        $this->spreadsheet->setActiveSheetIndex(0);
+
         $this->raise(new BeforeWriting($this, $this->exportable));
 
         if ($export instanceof WithCustomCsvSettings) {
