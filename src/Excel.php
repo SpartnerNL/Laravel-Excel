@@ -3,6 +3,7 @@
 namespace Maatwebsite\Excel;
 
 use Illuminate\Support\Collection;
+use Maatwebsite\Excel\Exceptions\InvalidFileType;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Contracts\Filesystem\Factory;
@@ -193,7 +194,13 @@ class Excel implements Exporter, Importer
             throw new NoTypeDetectedException();
         }
 
-        return config('excel.extension_detector.' . strtolower($extension));
+        $detectedType = config('excel.extension_detector.' . strtolower($extension));
+
+        if (null === $detectedType) {
+            throw new InvalidFileType();
+        }
+
+        return $detectedType;
     }
 
     /**

@@ -364,6 +364,28 @@ class ExcelTest extends TestCase
 
     /**
      * @test
+     * @expectedException \Maatwebsite\Excel\Exceptions\InvalidFileType
+     */
+    public function import_will_throw_error_when_file_type_is_not_supported()
+    {
+        $import = new class implements ToArray {
+            /**
+             * @param array $array
+             */
+            public function array(array $array)
+            {
+                Assert::assertEquals([
+                    ['test', 'test'],
+                    ['test', 'test'],
+                ], $array);
+            }
+        };
+
+        $this->SUT->import($import, UploadedFile::fake()->create('foo.wtf'));
+    }
+
+    /**
+     * @test
      */
     public function can_import_without_extension_with_explicit_reader_type()
     {
