@@ -3,10 +3,8 @@
 namespace Maatwebsite\Excel\Jobs;
 
 use Illuminate\Database\Connection;
-use Illuminate\Support\Facades\Event;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Events\StatementPrepared;
 use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 
 class SerializedQuery
@@ -52,10 +50,6 @@ class SerializedQuery
     {
         /** @var Connection $connection */
         $connection = app('db')->connection($this->connection);
-
-        Event::listen(StatementPrepared::class, function ($event) {
-            $event->statement->setFetchMode(\PDO::FETCH_ASSOC);
-        });
 
         return $this->hydrate(
             $connection->select($this->query, $this->bindings)
