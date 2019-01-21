@@ -77,14 +77,16 @@ class ExcelFake implements Exporter, Importer
 
     /**
      * @param object              $import
-     * @param string|UploadedFile $filePath
+     * @param string|UploadedFile $file
      * @param string|null         $disk
      * @param string|null         $readerType
      *
      * @return Reader|PendingDispatch
      */
-    public function import($import, $filePath, string $disk = null, string $readerType = null)
+    public function import($import, $file, string $disk = null, string $readerType = null)
     {
+        $filePath = ($file instanceof UploadedFile) ? $file->getFilename() : $file;
+
         $this->imported[$disk ?? 'default'][$filePath] = $import;
 
         return $this;
@@ -92,14 +94,16 @@ class ExcelFake implements Exporter, Importer
 
     /**
      * @param object              $import
-     * @param string|UploadedFile $filePath
+     * @param string|UploadedFile $file
      * @param string|null         $disk
      * @param string|null         $readerType
      *
      * @return array
      */
-    public function toArray($import, $filePath, string $disk = null, string $readerType = null): array
+    public function toArray($import, $file, string $disk = null, string $readerType = null): array
     {
+        $filePath = ($file instanceof UploadedFile) ? $file->getFilename() : $file;
+
         $this->imported[$disk ?? 'default'][$filePath] = $import;
 
         return [];
@@ -107,14 +111,16 @@ class ExcelFake implements Exporter, Importer
 
     /**
      * @param object              $import
-     * @param string|UploadedFile $filePath
+     * @param string|UploadedFile $file
      * @param string|null         $disk
      * @param string|null         $readerType
      *
      * @return Collection
      */
-    public function toCollection($import, $filePath, string $disk = null, string $readerType = null): Collection
+    public function toCollection($import, $file, string $disk = null, string $readerType = null): Collection
     {
+        $filePath = ($file instanceof UploadedFile) ? $file->getFilename() : $file;
+
         $this->imported[$disk ?? 'default'][$filePath] = $import;
 
         return new Collection();
@@ -122,15 +128,17 @@ class ExcelFake implements Exporter, Importer
 
     /**
      * @param ShouldQueue         $import
-     * @param string|UploadedFile $filePath
+     * @param string|UploadedFile $file
      * @param string|null         $disk
      * @param string              $readerType
      *
      * @return PendingDispatch
      */
-    public function queueImport(ShouldQueue $import, $filePath, string $disk = null, string $readerType = null)
+    public function queueImport(ShouldQueue $import, $file, string $disk = null, string $readerType = null)
     {
         Queue::fake();
+
+        $filePath = ($file instanceof UploadedFile) ? $file->getFilename() : $file;
 
         $this->queued[$disk ?? 'default'][$filePath] = $import;
 
