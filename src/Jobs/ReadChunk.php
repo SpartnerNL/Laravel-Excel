@@ -95,6 +95,7 @@ class ReadChunk implements ShouldQueue
 
         if ($sheet->getHighestRow() < $this->startRow) {
             $sheet->disconnect();
+
             return;
         }
 
