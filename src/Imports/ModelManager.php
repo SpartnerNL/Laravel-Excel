@@ -2,7 +2,6 @@
 
 namespace Maatwebsite\Excel\Imports;
 
-use Maatwebsite\Excel\Exceptions\RowSkippedException;
 use Throwable;
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
@@ -10,6 +9,7 @@ use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\SkipsOnError;
 use Maatwebsite\Excel\Concerns\WithValidation;
 use Maatwebsite\Excel\Validators\RowValidator;
+use Maatwebsite\Excel\Exceptions\RowSkippedException;
 
 class ModelManager
 {

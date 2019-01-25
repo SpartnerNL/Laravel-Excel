@@ -2,7 +2,6 @@
 
 namespace Maatwebsite\Excel\Tests\Concerns;
 
-use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use PHPUnit\Framework\Assert;
 use Illuminate\Validation\Rule;
 use Maatwebsite\Excel\Tests\TestCase;
@@ -12,6 +11,7 @@ use Maatwebsite\Excel\Validators\Failure;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\SkipsOnFailure;
 use Maatwebsite\Excel\Concerns\WithValidation;
+use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
 
 class SkipsOnFailureTest extends TestCase
