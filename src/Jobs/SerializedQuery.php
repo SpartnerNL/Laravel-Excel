@@ -2,6 +2,7 @@
 
 namespace Maatwebsite\Excel\Jobs;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Connection;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -30,13 +31,19 @@ class SerializedQuery
     public $model;
 
     /**
-     * @param Builder $builder
+     * @var array
+     */
+    public $with = [];
+
+    /**
+     * @param Builder|\Illuminate\Database\Eloquent\Builder $builder
      */
     public function __construct($builder)
     {
         $this->query      = $builder->toSql();
         $this->bindings   = $builder->getBindings();
         $this->connection = $builder->getConnection()->getName();
+        $this->with       = method_exists($builder, 'getEagerLoads') ? array_keys($builder->getEagerLoads()) : [];
 
         if ($builder instanceof EloquentBuilder) {
             $this->model = get_class($builder->getModel());
@@ -48,8 +55,7 @@ class SerializedQuery
      */
     public function execute()
     {
-        /** @var Connection $connection */
-        $connection = app('db')->connection($this->connection);
+        $connection = DB::connection($this->connection);
 
         return $this->hydrate(
             $connection->select($this->query, $this->bindings)
@@ -59,7 +65,7 @@ class SerializedQuery
     /**
      * @param array $items
      *
-     * @return mixed
+     * @return array
      */
     public function hydrate(array $items)
     {
@@ -67,9 +73,18 @@ class SerializedQuery
             return $items;
         }
 
-        return array_map(function ($item) use ($instance) {
+        $models = array_map(function ($item) use ($instance) {
             return $instance->newFromBuilder($item);
         }, $items);
+
+        if (!empty($this->with)) {
+            $instance
+                ->newQuery()
+                ->with($this->with)
+                ->eagerLoadRelations($models);
+        }
+
+        return $models;
     }
 
     /**
