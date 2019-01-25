@@ -107,6 +107,10 @@ class Excel implements Exporter, Importer
     {
         $writerType = $this->findTypeByExtension($filePath, $writerType);
 
+        if (!$writerType) {
+            throw new NoTypeDetectedException();
+        }
+
         return $this->queuedWriter->store($export, $filePath, $disk, $writerType);
     }
 
@@ -167,6 +171,10 @@ class Excel implements Exporter, Importer
     {
         $writerType = $this->findTypeByExtension($fileName, $writerType);
 
+        if (!$writerType) {
+            throw new NoTypeDetectedException();
+        }
+
         return $this->writer->export($export, $writerType);
     }
 
@@ -176,7 +184,7 @@ class Excel implements Exporter, Importer
      *
      * @return string|null
      */
-    protected function findTypeByExtension($fileName, string $type = null): string
+    protected function findTypeByExtension($fileName, string $type = null)
     {
         if (null !== $type) {
             return $type;
