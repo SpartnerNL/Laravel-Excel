@@ -16,3 +16,4 @@
 !value-binder-import.xlsx
 !csv-with-other-delimiter.csv
 !from-query-store-with-eager-loads.xlsx
+!from-query-store-without-eloquent.xlsx
