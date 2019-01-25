@@ -2,11 +2,11 @@
 
 namespace Maatwebsite\Excel\Jobs;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Connection;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
-use Illuminate\Support\Facades\DB;
 
 class SerializedQuery
 {

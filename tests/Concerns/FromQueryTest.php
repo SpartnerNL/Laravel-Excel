@@ -2,13 +2,13 @@
 
 namespace Maatwebsite\Excel\Tests\Concerns;
 
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\DB;
-use Maatwebsite\Excel\Tests\Data\Stubs\Database\Group;
-use Maatwebsite\Excel\Tests\Data\Stubs\FromUsersQueryExportWithEagerLoad;
 use Maatwebsite\Excel\Tests\TestCase;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
+use Maatwebsite\Excel\Tests\Data\Stubs\Database\Group;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Maatwebsite\Excel\Tests\Data\Stubs\FromUsersQueryExport;
+use Maatwebsite\Excel\Tests\Data\Stubs\FromUsersQueryExportWithEagerLoad;
 
 class FromQueryTest extends TestCase
 {
