@@ -17,7 +17,7 @@ class FromUsersQueryExportWithEagerLoad implements FromQuery, WithMapping
      */
     public function query()
     {
-        return User::query()->with('groups');
+        return User::query()->with('groups')->withCount('groups');
     }
 
     /**
@@ -29,6 +29,7 @@ class FromUsersQueryExportWithEagerLoad implements FromQuery, WithMapping
     {
         return [
             $row->name,
+            $row->groups_count,
             $row->groups->implode('name', ', '),
         ];
     }
