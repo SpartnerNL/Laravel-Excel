@@ -133,7 +133,7 @@ trait Importable
         $filePath = $filePath ?? $this->filePath ?? null;
 
         if (null === $filePath) {
-            throw new NoFilePathGivenException();
+            throw NoFilePathGivenException::import();
         }
 
         return $filePath;

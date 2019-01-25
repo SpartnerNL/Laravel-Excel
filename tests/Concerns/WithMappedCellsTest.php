@@ -87,6 +87,8 @@ class WithMappedCellsTest extends TestCase
                     'email' => 'patrick@maatwebsite.nl',
                 ], $array);
 
+                $array['password'] = str_random();
+
                 return new User($array);
             }
         };
