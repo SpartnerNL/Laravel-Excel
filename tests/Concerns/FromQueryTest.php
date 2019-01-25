@@ -3,13 +3,13 @@
 namespace Maatwebsite\Excel\Tests\Concerns;
 
 use Illuminate\Support\Facades\DB;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Maatwebsite\Excel\Tests\Data\Stubs\Database\Group;
-use Maatwebsite\Excel\Tests\Data\Stubs\FromNonEloquentQueryExport;
-use Maatwebsite\Excel\Tests\Data\Stubs\FromUsersQueryExportWithEagerLoad;
 use Maatwebsite\Excel\Tests\TestCase;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
+use Maatwebsite\Excel\Tests\Data\Stubs\Database\Group;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Maatwebsite\Excel\Tests\Data\Stubs\FromUsersQueryExport;
+use Maatwebsite\Excel\Tests\Data\Stubs\FromNonEloquentQueryExport;
+use Maatwebsite\Excel\Tests\Data\Stubs\FromUsersQueryExportWithEagerLoad;
 
 class FromQueryTest extends TestCase
 {
@@ -121,7 +121,7 @@ class FromQueryTest extends TestCase
 
         $contents = $this->readAsArray(__DIR__ . '/../Data/Disks/Local/from-query-store-without-eloquent.xlsx', 'Xlsx');
 
-        $allUsers = $export->query()->get()->map(function($row) {
+        $allUsers = $export->query()->get()->map(function ($row) {
             return array_values((array) $row);
         })->all();
 
@@ -139,7 +139,7 @@ class FromQueryTest extends TestCase
 
         $contents = $this->readAsArray(__DIR__ . '/../Data/Disks/Local/from-query-store-without-eloquent.xlsx', 'Xlsx');
 
-        $allUsers = $export->query()->get()->map(function($row) {
+        $allUsers = $export->query()->get()->map(function ($row) {
             return array_values((array) $row);
         })->all();
 
