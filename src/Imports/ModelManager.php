@@ -2,6 +2,7 @@
 
 namespace Maatwebsite\Excel\Imports;
 
+use Maatwebsite\Excel\Exceptions\RowSkippedException;
 use Throwable;
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
@@ -76,29 +77,33 @@ class ModelManager
      */
     private function massFlush(ToModel $import)
     {
-        if ($import instanceof WithValidation) {
-            $this->validator->validate($this->models, $import);
-        }
+        try {
+            if ($import instanceof WithValidation) {
+                $this->validator->validate($this->models, $import);
+            }
 
-        collect($this->models)
-            ->map(function (array $attributes) use ($import) {
-                return $this->toModels($import, $attributes);
-            })
-            ->flatten()
-            ->mapToGroups(function (Model $model) {
-                return [\get_class($model) => $this->prepare($model)->getAttributes()];
-            })->each(function (Collection $models, string $model) use ($import) {
-                try {
-                    /* @var Model $model */
-                    $model::query()->insert($models->toArray());
-                } catch (Throwable $e) {
-                    if ($import instanceof SkipsOnError) {
-                        $import->onError($e);
-                    } else {
-                        throw $e;
+            collect($this->models)
+                ->map(function (array $attributes) use ($import) {
+                    return $this->toModels($import, $attributes);
+                })
+                ->flatten()
+                ->mapToGroups(function (Model $model) {
+                    return [\get_class($model) => $this->prepare($model)->getAttributes()];
+                })->each(function (Collection $models, string $model) use ($import) {
+                    try {
+                        /* @var Model $model */
+                        $model::query()->insert($models->toArray());
+                    } catch (Throwable $e) {
+                        if ($import instanceof SkipsOnError) {
+                            $import->onError($e);
+                        } else {
+                            throw $e;
+                        }
                     }
-                }
-            });
+                });
+        } catch (RowSkippedException $e) {
+            // Skip mass flush for the models.
+        }
     }
 
     /**
@@ -107,21 +112,25 @@ class ModelManager
     private function singleFlush(ToModel $import)
     {
         collect($this->models)->each(function (array $attributes, $row) use ($import) {
-            if ($import instanceof WithValidation) {
-                $this->validator->validate([$row => $attributes], $import);
-            }
-
-            $this->toModels($import, $attributes)->each(function (Model $model) use ($import) {
-                try {
-                    $model->saveOrFail();
-                } catch (Throwable $e) {
-                    if ($import instanceof SkipsOnError) {
-                        $import->onError($e);
-                    } else {
-                        throw $e;
-                    }
+            try {
+                if ($import instanceof WithValidation) {
+                    $this->validator->validate([$row => $attributes], $import);
                 }
-            });
+
+                $this->toModels($import, $attributes)->each(function (Model $model) use ($import) {
+                    try {
+                        $model->saveOrFail();
+                    } catch (Throwable $e) {
+                        if ($import instanceof SkipsOnError) {
+                            $import->onError($e);
+                        } else {
+                            throw $e;
+                        }
+                    }
+                });
+            } catch (RowSkippedException $e) {
+                // Skip inserting the model.
+            }
         });
     }
 

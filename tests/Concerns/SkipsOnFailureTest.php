@@ -2,6 +2,7 @@
 
 namespace Maatwebsite\Excel\Tests\Concerns;
 
+use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use PHPUnit\Framework\Assert;
 use Illuminate\Validation\Rule;
 use Maatwebsite\Excel\Tests\TestCase;
@@ -80,6 +81,78 @@ class SkipsOnFailureTest extends TestCase
 
         // Shouldn't have rollbacked other imported rows.
         $this->assertDatabaseHas('users', [
+            'email' => 'patrick@maatwebsite.nl',
+        ]);
+
+        // Should have skipped inserting
+        $this->assertDatabaseMissing('users', [
+            'email' => 'taylor@laravel.com',
+        ]);
+    }
+
+    /**
+     * @test
+     */
+    public function can_skip_entire_batch()
+    {
+        $import = new class implements ToModel, WithValidation, WithBatchInserts, SkipsOnFailure {
+            use Importable;
+
+            public $failures = 0;
+
+            /**
+             * @param array $row
+             *
+             * @return Model|null
+             */
+            public function model(array $row)
+            {
+                return new User([
+                    'name'     => $row[0],
+                    'email'    => $row[1],
+                    'password' => 'secret',
+                ]);
+            }
+
+            /**
+             * @return array
+             */
+            public function rules(): array
+            {
+                return [
+                    '1' => Rule::in(['patrick@maatwebsite.nl']),
+                ];
+            }
+
+            /**
+             * @param Failure[] $failures
+             */
+            public function onFailure(Failure ...$failures)
+            {
+                $failure = $failures[0];
+
+                Assert::assertEquals(2, $failure->row());
+                Assert::assertEquals('1', $failure->attribute());
+                Assert::assertEquals(['The selected 1 is invalid.'], $failure->errors());
+
+                $this->failures += \count($failures);
+            }
+
+            /**
+             * @return int
+             */
+            public function batchSize(): int
+            {
+                return 100;
+            }
+        };
+
+        $import->import('import-users.xlsx');
+
+        $this->assertEquals(1, $import->failures);
+
+        // Should have rollbacked the rest of the batch.
+        $this->assertDatabaseMissing('users', [
             'email' => 'patrick@maatwebsite.nl',
         ]);
 

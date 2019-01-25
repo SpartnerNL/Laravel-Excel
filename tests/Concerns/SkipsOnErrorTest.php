@@ -2,6 +2,7 @@
 
 namespace Maatwebsite\Excel\Tests\Concerns;
 
+use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Throwable;
 use PHPUnit\Framework\Assert;
 use Maatwebsite\Excel\Tests\TestCase;

@@ -6,6 +6,7 @@ use Illuminate\Contracts\Validation\Factory;
 use Maatwebsite\Excel\Concerns\SkipsOnFailure;
 use Maatwebsite\Excel\Concerns\WithValidation;
 use Illuminate\Validation\ValidationException as IlluminateValidationException;
+use Maatwebsite\Excel\Exceptions\RowSkippedException;
 
 class RowValidator
 {
@@ -27,6 +28,7 @@ class RowValidator
      * @param WithValidation $import
      *
      * @throws ValidationException
+     * @throws RowSkippedException
      */
     public function validate(array $rows, WithValidation $import)
     {
@@ -52,6 +54,7 @@ class RowValidator
 
             if ($import instanceof SkipsOnFailure) {
                 $import->onFailure(...$failures);
+                throw new RowSkippedException();
             } else {
                 throw new ValidationException(
                     $e,
