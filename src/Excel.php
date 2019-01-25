@@ -59,10 +59,10 @@ class Excel implements Exporter, Importer
     private $reader;
 
     /**
-     * @param Writer            $writer
-     * @param QueuedWriter      $queuedWriter
-     * @param Reader            $reader
-     * @param Factory $filesystem
+     * @param Writer       $writer
+     * @param QueuedWriter $queuedWriter
+     * @param Reader       $reader
+     * @param Factory      $filesystem
      */
     public function __construct(
         Writer $writer,
@@ -120,8 +120,7 @@ class Excel implements Exporter, Importer
     public function import($import, $filePath, string $disk = null, string $readerType = null)
     {
         $readerType = $this->getReaderType($filePath, $readerType);
-
-        $response =  $this->reader->read($import, $filePath, $readerType, $disk);
+        $response   = $this->reader->read($import, $filePath, $readerType, $disk);
 
         if ($response instanceof PendingDispatch) {
             return $response;
@@ -209,17 +208,10 @@ class Excel implements Exporter, Importer
      * @param string|null         $readerType
      *
      * @throws NoTypeDetectedException
-     * @return string
+     * @return string|null
      */
-    private function getReaderType($filePath, string $readerType = null): string
+    private function getReaderType($filePath, string $readerType = null)
     {
-        $readerType = $this->findTypeByExtension($filePath, $readerType);
-        $readerType = $readerType ?? IOFactory::identify($filePath);
-
-        if (null === $readerType) {
-            throw new NoTypeDetectedException();
-        }
-
-        return $readerType;
+        return $this->findTypeByExtension($filePath, $readerType);
     }
 }

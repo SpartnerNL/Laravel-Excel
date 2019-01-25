@@ -5,9 +5,12 @@ namespace Maatwebsite\Excel;
 use InvalidArgumentException;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Exceptions\NoTypeDetectedException;
 use PhpOffice\PhpSpreadsheet\Cell\Cell;
+use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Reader\Csv;
 use Maatwebsite\Excel\Events\AfterImport;
+use PhpOffice\PhpSpreadsheet\Reader\Exception;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Events\BeforeImport;
@@ -69,7 +72,7 @@ class Reader
     /**
      * @param object              $import
      * @param string|UploadedFile $filePath
-     * @param string              $readerType
+     * @param string|null         $readerType
      * @param string|null         $disk
      *
      * @throws Exceptions\UnreadableFileException
@@ -78,7 +81,7 @@ class Reader
      * @throws \PhpOffice\PhpSpreadsheet\Reader\Exception
      * @return \Illuminate\Foundation\Bus\PendingDispatch|$this
      */
-    public function read($import, $filePath, string $readerType, string $disk = null)
+    public function read($import, $filePath, string $readerType = null, string $disk = null)
     {
         $reader = $this->getReader($import, $filePath, $readerType, $disk);
 
@@ -249,7 +252,7 @@ class Reader
     /**
      * @param object              $import
      * @param string|UploadedFile $filePath
-     * @param string              $readerType
+     * @param string|null         $readerType
      * @param string              $disk
      *
      * @throws Exceptions\UnreadableFileException
@@ -257,7 +260,7 @@ class Reader
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      * @return IReader
      */
-    private function getReader($import, $filePath, string $readerType, string $disk = null): IReader
+    private function getReader($import, $filePath, string $readerType = null, string $disk = null): IReader
     {
         if ($import instanceof ShouldQueue && !$import instanceof WithChunkReading) {
             throw new InvalidArgumentException('ShouldQueue is only supported in combination with WithChunkReading.');
@@ -277,7 +280,7 @@ class Reader
 
         $this->currentFile = $this->copyToFileSystem($filePath, $disk);
 
-        $reader = ReaderFactory::make($this->currentFile, $readerType);
+        $reader = ReaderFactory::make($this->currentFile, $this->getReaderType($readerType));
 
         if (method_exists($reader, 'setReadDataOnly')) {
             $reader->setReadDataOnly(config('excel.imports.read_only', true));
@@ -320,5 +323,24 @@ class Reader
     {
         $this->raise(new AfterImport($this, $import));
         $this->garbageCollect();
+    }
+
+    /**
+     * @param string|null $readerType
+     *
+     * @throws NoTypeDetectedException
+     * @return string
+     */
+    private function getReaderType(string $readerType = null): string
+    {
+        if (null !== $readerType) {
+            return $readerType;
+        }
+
+        try {
+            return IOFactory::identify($this->currentFile);
+        } catch (Exception $e) {
+            throw new NoTypeDetectedException(null, null, $e);
+        }
     }
 }

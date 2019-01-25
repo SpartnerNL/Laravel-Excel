@@ -344,7 +344,7 @@ class ExcelTest extends TestCase
      * @test
      * @expectedException \Maatwebsite\Excel\Exceptions\NoTypeDetectedException
      */
-    public function import_will_throw_error_when_no_reader_type_could_be_detected()
+    public function import_will_throw_error_when_no_reader_type_could_be_detected_when_no_extension()
     {
         $import = new class implements ToArray {
             /**
@@ -359,7 +359,26 @@ class ExcelTest extends TestCase
             }
         };
 
-        $this->SUT->import($import, UploadedFile::fake()->create('import.zip'));
+        $this->SUT->import($import, UploadedFile::fake()->create('import'));
+    }
+
+    /**
+     * @test
+     * @expectedException \Maatwebsite\Excel\Exceptions\NoTypeDetectedException
+     */
+    public function import_will_throw_error_when_no_reader_type_could_be_detected_with_unknown_extension()
+    {
+        $import = new class implements ToArray {
+            /**
+             * @param array $array
+             */
+            public function array(array $array)
+            {
+                //
+            }
+        };
+
+        $this->SUT->import($import, 'unknown-reader-type.zip');
     }
 
     /**
