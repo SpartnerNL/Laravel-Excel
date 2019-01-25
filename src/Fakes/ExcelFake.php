@@ -85,7 +85,7 @@ class ExcelFake implements Exporter, Importer
      */
     public function import($import, $file, string $disk = null, string $readerType = null)
     {
-        $filePath = ($file instanceof UploadedFile) ? $file->getFilename() : $file;
+        $filePath = ($file instanceof UploadedFile) ? $file->getClientOriginalName() : $file;
 
         $this->imported[$disk ?? 'default'][$filePath] = $import;
 

@@ -112,6 +112,21 @@ class ExcelFakeTest extends TestCase
     /**
      * @test
      */
+    public function can_assert_against_a_fake_import_with_uploaded_file()
+    {
+        ExcelFacade::fake();
+
+        ExcelFacade::import($this->givenImport(), $this->givenUploadedFile(__DIR__ . '/Data/Disks/Local/import.xlsx'));
+
+        ExcelFacade::assertImported('import.xlsx');
+        ExcelFacade::assertImported('import.xlsx', function (ToModel $import) {
+            return $import->model([]) instanceof User;
+        });
+    }
+
+    /**
+     * @test
+     */
     public function can_assert_against_a_fake_queued_import()
     {
         ExcelFacade::fake();
