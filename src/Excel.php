@@ -3,7 +3,6 @@
 namespace Maatwebsite\Excel;
 
 use Illuminate\Support\Collection;
-use PhpOffice\PhpSpreadsheet\IOFactory;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Contracts\Filesystem\Factory;
 use Illuminate\Foundation\Bus\PendingDispatch;
