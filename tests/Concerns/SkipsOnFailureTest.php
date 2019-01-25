@@ -82,5 +82,10 @@ class SkipsOnFailureTest extends TestCase
         $this->assertDatabaseHas('users', [
             'email' => 'patrick@maatwebsite.nl',
         ]);
+
+        // Should have skipped inserting
+        $this->assertDatabaseMissing('users', [
+            'email' => 'taylor@laravel.com',
+        ]);
     }
 }
