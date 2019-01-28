@@ -30,8 +30,7 @@ class WithMultipleSheetsTest extends TestCase
      */
     public function can_export_with_multiple_sheets_using_collections()
     {
-        $export = new class implements WithMultipleSheets
-        {
+        $export = new class implements WithMultipleSheets {
             use Exportable;
 
             /**
@@ -62,8 +61,7 @@ class WithMultipleSheetsTest extends TestCase
         /** @var Collection|User[] $users */
         $users = factory(User::class)->times(300)->make();
 
-        $export = new class($users) implements WithMultipleSheets
-        {
+        $export = new class($users) implements WithMultipleSheets {
             use Exportable;
 
             /**
@@ -104,15 +102,13 @@ class WithMultipleSheetsTest extends TestCase
      */
     public function can_import_multiple_sheets()
     {
-        $import = new class implements WithMultipleSheets
-        {
+        $import = new class implements WithMultipleSheets {
             use Importable;
 
             public function sheets(): array
             {
                 return [
-                    new class implements ToArray
-                    {
+                    new class implements ToArray {
                         public function array(array $array)
                         {
                             Assert::assertEquals([
@@ -121,8 +117,7 @@ class WithMultipleSheetsTest extends TestCase
                             ], $array);
                         }
                     },
-                    new class implements ToArray
-                    {
+                    new class implements ToArray {
                         public function array(array $array)
                         {
                             Assert::assertEquals([
@@ -143,15 +138,13 @@ class WithMultipleSheetsTest extends TestCase
      */
     public function can_import_multiple_sheets_by_sheet_name()
     {
-        $import = new class implements WithMultipleSheets
-        {
+        $import = new class implements WithMultipleSheets {
             use Importable;
 
             public function sheets(): array
             {
                 return [
-                    'Sheet2' => new class implements ToArray
-                    {
+                    'Sheet2' => new class implements ToArray {
                         public function array(array $array)
                         {
                             Assert::assertEquals([
@@ -160,8 +153,7 @@ class WithMultipleSheetsTest extends TestCase
                             ], $array);
                         }
                     },
-                    'Sheet1' => new class implements ToArray
-                    {
+                    'Sheet1' => new class implements ToArray {
                         public function array(array $array)
                         {
                             Assert::assertEquals([
@@ -182,8 +174,7 @@ class WithMultipleSheetsTest extends TestCase
      */
     public function can_import_multiple_sheets_by_sheet_index_and_name()
     {
-        $import = new class implements WithMultipleSheets
-        {
+        $import = new class implements WithMultipleSheets {
             use Importable;
 
             public $sheets = [];
@@ -191,8 +182,7 @@ class WithMultipleSheetsTest extends TestCase
             public function __construct()
             {
                 $this->sheets = [
-                    0        => new class implements ToArray
-                    {
+                    0        => new class implements ToArray {
                         public $called = false;
 
                         public function array(array $array)
@@ -204,8 +194,7 @@ class WithMultipleSheetsTest extends TestCase
                             ], $array);
                         }
                     },
-                    'Sheet2' => new class implements ToArray
-                    {
+                    'Sheet2' => new class implements ToArray {
                         public $called = false;
 
                         public function array(array $array)
@@ -238,8 +227,7 @@ class WithMultipleSheetsTest extends TestCase
      */
     public function can_import_multiple_sheets_by_sheet_name_and_index()
     {
-        $import = new class implements WithMultipleSheets
-        {
+        $import = new class implements WithMultipleSheets {
             use Importable;
 
             public $sheets = [];
@@ -247,8 +235,7 @@ class WithMultipleSheetsTest extends TestCase
             public function __construct()
             {
                 $this->sheets = [
-                    'Sheet1'        => new class implements ToArray
-                    {
+                    'Sheet1'        => new class implements ToArray {
                         public $called = false;
 
                         public function array(array $array)
@@ -260,8 +247,7 @@ class WithMultipleSheetsTest extends TestCase
                             ], $array);
                         }
                     },
-                    1 => new class implements ToArray
-                    {
+                    1 => new class implements ToArray {
                         public $called = false;
 
                         public function array(array $array)
