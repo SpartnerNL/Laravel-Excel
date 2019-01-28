@@ -2,7 +2,6 @@
 
 namespace Maatwebsite\Excel\Tests\Concerns;
 
-use Maatwebsite\Excel\Concerns\SkipsErrors;
 use Throwable;
 use PHPUnit\Framework\Assert;
 use Maatwebsite\Excel\Tests\TestCase;
@@ -10,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\QueryException;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\Importable;
+use Maatwebsite\Excel\Concerns\SkipsErrors;
 use Maatwebsite\Excel\Concerns\SkipsOnError;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
 
@@ -30,8 +30,7 @@ class SkipsOnErrorTest extends TestCase
      */
     public function can_skip_on_error()
     {
-        $import = new class implements ToModel, SkipsOnError
-        {
+        $import = new class implements ToModel, SkipsOnError {
             use Importable;
 
             public $errors = 0;
@@ -82,8 +81,7 @@ class SkipsOnErrorTest extends TestCase
      */
     public function can_skip_errors_and_collect_all_errors_at_the_end()
     {
-        $import = new class implements ToModel, SkipsOnError
-        {
+        $import = new class implements ToModel, SkipsOnError {
             use Importable, SkipsErrors;
 
             /**

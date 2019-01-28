@@ -2,7 +2,6 @@
 
 namespace Maatwebsite\Excel\Tests\Concerns;
 
-use Maatwebsite\Excel\Concerns\SkipsFailures;
 use PHPUnit\Framework\Assert;
 use Illuminate\Validation\Rule;
 use Maatwebsite\Excel\Tests\TestCase;
@@ -10,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Validators\Failure;
 use Maatwebsite\Excel\Concerns\Importable;
+use Maatwebsite\Excel\Concerns\SkipsFailures;
 use Maatwebsite\Excel\Concerns\SkipsOnFailure;
 use Maatwebsite\Excel\Concerns\WithValidation;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
@@ -32,8 +32,7 @@ class SkipsOnFailureTest extends TestCase
      */
     public function can_skip_on_error()
     {
-        $import = new class implements ToModel, WithValidation, SkipsOnFailure
-        {
+        $import = new class implements ToModel, WithValidation, SkipsOnFailure {
             use Importable;
 
             public $failures = 0;
@@ -97,8 +96,7 @@ class SkipsOnFailureTest extends TestCase
      */
     public function can_skip_entire_batch()
     {
-        $import = new class implements ToModel, WithValidation, WithBatchInserts, SkipsOnFailure
-        {
+        $import = new class implements ToModel, WithValidation, WithBatchInserts, SkipsOnFailure {
             use Importable;
 
             public $failures = 0;
@@ -170,8 +168,7 @@ class SkipsOnFailureTest extends TestCase
      */
     public function can_skip_failures_and_collect_all_failures_at_the_end()
     {
-        $import = new class implements ToModel, WithValidation, SkipsOnFailure
-        {
+        $import = new class implements ToModel, WithValidation, SkipsOnFailure {
             use Importable, SkipsFailures;
 
             /**
