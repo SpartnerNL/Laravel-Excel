@@ -2,6 +2,7 @@
 
 namespace Maatwebsite\Excel\Tests\Concerns;
 
+use Maatwebsite\Excel\Concerns\SkipsFailures;
 use PHPUnit\Framework\Assert;
 use Illuminate\Validation\Rule;
 use Maatwebsite\Excel\Tests\TestCase;
@@ -31,7 +32,8 @@ class SkipsOnFailureTest extends TestCase
      */
     public function can_skip_on_error()
     {
-        $import = new class implements ToModel, WithValidation, SkipsOnFailure {
+        $import = new class implements ToModel, WithValidation, SkipsOnFailure
+        {
             use Importable;
 
             public $failures = 0;
@@ -95,7 +97,8 @@ class SkipsOnFailureTest extends TestCase
      */
     public function can_skip_entire_batch()
     {
-        $import = new class implements ToModel, WithValidation, WithBatchInserts, SkipsOnFailure {
+        $import = new class implements ToModel, WithValidation, WithBatchInserts, SkipsOnFailure
+        {
             use Importable;
 
             public $failures = 0;
@@ -153,6 +156,62 @@ class SkipsOnFailureTest extends TestCase
 
         // Should have rollbacked the rest of the batch.
         $this->assertDatabaseMissing('users', [
+            'email' => 'patrick@maatwebsite.nl',
+        ]);
+
+        // Should have skipped inserting
+        $this->assertDatabaseMissing('users', [
+            'email' => 'taylor@laravel.com',
+        ]);
+    }
+
+    /**
+     * @test
+     */
+    public function can_skip_failures_and_collect_all_failures_at_the_end()
+    {
+        $import = new class implements ToModel, WithValidation, SkipsOnFailure
+        {
+            use Importable, SkipsFailures;
+
+            /**
+             * @param array $row
+             *
+             * @return Model|null
+             */
+            public function model(array $row)
+            {
+                return new User([
+                    'name'     => $row[0],
+                    'email'    => $row[1],
+                    'password' => 'secret',
+                ]);
+            }
+
+            /**
+             * @return array
+             */
+            public function rules(): array
+            {
+                return [
+                    '1' => Rule::in(['patrick@maatwebsite.nl']),
+                ];
+            }
+        };
+
+        $import->import('import-users.xlsx');
+
+        $this->assertCount(1, $import->failures());
+
+        /** @var Failure $failure */
+        $failure = $import->failures()->first();
+
+        $this->assertEquals(2, $failure->row());
+        $this->assertEquals('1', $failure->attribute());
+        $this->assertEquals(['The selected 1 is invalid.'], $failure->errors());
+
+        // Shouldn't have rollbacked other imported rows.
+        $this->assertDatabaseHas('users', [
             'email' => 'patrick@maatwebsite.nl',
         ]);
 
