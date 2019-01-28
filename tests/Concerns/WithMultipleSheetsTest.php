@@ -30,13 +30,14 @@ class WithMultipleSheetsTest extends TestCase
      */
     public function can_export_with_multiple_sheets_using_collections()
     {
-        $export = new class implements WithMultipleSheets {
+        $export = new class implements WithMultipleSheets
+        {
             use Exportable;
 
             /**
              * @return SheetWith100Rows[]
              */
-            public function sheets() : array
+            public function sheets(): array
             {
                 return [
                     new SheetWith100Rows('A'),
@@ -61,7 +62,8 @@ class WithMultipleSheetsTest extends TestCase
         /** @var Collection|User[] $users */
         $users = factory(User::class)->times(300)->make();
 
-        $export = new class($users) implements WithMultipleSheets {
+        $export = new class($users) implements WithMultipleSheets
+        {
             use Exportable;
 
             /**
@@ -80,7 +82,7 @@ class WithMultipleSheetsTest extends TestCase
             /**
              * @return SheetForUsersFromView[]
              */
-            public function sheets() : array
+            public function sheets(): array
             {
                 return [
                     new SheetForUsersFromView($this->users->forPage(1, 100)),
@@ -102,13 +104,15 @@ class WithMultipleSheetsTest extends TestCase
      */
     public function can_import_multiple_sheets()
     {
-        $import = new class implements WithMultipleSheets {
+        $import = new class implements WithMultipleSheets
+        {
             use Importable;
 
             public function sheets(): array
             {
                 return [
-                    new class implements ToArray {
+                    new class implements ToArray
+                    {
                         public function array(array $array)
                         {
                             Assert::assertEquals([
@@ -117,7 +121,8 @@ class WithMultipleSheetsTest extends TestCase
                             ], $array);
                         }
                     },
-                    new class implements ToArray {
+                    new class implements ToArray
+                    {
                         public function array(array $array)
                         {
                             Assert::assertEquals([
@@ -138,13 +143,15 @@ class WithMultipleSheetsTest extends TestCase
      */
     public function can_import_multiple_sheets_by_sheet_name()
     {
-        $import = new class implements WithMultipleSheets {
+        $import = new class implements WithMultipleSheets
+        {
             use Importable;
 
             public function sheets(): array
             {
                 return [
-                    'Sheet2' => new class implements ToArray {
+                    'Sheet2' => new class implements ToArray
+                    {
                         public function array(array $array)
                         {
                             Assert::assertEquals([
@@ -153,7 +160,8 @@ class WithMultipleSheetsTest extends TestCase
                             ], $array);
                         }
                     },
-                    'Sheet1' => new class implements ToArray {
+                    'Sheet1' => new class implements ToArray
+                    {
                         public function array(array $array)
                         {
                             Assert::assertEquals([
@@ -167,5 +175,117 @@ class WithMultipleSheetsTest extends TestCase
         };
 
         $import->import('import-multiple-sheets.xlsx');
+    }
+
+    /**
+     * @test
+     */
+    public function can_import_multiple_sheets_by_sheet_index_and_name()
+    {
+        $import = new class implements WithMultipleSheets
+        {
+            use Importable;
+
+            public $sheets = [];
+
+            public function __construct()
+            {
+                $this->sheets = [
+                    0        => new class implements ToArray
+                    {
+                        public $called = false;
+
+                        public function array(array $array)
+                        {
+                            $this->called = true;
+                            Assert::assertEquals([
+                                ['1.A1', '1.B1'],
+                                ['1.A2', '1.B2'],
+                            ], $array);
+                        }
+                    },
+                    'Sheet2' => new class implements ToArray
+                    {
+                        public $called = false;
+
+                        public function array(array $array)
+                        {
+                            $this->called = true;
+                            Assert::assertEquals([
+                                ['2.A1', '2.B1'],
+                                ['2.A2', '2.B2'],
+                            ], $array);
+                        }
+                    },
+                ];
+            }
+
+            public function sheets(): array
+            {
+                return $this->sheets;
+            }
+        };
+
+        $import->import('import-multiple-sheets.xlsx');
+
+        foreach ($import->sheets as $sheet) {
+            $this->assertTrue($sheet->called);
+        }
+    }
+
+    /**
+     * @test
+     */
+    public function can_import_multiple_sheets_by_sheet_name_and_index()
+    {
+        $import = new class implements WithMultipleSheets
+        {
+            use Importable;
+
+            public $sheets = [];
+
+            public function __construct()
+            {
+                $this->sheets = [
+                    'Sheet1'        => new class implements ToArray
+                    {
+                        public $called = false;
+
+                        public function array(array $array)
+                        {
+                            $this->called = true;
+                            Assert::assertEquals([
+                                ['1.A1', '1.B1'],
+                                ['1.A2', '1.B2'],
+                            ], $array);
+                        }
+                    },
+                    1 => new class implements ToArray
+                    {
+                        public $called = false;
+
+                        public function array(array $array)
+                        {
+                            $this->called = true;
+                            Assert::assertEquals([
+                                ['2.A1', '2.B1'],
+                                ['2.A2', '2.B2'],
+                            ], $array);
+                        }
+                    },
+                ];
+            }
+
+            public function sheets(): array
+            {
+                return $this->sheets;
+            }
+        };
+
+        $import->import('import-multiple-sheets.xlsx');
+
+        foreach ($import->sheets as $sheet) {
+            $this->assertTrue($sheet->called);
+        }
     }
 }

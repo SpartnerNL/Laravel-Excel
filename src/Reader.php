@@ -241,7 +241,12 @@ class Reader
         if ($import instanceof WithMultipleSheets) {
             $sheetImports = $import->sheets();
 
-            if (method_exists($reader, 'setLoadSheetsOnly')) {
+            // When only sheet names are given and the reader has
+            // an option to load only the selected sheets.
+            if (
+                method_exists($reader, 'setLoadSheetsOnly')
+                && count(array_filter(array_keys($sheetImports), 'is_numeric')) === 0
+            ) {
                 $reader->setLoadSheetsOnly(array_keys($sheetImports));
             }
         }
