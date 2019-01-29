@@ -112,7 +112,6 @@ class ExcelFakeTest extends TestCase
         });
     }
 
-
     /**
      * @test
      */

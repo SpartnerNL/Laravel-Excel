@@ -149,7 +149,7 @@ class ExcelFake implements Exporter, Importer
 
         $filePath = ($file instanceof UploadedFile) ? $file->getFilename() : $file;
 
-        $this->queued[$disk ?? 'default'][$filePath] = $import;
+        $this->queued[$disk ?? 'default'][$filePath]   = $import;
         $this->imported[$disk ?? 'default'][$filePath] = $import;
 
         return new PendingDispatch(new class {
