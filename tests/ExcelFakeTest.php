@@ -97,6 +97,25 @@ class ExcelFakeTest extends TestCase
     /**
      * @test
      */
+    public function can_assert_against_a_fake_implicitly_queued_export()
+    {
+        ExcelFacade::fake();
+
+        $response = ExcelFacade::store($this->givenQueuedExport(), 'queued-filename.csv', 's3');
+
+        $this->assertInstanceOf(PendingDispatch::class, $response);
+
+        ExcelFacade::assertStored('queued-filename.csv', 's3');
+        ExcelFacade::assertQueued('queued-filename.csv', 's3');
+        ExcelFacade::assertQueued('queued-filename.csv', 's3', function (FromCollection $export) {
+            return $export->collection()->contains('foo');
+        });
+    }
+
+
+    /**
+     * @test
+     */
     public function can_assert_against_a_fake_import()
     {
         ExcelFacade::fake();
@@ -131,10 +150,29 @@ class ExcelFakeTest extends TestCase
     {
         ExcelFacade::fake();
 
-        $response = ExcelFacade::queueImport($this->givenImport(), 'queued-filename.csv', 's3');
+        $response = ExcelFacade::queueImport($this->givenQueuedImport(), 'queued-filename.csv', 's3');
 
         $this->assertInstanceOf(PendingDispatch::class, $response);
 
+        ExcelFacade::assertImported('queued-filename.csv', 's3');
+        ExcelFacade::assertQueued('queued-filename.csv', 's3');
+        ExcelFacade::assertQueued('queued-filename.csv', 's3', function (ToModel $import) {
+            return $import->model([]) instanceof User;
+        });
+    }
+
+    /**
+     * @test
+     */
+    public function can_assert_against_a_fake_implicitly_queued_import()
+    {
+        ExcelFacade::fake();
+
+        $response = ExcelFacade::import($this->givenQueuedImport(), 'queued-filename.csv', 's3');
+
+        $this->assertInstanceOf(PendingDispatch::class, $response);
+
+        ExcelFacade::assertImported('queued-filename.csv', 's3');
         ExcelFacade::assertQueued('queued-filename.csv', 's3');
         ExcelFacade::assertQueued('queued-filename.csv', 's3', function (ToModel $import) {
             return $import->model([]) instanceof User;
@@ -175,9 +213,43 @@ class ExcelFakeTest extends TestCase
     }
 
     /**
+     * @return FromCollection
+     */
+    private function givenQueuedExport()
+    {
+        return new class implements FromCollection, ShouldQueue {
+            /**
+             * @return Collection
+             */
+            public function collection()
+            {
+                return collect(['foo', 'bar']);
+            }
+        };
+    }
+
+    /**
      * @return object
      */
     private function givenImport()
+    {
+        return new class implements ToModel {
+            /**
+             * @param array $row
+             *
+             * @return Model|null
+             */
+            public function model(array $row)
+            {
+                return new User([]);
+            }
+        };
+    }
+
+    /**
+     * @return object
+     */
+    private function givenQueuedImport()
     {
         return new class implements ToModel, ShouldQueue {
             /**

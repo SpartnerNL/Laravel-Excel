@@ -51,6 +51,10 @@ class ExcelFake implements Exporter, Importer
      */
     public function store($export, string $filePath, string $disk = null, string $writerType = null)
     {
+        if ($export instanceof ShouldQueue) {
+            return $this->queue($export, $filePath, $disk, $writerType);
+        }
+
         $this->stored[$disk ?? 'default'][$filePath] = $export;
 
         return true;
@@ -63,6 +67,7 @@ class ExcelFake implements Exporter, Importer
     {
         Queue::fake();
 
+        $this->stored[$disk ?? 'default'][$filePath] = $export;
         $this->queued[$disk ?? 'default'][$filePath] = $export;
 
         return new PendingDispatch(new class {
@@ -85,6 +90,10 @@ class ExcelFake implements Exporter, Importer
      */
     public function import($import, $file, string $disk = null, string $readerType = null)
     {
+        if ($import instanceof ShouldQueue) {
+            return $this->queueImport($import, $file, $disk, $readerType);
+        }
+
         $filePath = ($file instanceof UploadedFile) ? $file->getClientOriginalName() : $file;
 
         $this->imported[$disk ?? 'default'][$filePath] = $import;
@@ -141,6 +150,7 @@ class ExcelFake implements Exporter, Importer
         $filePath = ($file instanceof UploadedFile) ? $file->getFilename() : $file;
 
         $this->queued[$disk ?? 'default'][$filePath] = $import;
+        $this->imported[$disk ?? 'default'][$filePath] = $import;
 
         return new PendingDispatch(new class {
             use Queueable;
