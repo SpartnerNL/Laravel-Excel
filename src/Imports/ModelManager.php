@@ -93,10 +93,9 @@ class ModelManager
     private function massFlush(ToModel $import)
     {
         $this->models()
-             ->map(function (array $attributes) use ($import) {
+             ->flatMap(function (array $attributes) use ($import) {
                  return $this->toModels($import, $attributes);
              })
-             ->flatten()
              ->mapToGroups(function ($model) {
                  return [\get_class($model) => $this->prepare($model)->getAttributes()];
              })
