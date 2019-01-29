@@ -2,6 +2,7 @@
 
 namespace Maatwebsite\Excel\Imports;
 
+use Maatwebsite\Excel\Validators\ValidationException;
 use Throwable;
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
@@ -32,6 +33,14 @@ class ModelManager
     }
 
     /**
+     * @return Collection
+     */
+    public function models(): Collection
+    {
+        return new Collection($this->models);
+    }
+
+    /**
      * @param int   $row
      * @param array $attributes
      */
@@ -43,9 +52,15 @@ class ModelManager
     /**
      * @param ToModel $import
      * @param bool    $massInsert
+     *
+     * @throws ValidationException
      */
     public function flush(ToModel $import, bool $massInsert = false)
     {
+        if ($import instanceof WithValidation) {
+            $this->validateRows($import);
+        }
+
         if ($massInsert) {
             $this->massFlush($import);
         } else {
@@ -77,33 +92,26 @@ class ModelManager
      */
     private function massFlush(ToModel $import)
     {
-        try {
-            if ($import instanceof WithValidation) {
-                $this->validator->validate($this->models, $import);
-            }
-
-            collect($this->models)
-                ->map(function (array $attributes) use ($import) {
-                    return $this->toModels($import, $attributes);
-                })
-                ->flatten()
-                ->mapToGroups(function (Model $model) {
-                    return [\get_class($model) => $this->prepare($model)->getAttributes()];
-                })->each(function (Collection $models, string $model) use ($import) {
-                    try {
-                        /* @var Model $model */
-                        $model::query()->insert($models->toArray());
-                    } catch (Throwable $e) {
-                        if ($import instanceof SkipsOnError) {
-                            $import->onError($e);
-                        } else {
-                            throw $e;
-                        }
-                    }
-                });
-        } catch (RowSkippedException $e) {
-            // Skip mass flush for the models.
-        }
+        $this->models()
+             ->map(function (array $attributes) use ($import) {
+                 return $this->toModels($import, $attributes);
+             })
+             ->flatten()
+             ->mapToGroups(function ($model) {
+                 return [\get_class($model) => $this->prepare($model)->getAttributes()];
+             })
+             ->each(function (Collection $models, string $model) use ($import) {
+                 try {
+                     /* @var Model $model */
+                     $model::query()->insert($models->toArray());
+                 } catch (Throwable $e) {
+                     if ($import instanceof SkipsOnError) {
+                         $import->onError($e);
+                     } else {
+                         throw $e;
+                     }
+                 }
+             });
     }
 
     /**
@@ -111,12 +119,9 @@ class ModelManager
      */
     private function singleFlush(ToModel $import)
     {
-        collect($this->models)->each(function (array $attributes, $row) use ($import) {
-            try {
-                if ($import instanceof WithValidation) {
-                    $this->validator->validate([$row => $attributes], $import);
-                }
-
+        $this
+            ->models()
+            ->each(function (array $attributes) use ($import) {
                 $this->toModels($import, $attributes)->each(function (Model $model) use ($import) {
                     try {
                         $model->saveOrFail();
@@ -128,10 +133,7 @@ class ModelManager
                         }
                     }
                 });
-            } catch (RowSkippedException $e) {
-                // Skip inserting the model.
-            }
-        });
+            });
     }
 
     /**
@@ -160,5 +162,22 @@ class ModelManager
         }
 
         return $model;
+    }
+
+    /**
+     * @param WithValidation $import
+     *
+     * @throws ValidationException
+     */
+    private function validateRows(WithValidation $import)
+    {
+        try {
+            $this->validator->validate($this->models, $import);
+        } catch (RowSkippedException $e) {
+            // Filter out the rows that need to be skipped.
+            $this->models = $this->models()->filter(function ($attributes, $row) use ($e) {
+                return !in_array($row, $e->skippedRows(), true);
+            });
+        }
     }
 }

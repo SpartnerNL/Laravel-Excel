@@ -94,7 +94,7 @@ class SkipsOnFailureTest extends TestCase
     /**
      * @test
      */
-    public function can_skip_entire_batch()
+    public function skips_only_failed_rows_in_batch()
     {
         $import = new class implements ToModel, WithValidation, WithBatchInserts, SkipsOnFailure {
             use Importable;
@@ -152,8 +152,8 @@ class SkipsOnFailureTest extends TestCase
 
         $this->assertEquals(1, $import->failures);
 
-        // Should have rollbacked the rest of the batch.
-        $this->assertDatabaseMissing('users', [
+        // Shouldn't have rollbacked/skipped the rest of the batch.
+        $this->assertDatabaseHas('users', [
             'email' => 'patrick@maatwebsite.nl',
         ]);
 

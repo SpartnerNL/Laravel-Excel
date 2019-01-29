@@ -54,7 +54,7 @@ class RowValidator
 
             if ($import instanceof SkipsOnFailure) {
                 $import->onFailure(...$failures);
-                throw new RowSkippedException();
+                throw new RowSkippedException(...$failures);
             } else {
                 throw new ValidationException(
                     $e,
