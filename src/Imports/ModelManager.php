@@ -174,10 +174,9 @@ class ModelManager
         try {
             $this->validator->validate($this->models, $import);
         } catch (RowSkippedException $e) {
-            // Filter out the rows that need to be skipped.
-            $this->models = $this->models()->filter(function ($attributes, $row) use ($e) {
-                return !in_array($row, $e->skippedRows(), true);
-            });
+            foreach ($e->skippedRows() as $row) {
+                unset($this->models[$row]);
+            }
         }
     }
 }
