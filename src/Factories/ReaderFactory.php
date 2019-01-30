@@ -12,16 +12,11 @@ class ReaderFactory
      * @param string $filePath
      * @param string $readerType
      *
+     * @throws \PhpOffice\PhpSpreadsheet\Reader\Exception
      * @return IReader
      */
     public static function make(string $filePath, string $readerType): IReader
     {
-        $reader = IOFactory::createReader($readerType);
-
-        if (!$reader->canRead($filePath)) {
-            throw new UnreadableFileException;
-        }
-
-        return $reader;
+        return IOFactory::createReader($readerType);
     }
 }
