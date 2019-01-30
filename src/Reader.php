@@ -5,6 +5,8 @@ namespace Maatwebsite\Excel;
 use InvalidArgumentException;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Concerns\SkipsUnknownSheets;
+use Maatwebsite\Excel\Exceptions\SheetNotFoundException;
 use PhpOffice\PhpSpreadsheet\Cell\Cell;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Reader\Csv;
@@ -91,11 +93,12 @@ class Reader
 
         $this->beforeReading($import, $reader);
 
-        DB::transaction(function () {
+        DB::transaction(function () use ($import) {
             foreach ($this->sheetImports as $index => $sheetImport) {
-                $sheet = Sheet::make($this->spreadsheet, $index);
-                $sheet->import($sheetImport, $sheet->getStartRow($sheetImport));
-                $sheet->disconnect();
+                if ($sheet = $this->getSheet($import, $sheetImport, $index)) {
+                    $sheet->import($sheetImport, $sheet->getStartRow($sheetImport));
+                    $sheet->disconnect();
+                }
             }
         });
 
@@ -125,9 +128,10 @@ class Reader
         $sheets = [];
         foreach ($this->sheetImports as $index => $sheetImport) {
             $calculatesFormulas = $sheetImport instanceof WithCalculatedFormulas;
-            $sheet              = Sheet::make($this->spreadsheet, $index);
-            $sheets[$index]     = $sheet->toArray($sheetImport, $sheet->getStartRow($sheetImport), null, $calculatesFormulas);
-            $sheet->disconnect();
+            if ($sheet = $this->getSheet($import, $sheetImport, $index)) {
+                $sheets[$index] = $sheet->toArray($sheetImport, $sheet->getStartRow($sheetImport), null, $calculatesFormulas);
+                $sheet->disconnect();
+            }
         }
 
         $this->afterReading($import);
@@ -156,9 +160,10 @@ class Reader
         $sheets = new Collection();
         foreach ($this->sheetImports as $index => $sheetImport) {
             $calculatesFormulas = $sheetImport instanceof WithCalculatedFormulas;
-            $sheet              = Sheet::make($this->spreadsheet, $index);
-            $sheets->put($index, $sheet->toCollection($sheetImport, $sheet->getStartRow($sheetImport), null, $calculatesFormulas));
-            $sheet->disconnect();
+            if ($sheet = $this->getSheet($import, $sheetImport, $index)) {
+                $sheets->put($index, $sheet->toCollection($sheetImport, $sheet->getStartRow($sheetImport), null, $calculatesFormulas));
+                $sheet->disconnect();
+            }
         }
 
         $this->afterReading($import);
@@ -182,6 +187,36 @@ class Reader
         Cell::setValueBinder(new DefaultValueBinder);
 
         return $this;
+    }
+
+    /**
+     * @param $import
+     * @param $sheetImport
+     * @param $index
+     *
+     * @throws SheetNotFoundException
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
+     * @return Sheet|null
+     */
+    protected function getSheet($import, $sheetImport, $index)
+    {
+        try {
+            return Sheet::make($this->spreadsheet, $index);
+        } catch (SheetNotFoundException $e) {
+            if ($import instanceof SkipsUnknownSheets) {
+                $import->onUnknownSheet($index);
+
+                return null;
+            }
+
+            if ($sheetImport instanceof SkipsUnknownSheets) {
+                $sheetImport->onUnknownSheet($index);
+
+                return null;
+            }
+
+            throw $e;
+        }
     }
 
     /**

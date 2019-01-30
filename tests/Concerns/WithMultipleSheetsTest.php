@@ -2,6 +2,7 @@
 
 namespace Maatwebsite\Excel\Tests\Concerns;
 
+use Maatwebsite\Excel\Concerns\SkipsUnknownSheets;
 use PHPUnit\Framework\Assert;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Tests\TestCase;
@@ -141,6 +142,136 @@ class WithMultipleSheetsTest extends TestCase
                     'Some Random Sheet Name' => new class
                     {
 
+                    },
+                ];
+            }
+        };
+
+        $import->import('import-multiple-sheets.xlsx');
+    }
+
+    /**
+     * @test
+     */
+    public function unknown_sheet_name_can_be_ignored()
+    {
+        $import = new class implements WithMultipleSheets, SkipsUnknownSheets
+        {
+            use Importable;
+
+            public $unknown;
+
+            public function sheets(): array
+            {
+                return [
+                    'Some Random Sheet Name' => new class
+                    {
+
+                    },
+                ];
+            }
+
+            /**
+             * @param string|int $sheetName
+             */
+            public function onUnknownSheet($sheetName)
+            {
+                $this->unknown = $sheetName;
+            }
+        };
+
+        $import->import('import-multiple-sheets.xlsx');
+
+        $this->assertEquals('Some Random Sheet Name', $import->unknown);
+    }
+
+    /**
+     * @test
+     */
+    public function unknown_sheet_indices_can_be_ignored_per_name()
+    {
+        $import = new class implements WithMultipleSheets
+        {
+            use Importable;
+
+            public function sheets(): array
+            {
+                return [
+                    'Some Random Sheet Name' => new class implements SkipsUnknownSheets
+                    {
+
+                        /**
+                         * @param string|int $sheetName
+                         */
+                        public function onUnknownSheet($sheetName)
+                        {
+                            Assert::assertEquals('Some Random Sheet Name', $sheetName);
+                        }
+                    },
+                ];
+            }
+        };
+
+        $import->import('import-multiple-sheets.xlsx');
+    }
+
+    /**
+     * @test
+     */
+    public function unknown_sheet_indices_can_be_ignored()
+    {
+        $import = new class implements WithMultipleSheets, SkipsUnknownSheets
+        {
+            use Importable;
+
+            public $unknown;
+
+            public function sheets(): array
+            {
+                return [
+                    99999 => new class
+                    {
+
+                    },
+                ];
+            }
+
+            /**
+             * @param string|int $sheetName
+             */
+            public function onUnknownSheet($sheetName)
+            {
+                $this->unknown = $sheetName;
+            }
+        };
+
+        $import->import('import-multiple-sheets.xlsx');
+
+        $this->assertEquals(99999, $import->unknown);
+    }
+
+    /**
+     * @test
+     */
+    public function unknown_sheet_indices_can_be_ignored_per_sheet()
+    {
+        $import = new class implements WithMultipleSheets
+        {
+            use Importable;
+
+            public function sheets(): array
+            {
+                return [
+                    99999 => new class implements SkipsUnknownSheets
+                    {
+
+                        /**
+                         * @param string|int $sheetName
+                         */
+                        public function onUnknownSheet($sheetName)
+                        {
+                            Assert::assertEquals(99999, $sheetName);
+                        }
                     },
                 ];
             }
