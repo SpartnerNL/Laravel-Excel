@@ -17,7 +17,7 @@ class ModelManager
     /**
      * @var array
      */
-    private $models = [];
+    private $rows = [];
 
     /**
      * @var RowValidator
@@ -33,20 +33,12 @@ class ModelManager
     }
 
     /**
-     * @return Collection
-     */
-    public function models(): Collection
-    {
-        return new Collection($this->models);
-    }
-
-    /**
      * @param int   $row
      * @param array $attributes
      */
     public function add(int $row, array $attributes)
     {
-        $this->models[$row] = $attributes;
+        $this->rows[$row] = $attributes;
     }
 
     /**
@@ -67,7 +59,7 @@ class ModelManager
             $this->singleFlush($import);
         }
 
-        $this->models = [];
+        $this->rows = [];
     }
 
     /**
@@ -92,7 +84,7 @@ class ModelManager
      */
     private function massFlush(ToModel $import)
     {
-        $this->models()
+        $this->rows()
              ->flatMap(function (array $attributes) use ($import) {
                  return $this->toModels($import, $attributes);
              })
@@ -119,7 +111,7 @@ class ModelManager
     private function singleFlush(ToModel $import)
     {
         $this
-            ->models()
+            ->rows()
             ->each(function (array $attributes) use ($import) {
                 $this->toModels($import, $attributes)->each(function (Model $model) use ($import) {
                     try {
@@ -171,11 +163,19 @@ class ModelManager
     private function validateRows(WithValidation $import)
     {
         try {
-            $this->validator->validate($this->models, $import);
+            $this->validator->validate($this->rows, $import);
         } catch (RowSkippedException $e) {
             foreach ($e->skippedRows() as $row) {
-                unset($this->models[$row]);
+                unset($this->rows[$row]);
             }
         }
+    }
+
+    /**
+     * @return Collection
+     */
+    private function rows(): Collection
+    {
+        return new Collection($this->rows);
     }
 }
