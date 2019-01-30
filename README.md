@@ -207,7 +207,7 @@ Versions will be supported for a limited amount of time.
 | Version | Laravel Version | Php Version | Support |
 |---- |----|----|----|
 | 2.1 | <=5.6 | <=7.0 | Unsupported since 15-5-2018 |
-| 3.0 | ^5.5 |  ^7.0 | Security fixes till 31-12-2018 |
+| 3.0 | ^5.5 |  ^7.0 | Unsupported since 31-12-2018 |
 | 3.1 | ^5.5 |  ^7.0 | New features |
 
 ## :mailbox_with_mail: License & Postcardware
