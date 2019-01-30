@@ -4,7 +4,6 @@ namespace Maatwebsite\Excel\Factories;
 
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Reader\IReader;
-use Maatwebsite\Excel\Exceptions\UnreadableFileException;
 
 class ReaderFactory
 {
