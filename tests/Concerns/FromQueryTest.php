@@ -63,7 +63,7 @@ class FromQueryTest extends TestCase
         DB::connection()->enableQueryLog();
         $export = new FromUsersQueryExportWithEagerLoad();
 
-        $response = $export->store('from-query-store-with-eager-loads.xlsx');
+        $response = $export->store('from-query-with-eager-loads.xlsx');
 
         $this->assertTrue($response);
 
@@ -73,7 +73,7 @@ class FromQueryTest extends TestCase
         $this->assertCount(2, DB::getQueryLog());
         DB::connection()->disableQueryLog();
 
-        $contents = $this->readAsArray(__DIR__ . '/../Data/Disks/Local/from-query-store-with-eager-loads.xlsx', 'Xlsx');
+        $contents = $this->readAsArray(__DIR__ . '/../Data/Disks/Local/from-query-with-eager-loads.xlsx', 'Xlsx');
 
         $allUsers = $export->query()->get()->map(function (User $user) use ($export) {
             return $export->map($user);
@@ -90,7 +90,7 @@ class FromQueryTest extends TestCase
         DB::connection()->enableQueryLog();
         $export = new FromUsersQueryExportWithEagerLoad();
 
-        $export->queue('from-query-store-with-eager-loads.xlsx');
+        $export->queue('from-query-with-eager-loads.xlsx');
 
         // Should be 3 queries:
         // 1) Count users to create chunked queues
@@ -99,7 +99,7 @@ class FromQueryTest extends TestCase
         $this->assertCount(3, DB::getQueryLog());
         DB::connection()->disableQueryLog();
 
-        $contents = $this->readAsArray(__DIR__ . '/../Data/Disks/Local/from-query-store-with-eager-loads.xlsx', 'Xlsx');
+        $contents = $this->readAsArray(__DIR__ . '/../Data/Disks/Local/from-query-with-eager-loads.xlsx', 'Xlsx');
 
         $allUsers = $export->query()->get()->map(function (User $user) use ($export) {
             return $export->map($user);
@@ -115,11 +115,11 @@ class FromQueryTest extends TestCase
     {
         $export = new FromNonEloquentQueryExport();
 
-        $response = $export->store('from-query-store-without-eloquent.xlsx');
+        $response = $export->store('from-query-without-eloquent.xlsx');
 
         $this->assertTrue($response);
 
-        $contents = $this->readAsArray(__DIR__ . '/../Data/Disks/Local/from-query-store-without-eloquent.xlsx', 'Xlsx');
+        $contents = $this->readAsArray(__DIR__ . '/../Data/Disks/Local/from-query-without-eloquent.xlsx', 'Xlsx');
 
         $allUsers = $export->query()->get()->map(function ($row) {
             return array_values((array) $row);
@@ -135,9 +135,9 @@ class FromQueryTest extends TestCase
     {
         $export = new FromNonEloquentQueryExport();
 
-        $export->queue('from-query-store-without-eloquent.xlsx');
+        $export->queue('from-query-without-eloquent.xlsx');
 
-        $contents = $this->readAsArray(__DIR__ . '/../Data/Disks/Local/from-query-store-without-eloquent.xlsx', 'Xlsx');
+        $contents = $this->readAsArray(__DIR__ . '/../Data/Disks/Local/from-query-without-eloquent.xlsx', 'Xlsx');
 
         $allUsers = $export->query()->get()->map(function ($row) {
             return array_values((array) $row);

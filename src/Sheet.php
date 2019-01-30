@@ -40,6 +40,7 @@ use Maatwebsite\Excel\Concerns\WithColumnFormatting;
 use Maatwebsite\Excel\Concerns\WithCustomValueBinder;
 use Maatwebsite\Excel\Concerns\WithCalculatedFormulas;
 use Maatwebsite\Excel\Concerns\WithStrictNullComparison;
+use Maatwebsite\Excel\Exceptions\SheetNotFoundException;
 use Maatwebsite\Excel\Exceptions\ConcernConflictException;
 use PhpOffice\PhpSpreadsheet\Cell\Cell as SpreadsheetCell;
 
@@ -81,26 +82,33 @@ class Sheet
      * @param Spreadsheet $spreadsheet
      * @param string|int  $index
      *
+     * @throws SheetNotFoundException
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
      * @return Sheet
      */
     public static function make(Spreadsheet $spreadsheet, $index)
     {
         if (is_numeric($index)) {
-            return Sheet::byIndex($spreadsheet, $index);
+            return self::byIndex($spreadsheet, $index);
         }
 
-        return Sheet::byName($spreadsheet, $index);
+        return self::byName($spreadsheet, $index);
     }
 
     /**
      * @param Spreadsheet $spreadsheet
      * @param int         $index
      *
+     * @throws SheetNotFoundException
      * @throws \PhpOffice\PhpSpreadsheet\Exception
      * @return Sheet
      */
-    public static function byIndex(Spreadsheet $spreadsheet, int $index)
+    public static function byIndex(Spreadsheet $spreadsheet, int $index): Sheet
     {
+        if (!isset($spreadsheet->getAllSheets()[$index])) {
+            throw SheetNotFoundException::byIndex($index, $spreadsheet->getSheetCount());
+        }
+
         return new static($spreadsheet->getSheet($index));
     }
 
@@ -108,10 +116,15 @@ class Sheet
      * @param Spreadsheet $spreadsheet
      * @param string      $name
      *
+     * @throws SheetNotFoundException
      * @return Sheet
      */
-    public static function byName(Spreadsheet $spreadsheet, string $name)
+    public static function byName(Spreadsheet $spreadsheet, string $name): Sheet
     {
+        if (!$spreadsheet->sheetNameExists($name)) {
+            throw SheetNotFoundException::byName($name);
+        }
+
         return new static($spreadsheet->getSheetByName($name));
     }
 
