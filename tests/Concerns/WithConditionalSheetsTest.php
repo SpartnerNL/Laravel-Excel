@@ -2,18 +2,11 @@
 
 namespace Maatwebsite\Excel\Tests\Concerns;
 
-use Maatwebsite\Excel\Concerns\SkipsUnknownSheets;
-use Maatwebsite\Excel\Concerns\WithConditionalSheets;
-use PHPUnit\Framework\Assert;
-use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Tests\TestCase;
 use Maatwebsite\Excel\Concerns\ToArray;
-use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
-use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
-use Maatwebsite\Excel\Tests\Data\Stubs\SheetWith100Rows;
-use Maatwebsite\Excel\Tests\Data\Stubs\SheetForUsersFromView;
+use Maatwebsite\Excel\Concerns\WithConditionalSheets;
 
 class WithConditionalSheetsTest extends TestCase
 {
@@ -32,8 +25,7 @@ class WithConditionalSheetsTest extends TestCase
      */
     public function can_select_which_sheets_will_be_imported()
     {
-        $import = new class implements WithMultipleSheets
-        {
+        $import = new class implements WithMultipleSheets {
             use Importable, WithConditionalSheets;
 
             public $sheets = [];
@@ -46,8 +38,7 @@ class WithConditionalSheetsTest extends TestCase
             public function init()
             {
                 $this->sheets = [
-                    'Sheet1' => new class implements ToArray
-                    {
+                    'Sheet1' => new class implements ToArray {
                         public $called = false;
 
                         public function array(array $array)
@@ -55,8 +46,7 @@ class WithConditionalSheetsTest extends TestCase
                             $this->called = true;
                         }
                     },
-                    'Sheet2' => new class implements ToArray
-                    {
+                    'Sheet2' => new class implements ToArray {
                         public $called = false;
 
                         public function array(array $array)

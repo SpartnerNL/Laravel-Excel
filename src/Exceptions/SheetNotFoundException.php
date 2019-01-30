@@ -4,7 +4,6 @@ namespace Maatwebsite\Excel\Exceptions;
 
 class SheetNotFoundException extends \Exception implements LaravelExcelException
 {
-
     /**
      * @param string $name
      *
