@@ -75,10 +75,10 @@ class Reader
      * @param string|null         $readerType
      * @param string|null         $disk
      *
+     * @throws Exception
      * @throws Exceptions\UnreadableFileException
-     * @throws InvalidArgumentException
+     * @throws NoTypeDetectedException
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
-     * @throws \PhpOffice\PhpSpreadsheet\Reader\Exception
      * @return \Illuminate\Foundation\Bus\PendingDispatch|$this
      */
     public function read($import, $filePath, string $readerType = null, string $disk = null)
@@ -110,10 +110,11 @@ class Reader
      * @param string              $readerType
      * @param string|null         $disk
      *
+     * @throws Exceptions\SheetNotFoundException
      * @throws Exceptions\UnreadableFileException
-     * @throws InvalidArgumentException
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
-     * @throws \PhpOffice\PhpSpreadsheet\Reader\Exception
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
+     * @throws NoTypeDetectedException
      * @return array
      */
     public function toArray($import, $filePath, string $readerType, string $disk = null): array
@@ -140,10 +141,11 @@ class Reader
      * @param string              $readerType
      * @param string|null         $disk
      *
+     * @throws Exceptions\SheetNotFoundException
      * @throws Exceptions\UnreadableFileException
-     * @throws InvalidArgumentException
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
-     * @throws \PhpOffice\PhpSpreadsheet\Reader\Exception
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
+     * @throws NoTypeDetectedException
      * @return Collection
      */
     public function toCollection($import, $filePath, string $readerType, string $disk = null): Collection
@@ -175,7 +177,7 @@ class Reader
     /**
      * @return $this
      */
-    public function setDefaultValueBinder()
+    public function setDefaultValueBinder(): self
     {
         Cell::setValueBinder(new DefaultValueBinder);
 
@@ -189,7 +191,7 @@ class Reader
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      * @return string
      */
-    protected function copyToFileSystem($filePath, string $disk = null)
+    protected function copyToFileSystem($filePath, string $disk = null): string
     {
         $tempFilePath = $this->getTmpFile();
 
@@ -263,6 +265,7 @@ class Reader
      * @throws Exceptions\UnreadableFileException
      * @throws InvalidArgumentException
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+     * @throws NoTypeDetectedException
      * @return IReader
      */
     private function getReader($import, $filePath, string $readerType = null, string $disk = null): IReader
@@ -305,6 +308,8 @@ class Reader
     /**
      * @param object  $import
      * @param IReader $reader
+     *
+     * @throws Exception
      */
     private function beforeReading($import, IReader $reader)
     {
