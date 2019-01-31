@@ -8,6 +8,8 @@ use Maatwebsite\Excel\Events\BeforeSheet;
 use Maatwebsite\Excel\Events\BeforeExport;
 use Maatwebsite\Excel\Events\BeforeImport;
 use Maatwebsite\Excel\Events\BeforeWriting;
+use Maatwebsite\Excel\Events\AfterChunkImport;
+use Maatwebsite\Excel\Events\BeforeChunkImport;
 
 trait RegistersEventListeners
 {
@@ -32,6 +34,14 @@ trait RegistersEventListeners
 
         if (method_exists($this, 'afterImport')) {
             $listeners[AfterImport::class] = [static::class, 'afterImport'];
+        }
+
+        if (method_exists($this, 'beforeChunkImport')) {
+            $listeners[BeforeChunkImport::class] = [static::class, 'beforeChunkImport'];
+        }
+
+        if (method_exists($this, 'afterChunkImport')) {
+            $listeners[AfterChunkImport::class] = [static::class, 'afterChunkImport'];
         }
 
         if (method_exists($this, 'beforeSheet')) {

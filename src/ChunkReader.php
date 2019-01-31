@@ -7,7 +7,9 @@ use Maatwebsite\Excel\Jobs\ReadChunk;
 use Maatwebsite\Excel\Jobs\QueueImport;
 use Illuminate\Contracts\Bus\Dispatcher;
 use Maatwebsite\Excel\Concerns\WithLimit;
+use Maatwebsite\Excel\Jobs\EndChunkImport;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Maatwebsite\Excel\Jobs\StartChunkImport;
 use PhpOffice\PhpSpreadsheet\Reader\IReader;
 use Maatwebsite\Excel\Concerns\WithProgressBar;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
@@ -34,6 +36,7 @@ class ChunkReader
         }
 
         $jobs = new Collection();
+        $jobs->push(new StartChunkImport($reader, $import));
         foreach ($worksheets as $name => $sheetImport) {
             $startRow         = HeadingRowExtractor::determineStartRow($sheetImport);
             $totalRows[$name] = $sheetImport instanceof WithLimit ? $sheetImport->limit() : $totalRows[$name];
@@ -49,12 +52,13 @@ class ChunkReader
                 ));
             }
         }
+        $jobs->push(new EndChunkImport($reader, $import));
 
         if ($import instanceof ShouldQueue) {
             return QueueImport::withChain($jobs->toArray())->dispatch();
         }
 
-        $jobs->each(function (ReadChunk $job) {
+        $jobs->each(function ($job) {
             app(Dispatcher::class)->dispatchNow($job);
         });
 
