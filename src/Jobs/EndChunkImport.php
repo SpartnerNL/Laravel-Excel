@@ -3,7 +3,6 @@
 namespace Maatwebsite\Excel\Jobs;
 
 use Illuminate\Bus\Queueable;
-use Maatwebsite\Excel\Reader;
 use Maatwebsite\Excel\HasEventBus;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Illuminate\Contracts\Queue\ShouldQueue;
