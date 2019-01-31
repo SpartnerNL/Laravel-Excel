@@ -500,7 +500,7 @@ class Sheet
 
             if (isset($result[0]) && is_array($result[0])) {
                 $append = array_merge($append, $result);
-            }else {
+            } else {
                 $append[] = static::mapArraybleRow($result);
             }
         }
