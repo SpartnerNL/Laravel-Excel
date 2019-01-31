@@ -496,7 +496,13 @@ class Sheet
                 $row = $sheetExport->map($row);
             }
 
-            $append[] = static::mapArraybleRow($row);
+            $result = static::mapArraybleRow($row);
+
+            if (isset($result[0]) && is_array($result[0])) {
+                $append = array_merge($append, $result);
+            }else {
+                $append[] = static::mapArraybleRow($result);
+            }
         }
 
         if ($sheetExport instanceof WithCustomStartCell) {
