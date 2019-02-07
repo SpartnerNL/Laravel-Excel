@@ -2,12 +2,11 @@
 
 namespace Maatwebsite\Excel\Tests\Data\Stubs;
 
-use Maatwebsite\Excel\Tests\Data\Stubs\Database\Group;
 use Illuminate\Database\Query\Builder;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\WithMapping;
-use Maatwebsite\Excel\Concerns\WithCustomChunkSize;
+use Maatwebsite\Excel\Tests\Data\Stubs\Database\Group;
 
 class FromNestedArraysQueryExport implements FromQuery, WithMapping
 {
@@ -30,9 +29,9 @@ class FromNestedArraysQueryExport implements FromQuery, WithMapping
      */
     public function map($row): array
     {
-        $rows = [];
+        $rows    = [];
         $sub_row = [$row->name, ''];
-        $count = 0;
+        $count   = 0;
 
         foreach ($row->users as $user) {
             if ($count === 0) {

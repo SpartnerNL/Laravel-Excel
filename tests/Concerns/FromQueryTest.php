@@ -8,8 +8,8 @@ use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\Group;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Maatwebsite\Excel\Tests\Data\Stubs\FromUsersQueryExport;
-use Maatwebsite\Excel\Tests\Data\Stubs\FromNestedArraysQueryExport;
 use Maatwebsite\Excel\Tests\Data\Stubs\FromNonEloquentQueryExport;
+use Maatwebsite\Excel\Tests\Data\Stubs\FromNestedArraysQueryExport;
 use Maatwebsite\Excel\Tests\Data\Stubs\FromUsersQueryExportWithEagerLoad;
 
 class FromQueryTest extends TestCase
@@ -194,7 +194,7 @@ class FromQueryTest extends TestCase
             foreach ($group->users as $key => $user) {
                 if ($key === 0) {
                     $group_row[1] = $user->email;
-                    $expected[] = $group_row;
+                    $expected[]   = $group_row;
                     continue;
                 }
 
