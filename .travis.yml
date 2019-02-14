@@ -41,11 +41,11 @@ matrix:
 before_install:
   - phpenv config-rm xdebug.ini
   - composer self-update --stable --no-interaction
-  - composer require orchestra/testbench:$TESTBENCH orchestra/database:$ORCHESTRA_DATABASE phpunit/phpunit:$PHPUNIT --no-update --no-interaction --dev --stability dev
+  - composer require orchestra/testbench:$TESTBENCH orchestra/database:$ORCHESTRA_DATABASE phpunit/phpunit:$PHPUNIT --no-update --no-interaction --dev
   - mysql -e 'CREATE DATABASE IF NOT EXISTS laravel_excel;'
 
 install:
-  - travis_retry composer install --no-suggest --no-interaction --stability dev
+  - travis_retry composer install --no-suggest --no-interaction
 
 script:
   - vendor/bin/phpunit --verbose --configuration phpunit.xml.dist

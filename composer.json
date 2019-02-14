@@ -51,5 +51,7 @@
         "Excel": "Maatwebsite\\Excel\\Facades\\Excel"
       }
     }
-  }
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true
 }
