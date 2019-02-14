@@ -3,6 +3,7 @@
 namespace Maatwebsite\Excel\Validators;
 
 use Illuminate\Contracts\Validation\Factory;
+use Illuminate\Support\Str;
 use Maatwebsite\Excel\Concerns\SkipsOnFailure;
 use Maatwebsite\Excel\Concerns\WithValidation;
 use Maatwebsite\Excel\Exceptions\RowSkippedException;
@@ -108,7 +109,31 @@ class RowValidator
         return collect($elements)->mapWithKeys(function ($rule, $attribute) {
             $attribute = starts_with($attribute, '*.') ? $attribute : '*.' . $attribute;
 
-            return [$attribute => $rule];
+            return [$attribute => $this->formatRule($rule)];
         })->all();
+    }
+
+    /**
+     * @param string|array $rules
+     *
+     * @return string|array
+     */
+    private function formatRule($rules)
+    {
+        if (is_array($rules)) {
+            foreach ($rules as $rule) {
+                $formatted[] = $this->formatRule($rule);
+            }
+
+            return $formatted ?? [];
+        }
+
+        if (Str::contains($rules, 'required_if') && preg_match('/(.*):(.*),(.*)/', $rules, $matches)) {
+            $column = starts_with($matches[2], '*.') ? $matches[2] : '*.' . $matches[2];
+
+            return $matches[1] . ':' . $column . ',' . $matches[3];
+        }
+
+        return $rules;
     }
 }

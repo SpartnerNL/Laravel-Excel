@@ -31,7 +31,8 @@ class WithValidationTest extends TestCase
      */
     public function can_validate_rows()
     {
-        $import = new class implements ToModel, WithValidation {
+        $import = new class implements ToModel, WithValidation
+        {
             use Importable;
 
             /**
@@ -79,9 +80,55 @@ class WithValidationTest extends TestCase
     /**
      * @test
      */
+    public function can_validate_rows_with_conditionality()
+    {
+        $import = new class implements ToModel, WithValidation
+        {
+            use Importable;
+
+            /**
+             * @param array $row
+             *
+             * @return Model|null
+             */
+            public function model(array $row)
+            {
+                return new User([
+                    'name'     => $row[0],
+                    'email'    => $row[1],
+                    'password' => 'secret',
+                ]);
+            }
+
+            /**
+             * @return array
+             */
+            public function rules(): array
+            {
+                return [
+                    'conditional_required_column' => 'required_if:1,patrick@maatwebsite.nl',
+                ];
+            }
+        };
+
+        try {
+            $import->import('import-users.xlsx');
+        } catch (ValidationException $e) {
+            $this->validateFailure($e, 1, 'conditional_required_column', [
+                'The conditional_required_column field is required when 1.1 is patrick@maatwebsite.nl.',
+            ]);
+        }
+
+        $this->assertInstanceOf(ValidationException::class, $e ?? null);
+    }
+
+    /**
+     * @test
+     */
     public function can_validate_with_custom_attributes()
     {
-        $import = new class implements ToModel, WithValidation {
+        $import = new class implements ToModel, WithValidation
+        {
             use Importable;
 
             /**
@@ -133,7 +180,8 @@ class WithValidationTest extends TestCase
      */
     public function can_validate_with_custom_message()
     {
-        $import = new class implements ToModel, WithValidation {
+        $import = new class implements ToModel, WithValidation
+        {
             use Importable;
 
             /**
@@ -187,7 +235,8 @@ class WithValidationTest extends TestCase
      */
     public function can_validate_rows_with_headings()
     {
-        $import = new class implements ToModel, WithHeadingRow, WithValidation {
+        $import = new class implements ToModel, WithHeadingRow, WithValidation
+        {
             use Importable;
 
             /**
@@ -231,7 +280,8 @@ class WithValidationTest extends TestCase
      */
     public function can_validate_rows_in_batches()
     {
-        $import = new class implements ToModel, WithHeadingRow, WithBatchInserts, WithValidation {
+        $import = new class implements ToModel, WithHeadingRow, WithBatchInserts, WithValidation
+        {
             use Importable;
 
             /**
