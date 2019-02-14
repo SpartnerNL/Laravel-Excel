@@ -10,20 +10,6 @@
   Laravel Excel 3.1
 </h1>
 
-<p align="center">
-  
-  <a href="https://medium.com/maatwebsite/celebrating-5-years-of-laravel-excel-d0416eebca20">
-  <img alt="Laravel Excel - 10 Million Downloads" src="https://user-images.githubusercontent.com/7728097/52121137-db33f300-261e-11e9-98b4-18fa4d572b2e.jpg" />
-  </a>
-  </p>
-  
-<h3 align="center">
-  🎉 Celebrating 10 Million Downloads. Read more on <a href="https://medium.com/maatwebsite/celebrating-5-years-of-laravel-excel-d0416eebca20">our blog!</a> about 5 years of Laravel!
-</h3>
-
-<p></p>
-
-
 <h3 align="center">
   :muscle: :fire: :rocket:
 </h3>
