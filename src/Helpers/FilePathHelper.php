@@ -2,8 +2,8 @@
 
 namespace Maatwebsite\Excel\Helpers;
 
-use Illuminate\Contracts\Filesystem\Factory;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Contracts\Filesystem\Factory;
 
 class FilePathHelper
 {
