@@ -342,6 +342,27 @@ class ExcelTest extends TestCase
 
     /**
      * @test
+     */
+    public function can_import_a_simple_xlsx_file_from_real_path()
+    {
+        $import = new class implements ToArray {
+            /**
+             * @param array $array
+             */
+            public function array(array $array)
+            {
+                Assert::assertEquals([
+                    ['test', 'test'],
+                    ['test', 'test'],
+                ], $array);
+            }
+        };
+
+        $this->SUT->import($import, __DIR__ . '/Data/Disks/Local/import.xlsx');
+    }
+
+    /**
+     * @test
      * @expectedException \Maatwebsite\Excel\Exceptions\NoTypeDetectedException
      */
     public function import_will_throw_error_when_no_reader_type_could_be_detected_when_no_extension()

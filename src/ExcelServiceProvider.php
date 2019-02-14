@@ -4,6 +4,7 @@ namespace Maatwebsite\Excel;
 
 use Illuminate\Support\Collection;
 use Illuminate\Support\ServiceProvider;
+use Maatwebsite\Excel\Helpers\FilePathHelper;
 use Maatwebsite\Excel\Mixins\StoreCollection;
 use Maatwebsite\Excel\Console\ExportMakeCommand;
 use Maatwebsite\Excel\Console\ImportMakeCommand;
@@ -39,8 +40,14 @@ class ExcelServiceProvider extends ServiceProvider
         );
 
         $this->app->bind(Reader::class, function () {
+            $config = $this->app->make('config');
+
             return new Reader(
-                $this->app->make('filesystem')
+                new FilePathHelper(
+                    $this->app->make('filesystem'),
+                    $config->get('excel.exports.temp_path', sys_get_temp_dir())
+                ),
+                $config->get('excel.imports.csv', $config->get('excel.exports.csv', []))
             );
         });
 
