@@ -490,14 +490,21 @@ class Sheet
      */
     public function appendRows($rows, $sheetExport)
     {
-        $append = [];
+        $append = [[]];
         foreach ($rows as $row) {
             if ($sheetExport instanceof WithMapping) {
                 $row = $sheetExport->map($row);
             }
 
-            $append[] = static::mapArraybleRow($row);
+            $row = static::mapArraybleRow($row);
+
+            if (isset($row[0]) && is_array($row[0])) {
+                $append[] = $row;
+            } else {
+                $append[] = [$row];
+            }
         }
+        $append = array_merge(...$append);
 
         if ($sheetExport instanceof WithCustomStartCell) {
             $startCell = $sheetExport->startCell();

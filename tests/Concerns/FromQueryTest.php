@@ -9,6 +9,7 @@ use Maatwebsite\Excel\Tests\Data\Stubs\Database\Group;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Maatwebsite\Excel\Tests\Data\Stubs\FromUsersQueryExport;
 use Maatwebsite\Excel\Tests\Data\Stubs\FromNonEloquentQueryExport;
+use Maatwebsite\Excel\Tests\Data\Stubs\FromNestedArraysQueryExport;
 use Maatwebsite\Excel\Tests\Data\Stubs\FromUsersQueryExportWithEagerLoad;
 
 class FromQueryTest extends TestCase
@@ -32,6 +33,14 @@ class FromQueryTest extends TestCase
 
         factory(User::class)->times(100)->create()->each(function (User $user) use ($group) {
             $user->groups()->save($group);
+        });
+
+        $group_two = factory(Group::class)->create([
+            'name' => 'Group 2',
+        ]);
+
+        factory(User::class)->times(5)->create()->each(function (User $user) use ($group_two) {
+            $user->groups()->save($group_two);
         });
     }
 
@@ -144,5 +153,55 @@ class FromQueryTest extends TestCase
         })->all();
 
         $this->assertEquals($allUsers, $contents);
+    }
+
+    /**
+     * @test
+     */
+    public function can_export_from_query_builder_with_nested_arrays()
+    {
+        $export = new FromNestedArraysQueryExport();
+
+        $response = $export->store('from-query-with-nested-arrays.xlsx');
+
+        $this->assertTrue($response);
+
+        $contents = $this->readAsArray(__DIR__ . '/../Data/Disks/Local/from-query-with-nested-arrays.xlsx', 'Xlsx');
+
+        $this->assertEquals($this->format_nested_arrays_expected_data($export->query()->get()), $contents);
+    }
+
+    /**
+     * @test
+     */
+    public function can_export_from_query_builder_with_nested_arrays_queued()
+    {
+        $export = new FromNestedArraysQueryExport();
+
+        $export->queue('from-query-with-nested-arrays.xlsx');
+
+        $contents = $this->readAsArray(__DIR__ . '/../Data/Disks/Local/from-query-with-nested-arrays.xlsx', 'Xlsx');
+
+        $this->assertEquals($this->format_nested_arrays_expected_data($export->query()->get()), $contents);
+    }
+
+    protected function format_nested_arrays_expected_data($groups)
+    {
+        $expected = [];
+        foreach ($groups as $group) {
+            $group_row = [$group->name, ''];
+
+            foreach ($group->users as $key => $user) {
+                if ($key === 0) {
+                    $group_row[1] = $user->email;
+                    $expected[]   = $group_row;
+                    continue;
+                }
+
+                $expected[] = ['', $user->email];
+            }
+        }
+
+        return $expected;
     }
 }
