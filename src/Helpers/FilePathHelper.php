@@ -2,9 +2,9 @@
 
 namespace Maatwebsite\Excel\Helpers;
 
+use Illuminate\Support\Str;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Contracts\Filesystem\Factory;
-use Illuminate\Support\Str;
 
 class FilePathHelper
 {
