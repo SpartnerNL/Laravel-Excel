@@ -5,7 +5,6 @@ namespace Maatwebsite\Excel;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToArray;
 use Maatwebsite\Excel\Concerns\ToModel;
-use Maatwebsite\Excel\Helpers\ArrayHelper;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use Maatwebsite\Excel\Concerns\FromView;
 use Maatwebsite\Excel\Events\AfterSheet;
@@ -19,6 +18,7 @@ use PhpOffice\PhpSpreadsheet\Reader\Html;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use Maatwebsite\Excel\Concerns\WithCharts;
 use Maatwebsite\Excel\Concerns\WithEvents;
+use Maatwebsite\Excel\Helpers\ArrayHelper;
 use Illuminate\Contracts\Support\Arrayable;
 use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Imports\EndRowFinder;
@@ -485,7 +485,7 @@ class Sheet
      */
     public function appendRows($rows, $sheetExport)
     {
-        $rows = (new Collection($rows))->flatMap(function($row) use ($sheetExport) {
+        $rows = (new Collection($rows))->flatMap(function ($row) use ($sheetExport) {
             if ($sheetExport instanceof WithMapping) {
                 $row = $sheetExport->map($row);
             }
