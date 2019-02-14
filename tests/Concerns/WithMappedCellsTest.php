@@ -2,6 +2,7 @@
 
 namespace Maatwebsite\Excel\Tests\Concerns;
 
+use Illuminate\Support\Str;
 use PHPUnit\Framework\Assert;
 use Maatwebsite\Excel\Tests\TestCase;
 use Maatwebsite\Excel\Concerns\ToArray;
@@ -87,7 +88,7 @@ class WithMappedCellsTest extends TestCase
                     'email' => 'patrick@maatwebsite.nl',
                 ], $array);
 
-                $array['password'] = str_random();
+                $array['password'] = Str::random();
 
                 return new User($array);
             }

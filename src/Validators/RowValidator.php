@@ -56,12 +56,12 @@ class RowValidator
             if ($import instanceof SkipsOnFailure) {
                 $import->onFailure(...$failures);
                 throw new RowSkippedException(...$failures);
-            } else {
-                throw new ValidationException(
-                    $e,
-                    $failures
-                );
             }
+
+            throw new ValidationException(
+                $e,
+                $failures
+            );
         }
     }
 
@@ -107,7 +107,7 @@ class RowValidator
     private function formatKey(array $elements): array
     {
         return collect($elements)->mapWithKeys(function ($rule, $attribute) {
-            $attribute = starts_with($attribute, '*.') ? $attribute : '*.' . $attribute;
+            $attribute = Str::startsWith($attribute, '*.') ? $attribute : '*.' . $attribute;
 
             return [$attribute => $this->formatRule($rule)];
         })->all();
@@ -129,7 +129,7 @@ class RowValidator
         }
 
         if (Str::contains($rules, 'required_if') && preg_match('/(.*):(.*),(.*)/', $rules, $matches)) {
-            $column = starts_with($matches[2], '*.') ? $matches[2] : '*.' . $matches[2];
+            $column = Str::startsWith($matches[2], '*.') ? $matches[2] : '*.' . $matches[2];
 
             return $matches[1] . ':' . $column . ',' . $matches[3];
         }

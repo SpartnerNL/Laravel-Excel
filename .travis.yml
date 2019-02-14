@@ -28,11 +28,15 @@ matrix:
 
   # Laravel 5.7
   - php: 7.1
-    env: LARAVEL=5.7.* TESTBENCH=3.7.* ORCHESTRA_DATABASE=3.7.*@dev PHPUNIT=~7.0
+    env: LARAVEL=5.7.* TESTBENCH=3.7.* ORCHESTRA_DATABASE=3.7.* PHPUNIT=~7.0
   - php: 7.2
-    env: LARAVEL=5.7.* TESTBENCH=3.7.* ORCHESTRA_DATABASE=3.7.*@dev PHPUNIT=~7.0
-#  - php: 7.3
-#    env: LARAVEL=5.7.* TESTBENCH=3.7.* ORCHESTRA_DATABASE=3.7.*@dev PHPUNIT=~7.0
+    env: LARAVEL=5.7.* TESTBENCH=3.7.* ORCHESTRA_DATABASE=3.7.* PHPUNIT=~7.0
+
+# Laravel 5.8
+  - php: 7.2
+    env: LARAVEL=5.8.*@dev TESTBENCH=3.8.*@dev ORCHESTRA_DATABASE=3.8.*@dev PHPUNIT=~7.5
+  - php: 7.3
+    env: LARAVEL=5.8.*@dev TESTBENCH=3.8.*@dev ORCHESTRA_DATABASE=3.8.*@dev PHPUNIT=~7.5
 
 before_install:
   - phpenv config-rm xdebug.ini

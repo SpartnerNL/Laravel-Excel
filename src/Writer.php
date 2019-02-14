@@ -2,6 +2,7 @@
 
 namespace Maatwebsite\Excel;
 
+use Illuminate\Support\Str;
 use PhpOffice\PhpSpreadsheet\Cell\Cell;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Writer\Csv;
@@ -263,7 +264,7 @@ class Writer
      */
     public function tempFile(): string
     {
-        return $this->tmpPath . DIRECTORY_SEPARATOR . 'laravel-excel-' . str_random(16);
+        return $this->tmpPath . DIRECTORY_SEPARATOR . 'laravel-excel-' . Str::random(16);
     }
 
     /**

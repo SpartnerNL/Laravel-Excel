@@ -4,6 +4,7 @@ namespace Maatwebsite\Excel\Helpers;
 
 use Illuminate\Http\UploadedFile;
 use Illuminate\Contracts\Filesystem\Factory;
+use Illuminate\Support\Str;
 
 class FilePathHelper
 {
@@ -74,6 +75,6 @@ class FilePathHelper
      */
     protected function generateTemporaryFile(): string
     {
-        return $this->tempPath . DIRECTORY_SEPARATOR . str_random(16);
+        return $this->tempPath . DIRECTORY_SEPARATOR . Str::random(16);
     }
 }

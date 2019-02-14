@@ -2,6 +2,8 @@
 
 namespace Maatwebsite\Excel\Concerns;
 
+use Illuminate\Support\Arr;
+
 trait MapsCsvSettings
 {
     /**
@@ -54,14 +56,14 @@ trait MapsCsvSettings
      */
     public function applyCsvSettings(array $config)
     {
-        $this->delimiter            = array_get($config, 'delimiter', $this->delimiter);
-        $this->enclosure            = array_get($config, 'enclosure', $this->enclosure);
-        $this->lineEnding           = array_get($config, 'line_ending', $this->lineEnding);
-        $this->useBom               = array_get($config, 'use_bom', $this->useBom);
-        $this->includeSeparatorLine = array_get($config, 'include_separator_line', $this->includeSeparatorLine);
-        $this->excelCompatibility   = array_get($config, 'excel_compatibility', $this->excelCompatibility);
-        $this->escapeCharacter      = array_get($config, 'escape_character', $this->escapeCharacter);
-        $this->contiguous           = array_get($config, 'contiguous', $this->contiguous);
-        $this->inputEncoding        = array_get($config, 'input_encoding', $this->inputEncoding);
+        $this->delimiter            = Arr::get($config, 'delimiter', $this->delimiter);
+        $this->enclosure            = Arr::get($config, 'enclosure', $this->enclosure);
+        $this->lineEnding           = Arr::get($config, 'line_ending', $this->lineEnding);
+        $this->useBom               = Arr::get($config, 'use_bom', $this->useBom);
+        $this->includeSeparatorLine = Arr::get($config, 'include_separator_line', $this->includeSeparatorLine);
+        $this->excelCompatibility   = Arr::get($config, 'excel_compatibility', $this->excelCompatibility);
+        $this->escapeCharacter      = Arr::get($config, 'escape_character', $this->escapeCharacter);
+        $this->contiguous           = Arr::get($config, 'contiguous', $this->contiguous);
+        $this->inputEncoding        = Arr::get($config, 'input_encoding', $this->inputEncoding);
     }
 }
