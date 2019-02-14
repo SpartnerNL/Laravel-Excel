@@ -5,6 +5,7 @@ namespace Maatwebsite\Excel;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToArray;
 use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Helpers\ArrayHelper;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use Maatwebsite\Excel\Concerns\FromView;
 use Maatwebsite\Excel\Events\AfterSheet;
@@ -354,9 +355,7 @@ class Sheet
     public function fromQuery(FromQuery $sheetExport, Worksheet $worksheet)
     {
         $sheetExport->query()->chunk($this->getChunkSize($sheetExport), function ($chunk) use ($sheetExport, $worksheet) {
-            foreach ($chunk as $row) {
-                $this->appendRow($row, $sheetExport);
-            }
+            $this->appendRows($chunk, $sheetExport);
         });
     }
 
@@ -388,8 +387,6 @@ class Sheet
      * @param array       $rows
      * @param string|null $startCell
      * @param bool        $strictNullComparison
-     *
-     * @throws \PhpOffice\PhpSpreadsheet\Exception
      */
     public function append(array $rows, string $startCell = null, bool $strictNullComparison = false)
     {
@@ -485,32 +482,24 @@ class Sheet
     /**
      * @param iterable $rows
      * @param object   $sheetExport
-     *
-     * @throws \PhpOffice\PhpSpreadsheet\Exception
      */
     public function appendRows($rows, $sheetExport)
     {
-        $append = [[]];
-        foreach ($rows as $row) {
+        $rows = (new Collection($rows))->flatMap(function($row) use ($sheetExport) {
             if ($sheetExport instanceof WithMapping) {
                 $row = $sheetExport->map($row);
             }
 
-            $row = static::mapArraybleRow($row);
+            return ArrayHelper::ensureMultiDimensional(
+                static::mapArraybleRow($row)
+            );
+        })->toArray();
 
-            if (isset($row[0]) && is_array($row[0])) {
-                $append[] = $row;
-            } else {
-                $append[] = [$row];
-            }
-        }
-        $append = array_merge(...$append);
-
-        if ($sheetExport instanceof WithCustomStartCell) {
-            $startCell = $sheetExport->startCell();
-        }
-
-        $this->append($append, $startCell ?? null, $this->hasStrictNullComparison($sheetExport));
+        $this->append(
+            $rows,
+            $sheetExport instanceof WithCustomStartCell ? $sheetExport->startCell() : null,
+            $this->hasStrictNullComparison($sheetExport)
+        );
     }
 
     /**
@@ -555,31 +544,6 @@ class Sheet
     {
         $this->worksheet->disconnectCells();
         unset($this->worksheet);
-    }
-
-    /**
-     * @param iterable $row
-     * @param object   $sheetExport
-     *
-     * @throws \PhpOffice\PhpSpreadsheet\Exception
-     */
-    protected function appendRow($row, $sheetExport)
-    {
-        if ($sheetExport instanceof WithMapping) {
-            $row = $sheetExport->map($row);
-        }
-
-        $row = static::mapArraybleRow($row);
-
-        if ($sheetExport instanceof WithCustomStartCell) {
-            $startCell = $sheetExport->startCell();
-        }
-
-        if (isset($row[0]) && is_array($row[0])) {
-            $this->append($row, $startCell ?? null, $this->hasStrictNullComparison($sheetExport));
-        } else {
-            $this->append([$row], $startCell ?? null, $this->hasStrictNullComparison($sheetExport));
-        }
     }
 
     /**
