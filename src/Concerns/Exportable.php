@@ -31,11 +31,12 @@ trait Exportable
      * @param string      $filePath
      * @param string|null $disk
      * @param string|null $writerType
+     * @param mixed       $diskOptions
      *
      * @throws NoFilePathGivenException
      * @return bool|PendingDispatch
      */
-    public function store(string $filePath = null, string $disk = null, string $writerType = null)
+    public function store(string $filePath = null, string $disk = null, string $writerType = null, $diskOptions = [])
     {
         $filePath = $filePath ?? $this->filePath ?? null;
 
@@ -47,7 +48,8 @@ trait Exportable
             $this,
             $filePath,
             $disk ?? $this->disk ?? null,
-            $writerType ?? $this->writerType ?? null
+            $writerType ?? $this->writerType ?? null,
+            $diskOptions ?? $this->diskOptions ?? []
         );
     }
 
@@ -55,11 +57,12 @@ trait Exportable
      * @param string|null $filePath
      * @param string|null $disk
      * @param string|null $writerType
+     * @param mixed       $diskOptions
      *
      * @throws NoFilePathGivenException
      * @return PendingDispatch
      */
-    public function queue(string $filePath = null, string $disk = null, string $writerType = null)
+    public function queue(string $filePath = null, string $disk = null, string $writerType = null, $diskOptions = [])
     {
         $filePath = $filePath ?? $this->filePath ?? null;
 
@@ -71,7 +74,8 @@ trait Exportable
             $this,
             $filePath,
             $disk ?? $this->disk ?? null,
-            $writerType ?? $this->writerType ?? null
+            $writerType ?? $this->writerType ?? null,
+            $diskOptions ?? $this->diskOptions ?? []
         );
     }
 

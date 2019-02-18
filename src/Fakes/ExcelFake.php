@@ -49,7 +49,7 @@ class ExcelFake implements Exporter, Importer
     /**
      * {@inheritdoc}
      */
-    public function store($export, string $filePath, string $disk = null, string $writerType = null)
+    public function store($export, string $filePath, string $disk = null, string $writerType = null, $diskOptions = [])
     {
         if ($export instanceof ShouldQueue) {
             return $this->queue($export, $filePath, $disk, $writerType);
@@ -63,7 +63,7 @@ class ExcelFake implements Exporter, Importer
     /**
      * {@inheritdoc}
      */
-    public function queue($export, string $filePath, string $disk = null, string $writerType = null)
+    public function queue($export, string $filePath, string $disk = null, string $writerType = null, $diskOptions = [])
     {
         Queue::fake();
 
