@@ -88,21 +88,21 @@ class Excel implements Exporter, Importer
     /**
      * {@inheritdoc}
      */
-    public function store($export, string $filePath, string $disk = null, string $writerType = null)
+    public function store($export, string $filePath, string $disk = null, string $writerType = null, $diskOptions = [])
     {
         if ($export instanceof ShouldQueue) {
-            return $this->queue($export, $filePath, $disk, $writerType);
+            return $this->queue($export, $filePath, $disk, $writerType, $diskOptions);
         }
 
         $file = $this->export($export, $filePath, $writerType);
 
-        return $this->filesystem->disk($disk)->put($filePath, fopen($file, 'r+'));
+        return $this->filesystem->disk($disk)->put($filePath, fopen($file, 'r+'), $diskOptions);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function queue($export, string $filePath, string $disk = null, string $writerType = null)
+    public function queue($export, string $filePath, string $disk = null, string $writerType = null, $diskOptions = [])
     {
         $writerType = $this->findTypeByExtension($filePath, $writerType);
 
@@ -110,7 +110,7 @@ class Excel implements Exporter, Importer
             throw new NoTypeDetectedException();
         }
 
-        return $this->queuedWriter->store($export, $filePath, $disk, $writerType);
+        return $this->queuedWriter->store($export, $filePath, $disk, $writerType, $diskOptions);
     }
 
     /**

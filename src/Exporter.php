@@ -23,20 +23,22 @@ interface Exporter
      * @param string      $filePath
      * @param string|null $disk
      * @param string      $writerType
+     * @param mixed       $diskOptions
      *
      * @throws \PhpOffice\PhpSpreadsheet\Exception
      * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
      * @return bool
      */
-    public function store($export, string $filePath, string $disk = null, string $writerType = null);
+    public function store($export, string $filePath, string $disk = null, string $writerType = null, $diskOptions = []);
 
     /**
      * @param object      $export
      * @param string      $filePath
      * @param string|null $disk
      * @param string      $writerType
+     * @param mixed       $diskOptions
      *
      * @return PendingDispatch
      */
-    public function queue($export, string $filePath, string $disk = null, string $writerType = null);
+    public function queue($export, string $filePath, string $disk = null, string $writerType = null, $diskOptions = []);
 }
