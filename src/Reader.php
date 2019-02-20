@@ -284,6 +284,10 @@ class Reader
 
         $this->currentFile = $this->filePathHelper->getRealPath($filePath, $disk);
 
+        if ($import instanceof ShouldQueue && ($remoteTempDisk = config('excel.imports.remote_temp_disk')) !== null) {
+            $this->filePathHelper->storeToTempDisk($this->currentFile, $remoteTempDisk);
+        }
+
         $reader = ReaderFactory::make($this->currentFile, $this->getReaderType($readerType));
 
         if (method_exists($reader, 'setReadDataOnly')) {

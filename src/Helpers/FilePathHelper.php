@@ -33,6 +33,8 @@ class FilePathHelper
      * @param string|null         $disk
      *
      * @return string
+     *
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     public function getRealPath($filePath, string $disk = null): string
     {
@@ -51,8 +53,10 @@ class FilePathHelper
      * @param string      $source
      * @param string      $destination
      * @param string|null $disk
+     *
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
-    protected function copyToTempFile(string $source, string $destination, string $disk = null)
+    public function copyToTempFile(string $source, string $destination, string $disk = null)
     {
         if (null === $disk && false !== realpath($source)) {
             copy($source, $destination);
@@ -68,6 +72,21 @@ class FilePathHelper
         );
 
         fclose($tmpStream);
+    }
+
+    /**
+     * @param string $realPath
+     * @param string $tempDisk
+     *
+     * @throws \Illuminate\Contracts\Filesystem\FileExistsException
+     */
+    public function storeToTempDisk(string $realPath, string $tempDisk)
+    {
+        $readStream = fopen($realPath, 'rb+');
+
+        $this->filesystem->disk($tempDisk)->writeStream(basename($realPath), $readStream);
+
+        fclose($readStream);
     }
 
     /**

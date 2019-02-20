@@ -11,6 +11,7 @@ use PhpOffice\PhpSpreadsheet\Reader\IReader;
 use Maatwebsite\Excel\Filters\ChunkReadFilter;
 use Maatwebsite\Excel\Imports\HeadingRowExtractor;
 use Maatwebsite\Excel\Concerns\WithCustomValueBinder;
+use Maatwebsite\Excel\Helpers\FilePathHelper;
 
 class ReadChunk implements ShouldQueue
 {
@@ -85,6 +86,10 @@ class ReadChunk implements ShouldQueue
         $this->reader->setReadFilter($filter);
         $this->reader->setReadDataOnly(true);
         $this->reader->setReadEmptyCells(false);
+
+        if ($this->sheetImport instanceof ShouldQueue && ($remoteTempDisk = config('excel.imports.remote_temp_disk')) !== null) {
+            app(FilePathHelper::class)->copyToTempFile(basename($this->file), $this->file, $remoteTempDisk);
+        }
 
         $spreadsheet = $this->reader->load($this->file);
 

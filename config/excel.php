@@ -86,6 +86,22 @@ return [
             'include_separator_line' => false,
             'excel_compatibility'    => false,
         ],
+
+        /*
+        |--------------------------------------------------------------------------
+        | Remote temporary disk
+        |--------------------------------------------------------------------------
+        |
+        | If not null, then spreadsheet chunks for queued reading will be stored
+        | at and retrieved from the specified filesystem disk, in addition to
+        | the configured temp_path on the local server.
+        |
+        | This is especially useful when queued jobs are processed on a different
+        | server than the one handling the uploaded file, so that the file
+        | can be available to both servers.
+        |
+        */
+        'remote_temp_disk'       => null,
     ],
 
     /*
