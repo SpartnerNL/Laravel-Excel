@@ -4,7 +4,6 @@ namespace Maatwebsite\Excel\Jobs;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Filesystem\FilesystemManager;
 use Maatwebsite\Excel\Helpers\FilePathHelper;
 
 class StoreQueuedExport implements ShouldQueue

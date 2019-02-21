@@ -4,8 +4,8 @@ namespace Maatwebsite\Excel;
 
 use Illuminate\Support\Collection;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Contracts\Filesystem\Factory;
 use Illuminate\Foundation\Bus\PendingDispatch;
+use Maatwebsite\Excel\Helpers\FilePathHelper;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Maatwebsite\Excel\Exceptions\NoTypeDetectedException;
 
@@ -48,9 +48,9 @@ class Excel implements Exporter, Importer
     protected $queuedWriter;
 
     /**
-     * @var Factory
+     * @var FilePathHelper
      */
-    protected $filesystem;
+    protected $filePathHelper;
 
     /**
      * @var Reader
@@ -58,21 +58,21 @@ class Excel implements Exporter, Importer
     private $reader;
 
     /**
-     * @param Writer       $writer
-     * @param QueuedWriter $queuedWriter
-     * @param Reader       $reader
-     * @param Factory      $filesystem
+     * @param Writer         $writer
+     * @param QueuedWriter   $queuedWriter
+     * @param Reader         $reader
+     * @param FilePathHelper $filePathHelper
      */
     public function __construct(
         Writer $writer,
         QueuedWriter $queuedWriter,
         Reader $reader,
-        Factory $filesystem
+        FilePathHelper $filePathHelper
     ) {
-        $this->writer       = $writer;
-        $this->reader       = $reader;
-        $this->filesystem   = $filesystem;
-        $this->queuedWriter = $queuedWriter;
+        $this->writer         = $writer;
+        $this->reader         = $reader;
+        $this->filePathHelper = $filePathHelper;
+        $this->queuedWriter   = $queuedWriter;
     }
 
     /**
@@ -95,11 +95,8 @@ class Excel implements Exporter, Importer
         }
 
         $file = $this->export($export, $filePath, $writerType);
-        $stream = fopen($file, 'rb+');
-        $success = $this->filesystem->disk($disk)->put($filePath, $stream, $diskOptions);
-        fclose($stream);
 
-        return $success;
+        return $this->filePathHelper->storeToDisk($file, $filePath, $disk, $diskOptions);
     }
 
     /**

@@ -48,7 +48,7 @@ class ExcelServiceProvider extends ServiceProvider
                 $this->app->make(Writer::class),
                 $this->app->make(QueuedWriter::class),
                 $this->app->make(Reader::class),
-                $this->app->make('filesystem')
+                $this->app->make(FilePathHelper::class)
             );
         });
 

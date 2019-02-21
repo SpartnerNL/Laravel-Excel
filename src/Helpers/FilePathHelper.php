@@ -45,7 +45,7 @@ class FilePathHelper
      */
     public function copyToTempFile($filePath, string $disk = null, bool $remote = false): string
     {
-        $fileName    = $this->generateTempFileName($remote);
+        $fileName = $this->generateTempFileName($remote);
 
         if ($filePath instanceof UploadedFile) {
             $filePath->move($this->getTempPath(), $fileName);
@@ -83,12 +83,16 @@ class FilePathHelper
      * @param string      $destination
      * @param string|null $disk
      * @param mixed       $diskOptions
+     *
+     * @return bool
      */
-    public function storeToDisk(string $source, string $destination, string $disk = null, $diskOptions = [])
+    public function storeToDisk(string $source, string $destination, string $disk = null, $diskOptions = []): bool
     {
         $readStream = fopen($source, 'rb+');
-        $this->filesystem->disk($disk)->put($destination, $readStream, $diskOptions);
+        $success = $this->filesystem->disk($disk)->put($destination, $readStream, $diskOptions);
         fclose($readStream);
+
+        return $success;
     }
 
     /**
