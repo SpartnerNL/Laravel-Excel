@@ -89,7 +89,9 @@ class FilePathHelper
     public function storeToDisk(string $source, string $destination, string $disk = null, $diskOptions = []): bool
     {
         $readStream = fopen($source, 'rb+');
+
         $success = $this->filesystem->disk($disk)->put($destination, $readStream, $diskOptions);
+
         fclose($readStream);
 
         return $success;
