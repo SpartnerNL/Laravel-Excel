@@ -60,6 +60,7 @@ class Writer
      * @param object $export
      * @param string $writerType
      *
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
      * @return string
      */
     public function export($export, string $writerType): string
@@ -75,7 +76,7 @@ class Writer
             $this->addNewSheet()->export($sheetExport);
         }
 
-        return $this->write($export, $this->tempFile(), $writerType);
+        return $this->write($export, $this->filePathHelper->generateTempFileName(), $writerType);
     }
 
     /**
@@ -268,14 +269,6 @@ class Writer
         Cell::setValueBinder(new DefaultValueBinder());
 
         return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function tempFile(): string
-    {
-        return $this->filePathHelper->getTempPath($this->filePathHelper->generateTempFileName());
     }
 
     /**

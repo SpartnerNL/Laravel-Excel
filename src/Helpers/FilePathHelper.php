@@ -45,23 +45,25 @@ class FilePathHelper
      */
     public function copyToTempFile($filePath, string $disk = null, bool $remote = false): string
     {
-        $remote      = $remote && $this->remoteTempDisk !== null;
         $fileName    = $this->generateTempFileName($remote);
-        $destination = $this->getTempPath($fileName);
 
         if ($filePath instanceof UploadedFile) {
-            $filePath->move($destination);
-        } elseif ($disk === null && realpath($filePath) !== false) {
-            copy($filePath, $destination);
+            $filePath->move($this->getTempPath(), $fileName);
         } else {
-            $this->copyFromDisk($filePath, $destination, $disk);
+            $destination = $this->getTempPath($fileName);
+
+            if ($disk === null && realpath($filePath) !== false) {
+                copy($filePath, $destination);
+            } else {
+                $this->copyFromDisk($filePath, $destination, $disk);
+            }
         }
 
         if ($remote) {
             $this->storeToTempDisk($fileName);
         }
 
-        return $filePath;
+        return $fileName;
     }
 
     /**
@@ -73,10 +75,19 @@ class FilePathHelper
             return;
         }
 
-        $readStream = fopen($this->getTempPath($fileName), 'rb+');
+        $this->storeToDisk($this->getTempPath($fileName), $fileName, $this->remoteTempDisk);
+    }
 
-        $this->filesystem->disk($this->remoteTempDisk)->put($fileName, $readStream);
-
+    /**
+     * @param string      $source
+     * @param string      $destination
+     * @param string|null $disk
+     * @param mixed       $diskOptions
+     */
+    public function storeToDisk(string $source, string $destination, string $disk = null, $diskOptions = [])
+    {
+        $readStream = fopen($source, 'rb+');
+        $this->filesystem->disk($disk)->put($destination, $readStream, $diskOptions);
         fclose($readStream);
     }
 
@@ -89,7 +100,7 @@ class FilePathHelper
     {
         do {
             $fileName = 'laravel-excel-' . Str::random(16);
-        } while (realpath($this->getTempPath($fileName)) === false || ($remote && $this->filesystem->disk($this->remoteTempDisk)->exists($fileName)));
+        } while ($this->tempFileExists($fileName, $remote));
 
         return $fileName;
     }
@@ -109,7 +120,7 @@ class FilePathHelper
             return $file;
         }
 
-        throw new UnreadableFileException;
+        throw new UnreadableFileException();
     }
 
     /**
@@ -161,5 +172,22 @@ class FilePathHelper
         fclose($tmpStream);
 
         return $success !== false;
+    }
+
+    /**
+     * @param string $fileName
+     * @param bool   $remote
+     *
+     * @return bool
+     */
+    protected function tempFileExists(string $fileName, bool $remote = false): bool
+    {
+        $fileExists = realpath($this->getTempPath($fileName)) !== false;
+
+        if ($remote && $this->remoteTempDisk !== null) {
+            $fileExists = $fileExists && $this->filesystem->disk($this->remoteTempDisk)->exists($fileName);
+        }
+
+        return $fileExists;
     }
 }

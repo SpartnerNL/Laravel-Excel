@@ -50,16 +50,17 @@ class QueuedWriter
      * @param string      $filePath
      * @param string|null $disk
      * @param string|null $writerType
+     * @param mixed       $diskOptions
      *
      * @return \Illuminate\Foundation\Bus\PendingDispatch
      */
-    public function store($export, string $filePath, string $disk = null, string $writerType = null)
+    public function store($export, string $filePath, string $disk = null, string $writerType = null, $diskOptions = [])
     {
         $tempFile = $this->filePathHelper->generateTempFileName(true);
 
         $jobs = $this->buildExportJobs($export, $tempFile, $writerType);
 
-        $jobs->push(new StoreQueuedExport($tempFile, $filePath, $disk));
+        $jobs->push(new StoreQueuedExport($tempFile, $filePath, $disk, $diskOptions));
 
         return QueueExport::withChain($jobs->toArray())->dispatch($export, $tempFile, $writerType);
     }

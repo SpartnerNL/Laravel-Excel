@@ -5,6 +5,7 @@ namespace Maatwebsite\Excel\Jobs;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Filesystem\FilesystemManager;
+use Maatwebsite\Excel\Helpers\FilePathHelper;
 
 class StoreQueuedExport implements ShouldQueue
 {
@@ -13,7 +14,7 @@ class StoreQueuedExport implements ShouldQueue
     /**
      * @var string
      */
-    private $tempPath;
+    private $tempFile;
 
     /**
      * @var string
@@ -26,24 +27,34 @@ class StoreQueuedExport implements ShouldQueue
     private $disk;
 
     /**
-     * @param string      $tempPath
+     * @var mixed
+     */
+    private $diskOptions;
+
+    /**
+     * @param string      $tempFile
      * @param string      $path
      * @param string|null $disk
+     * @param mixed       $diskOptions
      */
-    public function __construct(string $tempPath, string $path, string $disk = null)
+    public function __construct(string $tempFile, string $path, string $disk = null, $diskOptions = [])
     {
-        $this->tempPath = $tempPath;
-        $this->path     = $path;
-        $this->disk     = $disk;
+        $this->tempFile    = $tempFile;
+        $this->path        = $path;
+        $this->disk        = $disk;
+        $this->diskOptions = $diskOptions;
     }
 
     /**
-     * @param FilesystemManager $filesystem
+     * @param FilePathHelper $filePathHelper
      */
-    public function handle(FilesystemManager $filesystem)
+    public function handle(FilePathHelper $filePathHelper)
     {
-        $stream = fopen($this->tempPath, 'rb+');
-        $filesystem->disk($this->disk)->put($this->path, $stream);
-        fclose($stream);
+        $filePathHelper->storeToDisk(
+            $filePathHelper->getTempPath($this->tempFile),
+            $this->path,
+            $this->disk,
+            $this->diskOptions
+        );
     }
 }
