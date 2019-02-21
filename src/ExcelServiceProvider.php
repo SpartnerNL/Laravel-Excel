@@ -40,21 +40,7 @@ class ExcelServiceProvider extends ServiceProvider
         );
 
         $this->app->bind(FilePathHelper::class, function () {
-            $config = $this->app->make('config');
-
-            return new FilePathHelper(
-                $this->app->make('filesystem'),
-                $config->get('excel.exports.temp_path', sys_get_temp_dir())
-            );
-        });
-
-        $this->app->bind(Reader::class, function () {
-            $config = $this->app->make('config');
-
-            return new Reader(
-                $this->app->make(FilePathHelper::class),
-                $config->get('excel.imports.csv', $config->get('excel.exports.csv', []))
-            );
+            return new FilePathHelper($this->app->make('filesystem'));
         });
 
         $this->app->bind('excel', function () {

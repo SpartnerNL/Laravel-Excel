@@ -3,6 +3,29 @@
 use Maatwebsite\Excel\Excel;
 
 return [
+    /*
+    |--------------------------------------------------------------------------
+    | Temporary path
+    |--------------------------------------------------------------------------
+    |
+    | When exporting files, we use a temporary file, before storing
+    | or downloading. Here you can customize that path.
+    |
+    */
+    'temp_path'          => sys_get_temp_dir(),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Remote temporary disk
+    |--------------------------------------------------------------------------
+    |
+    | If not null, then temporary files for queued imports and exports will be stored
+    | at and retrieved from the specified filesystem disk, in addition to
+    | the configured temp_path on the local server.
+    |
+    */
+    'remote_temp_disk'   => null,
+
     'exports' => [
 
         /*
@@ -15,17 +38,6 @@ return [
         |
         */
         'chunk_size'             => 1000,
-
-        /*
-        |--------------------------------------------------------------------------
-        | Temporary path
-        |--------------------------------------------------------------------------
-        |
-        | When exporting files, we use a temporary file, before storing
-        | or downloading. Here you can customize that path.
-        |
-        */
-        'temp_path'              => sys_get_temp_dir(),
 
         /*
        |--------------------------------------------------------------------------
@@ -86,22 +98,6 @@ return [
             'include_separator_line' => false,
             'excel_compatibility'    => false,
         ],
-
-        /*
-        |--------------------------------------------------------------------------
-        | Remote temporary disk
-        |--------------------------------------------------------------------------
-        |
-        | If not null, then spreadsheet chunks for queued reading will be stored
-        | at and retrieved from the specified filesystem disk, in addition to
-        | the configured temp_path on the local server.
-        |
-        | This is especially useful when queued jobs are processed on a different
-        | server than the one handling the uploaded file, so that the file
-        | can be available to both servers.
-        |
-        */
-        'remote_temp_disk'       => null,
     ],
 
     /*

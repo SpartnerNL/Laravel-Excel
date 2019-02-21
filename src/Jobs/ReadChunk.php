@@ -9,9 +9,9 @@ use PhpOffice\PhpSpreadsheet\Cell\Cell;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use PhpOffice\PhpSpreadsheet\Reader\IReader;
 use Maatwebsite\Excel\Filters\ChunkReadFilter;
+use Maatwebsite\Excel\Helpers\FilePathHelper;
 use Maatwebsite\Excel\Imports\HeadingRowExtractor;
 use Maatwebsite\Excel\Concerns\WithCustomValueBinder;
-use Maatwebsite\Excel\Helpers\FilePathHelper;
 
 class ReadChunk implements ShouldQueue
 {
@@ -25,7 +25,7 @@ class ReadChunk implements ShouldQueue
     /**
      * @var string
      */
-    private $file;
+    private $fileName;
 
     /**
      * @var string
@@ -49,16 +49,16 @@ class ReadChunk implements ShouldQueue
 
     /**
      * @param IReader $reader
-     * @param string  $file
+     * @param string  $fileName
      * @param string  $sheetName
      * @param object  $sheetImport
      * @param int     $startRow
      * @param int     $chunkSize
      */
-    public function __construct(IReader $reader, string $file, string $sheetName, $sheetImport, int $startRow, int $chunkSize)
+    public function __construct(IReader $reader, string $fileName, string $sheetName, $sheetImport, int $startRow, int $chunkSize)
     {
         $this->reader      = $reader;
-        $this->file        = $file;
+        $this->fileName    = $fileName;
         $this->sheetName   = $sheetName;
         $this->sheetImport = $sheetImport;
         $this->startRow    = $startRow;
@@ -66,9 +66,14 @@ class ReadChunk implements ShouldQueue
     }
 
     /**
+     * @param FilePathHelper $filePathHelper
+     *
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+     * @throws \Maatwebsite\Excel\Exceptions\SheetNotFoundException
+     * @throws \Maatwebsite\Excel\Exceptions\UnreadableFileException
      * @throws \PhpOffice\PhpSpreadsheet\Reader\Exception
      */
-    public function handle()
+    public function handle(FilePathHelper $filePathHelper)
     {
         if ($this->sheetImport instanceof WithCustomValueBinder) {
             Cell::setValueBinder($this->sheetImport);
@@ -87,11 +92,8 @@ class ReadChunk implements ShouldQueue
         $this->reader->setReadDataOnly(true);
         $this->reader->setReadEmptyCells(false);
 
-        if ($this->sheetImport instanceof ShouldQueue && ($remoteTempDisk = config('excel.imports.remote_temp_disk')) !== null) {
-            app(FilePathHelper::class)->copyToTempFile(basename($this->file), $this->file, $remoteTempDisk);
-        }
-
-        $spreadsheet = $this->reader->load($this->file);
+        $file = $filePathHelper->getTempFile($this->fileName);
+        $spreadsheet = $this->reader->load($file);
 
         $sheet = Sheet::byName(
             $spreadsheet,

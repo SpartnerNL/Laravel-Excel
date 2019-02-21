@@ -3,6 +3,7 @@
 namespace Maatwebsite\Excel;
 
 use Illuminate\Support\Collection;
+use Maatwebsite\Excel\Helpers\FilePathHelper;
 use Maatwebsite\Excel\Jobs\ReadChunk;
 use Maatwebsite\Excel\Jobs\QueueImport;
 use Illuminate\Contracts\Bus\Dispatcher;
@@ -17,15 +18,29 @@ use Maatwebsite\Excel\Imports\HeadingRowExtractor;
 class ChunkReader
 {
     /**
+     * @var FilePathHelper
+     */
+    protected $filePathHelper;
+
+    /**
+     * @param FilePathHelper $filePathHelper
+     */
+    public function __construct(FilePathHelper $filePathHelper)
+    {
+        $this->filePathHelper = $filePathHelper;
+    }
+
+    /**
      * @param WithChunkReading $import
      * @param IReader          $reader
-     * @param string           $file
+     * @param string           $fileName
      *
      * @return \Illuminate\Foundation\Bus\PendingDispatch|null
      */
-    public function read(WithChunkReading $import, IReader $reader, string $file)
+    public function read(WithChunkReading $import, IReader $reader, string $fileName)
     {
         $chunkSize  = $import->chunkSize();
+        $file       = $this->filePathHelper->getTempPath($fileName);
         $totalRows  = $this->getTotalRows($reader, $file);
         $worksheets = $this->getWorksheets($import, $reader, $file);
 
@@ -41,7 +56,7 @@ class ChunkReader
             for ($currentRow = $startRow; $currentRow <= $totalRows[$name]; $currentRow += $chunkSize) {
                 $jobs->push(new ReadChunk(
                     $reader,
-                    $file,
+                    $fileName,
                     $name,
                     $sheetImport,
                     $currentRow,
