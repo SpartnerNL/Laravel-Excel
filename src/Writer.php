@@ -17,7 +17,6 @@ use Maatwebsite\Excel\Concerns\MapsCsvSettings;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 use Maatwebsite\Excel\Concerns\WithCustomCsvSettings;
 use Maatwebsite\Excel\Concerns\WithCustomValueBinder;
-use PhpOffice\PhpSpreadsheet\Cell\DefaultValueBinder;
 use Maatwebsite\Excel\Concerns\WithPreCalculateFormulas;
 
 class Writer
@@ -266,7 +265,7 @@ class Writer
      */
     public function setDefaultValueBinder()
     {
-        Cell::setValueBinder(new DefaultValueBinder);
+        Cell::setValueBinder(new DefaultValueBinder());
 
         return $this;
     }
