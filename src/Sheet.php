@@ -491,7 +491,7 @@ class Sheet
                 $row = $sheetExport->map($row);
             }
 
-            return ArrayHelper::ensureMultiDimensional(
+            return ArrayHelper::ensureMultipleRows(
                 static::mapArraybleRow($row)
             );
         })->toArray();

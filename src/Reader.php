@@ -23,7 +23,6 @@ use Maatwebsite\Excel\Concerns\SkipsUnknownSheets;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 use Maatwebsite\Excel\Concerns\WithCustomCsvSettings;
 use Maatwebsite\Excel\Concerns\WithCustomValueBinder;
-use PhpOffice\PhpSpreadsheet\Cell\DefaultValueBinder;
 use Maatwebsite\Excel\Concerns\WithCalculatedFormulas;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Maatwebsite\Excel\Exceptions\SheetNotFoundException;
@@ -178,7 +177,7 @@ class Reader
      */
     public function setDefaultValueBinder(): self
     {
-        Cell::setValueBinder(new DefaultValueBinder);
+        Cell::setValueBinder(new DefaultValueBinder());
 
         return $this;
     }

@@ -9,9 +9,9 @@ class ArrayHelper
      *
      * @return array
      */
-    public static function ensureMultiDimensional(array $array): array
+    public static function ensureMultipleRows(array $array): array
     {
-        if (static::isMultiDimensional($array)) {
+        if (static::hasMultipleRows($array)) {
             return $array;
         }
 
@@ -19,12 +19,15 @@ class ArrayHelper
     }
 
     /**
+     * Only have multiple rows, if each
+     * element in the array is an array itself
+     *
      * @param array $array
      *
      * @return bool
      */
-    public static function isMultiDimensional(array $array): bool
+    public static function hasMultipleRows(array $array): bool
     {
-        return count($array) !== count($array, COUNT_RECURSIVE);
+        return count($array) === count(array_filter($array, 'is_array'));
     }
 }
