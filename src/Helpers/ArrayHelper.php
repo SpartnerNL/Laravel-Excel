@@ -20,7 +20,7 @@ class ArrayHelper
 
     /**
      * Only have multiple rows, if each
-     * element in the array is an array itself
+     * element in the array is an array itself.
      *
      * @param array $array
      *

@@ -2,10 +2,10 @@
 
 namespace Maatwebsite\Excel\Tests\Concerns;
 
-use Maatwebsite\Excel\Concerns\Exportable;
-use Maatwebsite\Excel\Concerns\FromArray;
-use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Tests\TestCase;
+use Maatwebsite\Excel\Concerns\FromArray;
+use Maatwebsite\Excel\Concerns\Exportable;
+use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Tests\Data\Stubs\WithMappingExport;
 
 class WithMappingTest extends TestCase
@@ -44,9 +44,7 @@ class WithMappingTest extends TestCase
      */
     public function can_return_multiple_rows_in_map()
     {
-        $export = new class implements FromArray, WithMapping
-        {
-
+        $export = new class implements FromArray, WithMapping {
             use Exportable;
 
             /**
@@ -70,7 +68,7 @@ class WithMappingTest extends TestCase
             {
                 return [
                     [$row['id']],
-                    [$row['id']]
+                    [$row['id']],
                 ];
             }
         };
@@ -89,9 +87,7 @@ class WithMappingTest extends TestCase
      */
     public function json_array_columns_shouldnt_be_detected_as_multiple_rows()
     {
-        $export = new class implements FromArray
-        {
-
+        $export = new class implements FromArray {
             use Exportable;
 
             /**
