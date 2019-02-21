@@ -2,8 +2,6 @@
 
 namespace Maatwebsite\Excel;
 
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Maatwebsite\Excel\Helpers\FilePathHelper;
 use PhpOffice\PhpSpreadsheet\Cell\Cell;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Writer\Csv;
@@ -12,7 +10,9 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use Maatwebsite\Excel\Concerns\WithCharts;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Events\BeforeExport;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Maatwebsite\Excel\Events\BeforeWriting;
+use Maatwebsite\Excel\Helpers\FilePathHelper;
 use Maatwebsite\Excel\Concerns\MapsCsvSettings;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 use Maatwebsite\Excel\Concerns\WithCustomCsvSettings;
@@ -138,7 +138,7 @@ class Writer
     public function write($export, string $fileName, string $writerType)
     {
         $this->exportable = $export;
-        $filePath = $this->filePathHelper->getTempPath($fileName);
+        $filePath         = $this->filePathHelper->getTempPath($fileName);
 
         $this->spreadsheet->setActiveSheetIndex(0);
 

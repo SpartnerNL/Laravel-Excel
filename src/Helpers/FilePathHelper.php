@@ -30,7 +30,8 @@ class FilePathHelper
     public function __construct(Factory $filesystem)
     {
         $this->filesystem     = $filesystem;
-        $this->tempPath       = config('excel.temp_path', sys_get_temp_dir());
+        // TODO: Remove support for excel.exports.temp_path in v4
+        $this->tempPath       = config('excel.temp_path', config('excel.exports.temp_path', sys_get_temp_dir()));
         $this->remoteTempDisk = config('excel.remote_temp_disk');
     }
 
@@ -44,8 +45,8 @@ class FilePathHelper
      */
     public function copyToTempFile($filePath, string $disk = null, bool $remote = false): string
     {
-        $remote = $remote && $this->remoteTempDisk !== null;
-        $fileName = $this->generateTempFileName($remote);
+        $remote      = $remote && $this->remoteTempDisk !== null;
+        $fileName    = $this->generateTempFileName($remote);
         $destination = $this->getTempPath($fileName);
 
         if ($filePath instanceof UploadedFile) {
@@ -88,7 +89,7 @@ class FilePathHelper
     {
         do {
             $fileName = 'laravel-excel-' . Str::random(16);
-        } while (file_exists($this->getTempPath($fileName)) || ($remote && $this->filesystem->disk($this->remoteTempDisk)->exists($fileName)));
+        } while (realpath($this->getTempPath($fileName)) === false || ($remote && $this->filesystem->disk($this->remoteTempDisk)->exists($fileName)));
 
         return $fileName;
     }
@@ -104,14 +105,8 @@ class FilePathHelper
     {
         $file = $this->getTempPath($fileName);
 
-        if (realpath($file) !== false) {
+        if (realpath($file) !== false || ($this->remoteTempDisk !== null && $this->copyFromDisk($fileName, $file, $this->remoteTempDisk))) {
             return $file;
-        }
-
-        if ($this->remoteTempDisk !== null) {
-            if ($this->copyFromDisk($fileName, $file, $this->remoteTempDisk) !== false) {
-                return $file;
-            }
         }
 
         throw new UnreadableFileException;

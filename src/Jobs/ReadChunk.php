@@ -8,8 +8,8 @@ use Illuminate\Support\Facades\DB;
 use PhpOffice\PhpSpreadsheet\Cell\Cell;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use PhpOffice\PhpSpreadsheet\Reader\IReader;
-use Maatwebsite\Excel\Filters\ChunkReadFilter;
 use Maatwebsite\Excel\Helpers\FilePathHelper;
+use Maatwebsite\Excel\Filters\ChunkReadFilter;
 use Maatwebsite\Excel\Imports\HeadingRowExtractor;
 use Maatwebsite\Excel\Concerns\WithCustomValueBinder;
 
@@ -92,7 +92,7 @@ class ReadChunk implements ShouldQueue
         $this->reader->setReadDataOnly(true);
         $this->reader->setReadEmptyCells(false);
 
-        $file = $filePathHelper->getTempFile($this->fileName);
+        $file        = $filePathHelper->getTempFile($this->fileName);
         $spreadsheet = $this->reader->load($file);
 
         $sheet = Sheet::byName(

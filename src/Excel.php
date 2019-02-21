@@ -95,8 +95,11 @@ class Excel implements Exporter, Importer
         }
 
         $file = $this->export($export, $filePath, $writerType);
+        $stream = fopen($file, 'rb+');
+        $success = $this->filesystem->disk($disk)->put($filePath, $stream, $diskOptions);
+        fclose($stream);
 
-        return $this->filesystem->disk($disk)->put($filePath, fopen($file, 'r+'), $diskOptions);
+        return $success;
     }
 
     /**

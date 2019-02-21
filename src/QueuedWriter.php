@@ -2,13 +2,13 @@
 
 namespace Maatwebsite\Excel;
 
-use Maatwebsite\Excel\Helpers\FilePathHelper;
 use Traversable;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Jobs\CloseSheet;
 use Maatwebsite\Excel\Jobs\QueueExport;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Jobs\SerializedQuery;
+use Maatwebsite\Excel\Helpers\FilePathHelper;
 use Maatwebsite\Excel\Jobs\AppendDataToSheet;
 use Maatwebsite\Excel\Jobs\StoreQueuedExport;
 use Maatwebsite\Excel\Concerns\FromCollection;

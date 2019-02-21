@@ -42,6 +42,8 @@ class StoreQueuedExport implements ShouldQueue
      */
     public function handle(FilesystemManager $filesystem)
     {
-        $filesystem->disk($this->disk)->put($this->path, fopen($this->tempPath, 'rb+'));
+        $stream = fopen($this->tempPath, 'rb+');
+        $filesystem->disk($this->disk)->put($this->path, $stream);
+        fclose($stream);
     }
 }
