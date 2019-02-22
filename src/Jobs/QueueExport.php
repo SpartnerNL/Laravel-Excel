@@ -42,7 +42,6 @@ class QueueExport implements ShouldQueue
      * @param Writer $writer
      *
      * @throws \PhpOffice\PhpSpreadsheet\Exception
-     * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
      */
     public function handle(Writer $writer)
     {

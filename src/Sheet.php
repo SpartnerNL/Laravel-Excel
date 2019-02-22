@@ -2,7 +2,6 @@
 
 namespace Maatwebsite\Excel;
 
-use Illuminate\Support\Str;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToArray;
 use Maatwebsite\Excel\Concerns\ToModel;
@@ -28,6 +27,7 @@ use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithDrawings;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Imports\ModelImporter;
+use Maatwebsite\Excel\Helpers\FilePathHelper;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithMappedCells;
@@ -56,9 +56,9 @@ class Sheet
     protected $chunkSize;
 
     /**
-     * @var string
+     * @var FilePathHelper
      */
-    protected $tmpPath;
+    protected $filePathHelper;
 
     /**
      * @var object
@@ -75,9 +75,9 @@ class Sheet
      */
     public function __construct(Worksheet $worksheet)
     {
-        $this->worksheet = $worksheet;
-        $this->chunkSize = config('excel.exports.chunk_size', 100);
-        $this->tmpPath   = config('excel.exports.temp_path', sys_get_temp_dir());
+        $this->worksheet      = $worksheet;
+        $this->chunkSize      = config('excel.exports.chunk_size', 100);
+        $this->filePathHelper = app(FilePathHelper::class);
     }
 
     /**
@@ -566,7 +566,7 @@ class Sheet
      */
     protected function tempFile(): string
     {
-        return $this->tmpPath . DIRECTORY_SEPARATOR . 'laravel-excel-' . Str::random(16);
+        return $this->filePathHelper->getTempPath($this->filePathHelper->generateTempFileName());
     }
 
     /**

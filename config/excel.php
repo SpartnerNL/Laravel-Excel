@@ -3,6 +3,29 @@
 use Maatwebsite\Excel\Excel;
 
 return [
+    /*
+    |--------------------------------------------------------------------------
+    | Temporary path
+    |--------------------------------------------------------------------------
+    |
+    | When exporting files, we use a temporary file, before storing
+    | or downloading. Here you can customize that path.
+    |
+    */
+    'temp_path'          => sys_get_temp_dir(),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Remote temporary disk
+    |--------------------------------------------------------------------------
+    |
+    | If not null, then temporary files for queued imports and exports will be stored
+    | at and retrieved from the specified filesystem disk, in addition to
+    | the configured temp_path on the local server.
+    |
+    */
+    'remote_temp_disk'   => null,
+
     'exports' => [
 
         /*
@@ -15,17 +38,6 @@ return [
         |
         */
         'chunk_size'             => 1000,
-
-        /*
-        |--------------------------------------------------------------------------
-        | Temporary path
-        |--------------------------------------------------------------------------
-        |
-        | When exporting files, we use a temporary file, before storing
-        | or downloading. Here you can customize that path.
-        |
-        */
-        'temp_path'              => sys_get_temp_dir(),
 
         /*
        |--------------------------------------------------------------------------

@@ -39,16 +39,8 @@ class ExcelServiceProvider extends ServiceProvider
             'excel'
         );
 
-        $this->app->bind(Reader::class, function () {
-            $config = $this->app->make('config');
-
-            return new Reader(
-                new FilePathHelper(
-                    $this->app->make('filesystem'),
-                    $config->get('excel.exports.temp_path', sys_get_temp_dir())
-                ),
-                $config->get('excel.imports.csv', $config->get('excel.exports.csv', []))
-            );
+        $this->app->bind(FilePathHelper::class, function () {
+            return new FilePathHelper($this->app->make('filesystem'));
         });
 
         $this->app->bind('excel', function () {
@@ -56,7 +48,7 @@ class ExcelServiceProvider extends ServiceProvider
                 $this->app->make(Writer::class),
                 $this->app->make(QueuedWriter::class),
                 $this->app->make(Reader::class),
-                $this->app->make('filesystem')
+                $this->app->make(FilePathHelper::class)
             );
         });
 

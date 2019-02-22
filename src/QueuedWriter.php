@@ -8,6 +8,7 @@ use Maatwebsite\Excel\Jobs\CloseSheet;
 use Maatwebsite\Excel\Jobs\QueueExport;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Jobs\SerializedQuery;
+use Maatwebsite\Excel\Helpers\FilePathHelper;
 use Maatwebsite\Excel\Jobs\AppendDataToSheet;
 use Maatwebsite\Excel\Jobs\StoreQueuedExport;
 use Maatwebsite\Excel\Concerns\FromCollection;
@@ -24,17 +25,24 @@ class QueuedWriter
     protected $writer;
 
     /**
+     * @var FilePathHelper
+     */
+    protected $filePathHelper;
+
+    /**
      * @var int
      */
     protected $chunkSize;
 
     /**
-     * @param Writer $writer
+     * @param Writer         $writer
+     * @param FilePathHelper $filePathHelper
      */
-    public function __construct(Writer $writer)
+    public function __construct(Writer $writer, FilePathHelper $filePathHelper)
     {
-        $this->writer    = $writer;
-        $this->chunkSize = config('excel.exports.chunk_size', 1000);
+        $this->writer         = $writer;
+        $this->filePathHelper = $filePathHelper;
+        $this->chunkSize      = config('excel.exports.chunk_size', 1000);
     }
 
     /**
@@ -42,16 +50,17 @@ class QueuedWriter
      * @param string      $filePath
      * @param string|null $disk
      * @param string|null $writerType
+     * @param mixed       $diskOptions
      *
      * @return \Illuminate\Foundation\Bus\PendingDispatch
      */
-    public function store($export, string $filePath, string $disk = null, string $writerType = null)
+    public function store($export, string $filePath, string $disk = null, string $writerType = null, $diskOptions = [])
     {
-        $tempFile = $this->writer->tempFile();
+        $tempFile = $this->filePathHelper->generateTempFileName(true);
 
         $jobs = $this->buildExportJobs($export, $tempFile, $writerType);
 
-        $jobs->push(new StoreQueuedExport($tempFile, $filePath, $disk));
+        $jobs->push(new StoreQueuedExport($tempFile, $filePath, $disk, $diskOptions));
 
         return QueueExport::withChain($jobs->toArray())->dispatch($export, $tempFile, $writerType);
     }
@@ -86,7 +95,7 @@ class QueuedWriter
 
     /**
      * @param FromCollection $export
-     * @param string         $filePath
+     * @param string         $fileName
      * @param string         $writerType
      * @param int            $sheetIndex
      *
@@ -94,21 +103,21 @@ class QueuedWriter
      */
     private function exportCollection(
         FromCollection $export,
-        string $filePath,
+        string $fileName,
         string $writerType,
         int $sheetIndex
     ) {
         return $export
             ->collection()
             ->chunk($this->getChunkSize($export))
-            ->map(function ($rows) use ($writerType, $filePath, $sheetIndex, $export) {
+            ->map(function ($rows) use ($writerType, $fileName, $sheetIndex, $export) {
                 if ($rows instanceof Traversable) {
                     $rows = iterator_to_array($rows);
                 }
 
                 return new AppendDataToSheet(
                     $export,
-                    $filePath,
+                    $fileName,
                     $writerType,
                     $sheetIndex,
                     $rows
@@ -118,7 +127,7 @@ class QueuedWriter
 
     /**
      * @param FromQuery $export
-     * @param string    $filePath
+     * @param string    $fileName
      * @param string    $writerType
      * @param int       $sheetIndex
      *
@@ -126,7 +135,7 @@ class QueuedWriter
      */
     private function exportQuery(
         FromQuery $export,
-        string $filePath,
+        string $fileName,
         string $writerType,
         int $sheetIndex
     ) {
@@ -144,7 +153,7 @@ class QueuedWriter
 
             $jobs->push(new AppendQueryToSheet(
                 $export,
-                $filePath,
+                $fileName,
                 $writerType,
                 $sheetIndex,
                 $serializedQuery

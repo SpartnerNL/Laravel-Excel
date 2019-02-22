@@ -4,7 +4,7 @@ namespace Maatwebsite\Excel;
 
 use Illuminate\Support\Collection;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Contracts\Filesystem\Factory;
+use Maatwebsite\Excel\Helpers\FilePathHelper;
 use Illuminate\Foundation\Bus\PendingDispatch;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Maatwebsite\Excel\Exceptions\NoTypeDetectedException;
@@ -48,9 +48,9 @@ class Excel implements Exporter, Importer
     protected $queuedWriter;
 
     /**
-     * @var Factory
+     * @var FilePathHelper
      */
-    protected $filesystem;
+    protected $filePathHelper;
 
     /**
      * @var Reader
@@ -58,21 +58,21 @@ class Excel implements Exporter, Importer
     private $reader;
 
     /**
-     * @param Writer       $writer
-     * @param QueuedWriter $queuedWriter
-     * @param Reader       $reader
-     * @param Factory      $filesystem
+     * @param Writer         $writer
+     * @param QueuedWriter   $queuedWriter
+     * @param Reader         $reader
+     * @param FilePathHelper $filePathHelper
      */
     public function __construct(
         Writer $writer,
         QueuedWriter $queuedWriter,
         Reader $reader,
-        Factory $filesystem
+        FilePathHelper $filePathHelper
     ) {
-        $this->writer       = $writer;
-        $this->reader       = $reader;
-        $this->filesystem   = $filesystem;
-        $this->queuedWriter = $queuedWriter;
+        $this->writer         = $writer;
+        $this->reader         = $reader;
+        $this->filePathHelper = $filePathHelper;
+        $this->queuedWriter   = $queuedWriter;
     }
 
     /**
@@ -96,7 +96,7 @@ class Excel implements Exporter, Importer
 
         $file = $this->export($export, $filePath, $writerType);
 
-        return $this->filesystem->disk($disk)->put($filePath, fopen($file, 'r+'), $diskOptions);
+        return $this->filePathHelper->storeToDisk($file, $filePath, $disk, $diskOptions);
     }
 
     /**

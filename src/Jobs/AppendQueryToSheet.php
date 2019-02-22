@@ -19,7 +19,7 @@ class AppendQueryToSheet implements ShouldQueue
     /**
      * @var string
      */
-    public $filePath;
+    public $fileName;
 
     /**
      * @var string
@@ -38,21 +38,21 @@ class AppendQueryToSheet implements ShouldQueue
 
     /**
      * @param object          $sheetExport
-     * @param string          $filePath
+     * @param string          $fileName
      * @param string          $writerType
      * @param int             $sheetIndex
      * @param SerializedQuery $query
      */
     public function __construct(
         $sheetExport,
-        string $filePath,
+        string $fileName,
         string $writerType,
         int $sheetIndex,
         SerializedQuery $query
     ) {
         $this->sheetExport = $sheetExport;
         $this->query       = $query;
-        $this->filePath    = $filePath;
+        $this->fileName    = $fileName;
         $this->writerType  = $writerType;
         $this->sheetIndex  = $sheetIndex;
     }
@@ -62,16 +62,15 @@ class AppendQueryToSheet implements ShouldQueue
      *
      * @throws \PhpOffice\PhpSpreadsheet\Exception
      * @throws \PhpOffice\PhpSpreadsheet\Reader\Exception
-     * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
      */
     public function handle(Writer $writer)
     {
-        $writer = $writer->reopen($this->filePath, $this->writerType);
+        $writer = $writer->reopen($this->fileName, $this->writerType);
 
         $sheet = $writer->getSheetByIndex($this->sheetIndex);
 
         $sheet->appendRows($this->query->execute(), $this->sheetExport);
 
-        $writer->write($this->sheetExport, $this->filePath, $this->writerType);
+        $writer->write($this->sheetExport, $this->fileName, $this->writerType);
     }
 }

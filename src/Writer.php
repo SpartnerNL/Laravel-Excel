@@ -2,7 +2,6 @@
 
 namespace Maatwebsite\Excel;
 
-use Illuminate\Support\Str;
 use PhpOffice\PhpSpreadsheet\Cell\Cell;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Writer\Csv;
@@ -11,7 +10,9 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use Maatwebsite\Excel\Concerns\WithCharts;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Events\BeforeExport;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Maatwebsite\Excel\Events\BeforeWriting;
+use Maatwebsite\Excel\Helpers\FilePathHelper;
 use Maatwebsite\Excel\Concerns\MapsCsvSettings;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 use Maatwebsite\Excel\Concerns\WithCustomCsvSettings;
@@ -33,9 +34,9 @@ class Writer
     protected $exportable;
 
     /**
-     * @var string
+     * @var FilePathHelper
      */
-    protected $tmpPath;
+    protected $filePathHelper;
 
     /**
      * @var string
@@ -44,12 +45,14 @@ class Writer
 
     /**
      * New Writer instance.
+     *
+     * @param FilePathHelper $filePathHelper
      */
-    public function __construct()
+    public function __construct(FilePathHelper $filePathHelper)
     {
-        $this->tmpPath = config('excel.exports.temp_path', sys_get_temp_dir());
-        $this->applyCsvSettings(config('excel.exports.csv', []));
+        $this->filePathHelper = $filePathHelper;
 
+        $this->applyCsvSettings(config('excel.exports.csv', []));
         $this->setDefaultValueBinder();
     }
 
@@ -57,6 +60,7 @@ class Writer
      * @param object $export
      * @param string $writerType
      *
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
      * @return string
      */
     public function export($export, string $writerType): string
@@ -72,7 +76,7 @@ class Writer
             $this->addNewSheet()->export($sheetExport);
         }
 
-        return $this->write($export, $this->tempFile(), $writerType);
+        return $this->write($export, $this->filePathHelper->generateTempFileName(), $writerType);
     }
 
     /**
@@ -109,13 +113,15 @@ class Writer
      * @param string $tempFile
      * @param string $writerType
      *
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+     * @throws \Maatwebsite\Excel\Exceptions\UnreadableFileException
      * @throws \PhpOffice\PhpSpreadsheet\Reader\Exception
      * @return Writer
      */
     public function reopen(string $tempFile, string $writerType)
     {
         $reader            = IOFactory::createReader($writerType);
-        $this->spreadsheet = $reader->load($tempFile);
+        $this->spreadsheet = $reader->load($this->filePathHelper->getTempFile($tempFile));
 
         return $this;
     }
@@ -125,11 +131,14 @@ class Writer
      * @param string $fileName
      * @param string $writerType
      *
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
+     * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
      * @return string
      */
     public function write($export, string $fileName, string $writerType)
     {
         $this->exportable = $export;
+        $filePath         = $this->filePathHelper->getTempPath($fileName);
 
         $this->spreadsheet->setActiveSheetIndex(0);
 
@@ -161,12 +170,16 @@ class Writer
                 : config('excel.exports.pre_calculate_formulas', false)
         );
 
-        $writer->save($fileName);
+        $writer->save($filePath);
+
+        if ($export instanceof ShouldQueue) {
+            $this->filePathHelper->storeToTempDisk($fileName);
+        }
 
         $this->spreadsheet->disconnectWorksheets();
         unset($this->spreadsheet);
 
-        return $fileName;
+        return $filePath;
     }
 
     /**
@@ -256,14 +269,6 @@ class Writer
         Cell::setValueBinder(new DefaultValueBinder());
 
         return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function tempFile(): string
-    {
-        return $this->tmpPath . DIRECTORY_SEPARATOR . 'laravel-excel-' . Str::random(16);
     }
 
     /**

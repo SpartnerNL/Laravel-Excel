@@ -19,7 +19,7 @@ class CloseSheet implements ShouldQueue
     /**
      * @var string
      */
-    private $filePath;
+    private $fileName;
 
     /**
      * @var string
@@ -33,14 +33,14 @@ class CloseSheet implements ShouldQueue
 
     /**
      * @param object $sheetExport
-     * @param string $filePath
+     * @param string $fileName
      * @param string $writerType
      * @param int    $sheetIndex
      */
-    public function __construct($sheetExport, string $filePath, string $writerType, int $sheetIndex)
+    public function __construct($sheetExport, string $fileName, string $writerType, int $sheetIndex)
     {
         $this->sheetExport = $sheetExport;
-        $this->filePath    = $filePath;
+        $this->fileName    = $fileName;
         $this->writerType  = $writerType;
         $this->sheetIndex  = $sheetIndex;
     }
@@ -50,11 +50,10 @@ class CloseSheet implements ShouldQueue
      *
      * @throws \PhpOffice\PhpSpreadsheet\Exception
      * @throws \PhpOffice\PhpSpreadsheet\Reader\Exception
-     * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
      */
     public function handle(Writer $writer)
     {
-        $writer = $writer->reopen($this->filePath, $this->writerType);
+        $writer = $writer->reopen($this->fileName, $this->writerType);
 
         $sheet = $writer->getSheetByIndex($this->sheetIndex);
 
@@ -64,6 +63,6 @@ class CloseSheet implements ShouldQueue
 
         $sheet->close($this->sheetExport);
 
-        $writer->write($this->sheetExport, $this->filePath, $this->writerType);
+        $writer->write($this->sheetExport, $this->fileName, $this->writerType);
     }
 }

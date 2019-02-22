@@ -54,13 +54,12 @@ class Reader
 
     /**
      * @param FilePathHelper $filePathHelper
-     * @param array          $csvSettings
      */
-    public function __construct(FilePathHelper $filePathHelper, array $csvSettings = [])
+    public function __construct(FilePathHelper $filePathHelper)
     {
         $this->filePathHelper = $filePathHelper;
 
-        $this->applyCsvSettings($csvSettings);
+        $this->applyCsvSettings(config('excel.imports.csv', []));
         $this->setDefaultValueBinder();
     }
 
@@ -71,7 +70,6 @@ class Reader
      * @param string|null         $disk
      *
      * @throws Exception
-     * @throws Exceptions\UnreadableFileException
      * @throws NoTypeDetectedException
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      * @return \Illuminate\Foundation\Bus\PendingDispatch|$this
@@ -81,7 +79,7 @@ class Reader
         $reader = $this->getReader($import, $filePath, $readerType, $disk);
 
         if ($import instanceof WithChunkReading) {
-            return (new ChunkReader)->read($import, $reader, $this->currentFile);
+            return app(ChunkReader::class)->read($import, $reader, $this->currentFile);
         }
 
         $this->beforeReading($import, $reader);
@@ -139,7 +137,6 @@ class Reader
      * @param string|null         $disk
      *
      * @throws Exceptions\SheetNotFoundException
-     * @throws Exceptions\UnreadableFileException
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      * @throws \PhpOffice\PhpSpreadsheet\Exception
      * @throws NoTypeDetectedException
@@ -222,8 +219,7 @@ class Reader
         // Force garbage collecting
         unset($this->sheetImports, $this->spreadsheet);
 
-        // Remove the temporary file.
-        unlink($this->currentFile);
+        $this->filePathHelper->deleteTempFile($this->currentFile);
     }
 
     /**
@@ -257,15 +253,16 @@ class Reader
      * @param string|null         $readerType
      * @param string              $disk
      *
-     * @throws Exceptions\UnreadableFileException
      * @throws InvalidArgumentException
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      * @throws NoTypeDetectedException
+     * @throws \PhpOffice\PhpSpreadsheet\Reader\Exception
      * @return IReader
      */
     private function getReader($import, $filePath, string $readerType = null, string $disk = null): IReader
     {
-        if ($import instanceof ShouldQueue && !$import instanceof WithChunkReading) {
+        $shouldQueue = $import instanceof ShouldQueue;
+        if ($shouldQueue && !$import instanceof WithChunkReading) {
             throw new InvalidArgumentException('ShouldQueue is only supported in combination with WithChunkReading.');
         }
 
@@ -281,9 +278,9 @@ class Reader
             $this->applyCsvSettings($import->getCsvSettings());
         }
 
-        $this->currentFile = $this->filePathHelper->getRealPath($filePath, $disk);
+        $this->currentFile = $this->filePathHelper->copyToTempFile($filePath, $disk, $shouldQueue);
 
-        $reader = ReaderFactory::make($this->currentFile, $this->getReaderType($readerType));
+        $reader = ReaderFactory::make($this->getReaderType($readerType));
 
         if (method_exists($reader, 'setReadDataOnly')) {
             $reader->setReadDataOnly(config('excel.imports.read_only', true));
@@ -310,7 +307,7 @@ class Reader
     {
         $this->sheetImports = $this->buildSheetImports($import, $reader);
 
-        $this->spreadsheet = $reader->load($this->currentFile);
+        $this->spreadsheet = $reader->load($this->filePathHelper->getTempPath($this->currentFile));
 
         // When no multiple sheets, use the main import object
         // for each loaded sheet in the spreadsheet
@@ -343,7 +340,7 @@ class Reader
         }
 
         try {
-            return IOFactory::identify($this->currentFile);
+            return IOFactory::identify($this->filePathHelper->getTempPath($this->currentFile));
         } catch (Exception $e) {
             throw new NoTypeDetectedException(null, null, $e);
         }
