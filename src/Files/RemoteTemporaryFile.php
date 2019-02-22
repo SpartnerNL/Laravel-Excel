@@ -33,16 +33,6 @@ class RemoteTemporaryFile extends TemporaryFile
     }
 
     /**
-     * @return LocalTemporaryFile
-     */
-    private function copy(): LocalTemporaryFile
-    {
-        return $this->disk->copyToLocalTempFolder(
-            $this->filename
-        );
-    }
-
-    /**
      * @return bool
      */
     public function exists(): bool
@@ -65,6 +55,16 @@ class RemoteTemporaryFile extends TemporaryFile
     {
         $this->disk->put(
             $this->getLocalPath(),
+            $this->filename
+        );
+    }
+
+    /**
+     * @return LocalTemporaryFile
+     */
+    private function copy(): LocalTemporaryFile
+    {
+        return $this->disk->copyToLocalTempFolder(
             $this->filename
         );
     }

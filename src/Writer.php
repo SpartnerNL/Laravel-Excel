@@ -2,8 +2,6 @@
 
 namespace Maatwebsite\Excel;
 
-use Maatwebsite\Excel\Files\TemporaryFile;
-use Maatwebsite\Excel\Files\TemporaryFileFactory;
 use PhpOffice\PhpSpreadsheet\Cell\Cell;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Writer\Csv;
@@ -12,10 +10,11 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use Maatwebsite\Excel\Concerns\WithCharts;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Events\BeforeExport;
-use Illuminate\Contracts\Queue\ShouldQueue;
+use Maatwebsite\Excel\Files\TemporaryFile;
 use Maatwebsite\Excel\Events\BeforeWriting;
 use Maatwebsite\Excel\Helpers\FilePathHelper;
 use Maatwebsite\Excel\Concerns\MapsCsvSettings;
+use Maatwebsite\Excel\Files\TemporaryFileFactory;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 use Maatwebsite\Excel\Concerns\WithCustomCsvSettings;
 use Maatwebsite\Excel\Concerns\WithCustomValueBinder;

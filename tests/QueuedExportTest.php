@@ -2,13 +2,13 @@
 
 namespace Maatwebsite\Excel\Tests;
 
-use Illuminate\Queue\Events\JobProcessing;
-use Illuminate\Support\Facades\Queue;
 use Maatwebsite\Excel\Excel;
-use Maatwebsite\Excel\Files\RemoteTemporaryFile;
-use Maatwebsite\Excel\Files\TemporaryFile;
+use Illuminate\Support\Facades\Queue;
 use Maatwebsite\Excel\Jobs\QueueExport;
 use Illuminate\Queue\Events\JobProcessed;
+use Illuminate\Queue\Events\JobProcessing;
+use Maatwebsite\Excel\Files\TemporaryFile;
+use Maatwebsite\Excel\Files\RemoteTemporaryFile;
 use Maatwebsite\Excel\Tests\Data\Stubs\QueuedExport;
 use Maatwebsite\Excel\Tests\Data\Stubs\ShouldQueueExport;
 use Maatwebsite\Excel\Tests\Data\Stubs\AfterQueueExportJob;
@@ -58,7 +58,6 @@ class QueuedExportTest extends TestCase
         // Delete the local temp file after the QueueExport job
         // to simulate the following jobs using a different filesystem.
         Queue::after(function (JobProcessed $event) {
-
             if ($event->job->resolveName() === QueueExport::class) {
                 /** @var TemporaryFile $tempFile */
                 $tempFile = $this->inspectJobProperty($event->job, 'temporaryFile');

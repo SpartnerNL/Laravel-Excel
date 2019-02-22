@@ -3,10 +3,9 @@
 namespace Maatwebsite\Excel\Jobs;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Maatwebsite\Excel\Files\Disk;
 use Maatwebsite\Excel\Files\TemporaryFile;
-use Maatwebsite\Excel\Helpers\FilePathHelper;
+use Illuminate\Contracts\Queue\ShouldQueue;
 
 class StoreQueuedExport implements ShouldQueue
 {

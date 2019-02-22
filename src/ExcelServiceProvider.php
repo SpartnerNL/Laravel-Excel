@@ -3,14 +3,14 @@
 namespace Maatwebsite\Excel;
 
 use Illuminate\Support\Collection;
-use Maatwebsite\Excel\Files\Filesystem;
 use Illuminate\Support\ServiceProvider;
-use Maatwebsite\Excel\Files\TemporaryFileFactory;
+use Maatwebsite\Excel\Files\Filesystem;
 use Maatwebsite\Excel\Helpers\FilePathHelper;
 use Maatwebsite\Excel\Mixins\StoreCollection;
 use Maatwebsite\Excel\Console\ExportMakeCommand;
 use Maatwebsite\Excel\Console\ImportMakeCommand;
 use Maatwebsite\Excel\Mixins\DownloadCollection;
+use Maatwebsite\Excel\Files\TemporaryFileFactory;
 use Laravel\Lumen\Application as LumenApplication;
 
 class ExcelServiceProvider extends ServiceProvider

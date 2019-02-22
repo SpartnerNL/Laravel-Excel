@@ -2,20 +2,19 @@
 
 namespace Maatwebsite\Excel;
 
-use Maatwebsite\Excel\Files\Disk;
-use Maatwebsite\Excel\Files\TemporaryFile;
-use Maatwebsite\Excel\Files\TemporaryFileFactory;
 use Traversable;
+use Maatwebsite\Excel\Files\Disk;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Jobs\CloseSheet;
 use Maatwebsite\Excel\Jobs\QueueExport;
 use Maatwebsite\Excel\Concerns\FromQuery;
+use Maatwebsite\Excel\Files\TemporaryFile;
 use Maatwebsite\Excel\Jobs\SerializedQuery;
-use Maatwebsite\Excel\Helpers\FilePathHelper;
 use Maatwebsite\Excel\Jobs\AppendDataToSheet;
 use Maatwebsite\Excel\Jobs\StoreQueuedExport;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Jobs\AppendQueryToSheet;
+use Maatwebsite\Excel\Files\TemporaryFileFactory;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 use Maatwebsite\Excel\Concerns\WithCustomChunkSize;
 use Maatwebsite\Excel\Concerns\WithCustomQuerySize;
