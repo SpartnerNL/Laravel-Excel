@@ -2,16 +2,14 @@
 
 namespace Maatwebsite\Excel\Tests;
 
-use Illuminate\Queue\Events\JobProcessed;
 use Illuminate\Support\Facades\Queue;
-use Maatwebsite\Excel\Files\RemoteTemporaryFile;
-use Maatwebsite\Excel\Files\TemporaryFile;
 use Maatwebsite\Excel\Jobs\ReadChunk;
+use Illuminate\Queue\Events\JobProcessed;
 use Illuminate\Queue\Events\JobProcessing;
 use Maatwebsite\Excel\Concerns\Importable;
+use Maatwebsite\Excel\Files\TemporaryFile;
 use Illuminate\Foundation\Bus\PendingDispatch;
-use Maatwebsite\Excel\Tests\Data\Stubs\Database\Group;
-use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
+use Maatwebsite\Excel\Files\RemoteTemporaryFile;
 use Maatwebsite\Excel\Tests\Data\Stubs\QueuedImport;
 use Maatwebsite\Excel\Tests\Data\Stubs\AfterQueueImportJob;
 

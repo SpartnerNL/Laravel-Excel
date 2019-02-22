@@ -4,10 +4,10 @@ namespace Maatwebsite\Excel\Helpers;
 
 use Illuminate\Support\Str;
 use Illuminate\Http\UploadedFile;
-use Illuminate\Contracts\Filesystem\Factory;
-use Maatwebsite\Excel\Exceptions\UnreadableFileException;
 use Maatwebsite\Excel\Files\TemporaryFile;
+use Illuminate\Contracts\Filesystem\Factory;
 use Maatwebsite\Excel\Files\TemporaryFileFactory;
+use Maatwebsite\Excel\Exceptions\UnreadableFileException;
 
 class FilePathHelper
 {
@@ -58,7 +58,7 @@ class FilePathHelper
 
         if ($filePath instanceof UploadedFile) {
             $filePath->move(dirname($path), basename($path));
-        } else if ($disk === null && realpath($filePath) !== false) {
+        } elseif ($disk === null && realpath($filePath) !== false) {
             copy($filePath, $path);
         } else {
             $this->copyFromDisk($filePath, $path, $disk);

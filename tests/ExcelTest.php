@@ -61,7 +61,6 @@ class ExcelTest extends TestCase
         $this->assertEquals('attachment; filename=filename.xlsx', str_replace('"', '', $response->headers->get('Content-Disposition')));
     }
 
-
     /**
      * @test
      */
@@ -74,7 +73,6 @@ class ExcelTest extends TestCase
         $this->assertTrue($response);
         $this->assertFileExists(__DIR__ . '/Data/Disks/Local/filename.xlsx');
     }
-
 
     /**
      * @test
