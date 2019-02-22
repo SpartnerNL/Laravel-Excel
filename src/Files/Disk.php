@@ -40,6 +40,17 @@ class Disk
     }
 
     /**
+     * @param string $name
+     * @param array  $arguments
+     *
+     * @return mixed
+     */
+    public function __call($name, $arguments)
+    {
+        return $this->disk->{$name}(...$arguments);
+    }
+
+    /**
      * @param string          $destination
      * @param string|resource $contents
      *
@@ -74,52 +85,10 @@ class Disk
     }
 
     /**
-     * @param string $fileName
-     *
-     * @return LocalTemporaryFile
-     */
-    public function copyToLocalTempFolder(string $fileName): LocalTemporaryFile
-    {
-        $temporaryFile = $this->getTemporaryFileFactory()->makeLocal(
-            $fileName
-        );
-
-        $tmpStream = fopen($temporaryFile->getLocalPath(), 'wb+');
-
-        stream_copy_to_stream(
-            $this->disk->readStream($fileName),
-            $tmpStream
-        );
-
-        fclose($tmpStream);
-
-        return $temporaryFile;
-    }
-
-    /**
      * @param string $filename
      */
     public function touch(string $filename)
     {
         $this->disk->put($filename, '', $this->diskOptions);
-    }
-
-    /**
-     * @return TemporaryFileFactory
-     */
-    private function getTemporaryFileFactory(): TemporaryFileFactory
-    {
-        return app(TemporaryFileFactory::class);
-    }
-
-    /**
-     * @param string $name
-     * @param array  $arguments
-     *
-     * @return mixed
-     */
-    public function __call($name, $arguments)
-    {
-        return $this->disk->{$name}(...$arguments);
     }
 }

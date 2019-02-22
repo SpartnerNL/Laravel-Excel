@@ -4,9 +4,9 @@ namespace Maatwebsite\Excel;
 
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Files\Filesystem;
+use Maatwebsite\Excel\Files\TemporaryFile;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\PendingDispatch;
-use Maatwebsite\Excel\Files\TemporaryFile;
 use Maatwebsite\Excel\Helpers\FileTypeDetector;
 
 class Excel implements Exporter, Importer
@@ -121,9 +121,9 @@ class Excel implements Exporter, Importer
     /**
      * {@inheritdoc}
      */
-    public function raw($export, string $fileName, string $writerType = null)
+    public function raw($export, string $writerType)
     {
-        return $this->export($export, $fileName, $writerType)->contents();
+        return $this->writer->export($export, $writerType)->contents();
     }
 
     /**

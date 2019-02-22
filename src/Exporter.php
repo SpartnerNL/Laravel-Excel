@@ -44,12 +44,9 @@ interface Exporter
 
     /**
      * @param object $export
-     * @param string $filePath
      * @param string $writerType
      *
-     * @throws \PhpOffice\PhpSpreadsheet\Exception
-     * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
      * @return string
      */
-    public function raw($export, string $filePath, string $writerType = null);
+    public function raw($export, string $writerType);
 }

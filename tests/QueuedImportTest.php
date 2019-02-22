@@ -4,7 +4,6 @@ namespace Maatwebsite\Excel\Tests;
 
 use Illuminate\Support\Facades\Queue;
 use Maatwebsite\Excel\Jobs\ReadChunk;
-use Illuminate\Queue\Events\JobProcessed;
 use Illuminate\Queue\Events\JobProcessing;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Files\TemporaryFile;
@@ -59,10 +58,11 @@ class QueuedImportTest extends TestCase
      */
     public function can_queue_import_with_remote_temp_disk()
     {
-        config()->set('excel.remote_temp_disk', 'test');
+        config()->set('excel.temporary_files.remote_disk', 'test');
 
-        // Delete the local temp file after the QueueExport job
-        // to simulate the following jobs using a different filesystem.
+        // Delete the local temp file before each read chunk job
+        // to simulate using a shared remote disk, without
+        // having a dependency on a local temp file.
         Queue::before(function (JobProcessing $event) {
             if ($event->job->resolveName() === ReadChunk::class) {
                 /** @var TemporaryFile $tempFile */

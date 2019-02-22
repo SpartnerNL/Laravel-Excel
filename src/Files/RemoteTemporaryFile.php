@@ -62,7 +62,7 @@ class RemoteTemporaryFile extends TemporaryFile
     /**
      * @return TemporaryFile
      */
-    public function fresh(): TemporaryFile
+    public function sync(): TemporaryFile
     {
         if (!$this->localTemporaryFile->exists()) {
             touch($this->localTemporaryFile->getLocalPath());
@@ -79,7 +79,7 @@ class RemoteTemporaryFile extends TemporaryFile
     /**
      * Store on remote disk.
      */
-    public function sync()
+    public function updateRemote()
     {
         $this->disk->copy(
             $this->localTemporaryFile,

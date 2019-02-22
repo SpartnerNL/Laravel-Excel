@@ -5,7 +5,6 @@ namespace Maatwebsite\Excel;
 use Illuminate\Support\Collection;
 use Illuminate\Support\ServiceProvider;
 use Maatwebsite\Excel\Files\Filesystem;
-use Maatwebsite\Excel\Helpers\FilePathHelper;
 use Maatwebsite\Excel\Mixins\StoreCollection;
 use Maatwebsite\Excel\Console\ExportMakeCommand;
 use Maatwebsite\Excel\Console\ImportMakeCommand;
@@ -44,8 +43,8 @@ class ExcelServiceProvider extends ServiceProvider
         $this->app->bind(TemporaryFileFactory::class, function () {
             return new TemporaryFileFactory(
                 $this->app->make(Filesystem::class),
-                config('excel.temp_path', config('excel.exports.temp_path', storage_path('framework/laravel-excel'))),
-                config('excel.remote_temp_disk')
+                config('excel.temporary_files.local_path', config('excel.exports.temp_path', storage_path('framework/laravel-excel'))),
+                config('excel.temporary_files.remote_disk')
 
             );
         });
