@@ -70,7 +70,7 @@ class TemporaryFileFactory
 
         return new RemoteTemporaryFile(
             $this->filesystem->disk($this->temporaryDisk),
-            $this->generateFilename(),
+            $filename,
             $this->makeLocal($filename)
         );
     }

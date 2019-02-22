@@ -3,28 +3,6 @@
 use Maatwebsite\Excel\Excel;
 
 return [
-    /*
-    |--------------------------------------------------------------------------
-    | Temporary path
-    |--------------------------------------------------------------------------
-    |
-    | When exporting files, we use a temporary file, before storing
-    | or downloading. Here you can customize that path.
-    |
-    */
-    'temp_path'        => storage_path('framework/laravel-excel'),
-
-    /*
-    |--------------------------------------------------------------------------
-    | Remote temporary disk
-    |--------------------------------------------------------------------------
-    |
-    | If not null, then temporary files for queued imports and exports will be stored
-    | at and retrieved from the specified filesystem disk, in addition to
-    | the configured temp_path on the local server.
-    |
-    */
-    'remote_temp_disk' => null,
 
     'exports' => [
 
@@ -137,5 +115,36 @@ return [
         |
         */
         'pdf'      => Excel::DOMPDF,
+    ],
+
+    'temporary_files' => [
+
+        /*
+        |--------------------------------------------------------------------------
+        | Local Temporary Path
+        |--------------------------------------------------------------------------
+        |
+        | When exporting and importing files, we use a temporary file, before
+        | storing reading or downloading. Here you can customize that path.
+        |
+        */
+        'local_path'        => sys_get_temp_dir(),
+
+        /*
+        |--------------------------------------------------------------------------
+        | Remote Temporary Disk
+        |--------------------------------------------------------------------------
+        |
+        | When dealing with a multi server setup with queues in which you
+        | cannot rely on having a shared local temporary path, you might
+        | want to store the temporary file on a shared disk. During the
+        | queue executing, we'll retrieve the temporary file from that
+        | location instead. When left to null, it will always use
+        | the local path. This setting only has effect when using
+        | in conjunction with queued imports and exports.
+        |
+        */
+        'remote_disk' => null,
+
     ],
 ];

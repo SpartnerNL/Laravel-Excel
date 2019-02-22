@@ -39,7 +39,7 @@ abstract class TemporaryFile
     /**
      * @return TemporaryFile
      */
-    public function fresh(): TemporaryFile
+    public function sync(): TemporaryFile
     {
         return $this;
     }
@@ -63,6 +63,6 @@ abstract class TemporaryFile
         $this->put($readStream);
         fclose($readStream);
 
-        return $this->fresh();
+        return $this->sync();
     }
 }

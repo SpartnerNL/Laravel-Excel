@@ -119,7 +119,7 @@ class ExcelTest extends TestCase
     {
         $export = new EmptyExport;
 
-        $response = $this->SUT->raw($export, 'filename.xlsx');
+        $response = $this->SUT->raw($export, Excel::XLSX);
 
         $this->assertNotEmpty($response);
     }
@@ -162,11 +162,11 @@ class ExcelTest extends TestCase
             public function getCsvSettings(): array
             {
                 return [
-                    'line_ending' => PHP_EOL,
-                    'enclosure' => '',
-                    'delimiter' => ';',
+                    'line_ending'            => PHP_EOL,
+                    'enclosure'              => '',
+                    'delimiter'              => ';',
                     'include_separator_line' => true,
-                    'excel_compatibility' => false,
+                    'excel_compatibility'    => false,
                 ];
             }
         };

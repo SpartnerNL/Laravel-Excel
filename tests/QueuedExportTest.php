@@ -4,11 +4,9 @@ namespace Maatwebsite\Excel\Tests;
 
 use Maatwebsite\Excel\Excel;
 use Illuminate\Support\Facades\Queue;
-use Maatwebsite\Excel\Jobs\AppendDataToSheet;
-use Maatwebsite\Excel\Jobs\QueueExport;
-use Illuminate\Queue\Events\JobProcessed;
 use Illuminate\Queue\Events\JobProcessing;
 use Maatwebsite\Excel\Files\TemporaryFile;
+use Maatwebsite\Excel\Jobs\AppendDataToSheet;
 use Maatwebsite\Excel\Files\RemoteTemporaryFile;
 use Maatwebsite\Excel\Tests\Data\Stubs\QueuedExport;
 use Maatwebsite\Excel\Tests\Data\Stubs\ShouldQueueExport;
@@ -46,13 +44,13 @@ class QueuedExportTest extends TestCase
      */
     public function can_queue_export_with_remote_temp_disk()
     {
-        config()->set('excel.remote_temp_disk', 'test');
+        config()->set('excel.temporary_files.remote_disk', 'test');
 
         // Delete the local temp file before each append job
         // to simulate using a shared remote disk, without
-        // having a depending on a local temp file.
+        // having a dependency on a local temp file.
         $jobs = 0;
-        Queue::before(function (JobProcessing $event) use(&$jobs) {
+        Queue::before(function (JobProcessing $event) use (&$jobs) {
             if ($event->job->resolveName() === AppendDataToSheet::class) {
                 /** @var TemporaryFile $tempFile */
                 $tempFile = $this->inspectJobProperty($event->job, 'temporaryFile');

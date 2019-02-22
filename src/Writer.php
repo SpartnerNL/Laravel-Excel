@@ -2,8 +2,6 @@
 
 namespace Maatwebsite\Excel;
 
-use Maatwebsite\Excel\Factories\WriterFactory;
-use Maatwebsite\Excel\Files\RemoteTemporaryFile;
 use PhpOffice\PhpSpreadsheet\Cell\Cell;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use Maatwebsite\Excel\Concerns\WithTitle;
@@ -12,6 +10,8 @@ use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Events\BeforeExport;
 use Maatwebsite\Excel\Files\TemporaryFile;
 use Maatwebsite\Excel\Events\BeforeWriting;
+use Maatwebsite\Excel\Factories\WriterFactory;
+use Maatwebsite\Excel\Files\RemoteTemporaryFile;
 use Maatwebsite\Excel\Files\TemporaryFileFactory;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 use Maatwebsite\Excel\Concerns\WithCustomValueBinder;
@@ -108,7 +108,7 @@ class Writer
     public function reopen(TemporaryFile $tempFile, string $writerType)
     {
         $reader            = IOFactory::createReader($writerType);
-        $this->spreadsheet = $reader->load($tempFile->fresh()->getLocalPath());
+        $this->spreadsheet = $reader->load($tempFile->sync()->getLocalPath());
 
         return $this;
     }
@@ -141,7 +141,7 @@ class Writer
         );
 
         if ($temporaryFile instanceof RemoteTemporaryFile) {
-            $temporaryFile->sync();
+            $temporaryFile->updateRemote();
         }
 
         $this->spreadsheet->disconnectWorksheets();
