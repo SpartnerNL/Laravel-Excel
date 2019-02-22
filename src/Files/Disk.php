@@ -43,7 +43,13 @@ class Disk
     {
         $readStream = fopen($source, 'rb+');
 
-        $success = $this->disk->put($destination, $readStream, $this->diskOptions);
+        if (realpath($destination)) {
+            $tempStream = fopen($destination, 'rb+');
+            $success    = stream_copy_to_stream($tempStream, $readStream) !== false;
+            fclose($tempStream);
+        } else {
+            $success = $this->disk->put($destination, $readStream, $this->diskOptions);
+        }
 
         fclose($readStream);
 
