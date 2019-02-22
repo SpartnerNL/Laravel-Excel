@@ -214,14 +214,12 @@ class Reader
      */
     private function garbageCollect()
     {
-        $remote = $this->sheetImports instanceof ShouldQueue;
-
         $this->setDefaultValueBinder();
 
         // Force garbage collecting
         unset($this->sheetImports, $this->spreadsheet);
 
-        $this->filePathHelper->deleteTempFile($this->currentFile, $remote);
+        $this->filePathHelper->deleteTempFile($this->currentFile);
     }
 
     /**
