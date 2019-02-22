@@ -6,6 +6,8 @@ use Illuminate\Support\Str;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Contracts\Filesystem\Factory;
 use Maatwebsite\Excel\Exceptions\UnreadableFileException;
+use Maatwebsite\Excel\Files\TemporaryFile;
+use Maatwebsite\Excel\Files\TemporaryFileFactory;
 
 class FilePathHelper
 {
@@ -23,16 +25,22 @@ class FilePathHelper
      * @var Factory
      */
     protected $filesystem;
+    /**
+     * @var TemporaryFileFactory
+     */
+    private $temporaryFileFactory;
 
     /**
-     * @param Factory $filesystem
+     * @param Factory              $filesystem
+     * @param TemporaryFileFactory $temporaryFileFactory
      */
-    public function __construct(Factory $filesystem)
+    public function __construct(Factory $filesystem, TemporaryFileFactory $temporaryFileFactory)
     {
-        $this->filesystem     = $filesystem;
+        $this->filesystem = $filesystem;
         // TODO: Remove support for excel.exports.temp_path in v4
-        $this->tempPath       = config('excel.temp_path', config('excel.exports.temp_path', sys_get_temp_dir()));
-        $this->remoteTempDisk = config('excel.remote_temp_disk');
+        $this->tempPath             = config('excel.temp_path', config('excel.exports.temp_path', sys_get_temp_dir()));
+        $this->remoteTempDisk       = config('excel.remote_temp_disk');
+        $this->temporaryFileFactory = $temporaryFileFactory;
     }
 
     /**
@@ -41,29 +49,26 @@ class FilePathHelper
      * @param bool                $remote
      *
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
-     * @return string
+     * @return TemporaryFile
      */
-    public function copyToTempFile($filePath, string $disk = null, bool $remote = false): string
+    public function copyToTempFile($filePath, string $disk = null, bool $remote = false): TemporaryFile
     {
-        $fileName = $this->generateTempFileName($remote);
+        $temporaryFile = $this->temporaryFileFactory->make();
+        $path          = $temporaryFile->getLocalPath();
 
         if ($filePath instanceof UploadedFile) {
-            $filePath->move($this->getTempPath(), $fileName);
+            $filePath->move(dirname($path), basename($path));
+        } else if ($disk === null && realpath($filePath) !== false) {
+            copy($filePath, $path);
         } else {
-            $destination = $this->getTempPath($fileName);
-
-            if ($disk === null && realpath($filePath) !== false) {
-                copy($filePath, $destination);
-            } else {
-                $this->copyFromDisk($filePath, $destination, $disk);
-            }
+            $this->copyFromDisk($filePath, $path, $disk);
         }
 
         if ($remote) {
-            $this->storeToTempDisk($fileName);
+            $temporaryFile->store();
         }
 
-        return $fileName;
+        return $temporaryFile;
     }
 
     /**
@@ -147,7 +152,7 @@ class FilePathHelper
 
     /**
      * @param string $fileName
-     * @param bool $remote
+     * @param bool   $remote
      */
     public function deleteTempFile(string $fileName, bool $remote = false)
     {

@@ -2,6 +2,7 @@
 
 namespace Maatwebsite\Excel\Jobs;
 
+use Maatwebsite\Excel\Files\TemporaryFile;
 use Maatwebsite\Excel\Sheet;
 use Illuminate\Bus\Queueable;
 use Illuminate\Support\Facades\DB;
@@ -23,9 +24,9 @@ class ReadChunk implements ShouldQueue
     private $reader;
 
     /**
-     * @var string
+     * @var TemporaryFile
      */
-    private $fileName;
+    private $temporaryFile;
 
     /**
      * @var string
@@ -48,32 +49,28 @@ class ReadChunk implements ShouldQueue
     private $chunkSize;
 
     /**
-     * @param IReader $reader
-     * @param string  $fileName
-     * @param string  $sheetName
-     * @param object  $sheetImport
-     * @param int     $startRow
-     * @param int     $chunkSize
+     * @param IReader       $reader
+     * @param TemporaryFile $temporaryFile
+     * @param string        $sheetName
+     * @param object        $sheetImport
+     * @param int           $startRow
+     * @param int           $chunkSize
      */
-    public function __construct(IReader $reader, string $fileName, string $sheetName, $sheetImport, int $startRow, int $chunkSize)
+    public function __construct(IReader $reader, TemporaryFile $temporaryFile, string $sheetName, $sheetImport, int $startRow, int $chunkSize)
     {
-        $this->reader      = $reader;
-        $this->fileName    = $fileName;
-        $this->sheetName   = $sheetName;
-        $this->sheetImport = $sheetImport;
-        $this->startRow    = $startRow;
-        $this->chunkSize   = $chunkSize;
+        $this->reader        = $reader;
+        $this->temporaryFile = $temporaryFile;
+        $this->sheetName     = $sheetName;
+        $this->sheetImport   = $sheetImport;
+        $this->startRow      = $startRow;
+        $this->chunkSize     = $chunkSize;
     }
 
     /**
-     * @param FilePathHelper $filePathHelper
-     *
-     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      * @throws \Maatwebsite\Excel\Exceptions\SheetNotFoundException
-     * @throws \Maatwebsite\Excel\Exceptions\UnreadableFileException
      * @throws \PhpOffice\PhpSpreadsheet\Reader\Exception
      */
-    public function handle(FilePathHelper $filePathHelper)
+    public function handle()
     {
         if ($this->sheetImport instanceof WithCustomValueBinder) {
             Cell::setValueBinder($this->sheetImport);
@@ -92,8 +89,9 @@ class ReadChunk implements ShouldQueue
         $this->reader->setReadDataOnly(true);
         $this->reader->setReadEmptyCells(false);
 
-        $file        = $filePathHelper->getTempFile($this->fileName);
-        $spreadsheet = $this->reader->load($file);
+        $spreadsheet = $this->reader->load(
+            $this->temporaryFile->getLocalPath()
+        );
 
         $sheet = Sheet::byName(
             $spreadsheet,

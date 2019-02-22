@@ -3,6 +3,7 @@
 namespace Maatwebsite\Excel;
 
 use Illuminate\Support\Collection;
+use Maatwebsite\Excel\Files\TemporaryFile;
 use Maatwebsite\Excel\Jobs\ReadChunk;
 use Maatwebsite\Excel\Jobs\QueueImport;
 use Illuminate\Contracts\Bus\Dispatcher;
@@ -33,14 +34,14 @@ class ChunkReader
     /**
      * @param WithChunkReading $import
      * @param IReader          $reader
-     * @param string           $fileName
+     * @param TemporaryFile    $temporaryFile
      *
      * @return \Illuminate\Foundation\Bus\PendingDispatch|null
      */
-    public function read(WithChunkReading $import, IReader $reader, string $fileName)
+    public function read(WithChunkReading $import, IReader $reader, TemporaryFile $temporaryFile)
     {
         $chunkSize  = $import->chunkSize();
-        $file       = $this->filePathHelper->getTempPath($fileName);
+        $file       = $temporaryFile->getLocalPath();
         $totalRows  = $this->getTotalRows($reader, $file);
         $worksheets = $this->getWorksheets($import, $reader, $file);
 
@@ -56,7 +57,7 @@ class ChunkReader
             for ($currentRow = $startRow; $currentRow <= $totalRows[$name]; $currentRow += $chunkSize) {
                 $jobs->push(new ReadChunk(
                     $reader,
-                    $fileName,
+                    $temporaryFile,
                     $name,
                     $sheetImport,
                     $currentRow,

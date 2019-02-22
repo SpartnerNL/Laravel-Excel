@@ -5,6 +5,7 @@ namespace Maatwebsite\Excel;
 use InvalidArgumentException;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Files\TemporaryFile;
 use PhpOffice\PhpSpreadsheet\Cell\Cell;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Reader\Csv;
@@ -43,7 +44,7 @@ class Reader
     protected $sheetImports = [];
 
     /**
-     * @var string
+     * @var TemporaryFile
      */
     protected $currentFile;
 
@@ -219,7 +220,7 @@ class Reader
         // Force garbage collecting
         unset($this->sheetImports, $this->spreadsheet);
 
-        $this->filePathHelper->deleteTempFile($this->currentFile);
+        $this->currentFile->delete();
     }
 
     /**
@@ -307,7 +308,9 @@ class Reader
     {
         $this->sheetImports = $this->buildSheetImports($import, $reader);
 
-        $this->spreadsheet = $reader->load($this->filePathHelper->getTempPath($this->currentFile));
+        $this->spreadsheet = $reader->load(
+            $this->currentFile->getLocalPath()
+        );
 
         // When no multiple sheets, use the main import object
         // for each loaded sheet in the spreadsheet
@@ -340,7 +343,7 @@ class Reader
         }
 
         try {
-            return IOFactory::identify($this->filePathHelper->getTempPath($this->currentFile));
+            return IOFactory::identify($this->currentFile->getLocalPath());
         } catch (Exception $e) {
             throw new NoTypeDetectedException(null, null, $e);
         }
