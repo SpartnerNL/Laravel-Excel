@@ -2,11 +2,11 @@
 
 namespace Maatwebsite\Excel\Tests;
 
-use Illuminate\Queue\Events\JobProcessing;
 use Illuminate\Support\Facades\Queue;
+use Maatwebsite\Excel\Jobs\ReadChunk;
+use Illuminate\Queue\Events\JobProcessing;
 use Maatwebsite\Excel\Concerns\Importable;
 use Illuminate\Foundation\Bus\PendingDispatch;
-use Maatwebsite\Excel\Jobs\ReadChunk;
 use Maatwebsite\Excel\Tests\Data\Stubs\QueuedImport;
 use Maatwebsite\Excel\Tests\Data\Stubs\AfterQueueImportJob;
 

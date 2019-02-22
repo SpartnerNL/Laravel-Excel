@@ -2,8 +2,8 @@
 
 namespace Maatwebsite\Excel\Tests;
 
-use Illuminate\Contracts\Queue\Job;
 use Illuminate\Http\Testing\File;
+use Illuminate\Contracts\Queue\Job;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use Maatwebsite\Excel\ExcelServiceProvider;
 use Orchestra\Database\ConsoleServiceProvider;

@@ -2,9 +2,9 @@
 
 namespace Maatwebsite\Excel\Tests;
 
-use Illuminate\Queue\Events\JobProcessed;
 use Illuminate\Support\Facades\Queue;
 use Maatwebsite\Excel\Jobs\QueueExport;
+use Illuminate\Queue\Events\JobProcessed;
 use Maatwebsite\Excel\Tests\Data\Stubs\QueuedExport;
 use Maatwebsite\Excel\Tests\Data\Stubs\ShouldQueueExport;
 use Maatwebsite\Excel\Tests\Data\Stubs\AfterQueueExportJob;
