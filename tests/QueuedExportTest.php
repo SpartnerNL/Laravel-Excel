@@ -2,7 +2,11 @@
 
 namespace Maatwebsite\Excel\Tests;
 
+use Illuminate\Queue\Events\JobProcessing;
 use Illuminate\Support\Facades\Queue;
+use Maatwebsite\Excel\Excel;
+use Maatwebsite\Excel\Files\RemoteTemporaryFile;
+use Maatwebsite\Excel\Files\TemporaryFile;
 use Maatwebsite\Excel\Jobs\QueueExport;
 use Illuminate\Queue\Events\JobProcessed;
 use Maatwebsite\Excel\Tests\Data\Stubs\QueuedExport;
@@ -43,12 +47,32 @@ class QueuedExportTest extends TestCase
     {
         config()->set('excel.remote_temp_disk', 'test');
 
+        Queue::before(function (JobProcessing $event) {
+            if ($event->job->resolveName() === QueueExport::class) {
+                /** @var TemporaryFile $tempFile */
+                $tempFile = $this->inspectJobProperty($event->job, 'temporaryFile');
+                $this->assertInstanceOf(RemoteTemporaryFile::class, $tempFile);
+            }
+        });
+
         // Delete the local temp file after the QueueExport job
         // to simulate the following jobs using a different filesystem.
         Queue::after(function (JobProcessed $event) {
+
             if ($event->job->resolveName() === QueueExport::class) {
-                $tempFile = $this->inspectJobProperty($event->job, 'tempFile');
-                $this->assertTrue(unlink(config('excel.temp_path') . DIRECTORY_SEPARATOR . $tempFile));
+                /** @var TemporaryFile $tempFile */
+                $tempFile = $this->inspectJobProperty($event->job, 'temporaryFile');
+
+                $this->assertInstanceOf(RemoteTemporaryFile::class, $tempFile);
+
+                // Should exist remote
+                $this->assertTrue(
+                    $tempFile->exists()
+                );
+
+                $this->assertTrue(
+                    unlink($tempFile->getLocalPath())
+                );
             }
         });
 
@@ -57,6 +81,10 @@ class QueuedExportTest extends TestCase
         $export->queue('queued-export.xlsx')->chain([
             new AfterQueueExportJob(__DIR__ . '/Data/Disks/Local/queued-export.xlsx'),
         ]);
+
+        $array = $this->readAsArray(__DIR__ . '/Data/Disks/Local/queued-export.xlsx', Excel::XLSX);
+
+        $this->assertCount(100, $array);
     }
 
     /**

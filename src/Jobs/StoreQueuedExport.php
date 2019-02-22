@@ -4,6 +4,8 @@ namespace Maatwebsite\Excel\Jobs;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Maatwebsite\Excel\Files\Disk;
+use Maatwebsite\Excel\Files\TemporaryFile;
 use Maatwebsite\Excel\Helpers\FilePathHelper;
 
 class StoreQueuedExport implements ShouldQueue
@@ -13,47 +15,35 @@ class StoreQueuedExport implements ShouldQueue
     /**
      * @var string
      */
-    private $tempFile;
+    private $filePath;
 
     /**
-     * @var string
-     */
-    private $path;
-
-    /**
-     * @var string|null
+     * @var Disk
      */
     private $disk;
 
     /**
-     * @var mixed
+     * @var TemporaryFile
      */
-    private $diskOptions;
+    private $temporaryFile;
 
     /**
-     * @param string      $tempFile
-     * @param string      $path
-     * @param string|null $disk
-     * @param mixed       $diskOptions
+     * @param TemporaryFile $temporaryFile
+     * @param Disk          $disk
+     * @param string        $filePath
      */
-    public function __construct(string $tempFile, string $path, string $disk = null, $diskOptions = [])
+    public function __construct(TemporaryFile $temporaryFile, Disk $disk, string $filePath)
     {
-        $this->tempFile    = $tempFile;
-        $this->path        = $path;
-        $this->disk        = $disk;
-        $this->diskOptions = $diskOptions;
+        $this->disk          = $disk;
+        $this->filePath      = $filePath;
+        $this->temporaryFile = $temporaryFile;
     }
 
-    /**
-     * @param FilePathHelper $filePathHelper
-     */
-    public function handle(FilePathHelper $filePathHelper)
+    public function handle()
     {
-        $filePathHelper->storeToDisk(
-            $filePathHelper->getTempPath($this->tempFile),
-            $this->path,
-            $this->disk,
-            $this->diskOptions
+        $this->disk->put(
+            $this->temporaryFile->getLocalPath(),
+            $this->filePath
         );
     }
 }

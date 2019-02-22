@@ -2,6 +2,7 @@
 
 namespace Maatwebsite\Excel\Jobs;
 
+use Maatwebsite\Excel\Files\TemporaryFile;
 use Maatwebsite\Excel\Writer;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -19,23 +20,23 @@ class QueueExport implements ShouldQueue
     /**
      * @var string
      */
-    private $tempFile;
-
-    /**
-     * @var string
-     */
     private $writerType;
 
     /**
-     * @param object $export
-     * @param string $tempFile
-     * @param string $writerType
+     * @var TemporaryFile
      */
-    public function __construct($export, string $tempFile, string $writerType)
+    private $temporaryFile;
+
+    /**
+     * @param object        $export
+     * @param TemporaryFile $temporaryFile
+     * @param string        $writerType
+     */
+    public function __construct($export, TemporaryFile $temporaryFile, string $writerType)
     {
-        $this->export     = $export;
-        $this->tempFile   = $tempFile;
-        $this->writerType = $writerType;
+        $this->export        = $export;
+        $this->writerType    = $writerType;
+        $this->temporaryFile = $temporaryFile;
     }
 
     /**
@@ -59,6 +60,6 @@ class QueueExport implements ShouldQueue
         }
 
         // Write to temp file with empty sheets.
-        $writer->write($sheetExport, $this->tempFile, $this->writerType);
+        $writer->write($sheetExport, $this->temporaryFile, $this->writerType);
     }
 }

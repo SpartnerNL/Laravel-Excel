@@ -3,6 +3,7 @@
 namespace Maatwebsite\Excel\Jobs;
 
 use Illuminate\Bus\Queueable;
+use Maatwebsite\Excel\Files\TemporaryFile;
 use Maatwebsite\Excel\Writer;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -19,7 +20,7 @@ class AppendQueryToSheet implements ShouldQueue
     /**
      * @var string
      */
-    public $fileName;
+    public $temporaryFile;
 
     /**
      * @var string
@@ -38,23 +39,23 @@ class AppendQueryToSheet implements ShouldQueue
 
     /**
      * @param object          $sheetExport
-     * @param string          $fileName
+     * @param TemporaryFile   $temporaryFile
      * @param string          $writerType
      * @param int             $sheetIndex
      * @param SerializedQuery $query
      */
     public function __construct(
         $sheetExport,
-        string $fileName,
+        TemporaryFile $temporaryFile,
         string $writerType,
         int $sheetIndex,
         SerializedQuery $query
     ) {
-        $this->sheetExport = $sheetExport;
-        $this->query       = $query;
-        $this->fileName    = $fileName;
-        $this->writerType  = $writerType;
-        $this->sheetIndex  = $sheetIndex;
+        $this->sheetExport   = $sheetExport;
+        $this->query         = $query;
+        $this->temporaryFile = $temporaryFile;
+        $this->writerType    = $writerType;
+        $this->sheetIndex    = $sheetIndex;
     }
 
     /**
@@ -65,12 +66,12 @@ class AppendQueryToSheet implements ShouldQueue
      */
     public function handle(Writer $writer)
     {
-        $writer = $writer->reopen($this->fileName, $this->writerType);
+        $writer = $writer->reopen($this->temporaryFile, $this->writerType);
 
         $sheet = $writer->getSheetByIndex($this->sheetIndex);
 
         $sheet->appendRows($this->query->execute(), $this->sheetExport);
 
-        $writer->write($this->sheetExport, $this->fileName, $this->writerType);
+        $writer->write($this->sheetExport, $this->temporaryFile, $this->writerType);
     }
 }

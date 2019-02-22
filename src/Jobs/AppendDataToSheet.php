@@ -3,6 +3,7 @@
 namespace Maatwebsite\Excel\Jobs;
 
 use Illuminate\Bus\Queueable;
+use Maatwebsite\Excel\Files\TemporaryFile;
 use Maatwebsite\Excel\Writer;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -19,7 +20,7 @@ class AppendDataToSheet implements ShouldQueue
     /**
      * @var string
      */
-    public $fileName;
+    public $temporaryFile;
 
     /**
      * @var string
@@ -37,19 +38,19 @@ class AppendDataToSheet implements ShouldQueue
     public $sheetExport;
 
     /**
-     * @param object $sheetExport
-     * @param string $fileName
-     * @param string $writerType
-     * @param int    $sheetIndex
-     * @param array  $data
+     * @param object        $sheetExport
+     * @param TemporaryFile $temporaryFile
+     * @param string        $writerType
+     * @param int           $sheetIndex
+     * @param array         $data
      */
-    public function __construct($sheetExport, string $fileName, string $writerType, int $sheetIndex, array $data)
+    public function __construct($sheetExport, TemporaryFile $temporaryFile, string $writerType, int $sheetIndex, array $data)
     {
-        $this->sheetExport = $sheetExport;
-        $this->data        = $data;
-        $this->fileName    = $fileName;
-        $this->writerType  = $writerType;
-        $this->sheetIndex  = $sheetIndex;
+        $this->sheetExport   = $sheetExport;
+        $this->data          = $data;
+        $this->temporaryFile = $temporaryFile;
+        $this->writerType    = $writerType;
+        $this->sheetIndex    = $sheetIndex;
     }
 
     /**
@@ -60,12 +61,12 @@ class AppendDataToSheet implements ShouldQueue
      */
     public function handle(Writer $writer)
     {
-        $writer = $writer->reopen($this->fileName, $this->writerType);
+        $writer = $writer->reopen($this->temporaryFile, $this->writerType);
 
         $sheet = $writer->getSheetByIndex($this->sheetIndex);
 
         $sheet->appendRows($this->data, $this->sheetExport);
 
-        $writer->write($this->sheetExport, $this->fileName, $this->writerType);
+        $writer->write($this->sheetExport, $this->temporaryFile, $this->writerType);
     }
 }

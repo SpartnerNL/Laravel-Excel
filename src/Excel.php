@@ -4,8 +4,8 @@ namespace Maatwebsite\Excel;
 
 use Illuminate\Support\Collection;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Maatwebsite\Excel\Helpers\FilePathHelper;
 use Illuminate\Foundation\Bus\PendingDispatch;
+use Maatwebsite\Excel\Files\Filesystem;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Maatwebsite\Excel\Exceptions\NoTypeDetectedException;
 
@@ -48,9 +48,9 @@ class Excel implements Exporter, Importer
     protected $queuedWriter;
 
     /**
-     * @var FilePathHelper
+     * @var Filesystem
      */
-    protected $filePathHelper;
+    protected $filesystem;
 
     /**
      * @var Reader
@@ -58,21 +58,21 @@ class Excel implements Exporter, Importer
     private $reader;
 
     /**
-     * @param Writer         $writer
-     * @param QueuedWriter   $queuedWriter
-     * @param Reader         $reader
-     * @param FilePathHelper $filePathHelper
+     * @param Writer       $writer
+     * @param QueuedWriter $queuedWriter
+     * @param Reader       $reader
+     * @param Filesystem   $filesystem
      */
     public function __construct(
         Writer $writer,
         QueuedWriter $queuedWriter,
         Reader $reader,
-        FilePathHelper $filePathHelper
+        Filesystem $filesystem
     ) {
-        $this->writer         = $writer;
-        $this->reader         = $reader;
-        $this->filePathHelper = $filePathHelper;
-        $this->queuedWriter   = $queuedWriter;
+        $this->writer       = $writer;
+        $this->reader       = $reader;
+        $this->filesystem   = $filesystem;
+        $this->queuedWriter = $queuedWriter;
     }
 
     /**
@@ -80,29 +80,31 @@ class Excel implements Exporter, Importer
      */
     public function download($export, string $fileName, string $writerType = null)
     {
-        $file = $this->export($export, $fileName, $writerType);
-
-        return response()->download($file, $fileName);
+        return response()->download(
+            $this->export($export, $fileName, $writerType),
+            $fileName
+        );
     }
 
     /**
      * {@inheritdoc}
      */
-    public function store($export, string $filePath, string $disk = null, string $writerType = null, $diskOptions = [])
+    public function store($export, string $filePath, string $diskName = null, string $writerType = null, $diskOptions = [])
     {
         if ($export instanceof ShouldQueue) {
-            return $this->queue($export, $filePath, $disk, $writerType, $diskOptions);
+            return $this->queue($export, $filePath, $diskName, $writerType, $diskOptions);
         }
 
-        $file = $this->export($export, $filePath, $writerType);
-
-        return $this->filePathHelper->storeToDisk($file, $filePath, $disk, $diskOptions);
+        return $this->filesystem->disk($diskName, $diskOptions)->put(
+            $this->export($export, $filePath, $writerType),
+            $filePath
+        );
     }
 
     /**
      * {@inheritdoc}
      */
-    public function queue($export, string $filePath, string $disk = null, string $writerType = null, $diskOptions = [])
+    public function queue($export, string $filePath, string $diskName = null, string $writerType = null, $diskOptions = [])
     {
         $writerType = $this->findTypeByExtension($filePath, $writerType);
 
@@ -110,7 +112,14 @@ class Excel implements Exporter, Importer
             throw new NoTypeDetectedException();
         }
 
-        return $this->queuedWriter->store($export, $filePath, $disk, $writerType, $diskOptions);
+        $disk = $this->filesystem->disk($diskName, $diskOptions);
+
+        return $this->queuedWriter->store(
+            $export,
+            $filePath,
+            $disk,
+            $writerType
+        );
     }
 
     /**
@@ -162,10 +171,9 @@ class Excel implements Exporter, Importer
      * @param string      $writerType
      *
      * @throws \PhpOffice\PhpSpreadsheet\Exception
-     * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
      * @return string
      */
-    protected function export($export, string $fileName, string $writerType = null)
+    protected function export($export, string $fileName, string $writerType = null): string
     {
         $writerType = $this->findTypeByExtension($fileName, $writerType);
 

@@ -12,7 +12,7 @@ return [
     | or downloading. Here you can customize that path.
     |
     */
-    'temp_path'          => sys_get_temp_dir(),
+    'temp_path'        => storage_path('framework/laravel-excel'),
 
     /*
     |--------------------------------------------------------------------------
@@ -24,7 +24,7 @@ return [
     | the configured temp_path on the local server.
     |
     */
-    'remote_temp_disk'   => null,
+    'remote_temp_disk' => null,
 
     'exports' => [
 
@@ -90,7 +90,7 @@ return [
         | Configure e.g. delimiter, enclosure and line ending for CSV imports.
         |
         */
-        'csv'                    => [
+        'csv'         => [
             'delimiter'              => ',',
             'enclosure'              => '"',
             'line_ending'            => PHP_EOL,

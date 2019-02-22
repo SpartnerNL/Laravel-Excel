@@ -2,6 +2,8 @@
 
 namespace Maatwebsite\Excel;
 
+use Maatwebsite\Excel\Files\TemporaryFile;
+use Maatwebsite\Excel\Files\TemporaryFileFactory;
 use PhpOffice\PhpSpreadsheet\Cell\Cell;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Writer\Csv;
@@ -42,15 +44,21 @@ class Writer
      * @var string
      */
     protected $file;
+    /**
+     * @var TemporaryFileFactory
+     */
+    private $temporaryFileFactory;
 
     /**
      * New Writer instance.
      *
-     * @param FilePathHelper $filePathHelper
+     * @param FilePathHelper       $filePathHelper
+     * @param TemporaryFileFactory $temporaryFileFactory
      */
-    public function __construct(FilePathHelper $filePathHelper)
+    public function __construct(FilePathHelper $filePathHelper, TemporaryFileFactory $temporaryFileFactory)
     {
-        $this->filePathHelper = $filePathHelper;
+        $this->filePathHelper       = $filePathHelper;
+        $this->temporaryFileFactory = $temporaryFileFactory;
 
         $this->applyCsvSettings(config('excel.exports.csv', []));
         $this->setDefaultValueBinder();
@@ -76,7 +84,7 @@ class Writer
             $this->addNewSheet()->export($sheetExport);
         }
 
-        return $this->write($export, $this->filePathHelper->generateTempFileName(), $writerType);
+        return $this->write($export, $this->temporaryFileFactory->makeLocalTemporaryFile(), $writerType);
     }
 
     /**
@@ -110,35 +118,32 @@ class Writer
     }
 
     /**
-     * @param string $tempFile
-     * @param string $writerType
+     * @param TemporaryFile $tempFile
+     * @param string        $writerType
      *
-     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
-     * @throws \Maatwebsite\Excel\Exceptions\UnreadableFileException
      * @throws \PhpOffice\PhpSpreadsheet\Reader\Exception
      * @return Writer
      */
-    public function reopen(string $tempFile, string $writerType)
+    public function reopen(TemporaryFile $tempFile, string $writerType)
     {
         $reader            = IOFactory::createReader($writerType);
-        $this->spreadsheet = $reader->load($this->filePathHelper->getTempFile($tempFile));
+        $this->spreadsheet = $reader->load($tempFile->getLocalPath());
 
         return $this;
     }
 
     /**
-     * @param object $export
-     * @param string $fileName
-     * @param string $writerType
+     * @param object        $export
+     * @param TemporaryFile $tempFile
+     * @param string        $writerType
      *
      * @throws \PhpOffice\PhpSpreadsheet\Exception
      * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
      * @return string
      */
-    public function write($export, string $fileName, string $writerType)
+    public function write($export, TemporaryFile $tempFile, string $writerType)
     {
         $this->exportable = $export;
-        $filePath         = $this->filePathHelper->getTempPath($fileName);
 
         $this->spreadsheet->setActiveSheetIndex(0);
 
@@ -170,11 +175,13 @@ class Writer
                 : config('excel.exports.pre_calculate_formulas', false)
         );
 
-        $writer->save($filePath);
+        $filePath = $tempFile->getLocalPath();
 
-        if ($export instanceof ShouldQueue) {
-            $this->filePathHelper->storeToTempDisk($fileName);
-        }
+        $writer->save(
+            $filePath
+        );
+
+        $tempFile->store();
 
         $this->spreadsheet->disconnectWorksheets();
         unset($this->spreadsheet);
