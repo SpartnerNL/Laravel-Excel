@@ -203,8 +203,8 @@ Our software is open source and licensed under the MIT license.
 If you use the software in your production environment we would appreciate to receive a postcard of your hometown. Please send it to:
 
 **Maatwebsite**  
-Florijnruwe 111-2  
-6218 CA Maastricht  
-The Netherlands  
+Markt 2  
+6231 LS, Meerssen  
+The Netherlands 
 
 More about the license can be found at: [https://laravel-excel.maatwebsite.nl/3.1/getting-started/license.html](https://laravel-excel.maatwebsite.nl/3.1/getting-started/license.html)
