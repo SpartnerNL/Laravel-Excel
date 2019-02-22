@@ -41,4 +41,15 @@ interface Exporter
      * @return PendingDispatch
      */
     public function queue($export, string $filePath, string $disk = null, string $writerType = null, $diskOptions = []);
+
+    /**
+     * @param object $export
+     * @param string $filePath
+     * @param string $writerType
+     *
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
+     * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
+     * @return string
+     */
+    public function raw($export, string $filePath, string $writerType = null);
 }

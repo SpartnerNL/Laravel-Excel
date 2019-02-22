@@ -5,6 +5,7 @@ namespace Maatwebsite\Excel;
 use InvalidArgumentException;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Files\TemporaryFileFactory;
 use PhpOffice\PhpSpreadsheet\Cell\Cell;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Reader\Csv;
@@ -31,7 +32,7 @@ use Maatwebsite\Excel\Exceptions\NoTypeDetectedException;
 
 class Reader
 {
-    use DelegatedMacroable, HasEventBus, MapsCsvSettings;
+    use DelegatedMacroable, HasEventBus;
 
     /**
      * @var Spreadsheet
@@ -49,19 +50,18 @@ class Reader
     protected $currentFile;
 
     /**
-     * @var FilePathHelper
+     * @var TemporaryFileFactory
      */
-    protected $filePathHelper;
+    protected $temporaryFileFactory;
 
     /**
-     * @param FilePathHelper $filePathHelper
+     * @param TemporaryFileFactory $temporaryFileFactory
      */
-    public function __construct(FilePathHelper $filePathHelper)
+    public function __construct(TemporaryFileFactory $temporaryFileFactory)
     {
-        $this->filePathHelper = $filePathHelper;
-
-        $this->applyCsvSettings(config('excel.imports.csv', []));
         $this->setDefaultValueBinder();
+
+        $this->temporaryFileFactory = $temporaryFileFactory;
     }
 
     /**
@@ -80,7 +80,7 @@ class Reader
         $reader = $this->getReader($import, $filePath, $readerType, $disk);
 
         if ($import instanceof WithChunkReading) {
-            return app(ChunkReader::class)->read($import, $reader, $this->currentFile);
+            return (new ChunkReader)->read($import, $reader, $this->currentFile);
         }
 
         $this->beforeReading($import, $reader);
@@ -106,7 +106,6 @@ class Reader
      * @param string|null         $disk
      *
      * @throws Exceptions\SheetNotFoundException
-     * @throws Exceptions\UnreadableFileException
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      * @throws \PhpOffice\PhpSpreadsheet\Exception
      * @throws NoTypeDetectedException
@@ -211,19 +210,6 @@ class Reader
     }
 
     /**
-     * Garbage collect.
-     */
-    private function garbageCollect()
-    {
-        $this->setDefaultValueBinder();
-
-        // Force garbage collecting
-        unset($this->sheetImports, $this->spreadsheet);
-
-        $this->currentFile->delete();
-    }
-
-    /**
      * @param object  $import
      * @param IReader $reader
      *
@@ -275,27 +261,17 @@ class Reader
             Cell::setValueBinder($import);
         }
 
-        if ($import instanceof WithCustomCsvSettings) {
-            $this->applyCsvSettings($import->getCsvSettings());
-        }
+        $temporaryFile     = $shouldQueue ? $this->temporaryFileFactory->make() : $this->temporaryFileFactory->makeLocal();
+        $this->currentFile = $temporaryFile->copyFrom(
+            $filePath,
+            $disk
+        );
 
-        $this->currentFile = $this->filePathHelper->copyToTempFile($filePath, $disk, $shouldQueue);
-
-        $reader = ReaderFactory::make($this->getReaderType($readerType));
-
-        if (method_exists($reader, 'setReadDataOnly')) {
-            $reader->setReadDataOnly(config('excel.imports.read_only', true));
-        }
-
-        if ($reader instanceof Csv) {
-            $reader->setDelimiter($this->delimiter);
-            $reader->setEnclosure($this->enclosure);
-            $reader->setEscapeCharacter($this->escapeCharacter);
-            $reader->setContiguous($this->contiguous);
-            $reader->setInputEncoding($this->inputEncoding);
-        }
-
-        return $reader;
+        return ReaderFactory::make(
+            $import,
+            $this->currentFile,
+            $readerType
+        );
     }
 
     /**
@@ -327,25 +303,20 @@ class Reader
     private function afterReading($import)
     {
         $this->raise(new AfterImport($this, $import));
+
         $this->garbageCollect();
     }
 
     /**
-     * @param string|null $readerType
-     *
-     * @throws NoTypeDetectedException
-     * @return string
+     * Garbage collect.
      */
-    private function getReaderType(string $readerType = null): string
+    private function garbageCollect()
     {
-        if (null !== $readerType) {
-            return $readerType;
-        }
+        $this->setDefaultValueBinder();
 
-        try {
-            return IOFactory::identify($this->currentFile->getLocalPath());
-        } catch (Exception $e) {
-            throw new NoTypeDetectedException(null, null, $e);
-        }
+        // Force garbage collecting
+        unset($this->sheetImports, $this->spreadsheet);
+
+        $this->currentFile->delete();
     }
 }

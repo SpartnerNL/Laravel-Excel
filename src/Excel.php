@@ -6,8 +6,8 @@ use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Files\Filesystem;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\PendingDispatch;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Maatwebsite\Excel\Exceptions\NoTypeDetectedException;
+use Maatwebsite\Excel\Files\TemporaryFile;
+use Maatwebsite\Excel\Helpers\FileTypeDetector;
 
 class Excel implements Exporter, Importer
 {
@@ -81,9 +81,9 @@ class Excel implements Exporter, Importer
     public function download($export, string $fileName, string $writerType = null)
     {
         return response()->download(
-            $this->export($export, $fileName, $writerType),
+            $this->export($export, $fileName, $writerType)->getLocalPath(),
             $fileName
-        );
+        )->deleteFileAfterSend(true);
     }
 
     /**
@@ -95,7 +95,7 @@ class Excel implements Exporter, Importer
             return $this->queue($export, $filePath, $diskName, $writerType, $diskOptions);
         }
 
-        return $this->filesystem->disk($diskName, $diskOptions)->put(
+        return $this->filesystem->disk($diskName, $diskOptions)->copy(
             $this->export($export, $filePath, $writerType),
             $filePath
         );
@@ -106,11 +106,7 @@ class Excel implements Exporter, Importer
      */
     public function queue($export, string $filePath, string $diskName = null, string $writerType = null, $diskOptions = [])
     {
-        $writerType = $this->findTypeByExtension($filePath, $writerType);
-
-        if (!$writerType) {
-            throw new NoTypeDetectedException();
-        }
+        $writerType = FileTypeDetector::detectStrict($filePath, $writerType);
 
         $disk = $this->filesystem->disk($diskName, $diskOptions);
 
@@ -125,9 +121,17 @@ class Excel implements Exporter, Importer
     /**
      * {@inheritdoc}
      */
+    public function raw($export, string $fileName, string $writerType = null)
+    {
+        return $this->export($export, $fileName, $writerType)->contents();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function import($import, $filePath, string $disk = null, string $readerType = null)
     {
-        $readerType = $this->getReaderType($filePath, $readerType);
+        $readerType = FileTypeDetector::detect($filePath, $readerType);
         $response   = $this->reader->read($import, $filePath, $readerType, $disk);
 
         if ($response instanceof PendingDispatch) {
@@ -142,7 +146,7 @@ class Excel implements Exporter, Importer
      */
     public function toArray($import, $filePath, string $disk = null, string $readerType = null): array
     {
-        $readerType = $this->getReaderType($filePath, $readerType);
+        $readerType = FileTypeDetector::detect($filePath, $readerType);
 
         return $this->reader->toArray($import, $filePath, $readerType, $disk);
     }
@@ -152,7 +156,7 @@ class Excel implements Exporter, Importer
      */
     public function toCollection($import, $filePath, string $disk = null, string $readerType = null): Collection
     {
-        $readerType = $this->getReaderType($filePath, $readerType);
+        $readerType = FileTypeDetector::detect($filePath, $readerType);
 
         return $this->reader->toCollection($import, $filePath, $readerType, $disk);
     }
@@ -171,54 +175,12 @@ class Excel implements Exporter, Importer
      * @param string      $writerType
      *
      * @throws \PhpOffice\PhpSpreadsheet\Exception
-     * @return string
+     * @return TemporaryFile
      */
-    protected function export($export, string $fileName, string $writerType = null): string
+    protected function export($export, string $fileName, string $writerType = null): TemporaryFile
     {
-        $writerType = $this->findTypeByExtension($fileName, $writerType);
-
-        if (!$writerType) {
-            throw new NoTypeDetectedException();
-        }
+        $writerType = FileTypeDetector::detectStrict($fileName, $writerType);
 
         return $this->writer->export($export, $writerType);
-    }
-
-    /**
-     * @param string|UploadedFile $fileName
-     * @param string|null         $type
-     *
-     * @return string|null
-     */
-    protected function findTypeByExtension($fileName, string $type = null)
-    {
-        if (null !== $type) {
-            return $type;
-        }
-
-        if (!$fileName instanceof UploadedFile) {
-            $pathInfo  = pathinfo($fileName);
-            $extension = $pathInfo['extension'] ?? '';
-        } else {
-            $extension = $fileName->getClientOriginalExtension();
-        }
-
-        if (null === $type && trim($extension) === '') {
-            throw new NoTypeDetectedException();
-        }
-
-        return config('excel.extension_detector.' . strtolower($extension));
-    }
-
-    /**
-     * @param string|UploadedFile $filePath
-     * @param string|null         $readerType
-     *
-     * @throws NoTypeDetectedException
-     * @return string|null
-     */
-    private function getReaderType($filePath, string $readerType = null)
-    {
-        return $this->findTypeByExtension($filePath, $readerType);
     }
 }

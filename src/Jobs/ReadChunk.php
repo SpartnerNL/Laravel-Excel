@@ -2,6 +2,7 @@
 
 namespace Maatwebsite\Excel\Jobs;
 
+use Illuminate\Foundation\Bus\Dispatchable;
 use Maatwebsite\Excel\Sheet;
 use Illuminate\Bus\Queueable;
 use Illuminate\Support\Facades\DB;
@@ -15,7 +16,7 @@ use Maatwebsite\Excel\Concerns\WithCustomValueBinder;
 
 class ReadChunk implements ShouldQueue
 {
-    use Queueable;
+    use Queueable, Dispatchable;
 
     /**
      * @var IReader
@@ -89,7 +90,7 @@ class ReadChunk implements ShouldQueue
         $this->reader->setReadEmptyCells(false);
 
         $spreadsheet = $this->reader->load(
-            $this->temporaryFile->getLocalPath()
+            $this->temporaryFile->fresh()->getLocalPath()
         );
 
         $sheet = Sheet::byName(

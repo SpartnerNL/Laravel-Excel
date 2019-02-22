@@ -4,6 +4,7 @@ namespace Maatwebsite\Excel\Tests;
 
 use Maatwebsite\Excel\Excel;
 use Illuminate\Support\Facades\Queue;
+use Maatwebsite\Excel\Jobs\AppendDataToSheet;
 use Maatwebsite\Excel\Jobs\QueueExport;
 use Illuminate\Queue\Events\JobProcessed;
 use Illuminate\Queue\Events\JobProcessing;
@@ -47,18 +48,12 @@ class QueuedExportTest extends TestCase
     {
         config()->set('excel.remote_temp_disk', 'test');
 
-        Queue::before(function (JobProcessing $event) {
-            if ($event->job->resolveName() === QueueExport::class) {
-                /** @var TemporaryFile $tempFile */
-                $tempFile = $this->inspectJobProperty($event->job, 'temporaryFile');
-                $this->assertInstanceOf(RemoteTemporaryFile::class, $tempFile);
-            }
-        });
-
-        // Delete the local temp file after the QueueExport job
-        // to simulate the following jobs using a different filesystem.
-        Queue::after(function (JobProcessed $event) {
-            if ($event->job->resolveName() === QueueExport::class) {
+        // Delete the local temp file before each append job
+        // to simulate using a shared remote disk, without
+        // having a depending on a local temp file.
+        $jobs = 0;
+        Queue::before(function (JobProcessing $event) use(&$jobs) {
+            if ($event->job->resolveName() === AppendDataToSheet::class) {
                 /** @var TemporaryFile $tempFile */
                 $tempFile = $this->inspectJobProperty($event->job, 'temporaryFile');
 
@@ -72,6 +67,8 @@ class QueuedExportTest extends TestCase
                 $this->assertTrue(
                     unlink($tempFile->getLocalPath())
                 );
+
+                $jobs++;
             }
         });
 
@@ -84,6 +81,7 @@ class QueuedExportTest extends TestCase
         $array = $this->readAsArray(__DIR__ . '/Data/Disks/Local/queued-export.xlsx', Excel::XLSX);
 
         $this->assertCount(100, $array);
+        $this->assertEquals(3, $jobs);
     }
 
     /**

@@ -13,7 +13,6 @@ use Maatwebsite\Excel\Concerns\FromView;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\WithEvents;
-use Maatwebsite\Excel\Events\BeforeWriting;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Facades\Excel as ExcelFacade;
 use Maatwebsite\Excel\Tests\Data\Stubs\EmptyExport;
@@ -116,6 +115,18 @@ class ExcelTest extends TestCase
     /**
      * @test
      */
+    public function can_get_raw_export_contents()
+    {
+        $export = new EmptyExport;
+
+        $response = $this->SUT->raw($export, 'filename.xlsx');
+
+        $this->assertNotEmpty($response);
+    }
+
+    /**
+     * @test
+     */
     public function can_store_tsv_export_with_default_settings()
     {
         $export = new EmptyExport;
@@ -131,7 +142,7 @@ class ExcelTest extends TestCase
      */
     public function can_store_csv_export_with_custom_settings()
     {
-        $export = new class implements WithEvents, FromCollection {
+        $export = new class implements WithEvents, FromCollection, WithCustomCsvSettings {
             use RegistersEventListeners;
 
             /**
@@ -146,15 +157,17 @@ class ExcelTest extends TestCase
             }
 
             /**
-             * @param BeforeWriting $event
+             * @return array
              */
-            public static function beforeWriting(BeforeWriting $event)
+            public function getCsvSettings(): array
             {
-                $event->writer->setLineEnding(PHP_EOL);
-                $event->writer->setEnclosure('');
-                $event->writer->setDelimiter(';');
-                $event->writer->setIncludeSeparatorLine(true);
-                $event->writer->setExcelCompatibility(false);
+                return [
+                    'line_ending' => PHP_EOL,
+                    'enclosure' => '',
+                    'delimiter' => ';',
+                    'include_separator_line' => true,
+                    'excel_compatibility' => false,
+                ];
             }
         };
 

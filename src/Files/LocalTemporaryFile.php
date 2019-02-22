@@ -43,8 +43,27 @@ class LocalTemporaryFile extends TemporaryFile
         return unlink($this->filePath);
     }
 
-    public function store()
+    /**
+     * @return resource
+     */
+    public function readStream()
     {
-        //
+        return fopen($this->getLocalPath(), 'rb+');
+    }
+
+    /**
+     * @return string
+     */
+    public function contents(): string
+    {
+        return file_get_contents($this->filePath);
+    }
+
+    /**
+     * @param @param string|resource $contents
+     */
+    public function put($contents)
+    {
+        file_put_contents($this->filePath, $contents);
     }
 }

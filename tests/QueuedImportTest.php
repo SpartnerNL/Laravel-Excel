@@ -61,28 +61,9 @@ class QueuedImportTest extends TestCase
     {
         config()->set('excel.remote_temp_disk', 'test');
 
-        Queue::before(function (JobProcessing $event) {
-            if ($event->job->resolveName() === ReadChunk::class) {
-                /** @var TemporaryFile $tempFile */
-                $tempFile = $this->inspectJobProperty($event->job, 'temporaryFile');
-                $this->assertInstanceOf(RemoteTemporaryFile::class, $tempFile);
-            }
-        });
-
-        // Delete the local temp file before the first ReadChunk job
-        // to simulate the job using a different filesystem.
-        //$tempFileDeleted = false;
-        //Queue::before(function (JobProcessing $event) use (&$tempFileDeleted) {
-        //    if (!$tempFileDeleted && $event->job->resolveName() === ReadChunk::class) {
-        //        $tempFile = $this->inspectJobProperty($event->job, 'fileName');
-        //        $this->assertTrue(unlink(config('excel.temp_path') . DIRECTORY_SEPARATOR . $tempFile));
-        //        $tempFileDeleted = true;
-        //    }
-        //});
-
         // Delete the local temp file after the QueueExport job
         // to simulate the following jobs using a different filesystem.
-        Queue::after(function (JobProcessed $event) {
+        Queue::before(function (JobProcessing $event) {
             if ($event->job->resolveName() === ReadChunk::class) {
                 /** @var TemporaryFile $tempFile */
                 $tempFile = $this->inspectJobProperty($event->job, 'temporaryFile');

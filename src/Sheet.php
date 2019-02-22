@@ -5,6 +5,7 @@ namespace Maatwebsite\Excel;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToArray;
 use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Files\TemporaryFileFactory;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use Maatwebsite\Excel\Concerns\FromView;
 use Maatwebsite\Excel\Events\AfterSheet;
@@ -56,9 +57,9 @@ class Sheet
     protected $chunkSize;
 
     /**
-     * @var FilePathHelper
+     * @var TemporaryFileFactory
      */
-    protected $filePathHelper;
+    protected $temporaryFileFactory;
 
     /**
      * @var object
@@ -75,9 +76,9 @@ class Sheet
      */
     public function __construct(Worksheet $worksheet)
     {
-        $this->worksheet      = $worksheet;
-        $this->chunkSize      = config('excel.exports.chunk_size', 100);
-        $this->filePathHelper = app(FilePathHelper::class);
+        $this->worksheet            = $worksheet;
+        $this->chunkSize            = config('excel.exports.chunk_size', 100);
+        $this->temporaryFileFactory = app(TemporaryFileFactory::class);
     }
 
     /**
@@ -336,8 +337,8 @@ class Sheet
      */
     public function fromView(FromView $sheetExport)
     {
-        $tempFile = $this->tempFile();
-        file_put_contents($tempFile, $sheetExport->view()->render());
+        $temporaryFile = $this->temporaryFileFactory->makeLocal();
+        $temporaryFile->put($sheetExport->view()->render());
 
         $spreadsheet = $this->worksheet->getParent();
 
@@ -346,7 +347,9 @@ class Sheet
 
         // Insert content into the last sheet
         $reader->setSheetIndex($spreadsheet->getSheetCount() - 1);
-        $reader->loadIntoExisting($tempFile, $spreadsheet);
+        $reader->loadIntoExisting($temporaryFile->getLocalPath(), $spreadsheet);
+
+        $temporaryFile->delete();
     }
 
     /**
@@ -559,14 +562,6 @@ class Sheet
         for ($i = $lower; $i !== $upper; $i++) {
             yield $i;
         }
-    }
-
-    /**
-     * @return string
-     */
-    protected function tempFile(): string
-    {
-        return $this->filePathHelper->getTempPath($this->filePathHelper->generateTempFileName());
     }
 
     /**

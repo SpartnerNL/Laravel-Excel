@@ -9,61 +9,61 @@ trait MapsCsvSettings
     /**
      * @var string
      */
-    protected $delimiter = ',';
+    protected static $delimiter = ',';
 
     /**
      * @var string
      */
-    protected $enclosure = '"';
+    protected static $enclosure = '"';
 
     /**
      * @var string
      */
-    protected $lineEnding = PHP_EOL;
+    protected static $lineEnding = PHP_EOL;
 
     /**
      * @var bool
      */
-    protected $useBom = false;
+    protected static $useBom = false;
 
     /**
      * @var bool
      */
-    protected $includeSeparatorLine = false;
+    protected static $includeSeparatorLine = false;
 
     /**
      * @var bool
      */
-    protected $excelCompatibility = false;
+    protected static $excelCompatibility = false;
 
     /**
      * @var string
      */
-    protected $escapeCharacter = '\\';
+    protected static $escapeCharacter = '\\';
 
     /**
      * @var bool
      */
-    protected $contiguous = false;
+    protected static $contiguous = false;
 
     /**
      * @var string
      */
-    protected $inputEncoding = 'UTF-8';
+    protected static $inputEncoding = 'UTF-8';
 
     /**
      * @param array $config
      */
-    public function applyCsvSettings(array $config)
+    public static function applyCsvSettings(array $config)
     {
-        $this->delimiter            = Arr::get($config, 'delimiter', $this->delimiter);
-        $this->enclosure            = Arr::get($config, 'enclosure', $this->enclosure);
-        $this->lineEnding           = Arr::get($config, 'line_ending', $this->lineEnding);
-        $this->useBom               = Arr::get($config, 'use_bom', $this->useBom);
-        $this->includeSeparatorLine = Arr::get($config, 'include_separator_line', $this->includeSeparatorLine);
-        $this->excelCompatibility   = Arr::get($config, 'excel_compatibility', $this->excelCompatibility);
-        $this->escapeCharacter      = Arr::get($config, 'escape_character', $this->escapeCharacter);
-        $this->contiguous           = Arr::get($config, 'contiguous', $this->contiguous);
-        $this->inputEncoding        = Arr::get($config, 'input_encoding', $this->inputEncoding);
+        static::$delimiter            = Arr::get($config, 'delimiter', static::$delimiter);
+        static::$enclosure            = Arr::get($config, 'enclosure', static::$enclosure);
+        static::$lineEnding           = Arr::get($config, 'line_ending', static::$lineEnding);
+        static::$useBom               = Arr::get($config, 'use_bom', static::$useBom);
+        static::$includeSeparatorLine = Arr::get($config, 'include_separator_line', static::$includeSeparatorLine);
+        static::$excelCompatibility   = Arr::get($config, 'excel_compatibility', static::$excelCompatibility);
+        static::$escapeCharacter      = Arr::get($config, 'escape_character', static::$escapeCharacter);
+        static::$contiguous           = Arr::get($config, 'contiguous', static::$contiguous);
+        static::$inputEncoding        = Arr::get($config, 'input_encoding', static::$inputEncoding);
     }
 }

@@ -41,13 +41,6 @@ class ExcelServiceProvider extends ServiceProvider
             'excel'
         );
 
-        $this->app->bind(FilePathHelper::class, function () {
-            return new FilePathHelper(
-                $this->app->make('filesystem'),
-                $this->app->make(TemporaryFileFactory::class)
-            );
-        });
-
         $this->app->bind(TemporaryFileFactory::class, function () {
             return new TemporaryFileFactory(
                 $this->app->make(Filesystem::class),

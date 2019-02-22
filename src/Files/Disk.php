@@ -4,6 +4,12 @@ namespace Maatwebsite\Excel\Files;
 
 use Illuminate\Contracts\Filesystem\Filesystem;
 
+/**
+ * @method bool get(string $filename)
+ * @method resource readStream(string $filename)
+ * @method bool delete(string $filename)
+ * @method bool exists(string $filename)
+ */
 class Disk
 {
     /**
@@ -34,21 +40,32 @@ class Disk
     }
 
     /**
-     * @param string $source
-     * @param string $destination
+     * @param string          $destination
+     * @param string|resource $contents
      *
      * @return bool
      */
-    public function put(string $source, string $destination): bool
+    public function put(string $destination, $contents): bool
     {
-        $readStream = fopen($source, 'rb+');
+        return $this->disk->put($destination, $contents, $this->diskOptions);
+    }
+
+    /**
+     * @param TemporaryFile $source
+     * @param string        $destination
+     *
+     * @return bool
+     */
+    public function copy(TemporaryFile $source, string $destination): bool
+    {
+        $readStream = $source->readStream();
 
         if (realpath($destination)) {
             $tempStream = fopen($destination, 'rb+');
-            $success    = stream_copy_to_stream($tempStream, $readStream) !== false;
+            $success    = stream_copy_to_stream($readStream, $tempStream) !== false;
             fclose($tempStream);
         } else {
-            $success = $this->disk->put($destination, $readStream, $this->diskOptions);
+            $success = $this->put($destination, $readStream);
         }
 
         fclose($readStream);
@@ -63,15 +80,11 @@ class Disk
      */
     public function copyToLocalTempFolder(string $fileName): LocalTemporaryFile
     {
-        $temporaryFile = $this->getTemporaryFileFactory()->makeLocalTemporaryFile(
+        $temporaryFile = $this->getTemporaryFileFactory()->makeLocal(
             $fileName
         );
 
-        if ($temporaryFile->exists()) {
-            return $temporaryFile;
-        }
-
-        $tmpStream = fopen($temporaryFile->getPath(), 'wb+');
+        $tmpStream = fopen($temporaryFile->getLocalPath(), 'wb+');
 
         stream_copy_to_stream(
             $this->disk->readStream($fileName),
@@ -84,23 +97,11 @@ class Disk
     }
 
     /**
-     * @param string $path
-     *
-     * @return bool
-     */
-    public function exists(string $path): bool
-    {
-        return $this->disk->exists($path);
-    }
-
-    /**
      * @param string $filename
-     *
-     * @return bool
      */
-    public function delete(string $filename): bool
+    public function touch(string $filename)
     {
-        return $this->disk->delete($filename);
+        $this->disk->put($filename, '', $this->diskOptions);
     }
 
     /**
@@ -109,5 +110,16 @@ class Disk
     private function getTemporaryFileFactory(): TemporaryFileFactory
     {
         return app(TemporaryFileFactory::class);
+    }
+
+    /**
+     * @param string $name
+     * @param array  $arguments
+     *
+     * @return mixed
+     */
+    public function __call($name, $arguments)
+    {
+        return $this->disk->{$name}(...$arguments);
     }
 }

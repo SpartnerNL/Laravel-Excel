@@ -39,10 +39,10 @@ class TemporaryFileFactory
     public function make(): TemporaryFile
     {
         if (null !== $this->temporaryDisk) {
-            return $this->makeRemoteTemporaryFile();
+            return $this->makeRemote();
         }
 
-        return $this->makeLocalTemporaryFile();
+        return $this->makeLocal();
     }
 
     /**
@@ -50,7 +50,7 @@ class TemporaryFileFactory
      *
      * @return LocalTemporaryFile
      */
-    public function makeLocalTemporaryFile(string $fileName = null): LocalTemporaryFile
+    public function makeLocal(string $fileName = null): LocalTemporaryFile
     {
         if (!file_exists($this->temporaryPath) && !mkdir($concurrentDirectory = $this->temporaryPath) && !is_dir($concurrentDirectory)) {
             throw new \RuntimeException(sprintf('Directory "%s" was not created', $concurrentDirectory));
@@ -64,11 +64,14 @@ class TemporaryFileFactory
     /**
      * @return RemoteTemporaryFile
      */
-    private function makeRemoteTemporaryFile(): RemoteTemporaryFile
+    private function makeRemote(): RemoteTemporaryFile
     {
+        $filename = $this->generateFilename();
+
         return new RemoteTemporaryFile(
             $this->filesystem->disk($this->temporaryDisk),
-            $this->generateFilename()
+            $this->generateFilename(),
+            $this->makeLocal($filename)
         );
     }
 

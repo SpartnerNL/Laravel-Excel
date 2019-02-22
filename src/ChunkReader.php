@@ -19,19 +19,6 @@ use Maatwebsite\Excel\Imports\HeadingRowExtractor;
 class ChunkReader
 {
     /**
-     * @var FilePathHelper
-     */
-    protected $filePathHelper;
-
-    /**
-     * @param FilePathHelper $filePathHelper
-     */
-    public function __construct(FilePathHelper $filePathHelper)
-    {
-        $this->filePathHelper = $filePathHelper;
-    }
-
-    /**
      * @param WithChunkReading $import
      * @param IReader          $reader
      * @param TemporaryFile    $temporaryFile
@@ -70,9 +57,7 @@ class ChunkReader
             return QueueImport::withChain($jobs->toArray())->dispatch();
         }
 
-        $jobs->each(function (ReadChunk $job) {
-            app(Dispatcher::class)->dispatchNow($job);
-        });
+        $jobs->each->handle();
 
         if ($import instanceof WithProgressBar) {
             $import->getConsoleOutput()->progressFinish();

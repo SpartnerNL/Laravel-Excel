@@ -40,8 +40,8 @@ class StoreQueuedExport implements ShouldQueue
 
     public function handle()
     {
-        $this->disk->put(
-            $this->temporaryFile->getLocalPath(),
+        $this->disk->copy(
+            $this->temporaryFile,
             $this->filePath
         );
     }

@@ -15,13 +15,22 @@ class RemoteTemporaryFile extends TemporaryFile
     private $filename;
 
     /**
-     * @param Disk   $disk
-     * @param string $filename
+     * @var LocalTemporaryFile
      */
-    public function __construct(Disk $disk, string $filename)
+    private $localTemporaryFile;
+
+    /**
+     * @param Disk               $disk
+     * @param string             $filename
+     * @param LocalTemporaryFile $localTemporaryFile
+     */
+    public function __construct(Disk $disk, string $filename, LocalTemporaryFile $localTemporaryFile)
     {
-        $this->disk     = $disk;
-        $this->filename = $filename;
+        $this->disk               = $disk;
+        $this->filename           = $filename;
+        $this->localTemporaryFile = $localTemporaryFile;
+
+        $this->disk->touch($filename);
     }
 
     /**
@@ -29,7 +38,7 @@ class RemoteTemporaryFile extends TemporaryFile
      */
     public function getLocalPath(): string
     {
-        return $this->copy()->getLocalPath();
+        return $this->localTemporaryFile->getLocalPath();
     }
 
     /**
@@ -45,27 +54,60 @@ class RemoteTemporaryFile extends TemporaryFile
      */
     public function delete(): bool
     {
+        $this->localTemporaryFile->delete();
+
         return $this->disk->delete($this->filename);
+    }
+
+    /**
+     * @return TemporaryFile
+     */
+    public function fresh(): TemporaryFile
+    {
+        if (!$this->localTemporaryFile->exists()) {
+            touch($this->localTemporaryFile->getLocalPath());
+        }
+
+        $this->disk->copy(
+            $this,
+            $this->localTemporaryFile->getLocalPath()
+        );
+
+        return $this;
     }
 
     /**
      * Store on remote disk.
      */
-    public function store()
+    public function sync()
     {
-        $this->disk->put(
-            $this->getLocalPath(),
+        $this->disk->copy(
+            $this->localTemporaryFile,
             $this->filename
         );
     }
 
     /**
-     * @return LocalTemporaryFile
+     * @return resource
      */
-    private function copy(): LocalTemporaryFile
+    public function readStream()
     {
-        return $this->disk->copyToLocalTempFolder(
-            $this->filename
-        );
+        return $this->disk->readStream($this->filename);
+    }
+
+    /**
+     * @return string
+     */
+    public function contents(): string
+    {
+        return $this->disk->get($this->filename);
+    }
+
+    /**
+     * @param string|resource $contents
+     */
+    public function put($contents)
+    {
+        $this->disk->put($this->filename, $contents);
     }
 }
