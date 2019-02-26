@@ -13,8 +13,6 @@ matrix:
   fast_finish: true
   include:
   # Laravel 5.5
-  - php: 7.0
-    env: LARAVEL=5.5.* TESTBENCH=3.5.* ORCHESTRA_DATABASE=3.5.* PHPUNIT=~6.0
   - php: 7.1
     env: LARAVEL=5.5.* TESTBENCH=3.5.* ORCHESTRA_DATABASE=3.5.* PHPUNIT=~6.0
   - php: 7.2
@@ -28,11 +26,19 @@ matrix:
 
   # Laravel 5.7
   - php: 7.1
-    env: LARAVEL=5.7.* TESTBENCH=3.7.* ORCHESTRA_DATABASE=3.7.* PHPUNIT=~7.0
+    env: LARAVEL=5.7.* TESTBENCH=3.7.* ORCHESTRA_DATABASE=3.7.* PHPUNIT=~7.5
   - php: 7.2
-    env: LARAVEL=5.7.* TESTBENCH=3.7.* ORCHESTRA_DATABASE=3.7.* PHPUNIT=~7.0
+    env: LARAVEL=5.7.* TESTBENCH=3.7.* ORCHESTRA_DATABASE=3.7.* PHPUNIT=~7.5
   - php: 7.3
-    env: LARAVEL=5.7.* TESTBENCH=3.7.* ORCHESTRA_DATABASE=3.7.* PHPUNIT=~7.0
+    env: LARAVEL=5.7.* TESTBENCH=3.7.* ORCHESTRA_DATABASE=3.7.* PHPUNIT=~7.5
+
+# Laravel 5.8
+  - php: 7.1
+    env: LARAVEL=5.8.* TESTBENCH=3.8.* ORCHESTRA_DATABASE=3.8.* PHPUNIT=~8.0
+  - php: 7.2
+    env: LARAVEL=5.8.* TESTBENCH=3.8.* ORCHESTRA_DATABASE=3.8.* PHPUNIT=~8.0
+  - php: 7.3
+    env: LARAVEL=5.8.* TESTBENCH=3.8.* ORCHESTRA_DATABASE=3.8.* PHPUNIT=~8.0
 
 before_install:
   - phpenv config-rm xdebug.ini

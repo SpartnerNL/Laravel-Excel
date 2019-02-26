@@ -17,7 +17,7 @@ class WithCustomCsvSettingsTest extends TestCase
      */
     protected $SUT;
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -61,9 +61,9 @@ class WithCustomCsvSettingsTest extends TestCase
 
         $contents = file_get_contents(__DIR__ . '/../Data/Disks/Local/custom-csv.csv');
 
-        $this->assertContains('sep=;', $contents);
-        $this->assertContains('A1;B1', $contents);
-        $this->assertContains('A2;B2', $contents);
+        $this->assertStringContainsString('sep=;', $contents);
+        $this->assertStringContainsString('A1;B1', $contents);
+        $this->assertStringContainsString('A2;B2', $contents);
     }
 
     /**

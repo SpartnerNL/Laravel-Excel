@@ -7,7 +7,7 @@ use Maatwebsite\Excel\Imports\HeadingRowFormatter;
 
 class HeadingRowImportTest extends TestCase
 {
-    public function tearDown()
+    protected function tearDown(): void
     {
         HeadingRowFormatter::reset();
     }

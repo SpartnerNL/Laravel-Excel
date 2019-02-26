@@ -17,7 +17,7 @@ class QueuedImportTest extends TestCase
     /**
      * Setup the test environment.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -27,11 +27,12 @@ class QueuedImportTest extends TestCase
 
     /**
      * @test
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Importable should implement ShouldQueue to be queued.
      */
     public function cannot_queue_import_that_does_not_implement_should_queue()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Importable should implement ShouldQueue to be queued.');
+
         $import = new class {
             use Importable;
         };

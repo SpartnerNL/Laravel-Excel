@@ -27,7 +27,7 @@ class ExcelTest extends TestCase
      */
     protected $SUT;
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -175,18 +175,19 @@ class ExcelTest extends TestCase
 
         $contents = file_get_contents(__DIR__ . '/Data/Disks/Local/filename.csv');
 
-        $this->assertContains('sep=;', $contents);
-        $this->assertContains('A1;B1', $contents);
-        $this->assertContains('A2;B2', $contents);
+        $this->assertStringContainsString('sep=;', $contents);
+        $this->assertStringContainsString('A1;B1', $contents);
+        $this->assertStringContainsString('A2;B2', $contents);
     }
 
     /**
      * @test
-     * @expectedException \Maatwebsite\Excel\Exceptions\ConcernConflictException
-     * @expectedExceptionMessage Cannot use FromQuery, FromArray or FromCollection and FromView on the same sheet
      */
     public function cannot_use_from_collection_and_from_view_on_same_export()
     {
+        $this->expectException(\Maatwebsite\Excel\Exceptions\ConcernConflictException::class);
+        $this->expectExceptionMessage('Cannot use FromQuery, FromArray or FromCollection and FromView on the same sheet');
+
         $export = new class implements FromCollection, FromView {
             use Exportable;
 
@@ -389,10 +390,11 @@ class ExcelTest extends TestCase
 
     /**
      * @test
-     * @expectedException \Maatwebsite\Excel\Exceptions\NoTypeDetectedException
      */
     public function import_will_throw_error_when_no_reader_type_could_be_detected_when_no_extension()
     {
+        $this->expectException(\Maatwebsite\Excel\Exceptions\NoTypeDetectedException::class);
+
         $import = new class implements ToArray {
             /**
              * @param array $array
@@ -411,10 +413,11 @@ class ExcelTest extends TestCase
 
     /**
      * @test
-     * @expectedException \Maatwebsite\Excel\Exceptions\NoTypeDetectedException
      */
     public function import_will_throw_error_when_no_reader_type_could_be_detected_with_unknown_extension()
     {
+        $this->expectException(\Maatwebsite\Excel\Exceptions\NoTypeDetectedException::class);
+
         $import = new class implements ToArray {
             /**
              * @param array $array

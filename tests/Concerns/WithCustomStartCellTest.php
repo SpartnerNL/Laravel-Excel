@@ -15,7 +15,7 @@ class WithCustomStartCellTest extends TestCase
      */
     protected $SUT;
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 

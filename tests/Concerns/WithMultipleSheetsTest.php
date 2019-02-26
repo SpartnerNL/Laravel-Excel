@@ -19,7 +19,7 @@ class WithMultipleSheetsTest extends TestCase
     /**
      * Setup the test environment.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -100,11 +100,12 @@ class WithMultipleSheetsTest extends TestCase
 
     /**
      * @test
-     * @expectedException \Maatwebsite\Excel\Exceptions\SheetNotFoundException
-     * @expectedExceptionMessage Your requested sheet index: 9999 is out of bounds. The actual number of sheets is 2.
      */
     public function unknown_sheet_index_will_throw_sheet_not_found_exception()
     {
+        $this->expectException(\Maatwebsite\Excel\Exceptions\SheetNotFoundException::class);
+        $this->expectExceptionMessage('Your requested sheet index: 9999 is out of bounds. The actual number of sheets is 2.');
+
         $import = new class implements WithMultipleSheets {
             use Importable;
 
@@ -122,11 +123,12 @@ class WithMultipleSheetsTest extends TestCase
 
     /**
      * @test
-     * @expectedException \Maatwebsite\Excel\Exceptions\SheetNotFoundException
-     * @expectedExceptionMessage Your requested sheet name [Some Random Sheet Name] is out of bounds.
      */
     public function unknown_sheet_name_will_throw_sheet_not_found_exception()
     {
+        $this->expectException(\Maatwebsite\Excel\Exceptions\SheetNotFoundException::class);
+        $this->expectExceptionMessage('Your requested sheet name [Some Random Sheet Name] is out of bounds.');
+
         $import = new class implements WithMultipleSheets {
             use Importable;
 
