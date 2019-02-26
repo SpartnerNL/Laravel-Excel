@@ -63,21 +63,6 @@ class ExcelTest extends TestCase
     /**
      * @test
      */
-    public function can_store_an_export_object_on_real_path()
-    {
-        $export = new EmptyExport;
-
-        $filename = str_random();
-
-        $response = $this->SUT->store($export, __DIR__ . '/Data/Disks/Local/' . $filename . '.xlsx');
-
-        $this->assertTrue($response);
-        $this->assertFileExists(__DIR__ . '/Data/Disks/Local/' . $filename . '.xlsx');
-    }
-
-    /**
-     * @test
-     */
     public function can_store_an_export_object_on_default_disk()
     {
         $export = new EmptyExport;

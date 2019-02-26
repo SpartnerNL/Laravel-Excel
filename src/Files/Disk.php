@@ -71,8 +71,8 @@ class Disk
     {
         $readStream = $source->readStream();
 
-        if (is_writable(dirname($destination))) {
-            $tempStream = fopen($destination, 'wb+');
+        if (realpath($destination)) {
+            $tempStream = fopen($destination, 'rb+');
             $success    = stream_copy_to_stream($readStream, $tempStream) !== false;
             fclose($tempStream);
         } else {
