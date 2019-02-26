@@ -49,7 +49,8 @@ class RowValidator
                 $failures[] = new Failure(
                     $row,
                     $attributeName,
-                    str_replace($attribute, $attributeName, $messages)
+                    str_replace($attribute, $attributeName, $messages),
+                    $rows[$row]
                 );
             }
 

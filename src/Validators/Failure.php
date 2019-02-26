@@ -22,15 +22,22 @@ class Failure implements Arrayable
     protected $errors;
 
     /**
+     * @var array
+     */
+    private $values;
+
+    /**
      * @param int    $row
      * @param string $attribute
      * @param array  $errors
+     * @param array  $values
      */
-    public function __construct(int $row, string $attribute, array $errors)
+    public function __construct(int $row, string $attribute, array $errors, array $values = [])
     {
         $this->row       = $row;
         $this->attribute = $attribute;
         $this->errors    = $errors;
+        $this->values    = $values;
     }
 
     /**
@@ -55,6 +62,14 @@ class Failure implements Arrayable
     public function errors(): array
     {
         return $this->errors;
+    }
+
+    /**
+     * @return array
+     */
+    public function values(): array
+    {
+        return $this->values;
     }
 
     /**

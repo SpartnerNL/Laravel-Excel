@@ -71,6 +71,7 @@ class SkipsOnFailureTest extends TestCase
                 Assert::assertEquals(2, $failure->row());
                 Assert::assertEquals('1', $failure->attribute());
                 Assert::assertEquals(['The selected 1 is invalid.'], $failure->errors());
+                Assert::assertEquals(['Taylor Otwell', 'taylor@laravel.com'], $failure->values());
 
                 $this->failures += \count($failures);
             }
