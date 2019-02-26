@@ -9,7 +9,7 @@ use Maatwebsite\Excel\Files\TemporaryFile;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use PhpOffice\PhpSpreadsheet\Reader\IReader;
 use Maatwebsite\Excel\Filters\ChunkReadFilter;
-use Maatwebsite\Excel\Transactions\Transaction;
+use Maatwebsite\Excel\Transactions\TransactionHandler;
 use Maatwebsite\Excel\Imports\HeadingRowExtractor;
 use Maatwebsite\Excel\Concerns\WithCustomValueBinder;
 
@@ -66,12 +66,12 @@ class ReadChunk implements ShouldQueue
     }
 
     /**
-     * @param Transaction $transaction
+     * @param TransactionHandler $transaction
      *
      * @throws \Maatwebsite\Excel\Exceptions\SheetNotFoundException
      * @throws \PhpOffice\PhpSpreadsheet\Reader\Exception
      */
-    public function handle(Transaction $transaction)
+    public function handle(TransactionHandler $transaction)
     {
         if ($this->sheetImport instanceof WithCustomValueBinder) {
             Cell::setValueBinder($this->sheetImport);

@@ -15,19 +15,19 @@ class TransactionManager extends Manager
     }
 
     /**
-     * @return NullTransaction
+     * @return NullTransactionHandler
      */
     public function createNullDriver()
     {
-        return new NullTransaction();
+        return new NullTransactionHandler();
     }
 
     /**
-     * @return DbTransaction
+     * @return DbTransactionHandler
      */
     public function createDbDriver()
     {
-        return new DbTransaction(
+        return new DbTransactionHandler(
             $this->app->get('db.connection')
         );
     }

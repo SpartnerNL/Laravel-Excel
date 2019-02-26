@@ -2,7 +2,7 @@
 
 namespace Maatwebsite\Excel\Transactions;
 
-interface Transaction
+interface TransactionHandler
 {
     /**
      * @param callable $callback

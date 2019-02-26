@@ -4,7 +4,7 @@ namespace Maatwebsite\Excel\Transactions;
 
 use Illuminate\Database\ConnectionInterface;
 
-class DbTransaction implements Transaction
+class DbTransactionHandler implements TransactionHandler
 {
     /**
      * @var ConnectionInterface

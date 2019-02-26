@@ -12,6 +12,7 @@ use Maatwebsite\Excel\Console\ImportMakeCommand;
 use Maatwebsite\Excel\Mixins\DownloadCollection;
 use Maatwebsite\Excel\Files\TemporaryFileFactory;
 use Laravel\Lumen\Application as LumenApplication;
+use Maatwebsite\Excel\Transactions\TransactionHandler;
 use Maatwebsite\Excel\Transactions\TransactionManager;
 
 class ExcelServiceProvider extends ServiceProvider
@@ -46,7 +47,7 @@ class ExcelServiceProvider extends ServiceProvider
             return new TransactionManager($this->app);
         });
 
-        $this->app->bind(Transaction::class, function () {
+        $this->app->bind(TransactionHandler::class, function () {
             return $this->app->make(TransactionManager::class)->driver();
         });
 

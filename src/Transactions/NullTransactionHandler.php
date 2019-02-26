@@ -2,7 +2,7 @@
 
 namespace Maatwebsite\Excel\Transactions;
 
-class NullTransaction implements Transaction
+class NullTransactionHandler implements TransactionHandler
 {
     /**
      * @param callable $callback

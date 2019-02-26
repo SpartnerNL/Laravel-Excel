@@ -4,6 +4,7 @@ namespace Maatwebsite\Excel;
 
 use InvalidArgumentException;
 use Illuminate\Support\Collection;
+use Maatwebsite\Excel\Transactions\TransactionHandler;
 use PhpOffice\PhpSpreadsheet\Cell\Cell;
 use Maatwebsite\Excel\Events\AfterImport;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -50,15 +51,15 @@ class Reader
     protected $temporaryFileFactory;
 
     /**
-     * @var Transaction
+     * @var TransactionHandler
      */
     protected $transaction;
 
     /**
      * @param TemporaryFileFactory $temporaryFileFactory
-     * @param Transaction          $transaction
+     * @param TransactionHandler   $transaction
      */
-    public function __construct(TemporaryFileFactory $temporaryFileFactory, Transaction $transaction)
+    public function __construct(TemporaryFileFactory $temporaryFileFactory, TransactionHandler $transaction)
     {
         $this->setDefaultValueBinder();
 
