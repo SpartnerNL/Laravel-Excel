@@ -34,7 +34,7 @@ matrix:
 
 # Laravel 5.8
   - php: 7.1
-    env: LARAVEL=5.8.* TESTBENCH=3.8.* ORCHESTRA_DATABASE=3.8.* PHPUNIT=~8.0
+    env: LARAVEL=5.8.* TESTBENCH=3.8.* ORCHESTRA_DATABASE=3.8.* PHPUNIT=~7.5
   - php: 7.2
     env: LARAVEL=5.8.* TESTBENCH=3.8.* ORCHESTRA_DATABASE=3.8.* PHPUNIT=~8.0
   - php: 7.3
