@@ -117,6 +117,22 @@ return [
         'pdf'      => Excel::DOMPDF,
     ],
 
+    'value_binder' => [
+
+        /*
+        |--------------------------------------------------------------------------
+        | Default Value Binder
+        |--------------------------------------------------------------------------
+        |
+        | PhpSpreadsheet offers a way to hook into the process of a value being
+        | written to a cell. In there some assumptions are made on how the
+        | value should be formatted. If you want to change those defaults,
+        | you can implement your own default value binder.
+        |
+        */
+        'default' => Maatwebsite\Excel\DefaultValueBinder::class
+    ],
+
     'temporary_files' => [
 
         /*
@@ -128,7 +144,7 @@ return [
         | storing reading or downloading. Here you can customize that path.
         |
         */
-        'local_path'        => sys_get_temp_dir(),
+        'local_path'  => sys_get_temp_dir(),
 
         /*
         |--------------------------------------------------------------------------
