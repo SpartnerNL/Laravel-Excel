@@ -6,8 +6,8 @@ use Closure;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Queue\SerializableClosure;
 use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
+use Opis\Closure\SerializableClosure;
 
 class SerializedQuery
 {

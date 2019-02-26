@@ -23,7 +23,8 @@
     "ext-json": "*",
     "php": "^7.0",
     "phpoffice/phpspreadsheet": "^1.6",
-    "illuminate/support": "5.5.*|5.6.*|5.7.*|5.8.*"
+    "illuminate/support": "5.5.*|5.6.*|5.7.*|5.8.*",
+    "opis/closure": "^3.1"
   },
   "require-dev": {
     "phpunit/phpunit": "^8.0",
