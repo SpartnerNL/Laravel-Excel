@@ -67,10 +67,12 @@ class ExcelTest extends TestCase
     {
         $export = new EmptyExport;
 
-        $response = $this->SUT->store($export, __DIR__ . '/Data/Disks/Local/filename.xlsx');
+        $filename = str_random();
+
+        $response = $this->SUT->store($export, __DIR__ . '/Data/Disks/Local/'. $filename .'.xlsx');
 
         $this->assertTrue($response);
-        $this->assertFileExists(__DIR__ . '/Data/Disks/Local/filename.xlsx');
+        $this->assertFileExists(__DIR__ . '/Data/Disks/Local/'. $filename .'.xlsx');
     }
 
     /**
