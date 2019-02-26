@@ -53,5 +53,7 @@ class StoreQueuedExport implements ShouldQueue
             $this->temporaryFile,
             $this->filePath
         );
+
+        $this->temporaryFile->delete();
     }
 }
