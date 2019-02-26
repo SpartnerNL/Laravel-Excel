@@ -52,7 +52,6 @@ class ExcelServiceProvider extends ServiceProvider
 
         $this->app->bind(TemporaryFileFactory::class, function () {
             return new TemporaryFileFactory(
-                $this->app->make(Filesystem::class),
                 config('excel.temporary_files.local_path', config('excel.exports.temp_path', storage_path('framework/laravel-excel'))),
                 config('excel.temporary_files.remote_disk')
 

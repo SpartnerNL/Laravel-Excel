@@ -48,20 +48,26 @@ class QueuedWriter
     }
 
     /**
-     * @param object      $export
-     * @param string      $filePath
-     * @param Disk        $disk
-     * @param string|null $writerType
+     * @param object       $export
+     * @param string       $filePath
+     * @param string       $disk
+     * @param string|null  $writerType
+     * @param array|string $diskOptions
      *
      * @return \Illuminate\Foundation\Bus\PendingDispatch
      */
-    public function store($export, string $filePath, Disk $disk, string $writerType = null)
+    public function store($export, string $filePath, string $disk = null, string $writerType = null, $diskOptions = [])
     {
         $temporaryFile = $this->temporaryFileFactory->make();
 
         $jobs = $this->buildExportJobs($export, $temporaryFile, $writerType);
 
-        $jobs->push(new StoreQueuedExport($temporaryFile, $disk, $filePath));
+        $jobs->push(new StoreQueuedExport(
+            $temporaryFile,
+            $filePath,
+            $disk,
+            $diskOptions
+        ));
 
         return QueueExport::withChain($jobs->toArray())->dispatch($export, $temporaryFile, $writerType);
     }

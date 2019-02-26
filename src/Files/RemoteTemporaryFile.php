@@ -5,9 +5,14 @@ namespace Maatwebsite\Excel\Files;
 class RemoteTemporaryFile extends TemporaryFile
 {
     /**
-     * @var Disk
+     * @var string
      */
     private $disk;
+
+    /**
+     * @var Disk|null
+     */
+    private $diskInstance;
 
     /**
      * @var string
@@ -20,17 +25,17 @@ class RemoteTemporaryFile extends TemporaryFile
     private $localTemporaryFile;
 
     /**
-     * @param Disk               $disk
+     * @param string             $disk
      * @param string             $filename
      * @param LocalTemporaryFile $localTemporaryFile
      */
-    public function __construct(Disk $disk, string $filename, LocalTemporaryFile $localTemporaryFile)
+    public function __construct(string $disk, string $filename, LocalTemporaryFile $localTemporaryFile)
     {
         $this->disk               = $disk;
         $this->filename           = $filename;
         $this->localTemporaryFile = $localTemporaryFile;
 
-        $this->disk->touch($filename);
+        $this->disk()->touch($filename);
     }
 
     /**
@@ -46,7 +51,7 @@ class RemoteTemporaryFile extends TemporaryFile
      */
     public function exists(): bool
     {
-        return $this->disk->exists($this->filename);
+        return $this->disk()->exists($this->filename);
     }
 
     /**
@@ -56,7 +61,7 @@ class RemoteTemporaryFile extends TemporaryFile
     {
         $this->localTemporaryFile->delete();
 
-        return $this->disk->delete($this->filename);
+        return $this->disk()->delete($this->filename);
     }
 
     /**
@@ -68,7 +73,7 @@ class RemoteTemporaryFile extends TemporaryFile
             touch($this->localTemporaryFile->getLocalPath());
         }
 
-        $this->disk->copy(
+        $this->disk()->copy(
             $this,
             $this->localTemporaryFile->getLocalPath()
         );
@@ -81,7 +86,7 @@ class RemoteTemporaryFile extends TemporaryFile
      */
     public function updateRemote()
     {
-        $this->disk->copy(
+        $this->disk()->copy(
             $this->localTemporaryFile,
             $this->filename
         );
@@ -92,7 +97,7 @@ class RemoteTemporaryFile extends TemporaryFile
      */
     public function readStream()
     {
-        return $this->disk->readStream($this->filename);
+        return $this->disk()->readStream($this->filename);
     }
 
     /**
@@ -100,7 +105,7 @@ class RemoteTemporaryFile extends TemporaryFile
      */
     public function contents(): string
     {
-        return $this->disk->get($this->filename);
+        return $this->disk()->get($this->filename);
     }
 
     /**
@@ -108,6 +113,14 @@ class RemoteTemporaryFile extends TemporaryFile
      */
     public function put($contents)
     {
-        $this->disk->put($this->filename, $contents);
+        $this->disk()->put($this->filename, $contents);
+    }
+
+    /**
+     * @return Disk
+     */
+    public function disk(): Disk
+    {
+        return $this->diskInstance ?: $this->diskInstance = app(Filesystem::class)->disk($this->disk);
     }
 }

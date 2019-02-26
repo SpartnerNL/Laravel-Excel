@@ -104,17 +104,16 @@ class Excel implements Exporter, Importer
     /**
      * {@inheritdoc}
      */
-    public function queue($export, string $filePath, string $diskName = null, string $writerType = null, $diskOptions = [])
+    public function queue($export, string $filePath, string $disk = null, string $writerType = null, $diskOptions = [])
     {
         $writerType = FileTypeDetector::detectStrict($filePath, $writerType);
-
-        $disk = $this->filesystem->disk($diskName, $diskOptions);
 
         return $this->queuedWriter->store(
             $export,
             $filePath,
             $disk,
-            $writerType
+            $writerType,
+            $diskOptions
         );
     }
 

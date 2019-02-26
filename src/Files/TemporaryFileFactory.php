@@ -7,11 +7,6 @@ use Illuminate\Support\Str;
 class TemporaryFileFactory
 {
     /**
-     * @var Filesystem
-     */
-    private $filesystem;
-
-    /**
      * @var string|null
      */
     private $temporaryPath;
@@ -22,13 +17,11 @@ class TemporaryFileFactory
     private $temporaryDisk;
 
     /**
-     * @param Filesystem  $filesystem
      * @param string|null $temporaryPath
      * @param string|null $temporaryDisk
      */
-    public function __construct(Filesystem $filesystem, string $temporaryPath = null, string $temporaryDisk = null)
+    public function __construct(string $temporaryPath = null, string $temporaryDisk = null)
     {
-        $this->filesystem    = $filesystem;
         $this->temporaryPath = $temporaryPath;
         $this->temporaryDisk = $temporaryDisk;
     }
@@ -69,7 +62,7 @@ class TemporaryFileFactory
         $filename = $this->generateFilename();
 
         return new RemoteTemporaryFile(
-            $this->filesystem->disk($this->temporaryDisk),
+            $this->temporaryDisk,
             $filename,
             $this->makeLocal($filename)
         );
