@@ -9,7 +9,6 @@ use Maatwebsite\Excel\Tests\TestCase;
 use Maatwebsite\Excel\Concerns\ToArray;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithCustomCsvSettings;
-use PHPUnit\Framework\Constraint\StringContains;
 
 class WithCustomCsvSettingsTest extends TestCase
 {
