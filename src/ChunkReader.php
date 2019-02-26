@@ -55,7 +55,9 @@ class ChunkReader
             return QueueImport::withChain($jobs->toArray())->dispatch();
         }
 
-        $jobs->each->handle();
+        $jobs->each(function(ReadChunk $job) {
+            dispatch_now($job);
+        });
 
         if ($import instanceof WithProgressBar) {
             $import->getConsoleOutput()->progressFinish();

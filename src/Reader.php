@@ -4,7 +4,7 @@ namespace Maatwebsite\Excel;
 
 use InvalidArgumentException;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Transactions\Transaction;
 use PhpOffice\PhpSpreadsheet\Cell\Cell;
 use Maatwebsite\Excel\Events\AfterImport;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -50,12 +50,19 @@ class Reader
     protected $temporaryFileFactory;
 
     /**
-     * @param TemporaryFileFactory $temporaryFileFactory
+     * @var Transaction
      */
-    public function __construct(TemporaryFileFactory $temporaryFileFactory)
+    protected $transaction;
+
+    /**
+     * @param TemporaryFileFactory $temporaryFileFactory
+     * @param Transaction          $transaction
+     */
+    public function __construct(TemporaryFileFactory $temporaryFileFactory, Transaction $transaction)
     {
         $this->setDefaultValueBinder();
 
+        $this->transaction          = $transaction;
         $this->temporaryFileFactory = $temporaryFileFactory;
     }
 
@@ -80,7 +87,7 @@ class Reader
 
         $this->beforeReading($import, $reader);
 
-        DB::transaction(function () use ($import) {
+        ($this->transaction)(function () use ($import) {
             foreach ($this->sheetImports as $index => $sheetImport) {
                 if ($sheet = $this->getSheet($import, $sheetImport, $index)) {
                     $sheet->import($sheetImport, $sheet->getStartRow($sheetImport));

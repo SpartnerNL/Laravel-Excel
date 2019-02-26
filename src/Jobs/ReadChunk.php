@@ -4,12 +4,12 @@ namespace Maatwebsite\Excel\Jobs;
 
 use Maatwebsite\Excel\Sheet;
 use Illuminate\Bus\Queueable;
-use Illuminate\Support\Facades\DB;
 use PhpOffice\PhpSpreadsheet\Cell\Cell;
 use Maatwebsite\Excel\Files\TemporaryFile;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use PhpOffice\PhpSpreadsheet\Reader\IReader;
 use Maatwebsite\Excel\Filters\ChunkReadFilter;
+use Maatwebsite\Excel\Transactions\Transaction;
 use Maatwebsite\Excel\Imports\HeadingRowExtractor;
 use Maatwebsite\Excel\Concerns\WithCustomValueBinder;
 
@@ -66,10 +66,12 @@ class ReadChunk implements ShouldQueue
     }
 
     /**
+     * @param Transaction $transaction
+     *
      * @throws \Maatwebsite\Excel\Exceptions\SheetNotFoundException
      * @throws \PhpOffice\PhpSpreadsheet\Reader\Exception
      */
-    public function handle()
+    public function handle(Transaction $transaction)
     {
         if ($this->sheetImport instanceof WithCustomValueBinder) {
             Cell::setValueBinder($this->sheetImport);
@@ -103,7 +105,7 @@ class ReadChunk implements ShouldQueue
             return;
         }
 
-        DB::transaction(function () use ($sheet) {
+        $transaction(function () use ($sheet) {
             $sheet->import(
                 $this->sheetImport,
                 $this->startRow

@@ -133,6 +133,23 @@ return [
         'default' => Maatwebsite\Excel\DefaultValueBinder::class,
     ],
 
+    'transactions' => [
+
+        /*
+        |--------------------------------------------------------------------------
+        | Transaction Driver
+        |--------------------------------------------------------------------------
+        |
+        | By default the import is wrapped in a transaction. This is useful
+        | for when an import may fail and you want to retry it. With the
+        | transactions, the previous import gets rolled-back.
+        |
+        | Drivers: db|null
+        |
+        */
+        'driver' => 'db',
+    ],
+
     'temporary_files' => [
 
         /*
