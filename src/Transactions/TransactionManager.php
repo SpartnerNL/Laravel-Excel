@@ -11,7 +11,7 @@ class TransactionManager extends Manager
      */
     public function getDefaultDriver()
     {
-        return config('excel.transactions.driver');
+        return config('excel.transactions.handler');
     }
 
     /**
