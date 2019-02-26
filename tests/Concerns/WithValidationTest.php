@@ -31,8 +31,7 @@ class WithValidationTest extends TestCase
      */
     public function can_validate_rows()
     {
-        $import = new class implements ToModel, WithValidation
-        {
+        $import = new class implements ToModel, WithValidation {
             use Importable;
 
             /**
@@ -82,8 +81,7 @@ class WithValidationTest extends TestCase
      */
     public function can_validate_rows_with_closure_validation_rules()
     {
-        $import = new class implements ToModel, WithValidation
-        {
+        $import = new class implements ToModel, WithValidation {
             use Importable;
 
             /**
@@ -137,8 +135,7 @@ class WithValidationTest extends TestCase
      */
     public function can_validate_rows_with_custom_validation_rule_objects()
     {
-        $import = new class implements ToModel, WithValidation
-        {
+        $import = new class implements ToModel, WithValidation {
             use Importable;
 
             /**
@@ -161,8 +158,7 @@ class WithValidationTest extends TestCase
             public function rules(): array
             {
                 return [
-                    '1' => new class implements \Illuminate\Contracts\Validation\Rule
-                    {
+                    '1' => new class implements \Illuminate\Contracts\Validation\Rule {
                         /**
                          * @param  string $attribute
                          * @param  mixed  $value
@@ -210,8 +206,7 @@ class WithValidationTest extends TestCase
      */
     public function can_validate_rows_with_conditionality()
     {
-        $import = new class implements ToModel, WithValidation
-        {
+        $import = new class implements ToModel, WithValidation {
             use Importable;
 
             /**
@@ -255,8 +250,7 @@ class WithValidationTest extends TestCase
      */
     public function can_validate_with_custom_attributes()
     {
-        $import = new class implements ToModel, WithValidation
-        {
+        $import = new class implements ToModel, WithValidation {
             use Importable;
 
             /**
@@ -308,8 +302,7 @@ class WithValidationTest extends TestCase
      */
     public function can_validate_with_custom_message()
     {
-        $import = new class implements ToModel, WithValidation
-        {
+        $import = new class implements ToModel, WithValidation {
             use Importable;
 
             /**
@@ -363,8 +356,7 @@ class WithValidationTest extends TestCase
      */
     public function can_validate_rows_with_headings()
     {
-        $import = new class implements ToModel, WithHeadingRow, WithValidation
-        {
+        $import = new class implements ToModel, WithHeadingRow, WithValidation {
             use Importable;
 
             /**
@@ -408,8 +400,7 @@ class WithValidationTest extends TestCase
      */
     public function can_validate_rows_in_batches()
     {
-        $import = new class implements ToModel, WithHeadingRow, WithBatchInserts, WithValidation
-        {
+        $import = new class implements ToModel, WithHeadingRow, WithBatchInserts, WithValidation {
             use Importable;
 
             /**
