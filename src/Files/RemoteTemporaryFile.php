@@ -38,6 +38,11 @@ class RemoteTemporaryFile extends TemporaryFile
         $this->disk()->touch($filename);
     }
 
+    public function __sleep()
+    {
+        return ['disk', 'filename', 'localTemporaryFile'];
+    }
+
     /**
      * @return string
      */
@@ -122,10 +127,5 @@ class RemoteTemporaryFile extends TemporaryFile
     public function disk(): Disk
     {
         return $this->diskInstance ?: $this->diskInstance = app(Filesystem::class)->disk($this->disk);
-    }
-
-    public function __sleep()
-    {
-        return ['disk', 'filename', 'localTemporaryFile'];
     }
 }
