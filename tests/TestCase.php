@@ -8,6 +8,7 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
 use Maatwebsite\Excel\ExcelServiceProvider;
 use Orchestra\Database\ConsoleServiceProvider;
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
+use PHPUnit\Framework\Constraint\StringContains;
 
 class TestCase extends OrchestraTestCase
 {
@@ -116,5 +117,19 @@ class TestCase extends OrchestraTestCase
         $class = $job->resolveName();
 
         return $dict[$property] ?? $dict["\0*\0$property"] ?? $dict["\0$class\0$property"];
+    }
+
+    /**
+     * @param string $needle
+     * @param string $haystack
+     * @param string $message
+     */
+    protected function assertStringContains(string $needle, string $haystack, string $message = '')
+    {
+        if (method_exists($this, 'assertStringContainsString')) {
+            $this->assertStringContainsString($needle, $haystack, $message);
+        } else {
+            static::assertThat($haystack, new StringContains($needle, false), $message);
+        }
     }
 }

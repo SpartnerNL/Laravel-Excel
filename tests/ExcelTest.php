@@ -162,9 +162,9 @@ class ExcelTest extends TestCase
 
         $contents = file_get_contents(__DIR__ . '/Data/Disks/Local/filename.csv');
 
-        $this->assertStringContainsString('sep=;', $contents);
-        $this->assertStringContainsString('A1;B1', $contents);
-        $this->assertStringContainsString('A2;B2', $contents);
+        $this->assertStringContains('sep=;', $contents);
+        $this->assertStringContains('A1;B1', $contents);
+        $this->assertStringContains('A2;B2', $contents);
     }
 
     /**
