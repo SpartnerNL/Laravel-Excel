@@ -3,7 +3,6 @@
 namespace Maatwebsite\Excel\Jobs;
 
 use Illuminate\Bus\Queueable;
-use Maatwebsite\Excel\Files\Disk;
 use Maatwebsite\Excel\Files\Filesystem;
 use Maatwebsite\Excel\Files\TemporaryFile;
 use Illuminate\Contracts\Queue\ShouldQueue;

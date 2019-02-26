@@ -3,7 +3,6 @@
 namespace Maatwebsite\Excel;
 
 use Traversable;
-use Maatwebsite\Excel\Files\Disk;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Jobs\CloseSheet;
 use Maatwebsite\Excel\Jobs\QueueExport;
