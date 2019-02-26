@@ -130,7 +130,7 @@ return [
         | you can implement your own default value binder.
         |
         */
-        'default' => Maatwebsite\Excel\DefaultValueBinder::class
+        'default' => Maatwebsite\Excel\DefaultValueBinder::class,
     ],
 
     'temporary_files' => [
