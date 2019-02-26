@@ -18,7 +18,7 @@ class FromUsersQueryExportWithEagerLoad implements FromQuery, WithMapping
     public function query()
     {
         return User::query()->with([
-            'groups' => function($query) {
+            'groups' => function ($query) {
                 $query->where('name', 'Group 1');
             },
         ])->withCount('groups');
