@@ -6,7 +6,6 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\ServiceProvider;
 use Maatwebsite\Excel\Files\Filesystem;
 use Maatwebsite\Excel\Mixins\StoreCollection;
-use Maatwebsite\Excel\Transactions\Transaction;
 use Maatwebsite\Excel\Console\ExportMakeCommand;
 use Maatwebsite\Excel\Console\ImportMakeCommand;
 use Maatwebsite\Excel\Mixins\DownloadCollection;

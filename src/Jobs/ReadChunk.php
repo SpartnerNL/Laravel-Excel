@@ -9,9 +9,9 @@ use Maatwebsite\Excel\Files\TemporaryFile;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use PhpOffice\PhpSpreadsheet\Reader\IReader;
 use Maatwebsite\Excel\Filters\ChunkReadFilter;
-use Maatwebsite\Excel\Transactions\TransactionHandler;
 use Maatwebsite\Excel\Imports\HeadingRowExtractor;
 use Maatwebsite\Excel\Concerns\WithCustomValueBinder;
+use Maatwebsite\Excel\Transactions\TransactionHandler;
 
 class ReadChunk implements ShouldQueue
 {
