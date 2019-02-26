@@ -4,10 +4,10 @@ namespace Maatwebsite\Excel\Jobs;
 
 use Closure;
 use Illuminate\Support\Facades\DB;
+use Opis\Closure\SerializableClosure;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
-use Opis\Closure\SerializableClosure;
 
 class SerializedQuery
 {
