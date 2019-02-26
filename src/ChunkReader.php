@@ -55,7 +55,7 @@ class ChunkReader
             return QueueImport::withChain($jobs->toArray())->dispatch();
         }
 
-        $jobs->each(function(ReadChunk $job) {
+        $jobs->each(function (ReadChunk $job) {
             dispatch_now($job);
         });
 

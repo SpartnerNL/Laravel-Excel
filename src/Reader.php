@@ -4,7 +4,6 @@ namespace Maatwebsite\Excel;
 
 use InvalidArgumentException;
 use Illuminate\Support\Collection;
-use Maatwebsite\Excel\Transactions\Transaction;
 use PhpOffice\PhpSpreadsheet\Cell\Cell;
 use Maatwebsite\Excel\Events\AfterImport;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -15,6 +14,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use PhpOffice\PhpSpreadsheet\Reader\IReader;
 use Maatwebsite\Excel\Factories\ReaderFactory;
 use PhpOffice\PhpSpreadsheet\Reader\Exception;
+use Maatwebsite\Excel\Transactions\Transaction;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Files\TemporaryFileFactory;
 use Maatwebsite\Excel\Concerns\SkipsUnknownSheets;
