@@ -116,7 +116,7 @@ class UsersController extends Controller
 
 :page_facing_up: Find your `users.xlsx` in your downloads folder!
 
-More installation instructions can be found at: [https://docs.laravel-excel.com/3.1/getting-started/installation.html](https://laravel-excel.maatwebsite.nl/3.1/getting-started/installation.html)
+More installation instructions can be found at: [https://docs.laravel-excel.com/3.1/getting-started/installation.html](https://docs.laravel-excel.com/3.1/getting-started/installation.html)
 
 ## :rocket: 5 minutes quick start for imports
 
@@ -207,4 +207,4 @@ Markt 2
 6231 LS, Meerssen  
 The Netherlands 
 
-More about the license can be found at: [https://docs.laravel-excel.com/3.1/getting-started/license.html](https://laravel-excel.maatwebsite.nl/3.1/getting-started/license.html)
+More about the license can be found at: [https://docs.laravel-excel.com/3.1/getting-started/license.html](https://docs.laravel-excel.com/3.1/getting-started/license.html)
