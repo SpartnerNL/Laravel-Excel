@@ -3,11 +3,10 @@
 namespace Maatwebsite\Excel\Tests\Concerns;
 
 use Illuminate\Support\Collection;
-use Maatwebsite\Excel\Concerns\Exportable;
-use Maatwebsite\Excel\Concerns\FromCollection;
-use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Tests\TestCase;
-use Maatwebsite\Excel\Tests\Data\Stubs\WithHeadingExport;
+use Maatwebsite\Excel\Concerns\Exportable;
+use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Concerns\FromCollection;
 
 class WithHeadingsTest extends TestCase
 {
@@ -16,8 +15,7 @@ class WithHeadingsTest extends TestCase
      */
     public function can_export_from_collection_with_heading_row()
     {
-        $export = new class implements FromCollection, WithHeadings
-        {
+        $export = new class implements FromCollection, WithHeadings {
             use Exportable;
 
             /**
@@ -60,8 +58,7 @@ class WithHeadingsTest extends TestCase
      */
     public function can_export_from_collection_with_multiple_heading_rows()
     {
-        $export = new class implements FromCollection, WithHeadings
-        {
+        $export = new class implements FromCollection, WithHeadings {
             use Exportable;
 
             /**
