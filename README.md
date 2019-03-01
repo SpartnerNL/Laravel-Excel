@@ -1,5 +1,3 @@
-
-
 <p align="center">
   <a href="https://laravel-excel.com">
     <img alt="Laravel Excel" src="https://user-images.githubusercontent.com/7728097/43685313-ff1e2110-98b0-11e8-8b50-900a2b262f0f.png" />
@@ -42,10 +40,19 @@ exports and imports.
   </a>
 </p>
 
+<div style="text-align:center;">
+  
+| 🎥 COURSE: "Advanced Laravel Excel". Grab your early-bird discount now! https://course.laravel-excel.com |
+| --- |
+
+</div>
+
 <h4 align="center">
   <a href="https://docs.laravel-excel.com/3.1/exports/">Quickstart</a>
   <span> · </span>
   <a href="https://docs.laravel-excel.com/3.1/getting-started/">Documentation</a>
+  <span> · </span>
+  <a href="https://course.laravel-excel.com">Video Course</a>
   <span> · </span>
   <a href="https://github.com/Maatwebsite/Laravel-Nova-Excel">Nova</a>
   <span> · </span>
@@ -184,7 +191,15 @@ You can find the full documentation of Laravel Excel [on the website](https://do
 
 We welcome suggestions for improving our docs. The documentation repository can be found at [https://github.com/Maatwebsite/laravel-excel-docs](https://github.com/Maatwebsite/laravel-excel-docs).
 
-Read some articles and tutorials can be found on our blog: https://medium.com/maatwebsite/laravel-excel/home
+Some articles and tutorials can be found on our blog: https://medium.com/maatwebsite/laravel-excel/home
+
+## 🎥 Video Course
+
+We are currently building a video course called "Advanced Laravel Excel". In this video course we’ll build a small application with real-life, complex imports and exports that go beyond simple user imports and exports. We’ll go step-by-step and tackle implementing Laravel Excel in a performant way.
+
+If you sign up now, you’ll get notified when the course launches and get it for the early bird price of $69 instead of ~~$99~~.
+
+https://course.laravel-excel.com
 
 ## :wrench: Supported Versions
 
