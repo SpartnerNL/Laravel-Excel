@@ -71,7 +71,7 @@ exports and imports.
 
 - **Export Blade views.** Want to have a custom layout in your spreadsheet? Use a HTML table in a Blade view and export that to Excel.
 
-![learning-laravel-excel](https://user-images.githubusercontent.com/7728097/53639057-7d4bf880-3c28-11e9-87b3-7f6f9d22d993.jpg)
+## 🎓 Learning Laravel Excel
 
 You can find the full documentation of Laravel Excel [on the website](https://docs.laravel-excel.com).
 
@@ -79,13 +79,15 @@ We welcome suggestions for improving our docs. The documentation repository can 
 
 Some articles and tutorials can be found on our blog: https://medium.com/maatwebsite/laravel-excel/home
 
-![video-course](https://user-images.githubusercontent.com/7728097/53639059-7de48f00-3c28-11e9-9490-6c4c4a0e0b0b.jpg)
+## 🎥 Video Course
 
 We are currently building a video course called "Advanced Laravel Excel". In this video course we’ll build a small application with real-life, complex imports and exports that go beyond simple user imports and exports. We’ll go step-by-step and tackle implementing Laravel Excel in a performant way.
 
 If you sign up now, you’ll get notified when the course launches and get it for the early bird price of $69 instead of ~~$99~~.
 
 https://course.laravel-excel.com
+
+## :mailbox_with_mail: License & Postcardware
 
 ![1_5nblgs68uarg0wxxejozdq](https://user-images.githubusercontent.com/7728097/53638144-9e5f1a00-3c25-11e9-9f4a-fc71c9d94562.jpg)
 
@@ -98,9 +100,8 @@ The Netherlands
 
 More about the license can be found at: [https://docs.laravel-excel.com/3.1/getting-started/license.html](https://docs.laravel-excel.com/3.1/getting-started/license.html)
 
-![support](https://user-images.githubusercontent.com/7728097/53639058-7de48f00-3c28-11e9-9c60-1cc1f7ef4717.jpg)
 
-Looking for commercial support, bug-prioritization or need help implementing a complex import or export? Maatwebsite loves to help! You can find the possibilities at: https://laravel-excel.com/commercial-support
+## :wrench: Supported Versions
 
 Versions will be supported for a limited amount of time.
 
