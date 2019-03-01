@@ -81,6 +81,8 @@ Some articles and tutorials can be found on our blog: https://medium.com/maatweb
 
 ## 🎥 Video Course
 
+![1_bzlh2ituv5x7yu2wenhxxw](https://user-images.githubusercontent.com/7728097/53638298-188f9e80-3c26-11e9-82c8-baf057271013.jpeg)
+
 We are currently building a video course called "Advanced Laravel Excel". In this video course we’ll build a small application with real-life, complex imports and exports that go beyond simple user imports and exports. We’ll go step-by-step and tackle implementing Laravel Excel in a performant way.
 
 If you sign up now, you’ll get notified when the course launches and get it for the early bird price of $69 instead of ~~$99~~.
