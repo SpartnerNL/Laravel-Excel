@@ -81,21 +81,13 @@ Some articles and tutorials can be found on our blog: https://medium.com/maatweb
 
 ## 🎥 Video Course
 
+![1_bzlh2ituv5x7yu2wenhxxw](https://user-images.githubusercontent.com/7728097/53638298-188f9e80-3c26-11e9-82c8-baf057271013.jpeg)
+
 We are currently building a video course called "Advanced Laravel Excel". In this video course we’ll build a small application with real-life, complex imports and exports that go beyond simple user imports and exports. We’ll go step-by-step and tackle implementing Laravel Excel in a performant way.
 
 If you sign up now, you’ll get notified when the course launches and get it for the early bird price of $69 instead of ~~$99~~.
 
 https://course.laravel-excel.com
-
-## :wrench: Supported Versions
-
-Versions will be supported for a limited amount of time.
-
-| Version | Laravel Version | Php Version | Support |
-|---- |----|----|----|
-| 2.1 | <=5.6 | <=7.0 | Unsupported since 15-5-2018 |
-| 3.0 | ^5.5 |  ^7.0 | Unsupported since 31-12-2018 |
-| 3.1 | ^5.5 |  ^7.1 | New features |
 
 ## :mailbox_with_mail: License & Postcardware
 
@@ -109,3 +101,14 @@ Markt 2
 The Netherlands 
 
 More about the license can be found at: [https://docs.laravel-excel.com/3.1/getting-started/license.html](https://docs.laravel-excel.com/3.1/getting-started/license.html)
+
+
+## :wrench: Supported Versions
+
+Versions will be supported for a limited amount of time.
+
+| Version | Laravel Version | Php Version | Support |
+|---- |----|----|----|
+| 2.1 | <=5.6 | <=7.0 | Unsupported since 15-5-2018 |
+| 3.0 | ^5.5 |  ^7.0 | Unsupported since 31-12-2018 |
+| 3.1 | ^5.5 |  ^7.1 | New features |
