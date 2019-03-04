@@ -33,7 +33,7 @@ class ExcelServiceProvider extends ServiceProvider
             }
         }
 
-        $this->app->booted(function() {
+        $this->app->booted(function () {
             Settings::setCache(
                 $this->app->make(CacheManager::class)->driver()
             );
