@@ -133,6 +133,42 @@ return [
         'default' => Maatwebsite\Excel\DefaultValueBinder::class,
     ],
 
+    'cache' => [
+        /*
+        |--------------------------------------------------------------------------
+        | Default cell caching driver
+        |--------------------------------------------------------------------------
+        |
+        | Drivers: memory|illuminate|hybrid
+        |
+        */
+        'driver'     => 'memory',
+
+        /*
+        |--------------------------------------------------------------------------
+        | Hybrid memory caching
+        |--------------------------------------------------------------------------
+        |
+        | Drivers: memory|hybrid|illuminate
+        |
+        */
+        'hybrid'     => [
+            'memory_limit' => 60000,
+        ],
+
+        /*
+        |--------------------------------------------------------------------------
+        | Illuminate cell caching
+        |--------------------------------------------------------------------------
+        |
+        | Stores: any of the defined stores in your cache config
+        |
+        */
+        'illuminate' => [
+            'store' => null,
+        ]
+    ],
+
     'transactions' => [
 
         /*

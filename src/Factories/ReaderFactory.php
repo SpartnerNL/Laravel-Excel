@@ -3,6 +3,7 @@
 namespace Maatwebsite\Excel\Factories;
 
 use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Reader\BaseReader;
 use PhpOffice\PhpSpreadsheet\Reader\Csv;
 use Maatwebsite\Excel\Files\TemporaryFile;
 use PhpOffice\PhpSpreadsheet\Reader\IReader;
@@ -25,6 +26,7 @@ class ReaderFactory
      */
     public static function make($import, TemporaryFile $file, string $readerType = null): IReader
     {
+        /** @var IReader|BaseReader $reader */
         $reader = IOFactory::createReader(
             $readerType ?: static::identify($file)
         );

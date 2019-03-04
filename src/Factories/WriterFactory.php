@@ -3,6 +3,7 @@
 namespace Maatwebsite\Excel\Factories;
 
 use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Writer\BaseWriter;
 use PhpOffice\PhpSpreadsheet\Writer\Csv;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use Maatwebsite\Excel\Concerns\WithCharts;
@@ -25,7 +26,12 @@ class WriterFactory
      */
     public static function make(string $writerType, Spreadsheet $spreadsheet, $export): IWriter
     {
+        /** @var IWriter|BaseWriter $writer */
         $writer = IOFactory::createWriter($spreadsheet, $writerType);
+
+        $writer->setUseDiskCaching(
+            config('excel.cache.driver') !== 'memory'
+        );
 
         if ($export instanceof WithCharts) {
             $writer->setIncludeCharts(true);

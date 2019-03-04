@@ -4,6 +4,7 @@ namespace Maatwebsite\Excel;
 
 use Illuminate\Support\Collection;
 use Illuminate\Support\ServiceProvider;
+use Maatwebsite\Excel\Cache\CacheManager;
 use Maatwebsite\Excel\Files\Filesystem;
 use Maatwebsite\Excel\Mixins\StoreCollection;
 use Maatwebsite\Excel\Console\ExportMakeCommand;
@@ -13,6 +14,7 @@ use Maatwebsite\Excel\Files\TemporaryFileFactory;
 use Laravel\Lumen\Application as LumenApplication;
 use Maatwebsite\Excel\Transactions\TransactionHandler;
 use Maatwebsite\Excel\Transactions\TransactionManager;
+use PhpOffice\PhpSpreadsheet\Settings;
 
 class ExcelServiceProvider extends ServiceProvider
 {
@@ -42,6 +44,10 @@ class ExcelServiceProvider extends ServiceProvider
             'excel'
         );
 
+        $this->app->bind(CacheManager::class, function () {
+            return new CacheManager($this->app);
+        });
+
         $this->app->bind(TransactionManager::class, function () {
             return new TransactionManager($this->app);
         });
@@ -68,6 +74,12 @@ class ExcelServiceProvider extends ServiceProvider
                 $this->app->make(QueuedWriter::class),
                 $this->app->make(Reader::class),
                 $this->app->make(Filesystem::class)
+            );
+        });
+
+        $this->app->resolving('excel', function () {
+            Settings::setCache(
+                $this->app->make(CacheManager::class)->driver()
             );
         });
 
