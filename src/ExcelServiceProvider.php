@@ -32,6 +32,12 @@ class ExcelServiceProvider extends ServiceProvider
                 ], 'config');
             }
         }
+
+        $this->app->booted(function() {
+            Settings::setCache(
+                $this->app->make(CacheManager::class)->driver()
+            );
+        });
     }
 
     /**
@@ -74,12 +80,6 @@ class ExcelServiceProvider extends ServiceProvider
                 $this->app->make(QueuedWriter::class),
                 $this->app->make(Reader::class),
                 $this->app->make(Filesystem::class)
-            );
-        });
-
-        $this->app->resolving('excel', function () {
-            Settings::setCache(
-                $this->app->make(CacheManager::class)->driver()
             );
         });
 
