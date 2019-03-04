@@ -166,7 +166,7 @@ return [
         */
         'illuminate' => [
             'store' => null,
-        ]
+        ],
     ],
 
     'transactions' => [

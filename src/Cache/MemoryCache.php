@@ -25,7 +25,7 @@ class MemoryCache implements CacheInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function clear()
     {
@@ -35,7 +35,7 @@ class MemoryCache implements CacheInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function delete($key)
     {
@@ -45,7 +45,7 @@ class MemoryCache implements CacheInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function deleteMultiple($keys)
     {
@@ -57,7 +57,7 @@ class MemoryCache implements CacheInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function get($key, $default = null)
     {
@@ -69,7 +69,7 @@ class MemoryCache implements CacheInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getMultiple($keys, $default = null)
     {
@@ -82,7 +82,7 @@ class MemoryCache implements CacheInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function has($key)
     {
@@ -90,7 +90,7 @@ class MemoryCache implements CacheInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function set($key, $value, $ttl = null)
     {
@@ -100,7 +100,7 @@ class MemoryCache implements CacheInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function setMultiple($values, $ttl = null)
     {

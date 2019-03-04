@@ -3,9 +3,10 @@
 namespace Maatwebsite\Excel;
 
 use Illuminate\Support\Collection;
+use PhpOffice\PhpSpreadsheet\Settings;
 use Illuminate\Support\ServiceProvider;
-use Maatwebsite\Excel\Cache\CacheManager;
 use Maatwebsite\Excel\Files\Filesystem;
+use Maatwebsite\Excel\Cache\CacheManager;
 use Maatwebsite\Excel\Mixins\StoreCollection;
 use Maatwebsite\Excel\Console\ExportMakeCommand;
 use Maatwebsite\Excel\Console\ImportMakeCommand;
@@ -14,7 +15,6 @@ use Maatwebsite\Excel\Files\TemporaryFileFactory;
 use Laravel\Lumen\Application as LumenApplication;
 use Maatwebsite\Excel\Transactions\TransactionHandler;
 use Maatwebsite\Excel\Transactions\TransactionManager;
-use PhpOffice\PhpSpreadsheet\Settings;
 
 class ExcelServiceProvider extends ServiceProvider
 {

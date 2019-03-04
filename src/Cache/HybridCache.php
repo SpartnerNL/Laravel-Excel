@@ -27,7 +27,7 @@ class HybridCache implements CacheInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function get($key, $default = null)
     {
@@ -39,7 +39,7 @@ class HybridCache implements CacheInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function set($key, $value, $ttl = null)
     {
@@ -53,7 +53,7 @@ class HybridCache implements CacheInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function delete($key)
     {
@@ -65,7 +65,7 @@ class HybridCache implements CacheInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function clear()
     {
@@ -75,7 +75,7 @@ class HybridCache implements CacheInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getMultiple($keys, $default = null)
     {
@@ -98,7 +98,7 @@ class HybridCache implements CacheInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function setMultiple($values, $ttl = null)
     {
@@ -112,7 +112,7 @@ class HybridCache implements CacheInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function deleteMultiple($keys)
     {
@@ -124,7 +124,7 @@ class HybridCache implements CacheInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function has($key)
     {
