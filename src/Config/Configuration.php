@@ -18,7 +18,7 @@ class Configuration
     }
 
     /**
-     * TODO: deprecate "excel.exports.temp_path" fallback in 3.2
+     * TODO: deprecate "excel.exports.temp_path" fallback in 3.2.
      *
      * @return string
      */

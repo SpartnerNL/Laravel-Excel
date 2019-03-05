@@ -4,9 +4,9 @@ namespace Maatwebsite\Excel;
 
 use Illuminate\Support\Collection;
 use Illuminate\Support\ServiceProvider;
-use Maatwebsite\Excel\Config\Configuration;
 use Maatwebsite\Excel\Files\Filesystem;
 use Maatwebsite\Excel\Cache\CacheManager;
+use Maatwebsite\Excel\Config\Configuration;
 use Maatwebsite\Excel\Mixins\StoreCollection;
 use Maatwebsite\Excel\Config\SettingsProvider;
 use Maatwebsite\Excel\Console\ExportMakeCommand;
