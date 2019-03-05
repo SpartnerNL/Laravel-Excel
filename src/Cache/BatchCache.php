@@ -4,7 +4,7 @@ namespace Maatwebsite\Excel\Cache;
 
 use Psr\SimpleCache\CacheInterface;
 
-class HybridCache implements CacheInterface
+class BatchCache implements CacheInterface
 {
     /**
      * @var CacheInterface

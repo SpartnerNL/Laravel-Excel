@@ -67,9 +67,9 @@ class FromQueryTest extends TestCase
     /**
      * @test
      */
-    public function can_export_from_query_with_hybrid_caching()
+    public function can_export_from_query_with_batch_caching()
     {
-        config()->set('excel.cache.driver', 'hybrid');
+        config()->set('excel.cache.driver', 'batch');
 
         $export = new FromUsersQueryExport;
 

@@ -160,25 +160,25 @@ return [
         | want to mitigate that, you can configure a cell caching driver here.
         | When using the illuminate driver, it will store each value in a the
         | cache store. This can slow down the process, because it needs to
-        | store each value. You can use the "hybrid" store if you want to
+        | store each value. You can use the "batch" store if you want to
         | only persist to the store when the memory limit is reached.
         |
-        | Drivers: memory|illuminate|hybrid
+        | Drivers: memory|illuminate|batch
         |
         */
         'driver'     => 'memory',
 
         /*
         |--------------------------------------------------------------------------
-        | Hybrid memory caching
+        | Batch memory caching
         |--------------------------------------------------------------------------
         |
-        | When dealing with the "hybrid" caching driver, it will only
+        | When dealing with the "batch" caching driver, it will only
         | persist to the store when the memory limit is reached.
         | Here you can tweak the memory limit to your liking.
         |
         */
-        'hybrid'     => [
+        'batch'     => [
             'memory_limit' => 60000,
         ],
 

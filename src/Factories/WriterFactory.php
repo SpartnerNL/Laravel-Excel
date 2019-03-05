@@ -2,6 +2,7 @@
 
 namespace Maatwebsite\Excel\Factories;
 
+use Maatwebsite\Excel\Config\Configuration;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Writer\Csv;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -30,7 +31,7 @@ class WriterFactory
         $writer = IOFactory::createWriter($spreadsheet, $writerType);
 
         $writer->setUseDiskCaching(
-            config('excel.cache.driver') !== 'memory'
+            Configuration::usesDiskCache()
         );
 
         if ($export instanceof WithCharts) {

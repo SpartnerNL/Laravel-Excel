@@ -4,9 +4,25 @@ namespace Maatwebsite\Excel\Cache;
 
 use Illuminate\Support\Manager;
 use Psr\SimpleCache\CacheInterface;
+use Maatwebsite\Excel\Config\Configuration;
 
 class CacheManager extends Manager
 {
+    /**
+     * @const string
+     */
+    const DRIVER_BATCH = 'batch';
+
+    /**
+     * @const string
+     */
+    const DRIVER_MEMORY = 'memory';
+
+    /**
+     * @const string
+     */
+    const DRIVER_ILLUMINATE = 'illuminate';
+
     /**
      * Get the default driver name.
      *
@@ -14,7 +30,7 @@ class CacheManager extends Manager
      */
     public function getDefaultDriver(): string
     {
-        return config('excel.cache.driver', 'memory');
+        return Configuration::getCellCacheDriver();
     }
 
     /**
@@ -23,16 +39,16 @@ class CacheManager extends Manager
     public function createMemoryDriver(): CacheInterface
     {
         return new MemoryCache(
-            config('excel.cache.hybrid.memory_limit', 60000)
+            Configuration::getBatchMemoryLimit()
         );
     }
 
     /**
-     * @return HybridCache
+     * @return BatchCache
      */
-    public function createHybridDriver(): CacheInterface
+    public function createBatchDriver(): CacheInterface
     {
-        return new HybridCache(
+        return new BatchCache(
             $this->createIlluminateDriver(),
             $this->createMemoryDriver()
         );
@@ -44,7 +60,7 @@ class CacheManager extends Manager
     public function createIlluminateDriver(): CacheInterface
     {
         return $this->app->make('cache')->driver(
-            config('excel.cache.illuminate.store')
+            Configuration::getIlluminateCacheStore()
         );
     }
 }

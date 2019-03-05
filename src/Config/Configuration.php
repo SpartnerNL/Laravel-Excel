@@ -2,6 +2,7 @@
 
 namespace Maatwebsite\Excel\Config;
 
+use Maatwebsite\Excel\Cache\CacheManager;
 use Maatwebsite\Excel\DefaultValueBinder;
 use PhpOffice\PhpSpreadsheet\Cell\IValueBinder;
 
@@ -44,5 +45,37 @@ class Configuration
     public static function getTransactionHandler()
     {
         return config('excel.transactions.handler');
+    }
+
+    /**
+     * @return string
+     */
+    public static function getCellCacheDriver(): string
+    {
+        return config('excel.cache.driver', 'memory');
+    }
+
+    /**
+     * @return string|null
+     */
+    public static function getIlluminateCacheStore()
+    {
+        return config('excel.cache.illuminate.store');
+    }
+
+    /**
+     * @return int
+     */
+    public static function getBatchMemoryLimit(): int
+    {
+        return config('excel.cache.batch.memory_limit', 60000);
+    }
+
+    /**
+     * @return bool
+     */
+    public static function usesDiskCache(): bool
+    {
+        return self::getCellCacheDriver() !== CacheManager::DRIVER_MEMORY;
     }
 }

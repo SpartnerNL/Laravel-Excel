@@ -5,10 +5,10 @@ namespace Maatwebsite\Excel\Tests\Cache;
 use Illuminate\Cache\ArrayStore;
 use Illuminate\Cache\Repository;
 use Maatwebsite\Excel\Tests\TestCase;
-use Maatwebsite\Excel\Cache\HybridCache;
+use Maatwebsite\Excel\Cache\BatchCache;
 use Maatwebsite\Excel\Cache\MemoryCache;
 
-class HybridCacheTest extends TestCase
+class BatchCacheTest extends TestCase
 {
     /**
      * @var Repository
@@ -119,7 +119,7 @@ class HybridCacheTest extends TestCase
             'A4' => 'A4-value',
         ], $this->cache->getMultiple(['A1', 'A2', 'A3', 'A4']));
 
-        // Hybrid cache should return all 4 cells
+        // Batch cache should return all 4 cells
         $this->assertEquals([
             'A1' => 'A1-value',
             'A2' => 'A2-value',
@@ -161,7 +161,7 @@ class HybridCacheTest extends TestCase
             'A5' => 'A5-value',
         ], $this->cache->getMultiple(['A1', 'A2', 'A3', 'A4', 'A5']));
 
-        // Hybrid cache should return all 4 cells
+        // Batch cache should return all 4 cells
         $this->assertEquals([
             'A1' => 'A1-value',
             'A2' => 'A2-value',
@@ -172,16 +172,16 @@ class HybridCacheTest extends TestCase
     }
 
     /**
-     * Construct a HybridCache with a in memory store
+     * Construct a BatchCache with a in memory store
      * and an array cache, pretending to be a persistence store.
      *
      * @param array    $memory
      * @param array    $persisted
      * @param int|null $memoryLimit
      *
-     * @return HybridCache
+     * @return BatchCache
      */
-    private function givenCache(array $memory = [], array $persisted = [], int $memoryLimit = null): HybridCache
+    private function givenCache(array $memory = [], array $persisted = [], int $memoryLimit = null): BatchCache
     {
         $this->memory = new MemoryCache($memoryLimit);
         $this->memory->setMultiple($memory);
@@ -191,7 +191,7 @@ class HybridCacheTest extends TestCase
 
         $this->cache = new Repository($store);
 
-        return new HybridCache(
+        return new BatchCache(
             $this->cache,
             $this->memory
         );
