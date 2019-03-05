@@ -4,6 +4,7 @@ namespace Maatwebsite\Excel;
 
 use InvalidArgumentException;
 use Illuminate\Support\Collection;
+use Maatwebsite\Excel\Config\Configuration;
 use PhpOffice\PhpSpreadsheet\Cell\Cell;
 use Maatwebsite\Excel\Events\AfterImport;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -60,8 +61,6 @@ class Reader
      */
     public function __construct(TemporaryFileFactory $temporaryFileFactory, TransactionHandler $transaction)
     {
-        $this->setDefaultValueBinder();
-
         $this->transaction          = $transaction;
         $this->temporaryFileFactory = $temporaryFileFactory;
     }
@@ -169,18 +168,6 @@ class Reader
     public function getDelegate()
     {
         return $this->spreadsheet;
-    }
-
-    /**
-     * @return $this
-     */
-    public function setDefaultValueBinder(): self
-    {
-        Cell::setValueBinder(
-            app(config('excel.value_binder.default', DefaultValueBinder::class))
-        );
-
-        return $this;
     }
 
     /**
@@ -316,11 +303,23 @@ class Reader
      */
     private function garbageCollect()
     {
-        $this->setDefaultValueBinder();
+        $this->resetValueBinder();
 
         // Force garbage collecting
         unset($this->sheetImports, $this->spreadsheet);
 
         $this->currentFile->delete();
+    }
+
+    /**
+     * @return $this
+     */
+    private function resetValueBinder(): self
+    {
+        Cell::setValueBinder(
+            Configuration::getDefaultValueBinder()
+        );
+
+        return $this;
     }
 }

@@ -45,7 +45,7 @@ class HybridCache implements CacheInterface
     {
         $this->memory->set($key, $value, $ttl);
 
-        if ($this->memory->reachedLimit()) {
+        if ($this->memory->reachedMemoryLimit()) {
             return $this->cache->setMultiple($this->memory->flush(), $ttl);
         }
 
@@ -80,21 +80,26 @@ class HybridCache implements CacheInterface
     public function getMultiple($keys, $default = null)
     {
         // Check if all keys are still in memory
-        $memory = $this->getMultiple($keys, $default);
-        if (count($memory) === count($keys)) {
+        $memory              = $this->memory->getMultiple($keys, $default);
+        $actualItemsInMemory = count(array_filter($memory));
+
+        if ($actualItemsInMemory === count($keys)) {
             return $memory;
         }
 
         // Get all rows from cache if none is hold in memory.
-        if (count($memory) === 0) {
+        if ($actualItemsInMemory === 0) {
             return $this->cache->getMultiple($keys, $default);
         }
 
-        // Merge memory and cache rows
-        return array_merge(
-            $memory,
-            $this->cache->getMultiple($keys, $default)
-        );
+        // Add missing values from cache.
+        foreach ($this->cache->getMultiple($keys, $default) as $key => $value) {
+            if (null !== $value) {
+                $memory[$key] = $value;
+            }
+        }
+
+        return $memory;
     }
 
     /**
@@ -104,7 +109,7 @@ class HybridCache implements CacheInterface
     {
         $this->memory->setMultiple($values, $ttl);
 
-        if ($this->memory->reachedLimit()) {
+        if ($this->memory->reachedMemoryLimit()) {
             return $this->cache->setMultiple($this->memory->flush(), $ttl);
         }
 

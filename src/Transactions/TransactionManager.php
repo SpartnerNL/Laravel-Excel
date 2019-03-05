@@ -3,6 +3,7 @@
 namespace Maatwebsite\Excel\Transactions;
 
 use Illuminate\Support\Manager;
+use Maatwebsite\Excel\Config\Configuration;
 
 class TransactionManager extends Manager
 {
@@ -11,7 +12,7 @@ class TransactionManager extends Manager
      */
     public function getDefaultDriver()
     {
-        return config('excel.transactions.handler');
+        return Configuration::getTransactionHandler();
     }
 
     /**

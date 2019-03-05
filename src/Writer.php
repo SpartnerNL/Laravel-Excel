@@ -2,6 +2,7 @@
 
 namespace Maatwebsite\Excel;
 
+use Maatwebsite\Excel\Config\Configuration;
 use PhpOffice\PhpSpreadsheet\Cell\Cell;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use Maatwebsite\Excel\Concerns\WithTitle;
@@ -41,8 +42,6 @@ class Writer
     public function __construct(TemporaryFileFactory $temporaryFileFactory)
     {
         $this->temporaryFileFactory = $temporaryFileFactory;
-
-        $this->setDefaultValueBinder();
     }
 
     /**
@@ -137,15 +136,14 @@ class Writer
         );
 
         $writer->save(
-            $path = $temporaryFile->getLocalPath()
+            $temporaryFile->getLocalPath()
         );
 
         if ($temporaryFile instanceof RemoteTemporaryFile) {
             $temporaryFile->updateRemote();
         }
 
-        $this->spreadsheet->disconnectWorksheets();
-        unset($this->spreadsheet);
+        $this->garbageCollect();
 
         return $temporaryFile;
     }
@@ -170,18 +168,6 @@ class Writer
     }
 
     /**
-     * @return $this
-     */
-    public function setDefaultValueBinder()
-    {
-        Cell::setValueBinder(
-            app(config('excel.value_binder.default', DefaultValueBinder::class))
-        );
-
-        return $this;
-    }
-
-    /**
      * @param int $sheetIndex
      *
      * @throws \PhpOffice\PhpSpreadsheet\Exception
@@ -200,5 +186,28 @@ class Writer
     public function hasConcern($concern): bool
     {
         return $this->exportable instanceof $concern;
+    }
+
+    /**
+     * Garbage collect.
+     */
+    private function garbageCollect()
+    {
+        $this->spreadsheet->disconnectWorksheets();
+        unset($this->spreadsheet);
+
+        $this->resetValueBinder();
+    }
+
+    /**
+     * @return $this
+     */
+    private function resetValueBinder(): self
+    {
+        Cell::setValueBinder(
+            Configuration::getDefaultValueBinder()
+        );
+
+        return $this;
     }
 }

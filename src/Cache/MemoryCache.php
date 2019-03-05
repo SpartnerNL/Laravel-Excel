@@ -9,7 +9,7 @@ class MemoryCache implements CacheInterface
     /**
      * @var int|null
      */
-    protected $limit;
+    protected $memoryLimit;
 
     /**
      * @var array
@@ -17,11 +17,11 @@ class MemoryCache implements CacheInterface
     protected $cache = [];
 
     /**
-     * @param int|null $limit
+     * @param int|null $memoryLimit
      */
-    public function __construct(int $limit = null)
+    public function __construct(int $memoryLimit = null)
     {
-        $this->limit = $limit;
+        $this->memoryLimit = $memoryLimit;
     }
 
     /**
@@ -114,13 +114,14 @@ class MemoryCache implements CacheInterface
     /**
      * @return bool
      */
-    public function reachedLimit(): bool
+    public function reachedMemoryLimit(): bool
     {
-        if (null === $this->limit) {
+        // When no limit is given, we'll never reach any limit.
+        if (null === $this->memoryLimit) {
             return false;
         }
 
-        return count($this->cache) >= $this->limit;
+        return count($this->cache) >= $this->memoryLimit;
     }
 
     /**
