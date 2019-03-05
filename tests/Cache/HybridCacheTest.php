@@ -3,9 +3,7 @@
 namespace Maatwebsite\Excel\Tests\Cache;
 
 use Illuminate\Cache\ArrayStore;
-use Illuminate\Cache\FileStore;
 use Illuminate\Cache\Repository;
-use Illuminate\Filesystem\Filesystem;
 use Maatwebsite\Excel\Tests\TestCase;
 use Maatwebsite\Excel\Cache\HybridCache;
 use Maatwebsite\Excel\Cache\MemoryCache;
