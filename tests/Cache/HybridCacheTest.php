@@ -3,7 +3,9 @@
 namespace Maatwebsite\Excel\Tests\Cache;
 
 use Illuminate\Cache\ArrayStore;
+use Illuminate\Cache\FileStore;
 use Illuminate\Cache\Repository;
+use Illuminate\Filesystem\Filesystem;
 use Maatwebsite\Excel\Tests\TestCase;
 use Maatwebsite\Excel\Cache\HybridCache;
 use Maatwebsite\Excel\Cache\MemoryCache;
@@ -106,7 +108,7 @@ class HybridCacheTest extends TestCase
         $cache = $this->givenCache($inMemory, $persisted, $memoryLimit);
 
         // Setting a 4th value will reach the memory limit
-        $cache->set('A4', 'A4-value');
+        $cache->set('A4', 'A4-value', 10000);
 
         // Nothing in memory anymore
         $this->assertEquals([], array_filter($this->memory->getMultiple(['A1', 'A2', 'A3', 'A4'])));
@@ -147,7 +149,7 @@ class HybridCacheTest extends TestCase
         $cache->setMultiple([
             'A4' => 'A4-value',
             'A5' => 'A5-value',
-        ]);
+        ], 10000);
 
         // Nothing in memory anymore
         $this->assertEquals([], array_filter($this->memory->getMultiple(['A1', 'A2', 'A3', 'A4', 'A5'])));
@@ -186,8 +188,10 @@ class HybridCacheTest extends TestCase
         $this->memory = new MemoryCache($memoryLimit);
         $this->memory->setMultiple($memory);
 
-        $this->cache = new Repository(new ArrayStore());
-        $this->cache->setMultiple($persisted);
+        $store = new ArrayStore();
+        $store->putMany($persisted, 10000);
+
+        $this->cache = new Repository($store);
 
         return new HybridCache(
             $this->cache,

@@ -27,10 +27,10 @@
     "opis/closure": "^3.1"
   },
   "require-dev": {
-    "phpunit/phpunit": "^8.0",
+    "phpunit/phpunit": "~6.0",
     "mockery/mockery": "^1.1",
-    "orchestra/testbench": "^3.8",
-    "orchestra/database": "^3.8",
+    "orchestra/testbench": "^3.5",
+    "orchestra/database": "^3.5",
     "predis/predis": "^1.1"
   },
   "autoload": {
