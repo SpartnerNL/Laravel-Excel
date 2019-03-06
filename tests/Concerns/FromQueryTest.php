@@ -2,7 +2,9 @@
 
 namespace Maatwebsite\Excel\Tests\Concerns;
 
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Tests\Data\Stubs\FromGroupUsersQueuedQueryExport;
 use Maatwebsite\Excel\Tests\TestCase;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\Group;
@@ -59,6 +61,24 @@ class FromQueryTest extends TestCase
 
         $allUsers = $export->query()->get()->map(function (User $user) {
             return array_values($user->toArray());
+        })->toArray();
+
+        $this->assertEquals($allUsers, $contents);
+    }
+
+    /**
+     * @test
+     */
+    public function can_export_from_relation_query_queued()
+    {
+        $export = new FromGroupUsersQueuedQueryExport();
+
+        $export->queue('from-query-store.xlsx');
+
+        $contents = $this->readAsArray(__DIR__ . '/../Data/Disks/Local/from-query-store.xlsx', 'Xlsx');
+
+        $allUsers = $export->query()->get()->map(function($row) use ($export) {
+            return $export->map($row);
         })->toArray();
 
         $this->assertEquals($allUsers, $contents);
