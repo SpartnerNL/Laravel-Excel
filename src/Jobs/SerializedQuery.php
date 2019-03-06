@@ -3,11 +3,11 @@
 namespace Maatwebsite\Excel\Jobs;
 
 use Closure;
-use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Facades\DB;
 use Opis\Closure\SerializableClosure;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 
 class SerializedQuery
