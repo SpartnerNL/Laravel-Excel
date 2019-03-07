@@ -11,6 +11,7 @@ use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Events\BeforeImport;
 use Maatwebsite\Excel\Files\TemporaryFile;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Maatwebsite\Excel\Config\Configuration;
 use PhpOffice\PhpSpreadsheet\Reader\IReader;
 use Maatwebsite\Excel\Factories\ReaderFactory;
 use PhpOffice\PhpSpreadsheet\Reader\Exception;
@@ -60,8 +61,6 @@ class Reader
      */
     public function __construct(TemporaryFileFactory $temporaryFileFactory, TransactionHandler $transaction)
     {
-        $this->setDefaultValueBinder();
-
         $this->transaction          = $transaction;
         $this->temporaryFileFactory = $temporaryFileFactory;
     }
@@ -169,18 +168,6 @@ class Reader
     public function getDelegate()
     {
         return $this->spreadsheet;
-    }
-
-    /**
-     * @return $this
-     */
-    public function setDefaultValueBinder(): self
-    {
-        Cell::setValueBinder(
-            app(config('excel.value_binder.default', DefaultValueBinder::class))
-        );
-
-        return $this;
     }
 
     /**
@@ -316,11 +303,23 @@ class Reader
      */
     private function garbageCollect()
     {
-        $this->setDefaultValueBinder();
+        $this->resetValueBinder();
 
         // Force garbage collecting
         unset($this->sheetImports, $this->spreadsheet);
 
         $this->currentFile->delete();
+    }
+
+    /**
+     * @return $this
+     */
+    private function resetValueBinder(): self
+    {
+        Cell::setValueBinder(
+            Configuration::getDefaultValueBinder()
+        );
+
+        return $this;
     }
 }

@@ -5,7 +5,10 @@ namespace Maatwebsite\Excel;
 use Illuminate\Support\Collection;
 use Illuminate\Support\ServiceProvider;
 use Maatwebsite\Excel\Files\Filesystem;
+use Maatwebsite\Excel\Cache\CacheManager;
+use Maatwebsite\Excel\Config\Configuration;
 use Maatwebsite\Excel\Mixins\StoreCollection;
+use Maatwebsite\Excel\Config\SettingsProvider;
 use Maatwebsite\Excel\Console\ExportMakeCommand;
 use Maatwebsite\Excel\Console\ImportMakeCommand;
 use Maatwebsite\Excel\Mixins\DownloadCollection;
@@ -19,22 +22,6 @@ class ExcelServiceProvider extends ServiceProvider
     /**
      * {@inheritdoc}
      */
-    public function boot()
-    {
-        if ($this->app->runningInConsole()) {
-            if ($this->app instanceof LumenApplication) {
-                $this->app->configure('excel');
-            } else {
-                $this->publishes([
-                    $this->getConfigFile() => config_path('excel.php'),
-                ], 'config');
-            }
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function register()
     {
         $this->mergeConfigFrom(
@@ -42,22 +29,66 @@ class ExcelServiceProvider extends ServiceProvider
             'excel'
         );
 
+        $this->bindManagers();
+        $this->bindFactories();
+        $this->bindServices();
+        $this->bindAliases();
+        $this->bindMixins();
+
+        $this->commands([
+            ExportMakeCommand::class,
+            ImportMakeCommand::class,
+        ]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function boot()
+    {
+        if (!$this->app instanceof LumenApplication && $this->app->runningInConsole()) {
+            $this->publishes([
+                $this->getConfigFile() => config_path('excel.php'),
+            ], 'config');
+        }
+
+        $this->app->booted(function () {
+            $this->app->make(SettingsProvider::class)->provide();
+        });
+    }
+
+    /**
+     * Bind managers.
+     */
+    private function bindManagers()
+    {
+        $this->app->bind(CacheManager::class, function () {
+            return new CacheManager($this->app);
+        });
+
         $this->app->bind(TransactionManager::class, function () {
             return new TransactionManager($this->app);
         });
+    }
 
-        $this->app->bind(TransactionHandler::class, function () {
-            return $this->app->make(TransactionManager::class)->driver();
-        });
-
+    /**
+     * Bind factories.
+     */
+    private function bindFactories()
+    {
         $this->app->bind(TemporaryFileFactory::class, function () {
             return new TemporaryFileFactory(
-                config('excel.temporary_files.local_path', config('excel.exports.temp_path', storage_path('framework/laravel-excel'))),
-                config('excel.temporary_files.remote_disk')
-
+                Configuration::getLocalTemporaryPath(),
+                Configuration::getRemoteTemporaryDisk()
             );
         });
+    }
 
+    /**
+     * Bind services.
+     */
+    private function bindServices()
+    {
         $this->app->bind(Filesystem::class, function () {
             return new Filesystem($this->app->make('filesystem'));
         });
@@ -70,24 +101,35 @@ class ExcelServiceProvider extends ServiceProvider
                 $this->app->make(Filesystem::class)
             );
         });
+    }
+
+    /**
+     * Bind aliases.
+     */
+    private function bindAliases()
+    {
+        $this->app->bind(TransactionHandler::class, function () {
+            return $this->app->make(TransactionManager::class)->driver();
+        });
 
         $this->app->alias('excel', Excel::class);
         $this->app->alias('excel', Exporter::class);
         $this->app->alias('excel', Importer::class);
+    }
 
+    /**
+     * Bind mixins.
+     */
+    private function bindMixins()
+    {
         Collection::mixin(new DownloadCollection);
         Collection::mixin(new StoreCollection);
-
-        $this->commands([
-            ExportMakeCommand::class,
-            ImportMakeCommand::class,
-        ]);
     }
 
     /**
      * @return string
      */
-    protected function getConfigFile(): string
+    private function getConfigFile(): string
     {
         return __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'excel.php';
     }

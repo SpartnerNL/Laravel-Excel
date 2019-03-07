@@ -68,6 +68,28 @@ class FromQueryTest extends TestCase
     /**
      * @test
      */
+    public function can_export_from_query_with_batch_caching()
+    {
+        config()->set('excel.cache.driver', 'batch');
+
+        $export = new FromUsersQueryExport;
+
+        $response = $export->store('from-query-store.xlsx');
+
+        $this->assertTrue($response);
+
+        $contents = $this->readAsArray(__DIR__ . '/../Data/Disks/Local/from-query-store.xlsx', 'Xlsx');
+
+        $allUsers = $export->query()->get()->map(function (User $user) {
+            return array_values($user->toArray());
+        })->toArray();
+
+        $this->assertEquals($allUsers, $contents);
+    }
+
+    /**
+     * @test
+     */
     public function can_export_from_relation_query_queued()
     {
         $export = new FromGroupUsersQueuedQueryExport();

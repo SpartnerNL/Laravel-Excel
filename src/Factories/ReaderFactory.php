@@ -8,6 +8,7 @@ use Maatwebsite\Excel\Files\TemporaryFile;
 use PhpOffice\PhpSpreadsheet\Reader\IReader;
 use PhpOffice\PhpSpreadsheet\Reader\Exception;
 use Maatwebsite\Excel\Concerns\MapsCsvSettings;
+use PhpOffice\PhpSpreadsheet\Reader\BaseReader;
 use Maatwebsite\Excel\Concerns\WithCustomCsvSettings;
 use Maatwebsite\Excel\Exceptions\NoTypeDetectedException;
 
@@ -25,6 +26,7 @@ class ReaderFactory
      */
     public static function make($import, TemporaryFile $file, string $readerType = null): IReader
     {
+        /** @var IReader|BaseReader $reader */
         $reader = IOFactory::createReader(
             $readerType ?: static::identify($file)
         );
