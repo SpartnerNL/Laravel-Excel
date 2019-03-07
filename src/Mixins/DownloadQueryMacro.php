@@ -2,19 +2,18 @@
 
 namespace Maatwebsite\Excel\Mixins;
 
-use Illuminate\Database\Eloquent\Builder;
-use Maatwebsite\Excel\Concerns\Exportable;
-use Maatwebsite\Excel\Concerns\FromQuery;
-use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Sheet;
+use Illuminate\Database\Eloquent\Builder;
+use Maatwebsite\Excel\Concerns\FromQuery;
+use Maatwebsite\Excel\Concerns\Exportable;
+use Maatwebsite\Excel\Concerns\WithHeadings;
 
 class DownloadQueryMacro
 {
     public function __invoke()
     {
         return function (string $fileName, string $writerType = null, $withHeadings = false) {
-            $export = new class($this, $withHeadings) implements FromQuery, WithHeadings
-            {
+            $export = new class($this, $withHeadings) implements FromQuery, WithHeadings {
                 use Exportable;
 
                 /**

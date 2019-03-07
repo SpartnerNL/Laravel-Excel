@@ -2,21 +2,21 @@
 
 namespace Maatwebsite\Excel;
 
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 use Illuminate\Support\ServiceProvider;
 use Maatwebsite\Excel\Files\Filesystem;
+use Illuminate\Database\Eloquent\Builder;
 use Maatwebsite\Excel\Cache\CacheManager;
 use Maatwebsite\Excel\Config\Configuration;
-use Maatwebsite\Excel\Mixins\DownloadQueryMacro;
-use Maatwebsite\Excel\Mixins\StoreCollectionMixin;
+use Maatwebsite\Excel\Mixins\StoreQueryMacro;
 use Maatwebsite\Excel\Config\SettingsProvider;
 use Maatwebsite\Excel\Console\ExportMakeCommand;
 use Maatwebsite\Excel\Console\ImportMakeCommand;
-use Maatwebsite\Excel\Mixins\DownloadCollectionMixin;
+use Maatwebsite\Excel\Mixins\DownloadQueryMacro;
 use Maatwebsite\Excel\Files\TemporaryFileFactory;
 use Laravel\Lumen\Application as LumenApplication;
-use Maatwebsite\Excel\Mixins\StoreQueryMacro;
+use Maatwebsite\Excel\Mixins\StoreCollectionMixin;
+use Maatwebsite\Excel\Mixins\DownloadCollectionMixin;
 use Maatwebsite\Excel\Transactions\TransactionHandler;
 use Maatwebsite\Excel\Transactions\TransactionManager;
 
