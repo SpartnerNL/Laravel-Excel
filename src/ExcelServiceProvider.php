@@ -2,18 +2,21 @@
 
 namespace Maatwebsite\Excel;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 use Illuminate\Support\ServiceProvider;
 use Maatwebsite\Excel\Files\Filesystem;
 use Maatwebsite\Excel\Cache\CacheManager;
 use Maatwebsite\Excel\Config\Configuration;
-use Maatwebsite\Excel\Mixins\StoreCollection;
+use Maatwebsite\Excel\Mixins\DownloadQueryMacro;
+use Maatwebsite\Excel\Mixins\StoreCollectionMixin;
 use Maatwebsite\Excel\Config\SettingsProvider;
 use Maatwebsite\Excel\Console\ExportMakeCommand;
 use Maatwebsite\Excel\Console\ImportMakeCommand;
-use Maatwebsite\Excel\Mixins\DownloadCollection;
+use Maatwebsite\Excel\Mixins\DownloadCollectionMixin;
 use Maatwebsite\Excel\Files\TemporaryFileFactory;
 use Laravel\Lumen\Application as LumenApplication;
+use Maatwebsite\Excel\Mixins\StoreQueryMacro;
 use Maatwebsite\Excel\Transactions\TransactionHandler;
 use Maatwebsite\Excel\Transactions\TransactionManager;
 
@@ -122,8 +125,10 @@ class ExcelServiceProvider extends ServiceProvider
      */
     private function bindMixins()
     {
-        Collection::mixin(new DownloadCollection);
-        Collection::mixin(new StoreCollection);
+        Collection::mixin(new DownloadCollectionMixin);
+        Collection::mixin(new StoreCollectionMixin);
+        Builder::macro('downloadExcel', (new DownloadQueryMacro)());
+        Builder::macro('storeExcel', (new StoreQueryMacro())());
     }
 
     /**

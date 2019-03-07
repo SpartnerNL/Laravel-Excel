@@ -2,21 +2,19 @@
 
 namespace Maatwebsite\Excel\Mixins;
 
-use Maatwebsite\Excel\Sheet;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\Exportable;
-use Illuminate\Contracts\Support\Arrayable;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\FromCollection;
 
-class DownloadCollection
+class StoreCollectionMixin
 {
     /**
      * @return callable
      */
-    public function downloadExcel()
+    public function storeExcel()
     {
-        return function (string $fileName, string $writerType = null, $withHeadings = false) {
+        return function (string $filePath, string $disk = null, string $writerType = null, $withHeadings = false) {
             $export = new class($this, $withHeadings) implements FromCollection, WithHeadings {
                 use Exportable;
 
@@ -32,12 +30,12 @@ class DownloadCollection
 
                 /**
                  * @param Collection $collection
-                 * @param bool       $withHeading
+                 * @param bool       $withHeadings
                  */
-                public function __construct(Collection $collection, bool $withHeading = false)
+                public function __construct(Collection $collection, bool $withHeadings = false)
                 {
                     $this->collection   = $collection->toBase();
-                    $this->withHeadings = $withHeading;
+                    $this->withHeadings = $withHeadings;
                 }
 
                 /**
@@ -53,21 +51,11 @@ class DownloadCollection
                  */
                 public function headings(): array
                 {
-                    if (!$this->withHeadings) {
-                        return [];
-                    }
-
-                    $firstRow = $this->collection->first();
-
-                    if ($firstRow instanceof Arrayable || \is_object($firstRow)) {
-                        return array_keys(Sheet::mapArraybleRow($firstRow));
-                    }
-
-                    return $this->collection->collapse()->keys()->all();
+                    return $this->withHeadings ? $this->collection->collapse()->keys()->all() : [];
                 }
             };
 
-            return $export->download($fileName, $writerType);
+            return $export->store($filePath, $disk, $writerType);
         };
     }
 }
