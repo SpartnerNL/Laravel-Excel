@@ -8,7 +8,6 @@ use Maatwebsite\Excel\Files\Filesystem;
 use Illuminate\Database\Eloquent\Builder;
 use Maatwebsite\Excel\Cache\CacheManager;
 use Maatwebsite\Excel\Config\Configuration;
-use Maatwebsite\Excel\Mixins\StoreCollection;
 use Maatwebsite\Excel\Mixins\StoreQueryMacro;
 use Maatwebsite\Excel\Config\SettingsProvider;
 use Maatwebsite\Excel\Console\ExportMakeCommand;
