@@ -6,7 +6,7 @@ use Maatwebsite\Excel\Excel;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Tests\TestCase;
 
-class StoreCollectionTest extends TestCase
+class StoreCollectionMixinTest extends TestCase
 {
     /**
      * @test

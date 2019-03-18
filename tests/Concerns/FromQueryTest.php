@@ -10,6 +10,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Maatwebsite\Excel\Tests\Data\Stubs\FromUsersQueryExport;
 use Maatwebsite\Excel\Tests\Data\Stubs\FromNonEloquentQueryExport;
 use Maatwebsite\Excel\Tests\Data\Stubs\FromNestedArraysQueryExport;
+use Maatwebsite\Excel\Tests\Data\Stubs\FromGroupUsersQueuedQueryExport;
 use Maatwebsite\Excel\Tests\Data\Stubs\FromUsersQueryExportWithEagerLoad;
 
 class FromQueryTest extends TestCase
@@ -81,6 +82,24 @@ class FromQueryTest extends TestCase
 
         $allUsers = $export->query()->get()->map(function (User $user) {
             return array_values($user->toArray());
+        })->toArray();
+
+        $this->assertEquals($allUsers, $contents);
+    }
+
+    /**
+     * @test
+     */
+    public function can_export_from_relation_query_queued()
+    {
+        $export = new FromGroupUsersQueuedQueryExport();
+
+        $export->queue('from-query-store.xlsx');
+
+        $contents = $this->readAsArray(__DIR__ . '/../Data/Disks/Local/from-query-store.xlsx', 'Xlsx');
+
+        $allUsers = $export->query()->get()->map(function ($row) use ($export) {
+            return $export->map($row);
         })->toArray();
 
         $this->assertEquals($allUsers, $contents);

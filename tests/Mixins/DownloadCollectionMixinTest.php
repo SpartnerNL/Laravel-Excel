@@ -8,7 +8,7 @@ use Maatwebsite\Excel\Tests\TestCase;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
-class DownloadCollectionTest extends TestCase
+class DownloadCollectionMixinTest extends TestCase
 {
     /**
      * @test

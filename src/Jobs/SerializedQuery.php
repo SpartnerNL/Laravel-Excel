@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Opis\Closure\SerializableClosure;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 
 class SerializedQuery
@@ -37,7 +38,7 @@ class SerializedQuery
     public $with = [];
 
     /**
-     * @param Builder|\Illuminate\Database\Eloquent\Builder $builder
+     * @param Builder|Relation|EloquentBuilder $builder
      */
     public function __construct($builder)
     {
@@ -46,7 +47,7 @@ class SerializedQuery
         $this->connection = $builder->getConnection()->getName();
         $this->with       = $this->serializeEagerLoads($builder);
 
-        if ($builder instanceof EloquentBuilder) {
+        if ($builder instanceof EloquentBuilder || $builder instanceof Relation) {
             $this->model = get_class($builder->getModel());
         }
     }
