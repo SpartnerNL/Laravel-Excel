@@ -2,6 +2,7 @@
 
 namespace Maatwebsite\Excel\Factories;
 
+use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Writer\Csv;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -27,7 +28,7 @@ class WriterFactory
     {
         $writer = IOFactory::createWriter($spreadsheet, $writerType);
 
-        if ($export instanceof WithCharts) {
+        if (static::includesCharts($export)) {
             $writer->setIncludeCharts(true);
         }
 
@@ -54,5 +55,27 @@ class WriterFactory
         );
 
         return $writer;
+    }
+
+    /**
+     * @param $export
+     *
+     * @return bool
+     */
+    private static function includesCharts($export): bool
+    {
+        if ($export instanceof WithCharts) {
+            return true;
+        }
+
+        if ($export instanceof WithMultipleSheets) {
+            foreach ($export->sheets() as $sheet) {
+                if ($sheet instanceof WithCharts) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 }
