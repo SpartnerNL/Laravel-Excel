@@ -5,15 +5,13 @@ namespace Maatwebsite\Excel\Mixins;
 use Illuminate\Database\Eloquent\Model;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\Importable;
-use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
 class ImportAsMacro
 {
     public function __invoke()
     {
         return function (string $filename, callable $mapping, string $disk = null, string $readerType = null) {
-            $import = new class(get_class($this->getModel()), $mapping) implements ToModel
-            {
+            $import = new class(get_class($this->getModel()), $mapping) implements ToModel {
                 use Importable;
 
                 /**

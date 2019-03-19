@@ -2,15 +2,14 @@
 
 namespace Maatwebsite\Excel;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\ServiceProvider;
 use Maatwebsite\Excel\Files\Filesystem;
 use Illuminate\Database\Eloquent\Builder;
 use Maatwebsite\Excel\Cache\CacheManager;
+use Maatwebsite\Excel\Mixins\ImportMacro;
 use Maatwebsite\Excel\Config\Configuration;
 use Maatwebsite\Excel\Mixins\ImportAsMacro;
-use Maatwebsite\Excel\Mixins\ImportMacro;
 use Maatwebsite\Excel\Mixins\StoreQueryMacro;
 use Maatwebsite\Excel\Config\SettingsProvider;
 use Maatwebsite\Excel\Console\ExportMakeCommand;

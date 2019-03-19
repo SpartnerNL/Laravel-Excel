@@ -2,9 +2,9 @@
 
 namespace Maatwebsite\Excel\Tests\Mixins;
 
-use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
 use Maatwebsite\Excel\Tests\TestCase;
+use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ImportAsMacroTest extends TestCase
 {
@@ -37,7 +37,7 @@ class ImportAsMacroTest extends TestCase
         $this->assertCount(2, User::all());
         $this->assertEquals([
             'patrick@maatwebsite.nl',
-            'taylor@laravel.com'
+            'taylor@laravel.com',
         ], User::query()->pluck('email')->all());
     }
 }
