@@ -13,6 +13,7 @@ use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\OnEachRow;
 use Maatwebsite\Excel\Concerns\WithTitle;
 use Maatwebsite\Excel\Events\BeforeSheet;
+use Maatwebsite\Excel\Helpers\CellHelper;
 use PhpOffice\PhpSpreadsheet\Chart\Chart;
 use PhpOffice\PhpSpreadsheet\Reader\Html;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -402,7 +403,7 @@ class Sheet
         }
 
         if ($this->hasRows()) {
-            $startCell = 'A' . ($this->worksheet->getHighestRow() + 1);
+            $startCell = CellHelper::getColumnFromCoordinate($startCell) . ($this->worksheet->getHighestRow() + 1);
         }
 
         $this->worksheet->fromArray($rows, null, $startCell, $strictNullComparison);
@@ -572,7 +573,12 @@ class Sheet
      */
     private function hasRows(): bool
     {
-        return $this->worksheet->cellExists('A1');
+        $startCell = 'A1';
+        if ($this->exportable instanceof WithCustomStartCell) {
+            $startCell = $this->exportable->startCell();
+        }
+
+        return $this->worksheet->cellExists($startCell);
     }
 
     /**

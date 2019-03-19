@@ -2,7 +2,7 @@
 
 namespace Maatwebsite\Excel\Files;
 
-use Illuminate\Contracts\Filesystem\Filesystem;
+use Illuminate\Contracts\Filesystem\Filesystem as IlluminateFilesystem;
 
 /**
  * @method bool get(string $filename)
@@ -13,7 +13,7 @@ use Illuminate\Contracts\Filesystem\Filesystem;
 class Disk
 {
     /**
-     * @var Filesystem
+     * @var IlluminateFilesystem
      */
     protected $disk;
 
@@ -28,11 +28,11 @@ class Disk
     protected $diskOptions;
 
     /**
-     * @param Filesystem  $disk
+     * @param IlluminateFilesystem  $disk
      * @param string|null $name
      * @param array       $diskOptions
      */
-    public function __construct(Filesystem $disk, string $name = null, array $diskOptions = [])
+    public function __construct(IlluminateFilesystem $disk, string $name = null, array $diskOptions = [])
     {
         $this->disk        = $disk;
         $this->name        = $name;
@@ -74,12 +74,17 @@ class Disk
         if (realpath($destination)) {
             $tempStream = fopen($destination, 'rb+');
             $success    = stream_copy_to_stream($readStream, $tempStream) !== false;
-            fclose($tempStream);
+
+            if (is_resource($tempStream)) {
+                fclose($tempStream);
+            }
         } else {
             $success = $this->put($destination, $readStream);
         }
 
-        fclose($readStream);
+        if (is_resource($readStream)) {
+            fclose($readStream);
+        }
 
         return $success;
     }
