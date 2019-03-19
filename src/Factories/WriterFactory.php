@@ -31,7 +31,7 @@ class WriterFactory
     {
         /** @var IWriter|BaseWriter $writer */
         $writer = IOFactory::createWriter($spreadsheet, $writerType);
-        
+
         $writer->setUseDiskCaching(
             Configuration::usesDiskCache()
         );
