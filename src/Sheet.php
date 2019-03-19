@@ -5,6 +5,7 @@ namespace Maatwebsite\Excel;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToArray;
 use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Helpers\CellHelper;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use Maatwebsite\Excel\Concerns\FromView;
 use Maatwebsite\Excel\Events\AfterSheet;
@@ -402,7 +403,7 @@ class Sheet
         }
 
         if ($this->hasRows()) {
-            $startCell = 'A' . ($this->worksheet->getHighestRow() + 1);
+            $startCell = CellHelper::getColumnFromCoordinate($startCell) . ($this->worksheet->getHighestRow() + 1);
         }
 
         $this->worksheet->fromArray($rows, null, $startCell, $strictNullComparison);
@@ -572,7 +573,12 @@ class Sheet
      */
     private function hasRows(): bool
     {
-        return $this->worksheet->cellExists('A1');
+        $startCell = 'A1';
+        if ($this->exportable instanceof WithCustomStartCell) {
+            $startCell = $this->exportable->startCell();
+        }
+
+        return $this->worksheet->cellExists($startCell);
     }
 
     /**
