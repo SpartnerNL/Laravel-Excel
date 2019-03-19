@@ -61,7 +61,10 @@ abstract class TemporaryFile
         }
 
         $this->put($readStream);
-        fclose($readStream);
+
+        if (is_resource($readStream)) {
+            fclose($readStream);
+        }
 
         return $this->sync();
     }
