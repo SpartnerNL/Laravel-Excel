@@ -95,10 +95,16 @@ class Excel implements Exporter, Importer
             return $this->queue($export, $filePath, $diskName, $writerType, $diskOptions);
         }
 
-        return $this->filesystem->disk($diskName, $diskOptions)->copy(
-            $this->export($export, $filePath, $writerType),
+        $temporaryFile = $this->export($export, $filePath, $writerType);
+
+        $exported = $this->filesystem->disk($diskName, $diskOptions)->copy(
+            $temporaryFile,
             $filePath
         );
+
+        $temporaryFile->delete();
+
+        return $exported;
     }
 
     /**
