@@ -6,6 +6,7 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Writer\Csv;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use Maatwebsite\Excel\Concerns\WithCharts;
+use PhpOffice\PhpSpreadsheet\Writer\Html;
 use PhpOffice\PhpSpreadsheet\Writer\IWriter;
 use Maatwebsite\Excel\Concerns\MapsCsvSettings;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
@@ -30,6 +31,10 @@ class WriterFactory
 
         if (static::includesCharts($export)) {
             $writer->setIncludeCharts(true);
+        }
+
+        if ($writer instanceof Html && $export instanceof WithMultipleSheets) {
+            $writer->writeAllSheets();
         }
 
         if ($writer instanceof Csv) {
