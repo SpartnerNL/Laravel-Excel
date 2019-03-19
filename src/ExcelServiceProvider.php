@@ -2,12 +2,15 @@
 
 namespace Maatwebsite\Excel;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\ServiceProvider;
 use Maatwebsite\Excel\Files\Filesystem;
 use Illuminate\Database\Eloquent\Builder;
 use Maatwebsite\Excel\Cache\CacheManager;
 use Maatwebsite\Excel\Config\Configuration;
+use Maatwebsite\Excel\Mixins\ImportAsMacro;
+use Maatwebsite\Excel\Mixins\ImportMacro;
 use Maatwebsite\Excel\Mixins\StoreQueryMacro;
 use Maatwebsite\Excel\Config\SettingsProvider;
 use Maatwebsite\Excel\Console\ExportMakeCommand;
@@ -129,6 +132,8 @@ class ExcelServiceProvider extends ServiceProvider
         Collection::mixin(new StoreCollectionMixin);
         Builder::macro('downloadExcel', (new DownloadQueryMacro)());
         Builder::macro('storeExcel', (new StoreQueryMacro())());
+        Builder::macro('import', (new ImportMacro())());
+        Builder::macro('importAs', (new ImportAsMacro())());
     }
 
     /**
