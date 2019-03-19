@@ -83,4 +83,12 @@ class Row
     {
         return $this->row->getRowIndex();
     }
+
+    /**
+     * @return bool
+     */
+    public function isEmpty(): bool
+    {
+        return count(array_filter($this->toArray(null, false, false))) === 0;
+    }
 }

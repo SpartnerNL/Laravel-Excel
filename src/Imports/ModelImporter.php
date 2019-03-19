@@ -2,6 +2,7 @@
 
 namespace Maatwebsite\Excel\Imports;
 
+use Maatwebsite\Excel\Concerns\SkipsEmptyRows;
 use Maatwebsite\Excel\Row;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithMapping;
@@ -40,22 +41,24 @@ class ModelImporter
         foreach ($worksheet->getRowIterator($startRow, $endRow) as $spreadSheetRow) {
             $i++;
 
-            $row      = new Row($spreadSheetRow, $headingRow);
-            $rowArray = $row->toArray(null, $import instanceof WithCalculatedFormulas);
+            $row = new Row($spreadSheetRow, $headingRow);
+            if (!$import instanceof SkipsEmptyRows || ($import instanceof SkipsEmptyRows && !$row->isEmpty())) {
+                $rowArray = $row->toArray(null, $import instanceof WithCalculatedFormulas);
 
-            if ($import instanceof WithMapping) {
-                $rowArray = $import->map($rowArray);
-            }
+                if ($import instanceof WithMapping) {
+                    $rowArray = $import->map($rowArray);
+                }
 
-            $this->manager->add(
-                $row->getIndex(),
-                $rowArray
-            );
+                $this->manager->add(
+                    $row->getIndex(),
+                    $rowArray
+                );
 
-            // Flush each batch.
-            if (($i % $batchSize) === 0) {
-                $this->manager->flush($import, $batchSize > 1);
-                $i = 0;
+                // Flush each batch.
+                if (($i % $batchSize) === 0) {
+                    $this->manager->flush($import, $batchSize > 1);
+                    $i = 0;
+                }
             }
 
             if ($import instanceof WithProgressBar) {

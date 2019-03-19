@@ -3,6 +3,7 @@
 namespace Maatwebsite\Excel;
 
 use Illuminate\Support\Collection;
+use Maatwebsite\Excel\Concerns\SkipsEmptyRows;
 use Maatwebsite\Excel\Concerns\ToArray;
 use Maatwebsite\Excel\Concerns\ToModel;
 use PhpOffice\PhpSpreadsheet\IOFactory;
@@ -249,7 +250,11 @@ class Sheet
         if ($import instanceof OnEachRow) {
             $headingRow = HeadingRowExtractor::extract($this->worksheet, $import);
             foreach ($this->worksheet->getRowIterator()->resetStart($startRow ?? 1) as $row) {
-                $import->onRow(new Row($row, $headingRow));
+                $row = new Row($row, $headingRow);
+
+                if (!$import instanceof SkipsEmptyRows || ($import instanceof SkipsEmptyRows && !$row->isEmpty())) {
+                    $import->onRow($row);
+                }
 
                 if ($import instanceof WithProgressBar) {
                     $import->getConsoleOutput()->progressAdvance();
@@ -280,7 +285,13 @@ class Sheet
 
         $rows = [];
         foreach ($this->worksheet->getRowIterator($startRow, $endRow) as $row) {
-            $row = (new Row($row, $headingRow))->toArray($nullValue, $calculateFormulas, $formatData);
+            $row = new Row($row, $headingRow);
+
+            if ($import instanceof SkipsEmptyRows && $row->isEmpty()) {
+                continue;
+            }
+
+            $row = $row->toArray($nullValue, $calculateFormulas, $formatData);
 
             if ($import instanceof WithMapping) {
                 $row = $import->map($row);
