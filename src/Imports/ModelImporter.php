@@ -2,10 +2,10 @@
 
 namespace Maatwebsite\Excel\Imports;
 
-use Maatwebsite\Excel\Concerns\SkipsEmptyRows;
 use Maatwebsite\Excel\Row;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithMapping;
+use Maatwebsite\Excel\Concerns\SkipsEmptyRows;
 use Maatwebsite\Excel\Concerns\WithProgressBar;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
