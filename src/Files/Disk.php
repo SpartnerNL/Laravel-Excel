@@ -78,7 +78,6 @@ class Disk
             if (is_resource($tempStream)) {
                 fclose($tempStream);
             }
-
         } else {
             $success = $this->put($destination, $readStream);
         }
