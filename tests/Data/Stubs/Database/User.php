@@ -15,7 +15,7 @@ class User extends Model
     /**
      * @var array
      */
-    protected $hidden = ['password', 'email_verified_at'];
+    protected $hidden = ['password', 'email_verified_at', 'group_id'];
 
     /**
      * @return BelongsToMany
@@ -23,5 +23,13 @@ class User extends Model
     public function groups(): BelongsToMany
     {
         return $this->belongsToMany(Group::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function group()
+    {
+        return $this->belongsTo(Group::class);
     }
 }
