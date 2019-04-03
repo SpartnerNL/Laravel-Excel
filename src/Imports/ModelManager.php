@@ -2,11 +2,6 @@
 
 namespace Maatwebsite\Excel\Imports;
 
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Maatwebsite\Excel\Imports\Persistence\CascadePersistManager;
-use Maatwebsite\Excel\Transactions\TransactionHandler;
 use Throwable;
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
@@ -16,6 +11,7 @@ use Maatwebsite\Excel\Concerns\WithValidation;
 use Maatwebsite\Excel\Validators\RowValidator;
 use Maatwebsite\Excel\Exceptions\RowSkippedException;
 use Maatwebsite\Excel\Validators\ValidationException;
+use Maatwebsite\Excel\Imports\Persistence\CascadePersistManager;
 
 class ModelManager
 {

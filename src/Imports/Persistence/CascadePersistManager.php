@@ -2,11 +2,11 @@
 
 namespace Maatwebsite\Excel\Imports\Persistence;
 
+use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Transactions\TransactionHandler;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class CascadePersistManager
 {
@@ -84,7 +84,7 @@ class CascadePersistManager
         // With belongs to, we first need to save all relations,
         // so we can use their foreign key to attach to the relation.
         foreach ($models as $model) {
-            
+
             // Cascade any relations that this child model may have.
             if (!$this->save($model)) {
                 return false;
