@@ -2,9 +2,11 @@
 
 namespace Maatwebsite\Excel\Tests\Concerns;
 
+use Exception;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Events\AfterImport;
 use Maatwebsite\Excel\Events\BeforeImport;
+use Maatwebsite\Excel\Events\ImportFailed;
 use Maatwebsite\Excel\Reader;
 use PhpOffice\PhpSpreadsheet\Reader\IReader;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -21,6 +23,7 @@ use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\Group;
+use Throwable;
 
 class WithChunkReadingTest extends TestCase
 {
@@ -399,5 +402,60 @@ class WithChunkReadingTest extends TestCase
 
         $this->assertCount(10, DB::getQueryLog());
         DB::connection()->disableQueryLog();
+    }
+
+    /**
+     * @test
+     */
+    public function can_catch_job_failed_in_chunks()
+    {
+        $import = new class implements ToModel, WithChunkReading, WithEvents
+        {
+            use Importable;
+
+            public $failed = false;
+
+            /**
+             * @param  array  $row
+             *
+             * @return Model|null
+             */
+            public function model(array $row)
+            {
+                throw new Exception('Something went wrong in the chunk');
+            }
+
+            /**
+             * @return int
+             */
+            public function chunkSize(): int
+            {
+                return 1;
+            }
+
+            /**
+             * @return array
+             */
+            public function registerEvents(): array
+            {
+                return [
+                    ImportFailed::class => function (ImportFailed $event) {
+                        Assert::assertInstanceOf(Throwable::class, $event->getException());
+                        Assert::assertEquals('Something went wrong in the chunk', $event->e->getMessage());
+
+                        $this->failed = true;
+                    },
+                ];
+            }
+        };
+
+        try {
+            $import->import('import-users.xlsx');
+        } catch (Throwable $e) {
+            $this->assertInstanceOf(Exception::class, $e);
+            $this->assertEquals('Something went wrong in the chunk', $e->getMessage());
+        }
+
+        $this->assertTrue($import->failed, 'ImportFailed event was not called.');
     }
 }

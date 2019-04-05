@@ -4,6 +4,7 @@ namespace Maatwebsite\Excel;
 
 use InvalidArgumentException;
 use Illuminate\Support\Collection;
+use Maatwebsite\Excel\Events\ImportFailed;
 use Maatwebsite\Excel\Transactions\TransactionManager;
 use PhpOffice\PhpSpreadsheet\Cell\Cell;
 use Maatwebsite\Excel\Events\AfterImport;
@@ -25,6 +26,7 @@ use Maatwebsite\Excel\Transactions\TransactionHandler;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Maatwebsite\Excel\Exceptions\SheetNotFoundException;
 use Maatwebsite\Excel\Exceptions\NoTypeDetectedException;
+use Throwable;
 
 class Reader
 {
@@ -101,18 +103,23 @@ class Reader
             return (new ChunkReader)->read($import, $this, $this->currentFile);
         }
 
-        $this->loadSpreadsheet($import, $this->reader);
+        try {
+            $this->loadSpreadsheet($import, $this->reader);
 
-        ($this->transaction)(function () use ($import) {
-            foreach ($this->sheetImports as $index => $sheetImport) {
-                if ($sheet = $this->getSheet($import, $sheetImport, $index)) {
-                    $sheet->import($sheetImport, $sheet->getStartRow($sheetImport));
-                    $sheet->disconnect();
+            ($this->transaction)(function () use ($import) {
+                foreach ($this->sheetImports as $index => $sheetImport) {
+                    if ($sheet = $this->getSheet($import, $sheetImport, $index)) {
+                        $sheet->import($sheetImport, $sheet->getStartRow($sheetImport));
+                        $sheet->disconnect();
+                    }
                 }
-            }
-        });
+            });
 
-        $this->afterImport($import);
+            $this->afterImport($import);
+        } catch (Throwable $e) {
+            $this->raise(new ImportFailed($e));
+            throw $e;
+        }
 
         return $this;
     }

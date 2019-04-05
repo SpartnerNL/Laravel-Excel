@@ -18,6 +18,7 @@ use Maatwebsite\Excel\Concerns\WithProgressBar;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 use Maatwebsite\Excel\Imports\HeadingRowExtractor;
+use Throwable;
 
 class ChunkReader
 {
@@ -50,6 +51,7 @@ class ChunkReader
 
             for ($currentRow = $startRow; $currentRow <= $totalRows[$name]; $currentRow += $chunkSize) {
                 $jobs->push(new ReadChunk(
+                    $import,
                     $reader->getPhpSpreadsheetReader(),
                     $temporaryFile,
                     $name,
@@ -67,7 +69,14 @@ class ChunkReader
         }
 
         $jobs->each(function ($job) {
-            dispatch_now($job);
+            try {
+                dispatch_now($job);
+            } catch (Throwable $e) {
+                if (method_exists($job, 'failed')) {
+                    $job->failed($e);
+                }
+                throw $e;
+            }
         });
 
         if ($import instanceof WithProgressBar) {

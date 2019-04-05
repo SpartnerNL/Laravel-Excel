@@ -2,13 +2,16 @@
 
 namespace Maatwebsite\Excel\Jobs;
 
+use Maatwebsite\Excel\Events\ImportFailed;
+use Maatwebsite\Excel\HasEventBus;
 use Maatwebsite\Excel\Reader;
 use Illuminate\Bus\Queueable;
 use Maatwebsite\Excel\Concerns\WithEvents;
+use Throwable;
 
 class AfterImportJob
 {
-    use Queueable;
+    use Queueable, HasEventBus;
 
     /**
      * @var WithEvents
@@ -41,5 +44,16 @@ class AfterImportJob
         }
 
         $this->reader->afterImport($this->import);
+    }
+
+    /**
+     * @param  Throwable  $e
+     */
+    public function failed(Throwable $e)
+    {
+        if ($this->import instanceof WithEvents) {
+            $this->registerListeners($this->import->registerEvents());
+            $this->raise(new ImportFailed($e));
+        }
     }
 }
