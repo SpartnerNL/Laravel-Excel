@@ -7,8 +7,8 @@ use Maatwebsite\Excel\Events\AfterImport;
 use Maatwebsite\Excel\Events\BeforeSheet;
 use Maatwebsite\Excel\Events\BeforeExport;
 use Maatwebsite\Excel\Events\BeforeImport;
-use Maatwebsite\Excel\Events\BeforeWriting;
 use Maatwebsite\Excel\Events\ImportFailed;
+use Maatwebsite\Excel\Events\BeforeWriting;
 
 trait RegistersEventListeners
 {
