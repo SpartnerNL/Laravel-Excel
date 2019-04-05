@@ -2,6 +2,12 @@
 
 namespace Maatwebsite\Excel\Tests\Concerns;
 
+use Maatwebsite\Excel\Concerns\WithEvents;
+use Maatwebsite\Excel\Events\AfterImport;
+use Maatwebsite\Excel\Events\BeforeImport;
+use Maatwebsite\Excel\Reader;
+use PhpOffice\PhpSpreadsheet\Reader\IReader;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PHPUnit\Framework\Assert;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Tests\TestCase;
@@ -26,7 +32,7 @@ class WithChunkReadingTest extends TestCase
         parent::setUp();
 
         $this->loadLaravelMigrations(['--database' => 'testing']);
-        $this->loadMigrationsFrom(dirname(__DIR__) . '/Data/Stubs/Database/Migrations');
+        $this->loadMigrationsFrom(dirname(__DIR__).'/Data/Stubs/Database/Migrations');
     }
 
     /**
@@ -36,11 +42,15 @@ class WithChunkReadingTest extends TestCase
     {
         DB::connection()->enableQueryLog();
 
-        $import = new class implements ToModel, WithChunkReading {
+        $import = new class implements ToModel, WithChunkReading, WithEvents
+        {
             use Importable;
 
+            public $before = false;
+            public $after = false;
+
             /**
-             * @param array $row
+             * @param  array  $row
              *
              * @return Model|null
              */
@@ -60,12 +70,36 @@ class WithChunkReadingTest extends TestCase
             {
                 return 1;
             }
+
+            /**
+             * @return array
+             */
+            public function registerEvents(): array
+            {
+                return [
+                    BeforeImport::class => function (BeforeImport $event) {
+                        Assert::assertInstanceOf(Reader::class, $event->reader);
+                        Assert::assertInstanceOf(Spreadsheet::class, $event->reader->getDelegate());
+                        Assert::assertInstanceOf(IReader::class, $event->reader->getPhpSpreadsheetReader());
+                        $this->before = true;
+                    },
+                    AfterImport::class  => function (AfterImport $event) {
+                        Assert::assertInstanceOf(Reader::class, $event->reader);
+                        Assert::assertInstanceOf(Spreadsheet::class, $event->reader->getDelegate());
+                        Assert::assertInstanceOf(IReader::class, $event->reader->getPhpSpreadsheetReader());
+                        $this->after = true;
+                    },
+                ];
+            }
         };
 
         $import->import('import-users.xlsx');
 
         $this->assertCount(2, DB::getQueryLog());
         DB::connection()->disableQueryLog();
+
+        $this->assertTrue($import->before, 'BeforeImport was not called.');
+        $this->assertTrue($import->after, 'AfterImport was not called.');
     }
 
     /**
@@ -75,18 +109,19 @@ class WithChunkReadingTest extends TestCase
     {
         DB::connection()->enableQueryLog();
 
-        $import = new class implements ToModel, WithChunkReading, WithBatchInserts {
+        $import = new class implements ToModel, WithChunkReading, WithBatchInserts
+        {
             use Importable;
 
             /**
-             * @param array $row
+             * @param  array  $row
              *
              * @return Model|null
              */
             public function model(array $row)
             {
                 return new Group([
-                    'name'  => $row[0],
+                    'name' => $row[0],
                 ]);
             }
 
@@ -120,18 +155,19 @@ class WithChunkReadingTest extends TestCase
     {
         DB::connection()->enableQueryLog();
 
-        $import = new class implements ToModel, WithChunkReading, WithBatchInserts, WithHeadingRow {
+        $import = new class implements ToModel, WithChunkReading, WithBatchInserts, WithHeadingRow
+        {
             use Importable;
 
             /**
-             * @param array $row
+             * @param  array  $row
              *
              * @return Model|null
              */
             public function model(array $row)
             {
                 return new Group([
-                    'name'  => $row['name'],
+                    'name' => $row['name'],
                 ]);
             }
 
@@ -165,18 +201,19 @@ class WithChunkReadingTest extends TestCase
     {
         DB::connection()->enableQueryLog();
 
-        $import = new class implements ToModel, WithChunkReading, WithBatchInserts {
+        $import = new class implements ToModel, WithChunkReading, WithBatchInserts
+        {
             use Importable;
 
             /**
-             * @param array $row
+             * @param  array  $row
              *
              * @return Model|null
              */
             public function model(array $row)
             {
                 return new Group([
-                    'name'  => $row[0],
+                    'name' => $row[0],
                 ]);
             }
 
@@ -210,18 +247,19 @@ class WithChunkReadingTest extends TestCase
     {
         DB::connection()->enableQueryLog();
 
-        $import = new class implements ToModel, WithChunkReading, WithBatchInserts {
+        $import = new class implements ToModel, WithChunkReading, WithBatchInserts
+        {
             use Importable;
 
             /**
-             * @param array $row
+             * @param  array  $row
              *
              * @return Model|null
              */
             public function model(array $row)
             {
                 return new Group([
-                    'name'  => $row[0],
+                    'name' => $row[0],
                 ]);
             }
 
@@ -253,13 +291,14 @@ class WithChunkReadingTest extends TestCase
      */
     public function can_import_to_array_in_chunks()
     {
-        $import = new class implements ToArray, WithChunkReading {
+        $import = new class implements ToArray, WithChunkReading
+        {
             use Importable;
 
             public $called = 0;
 
             /**
-             * @param array $array
+             * @param  array  $array
              */
             public function array(array $array)
             {
@@ -289,7 +328,8 @@ class WithChunkReadingTest extends TestCase
     {
         DB::connection()->enableQueryLog();
 
-        $import = new class implements WithMultipleSheets, WithChunkReading {
+        $import = new class implements WithMultipleSheets, WithChunkReading
+        {
             use Importable;
 
             /**
@@ -306,16 +346,17 @@ class WithChunkReadingTest extends TestCase
             public function sheets(): array
             {
                 return [
-                    new class implements ToModel, WithBatchInserts {
+                    new class implements ToModel, WithBatchInserts
+                    {
                         /**
-                         * @param array $row
+                         * @param  array  $row
                          *
                          * @return Model|null
                          */
                         public function model(array $row)
                         {
                             return new Group([
-                                'name'  => $row[0],
+                                'name' => $row[0],
                             ]);
                         }
 
@@ -328,16 +369,17 @@ class WithChunkReadingTest extends TestCase
                         }
                     },
 
-                    new class implements ToModel, WithBatchInserts {
+                    new class implements ToModel, WithBatchInserts
+                    {
                         /**
-                         * @param array $row
+                         * @param  array  $row
                          *
                          * @return Model|null
                          */
                         public function model(array $row)
                         {
                             return new Group([
-                                'name'  => $row[0],
+                                'name' => $row[0],
                             ]);
                         }
 
