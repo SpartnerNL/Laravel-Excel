@@ -2,12 +2,12 @@
 
 namespace Maatwebsite\Excel\Jobs;
 
-use Maatwebsite\Excel\Events\ImportFailed;
-use Maatwebsite\Excel\HasEventBus;
-use Maatwebsite\Excel\Reader;
-use Illuminate\Bus\Queueable;
-use Maatwebsite\Excel\Concerns\WithEvents;
 use Throwable;
+use Illuminate\Bus\Queueable;
+use Maatwebsite\Excel\Reader;
+use Maatwebsite\Excel\HasEventBus;
+use Maatwebsite\Excel\Concerns\WithEvents;
+use Maatwebsite\Excel\Events\ImportFailed;
 
 class AfterImportJob
 {

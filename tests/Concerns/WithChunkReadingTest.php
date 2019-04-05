@@ -3,27 +3,27 @@
 namespace Maatwebsite\Excel\Tests\Concerns;
 
 use Exception;
-use Maatwebsite\Excel\Concerns\WithEvents;
-use Maatwebsite\Excel\Events\AfterImport;
-use Maatwebsite\Excel\Events\BeforeImport;
-use Maatwebsite\Excel\Events\ImportFailed;
+use Throwable;
 use Maatwebsite\Excel\Reader;
-use PhpOffice\PhpSpreadsheet\Reader\IReader;
-use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PHPUnit\Framework\Assert;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Tests\TestCase;
 use Illuminate\Database\Eloquent\Model;
 use Maatwebsite\Excel\Concerns\ToArray;
 use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Events\AfterImport;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use Maatwebsite\Excel\Concerns\Importable;
+use Maatwebsite\Excel\Concerns\WithEvents;
+use Maatwebsite\Excel\Events\BeforeImport;
+use Maatwebsite\Excel\Events\ImportFailed;
+use PhpOffice\PhpSpreadsheet\Reader\IReader;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\Group;
-use Throwable;
 
 class WithChunkReadingTest extends TestCase
 {
@@ -35,7 +35,7 @@ class WithChunkReadingTest extends TestCase
         parent::setUp();
 
         $this->loadLaravelMigrations(['--database' => 'testing']);
-        $this->loadMigrationsFrom(dirname(__DIR__).'/Data/Stubs/Database/Migrations');
+        $this->loadMigrationsFrom(dirname(__DIR__) . '/Data/Stubs/Database/Migrations');
     }
 
     /**
@@ -45,12 +45,11 @@ class WithChunkReadingTest extends TestCase
     {
         DB::connection()->enableQueryLog();
 
-        $import = new class implements ToModel, WithChunkReading, WithEvents
-        {
+        $import = new class implements ToModel, WithChunkReading, WithEvents {
             use Importable;
 
             public $before = false;
-            public $after = false;
+            public $after  = false;
 
             /**
              * @param  array  $row
@@ -112,8 +111,7 @@ class WithChunkReadingTest extends TestCase
     {
         DB::connection()->enableQueryLog();
 
-        $import = new class implements ToModel, WithChunkReading, WithBatchInserts
-        {
+        $import = new class implements ToModel, WithChunkReading, WithBatchInserts {
             use Importable;
 
             /**
@@ -158,8 +156,7 @@ class WithChunkReadingTest extends TestCase
     {
         DB::connection()->enableQueryLog();
 
-        $import = new class implements ToModel, WithChunkReading, WithBatchInserts, WithHeadingRow
-        {
+        $import = new class implements ToModel, WithChunkReading, WithBatchInserts, WithHeadingRow {
             use Importable;
 
             /**
@@ -204,8 +201,7 @@ class WithChunkReadingTest extends TestCase
     {
         DB::connection()->enableQueryLog();
 
-        $import = new class implements ToModel, WithChunkReading, WithBatchInserts
-        {
+        $import = new class implements ToModel, WithChunkReading, WithBatchInserts {
             use Importable;
 
             /**
@@ -250,8 +246,7 @@ class WithChunkReadingTest extends TestCase
     {
         DB::connection()->enableQueryLog();
 
-        $import = new class implements ToModel, WithChunkReading, WithBatchInserts
-        {
+        $import = new class implements ToModel, WithChunkReading, WithBatchInserts {
             use Importable;
 
             /**
@@ -294,8 +289,7 @@ class WithChunkReadingTest extends TestCase
      */
     public function can_import_to_array_in_chunks()
     {
-        $import = new class implements ToArray, WithChunkReading
-        {
+        $import = new class implements ToArray, WithChunkReading {
             use Importable;
 
             public $called = 0;
@@ -331,8 +325,7 @@ class WithChunkReadingTest extends TestCase
     {
         DB::connection()->enableQueryLog();
 
-        $import = new class implements WithMultipleSheets, WithChunkReading
-        {
+        $import = new class implements WithMultipleSheets, WithChunkReading {
             use Importable;
 
             /**
@@ -349,8 +342,7 @@ class WithChunkReadingTest extends TestCase
             public function sheets(): array
             {
                 return [
-                    new class implements ToModel, WithBatchInserts
-                    {
+                    new class implements ToModel, WithBatchInserts {
                         /**
                          * @param  array  $row
                          *
@@ -372,8 +364,7 @@ class WithChunkReadingTest extends TestCase
                         }
                     },
 
-                    new class implements ToModel, WithBatchInserts
-                    {
+                    new class implements ToModel, WithBatchInserts {
                         /**
                          * @param  array  $row
                          *
@@ -409,8 +400,7 @@ class WithChunkReadingTest extends TestCase
      */
     public function can_catch_job_failed_in_chunks()
     {
-        $import = new class implements ToModel, WithChunkReading, WithEvents
-        {
+        $import = new class implements ToModel, WithChunkReading, WithEvents {
             use Importable;
 
             public $failed = false;

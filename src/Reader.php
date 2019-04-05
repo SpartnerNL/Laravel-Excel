@@ -2,15 +2,15 @@
 
 namespace Maatwebsite\Excel;
 
+use Throwable;
 use InvalidArgumentException;
 use Illuminate\Support\Collection;
-use Maatwebsite\Excel\Events\ImportFailed;
-use Maatwebsite\Excel\Transactions\TransactionManager;
 use PhpOffice\PhpSpreadsheet\Cell\Cell;
 use Maatwebsite\Excel\Events\AfterImport;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Events\BeforeImport;
+use Maatwebsite\Excel\Events\ImportFailed;
 use Maatwebsite\Excel\Files\TemporaryFile;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use PhpOffice\PhpSpreadsheet\Reader\IReader;
@@ -26,7 +26,6 @@ use Maatwebsite\Excel\Transactions\TransactionHandler;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Maatwebsite\Excel\Exceptions\SheetNotFoundException;
 use Maatwebsite\Excel\Exceptions\NoTypeDetectedException;
-use Throwable;
 
 class Reader
 {
@@ -207,6 +206,113 @@ class Reader
     }
 
     /**
+     * @param  object  $import
+     */
+    public function loadSpreadsheet($import)
+    {
+        $this->sheetImports = $this->buildSheetImports($import);
+
+        $this->readSpreadsheet();
+
+        // When no multiple sheets, use the main import object
+        // for each loaded sheet in the spreadsheet
+        if (!$import instanceof WithMultipleSheets) {
+            $this->sheetImports = array_fill(0, $this->spreadsheet->getSheetCount(), $import);
+        }
+
+        $this->beforeImport($import);
+    }
+
+    public function readSpreadsheet()
+    {
+        $this->spreadsheet = $this->reader->load(
+            $this->currentFile->getLocalPath()
+        );
+    }
+
+    /**
+     * @param  object  $import
+     */
+    public function beforeImport($import)
+    {
+        $this->raise(new BeforeImport($this, $import));
+    }
+
+    /**
+     * @param  object  $import
+     */
+    public function afterImport($import)
+    {
+        $this->raise(new AfterImport($this, $import));
+
+        $this->garbageCollect();
+    }
+
+    /**
+     * @return IReader
+     */
+    public function getPhpSpreadsheetReader(): IReader
+    {
+        return $this->reader;
+    }
+
+    /**
+     * @param  object  $import
+     *
+     * @return array
+     */
+    public function getWorksheets($import): array
+    {
+        // Csv doesn't have worksheets.
+        if (!method_exists($this->reader, 'listWorksheetNames')) {
+            return ['Worksheet' => $import];
+        }
+
+        $worksheets     = [];
+        $worksheetNames = $this->reader->listWorksheetNames($this->currentFile->getLocalPath());
+        if ($import instanceof WithMultipleSheets) {
+            $sheetImports = $import->sheets();
+
+            // Load specific sheets.
+            if (method_exists($this->reader, 'setLoadSheetsOnly')) {
+                $this->reader->setLoadSheetsOnly(array_keys($sheetImports));
+            }
+
+            foreach ($sheetImports as $index => $sheetImport) {
+                // Translate index to name.
+                if (is_numeric($index)) {
+                    $index = $worksheetNames[$index] ?? $index;
+                }
+
+                // Specify with worksheet name should have which import.
+                $worksheets[$index] = $sheetImport;
+            }
+        } else {
+            // Each worksheet the same import class.
+            foreach ($worksheetNames as $name) {
+                $worksheets[$name] = $import;
+            }
+        }
+
+        return $worksheets;
+    }
+
+    /**
+     * @return array
+     */
+    public function getTotalRows(): array
+    {
+        $info = $this->reader->listWorksheetInfo($this->currentFile->getLocalPath());
+
+        $totalRows = [];
+        foreach ($info as $sheet) {
+            $totalRows[$sheet['worksheetName']] = $sheet['totalRows'];
+        }
+
+        return $totalRows;
+    }
+
+    /**
      * @param $import
      * @param $sheetImport
      * @param $index
@@ -301,49 +407,6 @@ class Reader
     }
 
     /**
-     * @param  object  $import
-     */
-    public function loadSpreadsheet($import)
-    {
-        $this->sheetImports = $this->buildSheetImports($import);
-
-        $this->readSpreadsheet();
-
-        // When no multiple sheets, use the main import object
-        // for each loaded sheet in the spreadsheet
-        if (!$import instanceof WithMultipleSheets) {
-            $this->sheetImports = array_fill(0, $this->spreadsheet->getSheetCount(), $import);
-        }
-
-        $this->beforeImport($import);
-    }
-
-    public function readSpreadsheet()
-    {
-        $this->spreadsheet = $this->reader->load(
-            $this->currentFile->getLocalPath()
-        );
-    }
-
-    /**
-     * @param  object  $import
-     */
-    public function beforeImport($import)
-    {
-        $this->raise(new BeforeImport($this, $import));
-    }
-
-    /**
-     * @param  object  $import
-     */
-    public function afterImport($import)
-    {
-        $this->raise(new AfterImport($this, $import));
-
-        $this->garbageCollect();
-    }
-
-    /**
      * Garbage collect.
      */
     private function garbageCollect()
@@ -354,69 +417,5 @@ class Reader
         unset($this->sheetImports, $this->spreadsheet);
 
         $this->currentFile->delete();
-    }
-
-    /**
-     * @return IReader
-     */
-    public function getPhpSpreadsheetReader(): IReader
-    {
-        return $this->reader;
-    }
-
-    /**
-     * @param  object  $import
-     *
-     * @return array
-     */
-    public function getWorksheets($import): array
-    {
-        // Csv doesn't have worksheets.
-        if (!method_exists($this->reader, 'listWorksheetNames')) {
-            return ['Worksheet' => $import];
-        }
-
-        $worksheets     = [];
-        $worksheetNames = $this->reader->listWorksheetNames($this->currentFile->getLocalPath());
-        if ($import instanceof WithMultipleSheets) {
-            $sheetImports = $import->sheets();
-
-            // Load specific sheets.
-            if (method_exists($this->reader, 'setLoadSheetsOnly')) {
-                $this->reader->setLoadSheetsOnly(array_keys($sheetImports));
-            }
-
-            foreach ($sheetImports as $index => $sheetImport) {
-                // Translate index to name.
-                if (is_numeric($index)) {
-                    $index = $worksheetNames[$index] ?? $index;
-                }
-
-                // Specify with worksheet name should have which import.
-                $worksheets[$index] = $sheetImport;
-            }
-        } else {
-            // Each worksheet the same import class.
-            foreach ($worksheetNames as $name) {
-                $worksheets[$name] = $import;
-            }
-        }
-
-        return $worksheets;
-    }
-
-    /**
-     * @return array
-     */
-    public function getTotalRows(): array
-    {
-        $info = $this->reader->listWorksheetInfo($this->currentFile->getLocalPath());
-
-        $totalRows = [];
-        foreach ($info as $sheet) {
-            $totalRows[$sheet['worksheetName']] = $sheet['totalRows'];
-        }
-
-        return $totalRows;
     }
 }
