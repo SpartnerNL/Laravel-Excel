@@ -5,6 +5,7 @@ namespace Maatwebsite\Excel\Tests\Mixins;
 use Maatwebsite\Excel\Excel;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Tests\TestCase;
+use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
 
 class StoreCollectionTest extends TestCase
 {
@@ -77,5 +78,23 @@ class StoreCollectionTest extends TestCase
             ['test', 'test'],
             ['test', 'test'],
         ], collect($array)->except(0)->values()->all());
+    }
+
+    /** @test */
+    public function can_store_a_model_collection_with_headings_as_excel()
+    {
+        $this->withFactories(__DIR__ . '/../Data/Stubs/Database/Factories');
+
+        $collection = factory(User::class, 2)->make();
+
+        $response = $collection->storeExcel('model-collection-headers-store.xlsx', null, Excel::XLSX, true);
+
+        $file = __DIR__ . '/../Data/Disks/Local/model-collection-headers-store.xlsx';
+
+        $this->assertTrue($response);
+        $this->assertFileExists($file);
+
+        $array = $this->readAsArray($file, Excel::XLSX);
+        $this->assertEquals(['name', 'email', 'remember_token'], collect($array)->first());
     }
 }
