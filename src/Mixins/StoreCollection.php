@@ -34,7 +34,7 @@ class StoreCollection
                  */
                 public function __construct(Collection $collection, bool $withHeadings = false)
                 {
-                    $this->collection = $collection->toBase();
+                    $this->collection   = $collection->toBase();
                     $this->withHeadings = $withHeadings;
                 }
 
