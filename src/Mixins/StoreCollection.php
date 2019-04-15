@@ -34,7 +34,7 @@ class StoreCollection
                  */
                 public function __construct(Collection $collection, bool $withHeadings = false)
                 {
-                    $this->collection   = $collection->toBase();
+                    $this->collection = $collection->toBase();
                     $this->withHeadings = $withHeadings;
                 }
 
@@ -51,7 +51,13 @@ class StoreCollection
                  */
                 public function headings(): array
                 {
-                    return $this->withHeadings ? $this->collection->collapse()->keys()->all() : [];
+                    if (!$this->withHeadings) {
+                        return [];
+                    }
+
+                    return is_array($first = $this->collection->first())
+                        ? $this->collection->collapse()->keys()->all()
+                        : array_keys($first->toArray());
                 }
             };
 
