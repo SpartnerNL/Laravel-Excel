@@ -3,6 +3,7 @@
 namespace Maatwebsite\Excel\Tests\Concerns;
 
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Excel;
 use Maatwebsite\Excel\Tests\TestCase;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Illuminate\Contracts\Support\Responsable;
@@ -86,5 +87,23 @@ class ExportableTest extends TestCase
         $response = $export->toResponse(new Request());
 
         $this->assertInstanceOf(BinaryFileResponse::class, $response);
+    }
+
+    /**
+     * @test
+     */
+    public function has_customized_header()
+    {
+        $export = new class {
+            use Exportable;
+        };
+        $response = $export->download(
+            'name.csv',
+            Excel::CSV,
+            [
+                'Content-Type' => 'text/csv',
+            ]
+        );
+        $this->assertEquals('text/csv', $response->headers->get('Content-Type'));
     }
 }
