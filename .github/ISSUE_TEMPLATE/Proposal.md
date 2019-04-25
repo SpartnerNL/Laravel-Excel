@@ -24,9 +24,9 @@ Please prefix your issue with: [PROPOSAL].
 
 <!-- Please be as exact and complete as possible when proving version numbers -->
 
-* PHP version: <!-- put your PHP version here -->
-* Laravel version: <!-- put your Laravel version here -->
-* Package version: <!-- put Laravel Excel package version here -->
+* PHP version: <!-- put your FULL PHP version here -->
+* Laravel version: <!-- put your FULL Laravel version here -->
+* Package version: <!-- put FULL Laravel Excel package version here -->
 
 ### Description
 
