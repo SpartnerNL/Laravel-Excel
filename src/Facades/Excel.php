@@ -10,9 +10,9 @@ use Illuminate\Foundation\Bus\PendingDispatch;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 /**
- * @method static BinaryFileResponse download(object $export, string $fileName, string $writerType = null)
- * @method static bool store(object $export, string $filePath, string $disk = null, string $writerType = null)
- * @method static PendingDispatch queue(object $export, string $filePath, string $disk = null, string $writerType = null)
+ * @method static BinaryFileResponse download(object $export, string $fileName, string $writerType = null, array $headers = [])
+ * @method static bool store(object $export, string $filePath, string $disk = null, string $writerType = null, $diskOptions = [])
+ * @method static PendingDispatch queue(object $export, string $filePath, string $disk = null, string $writerType = null, $diskOptions = [])
  * @method static BaseExcel import(object $import, string $filePath, string $disk = null, string $readerType = null)
  * @method static array toArray(object $import, string $filePath, string $disk = null, string $readerType = null)
  * @method static Collection toCollection(object $import, string $filePath, string $disk = null, string $readerType = null)
