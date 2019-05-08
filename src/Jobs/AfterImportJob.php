@@ -8,8 +8,9 @@ use Maatwebsite\Excel\Reader;
 use Maatwebsite\Excel\HasEventBus;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Events\ImportFailed;
+use Illuminate\Contracts\Queue\ShouldQueue;
 
-class AfterImportJob
+class AfterImportJob implements ShouldQueue
 {
     use Queueable, HasEventBus;
 
