@@ -1,22 +1,4 @@
-<p align="center">
-  <a href="https://laravel-excel.com">
-    <img alt="Laravel Excel" src="https://user-images.githubusercontent.com/7728097/43685313-ff1e2110-98b0-11e8-8b50-900a2b262f0f.png" />
-  </a>
-</p>
-
-<h1 align="center">
-  Laravel Excel 3.1
-</h1>
-
-<h3 align="center">
-  :muscle: :fire: :rocket:
-</h3>
-
-<p align="center">
-  <strong>Supercharged Excel exports and imports</strong><br>
-  A simple, but elegant wrapper around <a href="https://phpspreadsheet.readthedocs.io/">PhpSpreadsheet</a> with the goal of simplifying
-exports and imports. 
-</p>
+![banner](https://user-images.githubusercontent.com/7728097/57462628-7c16f780-7279-11e9-98a9-7d3fadc1de44.jpg)
 
 <p align="center">
   <a href="https://travis-ci.org/Maatwebsite/Laravel-Excel">
@@ -40,12 +22,14 @@ exports and imports.
   </a>
 </p>
 
-<div style="text-align:center;">
-  
-| 🎥 COURSE: "Advanced Laravel Excel". Grab your early-bird discount now! https://course.laravel-excel.com |
-| --- |
+<br>
 
-</div>
+  <h3 align="center">Supercharged Excel exports and imports</h3><br>
+  
+  <p align="center">
+  A simple, but elegant wrapper around <a href="https://phpspreadsheet.readthedocs.io/" target="_blank">PhpSpreadsheet</a> for <a href="https://laravel.com" target="_blank">Laravel</a> with the goal of simplifying
+exports and imports. 
+</p>
 
 <h4 align="center">
   <a href="https://docs.laravel-excel.com/3.1/exports/">Quickstart</a>
@@ -62,6 +46,8 @@ exports and imports.
   <span> · </span>
   <a href="https://docs.laravel-excel.com/3.1/getting-started/support.html">Support</a>
 </h4>
+
+## ✨ Features
 
 - **Easily export collections to Excel.** Supercharge your Laravel collections and export them directly to an Excel or CSV document. Exporting has never been so easy.
 
