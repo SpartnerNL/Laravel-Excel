@@ -1,4 +1,4 @@
-![banner](https://user-images.githubusercontent.com/7728097/57462628-7c16f780-7279-11e9-98a9-7d3fadc1de44.jpg)
+![banner](https://user-images.githubusercontent.com/7728097/57463977-2263fc80-727c-11e9-833d-669d816fb7fb.jpg)
 
 <p align="center">
   <a href="https://travis-ci.org/Maatwebsite/Laravel-Excel">
