@@ -22,6 +22,13 @@
   </a>
 </p>
 
+  <h3 align="center">Supercharged Excel exports and imports</h3>
+  
+  <p align="center">
+  A simple, but elegant <a href="https://laravel.com" target="_blank">Laravel<a/> wrapper around <a href="https://phpspreadsheet.readthedocs.io/" target="_blank">PhpSpreadsheet</a>
+exports and imports. 
+</p>
+
 <h4 align="center">
   <a href="https://docs.laravel-excel.com/3.1/exports/">Quickstart</a>
   <span> · </span>
@@ -37,17 +44,6 @@
   <span> · </span>
   <a href="https://docs.laravel-excel.com/3.1/getting-started/support.html">Support</a>
 </h4>
-
-<br>
-
-  <h3 align="center">Supercharged Excel exports and imports</h3>
-  
-  <p align="center">
-  A simple, but elegant <a href="https://laravel.com" target="_blank">Laravel<a/> wrapper around <a href="https://phpspreadsheet.readthedocs.io/" target="_blank">PhpSpreadsheet</a>
-exports and imports. 
-</p>
-
-<br>
 
 ## ✨ Features
 
