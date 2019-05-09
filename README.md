@@ -22,14 +22,14 @@
   </a>
 </p>
 
-<br>
-
-  <h3 align="center">Supercharged Excel exports and imports</h3><br>
+  <h2 align="center">Supercharged Excel exports and imports</h2>
   
   <p align="center">
   A simple, but elegant wrapper around <a href="https://phpspreadsheet.readthedocs.io/" target="_blank">PhpSpreadsheet</a> for <a href="https://laravel.com" target="_blank">Laravel</a> with the goal of simplifying
 exports and imports. 
 </p>
+
+<br>
 
 <h4 align="center">
   <a href="https://docs.laravel-excel.com/3.1/exports/">Quickstart</a>
