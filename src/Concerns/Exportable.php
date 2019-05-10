@@ -19,8 +19,8 @@ trait Exportable
      */
     public function download(string $fileName = null, string $writerType = null, array $headers = null)
     {
-        $headers  = $headers ?? $this->headers ?? [];
-        $fileName = $fileName ?? $this->fileName ?? null;
+        $headers    = $headers ?? $this->headers ?? [];
+        $fileName   = $fileName ?? $this->fileName ?? null;
         $writerType = $writerType ?? $this->writerType ?? null;
 
         if (null === $fileName) {
