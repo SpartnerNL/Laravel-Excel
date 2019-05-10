@@ -19,7 +19,8 @@ class ExportableTest extends TestCase
         $this->expectException(\Maatwebsite\Excel\Exceptions\NoFilenameGivenException::class);
         $this->expectExceptionMessage('A filename needs to be passed in order to download the export');
 
-        $export = new class {
+        $export = new class
+        {
             use Exportable;
         };
 
@@ -34,7 +35,8 @@ class ExportableTest extends TestCase
         $this->expectException(\Maatwebsite\Excel\Exceptions\NoFilePathGivenException::class);
         $this->expectExceptionMessage('A filepath needs to be passed in order to store the export');
 
-        $export = new class {
+        $export = new class
+        {
             use Exportable;
         };
 
@@ -49,7 +51,8 @@ class ExportableTest extends TestCase
         $this->expectException(\Maatwebsite\Excel\Exceptions\NoFilePathGivenException::class);
         $this->expectExceptionMessage('A filepath needs to be passed in order to store the export');
 
-        $export = new class {
+        $export = new class
+        {
             use Exportable;
         };
 
@@ -64,7 +67,8 @@ class ExportableTest extends TestCase
         $this->expectException(\Maatwebsite\Excel\Exceptions\NoFilenameGivenException::class);
         $this->expectExceptionMessage('A filename needs to be passed in order to download the export');
 
-        $export = new class implements Responsable {
+        $export = new class implements Responsable
+        {
             use Exportable;
         };
 
@@ -76,7 +80,8 @@ class ExportableTest extends TestCase
      */
     public function is_responsable()
     {
-        $export = new class implements Responsable {
+        $export = new class implements Responsable
+        {
             use Exportable;
 
             protected $fileName = 'export.xlsx';
@@ -92,9 +97,10 @@ class ExportableTest extends TestCase
     /**
      * @test
      */
-    public function has_customized_header()
+    public function can_have_customized_header()
     {
-        $export = new class {
+        $export   = new class
+        {
             use Exportable;
         };
         $response = $export->download(
@@ -104,6 +110,26 @@ class ExportableTest extends TestCase
                 'Content-Type' => 'text/csv',
             ]
         );
+        $this->assertEquals('text/csv', $response->headers->get('Content-Type'));
+    }
+
+    /**
+     * @test
+     */
+    public function can_set_custom_headers_in_export_class()
+    {
+        $export   = new class
+        {
+            use Exportable;
+
+            protected $fileName = 'name.csv';
+            protected $writerType = Excel::CSV;
+            protected $headers = [
+                'Content-Type' => 'text/csv',
+            ];
+        };
+        $response = $export->toResponse(request());
+
         $this->assertEquals('text/csv', $response->headers->get('Content-Type'));
     }
 }
