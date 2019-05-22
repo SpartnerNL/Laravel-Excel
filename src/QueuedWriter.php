@@ -93,7 +93,7 @@ class QueuedWriter
                 $jobs = $jobs->merge($this->exportCollection($sheetExport, $temporaryFile, $writerType, $sheetIndex));
             } elseif ($sheetExport instanceof FromQuery) {
                 $jobs = $jobs->merge($this->exportQuery($sheetExport, $temporaryFile, $writerType, $sheetIndex));
-            } elseif ( $sheetExport instanceof FromView) {
+            } elseif ($sheetExport instanceof FromView) {
                 $jobs = $jobs->merge($this->exportView($sheetExport, $temporaryFile, $writerType, $sheetIndex));
             }
 

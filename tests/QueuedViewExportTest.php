@@ -24,7 +24,7 @@ class QueuedViewExportTest extends TestCase
      */
     public function can_queue_an_export()
     {
-        $users = factory(User::class)->times(100)->create([]);
+        $users  = factory(User::class)->times(100)->create([]);
         $export = new SheetForUsersFromView($users);
 
         $export->queue('queued-view-export.xlsx')->chain([
@@ -34,6 +34,5 @@ class QueuedViewExportTest extends TestCase
         $actual = $this->readAsArray(__DIR__ . '/Data/Disks/Local/queued-view-export.xlsx', 'Xlsx');
 
         $this->assertCount(101, $actual);
-
     }
 }
