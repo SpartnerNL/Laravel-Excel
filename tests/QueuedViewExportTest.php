@@ -33,7 +33,7 @@ class QueuedViewExportTest extends TestCase
 
         $actual = $this->readAsArray(__DIR__ . '/Data/Disks/Local/queued-view-export.xlsx', 'Xlsx');
 
-        $this->assertCount(100, $actual);
+        $this->assertCount(101, $actual);
 
     }
 }
