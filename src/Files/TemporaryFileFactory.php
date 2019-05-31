@@ -17,6 +17,11 @@ class TemporaryFileFactory
     private $temporaryDisk;
 
     /**
+     * @var string|null
+     */
+    private $fileExtension;
+
+   /**
      * @param string|null $temporaryPath
      * @param string|null $temporaryDisk
      */
@@ -24,6 +29,14 @@ class TemporaryFileFactory
     {
         $this->temporaryPath = $temporaryPath;
         $this->temporaryDisk = $temporaryDisk;
+    }
+
+    /**
+     * @param string|null $fileExtension
+     */
+    public function setFileExtension(string $fileExtension)
+    {
+        $this->fileExtension = $fileExtension;
     }
 
     /**
@@ -73,6 +86,8 @@ class TemporaryFileFactory
      */
     private function generateFilename(): string
     {
-        return 'laravel-excel-' . Str::random(32);
+        $fileExtension = $this->fileExtension ? '.' . $this->fileExtension : '';
+
+        return 'laravel-excel-' . Str::random(32) . $fileExtension;
     }
 }

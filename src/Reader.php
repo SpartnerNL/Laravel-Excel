@@ -393,6 +393,7 @@ class Reader
             Cell::setValueBinder($import);
         }
 
+        $this->temporaryFileFactory->setFileExtension(pathinfo($filePath, PATHINFO_EXTENSION));
         $temporaryFile     = $shouldQueue ? $this->temporaryFileFactory->make() : $this->temporaryFileFactory->makeLocal();
         $this->currentFile = $temporaryFile->copyFrom(
             $filePath,

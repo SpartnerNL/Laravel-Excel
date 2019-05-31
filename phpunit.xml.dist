@@ -10,11 +10,11 @@
          stopOnFailure="false"
 >
     <php>
-        <env name="DB_HOST" value="127.0.0.1"/>
+        <env name="DB_HOST" value="10.0.2.2"/>
         <env name="DB_PORT" value="3306"/>
         <env name="DB_DATABASE" value="laravel_excel"/>
         <env name="DB_USERNAME" value="root"/>
-        <env name="DB_PASSWORD" value=""/>
+        <env name="DB_PASSWORD" value="root"/>
     </php>
     <testsuites>
         <testsuite name="Package Test Suite">
