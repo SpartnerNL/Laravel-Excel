@@ -21,7 +21,7 @@ class TemporaryFileFactory
      */
     private $fileExtension;
 
-   /**
+    /**
      * @param string|null $temporaryPath
      * @param string|null $temporaryDisk
      */

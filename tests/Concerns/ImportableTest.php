@@ -64,8 +64,7 @@ class ImportableTest extends TestCase
      */
     public function can_import_a_simple_csv_file_with_html_tags_inside()
     {
-        $import = new class implements ToArray
-        {
+        $import = new class implements ToArray {
             use Importable;
 
             /**
@@ -76,7 +75,7 @@ class ImportableTest extends TestCase
                 Assert::assertEquals([
                     ['key1', 'A', 'row1'],
                     ['key2', 'B', '<p>row2</p>'],
-                    ['key3', 'C', 'row3',],
+                    ['key3', 'C', 'row3'],
                     ['key4', 'D', 'row4'],
                     ['key5', 'E', 'row5'],
                     ['key6', 'F', '<a href=/url-example">link</a>"'],
