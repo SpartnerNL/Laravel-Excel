@@ -1,20 +1,20 @@
 <?php
 
-namespace Maatwebsite\Excel;
+namespace Seoperin\LaravelExcel;
 
 use Throwable;
 use Illuminate\Support\Collection;
-use Maatwebsite\Excel\Jobs\ReadChunk;
-use Maatwebsite\Excel\Jobs\QueueImport;
-use Maatwebsite\Excel\Concerns\WithLimit;
-use Maatwebsite\Excel\Concerns\WithEvents;
-use Maatwebsite\Excel\Events\BeforeImport;
-use Maatwebsite\Excel\Files\TemporaryFile;
-use Maatwebsite\Excel\Jobs\AfterImportJob;
+use Seoperin\LaravelExcel\Jobs\ReadChunk;
+use Seoperin\LaravelExcel\Jobs\QueueImport;
+use Seoperin\LaravelExcel\Concerns\WithLimit;
+use Seoperin\LaravelExcel\Concerns\WithEvents;
+use Seoperin\LaravelExcel\Events\BeforeImport;
+use Seoperin\LaravelExcel\Files\TemporaryFile;
+use Seoperin\LaravelExcel\Jobs\AfterImportJob;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Maatwebsite\Excel\Concerns\WithProgressBar;
-use Maatwebsite\Excel\Concerns\WithChunkReading;
-use Maatwebsite\Excel\Imports\HeadingRowExtractor;
+use Seoperin\LaravelExcel\Concerns\WithProgressBar;
+use Seoperin\LaravelExcel\Concerns\WithChunkReading;
+use Seoperin\LaravelExcel\Imports\HeadingRowExtractor;
 
 class ChunkReader
 {

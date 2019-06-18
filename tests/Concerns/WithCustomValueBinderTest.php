@@ -1,20 +1,20 @@
 <?php
 
-namespace Maatwebsite\Excel\Tests\Concerns;
+namespace Seoperin\LaravelExcel\Tests\Concerns;
 
 use Carbon\Carbon;
-use Maatwebsite\Excel\Excel;
+use Seoperin\LaravelExcel\Excel;
 use PHPUnit\Framework\Assert;
 use Illuminate\Support\Collection;
-use Maatwebsite\Excel\Tests\TestCase;
-use Maatwebsite\Excel\Concerns\ToArray;
+use Seoperin\LaravelExcel\Tests\TestCase;
+use Seoperin\LaravelExcel\Concerns\ToArray;
 use PhpOffice\PhpSpreadsheet\Cell\Cell;
 use PhpOffice\PhpSpreadsheet\Shared\Date;
-use Maatwebsite\Excel\Concerns\Exportable;
+use Seoperin\LaravelExcel\Concerns\Exportable;
 use PhpOffice\PhpSpreadsheet\Cell\DataType;
-use Maatwebsite\Excel\Concerns\FromCollection;
+use Seoperin\LaravelExcel\Concerns\FromCollection;
 use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
-use Maatwebsite\Excel\Concerns\WithCustomValueBinder;
+use Seoperin\LaravelExcel\Concerns\WithCustomValueBinder;
 use PhpOffice\PhpSpreadsheet\Cell\DefaultValueBinder;
 
 class WithCustomValueBinderTest extends TestCase

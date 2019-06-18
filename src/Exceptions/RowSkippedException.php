@@ -1,10 +1,10 @@
 <?php
 
-namespace Maatwebsite\Excel\Exceptions;
+namespace Seoperin\LaravelExcel\Exceptions;
 
 use Exception;
 use Illuminate\Support\Collection;
-use Maatwebsite\Excel\Validators\Failure;
+use Seoperin\LaravelExcel\Validators\Failure;
 
 class RowSkippedException extends Exception
 {

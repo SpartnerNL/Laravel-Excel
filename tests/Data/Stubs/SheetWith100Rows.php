@@ -1,17 +1,17 @@
 <?php
 
-namespace Maatwebsite\Excel\Tests\Data\Stubs;
+namespace Seoperin\LaravelExcel\Tests\Data\Stubs;
 
-use Maatwebsite\Excel\Writer;
+use Seoperin\LaravelExcel\Writer;
 use Illuminate\Support\Collection;
-use Maatwebsite\Excel\Tests\TestCase;
-use Maatwebsite\Excel\Concerns\WithTitle;
-use Maatwebsite\Excel\Concerns\Exportable;
-use Maatwebsite\Excel\Concerns\WithEvents;
-use Maatwebsite\Excel\Events\BeforeWriting;
-use Maatwebsite\Excel\Concerns\FromCollection;
-use Maatwebsite\Excel\Concerns\ShouldAutoSize;
-use Maatwebsite\Excel\Concerns\RegistersEventListeners;
+use Seoperin\LaravelExcel\Tests\TestCase;
+use Seoperin\LaravelExcel\Concerns\WithTitle;
+use Seoperin\LaravelExcel\Concerns\Exportable;
+use Seoperin\LaravelExcel\Concerns\WithEvents;
+use Seoperin\LaravelExcel\Events\BeforeWriting;
+use Seoperin\LaravelExcel\Concerns\FromCollection;
+use Seoperin\LaravelExcel\Concerns\ShouldAutoSize;
+use Seoperin\LaravelExcel\Concerns\RegistersEventListeners;
 
 class SheetWith100Rows implements FromCollection, WithTitle, ShouldAutoSize, WithEvents
 {

@@ -1,20 +1,20 @@
 <?php
 
-namespace Maatwebsite\Excel;
+namespace Seoperin\LaravelExcel;
 
 use PhpOffice\PhpSpreadsheet\Cell\Cell;
 use PhpOffice\PhpSpreadsheet\IOFactory;
-use Maatwebsite\Excel\Concerns\WithTitle;
+use Seoperin\LaravelExcel\Concerns\WithTitle;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use Maatwebsite\Excel\Concerns\WithEvents;
-use Maatwebsite\Excel\Events\BeforeExport;
-use Maatwebsite\Excel\Files\TemporaryFile;
-use Maatwebsite\Excel\Events\BeforeWriting;
-use Maatwebsite\Excel\Factories\WriterFactory;
-use Maatwebsite\Excel\Files\RemoteTemporaryFile;
-use Maatwebsite\Excel\Files\TemporaryFileFactory;
-use Maatwebsite\Excel\Concerns\WithMultipleSheets;
-use Maatwebsite\Excel\Concerns\WithCustomValueBinder;
+use Seoperin\LaravelExcel\Concerns\WithEvents;
+use Seoperin\LaravelExcel\Events\BeforeExport;
+use Seoperin\LaravelExcel\Files\TemporaryFile;
+use Seoperin\LaravelExcel\Events\BeforeWriting;
+use Seoperin\LaravelExcel\Factories\WriterFactory;
+use Seoperin\LaravelExcel\Files\RemoteTemporaryFile;
+use Seoperin\LaravelExcel\Files\TemporaryFileFactory;
+use Seoperin\LaravelExcel\Concerns\WithMultipleSheets;
+use Seoperin\LaravelExcel\Concerns\WithCustomValueBinder;
 
 class Writer
 {

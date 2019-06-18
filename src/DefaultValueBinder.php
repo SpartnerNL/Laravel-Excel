@@ -1,6 +1,6 @@
 <?php
 
-namespace Maatwebsite\Excel;
+namespace Seoperin\LaravelExcel;
 
 use PhpOffice\PhpSpreadsheet\Cell\Cell;
 use PhpOffice\PhpSpreadsheet\Cell\DefaultValueBinder as PhpSpreadsheetDefaultValueBinder;

@@ -1,10 +1,10 @@
 <?php
 
-namespace Maatwebsite\Excel\Tests\Data\Stubs;
+namespace Seoperin\LaravelExcel\Tests\Data\Stubs;
 
-use Maatwebsite\Excel\Concerns\Exportable;
+use Seoperin\LaravelExcel\Concerns\Exportable;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Maatwebsite\Excel\Concerns\WithMultipleSheets;
+use Seoperin\LaravelExcel\Concerns\WithMultipleSheets;
 
 class ShouldQueueExport implements WithMultipleSheets, ShouldQueue
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Maatwebsite\Excel\Tests\Data\Stubs\Database;
+namespace Seoperin\LaravelExcel\Tests\Data\Stubs\Database;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;

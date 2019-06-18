@@ -1,17 +1,17 @@
 <?php
 
-namespace Maatwebsite\Excel\Tests\Concerns;
+namespace Seoperin\LaravelExcel\Tests\Concerns;
 
 use Illuminate\Validation\Rule;
-use Maatwebsite\Excel\Tests\TestCase;
+use Seoperin\LaravelExcel\Tests\TestCase;
 use Illuminate\Database\Eloquent\Model;
-use Maatwebsite\Excel\Concerns\ToModel;
-use Maatwebsite\Excel\Concerns\Importable;
-use Maatwebsite\Excel\Concerns\WithHeadingRow;
-use Maatwebsite\Excel\Concerns\WithValidation;
-use Maatwebsite\Excel\Concerns\WithBatchInserts;
-use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
-use Maatwebsite\Excel\Validators\ValidationException;
+use Seoperin\LaravelExcel\Concerns\ToModel;
+use Seoperin\LaravelExcel\Concerns\Importable;
+use Seoperin\LaravelExcel\Concerns\WithHeadingRow;
+use Seoperin\LaravelExcel\Concerns\WithValidation;
+use Seoperin\LaravelExcel\Concerns\WithBatchInserts;
+use Seoperin\LaravelExcel\Tests\Data\Stubs\Database\User;
+use Seoperin\LaravelExcel\Validators\ValidationException;
 
 class WithValidationTest extends TestCase
 {

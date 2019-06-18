@@ -1,8 +1,8 @@
 <?php
 
-namespace Maatwebsite\Excel\Concerns;
+namespace Seoperin\LaravelExcel\Concerns;
 
-use Maatwebsite\Excel\Row;
+use Seoperin\LaravelExcel\Row;
 
 interface OnEachRow
 {

@@ -1,13 +1,13 @@
 <?php
 
-namespace Maatwebsite\Excel\Tests\Concerns;
+namespace Seoperin\LaravelExcel\Tests\Concerns;
 
 use Illuminate\Support\Collection;
-use Maatwebsite\Excel\Tests\TestCase;
-use Maatwebsite\Excel\Concerns\Exportable;
-use Maatwebsite\Excel\Concerns\WithHeadings;
-use Maatwebsite\Excel\Concerns\FromCollection;
-use Maatwebsite\Excel\Concerns\WithCustomStartCell;
+use Seoperin\LaravelExcel\Tests\TestCase;
+use Seoperin\LaravelExcel\Concerns\Exportable;
+use Seoperin\LaravelExcel\Concerns\WithHeadings;
+use Seoperin\LaravelExcel\Concerns\FromCollection;
+use Seoperin\LaravelExcel\Concerns\WithCustomStartCell;
 
 class WithHeadingsTest extends TestCase
 {

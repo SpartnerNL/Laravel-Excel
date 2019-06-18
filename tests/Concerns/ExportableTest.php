@@ -1,11 +1,11 @@
 <?php
 
-namespace Maatwebsite\Excel\Tests\Concerns;
+namespace Seoperin\LaravelExcel\Tests\Concerns;
 
 use Illuminate\Http\Request;
-use Maatwebsite\Excel\Excel;
-use Maatwebsite\Excel\Tests\TestCase;
-use Maatwebsite\Excel\Concerns\Exportable;
+use Seoperin\LaravelExcel\Excel;
+use Seoperin\LaravelExcel\Tests\TestCase;
+use Seoperin\LaravelExcel\Concerns\Exportable;
 use Illuminate\Contracts\Support\Responsable;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
@@ -16,7 +16,7 @@ class ExportableTest extends TestCase
      */
     public function needs_to_have_a_file_name_when_downloading()
     {
-        $this->expectException(\Maatwebsite\Excel\Exceptions\NoFilenameGivenException::class);
+        $this->expectException(\Seoperin\LaravelExcel\Exceptions\NoFilenameGivenException::class);
         $this->expectExceptionMessage('A filename needs to be passed in order to download the export');
 
         $export = new class {
@@ -31,7 +31,7 @@ class ExportableTest extends TestCase
      */
     public function needs_to_have_a_file_name_when_storing()
     {
-        $this->expectException(\Maatwebsite\Excel\Exceptions\NoFilePathGivenException::class);
+        $this->expectException(\Seoperin\LaravelExcel\Exceptions\NoFilePathGivenException::class);
         $this->expectExceptionMessage('A filepath needs to be passed in order to store the export');
 
         $export = new class {
@@ -46,7 +46,7 @@ class ExportableTest extends TestCase
      */
     public function needs_to_have_a_file_name_when_queuing()
     {
-        $this->expectException(\Maatwebsite\Excel\Exceptions\NoFilePathGivenException::class);
+        $this->expectException(\Seoperin\LaravelExcel\Exceptions\NoFilePathGivenException::class);
         $this->expectExceptionMessage('A filepath needs to be passed in order to store the export');
 
         $export = new class {
@@ -61,7 +61,7 @@ class ExportableTest extends TestCase
      */
     public function responsable_needs_to_have_file_name_configured_inside_the_export()
     {
-        $this->expectException(\Maatwebsite\Excel\Exceptions\NoFilenameGivenException::class);
+        $this->expectException(\Seoperin\LaravelExcel\Exceptions\NoFilenameGivenException::class);
         $this->expectExceptionMessage('A filename needs to be passed in order to download the export');
 
         $export = new class implements Responsable {

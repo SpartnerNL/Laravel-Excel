@@ -1,18 +1,18 @@
 <?php
 
-namespace Maatwebsite\Excel;
+namespace Seoperin\LaravelExcel;
 
 use Illuminate\Support\Collection;
 use Illuminate\Support\ServiceProvider;
-use Maatwebsite\Excel\Files\Filesystem;
-use Maatwebsite\Excel\Mixins\StoreCollection;
-use Maatwebsite\Excel\Console\ExportMakeCommand;
-use Maatwebsite\Excel\Console\ImportMakeCommand;
-use Maatwebsite\Excel\Mixins\DownloadCollection;
-use Maatwebsite\Excel\Files\TemporaryFileFactory;
+use Seoperin\LaravelExcel\Files\Filesystem;
+use Seoperin\LaravelExcel\Mixins\StoreCollection;
+use Seoperin\LaravelExcel\Console\ExportMakeCommand;
+use Seoperin\LaravelExcel\Console\ImportMakeCommand;
+use Seoperin\LaravelExcel\Mixins\DownloadCollection;
+use Seoperin\LaravelExcel\Files\TemporaryFileFactory;
 use Laravel\Lumen\Application as LumenApplication;
-use Maatwebsite\Excel\Transactions\TransactionHandler;
-use Maatwebsite\Excel\Transactions\TransactionManager;
+use Seoperin\LaravelExcel\Transactions\TransactionHandler;
+use Seoperin\LaravelExcel\Transactions\TransactionManager;
 
 class ExcelServiceProvider extends ServiceProvider
 {

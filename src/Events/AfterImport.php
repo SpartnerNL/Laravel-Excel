@@ -1,8 +1,8 @@
 <?php
 
-namespace Maatwebsite\Excel\Events;
+namespace Seoperin\LaravelExcel\Events;
 
-use Maatwebsite\Excel\Reader;
+use Seoperin\LaravelExcel\Reader;
 
 class AfterImport extends Event
 {

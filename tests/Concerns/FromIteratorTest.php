@@ -1,12 +1,12 @@
 <?php
 
-namespace Maatwebsite\Excel\Tests\Concerns;
+namespace Seoperin\LaravelExcel\Tests\Concerns;
 
 use Iterator;
 use ArrayIterator;
-use Maatwebsite\Excel\Tests\TestCase;
-use Maatwebsite\Excel\Concerns\Exportable;
-use Maatwebsite\Excel\Concerns\FromIterator;
+use Seoperin\LaravelExcel\Tests\TestCase;
+use Seoperin\LaravelExcel\Concerns\Exportable;
+use Seoperin\LaravelExcel\Concerns\FromIterator;
 
 class FromIteratorTest extends TestCase
 {

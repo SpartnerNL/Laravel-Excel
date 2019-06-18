@@ -1,10 +1,10 @@
 <?php
 
-namespace Maatwebsite\Excel\Imports;
+namespace Seoperin\LaravelExcel\Imports;
 
-use Maatwebsite\Excel\Row;
-use Maatwebsite\Excel\Concerns\WithStartRow;
-use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use Seoperin\LaravelExcel\Row;
+use Seoperin\LaravelExcel\Concerns\WithStartRow;
+use Seoperin\LaravelExcel\Concerns\WithHeadingRow;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
 class HeadingRowExtractor

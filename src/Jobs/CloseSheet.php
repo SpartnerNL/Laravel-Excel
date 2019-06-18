@@ -1,11 +1,11 @@
 <?php
 
-namespace Maatwebsite\Excel\Jobs;
+namespace Seoperin\LaravelExcel\Jobs;
 
 use Illuminate\Bus\Queueable;
-use Maatwebsite\Excel\Writer;
-use Maatwebsite\Excel\Concerns\WithEvents;
-use Maatwebsite\Excel\Files\TemporaryFile;
+use Seoperin\LaravelExcel\Writer;
+use Seoperin\LaravelExcel\Concerns\WithEvents;
+use Seoperin\LaravelExcel\Files\TemporaryFile;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
 class CloseSheet implements ShouldQueue

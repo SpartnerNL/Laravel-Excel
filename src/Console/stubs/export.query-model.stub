@@ -3,7 +3,7 @@
 namespace DummyNamespace;
 
 use DummyFullModelClass;
-use Maatwebsite\Excel\Concerns\FromQuery;
+use Seoperin\LaravelExcel\Concerns\FromQuery;
 
 class DummyClass implements FromQuery
 {

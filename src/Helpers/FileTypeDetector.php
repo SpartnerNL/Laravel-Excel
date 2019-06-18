@@ -1,9 +1,9 @@
 <?php
 
-namespace Maatwebsite\Excel\Helpers;
+namespace Seoperin\LaravelExcel\Helpers;
 
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Maatwebsite\Excel\Exceptions\NoTypeDetectedException;
+use Seoperin\LaravelExcel\Exceptions\NoTypeDetectedException;
 
 class FileTypeDetector
 {

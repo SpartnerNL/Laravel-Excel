@@ -1,6 +1,6 @@
 <?php
 
-namespace Maatwebsite\Excel;
+namespace Seoperin\LaravelExcel;
 
 use PhpOffice\PhpSpreadsheet\RichText\RichText;
 use PhpOffice\PhpSpreadsheet\Style\NumberFormat;

@@ -1,12 +1,12 @@
 <?php
 
-namespace Maatwebsite\Excel\Tests\Concerns;
+namespace Seoperin\LaravelExcel\Tests\Concerns;
 
-use Maatwebsite\Excel\Row;
+use Seoperin\LaravelExcel\Row;
 use PHPUnit\Framework\Assert;
-use Maatwebsite\Excel\Tests\TestCase;
-use Maatwebsite\Excel\Concerns\OnEachRow;
-use Maatwebsite\Excel\Concerns\Importable;
+use Seoperin\LaravelExcel\Tests\TestCase;
+use Seoperin\LaravelExcel\Concerns\OnEachRow;
+use Seoperin\LaravelExcel\Concerns\Importable;
 
 class OnEachRowTest extends TestCase
 {

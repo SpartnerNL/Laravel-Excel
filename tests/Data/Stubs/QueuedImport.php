@@ -1,14 +1,14 @@
 <?php
 
-namespace Maatwebsite\Excel\Tests\Data\Stubs;
+namespace Seoperin\LaravelExcel\Tests\Data\Stubs;
 
 use Illuminate\Database\Eloquent\Model;
-use Maatwebsite\Excel\Concerns\ToModel;
-use Maatwebsite\Excel\Concerns\Importable;
+use Seoperin\LaravelExcel\Concerns\ToModel;
+use Seoperin\LaravelExcel\Concerns\Importable;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Maatwebsite\Excel\Concerns\WithBatchInserts;
-use Maatwebsite\Excel\Concerns\WithChunkReading;
-use Maatwebsite\Excel\Tests\Data\Stubs\Database\Group;
+use Seoperin\LaravelExcel\Concerns\WithBatchInserts;
+use Seoperin\LaravelExcel\Concerns\WithChunkReading;
+use Seoperin\LaravelExcel\Tests\Data\Stubs\Database\Group;
 
 class QueuedImport implements ShouldQueue, ToModel, WithChunkReading, WithBatchInserts
 {

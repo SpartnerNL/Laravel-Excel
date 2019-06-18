@@ -1,19 +1,19 @@
 <?php
 
-namespace Maatwebsite\Excel\Tests\Concerns;
+namespace Seoperin\LaravelExcel\Tests\Concerns;
 
 use PHPUnit\Framework\Assert;
 use Illuminate\Validation\Rule;
-use Maatwebsite\Excel\Tests\TestCase;
+use Seoperin\LaravelExcel\Tests\TestCase;
 use Illuminate\Database\Eloquent\Model;
-use Maatwebsite\Excel\Concerns\ToModel;
-use Maatwebsite\Excel\Validators\Failure;
-use Maatwebsite\Excel\Concerns\Importable;
-use Maatwebsite\Excel\Concerns\SkipsFailures;
-use Maatwebsite\Excel\Concerns\SkipsOnFailure;
-use Maatwebsite\Excel\Concerns\WithValidation;
-use Maatwebsite\Excel\Concerns\WithBatchInserts;
-use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
+use Seoperin\LaravelExcel\Concerns\ToModel;
+use Seoperin\LaravelExcel\Validators\Failure;
+use Seoperin\LaravelExcel\Concerns\Importable;
+use Seoperin\LaravelExcel\Concerns\SkipsFailures;
+use Seoperin\LaravelExcel\Concerns\SkipsOnFailure;
+use Seoperin\LaravelExcel\Concerns\WithValidation;
+use Seoperin\LaravelExcel\Concerns\WithBatchInserts;
+use Seoperin\LaravelExcel\Tests\Data\Stubs\Database\User;
 
 class SkipsOnFailureTest extends TestCase
 {

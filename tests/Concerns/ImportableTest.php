@@ -1,12 +1,12 @@
 <?php
 
-namespace Maatwebsite\Excel\Tests\Concerns;
+namespace Seoperin\LaravelExcel\Tests\Concerns;
 
 use PHPUnit\Framework\Assert;
-use Maatwebsite\Excel\Importer;
-use Maatwebsite\Excel\Tests\TestCase;
-use Maatwebsite\Excel\Concerns\ToArray;
-use Maatwebsite\Excel\Concerns\Importable;
+use Seoperin\LaravelExcel\Importer;
+use Seoperin\LaravelExcel\Tests\TestCase;
+use Seoperin\LaravelExcel\Concerns\ToArray;
+use Seoperin\LaravelExcel\Concerns\Importable;
 
 class ImportableTest extends TestCase
 {

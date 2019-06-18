@@ -1,12 +1,12 @@
 <?php
 
-namespace Maatwebsite\Excel\Tests\Concerns;
+namespace Seoperin\LaravelExcel\Tests\Concerns;
 
-use Maatwebsite\Excel\Tests\TestCase;
-use Maatwebsite\Excel\Concerns\FromArray;
-use Maatwebsite\Excel\Concerns\Exportable;
-use Maatwebsite\Excel\Concerns\WithMapping;
-use Maatwebsite\Excel\Tests\Data\Stubs\WithMappingExport;
+use Seoperin\LaravelExcel\Tests\TestCase;
+use Seoperin\LaravelExcel\Concerns\FromArray;
+use Seoperin\LaravelExcel\Concerns\Exportable;
+use Seoperin\LaravelExcel\Concerns\WithMapping;
+use Seoperin\LaravelExcel\Tests\Data\Stubs\WithMappingExport;
 
 class WithMappingTest extends TestCase
 {

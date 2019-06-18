@@ -1,6 +1,6 @@
 <?php
 
-namespace Maatwebsite\Excel;
+namespace Seoperin\LaravelExcel;
 
 trait HasEventBus
 {

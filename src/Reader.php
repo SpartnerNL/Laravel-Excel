@@ -1,31 +1,31 @@
 <?php
 
-namespace Maatwebsite\Excel;
+namespace Seoperin\LaravelExcel;
 
 use Throwable;
 use InvalidArgumentException;
 use Illuminate\Support\Collection;
 use PhpOffice\PhpSpreadsheet\Cell\Cell;
-use Maatwebsite\Excel\Events\AfterImport;
+use Seoperin\LaravelExcel\Events\AfterImport;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use Maatwebsite\Excel\Concerns\WithEvents;
-use Maatwebsite\Excel\Events\BeforeImport;
-use Maatwebsite\Excel\Events\ImportFailed;
-use Maatwebsite\Excel\Files\TemporaryFile;
+use Seoperin\LaravelExcel\Concerns\WithEvents;
+use Seoperin\LaravelExcel\Events\BeforeImport;
+use Seoperin\LaravelExcel\Events\ImportFailed;
+use Seoperin\LaravelExcel\Files\TemporaryFile;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use PhpOffice\PhpSpreadsheet\Reader\IReader;
-use Maatwebsite\Excel\Factories\ReaderFactory;
+use Seoperin\LaravelExcel\Factories\ReaderFactory;
 use PhpOffice\PhpSpreadsheet\Reader\Exception;
-use Maatwebsite\Excel\Concerns\WithChunkReading;
-use Maatwebsite\Excel\Files\TemporaryFileFactory;
-use Maatwebsite\Excel\Concerns\SkipsUnknownSheets;
-use Maatwebsite\Excel\Concerns\WithMultipleSheets;
-use Maatwebsite\Excel\Concerns\WithCustomValueBinder;
-use Maatwebsite\Excel\Concerns\WithCalculatedFormulas;
-use Maatwebsite\Excel\Transactions\TransactionHandler;
+use Seoperin\LaravelExcel\Concerns\WithChunkReading;
+use Seoperin\LaravelExcel\Files\TemporaryFileFactory;
+use Seoperin\LaravelExcel\Concerns\SkipsUnknownSheets;
+use Seoperin\LaravelExcel\Concerns\WithMultipleSheets;
+use Seoperin\LaravelExcel\Concerns\WithCustomValueBinder;
+use Seoperin\LaravelExcel\Concerns\WithCalculatedFormulas;
+use Seoperin\LaravelExcel\Transactions\TransactionHandler;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Maatwebsite\Excel\Exceptions\SheetNotFoundException;
-use Maatwebsite\Excel\Exceptions\NoTypeDetectedException;
+use Seoperin\LaravelExcel\Exceptions\SheetNotFoundException;
+use Seoperin\LaravelExcel\Exceptions\NoTypeDetectedException;
 
 class Reader
 {

@@ -1,8 +1,8 @@
 <?php
 
-namespace Maatwebsite\Excel\Imports;
+namespace Seoperin\LaravelExcel\Imports;
 
-use Maatwebsite\Excel\Concerns\WithLimit;
+use Seoperin\LaravelExcel\Concerns\WithLimit;
 
 class EndRowFinder
 {

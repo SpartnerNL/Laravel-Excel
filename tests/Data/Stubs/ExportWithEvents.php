@@ -1,13 +1,13 @@
 <?php
 
-namespace Maatwebsite\Excel\Tests\Data\Stubs;
+namespace Seoperin\LaravelExcel\Tests\Data\Stubs;
 
-use Maatwebsite\Excel\Events\AfterSheet;
-use Maatwebsite\Excel\Events\BeforeSheet;
-use Maatwebsite\Excel\Concerns\Exportable;
-use Maatwebsite\Excel\Concerns\WithEvents;
-use Maatwebsite\Excel\Events\BeforeExport;
-use Maatwebsite\Excel\Events\BeforeWriting;
+use Seoperin\LaravelExcel\Events\AfterSheet;
+use Seoperin\LaravelExcel\Events\BeforeSheet;
+use Seoperin\LaravelExcel\Concerns\Exportable;
+use Seoperin\LaravelExcel\Concerns\WithEvents;
+use Seoperin\LaravelExcel\Events\BeforeExport;
+use Seoperin\LaravelExcel\Events\BeforeWriting;
 
 class ExportWithEvents implements WithEvents
 {

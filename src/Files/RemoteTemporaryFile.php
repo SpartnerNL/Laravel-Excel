@@ -1,6 +1,6 @@
 <?php
 
-namespace Maatwebsite\Excel\Files;
+namespace Seoperin\LaravelExcel\Files;
 
 class RemoteTemporaryFile extends TemporaryFile
 {

@@ -1,9 +1,9 @@
 <?php
 
-namespace Maatwebsite\Excel\Tests\Data\Stubs;
+namespace Seoperin\LaravelExcel\Tests\Data\Stubs;
 
-use Maatwebsite\Excel\Concerns\Exportable;
-use Maatwebsite\Excel\Concerns\WithMultipleSheets;
+use Seoperin\LaravelExcel\Concerns\Exportable;
+use Seoperin\LaravelExcel\Concerns\WithMultipleSheets;
 
 class QueuedExport implements WithMultipleSheets
 {

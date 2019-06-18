@@ -1,6 +1,6 @@
 <?php
 
-namespace Maatwebsite\Excel\Jobs;
+namespace Seoperin\LaravelExcel\Jobs;
 
 use Closure;
 use Illuminate\Support\Facades\DB;

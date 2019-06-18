@@ -1,11 +1,11 @@
 <?php
 
-namespace Maatwebsite\Excel\Tests\Mixins;
+namespace Seoperin\LaravelExcel\Tests\Mixins;
 
-use Maatwebsite\Excel\Excel;
+use Seoperin\LaravelExcel\Excel;
 use Illuminate\Support\Collection;
-use Maatwebsite\Excel\Tests\TestCase;
-use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
+use Seoperin\LaravelExcel\Tests\TestCase;
+use Seoperin\LaravelExcel\Tests\Data\Stubs\Database\User;
 
 class StoreCollectionTest extends TestCase
 {

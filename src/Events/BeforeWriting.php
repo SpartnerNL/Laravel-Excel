@@ -1,8 +1,8 @@
 <?php
 
-namespace Maatwebsite\Excel\Events;
+namespace Seoperin\LaravelExcel\Events;
 
-use Maatwebsite\Excel\Writer;
+use Seoperin\LaravelExcel\Writer;
 
 class BeforeWriting extends Event
 {

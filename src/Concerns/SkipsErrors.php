@@ -1,10 +1,10 @@
 <?php
 
-namespace Maatwebsite\Excel\Concerns;
+namespace Seoperin\LaravelExcel\Concerns;
 
 use Throwable;
 use Illuminate\Support\Collection;
-use Maatwebsite\Excel\Validators\Failure;
+use Seoperin\LaravelExcel\Validators\Failure;
 
 trait SkipsErrors
 {

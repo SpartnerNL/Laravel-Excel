@@ -3,7 +3,7 @@
 namespace DummyNamespace;
 
 use Illuminate\Support\Collection;
-use Maatwebsite\Excel\Concerns\ToCollection;
+use Seoperin\LaravelExcel\Concerns\ToCollection;
 
 class DummyClass implements ToCollection
 {

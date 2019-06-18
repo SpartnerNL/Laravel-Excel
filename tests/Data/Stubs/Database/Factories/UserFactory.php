@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Str;
 use Faker\Generator as Faker;
-use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
+use Seoperin\LaravelExcel\Tests\Data\Stubs\Database\User;
 
 /*
 |--------------------------------------------------------------------------

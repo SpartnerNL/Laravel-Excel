@@ -1,13 +1,13 @@
 <?php
 
-namespace Maatwebsite\Excel\Jobs;
+namespace Seoperin\LaravelExcel\Jobs;
 
 use Throwable;
 use Illuminate\Bus\Queueable;
-use Maatwebsite\Excel\Reader;
-use Maatwebsite\Excel\HasEventBus;
-use Maatwebsite\Excel\Concerns\WithEvents;
-use Maatwebsite\Excel\Events\ImportFailed;
+use Seoperin\LaravelExcel\Reader;
+use Seoperin\LaravelExcel\HasEventBus;
+use Seoperin\LaravelExcel\Concerns\WithEvents;
+use Seoperin\LaravelExcel\Events\ImportFailed;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
 class AfterImportJob implements ShouldQueue

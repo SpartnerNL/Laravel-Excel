@@ -1,16 +1,16 @@
 <?php
 
-namespace Maatwebsite\Excel\Tests;
+namespace Seoperin\LaravelExcel\Tests;
 
 use Illuminate\Support\Collection;
-use Maatwebsite\Excel\Fakes\ExcelFake;
+use Seoperin\LaravelExcel\Fakes\ExcelFake;
 use Illuminate\Database\Eloquent\Model;
-use Maatwebsite\Excel\Concerns\ToModel;
+use Seoperin\LaravelExcel\Concerns\ToModel;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\PendingDispatch;
-use Maatwebsite\Excel\Concerns\FromCollection;
-use Maatwebsite\Excel\Facades\Excel as ExcelFacade;
-use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
+use Seoperin\LaravelExcel\Concerns\FromCollection;
+use Seoperin\LaravelExcel\Facades\Excel as ExcelFacade;
+use Seoperin\LaravelExcel\Tests\Data\Stubs\Database\User;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class ExcelFakeTest extends TestCase

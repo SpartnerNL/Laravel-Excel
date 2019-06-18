@@ -1,13 +1,13 @@
 <?php
 
-namespace Maatwebsite\Excel;
+namespace Seoperin\LaravelExcel;
 
 use Illuminate\Support\Collection;
-use Maatwebsite\Excel\Files\Filesystem;
-use Maatwebsite\Excel\Files\TemporaryFile;
+use Seoperin\LaravelExcel\Files\Filesystem;
+use Seoperin\LaravelExcel\Files\TemporaryFile;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\PendingDispatch;
-use Maatwebsite\Excel\Helpers\FileTypeDetector;
+use Seoperin\LaravelExcel\Helpers\FileTypeDetector;
 
 class Excel implements Exporter, Importer
 {

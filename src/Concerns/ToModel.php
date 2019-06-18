@@ -1,6 +1,6 @@
 <?php
 
-namespace Maatwebsite\Excel\Concerns;
+namespace Seoperin\LaravelExcel\Concerns;
 
 use Illuminate\Database\Eloquent\Model;
 

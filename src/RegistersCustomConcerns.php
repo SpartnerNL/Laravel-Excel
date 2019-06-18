@@ -1,12 +1,12 @@
 <?php
 
-namespace Maatwebsite\Excel;
+namespace Seoperin\LaravelExcel;
 
-use Maatwebsite\Excel\Events\Event;
-use Maatwebsite\Excel\Events\AfterSheet;
-use Maatwebsite\Excel\Events\BeforeSheet;
-use Maatwebsite\Excel\Events\BeforeExport;
-use Maatwebsite\Excel\Events\BeforeWriting;
+use Seoperin\LaravelExcel\Events\Event;
+use Seoperin\LaravelExcel\Events\AfterSheet;
+use Seoperin\LaravelExcel\Events\BeforeSheet;
+use Seoperin\LaravelExcel\Events\BeforeExport;
+use Seoperin\LaravelExcel\Events\BeforeWriting;
 
 trait RegistersCustomConcerns
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Maatwebsite\Excel\Filters;
+namespace Seoperin\LaravelExcel\Filters;
 
 use PhpOffice\PhpSpreadsheet\Reader\IReadFilter;
 

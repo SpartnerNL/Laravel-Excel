@@ -1,11 +1,11 @@
 <?php
 
-namespace Maatwebsite\Excel\Tests;
+namespace Seoperin\LaravelExcel\Tests;
 
-use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
-use Maatwebsite\Excel\Tests\Data\Stubs\AfterQueueExportJob;
-use Maatwebsite\Excel\Tests\Data\Stubs\FromUsersQueryExport;
-use Maatwebsite\Excel\Tests\Data\Stubs\FromUsersQueryExportWithMapping;
+use Seoperin\LaravelExcel\Tests\Data\Stubs\Database\User;
+use Seoperin\LaravelExcel\Tests\Data\Stubs\AfterQueueExportJob;
+use Seoperin\LaravelExcel\Tests\Data\Stubs\FromUsersQueryExport;
+use Seoperin\LaravelExcel\Tests\Data\Stubs\FromUsersQueryExportWithMapping;
 
 class QueuedQueryExportTest extends TestCase
 {

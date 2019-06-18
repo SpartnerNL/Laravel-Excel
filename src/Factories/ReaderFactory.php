@@ -1,15 +1,15 @@
 <?php
 
-namespace Maatwebsite\Excel\Factories;
+namespace Seoperin\LaravelExcel\Factories;
 
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Reader\Csv;
-use Maatwebsite\Excel\Files\TemporaryFile;
+use Seoperin\LaravelExcel\Files\TemporaryFile;
 use PhpOffice\PhpSpreadsheet\Reader\IReader;
 use PhpOffice\PhpSpreadsheet\Reader\Exception;
-use Maatwebsite\Excel\Concerns\MapsCsvSettings;
-use Maatwebsite\Excel\Concerns\WithCustomCsvSettings;
-use Maatwebsite\Excel\Exceptions\NoTypeDetectedException;
+use Seoperin\LaravelExcel\Concerns\MapsCsvSettings;
+use Seoperin\LaravelExcel\Concerns\WithCustomCsvSettings;
+use Seoperin\LaravelExcel\Exceptions\NoTypeDetectedException;
 
 class ReaderFactory
 {

@@ -1,13 +1,13 @@
 <?php
 
-namespace Maatwebsite\Excel\Mixins;
+namespace Seoperin\LaravelExcel\Mixins;
 
-use Maatwebsite\Excel\Sheet;
+use Seoperin\LaravelExcel\Sheet;
 use Illuminate\Support\Collection;
-use Maatwebsite\Excel\Concerns\Exportable;
+use Seoperin\LaravelExcel\Concerns\Exportable;
 use Illuminate\Contracts\Support\Arrayable;
-use Maatwebsite\Excel\Concerns\WithHeadings;
-use Maatwebsite\Excel\Concerns\FromCollection;
+use Seoperin\LaravelExcel\Concerns\WithHeadings;
+use Seoperin\LaravelExcel\Concerns\FromCollection;
 
 class DownloadCollection
 {

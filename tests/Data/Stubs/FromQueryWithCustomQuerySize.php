@@ -1,15 +1,15 @@
 <?php
 
-namespace Maatwebsite\Excel\Tests\Data\Stubs;
+namespace Seoperin\LaravelExcel\Tests\Data\Stubs;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Query\Builder;
-use Maatwebsite\Excel\Concerns\FromQuery;
-use Maatwebsite\Excel\Concerns\Exportable;
+use Seoperin\LaravelExcel\Concerns\FromQuery;
+use Seoperin\LaravelExcel\Concerns\Exportable;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Maatwebsite\Excel\Concerns\WithMapping;
-use Maatwebsite\Excel\Concerns\WithCustomQuerySize;
-use Maatwebsite\Excel\Tests\Data\Stubs\Database\Group;
+use Seoperin\LaravelExcel\Concerns\WithMapping;
+use Seoperin\LaravelExcel\Concerns\WithCustomQuerySize;
+use Seoperin\LaravelExcel\Tests\Data\Stubs\Database\Group;
 
 class FromQueryWithCustomQuerySize implements FromQuery, WithCustomQuerySize, WithMapping, ShouldQueue
 {

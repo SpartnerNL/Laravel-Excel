@@ -1,11 +1,11 @@
 <?php
 
-namespace Maatwebsite\Excel\Tests;
+namespace Seoperin\LaravelExcel\Tests;
 
 use Illuminate\Http\Testing\File;
 use Illuminate\Contracts\Queue\Job;
 use PhpOffice\PhpSpreadsheet\IOFactory;
-use Maatwebsite\Excel\ExcelServiceProvider;
+use Seoperin\LaravelExcel\ExcelServiceProvider;
 use Orchestra\Database\ConsoleServiceProvider;
 use PHPUnit\Framework\Constraint\StringContains;
 use Orchestra\Testbench\TestCase as OrchestraTestCase;

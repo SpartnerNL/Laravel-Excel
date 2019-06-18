@@ -1,15 +1,15 @@
 <?php
 
-namespace Maatwebsite\Excel\Tests\Concerns;
+namespace Seoperin\LaravelExcel\Tests\Concerns;
 
 use Illuminate\Support\Collection;
 use Illuminate\Contracts\View\View;
-use Maatwebsite\Excel\Tests\TestCase;
-use Maatwebsite\Excel\Concerns\FromView;
-use Maatwebsite\Excel\Concerns\Exportable;
-use Maatwebsite\Excel\Concerns\WithMultipleSheets;
-use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
-use Maatwebsite\Excel\Tests\Data\Stubs\SheetForUsersFromView;
+use Seoperin\LaravelExcel\Tests\TestCase;
+use Seoperin\LaravelExcel\Concerns\FromView;
+use Seoperin\LaravelExcel\Concerns\Exportable;
+use Seoperin\LaravelExcel\Concerns\WithMultipleSheets;
+use Seoperin\LaravelExcel\Tests\Data\Stubs\Database\User;
+use Seoperin\LaravelExcel\Tests\Data\Stubs\SheetForUsersFromView;
 
 class FromViewTest extends TestCase
 {

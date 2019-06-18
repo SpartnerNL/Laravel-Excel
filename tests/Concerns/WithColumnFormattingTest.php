@@ -1,16 +1,16 @@
 <?php
 
-namespace Maatwebsite\Excel\Tests\Concerns;
+namespace Seoperin\LaravelExcel\Tests\Concerns;
 
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
-use Maatwebsite\Excel\Tests\TestCase;
+use Seoperin\LaravelExcel\Tests\TestCase;
 use PhpOffice\PhpSpreadsheet\Shared\Date;
-use Maatwebsite\Excel\Concerns\Exportable;
-use Maatwebsite\Excel\Concerns\WithMapping;
-use Maatwebsite\Excel\Concerns\FromCollection;
+use Seoperin\LaravelExcel\Concerns\Exportable;
+use Seoperin\LaravelExcel\Concerns\WithMapping;
+use Seoperin\LaravelExcel\Concerns\FromCollection;
 use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
-use Maatwebsite\Excel\Concerns\WithColumnFormatting;
+use Seoperin\LaravelExcel\Concerns\WithColumnFormatting;
 
 class WithColumnFormattingTest extends TestCase
 {

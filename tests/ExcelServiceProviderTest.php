@@ -1,8 +1,8 @@
 <?php
 
-namespace Maatwebsite\Excel\Tests;
+namespace Seoperin\LaravelExcel\Tests;
 
-use Maatwebsite\Excel\Excel;
+use Seoperin\LaravelExcel\Excel;
 
 class ExcelServiceProviderTest extends TestCase
 {

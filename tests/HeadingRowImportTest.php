@@ -1,9 +1,9 @@
 <?php
 
-namespace Maatwebsite\Excel\Tests;
+namespace Seoperin\LaravelExcel\Tests;
 
-use Maatwebsite\Excel\HeadingRowImport;
-use Maatwebsite\Excel\Imports\HeadingRowFormatter;
+use Seoperin\LaravelExcel\HeadingRowImport;
+use Seoperin\LaravelExcel\Imports\HeadingRowFormatter;
 
 class HeadingRowImportTest extends TestCase
 {

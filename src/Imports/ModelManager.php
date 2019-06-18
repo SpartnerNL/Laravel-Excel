@@ -1,16 +1,16 @@
 <?php
 
-namespace Maatwebsite\Excel\Imports;
+namespace Seoperin\LaravelExcel\Imports;
 
 use Throwable;
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
-use Maatwebsite\Excel\Concerns\ToModel;
-use Maatwebsite\Excel\Concerns\SkipsOnError;
-use Maatwebsite\Excel\Concerns\WithValidation;
-use Maatwebsite\Excel\Validators\RowValidator;
-use Maatwebsite\Excel\Exceptions\RowSkippedException;
-use Maatwebsite\Excel\Validators\ValidationException;
+use Seoperin\LaravelExcel\Concerns\ToModel;
+use Seoperin\LaravelExcel\Concerns\SkipsOnError;
+use Seoperin\LaravelExcel\Concerns\WithValidation;
+use Seoperin\LaravelExcel\Validators\RowValidator;
+use Seoperin\LaravelExcel\Exceptions\RowSkippedException;
+use Seoperin\LaravelExcel\Validators\ValidationException;
 
 class ModelManager
 {

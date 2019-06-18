@@ -1,17 +1,17 @@
 <?php
 
-namespace Maatwebsite\Excel\Tests;
+namespace Seoperin\LaravelExcel\Tests;
 
-use Maatwebsite\Excel\Excel;
+use Seoperin\LaravelExcel\Excel;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Queue\Events\JobProcessing;
-use Maatwebsite\Excel\Files\TemporaryFile;
-use Maatwebsite\Excel\Jobs\AppendDataToSheet;
-use Maatwebsite\Excel\Files\RemoteTemporaryFile;
-use Maatwebsite\Excel\Tests\Data\Stubs\QueuedExport;
-use Maatwebsite\Excel\Tests\Data\Stubs\ShouldQueueExport;
-use Maatwebsite\Excel\Tests\Data\Stubs\AfterQueueExportJob;
-use Maatwebsite\Excel\Tests\Data\Stubs\EloquentCollectionWithMappingExport;
+use Seoperin\LaravelExcel\Files\TemporaryFile;
+use Seoperin\LaravelExcel\Jobs\AppendDataToSheet;
+use Seoperin\LaravelExcel\Files\RemoteTemporaryFile;
+use Seoperin\LaravelExcel\Tests\Data\Stubs\QueuedExport;
+use Seoperin\LaravelExcel\Tests\Data\Stubs\ShouldQueueExport;
+use Seoperin\LaravelExcel\Tests\Data\Stubs\AfterQueueExportJob;
+use Seoperin\LaravelExcel\Tests\Data\Stubs\EloquentCollectionWithMappingExport;
 
 class QueuedExportTest extends TestCase
 {

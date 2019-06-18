@@ -1,12 +1,12 @@
 <?php
 
-namespace Maatwebsite\Excel;
+namespace Seoperin\LaravelExcel;
 
-use Maatwebsite\Excel\Concerns\WithLimit;
-use Maatwebsite\Excel\Concerns\Importable;
-use Maatwebsite\Excel\Concerns\WithMapping;
-use Maatwebsite\Excel\Concerns\WithStartRow;
-use Maatwebsite\Excel\Imports\HeadingRowFormatter;
+use Seoperin\LaravelExcel\Concerns\WithLimit;
+use Seoperin\LaravelExcel\Concerns\Importable;
+use Seoperin\LaravelExcel\Concerns\WithMapping;
+use Seoperin\LaravelExcel\Concerns\WithStartRow;
+use Seoperin\LaravelExcel\Imports\HeadingRowFormatter;
 
 class HeadingRowImport implements WithStartRow, WithLimit, WithMapping
 {

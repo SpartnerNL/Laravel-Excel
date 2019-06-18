@@ -1,6 +1,6 @@
 <?php
 
-namespace Maatwebsite\Excel\Imports;
+namespace Seoperin\LaravelExcel\Imports;
 
 use Illuminate\Support\Str;
 use InvalidArgumentException;

@@ -1,29 +1,29 @@
 <?php
 
-namespace Maatwebsite\Excel\Tests\Concerns;
+namespace Seoperin\LaravelExcel\Tests\Concerns;
 
 use Exception;
 use Throwable;
-use Maatwebsite\Excel\Reader;
+use Seoperin\LaravelExcel\Reader;
 use PHPUnit\Framework\Assert;
 use Illuminate\Support\Facades\DB;
-use Maatwebsite\Excel\Tests\TestCase;
+use Seoperin\LaravelExcel\Tests\TestCase;
 use Illuminate\Database\Eloquent\Model;
-use Maatwebsite\Excel\Concerns\ToArray;
-use Maatwebsite\Excel\Concerns\ToModel;
-use Maatwebsite\Excel\Events\AfterImport;
+use Seoperin\LaravelExcel\Concerns\ToArray;
+use Seoperin\LaravelExcel\Concerns\ToModel;
+use Seoperin\LaravelExcel\Events\AfterImport;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use Maatwebsite\Excel\Concerns\Importable;
-use Maatwebsite\Excel\Concerns\WithEvents;
-use Maatwebsite\Excel\Events\BeforeImport;
-use Maatwebsite\Excel\Events\ImportFailed;
+use Seoperin\LaravelExcel\Concerns\Importable;
+use Seoperin\LaravelExcel\Concerns\WithEvents;
+use Seoperin\LaravelExcel\Events\BeforeImport;
+use Seoperin\LaravelExcel\Events\ImportFailed;
 use PhpOffice\PhpSpreadsheet\Reader\IReader;
-use Maatwebsite\Excel\Concerns\WithHeadingRow;
-use Maatwebsite\Excel\Concerns\WithBatchInserts;
-use Maatwebsite\Excel\Concerns\WithChunkReading;
-use Maatwebsite\Excel\Concerns\WithMultipleSheets;
-use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
-use Maatwebsite\Excel\Tests\Data\Stubs\Database\Group;
+use Seoperin\LaravelExcel\Concerns\WithHeadingRow;
+use Seoperin\LaravelExcel\Concerns\WithBatchInserts;
+use Seoperin\LaravelExcel\Concerns\WithChunkReading;
+use Seoperin\LaravelExcel\Concerns\WithMultipleSheets;
+use Seoperin\LaravelExcel\Tests\Data\Stubs\Database\User;
+use Seoperin\LaravelExcel\Tests\Data\Stubs\Database\Group;
 
 class WithChunkReadingTest extends TestCase
 {

@@ -1,12 +1,12 @@
 <?php
 
-namespace Maatwebsite\Excel\Fakes;
+namespace Seoperin\LaravelExcel\Fakes;
 
 use Illuminate\Bus\Queueable;
-use Maatwebsite\Excel\Reader;
+use Seoperin\LaravelExcel\Reader;
 use PHPUnit\Framework\Assert;
-use Maatwebsite\Excel\Exporter;
-use Maatwebsite\Excel\Importer;
+use Seoperin\LaravelExcel\Exporter;
+use Seoperin\LaravelExcel\Importer;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Contracts\Queue\ShouldQueue;

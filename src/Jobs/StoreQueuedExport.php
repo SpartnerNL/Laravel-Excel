@@ -1,10 +1,10 @@
 <?php
 
-namespace Maatwebsite\Excel\Jobs;
+namespace Seoperin\LaravelExcel\Jobs;
 
 use Illuminate\Bus\Queueable;
-use Maatwebsite\Excel\Files\Filesystem;
-use Maatwebsite\Excel\Files\TemporaryFile;
+use Seoperin\LaravelExcel\Files\Filesystem;
+use Seoperin\LaravelExcel\Files\TemporaryFile;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
 class StoreQueuedExport implements ShouldQueue

@@ -1,8 +1,8 @@
 <?php
 
-namespace Maatwebsite\Excel\Concerns;
+namespace Seoperin\LaravelExcel\Concerns;
 
-use Maatwebsite\Excel\Validators\Failure;
+use Seoperin\LaravelExcel\Validators\Failure;
 
 interface SkipsOnFailure
 {

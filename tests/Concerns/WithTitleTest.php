@@ -1,9 +1,9 @@
 <?php
 
-namespace Maatwebsite\Excel\Tests\Concerns;
+namespace Seoperin\LaravelExcel\Tests\Concerns;
 
-use Maatwebsite\Excel\Tests\TestCase;
-use Maatwebsite\Excel\Tests\Data\Stubs\WithTitleExport;
+use Seoperin\LaravelExcel\Tests\TestCase;
+use Seoperin\LaravelExcel\Tests\Data\Stubs\WithTitleExport;
 
 class WithTitleTest extends TestCase
 {

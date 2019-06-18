@@ -1,22 +1,22 @@
 <?php
 
-namespace Maatwebsite\Excel;
+namespace Seoperin\LaravelExcel;
 
 use Traversable;
 use Illuminate\Support\Collection;
-use Maatwebsite\Excel\Jobs\CloseSheet;
-use Maatwebsite\Excel\Jobs\QueueExport;
-use Maatwebsite\Excel\Concerns\FromQuery;
-use Maatwebsite\Excel\Files\TemporaryFile;
-use Maatwebsite\Excel\Jobs\SerializedQuery;
-use Maatwebsite\Excel\Jobs\AppendDataToSheet;
-use Maatwebsite\Excel\Jobs\StoreQueuedExport;
-use Maatwebsite\Excel\Concerns\FromCollection;
-use Maatwebsite\Excel\Jobs\AppendQueryToSheet;
-use Maatwebsite\Excel\Files\TemporaryFileFactory;
-use Maatwebsite\Excel\Concerns\WithMultipleSheets;
-use Maatwebsite\Excel\Concerns\WithCustomChunkSize;
-use Maatwebsite\Excel\Concerns\WithCustomQuerySize;
+use Seoperin\LaravelExcel\Jobs\CloseSheet;
+use Seoperin\LaravelExcel\Jobs\QueueExport;
+use Seoperin\LaravelExcel\Concerns\FromQuery;
+use Seoperin\LaravelExcel\Files\TemporaryFile;
+use Seoperin\LaravelExcel\Jobs\SerializedQuery;
+use Seoperin\LaravelExcel\Jobs\AppendDataToSheet;
+use Seoperin\LaravelExcel\Jobs\StoreQueuedExport;
+use Seoperin\LaravelExcel\Concerns\FromCollection;
+use Seoperin\LaravelExcel\Jobs\AppendQueryToSheet;
+use Seoperin\LaravelExcel\Files\TemporaryFileFactory;
+use Seoperin\LaravelExcel\Concerns\WithMultipleSheets;
+use Seoperin\LaravelExcel\Concerns\WithCustomChunkSize;
+use Seoperin\LaravelExcel\Concerns\WithCustomQuerySize;
 
 class QueuedWriter
 {

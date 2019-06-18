@@ -1,6 +1,6 @@
 <?php
 
-namespace Maatwebsite\Excel\Events;
+namespace Seoperin\LaravelExcel\Events;
 
 abstract class Event
 {

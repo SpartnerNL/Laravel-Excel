@@ -1,6 +1,6 @@
 <?php
 
-namespace Maatwebsite\Excel\Console;
+namespace Seoperin\LaravelExcel\Console;
 
 use Illuminate\Support\Str;
 use InvalidArgumentException;

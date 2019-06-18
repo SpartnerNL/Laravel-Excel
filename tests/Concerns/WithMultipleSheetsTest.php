@@ -1,18 +1,18 @@
 <?php
 
-namespace Maatwebsite\Excel\Tests\Concerns;
+namespace Seoperin\LaravelExcel\Tests\Concerns;
 
 use PHPUnit\Framework\Assert;
 use Illuminate\Support\Collection;
-use Maatwebsite\Excel\Tests\TestCase;
-use Maatwebsite\Excel\Concerns\ToArray;
-use Maatwebsite\Excel\Concerns\Exportable;
-use Maatwebsite\Excel\Concerns\Importable;
-use Maatwebsite\Excel\Concerns\SkipsUnknownSheets;
-use Maatwebsite\Excel\Concerns\WithMultipleSheets;
-use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
-use Maatwebsite\Excel\Tests\Data\Stubs\SheetWith100Rows;
-use Maatwebsite\Excel\Tests\Data\Stubs\SheetForUsersFromView;
+use Seoperin\LaravelExcel\Tests\TestCase;
+use Seoperin\LaravelExcel\Concerns\ToArray;
+use Seoperin\LaravelExcel\Concerns\Exportable;
+use Seoperin\LaravelExcel\Concerns\Importable;
+use Seoperin\LaravelExcel\Concerns\SkipsUnknownSheets;
+use Seoperin\LaravelExcel\Concerns\WithMultipleSheets;
+use Seoperin\LaravelExcel\Tests\Data\Stubs\Database\User;
+use Seoperin\LaravelExcel\Tests\Data\Stubs\SheetWith100Rows;
+use Seoperin\LaravelExcel\Tests\Data\Stubs\SheetForUsersFromView;
 
 class WithMultipleSheetsTest extends TestCase
 {
@@ -103,7 +103,7 @@ class WithMultipleSheetsTest extends TestCase
      */
     public function unknown_sheet_index_will_throw_sheet_not_found_exception()
     {
-        $this->expectException(\Maatwebsite\Excel\Exceptions\SheetNotFoundException::class);
+        $this->expectException(\Seoperin\LaravelExcel\Exceptions\SheetNotFoundException::class);
         $this->expectExceptionMessage('Your requested sheet index: 9999 is out of bounds. The actual number of sheets is 2.');
 
         $import = new class implements WithMultipleSheets {
@@ -126,7 +126,7 @@ class WithMultipleSheetsTest extends TestCase
      */
     public function unknown_sheet_name_will_throw_sheet_not_found_exception()
     {
-        $this->expectException(\Maatwebsite\Excel\Exceptions\SheetNotFoundException::class);
+        $this->expectException(\Seoperin\LaravelExcel\Exceptions\SheetNotFoundException::class);
         $this->expectExceptionMessage('Your requested sheet name [Some Random Sheet Name] is out of bounds.');
 
         $import = new class implements WithMultipleSheets {

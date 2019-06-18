@@ -1,14 +1,14 @@
 <?php
 
-namespace Maatwebsite\Excel\Imports;
+namespace Seoperin\LaravelExcel\Imports;
 
-use Maatwebsite\Excel\Row;
-use Maatwebsite\Excel\Concerns\ToModel;
-use Maatwebsite\Excel\Concerns\WithMapping;
-use Maatwebsite\Excel\Concerns\WithProgressBar;
-use Maatwebsite\Excel\Concerns\WithBatchInserts;
+use Seoperin\LaravelExcel\Row;
+use Seoperin\LaravelExcel\Concerns\ToModel;
+use Seoperin\LaravelExcel\Concerns\WithMapping;
+use Seoperin\LaravelExcel\Concerns\WithProgressBar;
+use Seoperin\LaravelExcel\Concerns\WithBatchInserts;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
-use Maatwebsite\Excel\Concerns\WithCalculatedFormulas;
+use Seoperin\LaravelExcel\Concerns\WithCalculatedFormulas;
 
 class ModelImporter
 {

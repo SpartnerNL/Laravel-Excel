@@ -3,7 +3,7 @@
 namespace DummyNamespace;
 
 use DummyFullModelClass;
-use Maatwebsite\Excel\Concerns\ToModel;
+use Seoperin\LaravelExcel\Concerns\ToModel;
 
 class DummyClass implements ToModel
 {

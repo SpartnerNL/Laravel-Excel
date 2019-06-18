@@ -1,6 +1,6 @@
 <?php
 
-namespace Maatwebsite\Excel\Files;
+namespace Seoperin\LaravelExcel\Files;
 
 use Illuminate\Contracts\Filesystem\Filesystem as IlluminateFilesystem;
 

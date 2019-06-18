@@ -2,7 +2,7 @@
 
 namespace DummyNamespace;
 
-use Maatwebsite\Excel\Concerns\FromCollection;
+use Seoperin\LaravelExcel\Concerns\FromCollection;
 
 class DummyClass implements FromCollection
 {

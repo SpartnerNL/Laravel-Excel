@@ -1,6 +1,6 @@
 <?php
 
-namespace Maatwebsite\Excel\Transactions;
+namespace Seoperin\LaravelExcel\Transactions;
 
 use Illuminate\Database\ConnectionInterface;
 

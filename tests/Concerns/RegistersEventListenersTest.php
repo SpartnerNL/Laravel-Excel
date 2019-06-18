@@ -1,21 +1,21 @@
 <?php
 
-namespace Maatwebsite\Excel\Tests\Concerns;
+namespace Seoperin\LaravelExcel\Tests\Concerns;
 
-use Maatwebsite\Excel\Sheet;
-use Maatwebsite\Excel\Reader;
-use Maatwebsite\Excel\Writer;
-use Maatwebsite\Excel\Tests\TestCase;
-use Maatwebsite\Excel\Events\AfterSheet;
-use Maatwebsite\Excel\Events\BeforeSheet;
-use Maatwebsite\Excel\Events\BeforeExport;
-use Maatwebsite\Excel\Events\BeforeImport;
-use Maatwebsite\Excel\Events\BeforeWriting;
-use Maatwebsite\Excel\Tests\Data\Stubs\ExportWithEvents;
+use Seoperin\LaravelExcel\Sheet;
+use Seoperin\LaravelExcel\Reader;
+use Seoperin\LaravelExcel\Writer;
+use Seoperin\LaravelExcel\Tests\TestCase;
+use Seoperin\LaravelExcel\Events\AfterSheet;
+use Seoperin\LaravelExcel\Events\BeforeSheet;
+use Seoperin\LaravelExcel\Events\BeforeExport;
+use Seoperin\LaravelExcel\Events\BeforeImport;
+use Seoperin\LaravelExcel\Events\BeforeWriting;
+use Seoperin\LaravelExcel\Tests\Data\Stubs\ExportWithEvents;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
-use Maatwebsite\Excel\Tests\Data\Stubs\BeforeExportListener;
-use Maatwebsite\Excel\Tests\Data\Stubs\ExportWithRegistersEventListeners;
-use Maatwebsite\Excel\Tests\Data\Stubs\ImportWithRegistersEventListeners;
+use Seoperin\LaravelExcel\Tests\Data\Stubs\BeforeExportListener;
+use Seoperin\LaravelExcel\Tests\Data\Stubs\ExportWithRegistersEventListeners;
+use Seoperin\LaravelExcel\Tests\Data\Stubs\ImportWithRegistersEventListeners;
 
 class RegistersEventListenersTest extends TestCase
 {

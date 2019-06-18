@@ -1,16 +1,16 @@
 <?php
 
-namespace Maatwebsite\Excel\Tests;
+namespace Seoperin\LaravelExcel\Tests;
 
 use Illuminate\Support\Facades\Queue;
-use Maatwebsite\Excel\Jobs\ReadChunk;
+use Seoperin\LaravelExcel\Jobs\ReadChunk;
 use Illuminate\Queue\Events\JobProcessing;
-use Maatwebsite\Excel\Concerns\Importable;
-use Maatwebsite\Excel\Files\TemporaryFile;
+use Seoperin\LaravelExcel\Concerns\Importable;
+use Seoperin\LaravelExcel\Files\TemporaryFile;
 use Illuminate\Foundation\Bus\PendingDispatch;
-use Maatwebsite\Excel\Files\RemoteTemporaryFile;
-use Maatwebsite\Excel\Tests\Data\Stubs\QueuedImport;
-use Maatwebsite\Excel\Tests\Data\Stubs\AfterQueueImportJob;
+use Seoperin\LaravelExcel\Files\RemoteTemporaryFile;
+use Seoperin\LaravelExcel\Tests\Data\Stubs\QueuedImport;
+use Seoperin\LaravelExcel\Tests\Data\Stubs\AfterQueueImportJob;
 
 class QueuedImportTest extends TestCase
 {

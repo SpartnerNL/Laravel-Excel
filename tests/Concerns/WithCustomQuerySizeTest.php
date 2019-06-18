@@ -1,12 +1,12 @@
 <?php
 
-namespace Maatwebsite\Excel\Tests\Concerns;
+namespace Seoperin\LaravelExcel\Tests\Concerns;
 
-use Maatwebsite\Excel\Tests\TestCase;
-use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
-use Maatwebsite\Excel\Tests\Data\Stubs\Database\Group;
-use Maatwebsite\Excel\Tests\Data\Stubs\AfterQueueExportJob;
-use Maatwebsite\Excel\Tests\Data\Stubs\FromQueryWithCustomQuerySize;
+use Seoperin\LaravelExcel\Tests\TestCase;
+use Seoperin\LaravelExcel\Tests\Data\Stubs\Database\User;
+use Seoperin\LaravelExcel\Tests\Data\Stubs\Database\Group;
+use Seoperin\LaravelExcel\Tests\Data\Stubs\AfterQueueExportJob;
+use Seoperin\LaravelExcel\Tests\Data\Stubs\FromQueryWithCustomQuerySize;
 
 class WithCustomQuerySizeTest extends TestCase
 {

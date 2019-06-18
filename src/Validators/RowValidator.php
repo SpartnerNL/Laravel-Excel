@@ -1,12 +1,12 @@
 <?php
 
-namespace Maatwebsite\Excel\Validators;
+namespace Seoperin\LaravelExcel\Validators;
 
 use Illuminate\Support\Str;
 use Illuminate\Contracts\Validation\Factory;
-use Maatwebsite\Excel\Concerns\SkipsOnFailure;
-use Maatwebsite\Excel\Concerns\WithValidation;
-use Maatwebsite\Excel\Exceptions\RowSkippedException;
+use Seoperin\LaravelExcel\Concerns\SkipsOnFailure;
+use Seoperin\LaravelExcel\Concerns\WithValidation;
+use Seoperin\LaravelExcel\Exceptions\RowSkippedException;
 use Illuminate\Validation\ValidationException as IlluminateValidationException;
 
 class RowValidator

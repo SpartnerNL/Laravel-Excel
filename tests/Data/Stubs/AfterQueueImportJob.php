@@ -1,6 +1,6 @@
 <?php
 
-namespace Maatwebsite\Excel\Tests\Data\Stubs;
+namespace Seoperin\LaravelExcel\Tests\Data\Stubs;
 
 use Illuminate\Bus\Queueable;
 use PHPUnit\Framework\Assert;

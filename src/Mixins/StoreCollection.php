@@ -1,11 +1,11 @@
 <?php
 
-namespace Maatwebsite\Excel\Mixins;
+namespace Seoperin\LaravelExcel\Mixins;
 
 use Illuminate\Support\Collection;
-use Maatwebsite\Excel\Concerns\Exportable;
-use Maatwebsite\Excel\Concerns\WithHeadings;
-use Maatwebsite\Excel\Concerns\FromCollection;
+use Seoperin\LaravelExcel\Concerns\Exportable;
+use Seoperin\LaravelExcel\Concerns\WithHeadings;
+use Seoperin\LaravelExcel\Concerns\FromCollection;
 
 class StoreCollection
 {

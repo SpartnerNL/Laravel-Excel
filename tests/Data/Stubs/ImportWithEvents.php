@@ -1,13 +1,13 @@
 <?php
 
-namespace Maatwebsite\Excel\Tests\Data\Stubs;
+namespace Seoperin\LaravelExcel\Tests\Data\Stubs;
 
-use Maatwebsite\Excel\Events\AfterSheet;
-use Maatwebsite\Excel\Events\AfterImport;
-use Maatwebsite\Excel\Events\BeforeSheet;
-use Maatwebsite\Excel\Concerns\Importable;
-use Maatwebsite\Excel\Concerns\WithEvents;
-use Maatwebsite\Excel\Events\BeforeImport;
+use Seoperin\LaravelExcel\Events\AfterSheet;
+use Seoperin\LaravelExcel\Events\AfterImport;
+use Seoperin\LaravelExcel\Events\BeforeSheet;
+use Seoperin\LaravelExcel\Concerns\Importable;
+use Seoperin\LaravelExcel\Concerns\WithEvents;
+use Seoperin\LaravelExcel\Events\BeforeImport;
 
 class ImportWithEvents implements WithEvents
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Maatwebsite\Excel\Validators;
+namespace Seoperin\LaravelExcel\Validators;
 
 use Illuminate\Validation\ValidationException as IlluminateValidationException;
 

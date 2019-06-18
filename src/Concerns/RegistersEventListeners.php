@@ -1,14 +1,14 @@
 <?php
 
-namespace Maatwebsite\Excel\Concerns;
+namespace Seoperin\LaravelExcel\Concerns;
 
-use Maatwebsite\Excel\Events\AfterSheet;
-use Maatwebsite\Excel\Events\AfterImport;
-use Maatwebsite\Excel\Events\BeforeSheet;
-use Maatwebsite\Excel\Events\BeforeExport;
-use Maatwebsite\Excel\Events\BeforeImport;
-use Maatwebsite\Excel\Events\ImportFailed;
-use Maatwebsite\Excel\Events\BeforeWriting;
+use Seoperin\LaravelExcel\Events\AfterSheet;
+use Seoperin\LaravelExcel\Events\AfterImport;
+use Seoperin\LaravelExcel\Events\BeforeSheet;
+use Seoperin\LaravelExcel\Events\BeforeExport;
+use Seoperin\LaravelExcel\Events\BeforeImport;
+use Seoperin\LaravelExcel\Events\ImportFailed;
+use Seoperin\LaravelExcel\Events\BeforeWriting;
 
 trait RegistersEventListeners
 {

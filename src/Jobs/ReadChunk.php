@@ -1,22 +1,22 @@
 <?php
 
-namespace Maatwebsite\Excel\Jobs;
+namespace Seoperin\LaravelExcel\Jobs;
 
 use Throwable;
-use Maatwebsite\Excel\Sheet;
+use Seoperin\LaravelExcel\Sheet;
 use Illuminate\Bus\Queueable;
-use Maatwebsite\Excel\HasEventBus;
+use Seoperin\LaravelExcel\HasEventBus;
 use PhpOffice\PhpSpreadsheet\Cell\Cell;
-use Maatwebsite\Excel\Concerns\WithEvents;
-use Maatwebsite\Excel\Events\ImportFailed;
-use Maatwebsite\Excel\Files\TemporaryFile;
+use Seoperin\LaravelExcel\Concerns\WithEvents;
+use Seoperin\LaravelExcel\Events\ImportFailed;
+use Seoperin\LaravelExcel\Files\TemporaryFile;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use PhpOffice\PhpSpreadsheet\Reader\IReader;
-use Maatwebsite\Excel\Filters\ChunkReadFilter;
-use Maatwebsite\Excel\Concerns\WithChunkReading;
-use Maatwebsite\Excel\Imports\HeadingRowExtractor;
-use Maatwebsite\Excel\Concerns\WithCustomValueBinder;
-use Maatwebsite\Excel\Transactions\TransactionHandler;
+use Seoperin\LaravelExcel\Filters\ChunkReadFilter;
+use Seoperin\LaravelExcel\Concerns\WithChunkReading;
+use Seoperin\LaravelExcel\Imports\HeadingRowExtractor;
+use Seoperin\LaravelExcel\Concerns\WithCustomValueBinder;
+use Seoperin\LaravelExcel\Transactions\TransactionHandler;
 
 class ReadChunk implements ShouldQueue
 {
@@ -80,7 +80,7 @@ class ReadChunk implements ShouldQueue
     /**
      * @param  TransactionHandler  $transaction
      *
-     * @throws \Maatwebsite\Excel\Exceptions\SheetNotFoundException
+     * @throws \Seoperin\LaravelExcel\Exceptions\SheetNotFoundException
      * @throws \PhpOffice\PhpSpreadsheet\Reader\Exception
      */
     public function handle(TransactionHandler $transaction)

@@ -1,11 +1,11 @@
 <?php
 
-namespace Maatwebsite\Excel\Concerns;
+namespace Seoperin\LaravelExcel\Concerns;
 
-use Maatwebsite\Excel\Exporter;
+use Seoperin\LaravelExcel\Exporter;
 use Illuminate\Foundation\Bus\PendingDispatch;
-use Maatwebsite\Excel\Exceptions\NoFilenameGivenException;
-use Maatwebsite\Excel\Exceptions\NoFilePathGivenException;
+use Seoperin\LaravelExcel\Exceptions\NoFilenameGivenException;
+use Seoperin\LaravelExcel\Exceptions\NoFilePathGivenException;
 
 trait Exportable
 {

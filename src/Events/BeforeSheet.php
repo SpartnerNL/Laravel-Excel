@@ -1,8 +1,8 @@
 <?php
 
-namespace Maatwebsite\Excel\Events;
+namespace Seoperin\LaravelExcel\Events;
 
-use Maatwebsite\Excel\Sheet;
+use Seoperin\LaravelExcel\Sheet;
 
 class BeforeSheet extends Event
 {

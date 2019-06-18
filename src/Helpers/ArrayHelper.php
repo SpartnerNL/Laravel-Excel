@@ -1,6 +1,6 @@
 <?php
 
-namespace Maatwebsite\Excel\Helpers;
+namespace Seoperin\LaravelExcel\Helpers;
 
 class ArrayHelper
 {
