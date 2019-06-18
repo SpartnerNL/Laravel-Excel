@@ -4,16 +4,20 @@ namespace Maatwebsite\Excel\Jobs;
 
 use Illuminate\Bus\Queueable;
 use Maatwebsite\Excel\Writer;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use Maatwebsite\Excel\Concerns\FromView;
+use PhpOffice\PhpSpreadsheet\Reader\Html;
 use Maatwebsite\Excel\Files\TemporaryFile;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Maatwebsite\Excel\Files\TemporaryFileFactory;
 
 class AppendViewToSheet implements ShouldQueue
 {
     use Queueable, Dispatchable;
 
     /**
-     * @var string
+     * @var TemporaryFile
      */
     public $temporaryFile;
 
@@ -28,23 +32,29 @@ class AppendViewToSheet implements ShouldQueue
     public $sheetIndex;
 
     /**
-     * @var object
+     * @var FromView
      */
     public $sheetExport;
 
     /**
-     * @param object        $sheetExport
+     * @var TemporaryFileFactory
+     */
+    protected $temporaryFileFactory;
+
+    /**
+     * @param FromView        $sheetExport
      * @param TemporaryFile $temporaryFile
      * @param string        $writerType
      * @param int           $sheetIndex
      * @param array         $data
      */
-    public function __construct($sheetExport, TemporaryFile $temporaryFile, string $writerType, int $sheetIndex)
+    public function __construct(FromView $sheetExport, TemporaryFile $temporaryFile, string $writerType, int $sheetIndex)
     {
         $this->sheetExport   = $sheetExport;
         $this->temporaryFile = $temporaryFile;
         $this->writerType    = $writerType;
         $this->sheetIndex    = $sheetIndex;
+        $this->temporaryFileFactory = app(TemporaryFileFactory::class);
     }
 
     /**
@@ -57,9 +67,15 @@ class AppendViewToSheet implements ShouldQueue
     {
         $writer = $writer->reopen($this->temporaryFile, $this->writerType);
 
-        $sheet = $writer->getSheetByIndex($this->sheetIndex);
+        $temporaryFile = $this->temporaryFileFactory->makeLocal();
+        $temporaryFile->put($this->sheetExport->view()->render());
+        /** @var Html $reader */
+        $reader = IOFactory::createReader('Html');
 
-        $sheet->fromView($this->sheetExport);
+        // Insert content into the last sheet
+        $reader->setSheetIndex($this->sheetIndex);
+        $reader->loadIntoExisting($temporaryFile->getLocalPath(), $writer->getDelegate());
+        $temporaryFile->delete();
 
         $writer->write($this->sheetExport, $this->temporaryFile, $this->writerType);
     }
