@@ -7,7 +7,6 @@ use Maatwebsite\Excel\Writer;
 use Maatwebsite\Excel\Files\TemporaryFile;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Throwable;
 
 class AppendDataToSheet implements ShouldQueue
 {
