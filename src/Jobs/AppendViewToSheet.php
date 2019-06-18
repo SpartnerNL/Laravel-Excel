@@ -50,10 +50,10 @@ class AppendViewToSheet implements ShouldQueue
      */
     public function __construct(FromView $sheetExport, TemporaryFile $temporaryFile, string $writerType, int $sheetIndex)
     {
-        $this->sheetExport   = $sheetExport;
-        $this->temporaryFile = $temporaryFile;
-        $this->writerType    = $writerType;
-        $this->sheetIndex    = $sheetIndex;
+        $this->sheetExport          = $sheetExport;
+        $this->temporaryFile        = $temporaryFile;
+        $this->writerType           = $writerType;
+        $this->sheetIndex           = $sheetIndex;
         $this->temporaryFileFactory = app(TemporaryFileFactory::class);
     }
 
