@@ -10,6 +10,7 @@
          stopOnFailure="false"
 >
     <php>
+        <env name="APP_KEY" value="base64:6igsHe3RYC88h3Wje3VzSNqPwUr7Z5ru+NZw/9qwY5M=" />
         <env name="DB_HOST" value="127.0.0.1"/>
         <env name="DB_PORT" value="3306"/>
         <env name="DB_DATABASE" value="laravel_excel"/>

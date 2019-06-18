@@ -113,6 +113,8 @@ class SerializedQuery
      */
     private function serializeEagerLoads($builder): array
     {
+        $this->ensureSecurityProvider();
+
         return collect(method_exists($builder, 'getEagerLoads') ? $builder->getEagerLoads() : [])
             ->map(function (Closure $constraint) {
                 return new SerializableClosure($constraint);
@@ -124,8 +126,23 @@ class SerializedQuery
      */
     private function eagerLoads(): array
     {
+        $this->ensureSecurityProvider();
+
         return collect($this->with)->map(function (SerializableClosure $closure) {
             return $closure->getClosure();
         })->toArray();
+    }
+
+    /**
+     * If there's no security provider, this means the deferred
+     * QueueServiceProvider wasn't loaded yet. Let's load it now.
+     */
+    private function ensureSecurityProvider()
+    {
+        if (null !== SerializableClosure::getSecurityProvider()) {
+            return;
+        }
+
+        app()->loadDeferredProvider('queue');
     }
 }
