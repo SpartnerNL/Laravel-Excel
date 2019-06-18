@@ -4,13 +4,10 @@ namespace Maatwebsite\Excel\Jobs;
 
 use Illuminate\Bus\Queueable;
 use Maatwebsite\Excel\Writer;
-use PhpOffice\PhpSpreadsheet\IOFactory;
 use Maatwebsite\Excel\Concerns\FromView;
-use PhpOffice\PhpSpreadsheet\Reader\Html;
 use Maatwebsite\Excel\Files\TemporaryFile;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Maatwebsite\Excel\Files\TemporaryFileFactory;
 
 class AppendViewToSheet implements ShouldQueue
 {
@@ -37,11 +34,6 @@ class AppendViewToSheet implements ShouldQueue
     public $sheetExport;
 
     /**
-     * @var TemporaryFileFactory
-     */
-    protected $temporaryFileFactory;
-
-    /**
      * @param FromView        $sheetExport
      * @param TemporaryFile $temporaryFile
      * @param string        $writerType
@@ -50,11 +42,10 @@ class AppendViewToSheet implements ShouldQueue
      */
     public function __construct(FromView $sheetExport, TemporaryFile $temporaryFile, string $writerType, int $sheetIndex)
     {
-        $this->sheetExport          = $sheetExport;
-        $this->temporaryFile        = $temporaryFile;
-        $this->writerType           = $writerType;
-        $this->sheetIndex           = $sheetIndex;
-        $this->temporaryFileFactory = app(TemporaryFileFactory::class);
+        $this->sheetExport   = $sheetExport;
+        $this->temporaryFile = $temporaryFile;
+        $this->writerType    = $writerType;
+        $this->sheetIndex    = $sheetIndex;
     }
 
     /**
@@ -67,15 +58,9 @@ class AppendViewToSheet implements ShouldQueue
     {
         $writer = $writer->reopen($this->temporaryFile, $this->writerType);
 
-        $temporaryFile = $this->temporaryFileFactory->makeLocal();
-        $temporaryFile->put($this->sheetExport->view()->render());
-        /** @var Html $reader */
-        $reader = IOFactory::createReader('Html');
+        $sheet = $writer->getSheetByIndex($this->sheetIndex);
 
-        // Insert content into the last sheet
-        $reader->setSheetIndex($this->sheetIndex);
-        $reader->loadIntoExisting($temporaryFile->getLocalPath(), $writer->getDelegate());
-        $temporaryFile->delete();
+        $sheet->fromView($this->sheetExport, $this->sheetIndex);
 
         $writer->write($this->sheetExport, $this->temporaryFile, $this->writerType);
     }
