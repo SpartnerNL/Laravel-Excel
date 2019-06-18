@@ -35,21 +35,21 @@
   },
   "autoload": {
     "psr-4": {
-      "Seoperin\\Excel\\": "src/"
+      "Seoperin\\LaravelExcel\\": "src/"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "Seoperin\\Excel\\Tests\\": "tests/"
+      "Seoperin\\LaravelExcel\\Tests\\": "tests/"
     }
   },
   "extra": {
     "laravel": {
       "providers": [
-        "Seoperin\\Excel\\ExcelServiceProvider"
+        "Seoperin\\LaravelExcel\\ExcelServiceProvider"
       ],
       "aliases": {
-        "Excel": "Seoperin\\Excel\\Facades\\Excel"
+        "Excel": "Seoperin\\LaravelExcel\\Facades\\Excel"
       }
     }
   },
