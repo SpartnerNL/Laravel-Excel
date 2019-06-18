@@ -1,5 +1,4 @@
 <?php
-
 use Seoperin\LaravelExcel\Excel;
 
 return [
