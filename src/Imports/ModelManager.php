@@ -68,9 +68,9 @@ class ModelManager
      *
      * @return Model[]|Collection
      */
-    public function toModels(ToModel $import, array $attributes): Collection
+    public function toModels(ToModel $import, array $attributes, $row_number = 1): Collection
     {
-        $model = $import->model($attributes);
+        $model = $import->model($attributes, $row_number);
 
         if (null !== $model) {
             return \is_array($model) ? new Collection($model) : new Collection([$model]);
@@ -85,8 +85,8 @@ class ModelManager
     private function massFlush(ToModel $import)
     {
         $this->rows()
-             ->flatMap(function (array $attributes) use ($import) {
-                 return $this->toModels($import, $attributes);
+             ->flatMap(function (array $attributes, $row_number) use ($import) {
+                 return $this->toModels($import, $attributes, $row_number);
              })
              ->mapToGroups(function ($model) {
                  return [\get_class($model) => $this->prepare($model)->getAttributes()];
@@ -112,8 +112,8 @@ class ModelManager
     {
         $this
             ->rows()
-            ->each(function (array $attributes) use ($import) {
-                $this->toModels($import, $attributes)->each(function (Model $model) use ($import) {
+            ->each(function (array $attributes, $row_number) use ($import) {
+                $this->toModels($import, $attributes, $row_number)->each(function (Model $model) use ($import) {
                     try {
                         $model->saveOrFail();
                     } catch (Throwable $e) {
