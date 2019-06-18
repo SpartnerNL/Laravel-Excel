@@ -7,10 +7,11 @@ use Maatwebsite\Excel\Writer;
 use Maatwebsite\Excel\Files\TemporaryFile;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Throwable;
 
 class AppendQueryToSheet implements ShouldQueue
 {
-    use Queueable, Dispatchable;
+    use Queueable, Dispatchable, ProxyFailures;
 
     /**
      * @var SerializedQuery

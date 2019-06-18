@@ -9,9 +9,11 @@ use Maatwebsite\Excel\Files\TemporaryFile;
 use Maatwebsite\Excel\Jobs\AppendDataToSheet;
 use Maatwebsite\Excel\Files\RemoteTemporaryFile;
 use Maatwebsite\Excel\Tests\Data\Stubs\QueuedExport;
+use Maatwebsite\Excel\Tests\Data\Stubs\QueuedExportWithFailedHook;
 use Maatwebsite\Excel\Tests\Data\Stubs\ShouldQueueExport;
 use Maatwebsite\Excel\Tests\Data\Stubs\AfterQueueExportJob;
 use Maatwebsite\Excel\Tests\Data\Stubs\EloquentCollectionWithMappingExport;
+use Throwable;
 
 class QueuedExportTest extends TestCase
 {
@@ -23,7 +25,7 @@ class QueuedExportTest extends TestCase
         $export = new QueuedExport();
 
         $export->queue('queued-export.xlsx')->chain([
-            new AfterQueueExportJob(__DIR__ . '/Data/Disks/Local/queued-export.xlsx'),
+            new AfterQueueExportJob(__DIR__.'/Data/Disks/Local/queued-export.xlsx'),
         ]);
     }
 
@@ -35,7 +37,7 @@ class QueuedExportTest extends TestCase
         $export = new QueuedExport();
 
         $export->queue('queued-export.xlsx', 'test')->chain([
-            new AfterQueueExportJob(__DIR__ . '/Data/Disks/Test/queued-export.xlsx'),
+            new AfterQueueExportJob(__DIR__.'/Data/Disks/Test/queued-export.xlsx'),
         ]);
     }
 
@@ -73,10 +75,10 @@ class QueuedExportTest extends TestCase
         $export = new QueuedExport();
 
         $export->queue('queued-export.xlsx')->chain([
-            new AfterQueueExportJob(__DIR__ . '/Data/Disks/Local/queued-export.xlsx'),
+            new AfterQueueExportJob(__DIR__.'/Data/Disks/Local/queued-export.xlsx'),
         ]);
 
-        $array = $this->readAsArray(__DIR__ . '/Data/Disks/Local/queued-export.xlsx', Excel::XLSX);
+        $array = $this->readAsArray(__DIR__.'/Data/Disks/Local/queued-export.xlsx', Excel::XLSX);
 
         $this->assertCount(100, $array);
         $this->assertEquals(3, $jobs);
@@ -90,7 +92,7 @@ class QueuedExportTest extends TestCase
         $export = new ShouldQueueExport();
 
         $export->store('queued-export.xlsx', 'test')->chain([
-            new AfterQueueExportJob(__DIR__ . '/Data/Disks/Test/queued-export.xlsx'),
+            new AfterQueueExportJob(__DIR__.'/Data/Disks/Test/queued-export.xlsx'),
         ]);
     }
 
@@ -102,13 +104,28 @@ class QueuedExportTest extends TestCase
         $export = new EloquentCollectionWithMappingExport();
 
         $export->queue('queued-export.xlsx')->chain([
-            new AfterQueueExportJob(__DIR__ . '/Data/Disks/Local/queued-export.xlsx'),
+            new AfterQueueExportJob(__DIR__.'/Data/Disks/Local/queued-export.xlsx'),
         ]);
 
-        $actual = $this->readAsArray(__DIR__ . '/Data/Disks/Local/queued-export.xlsx', 'Xlsx');
+        $actual = $this->readAsArray(__DIR__.'/Data/Disks/Local/queued-export.xlsx', 'Xlsx');
 
         $this->assertEquals([
             ['Patrick', 'Brouwers'],
         ], $actual);
+    }
+
+    /**
+     * @test
+     */
+    public function can_catch_failures()
+    {
+        $export = new QueuedExportWithFailedHook();
+        try {
+            $export->queue('queued-export.xlsx');
+        } catch (Throwable $e) {
+
+        }
+
+        $this->assertTrue(app('queue-has-failed'));
     }
 }

@@ -7,10 +7,11 @@ use Maatwebsite\Excel\Writer;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Files\TemporaryFile;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Throwable;
 
 class CloseSheet implements ShouldQueue
 {
-    use Queueable;
+    use Queueable, ProxyFailures;
 
     /**
      * @var object
