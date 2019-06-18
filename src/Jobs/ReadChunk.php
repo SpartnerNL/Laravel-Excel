@@ -135,6 +135,10 @@ class ReadChunk implements ShouldQueue
         if ($this->import instanceof WithEvents) {
             $this->registerListeners($this->import->registerEvents());
             $this->raise(new ImportFailed($e));
+
+            if (method_exists($this->import, 'failed')) {
+                $this->import->failed($e);
+            }
         }
     }
 }

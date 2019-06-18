@@ -37,10 +37,6 @@ class AfterImportJob implements ShouldQueue
     public function handle()
     {
         if ($this->import instanceof WithEvents) {
-            if (null === $this->reader->getDelegate()) {
-                $this->reader->readSpreadsheet();
-            }
-
             $this->reader->registerListeners($this->import->registerEvents());
         }
 

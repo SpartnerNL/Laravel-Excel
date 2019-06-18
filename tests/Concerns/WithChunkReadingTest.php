@@ -81,14 +81,10 @@ class WithChunkReadingTest extends TestCase
                 return [
                     BeforeImport::class => function (BeforeImport $event) {
                         Assert::assertInstanceOf(Reader::class, $event->reader);
-                        Assert::assertInstanceOf(Spreadsheet::class, $event->reader->getDelegate());
-                        Assert::assertInstanceOf(IReader::class, $event->reader->getPhpSpreadsheetReader());
                         $this->before = true;
                     },
                     AfterImport::class  => function (AfterImport $event) {
                         Assert::assertInstanceOf(Reader::class, $event->reader);
-                        Assert::assertInstanceOf(Spreadsheet::class, $event->reader->getDelegate());
-                        Assert::assertInstanceOf(IReader::class, $event->reader->getPhpSpreadsheetReader());
                         $this->after = true;
                     },
                 ];

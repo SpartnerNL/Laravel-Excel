@@ -28,7 +28,6 @@ class ChunkReader
     public function read(WithChunkReading $import, Reader $reader, TemporaryFile $temporaryFile)
     {
         if ($import instanceof WithEvents && isset($import->registerEvents()[BeforeImport::class])) {
-            $reader->readSpreadsheet();
             $reader->beforeImport($import);
         }
 
