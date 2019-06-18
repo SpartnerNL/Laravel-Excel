@@ -1,5 +1,5 @@
 {
-  "name": "maatwebsite/excel",
+  "name": "seoperin/laravel-excel",
   "description": "Supercharged Excel exports and imports in Laravel",
   "license": "MIT",
   "keywords": [
@@ -15,8 +15,8 @@
   ],
   "authors": [
     {
-      "name": "Patrick Brouwers",
-      "email": "patrick@maatwebsite.nl"
+      "name": "Evgeniy Perin",
+      "email": "seoperin@gmail.com"
     }
   ],
   "require": {
@@ -35,21 +35,21 @@
   },
   "autoload": {
     "psr-4": {
-      "Maatwebsite\\Excel\\": "src/"
+      "Seoperin\\Excel\\": "src/"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "Maatwebsite\\Excel\\Tests\\": "tests/"
+      "Seoperin\\Excel\\Tests\\": "tests/"
     }
   },
   "extra": {
     "laravel": {
       "providers": [
-        "Maatwebsite\\Excel\\ExcelServiceProvider"
+        "Seoperin\\Excel\\ExcelServiceProvider"
       ],
       "aliases": {
-        "Excel": "Maatwebsite\\Excel\\Facades\\Excel"
+        "Excel": "Seoperin\\Excel\\Facades\\Excel"
       }
     }
   },
