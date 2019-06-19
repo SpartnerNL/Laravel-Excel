@@ -351,7 +351,7 @@ class Sheet
         $reader = IOFactory::createReader('Html');
 
         // If no sheetIndex given, insert content into the last sheet
-        $reader->setSheetIndex($sheetIndex === null ? $spreadsheet->getSheetCount() - 1 : $sheetIndex);
+        $reader->setSheetIndex($sheetIndex ?? $spreadsheet->getSheetCount() - 1);
         $reader->loadIntoExisting($temporaryFile->getLocalPath(), $spreadsheet);
 
         $temporaryFile->delete();
