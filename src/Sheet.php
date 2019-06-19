@@ -336,10 +336,11 @@ class Sheet
 
     /**
      * @param FromView $sheetExport
+     * @param int|null $sheetIndex
      *
      * @throws \PhpOffice\PhpSpreadsheet\Reader\Exception
      */
-    public function fromView(FromView $sheetExport)
+    public function fromView(FromView $sheetExport, $sheetIndex = null)
     {
         $temporaryFile = $this->temporaryFileFactory->makeLocal();
         $temporaryFile->put($sheetExport->view()->render());
@@ -349,8 +350,8 @@ class Sheet
         /** @var Html $reader */
         $reader = IOFactory::createReader('Html');
 
-        // Insert content into the last sheet
-        $reader->setSheetIndex($spreadsheet->getSheetCount() - 1);
+        // If no sheetIndex given, insert content into the last sheet
+        $reader->setSheetIndex($sheetIndex ?? $spreadsheet->getSheetCount() - 1);
         $reader->loadIntoExisting($temporaryFile->getLocalPath(), $spreadsheet);
 
         $temporaryFile->delete();
