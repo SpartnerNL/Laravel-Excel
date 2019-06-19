@@ -27,30 +27,34 @@ class TemporaryFileFactory
     }
 
     /**
+     * @param string|null $fileExtension
+     *
      * @return TemporaryFile
      */
-    public function make(): TemporaryFile
+    public function make(string $fileExtension = null): TemporaryFile
     {
         if (null !== $this->temporaryDisk) {
             return $this->makeRemote();
         }
 
-        return $this->makeLocal();
+        return $this->makeLocal(null, $fileExtension);
     }
 
     /**
      * @param string|null $fileName
      *
+     * @param string|null $fileExtension
+     *
      * @return LocalTemporaryFile
      */
-    public function makeLocal(string $fileName = null): LocalTemporaryFile
+    public function makeLocal(string $fileName = null, string $fileExtension = null): LocalTemporaryFile
     {
         if (!file_exists($this->temporaryPath) && !mkdir($concurrentDirectory = $this->temporaryPath) && !is_dir($concurrentDirectory)) {
             throw new \RuntimeException(sprintf('Directory "%s" was not created', $concurrentDirectory));
         }
 
         return new LocalTemporaryFile(
-            $this->temporaryPath . DIRECTORY_SEPARATOR . ($fileName ?: $this->generateFilename())
+            $this->temporaryPath . DIRECTORY_SEPARATOR . ($fileName ?: $this->generateFilename($fileExtension))
         );
     }
 
@@ -69,10 +73,12 @@ class TemporaryFileFactory
     }
 
     /**
+     * @param string|null $fileExtension
+     *
      * @return string
      */
-    private function generateFilename(): string
+    private function generateFilename(string $fileExtension = null): string
     {
-        return 'laravel-excel-' . Str::random(32);
+        return 'laravel-excel-' . Str::random(32) . ($fileExtension ? '.' . $fileExtension : '');
     }
 }
