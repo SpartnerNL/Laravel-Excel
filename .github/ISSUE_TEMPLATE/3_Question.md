@@ -1,6 +1,6 @@
 ---
-name: ❓ Question
-about: If you want to ask a question.
+name: 🧐 Question
+about: This repository is focused on reporting bugs or problems. If you need help, first read https://github.com/Maatwebsite/Laravel-Excel/blob/3.1/.github/SUPPORT.md
 
 ---
 
@@ -8,6 +8,7 @@ about: If you want to ask a question.
 
 PLEASE READ: FILLING IN THE TEMPLATE IS REQUIRED!
 Issues that do not include enough information might not be picked up.
+Issues that have not been filled in using the issue template will be closed.
 
 Have you read Laravel-Excel's 
 contributing guidelines (https://laravel-excel.maatwebsite.nl/docs/3.1/getting-started/contributing)
@@ -24,9 +25,9 @@ Please prefix your issue with [QUESTION].
 
 <!-- Please be as exact and complete as possible when proving version numbers -->
 
-* PHP version: <!-- put your FULL PHP version here -->
-* Laravel version: <!-- put your FULL Laravel version here -->
-* Package version: <!-- put FULL Laravel Excel package version here -->
+* PHP version: <!-- put your FULL (including patch number) PHP version here -->
+* Laravel version: <!-- put your FULL (including patch number) Laravel version here -->
+* Package version: <!-- put FULL (including patch number) Laravel Excel package version here -->
 
 ### Description
 

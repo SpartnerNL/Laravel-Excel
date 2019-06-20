@@ -1,5 +1,5 @@
 ---
-name: 🚀 Propsosal
+name: 💡 Propsosal
 about: If you have a 🔥 idea.
 
 ---
