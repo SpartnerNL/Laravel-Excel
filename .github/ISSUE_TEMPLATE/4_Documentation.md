@@ -1,6 +1,9 @@
 ---
-name: 📚 Documentation Issue
+name: "\U0001F4DA Documentation Issue"
 about: For documentation issues, open a pull request at https://github.com/Maatwebsite/laravel-excel-docs
+title: ''
+labels: ''
+assignees: ''
 
 ---
 

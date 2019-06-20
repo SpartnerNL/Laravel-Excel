@@ -1,6 +1,10 @@
 ---
-name: 🧐 Question
-about: This repository is focused on reporting bugs or problems. If you need help, first read https://github.com/Maatwebsite/Laravel-Excel/blob/3.1/.github/SUPPORT.md
+name: "\U0001F9D0 Question"
+about: This repository is focused on reporting bugs or problems. If you need help,
+  first read https://github.com/Maatwebsite/Laravel-Excel/blob/3.1/.github/SUPPORT.md
+title: "[QUESTION]"
+labels: question
+assignees: ''
 
 ---
 

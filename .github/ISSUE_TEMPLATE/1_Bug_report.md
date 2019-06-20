@@ -1,6 +1,10 @@
 ---
-name: 🐛 Bug Report
-about: Report a general package issue. Please ensure your Laravel-Excel version is still supported https://docs.laravel-excel.com/3.1/getting-started/support.html#supported-versions
+name: "\U0001F41B Bug Report"
+about: Report a general package issue. Please ensure your Laravel-Excel version is
+  still supported https://docs.laravel-excel.com/3.1/getting-started/support.html#supported-versions
+title: "[BUG]"
+labels: bug
+assignees: ''
 
 ---
 

@@ -1,6 +1,9 @@
 ---
-name: 💡 Propsosal
-about: If you have a 🔥 idea.
+name: "\U0001F4A1 Propsosal"
+about: "If you have a \U0001F525 idea."
+title: "[PROPOSAL]"
+labels: proposal
+assignees: ''
 
 ---
 
