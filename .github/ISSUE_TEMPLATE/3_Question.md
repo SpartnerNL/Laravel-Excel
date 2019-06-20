@@ -12,7 +12,7 @@ assignees: ''
 
 PLEASE READ: FILLING IN THE TEMPLATE IS REQUIRED!
 Issues that do not include enough information might not be picked up.
-Issues that have not been filled in using the issue template will be closed.
+Issues that have not been filled in using the issue template will be CLOSED.
 
 Have you read Laravel-Excel's 
 contributing guidelines (https://laravel-excel.maatwebsite.nl/docs/3.1/getting-started/contributing)
