@@ -25,6 +25,17 @@ Please prefix your issue with [QUESTION].
 
 ### Prerequisites
 
+<!--
+
+Put an X between the brackets if you have done the following:
+
+-->
+
+* [ ] Have read and understood: https://github.com/Maatwebsite/Laravel-Excel/blob/3.1/.github/SUPPORT.md
+* [ ] Checked if your Laravel Excel version is still supported: https://docs.laravel-excel.com/3.1/getting-started/support.html#supported-versions
+* [ ] Checked that your question isn't already asked before.
+* [ ] Filled in the entire issue template
+
 ### Versions
 
 <!-- Please be as exact and complete as possible when proving version numbers -->
