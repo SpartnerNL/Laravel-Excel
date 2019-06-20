@@ -9,7 +9,6 @@ assignees: ''
 ---
 
 <!--
-
 PLEASE READ: FILLING IN THE TEMPLATE IS REQUIRED!
 Issues that do not include enough information might not be picked up.
 Issues that have not been filled in using the issue template will be CLOSED.
@@ -20,15 +19,12 @@ and Code Of Conduct (https://github.com/Maatwebsite/Laravel-Excel/blob/3.1/CODE_
 By filing an Issue, you are expected to comply with it, including treating everyone with respect.
 
 Please prefix your issue with: [BUG] .
-
 -->
 
 ### Prerequisites
 
 <!--
-
 Put an X between the brackets if you have done the following:
-
 -->
 
 * [ ] Checked if your Laravel Excel version is still supported: https://docs.laravel-excel.com/3.1/getting-started/support.html#supported-versions
