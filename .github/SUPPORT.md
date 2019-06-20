@@ -8,7 +8,7 @@ Please contact info@maatwebsite.nl or via phone +31 (0)10 744 9312 or visit the 
 
 https://laravel-excel.com/commercial-support
 
-Alternatively you could ask your question on Stackoverflow or a Laravel-related forum:
+Also note that we are a wrapper package around PhpSpreadsheet and thus we cannot answer all questions that are about PhpSpreadsheet functionality. You could ask your question on Stackoverflow or a Laravel-related forum:
 
 - https://stackoverflow.com/questions/tagged/laravel-excel
 - https://laracasts.com/discuss
