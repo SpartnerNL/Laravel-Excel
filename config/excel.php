@@ -71,9 +71,9 @@ return [
         'csv'         => [
             'delimiter'              => ',',
             'enclosure'              => '"',
-            'escape_character'      => '\\',
-            'contiguous'            => false,
-            'input_encoding'        => 'UTF-8',
+            'escape_character'       => '\\',
+            'contiguous'             => false,
+            'input_encoding'         => 'UTF-8',
         ],
     ],
 
