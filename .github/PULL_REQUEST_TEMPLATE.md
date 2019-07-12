@@ -1,6 +1,6 @@
 ### Requirements
 
-Please take note of our contributing guidelines: https://laravel-excel-docs.dev/docs/3.1/getting-started/contributing
+Please take note of our contributing guidelines: https://docs.laravel-excel.com/3.1/getting-started/contributing.html
 Filling out the template is required. Any pull request that does not include enough information to be reviewed in a timely manner may be closed at the maintainers' discretion.
 
 Mark the following tasks as done:
