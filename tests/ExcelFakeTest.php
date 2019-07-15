@@ -153,7 +153,7 @@ class ExcelFakeTest extends TestCase
             return $import->model([]) instanceof User;
         });
         ExcelFacade::matchByRegex();
-        ExcelFacade::assertImported('/\w{6}-\w{8}\.csv/');
+        ExcelFacade::assertImported('/\w{6}\.xlsx/');
     }
 
     /**
