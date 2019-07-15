@@ -37,7 +37,7 @@ class ExcelFake implements Exporter, Importer
     protected $imported = [];
 
     /**
-     * @var boolean
+     * @var bool
      */
     protected $matchByRegex = false;
 
@@ -180,7 +180,7 @@ class ExcelFake implements Exporter, Importer
 
     /**
      * When asserting downloaded, stored, queued or imported, use regular expression
-     * to look for a matching file path
+     * to look for a matching file path.
      *
      * @return void
      */
@@ -191,7 +191,7 @@ class ExcelFake implements Exporter, Importer
 
     /**
      * When asserting downloaded, stored, queued or imported, use regular string
-     * comparison for matching file path
+     * comparison for matching file path.
      *
      * @return void
      */
@@ -222,9 +222,11 @@ class ExcelFake implements Exporter, Importer
             $results = preg_grep($key, $files);
             Assert::assertGreaterThan(0, count($results), $message);
             Assert::assertEquals(1, count($results), "More than one result matches the file name expression '$key'.");
+
             return $results[0];
         }
         Assert::assertArrayHasKey($key, $disk, $message);
+
         return $key;
     }
 
