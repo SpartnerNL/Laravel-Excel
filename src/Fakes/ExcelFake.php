@@ -195,39 +195,9 @@ class ExcelFake implements Exporter, Importer
      *
      * @return void
      */
-
     public function doNotMatchByRegex()
     {
         $this->matchByRegex = false;
-    }
-
-    /**
-     * Asserts that an array has a specified key and returns the key if successful.
-     * @see matchByRegex for more information about file path matching
-     *
-     * @param string    $key
-     * @param array     $array
-     * @param string    $message
-     *
-     * @return string
-     *
-     * @throws ExpectationFailedException
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws Exception
-     */
-    protected function assertArrayHasKey(string $key, array $disk, string $message = ''): string
-    {
-        if ($this->matchByRegex) {
-            $files = array_keys($disk);
-            $results = preg_grep($key, $files);
-            Assert::assertGreaterThan(0, count($results), $message);
-            Assert::assertEquals(1, count($results), "More than one result matches the file name expression '$key'.");
-
-            return $results[0];
-        }
-        Assert::assertArrayHasKey($key, $disk, $message);
-
-        return $key;
     }
 
     /**
@@ -339,5 +309,34 @@ class ExcelFake implements Exporter, Importer
             $callback($importedOnDisk[$filePath]),
             "The file [{$filePath}] was not imported with the expected data."
         );
+    }
+
+    /**
+     * Asserts that an array has a specified key and returns the key if successful.
+     * @see matchByRegex for more information about file path matching
+     *
+     * @param string    $key
+     * @param array     $array
+     * @param string    $message
+     *
+     * @return string
+     *
+     * @throws ExpectationFailedException
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws Exception
+     */
+    protected function assertArrayHasKey(string $key, array $disk, string $message = ''): string
+    {
+        if ($this->matchByRegex) {
+            $files = array_keys($disk);
+            $results = preg_grep($key, $files);
+            Assert::assertGreaterThan(0, count($results), $message);
+            Assert::assertEquals(1, count($results), "More than one result matches the file name expression '$key'.");
+
+            return $results[0];
+        }
+        Assert::assertArrayHasKey($key, $disk, $message);
+
+        return $key;
     }
 }
