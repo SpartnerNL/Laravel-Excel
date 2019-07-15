@@ -61,7 +61,7 @@ class ExcelFakeTest extends TestCase
             return $export->collection()->contains('foo');
         });
         ExcelFacade::matchByRegex();
-        ExcelFacade::assertStored('/\w{6}-\w{8}\.csv/');
+        ExcelFacade::assertStored('/\w{6}-\w{8}\.csv/', 's3');
     }
 
     /**
@@ -99,7 +99,7 @@ class ExcelFakeTest extends TestCase
             return $export->collection()->contains('foo');
         });
         ExcelFacade::matchByRegex();
-        ExcelFacade::assertQueued('/\w{6}-\w{8}\.csv/');
+        ExcelFacade::assertQueued('/\w{6}-\w{8}\.csv/', 's3');
     }
 
     /**
@@ -119,7 +119,7 @@ class ExcelFakeTest extends TestCase
             return $export->collection()->contains('foo');
         });
         ExcelFacade::matchByRegex();
-        ExcelFacade::assertQueued('/\w{6}-\w{8}\.csv/');
+        ExcelFacade::assertQueued('/\w{6}-\w{8}\.csv/', 's3');
     }
 
     /**
@@ -136,7 +136,7 @@ class ExcelFakeTest extends TestCase
             return $import->model([]) instanceof User;
         });
         ExcelFacade::matchByRegex();
-        ExcelFacade::assertImported('/\w{6}-\w{8}\.csv/');
+        ExcelFacade::assertImported('/\w{6}-\w{8}\.csv/', 's3');
     }
 
     /**
@@ -173,7 +173,7 @@ class ExcelFakeTest extends TestCase
             return $import->model([]) instanceof User;
         });
         ExcelFacade::matchByRegex();
-        ExcelFacade::assertQueued('/\w{6}-\w{8}\.csv/');
+        ExcelFacade::assertQueued('/\w{6}-\w{8}\.csv/', 's3');
     }
 
     /**
@@ -193,7 +193,7 @@ class ExcelFakeTest extends TestCase
             return $import->model([]) instanceof User;
         });
         ExcelFacade::matchByRegex();
-        ExcelFacade::assertQueued('/\w{6}-\w{8}\.csv/');
+        ExcelFacade::assertQueued('/\w{6}-\w{8}\.csv/', 's3');
     }
 
     /**
