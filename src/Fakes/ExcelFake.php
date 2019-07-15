@@ -328,7 +328,7 @@ class ExcelFake implements Exporter, Importer
     protected function assertArrayHasKey(string $key, array $disk, string $message = ''): string
     {
         if ($this->matchByRegex) {
-            $files = array_keys($disk);
+            $files   = array_keys($disk);
             $results = preg_grep($key, $files);
             Assert::assertGreaterThan(0, count($results), $message);
             Assert::assertEquals(1, count($results), "More than one result matches the file name expression '$key'.");
