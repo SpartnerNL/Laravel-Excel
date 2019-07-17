@@ -2,14 +2,12 @@
 
 namespace Maatwebsite\Excel\Jobs;
 
+use Throwable;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Maatwebsite\Excel\Concerns\WithEvents;
-use Maatwebsite\Excel\Events\ImportFailed;
-use Throwable;
 
 class QueueExportClass implements ShouldQueue
 {
@@ -34,7 +32,7 @@ class QueueExportClass implements ShouldQueue
     public function __construct($export, $args)
     {
         $this->export = $export;
-        $this->args = $args;
+        $this->args   = $args;
     }
 
     /**

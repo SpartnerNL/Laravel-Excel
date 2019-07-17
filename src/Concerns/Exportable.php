@@ -3,10 +3,10 @@
 namespace Maatwebsite\Excel\Concerns;
 
 use Maatwebsite\Excel\Exporter;
+use Maatwebsite\Excel\Jobs\QueueExportClass;
 use Illuminate\Foundation\Bus\PendingDispatch;
 use Maatwebsite\Excel\Exceptions\NoFilenameGivenException;
 use Maatwebsite\Excel\Exceptions\NoFilePathGivenException;
-use Maatwebsite\Excel\Jobs\QueueExportClass;
 
 trait Exportable
 {
@@ -74,7 +74,7 @@ trait Exportable
             throw NoFilePathGivenException::export();
         }
 
-        if($this instanceof FromCollection) {
+        if ($this instanceof FromCollection) {
             return QueueExportClass::dispatch($this, func_get_args());
         }
 
