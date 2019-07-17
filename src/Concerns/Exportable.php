@@ -3,7 +3,6 @@
 namespace Maatwebsite\Excel\Concerns;
 
 use Maatwebsite\Excel\Exporter;
-use Maatwebsite\Excel\Jobs\QueueExportClass;
 use Illuminate\Foundation\Bus\PendingDispatch;
 use Maatwebsite\Excel\Exceptions\NoFilenameGivenException;
 use Maatwebsite\Excel\Exceptions\NoFilePathGivenException;

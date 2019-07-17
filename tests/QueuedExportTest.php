@@ -2,14 +2,8 @@
 
 namespace Maatwebsite\Excel\Tests;
 
-use Maatwebsite\Excel\Jobs\QueueExportClass;
 use Throwable;
 use Maatwebsite\Excel\Excel;
-use Illuminate\Support\Facades\Queue;
-use Illuminate\Queue\Events\JobProcessing;
-use Maatwebsite\Excel\Files\TemporaryFile;
-use Maatwebsite\Excel\Jobs\AppendDataToSheet;
-use Maatwebsite\Excel\Files\RemoteTemporaryFile;
 use Maatwebsite\Excel\Tests\Data\Stubs\QueuedExport;
 use Maatwebsite\Excel\Tests\Data\Stubs\ShouldQueueExport;
 use Maatwebsite\Excel\Tests\Data\Stubs\AfterQueueExportJob;

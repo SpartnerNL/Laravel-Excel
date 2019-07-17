@@ -6,9 +6,9 @@ use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Files\Filesystem;
 use Maatwebsite\Excel\Files\TemporaryFile;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Maatwebsite\Excel\Jobs\QueueExportClass;
 use Illuminate\Foundation\Bus\PendingDispatch;
 use Maatwebsite\Excel\Helpers\FileTypeDetector;
-use Maatwebsite\Excel\Jobs\QueueExportClass;
 
 class Excel implements Exporter, Importer
 {
