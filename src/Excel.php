@@ -8,6 +8,7 @@ use Maatwebsite\Excel\Files\TemporaryFile;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\PendingDispatch;
 use Maatwebsite\Excel\Helpers\FileTypeDetector;
+use Maatwebsite\Excel\Jobs\QueueExportClass;
 
 class Excel implements Exporter, Importer
 {
@@ -115,13 +116,30 @@ class Excel implements Exporter, Importer
     {
         $writerType = FileTypeDetector::detectStrict($filePath, $writerType);
 
-        return $this->queuedWriter->store(
+        return QueueExportClass::dispatch(
             $export,
             $filePath,
             $disk,
             $writerType,
             $diskOptions
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function storeQueued($export, string $filePath, string $disk = null, string $writerType = null, $diskOptions = [])
+    {
+        $temporaryFile = $this->export($export, $filePath, $writerType);
+
+        $exported = $this->filesystem->disk($disk, $diskOptions)->copy(
+            $temporaryFile,
+            $filePath
+        );
+
+        $temporaryFile->delete();
+
+        return $exported;
     }
 
     /**

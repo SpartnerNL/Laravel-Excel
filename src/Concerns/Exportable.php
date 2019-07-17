@@ -74,10 +74,6 @@ trait Exportable
             throw NoFilePathGivenException::export();
         }
 
-        if ($this instanceof FromCollection) {
-            return QueueExportClass::dispatch($this, func_get_args());
-        }
-
         return $this->getExporter()->queue(
             $this,
             $filePath,
@@ -103,7 +99,7 @@ trait Exportable
     /**
      * @return Exporter
      */
-    private function getExporter(): Exporter
+    public function getExporter(): Exporter
     {
         return app(Exporter::class);
     }

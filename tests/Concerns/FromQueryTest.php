@@ -120,11 +120,10 @@ class FromQueryTest extends TestCase
 
         $export->queue('from-query-with-eager-loads.xlsx');
 
-        // Should be 3 queries:
-        // 1) Count users to create chunked queues
-        // 2) select all users
-        // 3) eager load query for groups
-        $this->assertCount(3, DB::getQueryLog());
+        // Should be 2 queries:
+        // 1) select all users
+        // 2) eager load query for groups
+        $this->assertCount(2, DB::getQueryLog());
         DB::connection()->disableQueryLog();
 
         $contents = $this->readAsArray(__DIR__ . '/../Data/Disks/Local/from-query-with-eager-loads.xlsx', 'Xlsx');

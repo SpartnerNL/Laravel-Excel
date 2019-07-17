@@ -21,18 +21,39 @@ class QueueExportClass implements ShouldQueue
     /**
      * @var array
      */
-    public $args;
+    public $filePath;
+
+    /**
+     * @var string|null
+     */
+    public $disk;
+
+    /**
+     * @var string|null
+     */
+    public $writerType;
+
+    /**
+     * @var array
+     */
+    public $diskOptions;
 
     /**
      * Create a new job instance.
      *
-     * @param $export
-     * @param $args
+     * @param object $export
+     * @param string $filePath
+     * @param string|null $disk
+     * @param string|null $writerType
+     * @param array $diskOptions
      */
-    public function __construct($export, $args)
+    public function __construct($export, string $filePath, string $disk = null, string $writerType = null, $diskOptions = [])
     {
-        $this->export = $export;
-        $this->args   = $args;
+        $this->export      = $export;
+        $this->filePath    = $filePath;
+        $this->disk        = $disk;
+        $this->writerType  = $writerType;
+        $this->diskOptions = $diskOptions;
     }
 
     /**
@@ -42,7 +63,13 @@ class QueueExportClass implements ShouldQueue
      */
     public function handle()
     {
-        $this->export->store(...$this->args);
+        $this->export->getExporter()->storeQueued(
+            $this->export,
+            $this->filePath,
+            $this->disk,
+            $this->writerType,
+            $this->diskOptions
+        );
     }
 
     /**

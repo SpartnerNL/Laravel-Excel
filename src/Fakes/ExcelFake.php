@@ -86,6 +86,16 @@ class ExcelFake implements Exporter, Importer
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function storeQueued($export, string $filePath, string $disk = null, string $writerType = null, $diskOptions = [])
+    {
+        $this->stored[$disk ?? 'default'][$filePath] = $export;
+
+        return true;
+    }
+
+    /**
      * @param object $export
      * @param string $writerType
      *
