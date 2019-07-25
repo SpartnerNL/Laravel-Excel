@@ -68,7 +68,7 @@ class ExcelFake implements Exporter, Importer
     /**
      * {@inheritdoc}
      */
-    public function queue($export, string $filePath, string $disk = null, string $writerType = null, $diskOptions = [])
+    public function queue($export, string $filePath, string $disk = null, string $writerType = null, $diskOptions = [], $tries = null)
     {
         Queue::fake();
 

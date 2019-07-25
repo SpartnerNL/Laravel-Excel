@@ -4,6 +4,8 @@ namespace Maatwebsite\Excel\Tests;
 
 use Throwable;
 use Maatwebsite\Excel\Excel;
+use Illuminate\Support\Facades\Queue;
+use Maatwebsite\Excel\Jobs\QueueExportClass;
 use Maatwebsite\Excel\Tests\Data\Stubs\QueuedExport;
 use Maatwebsite\Excel\Tests\Data\Stubs\ShouldQueueExport;
 use Maatwebsite\Excel\Tests\Data\Stubs\AfterQueueExportJob;
@@ -96,5 +98,34 @@ class QueuedExportTest extends TestCase
         }
 
         $this->assertTrue(app('queue-has-failed'));
+    }
+
+    /**
+     * @test
+     */
+    public function may_have_maximum_attempts()
+    {
+        $export = new ShouldQueueExport();
+
+        Queue::fake();
+
+        Queue::assertNothingPushed();
+
+        $export->queue('queued-export.xlsx');
+
+        Queue::assertPushed(QueueExportClass::class, 1);
+        // Job should have no maximum attempts per default
+        Queue::assertPushed(QueueExportClass::class, function ($job) {
+            return $job->tries === null;
+        });
+
+        $tries = 3;
+        $export->queue('queued-export.xlsx', null, null, null, $tries);
+
+        // Job should be pushed twice
+        Queue::assertPushed(QueueExportClass::class, 2);
+        Queue::assertPushed(QueueExportClass::class, function ($job) use ($tries) {
+            return $job->tries === 3;
+        });
     }
 }

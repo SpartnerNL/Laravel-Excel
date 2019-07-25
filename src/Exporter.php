@@ -38,10 +38,11 @@ interface Exporter
      * @param string|null $disk
      * @param string      $writerType
      * @param mixed       $diskOptions
+     * @param int|null    $tries
      *
      * @return PendingDispatch
      */
-    public function queue($export, string $filePath, string $disk = null, string $writerType = null, $diskOptions = []);
+    public function queue($export, string $filePath, string $disk = null, string $writerType = null, $diskOptions = [], $tries = null);
 
     /**
      * @param object      $export

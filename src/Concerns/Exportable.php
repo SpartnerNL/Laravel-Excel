@@ -61,11 +61,12 @@ trait Exportable
      * @param string|null $disk
      * @param string|null $writerType
      * @param mixed       $diskOptions
+     * @param int|null    $tries
      *
      * @throws NoFilePathGivenException
      * @return PendingDispatch
      */
-    public function queue(string $filePath = null, string $disk = null, string $writerType = null, $diskOptions = [])
+    public function queue(string $filePath = null, string $disk = null, string $writerType = null, $diskOptions = [], $tries = null)
     {
         $filePath = $filePath ?? $this->filePath ?? null;
 
@@ -78,7 +79,8 @@ trait Exportable
             $filePath,
             $disk ?? $this->disk ?? null,
             $writerType ?? $this->writerType ?? null,
-            $diskOptions ?? $this->diskOptions ?? []
+            $diskOptions ?? $this->diskOptions ?? [],
+            $tries ?? $this->tries ?? null
         );
     }
 

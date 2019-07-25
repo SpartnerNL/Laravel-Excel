@@ -112,7 +112,7 @@ class Excel implements Exporter, Importer
     /**
      * {@inheritdoc}
      */
-    public function queue($export, string $filePath, string $disk = null, string $writerType = null, $diskOptions = [])
+    public function queue($export, string $filePath, string $disk = null, string $writerType = null, $diskOptions = [], $tries = null)
     {
         $writerType = FileTypeDetector::detectStrict($filePath, $writerType);
 
@@ -121,7 +121,8 @@ class Excel implements Exporter, Importer
             $filePath,
             $disk,
             $writerType,
-            $diskOptions
+            $diskOptions,
+            $tries
         );
     }
 

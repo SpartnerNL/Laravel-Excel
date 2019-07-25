@@ -39,6 +39,11 @@ class QueueExportClass implements ShouldQueue
     public $diskOptions;
 
     /**
+     * @var int
+     */
+    public $tries;
+
+    /**
      * Create a new job instance.
      *
      * @param object $export
@@ -46,14 +51,16 @@ class QueueExportClass implements ShouldQueue
      * @param string|null $disk
      * @param string|null $writerType
      * @param array $diskOptions
+     * @param int|null $tries
      */
-    public function __construct($export, string $filePath, string $disk = null, string $writerType = null, $diskOptions = [])
+    public function __construct($export, string $filePath, string $disk = null, string $writerType = null, $diskOptions = [], $tries = null)
     {
         $this->export      = $export;
         $this->filePath    = $filePath;
         $this->disk        = $disk;
         $this->writerType  = $writerType;
         $this->diskOptions = $diskOptions;
+        $this->tries       = $tries;
     }
 
     /**
