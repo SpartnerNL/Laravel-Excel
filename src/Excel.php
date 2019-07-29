@@ -6,6 +6,7 @@ use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Files\Filesystem;
 use Maatwebsite\Excel\Jobs\QueuedExport;
 use Maatwebsite\Excel\Files\TemporaryFile;
+use Maatwebsite\Excel\Helpers\StoreHelper;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\PendingDispatch;
 use Maatwebsite\Excel\Helpers\FileTypeDetector;
@@ -97,50 +98,26 @@ class Excel implements Exporter, Importer
             return $this->queue($export, $filePath, $diskName, $writerType, $diskOptions);
         }
 
-        $temporaryFile = $this->export($export, $filePath, $writerType);
+        $disk = $this->filesystem->disk($diskName, $diskOptions);
 
-        $exported = $this->filesystem->disk($diskName, $diskOptions)->copy(
-            $temporaryFile,
-            $filePath
-        );
-
-        $temporaryFile->delete();
-
-        return $exported;
+        return StoreHelper::store($export, $this->writer, $disk, $filePath, $writerType);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function queue($export, string $filePath, string $disk = null, string $writerType = null, $diskOptions = [], $tries = null)
+    public function queue($export, string $filePath, string $diskName = null, string $writerType = null, $diskOptions = [], $tries = null)
     {
-        $writerType = FileTypeDetector::detectStrict($filePath, $writerType);
+        $disk = $this->filesystem->disk($diskName, $diskOptions);
 
         return QueuedExport::dispatch(
             $export,
-            $filePath,
+            $this->writer,
             $disk,
+            $filePath,
             $writerType,
-            $diskOptions,
             $tries
         );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function storeQueued($export, string $filePath, string $disk = null, string $writerType = null, $diskOptions = [])
-    {
-        $temporaryFile = $this->export($export, $filePath, $writerType);
-
-        $exported = $this->filesystem->disk($disk, $diskOptions)->copy(
-            $temporaryFile,
-            $filePath
-        );
-
-        $temporaryFile->delete();
-
-        return $exported;
     }
 
     /**

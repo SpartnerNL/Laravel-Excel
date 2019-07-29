@@ -45,17 +45,6 @@ interface Exporter
     public function queue($export, string $filePath, string $disk = null, string $writerType = null, $diskOptions = [], $tries = null);
 
     /**
-     * @param object      $export
-     * @param string      $filePath
-     * @param string|null $disk
-     * @param string      $writerType
-     * @param mixed       $diskOptions
-     *
-     * @return PendingDispatch
-     */
-    public function storeQueued($export, string $filePath, string $disk = null, string $writerType = null, $diskOptions = []);
-
-    /**
      * @param object $export
      * @param string $writerType
      *

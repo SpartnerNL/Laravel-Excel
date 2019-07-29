@@ -4,8 +4,11 @@ namespace Maatwebsite\Excel\Jobs;
 
 use Throwable;
 use Illuminate\Bus\Queueable;
+use Maatwebsite\Excel\Writer;
+use Maatwebsite\Excel\Files\Disk;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
+use Maatwebsite\Excel\Helpers\StoreHelper;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 
@@ -19,6 +22,16 @@ class QueuedExport implements ShouldQueue
     public $export;
 
     /**
+     * @var Writer
+     */
+    public $writer;
+
+    /**
+     * @var Disk
+     */
+    public $disk;
+
+    /**
      * @var array
      */
     public $filePath;
@@ -26,17 +39,7 @@ class QueuedExport implements ShouldQueue
     /**
      * @var string|null
      */
-    public $disk;
-
-    /**
-     * @var string|null
-     */
     public $writerType;
-
-    /**
-     * @var array
-     */
-    public $diskOptions;
 
     /**
      * @var int
@@ -47,36 +50,32 @@ class QueuedExport implements ShouldQueue
      * Create a new job instance.
      *
      * @param object $export
+     * @param Writer $writer
+     * @param Disk $disk
      * @param string $filePath
-     * @param string|null $disk
      * @param string|null $writerType
-     * @param array $diskOptions
      * @param int|null $tries
      */
-    public function __construct($export, string $filePath, string $disk = null, string $writerType = null, $diskOptions = [], $tries = null)
+    public function __construct($export, Writer $writer, Disk $disk, string $filePath, string $writerType = null, int $tries = null)
     {
         $this->export      = $export;
-        $this->filePath    = $filePath;
+        $this->writer      = $writer;
         $this->disk        = $disk;
+        $this->filePath    = $filePath;
         $this->writerType  = $writerType;
-        $this->diskOptions = $diskOptions;
         $this->tries       = $tries;
     }
 
     /**
      * Execute the job.
      *
+     * @throws \Maatwebsite\Excel\Exceptions\NoTypeDetectedException
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
      * @return void
      */
     public function handle()
     {
-        $this->export->getExporter()->storeQueued(
-            $this->export,
-            $this->filePath,
-            $this->disk,
-            $this->writerType,
-            $this->diskOptions
-        );
+        StoreHelper::store($this->export, $this->writer, $this->disk, $this->filePath, $this->writerType);
     }
 
     /**
