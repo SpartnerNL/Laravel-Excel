@@ -5,11 +5,11 @@ namespace Maatwebsite\Excel\Tests;
 use Throwable;
 use Maatwebsite\Excel\Excel;
 use Illuminate\Support\Facades\Queue;
-use Maatwebsite\Excel\Jobs\QueueExportClass;
-use Maatwebsite\Excel\Tests\Data\Stubs\QueuedExport;
+use Maatwebsite\Excel\Jobs\QueuedExport;
 use Maatwebsite\Excel\Tests\Data\Stubs\ShouldQueueExport;
 use Maatwebsite\Excel\Tests\Data\Stubs\AfterQueueExportJob;
 use Maatwebsite\Excel\Tests\Data\Stubs\QueuedExportWithFailedHook;
+use Maatwebsite\Excel\Tests\Data\Stubs\QueuedExport as QueuedExportStub;
 use Maatwebsite\Excel\Tests\Data\Stubs\EloquentCollectionWithMappingExport;
 
 class QueuedExportTest extends TestCase
@@ -19,7 +19,7 @@ class QueuedExportTest extends TestCase
      */
     public function can_queue_an_export()
     {
-        $export = new QueuedExport();
+        $export = new QueuedExportStub();
 
         $export->queue('queued-export.xlsx')->chain([
             new AfterQueueExportJob(__DIR__ . '/Data/Disks/Local/queued-export.xlsx'),
@@ -31,7 +31,7 @@ class QueuedExportTest extends TestCase
      */
     public function can_queue_an_export_and_store_on_different_disk()
     {
-        $export = new QueuedExport();
+        $export = new QueuedExportStub();
 
         $export->queue('queued-export.xlsx', 'test')->chain([
             new AfterQueueExportJob(__DIR__ . '/Data/Disks/Test/queued-export.xlsx'),
@@ -45,7 +45,7 @@ class QueuedExportTest extends TestCase
     {
         config()->set('excel.temporary_files.remote_disk', 'test');
 
-        $export = new QueuedExport();
+        $export = new QueuedExportStub();
 
         $export->queue('queued-export.xlsx')->chain([
             new AfterQueueExportJob(__DIR__ . '/Data/Disks/Local/queued-export.xlsx'),
@@ -113,9 +113,9 @@ class QueuedExportTest extends TestCase
 
         $export->queue('queued-export.xlsx');
 
-        Queue::assertPushed(QueueExportClass::class, 1);
+        Queue::assertPushed(QueuedExport::class, 1);
         // Job should have no maximum attempts per default
-        Queue::assertPushed(QueueExportClass::class, function ($job) {
+        Queue::assertPushed(QueuedExport::class, function ($job) {
             return $job->tries === null;
         });
 
@@ -123,8 +123,8 @@ class QueuedExportTest extends TestCase
         $export->queue('queued-export.xlsx', null, null, null, $tries);
 
         // Job should be pushed twice
-        Queue::assertPushed(QueueExportClass::class, 2);
-        Queue::assertPushed(QueueExportClass::class, function ($job) use ($tries) {
+        Queue::assertPushed(QueuedExport::class, 2);
+        Queue::assertPushed(QueuedExport::class, function ($job) use ($tries) {
             return $job->tries === 3;
         });
     }
