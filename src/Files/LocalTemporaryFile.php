@@ -48,7 +48,7 @@ class LocalTemporaryFile extends TemporaryFile
      */
     public function readStream()
     {
-        return fopen($this->getLocalPath(), 'rb+');
+        return fopen($this->getLocalPath(), 'rb');
     }
 
     /**
