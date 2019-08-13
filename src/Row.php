@@ -65,13 +65,19 @@ class Row
             $value = (new Cell($cell))->getValue($nullValue, $calculateFormulas, $formatData);
 
             if (isset($this->headingRow[$i])) {
-                $cells[$this->headingRow[$i]] = $value;
+                if (isset($cells[$this->headingRow[$i]])) {
+                    $ind = $this->headingRow[$i] . "_1";
+                    $cells[$ind] = $value;
+                } else {
+                    $cells[$this->headingRow[$i]] = $value;
+                }
             } else {
                 $cells[] = $value;
-            }
+         }
 
             $i++;
         }
+
 
         return $cells;
     }
