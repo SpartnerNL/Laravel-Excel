@@ -21,7 +21,6 @@
     "php": ">=5.5",
     "phpoffice/phpexcel": "^1.8.1",
     "illuminate/cache": "^5.0",
-    "illuminate/config": "^5.0",
     "illuminate/filesystem": "^5.0",
     "illuminate/support": "^5.0",
     "jeremeamia/superclosure": "^2.3",
