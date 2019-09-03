@@ -42,9 +42,9 @@ matrix:
     
 # Laravel 6.0
   - php: 7.2
-    env: LARAVEL=6.0.* TESTBENCH=3.9.x@dev ORCHESTRA_DATABASE=3.9.x@dev PHPUNIT=~8.0
+    env: LARAVEL=6.0.* TESTBENCH=4.0-dev@dev ORCHESTRA_DATABASE=4.0-dev@dev PHPUNIT=~8.0
   - php: 7.3
-    env: LARAVEL=6.0.* TESTBENCH=3.9.x@dev ORCHESTRA_DATABASE=3.9.x@dev PHPUNIT=~8.0
+    env: LARAVEL=6.0.* TESTBENCH=4.0-dev@dev ORCHESTRA_DATABASE=4.0-dev@dev PHPUNIT=~8.0
 
 before_install:
   - phpenv config-rm xdebug.ini
