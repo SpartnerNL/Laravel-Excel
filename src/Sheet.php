@@ -5,6 +5,9 @@ namespace Maatwebsite\Excel;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToArray;
 use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Concerns\WithValidation;
+use Maatwebsite\Excel\Exceptions\RowSkippedException;
+use Maatwebsite\Excel\Validators\RowValidator;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use Maatwebsite\Excel\Concerns\FromView;
 use Maatwebsite\Excel\Events\AfterSheet;
@@ -76,18 +79,18 @@ class Sheet
      */
     public function __construct(Worksheet $worksheet)
     {
-        $this->worksheet            = $worksheet;
-        $this->chunkSize            = config('excel.exports.chunk_size', 100);
+        $this->worksheet = $worksheet;
+        $this->chunkSize = config('excel.exports.chunk_size', 100);
         $this->temporaryFileFactory = app(TemporaryFileFactory::class);
     }
 
     /**
      * @param Spreadsheet $spreadsheet
-     * @param string|int  $index
+     * @param string|int $index
      *
-     * @throws SheetNotFoundException
-     * @throws \PhpOffice\PhpSpreadsheet\Exception
      * @return Sheet
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
+     * @throws SheetNotFoundException
      */
     public static function make(Spreadsheet $spreadsheet, $index)
     {
@@ -100,11 +103,11 @@ class Sheet
 
     /**
      * @param Spreadsheet $spreadsheet
-     * @param int         $index
+     * @param int $index
      *
-     * @throws SheetNotFoundException
-     * @throws \PhpOffice\PhpSpreadsheet\Exception
      * @return Sheet
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
+     * @throws SheetNotFoundException
      */
     public static function byIndex(Spreadsheet $spreadsheet, int $index): Sheet
     {
@@ -117,10 +120,10 @@ class Sheet
 
     /**
      * @param Spreadsheet $spreadsheet
-     * @param string      $name
+     * @param string $name
      *
-     * @throws SheetNotFoundException
      * @return Sheet
+     * @throws SheetNotFoundException
      */
     public static function byName(Spreadsheet $spreadsheet, string $name): Sheet
     {
@@ -214,7 +217,7 @@ class Sheet
 
     /**
      * @param object $import
-     * @param int    $startRow
+     * @param int $startRow
      */
     public function import($import, int $startRow = 1)
     {
@@ -248,8 +251,29 @@ class Sheet
 
         if ($import instanceof OnEachRow) {
             $headingRow = HeadingRowExtractor::extract($this->worksheet, $import);
+            $rows = [];
+
             foreach ($this->worksheet->getRowIterator()->resetStart($startRow ?? 1) as $row) {
-                $import->onRow(new Row($row, $headingRow));
+                $row = new Row($row, $headingRow);
+                $rows[$row->getIndex()] = $row;
+            }
+
+            if ($import instanceof WithValidation) {
+                $toValidate = array_map(function ($row) use ($import) {
+                    return $row->toArray(null, $import instanceof WithCalculatedFormulas);
+                }, $rows);
+
+                try {
+                    app(RowValidator::class)->validate($toValidate, $import);
+                } catch (RowSkippedException $e) {
+                    foreach ($e->skippedRows() as $row) {
+                        unset($rows[$row]);
+                    }
+                }
+            }
+
+            foreach ($rows as $row) {
+                $import->onRow($row);
 
                 if ($import instanceof WithProgressBar) {
                     $import->getConsoleOutput()->progressAdvance();
@@ -265,17 +289,17 @@ class Sheet
     }
 
     /**
-     * @param object   $import
+     * @param object $import
      * @param int|null $startRow
-     * @param null     $nullValue
-     * @param bool     $calculateFormulas
-     * @param bool     $formatData
+     * @param null $nullValue
+     * @param bool $calculateFormulas
+     * @param bool $formatData
      *
      * @return array
      */
     public function toArray($import, int $startRow = null, $nullValue = null, $calculateFormulas = false, $formatData = false)
     {
-        $endRow     = EndRowFinder::find($import, $startRow);
+        $endRow = EndRowFinder::find($import, $startRow);
         $headingRow = HeadingRowExtractor::extract($this->worksheet, $import);
 
         $rows = [];
@@ -297,11 +321,11 @@ class Sheet
     }
 
     /**
-     * @param object   $import
+     * @param object $import
      * @param int|null $startRow
-     * @param null     $nullValue
-     * @param bool     $calculateFormulas
-     * @param bool     $formatData
+     * @param null $nullValue
+     * @param bool $calculateFormulas
+     * @param bool $formatData
      *
      * @return Collection
      */
@@ -393,9 +417,9 @@ class Sheet
     }
 
     /**
-     * @param array       $rows
+     * @param array $rows
      * @param string|null $startCell
-     * @param bool        $strictNullComparison
+     * @param bool $strictNullComparison
      */
     public function append(array $rows, string $startCell = null, bool $strictNullComparison = false)
     {
@@ -490,7 +514,7 @@ class Sheet
 
     /**
      * @param iterable $rows
-     * @param object   $sheetExport
+     * @param object $sheetExport
      */
     public function appendRows($rows, $sheetExport)
     {
