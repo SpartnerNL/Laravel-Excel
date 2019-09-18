@@ -26,8 +26,7 @@
     "illuminate/support": "^5.0||^6.0",
     "jeremeamia/superclosure": "^2.3",
     "nesbot/carbon": "~1.0||~2.0",
-    "tijsverkoyen/css-to-inline-styles": "~2.0",
-    "laravel/helpers": "^1.0"
+    "tijsverkoyen/css-to-inline-styles": "~2.0"
   },
   "require-dev": {
     "phpseclib/phpseclib": "~1.0",
@@ -39,7 +38,8 @@
     "illuminate/http": "^5.0||^6.0",
     "illuminate/routing": "^5.0||^6.0",
     "illuminate/view": "^5.0||^6.0",
-    "illuminate/queue": "^5.0||^6.0"
+    "illuminate/queue": "^5.0||^6.0",
+    "laravel/helpers": "^1.0"
   },
   "autoload": {
     "classmap": [
