@@ -1,5 +1,6 @@
 <?php namespace Maatwebsite\Excel\Writers;
 
+use Illuminate\Support\Str;
 use Maatwebsite\Excel\Classes\LaravelExcelWorksheet;
 
 /**
@@ -47,7 +48,7 @@ class CellWriter
     public function setValue($value)
     {
         // Only set cell value for single cells
-        if (!str_contains($this->cells, ':')) {
+        if (!Str::contains($this->cells, ':')) {
             $this->sheet->setCellValue($this->cells, $value);
         }
 
@@ -62,7 +63,7 @@ class CellWriter
     public function setUrl($url)
     {
         // Only set cell value for single cells
-        if (!str_contains($this->cells, ':')) {
+        if (!Str::contains($this->cells, ':')) {
             $this->sheet->getCell($this->cells)->getHyperlink()->setUrl($url);
         }
 

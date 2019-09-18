@@ -38,8 +38,7 @@
     "illuminate/http": "^5.0|^6.0",
     "illuminate/routing": "^5.0|^6.0",
     "illuminate/view": "^5.0|^6.0",
-    "illuminate/queue": "^5.0|^6.0",
-    "laravel/helpers": "^1.0"
+    "illuminate/queue": "^5.0|^6.0"
   },
   "autoload": {
     "classmap": [
