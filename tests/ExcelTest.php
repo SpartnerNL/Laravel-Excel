@@ -66,11 +66,17 @@ class ExcelTest extends TestCase
     public function can_store_an_export_object_on_default_disk()
     {
         $export = new EmptyExport;
+        $name   = 'filename.xlsx';
+        $path   = __DIR__ . '/Data/Disks/Local/' . $name;
 
-        $response = $this->SUT->store($export, 'filename.xlsx');
+        @unlink($path);
+
+        $this->assertFileNotExists($path);
+
+        $response = $this->SUT->store($export, $name);
 
         $this->assertTrue($response);
-        $this->assertFileExists(__DIR__ . '/Data/Disks/Local/filename.xlsx');
+        $this->assertFileExists($path);
     }
 
     /**
@@ -79,11 +85,17 @@ class ExcelTest extends TestCase
     public function can_store_an_export_object_on_another_disk()
     {
         $export = new EmptyExport;
+        $name   = 'filename.xlsx';
+        $path   = __DIR__ . '/Data/Disks/Test/' . $name;
 
-        $response = $this->SUT->store($export, 'filename.xlsx', 'test');
+        @unlink($path);
+
+        $this->assertFileNotExists($path);
+
+        $response = $this->SUT->store($export, $name, 'test');
 
         $this->assertTrue($response);
-        $this->assertFileExists(__DIR__ . '/Data/Disks/Test/filename.xlsx');
+        $this->assertFileExists($path);
     }
 
     /**
@@ -92,11 +104,17 @@ class ExcelTest extends TestCase
     public function can_store_csv_export_with_default_settings()
     {
         $export = new EmptyExport;
+        $name   = 'filename.csv';
+        $path   = __DIR__ . '/Data/Disks/Local/' . $name;
 
-        $response = $this->SUT->store($export, 'filename.csv');
+        @unlink($path);
+
+        $this->assertFileNotExists($path);
+
+        $response = $this->SUT->store($export, $name);
 
         $this->assertTrue($response);
-        $this->assertFileExists(__DIR__ . '/Data/Disks/Local/filename.csv');
+        $this->assertFileExists($path);
     }
 
     /**
@@ -117,11 +135,17 @@ class ExcelTest extends TestCase
     public function can_store_tsv_export_with_default_settings()
     {
         $export = new EmptyExport;
+        $name   = 'filename.tsv';
+        $path   = __DIR__ . '/Data/Disks/Local/' . $name;
 
-        $response = $this->SUT->store($export, 'filename.tsv');
+        @unlink($path);
+
+        $this->assertFileNotExists($path);
+
+        $response = $this->SUT->store($export, $name);
 
         $this->assertTrue($response);
-        $this->assertFileExists(__DIR__ . '/Data/Disks/Local/filename.tsv');
+        $this->assertFileExists($path);
     }
 
     /**
