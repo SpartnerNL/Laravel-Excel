@@ -14,6 +14,7 @@ use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\FromCollection;
+use Maatwebsite\Excel\Tests\Helpers\FileHelper;
 use Maatwebsite\Excel\Facades\Excel as ExcelFacade;
 use Maatwebsite\Excel\Tests\Data\Stubs\EmptyExport;
 use Maatwebsite\Excel\Concerns\WithCustomCsvSettings;
@@ -67,7 +68,7 @@ class ExcelTest extends TestCase
     {
         $export = new EmptyExport;
         $name   = 'filename.xlsx';
-        $path   = __DIR__ . '/Data/Disks/Local/' . $name;
+        $path   = FileHelper::absolutePath($name, 'local');
 
         @unlink($path);
 
@@ -86,7 +87,7 @@ class ExcelTest extends TestCase
     {
         $export = new EmptyExport;
         $name   = 'filename.xlsx';
-        $path   = __DIR__ . '/Data/Disks/Test/' . $name;
+        $path   = FileHelper::absolutePath($name, 'test');
 
         @unlink($path);
 
@@ -105,7 +106,7 @@ class ExcelTest extends TestCase
     {
         $export = new EmptyExport;
         $name   = 'filename.csv';
-        $path   = __DIR__ . '/Data/Disks/Local/' . $name;
+        $path   = FileHelper::absolutePath($name, 'local');
 
         @unlink($path);
 
@@ -136,7 +137,7 @@ class ExcelTest extends TestCase
     {
         $export = new EmptyExport;
         $name   = 'filename.tsv';
-        $path   = __DIR__ . '/Data/Disks/Local/' . $name;
+        $path   = FileHelper::absolutePath($name, 'local');
 
         @unlink($path);
 
