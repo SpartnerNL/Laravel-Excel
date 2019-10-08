@@ -210,6 +210,8 @@ class Reader
      */
     public function loadSpreadsheet($import)
     {
+        $this->beforeImport($import);
+
         $this->sheetImports = $this->buildSheetImports($import);
 
         $this->readSpreadsheet();
@@ -219,8 +221,6 @@ class Reader
         if (!$import instanceof WithMultipleSheets) {
             $this->sheetImports = array_fill(0, $this->spreadsheet->getSheetCount(), $import);
         }
-
-        $this->beforeImport($import);
     }
 
     public function readSpreadsheet()
