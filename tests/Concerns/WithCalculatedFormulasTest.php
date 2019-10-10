@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Maatwebsite\Excel\Concerns\ToArray;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\Importable;
+use Maatwebsite\Excel\Concerns\WithStartRow;
 use Maatwebsite\Excel\Concerns\WithCalculatedFormulas;
 
 class WithCalculatedFormulasTest extends TestCase
@@ -90,6 +91,38 @@ class WithCalculatedFormulasTest extends TestCase
         };
 
         $import->import('import-formulas.xlsx');
+
+        $this->assertTrue($import->called);
+    }
+
+    public function can_import_with_formulas_and_reference()
+    {
+        $import = new class implements ToModel, WithCalculatedFormulas, WithStartRow {
+            use Importable;
+
+            public $called = false;
+
+            /**
+             * @param array $row
+             *
+             * @return Model|null
+             */
+            public function model(array $row)
+            {
+                $this->called = true;
+
+                Assert::assertSame('julien', $row[1]);
+
+                return null;
+            }
+
+            public function startRow(): int
+            {
+                return 2;
+            }
+        };
+
+        $import->import('import-external-reference.xls');
 
         $this->assertTrue($import->called);
     }
