@@ -2,13 +2,13 @@
 
 namespace Maatwebsite\Excel\Tests\Concerns;
 
-use Maatwebsite\Excel\Concerns\WithStartRow;
 use PHPUnit\Framework\Assert;
 use Maatwebsite\Excel\Tests\TestCase;
 use Illuminate\Database\Eloquent\Model;
 use Maatwebsite\Excel\Concerns\ToArray;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\Importable;
+use Maatwebsite\Excel\Concerns\WithStartRow;
 use Maatwebsite\Excel\Concerns\WithCalculatedFormulas;
 
 class WithCalculatedFormulasTest extends TestCase
@@ -95,35 +95,35 @@ class WithCalculatedFormulasTest extends TestCase
         $this->assertTrue($import->called);
     }
 
-	public function can_import_with_formulas_and_reference()
-	{
-		$import = new class implements ToModel, WithCalculatedFormulas, WithStartRow {
-			use Importable;
+    public function can_import_with_formulas_and_reference()
+    {
+        $import = new class implements ToModel, WithCalculatedFormulas, WithStartRow {
+            use Importable;
 
-			public $called = false;
+            public $called = false;
 
-			/**
-			 * @param array $row
-			 *
-			 * @return Model|null
-			 */
-			public function model(array $row)
-			{
-				$this->called = true;
+            /**
+             * @param array $row
+             *
+             * @return Model|null
+             */
+            public function model(array $row)
+            {
+                $this->called = true;
 
-				Assert::assertSame('julien', $row[1]);
+                Assert::assertSame('julien', $row[1]);
 
-				return null;
-			}
+                return null;
+            }
 
-			public function startRow(): int
-			{
-				return 2;
-			}
-		};
+            public function startRow(): int
+            {
+                return 2;
+            }
+        };
 
-		$import->import('import-external-reference.xls');
+        $import->import('import-external-reference.xls');
 
-		$this->assertTrue($import->called);
-	}
+        $this->assertTrue($import->called);
+    }
 }

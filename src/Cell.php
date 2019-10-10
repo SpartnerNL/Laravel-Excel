@@ -60,11 +60,10 @@ class Cell
                 $value = $this->cell->getValue()->getPlainText();
             } elseif ($calculateFormulas) {
                 try {
-		            $value = $this->cell->getCalculatedValue();
-	            }
-	            catch (Exception $e) {
-		            $value = $this->cell->getOldCalculatedValue();
-	            }
+                    $value = $this->cell->getCalculatedValue();
+                } catch (Exception $e) {
+                    $value = $this->cell->getOldCalculatedValue();
+                }
             } else {
                 $value = $this->cell->getValue();
             }
