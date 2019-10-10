@@ -3,6 +3,7 @@
 namespace Maatwebsite\Excel;
 
 use Illuminate\Support\Collection;
+use Maatwebsite\Excel\Concerns\FromGenerator;
 use Maatwebsite\Excel\Concerns\ToArray;
 use Maatwebsite\Excel\Concerns\ToModel;
 use PhpOffice\PhpSpreadsheet\IOFactory;
@@ -207,6 +208,11 @@ class Sheet
             if ($sheetExport instanceof FromIterator) {
                 $this->fromIterator($sheetExport);
             }
+
+            if ($sheetExport instanceof FromGenerator) {
+                $this->fromGenerator($sheetExport);
+            }
+
         }
 
         $this->close($sheetExport);
@@ -391,6 +397,15 @@ class Sheet
     {
         $this->appendRows($sheetExport->iterator(), $sheetExport);
     }
+
+    /**
+     * @param FromGenerator $sheetExport
+     */
+    public function fromGenerator(FromGenerator $sheetExport)
+    {
+        $this->appendRows($sheetExport->generator(), $sheetExport);
+    }
+
 
     /**
      * @param array       $rows
