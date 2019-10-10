@@ -2,7 +2,12 @@
 
 namespace Maatwebsite\Excel\Concerns;
 
+use Generator;
+
 interface FromGenerator
 {
-    public function generator();
+    /**
+     * @return Generator
+     */
+    public function generator(): Generator;
 }

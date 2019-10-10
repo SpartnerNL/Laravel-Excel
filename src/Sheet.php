@@ -212,7 +212,6 @@ class Sheet
             if ($sheetExport instanceof FromGenerator) {
                 $this->fromGenerator($sheetExport);
             }
-
         }
 
         $this->close($sheetExport);
@@ -405,7 +404,6 @@ class Sheet
     {
         $this->appendRows($sheetExport->generator(), $sheetExport);
     }
-
 
     /**
      * @param array       $rows
