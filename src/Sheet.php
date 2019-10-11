@@ -28,6 +28,7 @@ use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithDrawings;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Imports\ModelImporter;
+use Maatwebsite\Excel\Concerns\FromGenerator;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithMappedCells;
@@ -206,6 +207,10 @@ class Sheet
 
             if ($sheetExport instanceof FromIterator) {
                 $this->fromIterator($sheetExport);
+            }
+
+            if ($sheetExport instanceof FromGenerator) {
+                $this->fromGenerator($sheetExport);
             }
         }
 
@@ -390,6 +395,14 @@ class Sheet
     public function fromIterator(FromIterator $sheetExport)
     {
         $this->appendRows($sheetExport->iterator(), $sheetExport);
+    }
+
+    /**
+     * @param FromGenerator $sheetExport
+     */
+    public function fromGenerator(FromGenerator $sheetExport)
+    {
+        $this->appendRows($sheetExport->generator(), $sheetExport);
     }
 
     /**
