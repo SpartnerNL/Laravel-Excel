@@ -260,17 +260,27 @@ class Sheet
         if ($import instanceof OnEachRow) {
             $headingRow = HeadingRowExtractor::extract($this->worksheet, $import);
 
-            foreach ($this->worksheet->getRowIterator()->resetStart($startRow ?? 1) as $row) {
-                $row = new Row($row, $headingRow);
+            $rows = [];
 
-                if ($import instanceof WithValidation) {
-                    try {
-                        app(RowValidator::class)->validate([$row->toArray(null, $import instanceof WithCalculatedFormulas)], $import);
-                    } catch (RowSkippedException $e) {
-                        continue;
+            foreach ($this->worksheet->getRowIterator()->resetStart($startRow ?? 1) as $row) {
+                $rows[] = new Row($row, $headingRow);
+            }
+
+            if ($import instanceof WithValidation) {
+                $toValidate = array_map(function ($row) use ($import) {
+                    return $row->toArray(null, $import instanceof WithCalculatedFormulas);
+                }, $rows);
+
+                try {
+                    app(RowValidator::class)->validate($toValidate, $import);
+                } catch (RowSkippedException $e) {
+                    foreach ($e->skippedRows() as $row) {
+                        unset($rows[$row]);
                     }
                 }
+            }
 
+            foreach ($rows as $row) {
                 $import->onRow($row);
 
                 if ($import instanceof WithProgressBar) {
