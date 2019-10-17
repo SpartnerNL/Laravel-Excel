@@ -2,53 +2,54 @@
 
 namespace Maatwebsite\Excel;
 
-use Illuminate\Support\Collection;
-use Maatwebsite\Excel\Concerns\ToArray;
-use Maatwebsite\Excel\Concerns\ToModel;
-use Maatwebsite\Excel\Concerns\WithValidation;
-use Maatwebsite\Excel\Exceptions\RowSkippedException;
-use Maatwebsite\Excel\Validators\RowValidator;
-use PhpOffice\PhpSpreadsheet\IOFactory;
-use Maatwebsite\Excel\Concerns\FromView;
-use Maatwebsite\Excel\Events\AfterSheet;
-use Maatwebsite\Excel\Concerns\FromArray;
-use Maatwebsite\Excel\Concerns\FromQuery;
-use Maatwebsite\Excel\Concerns\OnEachRow;
-use Maatwebsite\Excel\Concerns\WithTitle;
-use Maatwebsite\Excel\Events\BeforeSheet;
-use Maatwebsite\Excel\Helpers\CellHelper;
-use PhpOffice\PhpSpreadsheet\Chart\Chart;
-use PhpOffice\PhpSpreadsheet\Reader\Html;
-use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use Maatwebsite\Excel\Concerns\WithCharts;
-use Maatwebsite\Excel\Concerns\WithEvents;
-use Maatwebsite\Excel\Helpers\ArrayHelper;
 use Illuminate\Contracts\Support\Arrayable;
-use Maatwebsite\Excel\Concerns\WithMapping;
-use Maatwebsite\Excel\Imports\EndRowFinder;
-use Maatwebsite\Excel\Concerns\FromIterator;
-use Maatwebsite\Excel\Concerns\ToCollection;
-use Maatwebsite\Excel\Concerns\WithDrawings;
-use Maatwebsite\Excel\Concerns\WithHeadings;
-use Maatwebsite\Excel\Imports\ModelImporter;
+use Illuminate\Support\Collection;
+use Maatwebsite\Excel\Concerns\FromArray;
 use Maatwebsite\Excel\Concerns\FromCollection;
+use Maatwebsite\Excel\Concerns\FromGenerator;
+use Maatwebsite\Excel\Concerns\FromIterator;
+use Maatwebsite\Excel\Concerns\FromQuery;
+use Maatwebsite\Excel\Concerns\FromView;
+use Maatwebsite\Excel\Concerns\OnEachRow;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
-use Maatwebsite\Excel\Concerns\WithMappedCells;
-use Maatwebsite\Excel\Concerns\WithProgressBar;
+use Maatwebsite\Excel\Concerns\ToArray;
+use Maatwebsite\Excel\Concerns\ToCollection;
+use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Concerns\WithCalculatedFormulas;
+use Maatwebsite\Excel\Concerns\WithCharts;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
-use Maatwebsite\Excel\Files\TemporaryFileFactory;
-use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
-use Maatwebsite\Excel\Imports\HeadingRowExtractor;
+use Maatwebsite\Excel\Concerns\WithColumnFormatting;
 use Maatwebsite\Excel\Concerns\WithCustomChunkSize;
 use Maatwebsite\Excel\Concerns\WithCustomStartCell;
-use PhpOffice\PhpSpreadsheet\Worksheet\BaseDrawing;
-use Maatwebsite\Excel\Concerns\WithColumnFormatting;
 use Maatwebsite\Excel\Concerns\WithCustomValueBinder;
-use Maatwebsite\Excel\Concerns\WithCalculatedFormulas;
+use Maatwebsite\Excel\Concerns\WithDrawings;
+use Maatwebsite\Excel\Concerns\WithEvents;
+use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Concerns\WithMappedCells;
+use Maatwebsite\Excel\Concerns\WithMapping;
+use Maatwebsite\Excel\Concerns\WithProgressBar;
 use Maatwebsite\Excel\Concerns\WithStrictNullComparison;
-use Maatwebsite\Excel\Exceptions\SheetNotFoundException;
+use Maatwebsite\Excel\Concerns\WithTitle;
+use Maatwebsite\Excel\Concerns\WithValidation;
+use Maatwebsite\Excel\Events\AfterSheet;
+use Maatwebsite\Excel\Events\BeforeSheet;
 use Maatwebsite\Excel\Exceptions\ConcernConflictException;
+use Maatwebsite\Excel\Exceptions\RowSkippedException;
+use Maatwebsite\Excel\Exceptions\SheetNotFoundException;
+use Maatwebsite\Excel\Files\TemporaryFileFactory;
+use Maatwebsite\Excel\Helpers\ArrayHelper;
+use Maatwebsite\Excel\Helpers\CellHelper;
+use Maatwebsite\Excel\Imports\EndRowFinder;
+use Maatwebsite\Excel\Imports\HeadingRowExtractor;
+use Maatwebsite\Excel\Imports\ModelImporter;
+use Maatwebsite\Excel\Validators\RowValidator;
 use PhpOffice\PhpSpreadsheet\Cell\Cell as SpreadsheetCell;
+use PhpOffice\PhpSpreadsheet\Chart\Chart;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Reader\Html;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Worksheet\BaseDrawing;
+use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
 class Sheet
 {
@@ -86,9 +87,10 @@ class Sheet
 
     /**
      * @param Spreadsheet $spreadsheet
-     * @param string|int $index
+     * @param string|int  $index
      *
      * @return Sheet
+     *
      * @throws \PhpOffice\PhpSpreadsheet\Exception
      * @throws SheetNotFoundException
      */
@@ -103,9 +105,10 @@ class Sheet
 
     /**
      * @param Spreadsheet $spreadsheet
-     * @param int $index
+     * @param int         $index
      *
      * @return Sheet
+     *
      * @throws \PhpOffice\PhpSpreadsheet\Exception
      * @throws SheetNotFoundException
      */
@@ -120,9 +123,10 @@ class Sheet
 
     /**
      * @param Spreadsheet $spreadsheet
-     * @param string $name
+     * @param string      $name
      *
      * @return Sheet
+     *
      * @throws SheetNotFoundException
      */
     public static function byName(Spreadsheet $spreadsheet, string $name): Sheet
@@ -210,6 +214,10 @@ class Sheet
             if ($sheetExport instanceof FromIterator) {
                 $this->fromIterator($sheetExport);
             }
+
+            if ($sheetExport instanceof FromGenerator) {
+                $this->fromGenerator($sheetExport);
+            }
         }
 
         $this->close($sheetExport);
@@ -217,7 +225,7 @@ class Sheet
 
     /**
      * @param object $import
-     * @param int $startRow
+     * @param int    $startRow
      */
     public function import($import, int $startRow = 1)
     {
@@ -289,11 +297,11 @@ class Sheet
     }
 
     /**
-     * @param object $import
+     * @param object   $import
      * @param int|null $startRow
-     * @param null $nullValue
-     * @param bool $calculateFormulas
-     * @param bool $formatData
+     * @param null     $nullValue
+     * @param bool     $calculateFormulas
+     * @param bool     $formatData
      *
      * @return array
      */
@@ -321,11 +329,11 @@ class Sheet
     }
 
     /**
-     * @param object $import
+     * @param object   $import
      * @param int|null $startRow
-     * @param null $nullValue
-     * @param bool $calculateFormulas
-     * @param bool $formatData
+     * @param null     $nullValue
+     * @param bool     $calculateFormulas
+     * @param bool     $formatData
      *
      * @return Collection
      */
@@ -417,9 +425,17 @@ class Sheet
     }
 
     /**
-     * @param array $rows
+     * @param FromGenerator $sheetExport
+     */
+    public function fromGenerator(FromGenerator $sheetExport)
+    {
+        $this->appendRows($sheetExport->generator(), $sheetExport);
+    }
+
+    /**
+     * @param array       $rows
      * @param string|null $startCell
-     * @param bool $strictNullComparison
+     * @param bool        $strictNullComparison
      */
     public function append(array $rows, string $startCell = null, bool $strictNullComparison = false)
     {
@@ -428,15 +444,12 @@ class Sheet
         }
 
         if ($this->hasRows()) {
-            $startCell = CellHelper::getColumnFromCoordinate($startCell) . ($this->worksheet->getHighestRow() + 1);
+            $startCell = CellHelper::getColumnFromCoordinate($startCell).($this->worksheet->getHighestRow() + 1);
         }
 
         $this->worksheet->fromArray($rows, null, $startCell, $strictNullComparison);
     }
 
-    /**
-     * @return void
-     */
     public function autoSize()
     {
         foreach ($this->buildColumnRange('A', $this->worksheet->getHighestDataColumn()) as $col) {
@@ -453,7 +466,7 @@ class Sheet
     public function formatColumn(string $column, string $format)
     {
         $this->worksheet
-            ->getStyle($column . '1:' . $column . $this->worksheet->getHighestRow())
+            ->getStyle($column.'1:'.$column.$this->worksheet->getHighestRow())
             ->getNumberFormat()
             ->setFormatCode($format);
     }
@@ -514,7 +527,7 @@ class Sheet
 
     /**
      * @param iterable $rows
-     * @param object $sheetExport
+     * @param object   $sheetExport
      */
     public function appendRows($rows, $sheetExport)
     {
@@ -587,8 +600,8 @@ class Sheet
      */
     protected function buildColumnRange(string $lower, string $upper)
     {
-        $upper++;
-        for ($i = $lower; $i !== $upper; $i++) {
+        ++$upper;
+        for ($i = $lower; $i !== $upper; ++$i) {
             yield $i;
         }
     }
