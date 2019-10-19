@@ -211,16 +211,27 @@ class Reader
     public function loadSpreadsheet($import)
     {
         $this->sheetImports = $this->buildSheetImports($import);
-
-        $this->readSpreadsheet();
+        
+        // @todo: review - If the Objective of the Before Import is to be able to Change
+        // the Reader, It should be Before the Read.        
+        $this->beforeImport($import);
+        
+        // $this->readSpreadsheet();
 
         // When no multiple sheets, use the main import object
         // for each loaded sheet in the spreadsheet
+        // @todo: If the change in the function $this->buildSheetImports($import); works
+        //      this section of code is redundant and can be removed.
         if (!$import instanceof WithMultipleSheets) {
-            $this->sheetImports = array_fill(0, $this->spreadsheet->getSheetCount(), $import);
+            // $this->sheetImports = array_fill(0, $this->spreadsheet->getSheetCount(), $import);
+            $this->sheetImports = array_fill(0, sizeof($this->reader->listWorkSheetNames($this->currentFile->getLocalPath())), $import);
         }
 
-        $this->beforeImport($import);
+        // @todo: review - If the read was needed to be able to run $this->spreadsheet->getSheetCount()
+        // With the change above is solved.
+        $this->readSpreadsheet();
+        
+//        $this->beforeImport($import);
     }
 
     public function readSpreadsheet()
@@ -361,6 +372,10 @@ class Reader
             ) {
                 $this->reader->setLoadSheetsOnly(array_keys($sheetImports));
             }
+        } else {
+            // Replicate the functionality implemented in public function loadSpreadsheet($import)
+            // @todo: If this works, The code in loadSpreadsheet to achieve this is redundant.
+            $sheetImports = array_fill(0, sizeof($this->reader->listWorkSheetNames($this->currentFile->getLocalPath())), $import);
         }
 
         return $sheetImports;
