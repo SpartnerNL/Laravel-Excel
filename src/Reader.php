@@ -210,14 +210,21 @@ class Reader
      */
     public function loadSpreadsheet($import)
     {
+        // @todo: Review modification at buildSheetImports()
         $this->sheetImports = $this->buildSheetImports($import);
         
         // @todo: review - If the Objective of the Before Import is to be able to Change
-        // the Reader, It should be Before the Read.        
-        $this->beforeImport($import);
+        // the Reader, It should be Before the Read.
+        // @todo: Create Events\BeforeLoad.php
+        // @todo: Define the function beforeLoad()
+        $this->beforeLoad($import);
         
-        // $this->readSpreadsheet();
+        $this->readSpreadsheet();
 
+        // @todo: Create Events\AfterLoad.php
+        // @todo: Define the function afterLoad()
+        $this->afterLoad($import);
+        
         // When no multiple sheets, use the main import object
         // for each loaded sheet in the spreadsheet
         // @todo: If the change in the function $this->buildSheetImports($import); works
@@ -226,12 +233,8 @@ class Reader
             // $this->sheetImports = array_fill(0, $this->spreadsheet->getSheetCount(), $import);
             $this->sheetImports = array_fill(0, sizeof($this->reader->listWorkSheetNames($this->currentFile->getLocalPath())), $import);
         }
-
-        // @todo: review - If the read was needed to be able to run $this->spreadsheet->getSheetCount()
-        // With the change above is solved.
-        $this->readSpreadsheet();
         
-//        $this->beforeImport($import);
+        $this->beforeImport($import);
     }
 
     public function readSpreadsheet()
@@ -259,6 +262,25 @@ class Reader
         $this->garbageCollect();
     }
 
+    /**
+     * @todo: Create Events\BeforeLoad.php
+     * @param  object  $import
+     */
+    public function beforeLoad($import)
+    {
+        $this->raise(new BeforeLoad($this, $import));
+    }
+
+    /**
+     * @todo: Create Events\AfterLoad.php
+     * @param  object  $import
+     */
+    public function afterLoad($import)
+    {
+        $this->raise(new AfterLoad($this, $import));
+    }
+    
+    
     /**
      * @return IReader
      */
