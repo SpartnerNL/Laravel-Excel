@@ -49,6 +49,16 @@ class AppendViewToSheet implements ShouldQueue
     }
 
     /**
+     * Get the middleware the job should be dispatched through.
+     *
+     * @return array
+     */
+    public function middleware()
+    {
+        return (method_exists($this->sheetExport, 'middleware')) ? $this->sheetExport->middleware() : [];
+    }
+
+    /**
      * @param Writer $writer
      *
      * @throws \PhpOffice\PhpSpreadsheet\Exception
