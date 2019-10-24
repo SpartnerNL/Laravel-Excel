@@ -15,7 +15,7 @@ class QueueExport implements ShouldQueue
     /**
      * @var object
      */
-    private $export;
+    public $export;
 
     /**
      * @var string
