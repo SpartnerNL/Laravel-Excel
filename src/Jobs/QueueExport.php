@@ -40,6 +40,16 @@ class QueueExport implements ShouldQueue
     }
 
     /**
+     * Get the middleware the job should be dispatched through.
+     *
+     * @return array
+     */
+    public function middleware()
+    {
+        return (method_exists($this->export, 'middleware')) ? $this->export->middleware() : [];
+    }
+
+    /**
      * @param Writer $writer
      *
      * @throws \PhpOffice\PhpSpreadsheet\Exception
