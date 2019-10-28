@@ -6,12 +6,12 @@ use Throwable;
 use InvalidArgumentException;
 use Illuminate\Support\Collection;
 use PhpOffice\PhpSpreadsheet\Cell\Cell;
-use Maatwebsite\Excel\Events\AfterImport;
-use Maatwebsite\Excel\Events\AfterLoad;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use Maatwebsite\Excel\Concerns\WithEvents;
+use Maatwebsite\Excel\Events\BeforeRead;
+use Maatwebsite\Excel\Events\AfterRead;
 use Maatwebsite\Excel\Events\BeforeImport;
-use Maatwebsite\Excel\Events\BeforeLoad;
+use Maatwebsite\Excel\Events\AfterImport;
 use Maatwebsite\Excel\Events\ImportFailed;
 use Maatwebsite\Excel\Files\TemporaryFile;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -212,29 +212,16 @@ class Reader
      */
     public function loadSpreadsheet($import)
     {
-        // @todo: Review modification at buildSheetImports()
         $this->sheetImports = $this->buildSheetImports($import);
         
-        // @todo: review - If the Objective of the Before Import is to be able to Change
-        // the Reader, It should be Before the Read.
-        // @todo: Create Events\BeforeLoad.php
-        // @todo: Define the function beforeLoad()
-        $this->beforeLoad($import);
+        $this->beforeRead($import);
         
         $this->readSpreadsheet();
 
-        // @todo: Create Events\AfterLoad.php
-        // @todo: Define the function afterLoad()
-		// @todo: Register the Event at Concerns\RegistersEventListeners.php
-        $this->afterLoad($import);
+        $this->afterRead($import);
         
-        // When no multiple sheets, use the main import object
-        // for each loaded sheet in the spreadsheet
-        // @todo: If the change in the function $this->buildSheetImports($import); works
-        //      this section of code is redundant and can be removed.
         if (!$import instanceof WithMultipleSheets) {
-            // $this->sheetImports = array_fill(0, $this->spreadsheet->getSheetCount(), $import);
-            $this->sheetImports = array_fill(0, sizeof($this->reader->listWorkSheetNames($this->currentFile->getLocalPath())), $import);
+            $this->sheetImports = array_fill(0, $this->spreadsheet->getSheetCount(), $import);
         }
         
         $this->beforeImport($import);
@@ -266,21 +253,19 @@ class Reader
     }
 
     /**
-     * @todo: Create Events\BeforeLoad.php
      * @param  object  $import
      */
-    public function beforeLoad($import)
+    public function beforeRead($import)
     {
-        $this->raise(new BeforeLoad($this, $import));
+        $this->raise(new BeforeRead($this, $import));
     }
 
     /**
-     * @todo: Create Events\AfterLoad.php
      * @param  object  $import
      */
-    public function afterLoad($import)
+    public function afterRead($import)
     {
-        $this->raise(new AfterLoad($this, $import));
+        $this->raise(new AfterRead($this, $import));
     }
     
     
@@ -397,10 +382,6 @@ class Reader
             ) {
                 $this->reader->setLoadSheetsOnly(array_keys($sheetImports));
             }
-        } else {
-            // Replicate the functionality implemented in public function loadSpreadsheet($import)
-            // @todo: If this works, The code in loadSpreadsheet to achieve this is redundant.
-            $sheetImports = array_fill(0, sizeof($this->reader->listWorkSheetNames($this->currentFile->getLocalPath())), $import);
         }
 
         return $sheetImports;

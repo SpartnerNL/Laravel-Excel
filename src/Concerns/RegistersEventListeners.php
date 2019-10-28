@@ -2,19 +2,15 @@
 
 namespace Maatwebsite\Excel\Concerns;
 
-use Maatwebsite\Excel\Events\AfterSheet;
-use Maatwebsite\Excel\Events\AfterImport;
-use Maatwebsite\Excel\Events\BeforeSheet;
 use Maatwebsite\Excel\Events\BeforeExport;
 use Maatwebsite\Excel\Events\BeforeImport;
+use Maatwebsite\Excel\Events\BeforeRead;
+use Maatwebsite\Excel\Events\BeforeSheet;
+use Maatwebsite\Excel\Events\AfterSheet;
+use Maatwebsite\Excel\Events\AfterRead;
+use Maatwebsite\Excel\Events\AfterImport;
 use Maatwebsite\Excel\Events\ImportFailed;
 use Maatwebsite\Excel\Events\BeforeWriting;
-// @todo: Review naming consistency with the package
-// @todo: Review Evtens\BeforeLoad.php
-// @todo: Review Evtens\AfterLoad.php
-// @todo: Review Reader.php
-use Maatwebsite\Excel\Events\BeforeLoad;
-use Maatwebsite\Excel\Events\AfterLoad;
 
 trait RegistersEventListeners
 {
@@ -54,12 +50,12 @@ trait RegistersEventListeners
         }
 
 		// 21/10/2019 RRE
-        if (method_exists($this, 'beforeLoad')) {
-            $listeners[BeforeLoad::class] = [static::class, 'beforeLoad'];
+        if (method_exists($this, 'beforeRead')) {
+            $listeners[BeforeRead::class] = [static::class, 'beforeRead'];
         }
 
-        if (method_exists($this, 'afterLoad')) {
-            $listeners[AfterLoad::class] = [static::class, 'afterLoad'];
+        if (method_exists($this, 'afterRead')) {
+            $listeners[AfterRead::class] = [static::class, 'afterRead'];
         }
 
         return $listeners;

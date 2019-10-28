@@ -3,9 +3,8 @@ namespace Maatwebsite\Excel\Events;
 
 use Maatwebsite\Excel\Reader;
 
-class BeforeLoad extends Event
+class BeforeRead extends Event
 {
-    // @todo: Review Funcitonality
     /**
      * @var Reader
      */
@@ -43,11 +42,10 @@ class BeforeLoad extends Event
     }
 
     /**
-     * @return mixed
+     * @return phpSpreadsheet Reader
      */
     public function getDelegate()
     {
-        // return $this->reader;
         return $this->reader->getPhpSpreadsheetReader();
 		/*
 		 * This will give Access to the Methods:
