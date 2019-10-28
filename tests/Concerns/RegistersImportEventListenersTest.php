@@ -54,7 +54,7 @@ class RegistersImportEventListenersTest extends TestCase
             $eventsTriggered++;
         };
 
-        $event->import('D:\Git_Projects\Laravel-Excel\tests\Data\Disks\Local\import.xlsx');
+        $event->import('import.xlsx');
         $this->assertEquals(5, $eventsTriggered);
     }
 }
