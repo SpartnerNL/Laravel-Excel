@@ -3,9 +3,8 @@ namespace Maatwebsite\Excel\Events;
 
 use Maatwebsite\Excel\Reader;
 
-class AfterLoad extends Event
+class AfterRead extends Event
 {
-    // @todo: RRE Review Functionality
     /**
      * @var Reader
      */
