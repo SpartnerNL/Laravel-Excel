@@ -1,17 +1,20 @@
 <?php
 namespace Maatwebsite\Excel\Events;
+
 use Maatwebsite\Excel\Reader;
-class AfterLoad extends Event
+
+class AfterRead extends Event
 {
-    // @todo: RRE Review Functionality
     /**
      * @var Reader
      */
     public $reader;
+
     /**
      * @var object
      */
     private $importable;
+
     /**
      * @param Reader $reader
      * @param object $importable
@@ -21,6 +24,7 @@ class AfterLoad extends Event
         $this->reader     = $reader;
         $this->importable = $importable;
     }
+
     /**
      * @return Reader
      */
@@ -28,6 +32,7 @@ class AfterLoad extends Event
     {
         return $this->reader;
     }
+
     /**
      * @return object
      */
@@ -35,11 +40,23 @@ class AfterLoad extends Event
     {
         return $this->importable;
     }
+
     /**
      * @return mixed
      */
     public function getDelegate()
     {
-        return $this->reader;
+        // return $this->reader;
+        return $this->reader->getPhpSpreadsheetReader();
+		/*
+		 * This will give Access to the Methods:
+		 *	- 	phpSpreadsheet->setLoadSheetsOnly([<$sheetname>...]);
+         *  -	phpSpreadsheet->setLoadAllSheets();
+		 *
+		 *  -	phpSpreadsheet->setReadDataOnly(<true|false>);
+         *  -	phpSpreadsheet->setReadEmptyCells(<true|false>);
+         *  -	phpSpreadsheet->setIncludeCharts(<true|false>);
+		*/
     }
+
 }
