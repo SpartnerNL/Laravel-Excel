@@ -47,6 +47,6 @@ class BeforeImport extends Event
      */
     public function getDelegate()
     {
-        return $this->reader->getPhpSpreadsheetReader();
+        return $this->reader;
     }
 }
