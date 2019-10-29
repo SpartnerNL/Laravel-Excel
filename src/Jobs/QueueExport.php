@@ -15,7 +15,7 @@ class QueueExport implements ShouldQueue
     /**
      * @var object
      */
-    private $export;
+    public $export;
 
     /**
      * @var string
@@ -37,6 +37,16 @@ class QueueExport implements ShouldQueue
         $this->export        = $export;
         $this->writerType    = $writerType;
         $this->temporaryFile = $temporaryFile;
+    }
+
+    /**
+     * Get the middleware the job should be dispatched through.
+     *
+     * @return array
+     */
+    public function middleware()
+    {
+        return (method_exists($this->export, 'middleware')) ? $this->export->middleware() : [];
     }
 
     /**

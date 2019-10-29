@@ -9,7 +9,6 @@ use Maatwebsite\Excel\Jobs\QueueExport;
 use Maatwebsite\Excel\Concerns\FromView;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Files\TemporaryFile;
-use Maatwebsite\Excel\Jobs\SerializedQuery;
 use Maatwebsite\Excel\Jobs\AppendDataToSheet;
 use Maatwebsite\Excel\Jobs\AppendViewToSheet;
 use Maatwebsite\Excel\Jobs\StoreQueuedExport;
@@ -157,16 +156,13 @@ class QueuedWriter
         $jobs = new Collection();
 
         for ($page = 1; $page <= $spins; $page++) {
-            $serializedQuery = new SerializedQuery(
-                $query->forPage($page, $this->getChunkSize($export))
-            );
-
             $jobs->push(new AppendQueryToSheet(
                 $export,
                 $temporaryFile,
                 $writerType,
                 $sheetIndex,
-                $serializedQuery
+                $page,
+                $this->getChunkSize($export)
             ));
         }
 
