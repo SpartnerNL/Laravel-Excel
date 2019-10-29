@@ -1,8 +1,5 @@
 <?php
-<<<<<<< HEAD
 
-=======
->>>>>>> 3.1
 namespace Maatwebsite\Excel\Events;
 
 use Maatwebsite\Excel\Reader;
@@ -46,32 +43,21 @@ class BeforeRead extends Event
     }
 
     /**
-<<<<<<< HEAD
-     * @return mixed
-=======
      * @return phpSpreadsheet Reader
->>>>>>> 3.1
      */
     public function getDelegate()
     {
         return $this->reader->getPhpSpreadsheetReader();
-		/*
-<<<<<<< HEAD
-		 * This will give Access to the phpSpreadsheet Methods:
-=======
-		 * This will give Access to the Methods:
->>>>>>> 3.1
-		 *	- 	phpSpreadsheet->setLoadSheetsOnly([<$sheetname>...]);
+   
+	/*
+	 * This will give Access to the phpSpreadsheet Methods:
+	 *	- 	phpSpreadsheet->setLoadSheetsOnly([<$sheetname>...]);
          *  -	phpSpreadsheet->setLoadAllSheets();
-		 *
-		 *  -	phpSpreadsheet->setReadDataOnly(<true|false>);
+	 *
+	 *  -	phpSpreadsheet->setReadDataOnly(<true|false>);
          *  -	phpSpreadsheet->setReadEmptyCells(<true|false>);
          *  -	phpSpreadsheet->setIncludeCharts(<true|false>);
-		*/
+	*/
     }
-<<<<<<< HEAD
-		
-=======
-
->>>>>>> 3.1
+	
 }
