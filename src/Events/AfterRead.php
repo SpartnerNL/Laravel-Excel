@@ -1,5 +1,8 @@
 <?php
+<<<<<<< HEAD
 
+=======
+>>>>>>> 3.1
 namespace Maatwebsite\Excel\Events;
 
 use Maatwebsite\Excel\Reader;
@@ -15,7 +18,11 @@ class AfterRead extends Event
      * @var object
      */
     private $importable;
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> 3.1
     /**
      * @param Reader $reader
      * @param object $importable
@@ -24,7 +31,11 @@ class AfterRead extends Event
     {
         $this->reader     = $reader;
         $this->importable = $importable;
+<<<<<<< HEAD
     }    
+=======
+    }
+>>>>>>> 3.1
 
     /**
      * @return Reader
@@ -47,6 +58,22 @@ class AfterRead extends Event
      */
     public function getDelegate()
     {
+<<<<<<< HEAD
         return $this->reader->getPhpSpreadsheetReader();
     }
+=======
+        // return $this->reader;
+        return $this->reader->getPhpSpreadsheetReader();
+		/*
+		 * This will give Access to the Methods:
+		 *	- 	phpSpreadsheet->setLoadSheetsOnly([<$sheetname>...]);
+         *  -	phpSpreadsheet->setLoadAllSheets();
+		 *
+		 *  -	phpSpreadsheet->setReadDataOnly(<true|false>);
+         *  -	phpSpreadsheet->setReadEmptyCells(<true|false>);
+         *  -	phpSpreadsheet->setIncludeCharts(<true|false>);
+		*/
+    }
+
+>>>>>>> 3.1
 }

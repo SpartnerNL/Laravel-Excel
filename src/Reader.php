@@ -6,12 +6,18 @@ use Throwable;
 use InvalidArgumentException;
 use Illuminate\Support\Collection;
 use PhpOffice\PhpSpreadsheet\Cell\Cell;
+<<<<<<< HEAD
 use Maatwebsite\Excel\Events\BeforeRead; // new
 use Maatwebsite\Excel\Events\AfterRead;  // new
 use Maatwebsite\Excel\Events\AfterImport;
+=======
+>>>>>>> 3.1
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use Maatwebsite\Excel\Concerns\WithEvents;
+use Maatwebsite\Excel\Events\BeforeRead;
+use Maatwebsite\Excel\Events\AfterRead;
 use Maatwebsite\Excel\Events\BeforeImport;
+use Maatwebsite\Excel\Events\AfterImport;
 use Maatwebsite\Excel\Events\ImportFailed;
 use Maatwebsite\Excel\Files\TemporaryFile;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -213,6 +219,7 @@ class Reader
     public function loadSpreadsheet($import)
     {
         $this->sheetImports = $this->buildSheetImports($import);
+<<<<<<< HEAD
 
 		$this->beforeRead($import); // new
 
@@ -222,10 +229,19 @@ class Reader
 
         // When no multiple sheets, use the main import object
         // for each loaded sheet in the spreadsheet
+=======
+        
+        $this->beforeRead($import);
+        
+        $this->readSpreadsheet();
+
+        $this->afterRead($import);
+        
+>>>>>>> 3.1
         if (!$import instanceof WithMultipleSheets) {
             $this->sheetImports = array_fill(0, $this->spreadsheet->getSheetCount(), $import);
         }
-
+        
         $this->beforeImport($import);
     }
 
@@ -270,6 +286,23 @@ class Reader
         $this->garbageCollect();
     }
 
+    /**
+     * @param  object  $import
+     */
+    public function beforeRead($import)
+    {
+        $this->raise(new BeforeRead($this, $import));
+    }
+
+    /**
+     * @param  object  $import
+     */
+    public function afterRead($import)
+    {
+        $this->raise(new AfterRead($this, $import));
+    }
+    
+    
     /**
      * @return IReader
      */
