@@ -2,8 +2,8 @@
 
 namespace Maatwebsite\Excel\Concerns;
 
-use Maatwebsite\Excel\Events\BeforeRead; // new
-use Maatwebsite\Excel\Events\AfterRead;  // new
+use Maatwebsite\Excel\Events\BeforeRead; // New
+use Maatwebsite\Excel\Events\AfterRead;  // New
 use Maatwebsite\Excel\Events\BeforeExport;
 use Maatwebsite\Excel\Events\AfterImport;
 use Maatwebsite\Excel\Events\BeforeImport;
