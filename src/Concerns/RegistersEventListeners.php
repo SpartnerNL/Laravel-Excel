@@ -2,26 +2,15 @@
 
 namespace Maatwebsite\Excel\Concerns;
 
-<<<<<<< HEAD
 use Maatwebsite\Excel\Events\BeforeRead; // new
 use Maatwebsite\Excel\Events\AfterRead;  // new
 use Maatwebsite\Excel\Events\BeforeExport;
-use Maatwebsite\Excel\Events\BeforeImport;
-use Maatwebsite\Excel\Events\BeforeSheet;
-use Maatwebsite\Excel\Events\AfterSheet;
-=======
-use Maatwebsite\Excel\Events\BeforeExport;
-use Maatwebsite\Excel\Events\BeforeImport;
-use Maatwebsite\Excel\Events\BeforeRead;
-use Maatwebsite\Excel\Events\BeforeSheet;
-use Maatwebsite\Excel\Events\AfterSheet;
-use Maatwebsite\Excel\Events\AfterRead;
 use Maatwebsite\Excel\Events\AfterImport;
+use Maatwebsite\Excel\Events\BeforeImport;
+use Maatwebsite\Excel\Events\BeforeSheet;
+use Maatwebsite\Excel\Events\AfterSheet;
 use Maatwebsite\Excel\Events\ImportFailed;
->>>>>>> 3.1
 use Maatwebsite\Excel\Events\BeforeWriting;
-use Maatwebsite\Excel\Events\AfterImport;
-use Maatwebsite\Excel\Events\ImportFailed;
 
 trait RegistersEventListeners
 {
@@ -64,22 +53,10 @@ trait RegistersEventListeners
             $listeners[BeforeRead::class] = [static::class, 'beforeRead'];
         }
 
-<<<<<<< HEAD
-        if (method_exists($this, 'afterRead')) {
-            $listeners[AfterRead::class] = [static::class, 'afterRead'];
-        }
-        
-=======
-		// 21/10/2019 RRE
-        if (method_exists($this, 'beforeRead')) {
-            $listeners[BeforeRead::class] = [static::class, 'beforeRead'];
-        }
-
         if (method_exists($this, 'afterRead')) {
             $listeners[AfterRead::class] = [static::class, 'afterRead'];
         }
 
->>>>>>> 3.1
-        return $listeners;
+	return $listeners;
     }
 }
