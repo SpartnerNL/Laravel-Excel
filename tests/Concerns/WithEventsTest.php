@@ -7,6 +7,9 @@ use Maatwebsite\Excel\Sheet;
 use Maatwebsite\Excel\Reader;
 use Maatwebsite\Excel\Writer;
 use Maatwebsite\Excel\Tests\TestCase;
+use Maatwebsite\Excel\Events\BeforeRead; // new
+use Maatwebsite\Excel\Events\AfterRead; // new
+use PhpOffice\PhpSpreadsheet\Reader\IReader; // new
 use Maatwebsite\Excel\Events\AfterSheet;
 use Maatwebsite\Excel\Events\AfterImport;
 use Maatwebsite\Excel\Events\BeforeSheet;
@@ -16,7 +19,7 @@ use Maatwebsite\Excel\Events\BeforeImport;
 use Maatwebsite\Excel\Events\BeforeWriting;
 use Maatwebsite\Excel\Tests\Data\Stubs\CustomConcern;
 use Maatwebsite\Excel\Tests\Data\Stubs\ExportWithEvents;
-use Maatwebsite\Excel\Tests\Data\Stubs\ImportWithEvents;
+use Maatwebsite\Excel\Tests\Data\Stubs\ImportWithEvents; // updated
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Maatwebsite\Excel\Tests\Data\Stubs\CustomSheetConcern;
 use Maatwebsite\Excel\Tests\Data\Stubs\BeforeExportListener;
@@ -69,6 +72,22 @@ class WithEventsTest extends TestCase
 
         $eventsTriggered = 0;
 
+        // New Test
+		$event->beforeRead = function ($event) use (&$eventsTriggered) {
+            $this->assertInstanceOf(BeforeRead::class, $event);
+            $this->assertInstanceOf(Reader::class, $event->getReader());
+            $this->assertInstanceOf(IReader::class, $event->getDelegate());
+	        $eventsTriggered++;
+        };
+
+        // New Test
+        $event->afterRead = function ($event) use (&$eventsTriggered) {
+            $this->assertInstanceOf(AfterRead::class, $event);
+            $this->assertInstanceOf(Reader::class, $event->getReader());
+            $this->assertInstanceOf(IReader::class, $event->getDelegate());
+            $eventsTriggered++;
+        };
+
         $event->beforeImport = function ($event) use (&$eventsTriggered) {
             $this->assertInstanceOf(BeforeImport::class, $event);
             $this->assertInstanceOf(Reader::class, $event->getReader());
@@ -94,7 +113,7 @@ class WithEventsTest extends TestCase
         };
 
         $event->import('import.xlsx');
-        $this->assertEquals(4, $eventsTriggered);
+        $this->assertEquals(6, $eventsTriggered);
     }
 
     /**

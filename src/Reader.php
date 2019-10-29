@@ -6,6 +6,8 @@ use Throwable;
 use InvalidArgumentException;
 use Illuminate\Support\Collection;
 use PhpOffice\PhpSpreadsheet\Cell\Cell;
+use Maatwebsite\Excel\Events\BeforeRead; // new
+use Maatwebsite\Excel\Events\AfterRead;  // new
 use Maatwebsite\Excel\Events\AfterImport;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use Maatwebsite\Excel\Concerns\WithEvents;
@@ -212,7 +214,11 @@ class Reader
     {
         $this->sheetImports = $this->buildSheetImports($import);
 
+		$this->beforeRead($import); // new
+
         $this->readSpreadsheet();
+
+		$this->afterRead($import);  // new
 
         // When no multiple sheets, use the main import object
         // for each loaded sheet in the spreadsheet
@@ -228,6 +234,22 @@ class Reader
         $this->spreadsheet = $this->reader->load(
             $this->currentFile->getLocalPath()
         );
+    }
+
+    /**
+     * @param  object  $import
+     */
+    public function beforeRead($import)
+    {
+        $this->raise(new BeforeRead($this, $import));
+    }
+
+    /**
+     * @param  object  $import
+     */
+    public function afterRead($import)
+    {
+        $this->raise(new AfterRead($this, $import));
     }
 
     /**

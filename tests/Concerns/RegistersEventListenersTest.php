@@ -6,10 +6,14 @@ use Maatwebsite\Excel\Sheet;
 use Maatwebsite\Excel\Reader;
 use Maatwebsite\Excel\Writer;
 use Maatwebsite\Excel\Tests\TestCase;
+use Maatwebsite\Excel\Events\BeforeRead; // New
+use Maatwebsite\Excel\Events\AfterRead; // New
+use PhpOffice\PhpSpreadsheet\Reader\IReader; // New
 use Maatwebsite\Excel\Events\AfterSheet;
 use Maatwebsite\Excel\Events\BeforeSheet;
 use Maatwebsite\Excel\Events\BeforeExport;
 use Maatwebsite\Excel\Events\BeforeImport;
+use Maatwebsite\Excel\Events\AfterImport; // Missing
 use Maatwebsite\Excel\Events\BeforeWriting;
 use Maatwebsite\Excel\Tests\Data\Stubs\ExportWithEvents;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
@@ -65,8 +69,31 @@ class RegistersEventListenersTest extends TestCase
 
         $eventsTriggered = 0;
 
+        // New Test
+		$event::$beforeRead = function ($event) use (&$eventsTriggered) {
+            $this->assertInstanceOf(BeforeRead::class, $event);
+            $this->assertInstanceOf(Reader::class, $event->getReader());
+            $this->assertInstanceOf(IReader::class, $event->getDelegate());
+	        $eventsTriggered++;
+        };
+
+        // New Test
+        $event::$afterRead = function ($event) use (&$eventsTriggered) {
+            $this->assertInstanceOf(AfterRead::class, $event);
+            $this->assertInstanceOf(Reader::class, $event->getReader());
+            $this->assertInstanceOf(IReader::class, $event->getDelegate());
+            $eventsTriggered++;
+        };
+
         $event::$beforeImport = function ($event) use (&$eventsTriggered) {
             $this->assertInstanceOf(BeforeImport::class, $event);
+            $this->assertInstanceOf(Reader::class, $event->reader);
+            $eventsTriggered++;
+        };
+
+		// Missing
+        $event::$afterImport = function ($event) use (&$eventsTriggered) {
+            $this->assertInstanceOf(AfterImport::class, $event);
             $this->assertInstanceOf(Reader::class, $event->reader);
             $eventsTriggered++;
         };
@@ -84,7 +111,7 @@ class RegistersEventListenersTest extends TestCase
         };
 
         $event->import('import.xlsx');
-        $this->assertEquals(3, $eventsTriggered);
+        $this->assertEquals(6, $eventsTriggered);
     }
 
     /**

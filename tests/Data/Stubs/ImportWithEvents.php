@@ -2,6 +2,8 @@
 
 namespace Maatwebsite\Excel\Tests\Data\Stubs;
 
+use Maatwebsite\Excel\Events\BeforeRead; // new
+use Maatwebsite\Excel\Events\AfterRead; // new
 use Maatwebsite\Excel\Events\AfterSheet;
 use Maatwebsite\Excel\Events\AfterImport;
 use Maatwebsite\Excel\Events\BeforeSheet;
@@ -12,6 +14,16 @@ use Maatwebsite\Excel\Events\BeforeImport;
 class ImportWithEvents implements WithEvents
 {
     use Importable;
+
+    /**
+     * @var callable
+     */
+    public $beforeRead;
+
+    /**
+     * @var callable
+     */
+    public $afterRead;
 
     /**
      * @var callable
@@ -34,6 +46,10 @@ class ImportWithEvents implements WithEvents
     public function registerEvents(): array
     {
         return [
+            BeforeRead::class => $this->beforeRead ?? function () {
+            },
+            AfterRead::class => $this->afterRead ?? function () {
+            },
             BeforeImport::class => $this->beforeImport ?? function () {
             },
             AfterImport::class => $this->afterImport ?? function () {
