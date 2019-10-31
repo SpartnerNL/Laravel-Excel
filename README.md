@@ -1,8 +1,3 @@
-<p align="center">
-  <img src="/art/logo.png" width="400" height="82" alt="Laravel Excel logo">
-</p>
-<br>
-
 ![banner](https://user-images.githubusercontent.com/7728097/57463977-2263fc80-727c-11e9-833d-669d816fb7fb.jpg)
 <br>
 
@@ -26,6 +21,12 @@
   <a href="https://packagist.org/packages/maatwebsite/excel">
     <img src="https://poser.pugx.org/maatwebsite/excel/license.png" alt="License">
   </a>
+</p>
+
+<br>
+
+<p align="center">
+<img src="/art/logo.png" width="400" height="82" alt="Laravel Excel logo">
 </p>
 
   <h3 align="center">Supercharged Excel exports and imports</h3>
