@@ -47,7 +47,7 @@ class AfterRead extends Event
      */
     public function getDelegate()
     {
-		// phpSpreadsheet Reader
+		// phpSpreadsheet Reader 
         return $this->reader->getPhpSpreadsheetReader();
     }
 

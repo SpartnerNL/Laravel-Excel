@@ -91,7 +91,7 @@ class RegistersEventListenersTest extends TestCase
             $eventsTriggered++;
         };
 
-		// Missing
+		// Missing 
         $event::$afterImport = function ($event) use (&$eventsTriggered) {
             $this->assertInstanceOf(AfterImport::class, $event);
             $this->assertInstanceOf(Reader::class, $event->reader);
