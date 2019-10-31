@@ -26,7 +26,7 @@
 <br>
 
 <p align="center">
-<img src="/art/logo.png" width="400" height="82" alt="Laravel Excel logo">
+<img src="https://user-images.githubusercontent.com/7728097/67977317-26178100-fc18-11e9-943e-c5302ca32622.png" width="400" height="82" alt="Laravel Excel logo">
 </p>
 
   <h3 align="center">Supercharged Excel exports and imports</h3>
