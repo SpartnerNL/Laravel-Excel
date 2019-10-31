@@ -47,9 +47,6 @@ exports and imports.
   </a>
 </p>
 
-![banner](https://user-images.githubusercontent.com/7728097/57463977-2263fc80-727c-11e9-833d-669d816fb7fb.jpg)
-<br>
-
 ## ✨ Features
 
 - **Easily export collections to Excel.** Supercharge your Laravel collections and export them directly to an Excel or CSV document. Exporting has never been so easy.
@@ -60,6 +57,9 @@ exports and imports.
 
 - **Export Blade views.** Want to have a custom layout in your spreadsheet? Use a HTML table in a Blade view and export that to Excel.
 
+![banner](https://user-images.githubusercontent.com/7728097/57463977-2263fc80-727c-11e9-833d-669d816fb7fb.jpg)
+<br>
+
 ## 🎓 Learning Laravel Excel
 
 You can find the full documentation of Laravel Excel [on the website](https://docs.laravel-excel.com).
@@ -69,8 +69,6 @@ We welcome suggestions for improving our docs. The documentation repository can 
 Some articles and tutorials can be found on our blog: https://medium.com/maatwebsite/laravel-excel/home
 
 ## 🎥 Video Course
-
-![1_bzlh2ituv5x7yu2wenhxxw](https://user-images.githubusercontent.com/7728097/53638298-188f9e80-3c26-11e9-82c8-baf057271013.jpeg)
 
 We are currently building a video course called "Advanced Laravel Excel". In this video course we’ll build a small application with real-life, complex imports and exports that go beyond simple user imports and exports. We’ll go step-by-step and tackle implementing Laravel Excel in a performant way.
 
