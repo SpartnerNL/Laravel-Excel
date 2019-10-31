@@ -1,32 +1,38 @@
+<p align="center">
+  <img src="/art/logo.png" width="400" height="82" alt="Laravel Excel logo">
+</p>
+<br>
+
 ![banner](https://user-images.githubusercontent.com/7728097/57463977-2263fc80-727c-11e9-833d-669d816fb7fb.jpg)
+<br>
 
 <p align="center">
   <a href="https://travis-ci.org/Maatwebsite/Laravel-Excel">
     <img src="https://travis-ci.org/Maatwebsite/Laravel-Excel.svg?branch=3.1" alt="Build Status">
-  </a> 
-  
+  </a>
+
   <a href="https://styleci.io/repos/14259390">
     <img src="https://styleci.io/repos/14259390/shield?branch=3.1" alt="StyleCI">
-  </a> 
-  
+  </a>
+
    <a href="https://packagist.org/packages/maatwebsite/excel">
       <img src="https://poser.pugx.org/maatwebsite/excel/v/stable.png" alt="Latest Stable Version">
-  </a> 
-  
+  </a>
+
   <a href="https://packagist.org/packages/maatwebsite/excel">
       <img src="https://poser.pugx.org/maatwebsite/excel/downloads.png" alt="Total Downloads">
-  </a> 
-  
+  </a>
+
   <a href="https://packagist.org/packages/maatwebsite/excel">
     <img src="https://poser.pugx.org/maatwebsite/excel/license.png" alt="License">
   </a>
 </p>
 
   <h3 align="center">Supercharged Excel exports and imports</h3>
-  
+
   <p align="center">
   A simple, but elegant <a href="https://laravel.com" target="_blank">Laravel<a/> wrapper around <a href="https://phpspreadsheet.readthedocs.io/" target="_blank">PhpSpreadsheet</a>
-exports and imports. 
+exports and imports.
 </p>
 
 <h4 align="center">
@@ -79,10 +85,10 @@ https://course.laravel-excel.com
 
 Laravel Excel is completely free (MIT license) to use, however the package is licensed as Postcardware. This means that if it makes it to your production environment, we would very much appreciate receiving a postcard from your hometown.
 
-**Maatwebsite**  
-Markt 2  
-6231 LS Meerssen  
-The Netherlands 
+**Maatwebsite**
+Markt 2
+6231 LS Meerssen
+The Netherlands
 
 More about the license can be found at: [https://docs.laravel-excel.com/3.1/getting-started/license.html](https://docs.laravel-excel.com/3.1/getting-started/license.html)
 
