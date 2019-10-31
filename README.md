@@ -1,5 +1,29 @@
-![banner](https://user-images.githubusercontent.com/7728097/57463977-2263fc80-727c-11e9-833d-669d816fb7fb.jpg)
-<br>
+<p align="center">
+<img src="https://user-images.githubusercontent.com/7728097/67977317-26178100-fc18-11e9-943e-c5302ca32622.png" width="400" height="82" alt="Laravel Excel logo">
+</p>
+
+<h3 align="center">Supercharged Excel exports and imports</h3>
+
+  <p align="center">
+  A simple, but elegant <a href="https://laravel.com" target="_blank">Laravel<a/> wrapper around <a href="https://phpspreadsheet.readthedocs.io/" target="_blank">PhpSpreadsheet</a>
+exports and imports.
+</p>
+
+<h4 align="center">
+  <a href="https://docs.laravel-excel.com/3.1/exports/">Quickstart</a>
+  <span> · </span>
+  <a href="https://docs.laravel-excel.com/3.1/getting-started/">Documentation</a>
+  <span> · </span>
+  <a href="https://course.laravel-excel.com">Video Course</a>
+  <span> · </span>
+  <a href="https://github.com/Maatwebsite/Laravel-Nova-Excel">Nova</a>
+  <span> · </span>
+  <a href="https://medium.com/maatwebsite/laravel-excel/home">Blog</a>
+  <span> · </span>
+  <a href="https://docs.laravel-excel.com/3.1/getting-started/contributing.html">Contributing</a>
+  <span> · </span>
+  <a href="https://docs.laravel-excel.com/3.1/getting-started/support.html">Support</a>
+</h4>
 
 <p align="center">
   <a href="https://travis-ci.org/Maatwebsite/Laravel-Excel">
@@ -23,34 +47,8 @@
   </a>
 </p>
 
+![banner](https://user-images.githubusercontent.com/7728097/57463977-2263fc80-727c-11e9-833d-669d816fb7fb.jpg)
 <br>
-
-<p align="center">
-<img src="https://user-images.githubusercontent.com/7728097/67977317-26178100-fc18-11e9-943e-c5302ca32622.png" width="400" height="82" alt="Laravel Excel logo">
-</p>
-
-  <h3 align="center">Supercharged Excel exports and imports</h3>
-
-  <p align="center">
-  A simple, but elegant <a href="https://laravel.com" target="_blank">Laravel<a/> wrapper around <a href="https://phpspreadsheet.readthedocs.io/" target="_blank">PhpSpreadsheet</a>
-exports and imports.
-</p>
-
-<h4 align="center">
-  <a href="https://docs.laravel-excel.com/3.1/exports/">Quickstart</a>
-  <span> · </span>
-  <a href="https://docs.laravel-excel.com/3.1/getting-started/">Documentation</a>
-  <span> · </span>
-  <a href="https://course.laravel-excel.com">Video Course</a>
-  <span> · </span>
-  <a href="https://github.com/Maatwebsite/Laravel-Nova-Excel">Nova</a>
-  <span> · </span>
-  <a href="https://medium.com/maatwebsite/laravel-excel/home">Blog</a>
-  <span> · </span>
-  <a href="https://docs.laravel-excel.com/3.1/getting-started/contributing.html">Contributing</a>
-  <span> · </span>
-  <a href="https://docs.laravel-excel.com/3.1/getting-started/support.html">Support</a>
-</h4>
 
 ## ✨ Features
 
