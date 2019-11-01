@@ -180,6 +180,7 @@ return [
         |
         */
         'remote_disk' => null,
+        'remote_prefix' => null,
 
     ],
 ];
