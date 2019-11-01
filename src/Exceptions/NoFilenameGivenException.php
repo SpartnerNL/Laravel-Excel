@@ -2,8 +2,8 @@
 
 namespace Maatwebsite\Excel\Exceptions;
 
-use Throwable;
 use InvalidArgumentException;
+use Throwable;
 
 class NoFilenameGivenException extends InvalidArgumentException implements LaravelExcelException
 {

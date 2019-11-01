@@ -2,14 +2,14 @@
 
 namespace Maatwebsite\Excel\Tests\Concerns;
 
-use Illuminate\Support\Collection;
 use Illuminate\Contracts\View\View;
-use Maatwebsite\Excel\Tests\TestCase;
-use Maatwebsite\Excel\Concerns\FromView;
+use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\Exportable;
+use Maatwebsite\Excel\Concerns\FromView;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
 use Maatwebsite\Excel\Tests\Data\Stubs\SheetForUsersFromView;
+use Maatwebsite\Excel\Tests\TestCase;
 
 class FromViewTest extends TestCase
 {

@@ -2,16 +2,16 @@
 
 namespace Maatwebsite\Excel\Tests\Data\Stubs;
 
-use Maatwebsite\Excel\Writer;
 use Illuminate\Support\Collection;
-use Maatwebsite\Excel\Tests\TestCase;
-use Maatwebsite\Excel\Concerns\WithTitle;
 use Maatwebsite\Excel\Concerns\Exportable;
-use Maatwebsite\Excel\Concerns\WithEvents;
-use Maatwebsite\Excel\Events\BeforeWriting;
 use Maatwebsite\Excel\Concerns\FromCollection;
-use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\RegistersEventListeners;
+use Maatwebsite\Excel\Concerns\ShouldAutoSize;
+use Maatwebsite\Excel\Concerns\WithEvents;
+use Maatwebsite\Excel\Concerns\WithTitle;
+use Maatwebsite\Excel\Events\BeforeWriting;
+use Maatwebsite\Excel\Tests\TestCase;
+use Maatwebsite\Excel\Writer;
 
 class SheetWith100Rows implements FromCollection, WithTitle, ShouldAutoSize, WithEvents
 {

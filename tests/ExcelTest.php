@@ -2,23 +2,23 @@
 
 namespace Maatwebsite\Excel\Tests;
 
-use Maatwebsite\Excel\Excel;
-use PHPUnit\Framework\Assert;
-use Maatwebsite\Excel\Importer;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
-use Illuminate\Contracts\View\View;
-use Maatwebsite\Excel\Concerns\ToArray;
-use Maatwebsite\Excel\Concerns\FromView;
 use Maatwebsite\Excel\Concerns\Exportable;
-use Maatwebsite\Excel\Concerns\Importable;
-use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\FromCollection;
-use Maatwebsite\Excel\Tests\Helpers\FileHelper;
-use Maatwebsite\Excel\Facades\Excel as ExcelFacade;
-use Maatwebsite\Excel\Tests\Data\Stubs\EmptyExport;
-use Maatwebsite\Excel\Concerns\WithCustomCsvSettings;
+use Maatwebsite\Excel\Concerns\FromView;
+use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\RegistersEventListeners;
+use Maatwebsite\Excel\Concerns\ToArray;
+use Maatwebsite\Excel\Concerns\WithCustomCsvSettings;
+use Maatwebsite\Excel\Concerns\WithEvents;
+use Maatwebsite\Excel\Excel;
+use Maatwebsite\Excel\Facades\Excel as ExcelFacade;
+use Maatwebsite\Excel\Importer;
+use Maatwebsite\Excel\Tests\Data\Stubs\EmptyExport;
+use Maatwebsite\Excel\Tests\Helpers\FileHelper;
+use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class ExcelTest extends TestCase

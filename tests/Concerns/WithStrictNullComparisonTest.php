@@ -3,11 +3,11 @@
 namespace Maatwebsite\Excel\Tests\Concerns;
 
 use Illuminate\Support\Collection;
-use Maatwebsite\Excel\Tests\TestCase;
 use Maatwebsite\Excel\Concerns\Exportable;
-use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\FromCollection;
+use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithStrictNullComparison;
+use Maatwebsite\Excel\Tests\TestCase;
 
 class WithStrictNullComparisonTest extends TestCase
 {

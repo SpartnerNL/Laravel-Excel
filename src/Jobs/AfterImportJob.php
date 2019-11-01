@@ -2,13 +2,13 @@
 
 namespace Maatwebsite\Excel\Jobs;
 
-use Throwable;
 use Illuminate\Bus\Queueable;
-use Maatwebsite\Excel\Reader;
-use Maatwebsite\Excel\HasEventBus;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Events\ImportFailed;
-use Illuminate\Contracts\Queue\ShouldQueue;
+use Maatwebsite\Excel\HasEventBus;
+use Maatwebsite\Excel\Reader;
+use Throwable;
 
 class AfterImportJob implements ShouldQueue
 {
