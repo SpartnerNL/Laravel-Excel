@@ -2,10 +2,10 @@
 
 namespace Maatwebsite\Excel\Tests\Mixins;
 
-use Maatwebsite\Excel\Excel;
 use Illuminate\Support\Collection;
-use Maatwebsite\Excel\Tests\TestCase;
+use Maatwebsite\Excel\Excel;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
+use Maatwebsite\Excel\Tests\TestCase;
 
 class StoreCollectionTest extends TestCase
 {

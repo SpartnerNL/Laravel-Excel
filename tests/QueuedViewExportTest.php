@@ -3,10 +3,10 @@
 namespace Maatwebsite\Excel\Tests;
 
 use Illuminate\Support\Collection;
-use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
 use Maatwebsite\Excel\Tests\Data\Stubs\AfterQueueExportJob;
-use Maatwebsite\Excel\Tests\Data\Stubs\SheetForUsersFromView;
+use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
 use Maatwebsite\Excel\Tests\Data\Stubs\FromViewExportWithMultipleSheets;
+use Maatwebsite\Excel\Tests\Data\Stubs\SheetForUsersFromView;
 
 class QueuedViewExportTest extends TestCase
 {

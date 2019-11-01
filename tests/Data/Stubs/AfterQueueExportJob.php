@@ -3,8 +3,8 @@
 namespace Maatwebsite\Excel\Tests\Data\Stubs;
 
 use Illuminate\Bus\Queueable;
-use Maatwebsite\Excel\Tests\TestCase;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Maatwebsite\Excel\Tests\TestCase;
 
 class AfterQueueExportJob implements ShouldQueue
 {
