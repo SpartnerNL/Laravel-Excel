@@ -29,7 +29,6 @@ class WithEventsTest extends TestCase
     /**
      * @test
      */
-
 	public function export_events_get_called()
     {
         $event = new ExportWithEvents();
@@ -59,6 +58,7 @@ class WithEventsTest extends TestCase
             $this->assertInstanceOf(Sheet::class, $event->getSheet());
             $eventsTriggered++;
         };
+
         $this->assertInstanceOf(BinaryFileResponse::class, $event->download('filename.xlsx'));
         $this->assertEquals(4, $eventsTriggered);
     }
@@ -111,6 +111,7 @@ class WithEventsTest extends TestCase
             $this->assertInstanceOf(Sheet::class, $event->getSheet());
             $eventsTriggered++;
         };
+
         $event->import('import.xlsx');
         $this->assertEquals(6, $eventsTriggered);
     }
@@ -118,7 +119,6 @@ class WithEventsTest extends TestCase
     /**
      * @test
      */
-
     public function can_have_invokable_class_as_listener()
     {
         $event = new ExportWithEvents();
@@ -134,7 +134,6 @@ class WithEventsTest extends TestCase
     /**
      * @test
      */
-
     public function can_have_global_event_listeners()
     {
         $event = new class {
@@ -172,7 +171,6 @@ class WithEventsTest extends TestCase
     /**
      * @test
      */
-
     public function can_have_custom_concern_handlers()
     {
         // Add a custom concern handler for the given concern.
@@ -212,7 +210,6 @@ class WithEventsTest extends TestCase
     /**
      * @test
      */
-
     public function can_have_custom_sheet_concern_handlers()
     {
         // Add a custom concern handler for the given concern.
