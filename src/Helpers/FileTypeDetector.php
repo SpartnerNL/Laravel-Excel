@@ -5,9 +5,6 @@ namespace Maatwebsite\Excel\Helpers;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Maatwebsite\Excel\Exceptions\NoTypeDetectedException;
 
-// @todo: RRE - Add the Helper IOFactory::identify($inputFileName)
-use PhpOffice\PhpSpreadsheet\IOFactory;
-
 class FileTypeDetector
 {
     /**
