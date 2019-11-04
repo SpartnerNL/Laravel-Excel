@@ -19,6 +19,21 @@ class FileTypeDetector
      */
     public static function detect($filePath, string $type = null)
     {
+
+	    if (null !== $type) {
+            return $type;
+        }
+        if (!$filePath instanceof UploadedFile) {
+            $pathInfo  = pathinfo($filePath);
+            $extension = $pathInfo['extension'] ?? '';
+        } else {
+            $extension = $filePath->getClientOriginalExtension();
+        }
+        if (null === $type && trim($extension) === '') {
+            throw new NoTypeDetectedException();
+        }
+        return config('excel.extension_detector.' . strtolower($extension));
+
 		/*
 		 * @todo: RRE
 		 * NOTE: 

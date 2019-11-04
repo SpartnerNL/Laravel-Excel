@@ -9,6 +9,7 @@ use Maatwebsite\Excel\ExcelServiceProvider;
 use Orchestra\Database\ConsoleServiceProvider;
 use PHPUnit\Framework\Constraint\StringContains;
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
+use Illuminate\Support\Facades\Storage;
 
 class TestCase extends OrchestraTestCase
 {
@@ -34,6 +35,7 @@ class TestCase extends OrchestraTestCase
      */
     public function givenUploadedFile(string $filePath, string $filename = null): File
     {
+
         $filename = $filename ?? basename($filePath);
 
         // Create temporary file.
@@ -84,21 +86,71 @@ class TestCase extends OrchestraTestCase
      */
     protected function getEnvironmentSetUp($app)
     {
+		// dd(storage_path());
+		// dd(Storage::disk('local'));
+		$app->useStoragePath(__DIR__ . '/Data/Disks/Local');
         $app['config']->set('filesystems.disks.local.root', __DIR__ . '/Data/Disks/Local');
         $app['config']->set('filesystems.disks.test', [
             'driver' => 'local',
             'root'   => __DIR__ . '/Data/Disks/Test',
         ]);
+		// dd(storage_path());
+		// dd(base_path());
+		// dd(Storage::disk('local'));
+		// dd(Storage::disk('test'));
 
+		/*
+		 * Original Option changing the driver and
+		 * customizing the phpunit.xml
+		 *
+				Note:
+				phpunit.xml <- Copied from phpuni.xml.dist 
+
+			  <env name="DB_HOST" value="127.0.0.1"/>
+			  <env name="DB_PORT" value="3306"/>
+			  <env name="DB_DATABASE" value="D:\paso\Cotizador\dbExcelTest.sqlite"/>
+			  <env name="DB_USERNAME" value="root"/>
+			  <env name="DB_PASSWORD" value=""/>
+
+		*/
         $app['config']->set('database.default', 'testing');
         $app['config']->set('database.connections.testing', [
-            'driver'   => 'mysql',
+            // 'driver'   => 'mysql',
+            'driver'   => 'sqlite',
             'host'     => env('DB_HOST'),
             'port'     => env('DB_PORT'),
             'database' => env('DB_DATABASE'),
             'username' => env('DB_USERNAME'),
             'password' => env('DB_PASSWORD'),
         ]);
+
+		/*
+		 * Alternative Option suggested https://github.com/orchestral/testbench
+		 * customizing the phpunit.xml
+		 *
+		*/
+/*
+		// Setup default database to use sqlite :memory:
+		$app['config']->set('database.default', 'testbench');
+		$app['config']->set('database.connections.testbench', [
+			'driver'   => 'sqlite',
+			'database' => ':memory:',
+			'prefix'   => '',
+		]);
+*/
+		/*
+		 * Alternative Option suggested https://github.com/orchestral/testbench
+		 * customizing the phpunit.xml
+		 * Without Declaration in this section
+				Note:
+				phpunit.xml <- Copied from phpuni.xml.dist 
+
+			<php>
+			  <env name="APP_KEY" value="base64:6igsHe3RYC88h3Wje3VzSNqPwUr7Z5ru+NZw/9qwY5M=" />
+			  <env name="DB_CONNECTION" value="testing"/>
+			</php>
+
+		*/
 
         $app['config']->set('view.paths', [
             __DIR__ . '/Data/Stubs/Views',
