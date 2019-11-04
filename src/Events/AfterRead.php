@@ -43,7 +43,7 @@ class AfterRead extends Event
     }
 
     /**
-     * @return mixed
+     * @return mixed 
      */
     public function getDelegate()
     {

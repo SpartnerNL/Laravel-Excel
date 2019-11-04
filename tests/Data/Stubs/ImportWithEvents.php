@@ -2,7 +2,7 @@
 
 namespace Maatwebsite\Excel\Tests\Data\Stubs;
 
-use Maatwebsite\Excel\Events\BeforeRead; // New
+use Maatwebsite\Excel\Events\BeforeRead; // New 
 use Maatwebsite\Excel\Events\AfterRead;  // New
 use Maatwebsite\Excel\Events\AfterSheet;
 use Maatwebsite\Excel\Events\AfterImport;

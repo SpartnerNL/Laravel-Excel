@@ -40,7 +40,7 @@ class ImportWithRegistersEventListeners implements WithEvents
      */
     public static $afterSheet;
 
-    // New
+    // New 
     public static function beforeRead()
     {
         (static::$beforeRead)(...func_get_args());

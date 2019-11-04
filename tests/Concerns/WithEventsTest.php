@@ -60,8 +60,6 @@ class WithEventsTest extends TestCase
             $eventsTriggered++;
         };
         $this->assertInstanceOf(BinaryFileResponse::class, $event->download('filename.xlsx'));
-        // $this->assertInstanceOf(BinaryFileResponse::class, $event->download('D:\Git_Projects\Laravel-Excel\tests\Data\Disks\Test\filename.xlsx'));
-        // $this->assertInstanceOf(BinaryFileResponse::class, $event->download('filename.xlsx'));
         $this->assertEquals(4, $eventsTriggered);
     }
 
@@ -113,10 +111,6 @@ class WithEventsTest extends TestCase
             $this->assertInstanceOf(Sheet::class, $event->getSheet());
             $eventsTriggered++;
         };
-		// dd(base_path());
-		// dd(storage_path());
-        // $event->import('D:\Git_Projects\Laravel-Excel\tests\Data\Disks\Local\import.xlsx');
-        // $event->import(storage_path('import.xlsx'));
         $event->import('import.xlsx');
         $this->assertEquals(6, $eventsTriggered);
     }

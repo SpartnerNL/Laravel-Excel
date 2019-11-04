@@ -53,7 +53,7 @@ class BeforeRead extends Event
 	 * This will give Access to the phpSpreadsheet Methods:
 	 *	- 	phpSpreadsheet->setLoadSheetsOnly([<$sheetname>...]);
      *  -	phpSpreadsheet->setLoadAllSheets();
-	 *
+	 * 
 	 *  -	phpSpreadsheet->setReadDataOnly(<true|false>);
      *  -	phpSpreadsheet->setReadEmptyCells(<true|false>);
      *  -	phpSpreadsheet->setIncludeCharts(<true|false>);
