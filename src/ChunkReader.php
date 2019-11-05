@@ -2,19 +2,19 @@
 
 namespace Maatwebsite\Excel;
 
-use Throwable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Collection;
-use Maatwebsite\Excel\Jobs\ReadChunk;
-use Maatwebsite\Excel\Jobs\QueueImport;
-use Maatwebsite\Excel\Concerns\WithLimit;
+use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithEvents;
+use Maatwebsite\Excel\Concerns\WithLimit;
+use Maatwebsite\Excel\Concerns\WithProgressBar;
 use Maatwebsite\Excel\Events\BeforeImport;
 use Maatwebsite\Excel\Files\TemporaryFile;
-use Maatwebsite\Excel\Jobs\AfterImportJob;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Maatwebsite\Excel\Concerns\WithProgressBar;
-use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Imports\HeadingRowExtractor;
+use Maatwebsite\Excel\Jobs\AfterImportJob;
+use Maatwebsite\Excel\Jobs\QueueImport;
+use Maatwebsite\Excel\Jobs\ReadChunk;
+use Throwable;
 
 class ChunkReader
 {

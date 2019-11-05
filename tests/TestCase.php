@@ -2,14 +2,14 @@
 
 namespace Maatwebsite\Excel\Tests;
 
-use Illuminate\Http\Testing\File;
 use Illuminate\Contracts\Queue\Job;
-use PhpOffice\PhpSpreadsheet\IOFactory;
+use Illuminate\Http\Testing\File;
 use Maatwebsite\Excel\ExcelServiceProvider;
 use Orchestra\Database\ConsoleServiceProvider;
-use PHPUnit\Framework\Constraint\StringContains;
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
 use Illuminate\Support\Facades\Storage;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use PHPUnit\Framework\Constraint\StringContains;
 
 class TestCase extends OrchestraTestCase
 {

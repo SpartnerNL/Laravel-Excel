@@ -14,15 +14,18 @@ use Maatwebsite\Excel\Events\AfterSheet;
 use Maatwebsite\Excel\Events\AfterImport;
 use Maatwebsite\Excel\Events\BeforeSheet;
 use Maatwebsite\Excel\Concerns\Exportable;
+use Maatwebsite\Excel\Events\AfterImport;
+use Maatwebsite\Excel\Events\AfterSheet;
 use Maatwebsite\Excel\Events\BeforeExport;
 use Maatwebsite\Excel\Events\BeforeImport;
+use Maatwebsite\Excel\Events\BeforeSheet;
 use Maatwebsite\Excel\Events\BeforeWriting;
+use Maatwebsite\Excel\Tests\Data\Stubs\BeforeExportListener;
 use Maatwebsite\Excel\Tests\Data\Stubs\CustomConcern;
+use Maatwebsite\Excel\Tests\Data\Stubs\CustomSheetConcern;
 use Maatwebsite\Excel\Tests\Data\Stubs\ExportWithEvents;
 use Maatwebsite\Excel\Tests\Data\Stubs\ImportWithEvents; // updated
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
-use Maatwebsite\Excel\Tests\Data\Stubs\CustomSheetConcern;
-use Maatwebsite\Excel\Tests\Data\Stubs\BeforeExportListener;
 
 class WithEventsTest extends TestCase
 {
