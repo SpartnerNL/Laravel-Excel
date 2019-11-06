@@ -10,15 +10,12 @@ use Maatwebsite\Excel\Tests\TestCase;
 use Maatwebsite\Excel\Events\BeforeRead;     // New
 use Maatwebsite\Excel\Events\AfterRead;      // New
 use PhpOffice\PhpSpreadsheet\Reader\IReader; // New
-use Maatwebsite\Excel\Events\AfterSheet;
-use Maatwebsite\Excel\Events\AfterImport;
-use Maatwebsite\Excel\Events\BeforeSheet;
-use Maatwebsite\Excel\Concerns\Exportable;
-use Maatwebsite\Excel\Events\AfterImport;
-use Maatwebsite\Excel\Events\AfterSheet;
-use Maatwebsite\Excel\Events\BeforeExport;
 use Maatwebsite\Excel\Events\BeforeImport;
+use Maatwebsite\Excel\Events\AfterImport;
 use Maatwebsite\Excel\Events\BeforeSheet;
+use Maatwebsite\Excel\Events\AfterSheet;
+use Maatwebsite\Excel\Concerns\Exportable;
+use Maatwebsite\Excel\Events\BeforeExport;
 use Maatwebsite\Excel\Events\BeforeWriting;
 use Maatwebsite\Excel\Tests\Data\Stubs\BeforeExportListener;
 use Maatwebsite\Excel\Tests\Data\Stubs\CustomConcern;
