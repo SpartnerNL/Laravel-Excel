@@ -2,11 +2,11 @@
 
 namespace Maatwebsite\Excel;
 
-use Maatwebsite\Excel\Events\Event;
 use Maatwebsite\Excel\Events\AfterSheet;
-use Maatwebsite\Excel\Events\BeforeSheet;
 use Maatwebsite\Excel\Events\BeforeExport;
+use Maatwebsite\Excel\Events\BeforeSheet;
 use Maatwebsite\Excel\Events\BeforeWriting;
+use Maatwebsite\Excel\Events\Event;
 
 trait RegistersCustomConcerns
 {

@@ -2,9 +2,9 @@
 
 namespace Maatwebsite\Excel\Concerns;
 
-use Throwable;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Validators\Failure;
+use Throwable;
 
 trait SkipsErrors
 {

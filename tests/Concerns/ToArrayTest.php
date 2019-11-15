@@ -2,10 +2,10 @@
 
 namespace Maatwebsite\Excel\Tests\Concerns;
 
-use PHPUnit\Framework\Assert;
-use Maatwebsite\Excel\Tests\TestCase;
-use Maatwebsite\Excel\Concerns\ToArray;
 use Maatwebsite\Excel\Concerns\Importable;
+use Maatwebsite\Excel\Concerns\ToArray;
+use Maatwebsite\Excel\Tests\TestCase;
+use PHPUnit\Framework\Assert;
 
 class ToArrayTest extends TestCase
 {

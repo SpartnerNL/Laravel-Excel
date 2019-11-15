@@ -4,13 +4,13 @@ namespace Maatwebsite\Excel;
 
 use Illuminate\Support\Collection;
 use Illuminate\Support\ServiceProvider;
-use Maatwebsite\Excel\Files\Filesystem;
-use Maatwebsite\Excel\Mixins\StoreCollection;
+use Laravel\Lumen\Application as LumenApplication;
 use Maatwebsite\Excel\Console\ExportMakeCommand;
 use Maatwebsite\Excel\Console\ImportMakeCommand;
-use Maatwebsite\Excel\Mixins\DownloadCollection;
+use Maatwebsite\Excel\Files\Filesystem;
 use Maatwebsite\Excel\Files\TemporaryFileFactory;
-use Laravel\Lumen\Application as LumenApplication;
+use Maatwebsite\Excel\Mixins\DownloadCollection;
+use Maatwebsite\Excel\Mixins\StoreCollection;
 use Maatwebsite\Excel\Transactions\TransactionHandler;
 use Maatwebsite\Excel\Transactions\TransactionManager;
 

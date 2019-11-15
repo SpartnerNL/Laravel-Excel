@@ -1,32 +1,12 @@
-![banner](https://user-images.githubusercontent.com/7728097/57463977-2263fc80-727c-11e9-833d-669d816fb7fb.jpg)
-
 <p align="center">
-  <a href="https://travis-ci.org/Maatwebsite/Laravel-Excel">
-    <img src="https://travis-ci.org/Maatwebsite/Laravel-Excel.svg?branch=3.1" alt="Build Status">
-  </a> 
-  
-  <a href="https://styleci.io/repos/14259390">
-    <img src="https://styleci.io/repos/14259390/shield?branch=3.1" alt="StyleCI">
-  </a> 
-  
-   <a href="https://packagist.org/packages/maatwebsite/excel">
-      <img src="https://poser.pugx.org/maatwebsite/excel/v/stable.png" alt="Latest Stable Version">
-  </a> 
-  
-  <a href="https://packagist.org/packages/maatwebsite/excel">
-      <img src="https://poser.pugx.org/maatwebsite/excel/downloads.png" alt="Total Downloads">
-  </a> 
-  
-  <a href="https://packagist.org/packages/maatwebsite/excel">
-    <img src="https://poser.pugx.org/maatwebsite/excel/license.png" alt="License">
-  </a>
+<img src="https://user-images.githubusercontent.com/7728097/67977317-26178100-fc18-11e9-943e-c5302ca32622.png" width="400" height="82" alt="Laravel Excel logo">
 </p>
 
-  <h3 align="center">Supercharged Excel exports and imports</h3>
-  
+<h3 align="center">Supercharged Excel exports and imports</h3>
+
   <p align="center">
   A simple, but elegant <a href="https://laravel.com" target="_blank">Laravel<a/> wrapper around <a href="https://phpspreadsheet.readthedocs.io/" target="_blank">PhpSpreadsheet</a>
-exports and imports. 
+exports and imports.
 </p>
 
 <h4 align="center">
@@ -45,6 +25,28 @@ exports and imports.
   <a href="https://docs.laravel-excel.com/3.1/getting-started/support.html">Support</a>
 </h4>
 
+<p align="center">
+  <a href="https://travis-ci.org/Maatwebsite/Laravel-Excel">
+    <img src="https://travis-ci.org/Maatwebsite/Laravel-Excel.svg?branch=3.1" alt="Build Status">
+  </a>
+
+  <a href="https://styleci.io/repos/14259390">
+    <img src="https://styleci.io/repos/14259390/shield?branch=3.1" alt="StyleCI">
+  </a>
+
+   <a href="https://packagist.org/packages/maatwebsite/excel">
+      <img src="https://poser.pugx.org/maatwebsite/excel/v/stable.png" alt="Latest Stable Version">
+  </a>
+
+  <a href="https://packagist.org/packages/maatwebsite/excel">
+      <img src="https://poser.pugx.org/maatwebsite/excel/downloads.png" alt="Total Downloads">
+  </a>
+
+  <a href="https://packagist.org/packages/maatwebsite/excel">
+    <img src="https://poser.pugx.org/maatwebsite/excel/license.png" alt="License">
+  </a>
+</p>
+
 ## ✨ Features
 
 - **Easily export collections to Excel.** Supercharge your Laravel collections and export them directly to an Excel or CSV document. Exporting has never been so easy.
@@ -55,6 +57,9 @@ exports and imports.
 
 - **Export Blade views.** Want to have a custom layout in your spreadsheet? Use a HTML table in a Blade view and export that to Excel.
 
+![banner](https://user-images.githubusercontent.com/7728097/57463977-2263fc80-727c-11e9-833d-669d816fb7fb.jpg)
+<br>
+
 ## 🎓 Learning Laravel Excel
 
 You can find the full documentation of Laravel Excel [on the website](https://docs.laravel-excel.com).
@@ -64,8 +69,6 @@ We welcome suggestions for improving our docs. The documentation repository can 
 Some articles and tutorials can be found on our blog: https://medium.com/maatwebsite/laravel-excel/home
 
 ## 🎥 Video Course
-
-![1_bzlh2ituv5x7yu2wenhxxw](https://user-images.githubusercontent.com/7728097/53638298-188f9e80-3c26-11e9-82c8-baf057271013.jpeg)
 
 We are currently building a video course called "Advanced Laravel Excel". In this video course we’ll build a small application with real-life, complex imports and exports that go beyond simple user imports and exports. We’ll go step-by-step and tackle implementing Laravel Excel in a performant way.
 
@@ -79,10 +82,10 @@ https://course.laravel-excel.com
 
 Laravel Excel is completely free (MIT license) to use, however the package is licensed as Postcardware. This means that if it makes it to your production environment, we would very much appreciate receiving a postcard from your hometown.
 
-**Maatwebsite**  
-Markt 2  
-6231 LS Meerssen  
-The Netherlands 
+**Maatwebsite**
+Markt 2
+6231 LS Meerssen
+The Netherlands
 
 More about the license can be found at: [https://docs.laravel-excel.com/3.1/getting-started/license.html](https://docs.laravel-excel.com/3.1/getting-started/license.html)
 

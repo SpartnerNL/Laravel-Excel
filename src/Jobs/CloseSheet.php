@@ -3,10 +3,10 @@
 namespace Maatwebsite\Excel\Jobs;
 
 use Illuminate\Bus\Queueable;
-use Maatwebsite\Excel\Writer;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Files\TemporaryFile;
-use Illuminate\Contracts\Queue\ShouldQueue;
+use Maatwebsite\Excel\Writer;
 
 class CloseSheet implements ShouldQueue
 {

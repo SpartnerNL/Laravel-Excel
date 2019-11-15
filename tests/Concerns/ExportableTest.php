@@ -2,11 +2,11 @@
 
 namespace Maatwebsite\Excel\Tests\Concerns;
 
+use Illuminate\Contracts\Support\Responsable;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Excel;
 use Maatwebsite\Excel\Tests\TestCase;
-use Maatwebsite\Excel\Concerns\Exportable;
-use Illuminate\Contracts\Support\Responsable;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class ExportableTest extends TestCase
