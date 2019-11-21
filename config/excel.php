@@ -179,7 +179,7 @@ return [
         | in conjunction with queued imports and exports.
         |
         */
-        'remote_disk' => null,
+        'remote_disk'   => null,
         'remote_prefix' => null,
 
     ],
