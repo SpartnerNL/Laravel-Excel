@@ -90,4 +90,21 @@ class QueuedImportTest extends TestCase
 
         $this->assertInstanceOf(PendingDispatch::class, $chain);
     }
+
+    /**
+     * @test
+     */
+    public function can_queue_import_with_remote_temp_disk_and_prefix()
+    {
+        config()->set('excel.temporary_files.remote_disk', 'test');
+        config()->set('excel.temporary_files.remote_prefix', 'tmp/');
+
+        $import = new QueuedImport();
+
+        $chain = $import->queue('import-batches.xlsx')->chain([
+            new AfterQueueImportJob(5000),
+        ]);
+
+        $this->assertInstanceOf(PendingDispatch::class, $chain);
+    }
 }
