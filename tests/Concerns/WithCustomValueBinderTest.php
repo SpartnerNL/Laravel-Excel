@@ -135,7 +135,7 @@ class WithCustomValueBinderTest extends TestCase
                         'col2',
                     ],
                     [
-                        1.0, // by default PhpSpreadsheet will convert numbers to float
+                        1
                         '2', // Forced to be a string
                     ],
                     [
