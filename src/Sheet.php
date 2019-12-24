@@ -30,9 +30,11 @@ use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Concerns\WithProgressBar;
 use Maatwebsite\Excel\Concerns\WithStrictNullComparison;
 use Maatwebsite\Excel\Concerns\WithTitle;
+use Maatwebsite\Excel\Concerns\WithValidation;
 use Maatwebsite\Excel\Events\AfterSheet;
 use Maatwebsite\Excel\Events\BeforeSheet;
 use Maatwebsite\Excel\Exceptions\ConcernConflictException;
+use Maatwebsite\Excel\Exceptions\RowSkippedException;
 use Maatwebsite\Excel\Exceptions\SheetNotFoundException;
 use Maatwebsite\Excel\Files\TemporaryFileFactory;
 use Maatwebsite\Excel\Helpers\ArrayHelper;
@@ -40,6 +42,7 @@ use Maatwebsite\Excel\Helpers\CellHelper;
 use Maatwebsite\Excel\Imports\EndRowFinder;
 use Maatwebsite\Excel\Imports\HeadingRowExtractor;
 use Maatwebsite\Excel\Imports\ModelImporter;
+use Maatwebsite\Excel\Validators\RowValidator;
 use PhpOffice\PhpSpreadsheet\Cell\Cell as SpreadsheetCell;
 use PhpOffice\PhpSpreadsheet\Chart\Chart;
 use PhpOffice\PhpSpreadsheet\IOFactory;
@@ -77,8 +80,8 @@ class Sheet
      */
     public function __construct(Worksheet $worksheet)
     {
-        $this->worksheet            = $worksheet;
-        $this->chunkSize            = config('excel.exports.chunk_size', 100);
+        $this->worksheet = $worksheet;
+        $this->chunkSize = config('excel.exports.chunk_size', 100);
         $this->temporaryFileFactory = app(TemporaryFileFactory::class);
     }
 
@@ -86,9 +89,10 @@ class Sheet
      * @param Spreadsheet $spreadsheet
      * @param string|int  $index
      *
-     * @throws SheetNotFoundException
-     * @throws \PhpOffice\PhpSpreadsheet\Exception
      * @return Sheet
+     *
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
+     * @throws SheetNotFoundException
      */
     public static function make(Spreadsheet $spreadsheet, $index)
     {
@@ -103,9 +107,10 @@ class Sheet
      * @param Spreadsheet $spreadsheet
      * @param int         $index
      *
-     * @throws SheetNotFoundException
-     * @throws \PhpOffice\PhpSpreadsheet\Exception
      * @return Sheet
+     *
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
+     * @throws SheetNotFoundException
      */
     public static function byIndex(Spreadsheet $spreadsheet, int $index): Sheet
     {
@@ -120,8 +125,9 @@ class Sheet
      * @param Spreadsheet $spreadsheet
      * @param string      $name
      *
-     * @throws SheetNotFoundException
      * @return Sheet
+     *
+     * @throws SheetNotFoundException
      */
     public static function byName(Spreadsheet $spreadsheet, string $name): Sheet
     {
@@ -253,8 +259,20 @@ class Sheet
 
         if ($import instanceof OnEachRow) {
             $headingRow = HeadingRowExtractor::extract($this->worksheet, $import);
+
             foreach ($this->worksheet->getRowIterator()->resetStart($startRow ?? 1) as $row) {
-                $import->onRow(new Row($row, $headingRow));
+                $sheetRow = new Row($row, $headingRow);
+
+                if ($import instanceof WithValidation) {
+                    $toValidate = [$sheetRow->toArray(null, $import instanceof WithCalculatedFormulas)];
+
+                    try {
+                        app(RowValidator::class)->validate($toValidate, $import);
+                    } catch (RowSkippedException $e) {
+                    }
+                }
+
+                $import->onRow($sheetRow);
 
                 if ($import instanceof WithProgressBar) {
                     $import->getConsoleOutput()->progressAdvance();
@@ -280,7 +298,7 @@ class Sheet
      */
     public function toArray($import, int $startRow = null, $nullValue = null, $calculateFormulas = false, $formatData = false)
     {
-        $endRow     = EndRowFinder::find($import, $startRow);
+        $endRow = EndRowFinder::find($import, $startRow);
         $headingRow = HeadingRowExtractor::extract($this->worksheet, $import);
 
         $rows = [];
@@ -417,15 +435,12 @@ class Sheet
         }
 
         if ($this->hasRows()) {
-            $startCell = CellHelper::getColumnFromCoordinate($startCell) . ($this->worksheet->getHighestRow() + 1);
+            $startCell = CellHelper::getColumnFromCoordinate($startCell).($this->worksheet->getHighestRow() + 1);
         }
 
         $this->worksheet->fromArray($rows, null, $startCell, $strictNullComparison);
     }
 
-    /**
-     * @return void
-     */
     public function autoSize()
     {
         foreach ($this->buildColumnRange('A', $this->worksheet->getHighestDataColumn()) as $col) {
@@ -442,7 +457,7 @@ class Sheet
     public function formatColumn(string $column, string $format)
     {
         $this->worksheet
-            ->getStyle($column . '1:' . $column . $this->worksheet->getHighestRow())
+            ->getStyle($column.'1:'.$column.$this->worksheet->getHighestRow())
             ->getNumberFormat()
             ->setFormatCode($format);
     }
@@ -576,8 +591,8 @@ class Sheet
      */
     protected function buildColumnRange(string $lower, string $upper)
     {
-        $upper++;
-        for ($i = $lower; $i !== $upper; $i++) {
+        ++$upper;
+        for ($i = $lower; $i !== $upper; ++$i) {
             yield $i;
         }
     }
