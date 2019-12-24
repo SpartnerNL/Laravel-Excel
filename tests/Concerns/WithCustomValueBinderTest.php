@@ -135,7 +135,7 @@ class WithCustomValueBinderTest extends TestCase
                         'col2',
                     ],
                     [
-                        1
+                        1,
                         '2', // Forced to be a string
                     ],
                     [
