@@ -80,8 +80,8 @@ class Sheet
      */
     public function __construct(Worksheet $worksheet)
     {
-        $this->worksheet = $worksheet;
-        $this->chunkSize = config('excel.exports.chunk_size', 100);
+        $this->worksheet            = $worksheet;
+        $this->chunkSize            = config('excel.exports.chunk_size', 100);
         $this->temporaryFileFactory = app(TemporaryFileFactory::class);
     }
 
@@ -298,7 +298,7 @@ class Sheet
      */
     public function toArray($import, int $startRow = null, $nullValue = null, $calculateFormulas = false, $formatData = false)
     {
-        $endRow = EndRowFinder::find($import, $startRow);
+        $endRow     = EndRowFinder::find($import, $startRow);
         $headingRow = HeadingRowExtractor::extract($this->worksheet, $import);
 
         $rows = [];
@@ -435,7 +435,7 @@ class Sheet
         }
 
         if ($this->hasRows()) {
-            $startCell = CellHelper::getColumnFromCoordinate($startCell).($this->worksheet->getHighestRow() + 1);
+            $startCell = CellHelper::getColumnFromCoordinate($startCell) . ($this->worksheet->getHighestRow() + 1);
         }
 
         $this->worksheet->fromArray($rows, null, $startCell, $strictNullComparison);
@@ -457,7 +457,7 @@ class Sheet
     public function formatColumn(string $column, string $format)
     {
         $this->worksheet
-            ->getStyle($column.'1:'.$column.$this->worksheet->getHighestRow())
+            ->getStyle($column . '1:' . $column . $this->worksheet->getHighestRow())
             ->getNumberFormat()
             ->setFormatCode($format);
     }
@@ -591,8 +591,8 @@ class Sheet
      */
     protected function buildColumnRange(string $lower, string $upper)
     {
-        ++$upper;
-        for ($i = $lower; $i !== $upper; ++$i) {
+        $upper++;
+        for ($i = $lower; $i !== $upper; $i++) {
             yield $i;
         }
     }
