@@ -63,6 +63,11 @@ class ReadChunk implements ShouldQueue
     public $timeout;
 
     /**
+     * @var int
+     */
+    public $tries;
+
+    /**
      * @param  WithChunkReading  $import
      * @param  IReader  $reader
      * @param  TemporaryFile  $temporaryFile
@@ -81,6 +86,7 @@ class ReadChunk implements ShouldQueue
         $this->startRow      = $startRow;
         $this->chunkSize     = $chunkSize;
         $this->timeout       = $import->timeout ?? null;
+        $this->tries         = $import->tries ?? null;
     }
 
     /**
