@@ -23,6 +23,16 @@ class ReadChunk implements ShouldQueue
     use Queueable, HasEventBus;
 
     /**
+     * @var int
+     */
+    public $timeout;
+
+    /**
+     * @var int
+     */
+    public $tries;
+
+    /**
      * @var WithChunkReading
      */
     private $import;
@@ -56,16 +66,6 @@ class ReadChunk implements ShouldQueue
      * @var int
      */
     private $chunkSize;
-
-    /**
-     * @var int
-     */
-    public $timeout;
-
-    /**
-     * @var int
-     */
-    public $tries;
 
     /**
      * @param  WithChunkReading  $import

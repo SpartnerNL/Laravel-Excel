@@ -26,7 +26,7 @@ class QueueImport implements ShouldQueue
     {
         if ($import) {
             $this->timeout = $import->timeout ?? null;
-            $this->tries = $import->tries ?? null;
+            $this->tries   = $import->tries ?? null;
         }
     }
 
