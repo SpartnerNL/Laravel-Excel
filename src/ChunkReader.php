@@ -60,7 +60,7 @@ class ChunkReader
         $jobs->push(new AfterImportJob($import, $reader));
 
         if ($import instanceof ShouldQueue) {
-            return QueueImport::withChain($jobs->toArray())->dispatch();
+            return QueueImport::withChain($jobs->toArray())->dispatch($import);
         }
 
         $jobs->each(function ($job) {
