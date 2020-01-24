@@ -487,7 +487,7 @@ class WithValidationTest extends TestCase
         try {
             $import->import('import-users-with-headings.xlsx');
         } catch (ValidationException $e) {
-            $this->validateFailure($e, 0, 'email', [
+            $this->validateFailure($e, 3, 'email', [
                 'The selected email is invalid.',
             ]);
         }
