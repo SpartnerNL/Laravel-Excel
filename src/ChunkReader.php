@@ -59,9 +59,9 @@ class ChunkReader
         }
 
         if ($import instanceof WithoutJobChaining) {
-            foreach ($jobs as $job) {
+            return $jobs->each(function ($job) {
                 dispatch($job);
-            }
+            });
         }
 
         $jobs->push(new AfterImportJob($import, $reader));
