@@ -221,7 +221,7 @@ class SkipsOnFailureTest extends TestCase
         ]);
     }
 
-        /**
+    /**
      * @test
      */
     public function can_validate_using_oneachrow_and_skipsonfailure()

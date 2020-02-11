@@ -271,8 +271,7 @@ class Sheet
                         $import->onRow($sheetRow);
                     } catch (RowSkippedException $e) {
                     }
-                }
-                else {
+                } else {
                     $import->onRow($sheetRow);
                 }
 
