@@ -268,11 +268,12 @@ class Sheet
 
                     try {
                         app(RowValidator::class)->validate($toValidate, $import);
+                        $import->onRow($sheetRow);
                     } catch (RowSkippedException $e) {
                     }
+                } else {
+                    $import->onRow($sheetRow);
                 }
-
-                $import->onRow($sheetRow);
 
                 if ($import instanceof WithProgressBar) {
                     $import->getConsoleOutput()->progressAdvance();
