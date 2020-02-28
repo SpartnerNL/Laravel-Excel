@@ -23,7 +23,7 @@
     "ext-json": "*",
     "php": "^7.0",
     "phpoffice/phpspreadsheet": "^1.10",
-    "illuminate/support": "5.5.*|5.6.*|5.7.*|5.8.*|^6.0"
+    "illuminate/support": "5.5.*|5.6.*|5.7.*|5.8.*|^6.0|^7.0"
   },
   "require-dev": {
     "orchestra/testbench": "^4.0",
