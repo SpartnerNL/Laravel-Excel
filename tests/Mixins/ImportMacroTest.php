@@ -26,6 +26,9 @@ class ImportMacroTest extends TestCase
     public function can_import_directly_into_a_model()
     {
         User::query()->truncate();
+        User::creating(function ($user) {
+            $user->password = 'secret';
+        });
 
         User::import('import-users-with-headings.xlsx');
 

@@ -2,29 +2,32 @@
 
 namespace Maatwebsite\Excel\Concerns;
 
-use Maatwebsite\Excel\Exporter;
 use Illuminate\Foundation\Bus\PendingDispatch;
 use Maatwebsite\Excel\Exceptions\NoFilenameGivenException;
 use Maatwebsite\Excel\Exceptions\NoFilePathGivenException;
+use Maatwebsite\Excel\Exporter;
 
 trait Exportable
 {
     /**
      * @param string      $fileName
      * @param string|null $writerType
+     * @param array       $headers
      *
      * @throws NoFilenameGivenException
      * @return \Illuminate\Http\Response|\Symfony\Component\HttpFoundation\BinaryFileResponse
      */
-    public function download(string $fileName = null, string $writerType = null)
+    public function download(string $fileName = null, string $writerType = null, array $headers = null)
     {
-        $fileName = $fileName ?? $this->fileName ?? null;
+        $headers    = $headers ?? $this->headers ?? [];
+        $fileName   = $fileName ?? $this->fileName ?? null;
+        $writerType = $writerType ?? $this->writerType ?? null;
 
         if (null === $fileName) {
             throw new NoFilenameGivenException();
         }
 
-        return $this->getExporter()->download($this, $fileName, $writerType ?? $this->writerType ?? null);
+        return $this->getExporter()->download($this, $fileName, $writerType, $headers);
     }
 
     /**

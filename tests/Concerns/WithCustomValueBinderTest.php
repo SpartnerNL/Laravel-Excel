@@ -3,19 +3,19 @@
 namespace Maatwebsite\Excel\Tests\Concerns;
 
 use Carbon\Carbon;
-use Maatwebsite\Excel\Excel;
-use PHPUnit\Framework\Assert;
 use Illuminate\Support\Collection;
-use Maatwebsite\Excel\Tests\TestCase;
-use Maatwebsite\Excel\Concerns\ToArray;
-use PhpOffice\PhpSpreadsheet\Cell\Cell;
-use PhpOffice\PhpSpreadsheet\Shared\Date;
 use Maatwebsite\Excel\Concerns\Exportable;
-use PhpOffice\PhpSpreadsheet\Cell\DataType;
 use Maatwebsite\Excel\Concerns\FromCollection;
-use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
+use Maatwebsite\Excel\Concerns\ToArray;
 use Maatwebsite\Excel\Concerns\WithCustomValueBinder;
+use Maatwebsite\Excel\Excel;
+use Maatwebsite\Excel\Tests\TestCase;
+use PhpOffice\PhpSpreadsheet\Cell\Cell;
+use PhpOffice\PhpSpreadsheet\Cell\DataType;
 use PhpOffice\PhpSpreadsheet\Cell\DefaultValueBinder;
+use PhpOffice\PhpSpreadsheet\Shared\Date;
+use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
+use PHPUnit\Framework\Assert;
 
 class WithCustomValueBinderTest extends TestCase
 {
@@ -135,7 +135,7 @@ class WithCustomValueBinderTest extends TestCase
                         'col2',
                     ],
                     [
-                        1.0, // by default PhpSpreadsheet will convert numbers to float
+                        1,
                         '2', // Forced to be a string
                     ],
                     [

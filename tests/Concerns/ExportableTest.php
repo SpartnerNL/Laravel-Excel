@@ -2,10 +2,11 @@
 
 namespace Maatwebsite\Excel\Tests\Concerns;
 
-use Illuminate\Http\Request;
-use Maatwebsite\Excel\Tests\TestCase;
-use Maatwebsite\Excel\Concerns\Exportable;
 use Illuminate\Contracts\Support\Responsable;
+use Illuminate\Http\Request;
+use Maatwebsite\Excel\Concerns\Exportable;
+use Maatwebsite\Excel\Excel;
+use Maatwebsite\Excel\Tests\TestCase;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class ExportableTest extends TestCase
@@ -86,5 +87,42 @@ class ExportableTest extends TestCase
         $response = $export->toResponse(new Request());
 
         $this->assertInstanceOf(BinaryFileResponse::class, $response);
+    }
+
+    /**
+     * @test
+     */
+    public function can_have_customized_header()
+    {
+        $export   = new class {
+            use Exportable;
+        };
+        $response = $export->download(
+            'name.csv',
+            Excel::CSV,
+            [
+                'Content-Type' => 'text/csv',
+            ]
+        );
+        $this->assertEquals('text/csv', $response->headers->get('Content-Type'));
+    }
+
+    /**
+     * @test
+     */
+    public function can_set_custom_headers_in_export_class()
+    {
+        $export   = new class {
+            use Exportable;
+
+            protected $fileName   = 'name.csv';
+            protected $writerType = Excel::CSV;
+            protected $headers    = [
+                'Content-Type' => 'text/csv',
+            ];
+        };
+        $response = $export->toResponse(request());
+
+        $this->assertEquals('text/csv', $response->headers->get('Content-Type'));
     }
 }

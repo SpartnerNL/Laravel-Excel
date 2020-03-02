@@ -2,15 +2,15 @@
 
 namespace Maatwebsite\Excel\Tests;
 
-use Illuminate\Support\Facades\Queue;
-use Maatwebsite\Excel\Jobs\ReadChunk;
-use Illuminate\Queue\Events\JobProcessing;
-use Maatwebsite\Excel\Concerns\Importable;
-use Maatwebsite\Excel\Files\TemporaryFile;
 use Illuminate\Foundation\Bus\PendingDispatch;
+use Illuminate\Queue\Events\JobProcessing;
+use Illuminate\Support\Facades\Queue;
+use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Files\RemoteTemporaryFile;
-use Maatwebsite\Excel\Tests\Data\Stubs\QueuedImport;
+use Maatwebsite\Excel\Files\TemporaryFile;
+use Maatwebsite\Excel\Jobs\ReadChunk;
 use Maatwebsite\Excel\Tests\Data\Stubs\AfterQueueImportJob;
+use Maatwebsite\Excel\Tests\Data\Stubs\QueuedImport;
 
 class QueuedImportTest extends TestCase
 {
@@ -81,6 +81,23 @@ class QueuedImportTest extends TestCase
                 );
             }
         });
+
+        $import = new QueuedImport();
+
+        $chain = $import->queue('import-batches.xlsx')->chain([
+            new AfterQueueImportJob(5000),
+        ]);
+
+        $this->assertInstanceOf(PendingDispatch::class, $chain);
+    }
+
+    /**
+     * @test
+     */
+    public function can_queue_import_with_remote_temp_disk_and_prefix()
+    {
+        config()->set('excel.temporary_files.remote_disk', 'test');
+        config()->set('excel.temporary_files.remote_prefix', 'tmp/');
 
         $import = new QueuedImport();
 

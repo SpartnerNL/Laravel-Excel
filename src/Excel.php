@@ -2,11 +2,11 @@
 
 namespace Maatwebsite\Excel;
 
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Foundation\Bus\PendingDispatch;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Files\Filesystem;
 use Maatwebsite\Excel\Files\TemporaryFile;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Foundation\Bus\PendingDispatch;
 use Maatwebsite\Excel\Helpers\FileTypeDetector;
 
 class Excel implements Exporter, Importer
@@ -78,11 +78,12 @@ class Excel implements Exporter, Importer
     /**
      * {@inheritdoc}
      */
-    public function download($export, string $fileName, string $writerType = null)
+    public function download($export, string $fileName, string $writerType = null, array $headers = [])
     {
         return response()->download(
             $this->export($export, $fileName, $writerType)->getLocalPath(),
-            $fileName
+            $fileName,
+            $headers
         )->deleteFileAfterSend(true);
     }
 

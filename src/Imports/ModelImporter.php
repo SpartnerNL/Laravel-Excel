@@ -36,6 +36,7 @@ class ModelImporter
         $headingRow = HeadingRowExtractor::extract($worksheet, $import);
         $batchSize  = $import instanceof WithBatchInserts ? $import->batchSize() : 1;
         $endRow     = EndRowFinder::find($import, $startRow);
+        $progessBar = $import instanceof WithProgressBar;
 
         $i = 0;
         foreach ($worksheet->getRowIterator($startRow, $endRow) as $spreadSheetRow) {
@@ -58,11 +59,13 @@ class ModelImporter
                 if (($i % $batchSize) === 0) {
                     $this->manager->flush($import, $batchSize > 1);
                     $i = 0;
-                }
-            }
 
-            if ($import instanceof WithProgressBar) {
-                $import->getConsoleOutput()->progressAdvance();
+                    if ($progessBar) {
+                        $import->getConsoleOutput()->progressAdvance($batchSize);
+                    }
+                } elseif ($progessBar) {
+                    $import->getConsoleOutput()->progressAdvance();
+                }
             }
         }
 

@@ -2,16 +2,18 @@
 
 namespace Maatwebsite\Excel\Tests;
 
-use Maatwebsite\Excel\Excel;
-use Illuminate\Support\Facades\Queue;
 use Illuminate\Queue\Events\JobProcessing;
+use Illuminate\Support\Facades\Queue;
+use Maatwebsite\Excel\Excel;
+use Maatwebsite\Excel\Files\RemoteTemporaryFile;
 use Maatwebsite\Excel\Files\TemporaryFile;
 use Maatwebsite\Excel\Jobs\AppendDataToSheet;
-use Maatwebsite\Excel\Files\RemoteTemporaryFile;
-use Maatwebsite\Excel\Tests\Data\Stubs\QueuedExport;
-use Maatwebsite\Excel\Tests\Data\Stubs\ShouldQueueExport;
 use Maatwebsite\Excel\Tests\Data\Stubs\AfterQueueExportJob;
 use Maatwebsite\Excel\Tests\Data\Stubs\EloquentCollectionWithMappingExport;
+use Maatwebsite\Excel\Tests\Data\Stubs\QueuedExport;
+use Maatwebsite\Excel\Tests\Data\Stubs\QueuedExportWithFailedHook;
+use Maatwebsite\Excel\Tests\Data\Stubs\ShouldQueueExport;
+use Throwable;
 
 class QueuedExportTest extends TestCase
 {
@@ -85,6 +87,21 @@ class QueuedExportTest extends TestCase
     /**
      * @test
      */
+    public function can_queue_export_with_remote_temp_disk_and_prefix()
+    {
+        config()->set('excel.temporary_files.remote_disk', 'test');
+        config()->set('excel.temporary_files.remote_prefix', 'tmp/');
+
+        $export = new QueuedExport();
+
+        $export->queue('queued-export.xlsx')->chain([
+            new AfterQueueExportJob(__DIR__ . '/Data/Disks/Local/queued-export.xlsx'),
+        ]);
+    }
+
+    /**
+     * @test
+     */
     public function can_implicitly_queue_an_export()
     {
         $export = new ShouldQueueExport();
@@ -110,5 +127,19 @@ class QueuedExportTest extends TestCase
         $this->assertEquals([
             ['Patrick', 'Brouwers'],
         ], $actual);
+    }
+
+    /**
+     * @test
+     */
+    public function can_catch_failures()
+    {
+        $export = new QueuedExportWithFailedHook();
+        try {
+            $export->queue('queued-export.xlsx');
+        } catch (Throwable $e) {
+        }
+
+        $this->assertTrue(app('queue-has-failed'));
     }
 }

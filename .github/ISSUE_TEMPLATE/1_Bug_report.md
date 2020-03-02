@@ -1,12 +1,17 @@
 ---
-name: 🐛 Bug Report
-about: If something isn't working as expected 🤔.
+name: "\U0001F41B Bug Report"
+about: Report a general package issue. Please ensure your Laravel-Excel version is
+  still supported https://docs.laravel-excel.com/3.1/getting-started/support.html#supported-versions
+title: "[BUG]"
+labels: bug
+assignees: ''
+
 ---
 
 <!--
-
 PLEASE READ: FILLING IN THE TEMPLATE IS REQUIRED!
 Issues that do not include enough information might not be picked up.
+Issues that have not been filled in using the issue template will be CLOSED.
 
 Have you read Laravel-Excel's 
 contributing guidelines (https://laravel-excel.maatwebsite.nl/docs/3.1/getting-started/contributing)
@@ -14,28 +19,27 @@ and Code Of Conduct (https://github.com/Maatwebsite/Laravel-Excel/blob/3.1/CODE_
 By filing an Issue, you are expected to comply with it, including treating everyone with respect.
 
 Please prefix your issue with: [BUG] .
-
 -->
 
 ### Prerequisites
 
 <!--
-
 Put an X between the brackets if you have done the following:
-
 -->
 
+* [ ] Checked if your Laravel Excel version is still supported: https://docs.laravel-excel.com/3.1/getting-started/support.html#supported-versions
 * [ ] Able to reproduce the behaviour outside of your code, the problem is isolated to Laravel Excel.
 * [ ] Checked that your issue isn't already filed.
 * [ ] Checked if no PR was submitted that fixes this problem.
+* [ ] Filled in the entire issue template
 
 ### Versions
 
 <!-- Please be as exact and complete as possible when proving version numbers -->
 
-* PHP version: <!-- put your PHP version here -->
-* Laravel version: <!-- put your Laravel version here -->
-* Package version: <!-- put Laravel Excel package version here -->
+* PHP version: <!-- put your FULL (including patch number) PHP version here -->
+* Laravel version: <!-- put your FULL (including patch number) Laravel version here -->
+* Package version: <!-- put FULL (including patch number) Laravel Excel package version here -->
 
 ### Description
 
@@ -56,4 +60,3 @@ Put an X between the brackets if you have done the following:
 ### Additional Information
 
 Any additional information, configuration or data that might be necessary to reproduce the issue.
-

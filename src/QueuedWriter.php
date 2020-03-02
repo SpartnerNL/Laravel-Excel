@@ -2,21 +2,22 @@
 
 namespace Maatwebsite\Excel;
 
-use Traversable;
 use Illuminate\Support\Collection;
-use Maatwebsite\Excel\Jobs\CloseSheet;
-use Maatwebsite\Excel\Jobs\QueueExport;
-use Maatwebsite\Excel\Concerns\FromQuery;
-use Maatwebsite\Excel\Files\TemporaryFile;
-use Maatwebsite\Excel\Jobs\SerializedQuery;
-use Maatwebsite\Excel\Jobs\AppendDataToSheet;
-use Maatwebsite\Excel\Jobs\StoreQueuedExport;
 use Maatwebsite\Excel\Concerns\FromCollection;
-use Maatwebsite\Excel\Jobs\AppendQueryToSheet;
-use Maatwebsite\Excel\Files\TemporaryFileFactory;
-use Maatwebsite\Excel\Concerns\WithMultipleSheets;
+use Maatwebsite\Excel\Concerns\FromQuery;
+use Maatwebsite\Excel\Concerns\FromView;
 use Maatwebsite\Excel\Concerns\WithCustomChunkSize;
 use Maatwebsite\Excel\Concerns\WithCustomQuerySize;
+use Maatwebsite\Excel\Concerns\WithMultipleSheets;
+use Maatwebsite\Excel\Files\TemporaryFile;
+use Maatwebsite\Excel\Files\TemporaryFileFactory;
+use Maatwebsite\Excel\Jobs\AppendDataToSheet;
+use Maatwebsite\Excel\Jobs\AppendQueryToSheet;
+use Maatwebsite\Excel\Jobs\AppendViewToSheet;
+use Maatwebsite\Excel\Jobs\CloseSheet;
+use Maatwebsite\Excel\Jobs\QueueExport;
+use Maatwebsite\Excel\Jobs\StoreQueuedExport;
+use Traversable;
 
 class QueuedWriter
 {
@@ -91,6 +92,8 @@ class QueuedWriter
                 $jobs = $jobs->merge($this->exportCollection($sheetExport, $temporaryFile, $writerType, $sheetIndex));
             } elseif ($sheetExport instanceof FromQuery) {
                 $jobs = $jobs->merge($this->exportQuery($sheetExport, $temporaryFile, $writerType, $sheetIndex));
+            } elseif ($sheetExport instanceof FromView) {
+                $jobs = $jobs->merge($this->exportView($sheetExport, $temporaryFile, $writerType, $sheetIndex));
             }
 
             $jobs->push(new CloseSheet($sheetExport, $temporaryFile, $writerType, $sheetIndex));
@@ -153,18 +156,40 @@ class QueuedWriter
         $jobs = new Collection();
 
         for ($page = 1; $page <= $spins; $page++) {
-            $serializedQuery = new SerializedQuery(
-                $query->forPage($page, $this->getChunkSize($export))
-            );
-
             $jobs->push(new AppendQueryToSheet(
                 $export,
                 $temporaryFile,
                 $writerType,
                 $sheetIndex,
-                $serializedQuery
+                $page,
+                $this->getChunkSize($export)
             ));
         }
+
+        return $jobs;
+    }
+
+    /**
+     * @param FromView     $export
+     * @param TemporaryFile $temporaryFile
+     * @param string        $writerType
+     * @param int           $sheetIndex
+     *
+     * @return Collection
+     */
+    private function exportView(
+        FromView $export,
+        TemporaryFile $temporaryFile,
+        string $writerType,
+        int $sheetIndex
+    ): Collection {
+        $jobs = new Collection();
+        $jobs->push(new AppendViewToSheet(
+            $export,
+            $temporaryFile,
+            $writerType,
+            $sheetIndex
+        ));
 
         return $jobs;
     }

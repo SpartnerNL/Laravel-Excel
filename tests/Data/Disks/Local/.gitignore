@@ -17,3 +17,5 @@
 !csv-with-other-delimiter.csv
 !unknown-reader-type.zip
 !import-empty-rows.xlsx
+!csv-with-html-tags.csv
+!import-external-reference.xls

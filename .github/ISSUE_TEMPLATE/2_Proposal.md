@@ -1,6 +1,9 @@
 ---
-name: ❓ Question
-about: If you want to ask a question.
+name: "\U0001F4A1 Propsosal"
+about: "If you have a \U0001F525 idea."
+title: "[PROPOSAL]"
+labels: proposal
+assignees: ''
 
 ---
 
@@ -14,7 +17,7 @@ contributing guidelines (https://laravel-excel.maatwebsite.nl/docs/3.1/getting-s
 and Code Of Conduct (https://github.com/Maatwebsite/Laravel-Excel/blob/3.1/CODE_OF_CONDUCT.md)?
 By filing an Issue, you are expected to comply with it, including treating everyone with respect.
 
-Please prefix your issue with [QUESTION].
+Please prefix your issue with: [PROPOSAL].
 
 -->
 
@@ -24,14 +27,18 @@ Please prefix your issue with [QUESTION].
 
 <!-- Please be as exact and complete as possible when proving version numbers -->
 
-* PHP version: <!-- put your PHP version here -->
-* Laravel version: <!-- put your Laravel version here -->
-* Package version: <!-- put Laravel Excel package version here -->
+* PHP version: <!-- put your FULL PHP version here -->
+* Laravel version: <!-- put your FULL Laravel version here -->
+* Package version: <!-- put FULL Laravel Excel package version here -->
 
 ### Description
 
-<!-- Describe your questions -->
+<!-- Describe your proposal -->
+
+### Example
+
+<!-- Show an example of how this proposal will work.  -->
 
 ### Additional Information
 
-Any additional information, configuration or data that might be necessary to reproduce the issue.
+Any additional information, configuration or data that might be needed to understand the proposal.

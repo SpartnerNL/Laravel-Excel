@@ -4,20 +4,20 @@ namespace Maatwebsite\Excel\Tests\Concerns;
 
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
+use Maatwebsite\Excel\Concerns\Exportable;
+use Maatwebsite\Excel\Concerns\FromCollection;
+use Maatwebsite\Excel\Concerns\WithColumnFormatting;
+use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Tests\TestCase;
 use PhpOffice\PhpSpreadsheet\Shared\Date;
-use Maatwebsite\Excel\Concerns\Exportable;
-use Maatwebsite\Excel\Concerns\WithMapping;
-use Maatwebsite\Excel\Concerns\FromCollection;
 use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
-use Maatwebsite\Excel\Concerns\WithColumnFormatting;
 
 class WithColumnFormattingTest extends TestCase
 {
     /**
      * @test
      */
-    public function can_export_with_heading()
+    public function can_export_with_column_formatting()
     {
         $export = new class() implements FromCollection, WithMapping, WithColumnFormatting {
             use Exportable;
@@ -64,9 +64,9 @@ class WithColumnFormattingTest extends TestCase
         $actual = $this->readAsArray(__DIR__ . '/../Data/Disks/Local/with-column-formatting-store.xlsx', 'Xlsx');
 
         $expected = [
-            ['06/03/18'],
-            ['07/03/18'],
-            ['08/03/18'],
+            ['06/03/2018'],
+            ['07/03/2018'],
+            ['08/03/2018'],
         ];
 
         $this->assertEquals($expected, $actual);

@@ -27,6 +27,6 @@ class DbTransactionHandler implements TransactionHandler
      */
     public function __invoke(callable $callback)
     {
-        return $this->connection->transaction($callback);
+        return $this->connection->transaction($callback, 3);
     }
 }

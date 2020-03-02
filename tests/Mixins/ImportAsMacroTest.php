@@ -2,9 +2,10 @@
 
 namespace Maatwebsite\Excel\Tests\Mixins;
 
-use Maatwebsite\Excel\Tests\TestCase;
-use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Maatwebsite\Excel\Tests\TestCase;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
 
 class ImportAsMacroTest extends TestCase
 {
@@ -29,8 +30,9 @@ class ImportAsMacroTest extends TestCase
 
         User::importAs('import-users.xlsx', function (array $row) {
             return [
-                'name'  => $row[0],
-                'email' => $row[1],
+                'name'     => $row[0],
+                'email'    => $row[1],
+                'password' => 'secret',
             ];
         });
 

@@ -2,29 +2,31 @@
 
 namespace Maatwebsite\Excel;
 
-use InvalidArgumentException;
-use Illuminate\Support\Collection;
-use PhpOffice\PhpSpreadsheet\Cell\Cell;
-use Maatwebsite\Excel\Events\AfterImport;
-use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use Maatwebsite\Excel\Concerns\WithEvents;
-use Maatwebsite\Excel\Events\BeforeImport;
-use Maatwebsite\Excel\Files\TemporaryFile;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Maatwebsite\Excel\Config\Configuration;
-use PhpOffice\PhpSpreadsheet\Reader\IReader;
-use Maatwebsite\Excel\Factories\ReaderFactory;
-use PhpOffice\PhpSpreadsheet\Reader\Exception;
-use Maatwebsite\Excel\Concerns\WithChunkReading;
-use Maatwebsite\Excel\Files\TemporaryFileFactory;
+use Illuminate\Support\Collection;
+use InvalidArgumentException;
 use Maatwebsite\Excel\Concerns\SkipsUnknownSheets;
-use Maatwebsite\Excel\Concerns\WithMultipleSheets;
-use Maatwebsite\Excel\Concerns\WithCustomValueBinder;
 use Maatwebsite\Excel\Concerns\WithCalculatedFormulas;
-use Maatwebsite\Excel\Transactions\TransactionHandler;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Maatwebsite\Excel\Exceptions\SheetNotFoundException;
+use Maatwebsite\Excel\Concerns\WithChunkReading;
+use Maatwebsite\Excel\Concerns\WithCustomValueBinder;
+use Maatwebsite\Excel\Concerns\WithEvents;
+use Maatwebsite\Excel\Concerns\WithMultipleSheets;
+use Maatwebsite\Excel\Events\AfterImport;
+use Maatwebsite\Excel\Events\BeforeImport;
+use Maatwebsite\Excel\Factories\ReaderFactory;
+use Maatwebsite\Excel\Files\TemporaryFile;
+use PhpOffice\PhpSpreadsheet\Reader\IReader;
+use Maatwebsite\Excel\Config\Configuration;
+use Maatwebsite\Excel\Events\ImportFailed;
 use Maatwebsite\Excel\Exceptions\NoTypeDetectedException;
+use Maatwebsite\Excel\Exceptions\SheetNotFoundException;
+use Maatwebsite\Excel\Files\TemporaryFileFactory;
+use Maatwebsite\Excel\Transactions\TransactionHandler;
+use PhpOffice\PhpSpreadsheet\Cell\Cell;
+use PhpOffice\PhpSpreadsheet\Reader\Exception;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Throwable;
 
 class Reader
 {
@@ -56,8 +58,13 @@ class Reader
     protected $transaction;
 
     /**
-     * @param TemporaryFileFactory $temporaryFileFactory
-     * @param TransactionHandler   $transaction
+     * @var IReader
+     */
+    protected $reader;
+
+    /**
+     * @param  TemporaryFileFactory  $temporaryFileFactory
+     * @param  TransactionHandler  $transaction
      */
     public function __construct(TemporaryFileFactory $temporaryFileFactory, TransactionHandler $transaction)
     {
@@ -65,57 +72,72 @@ class Reader
         $this->temporaryFileFactory = $temporaryFileFactory;
     }
 
+    public function __sleep()
+    {
+        return ['spreadsheet', 'sheetImports', 'currentFile', 'temporaryFileFactory', 'reader'];
+    }
+
+    public function __wakeup()
+    {
+        $this->transaction = app(TransactionHandler::class);
+    }
+
     /**
-     * @param object              $import
-     * @param string|UploadedFile $filePath
-     * @param string|null         $readerType
-     * @param string|null         $disk
+     * @param  object  $import
+     * @param  string|UploadedFile  $filePath
+     * @param  string|null  $readerType
+     * @param  string|null  $disk
      *
-     * @throws Exception
+     * @return \Illuminate\Foundation\Bus\PendingDispatch|$this
      * @throws NoTypeDetectedException
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
-     * @return \Illuminate\Foundation\Bus\PendingDispatch|$this
+     * @throws Exception
      */
     public function read($import, $filePath, string $readerType = null, string $disk = null)
     {
-        $reader = $this->getReader($import, $filePath, $readerType, $disk);
+        $this->reader = $this->getReader($import, $filePath, $readerType, $disk);
 
         if ($import instanceof WithChunkReading) {
-            return (new ChunkReader)->read($import, $reader, $this->currentFile);
+            return (new ChunkReader)->read($import, $this, $this->currentFile);
         }
 
-        $this->beforeReading($import, $reader);
+        try {
+            $this->loadSpreadsheet($import, $this->reader);
 
-        ($this->transaction)(function () use ($import) {
-            foreach ($this->sheetImports as $index => $sheetImport) {
-                if ($sheet = $this->getSheet($import, $sheetImport, $index)) {
-                    $sheet->import($sheetImport, $sheet->getStartRow($sheetImport));
-                    $sheet->disconnect();
+            ($this->transaction)(function () use ($import) {
+                foreach ($this->sheetImports as $index => $sheetImport) {
+                    if ($sheet = $this->getSheet($import, $sheetImport, $index)) {
+                        $sheet->import($sheetImport, $sheet->getStartRow($sheetImport));
+                        $sheet->disconnect();
+                    }
                 }
-            }
-        });
+            });
 
-        $this->afterReading($import);
+            $this->afterImport($import);
+        } catch (Throwable $e) {
+            $this->raise(new ImportFailed($e));
+            throw $e;
+        }
 
         return $this;
     }
 
     /**
-     * @param object              $import
-     * @param string|UploadedFile $filePath
-     * @param string              $readerType
-     * @param string|null         $disk
+     * @param  object  $import
+     * @param  string|UploadedFile  $filePath
+     * @param  string  $readerType
+     * @param  string|null  $disk
      *
-     * @throws Exceptions\SheetNotFoundException
+     * @return array
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      * @throws \PhpOffice\PhpSpreadsheet\Exception
      * @throws NoTypeDetectedException
-     * @return array
+     * @throws Exceptions\SheetNotFoundException
      */
     public function toArray($import, $filePath, string $readerType, string $disk = null): array
     {
-        $reader = $this->getReader($import, $filePath, $readerType, $disk);
-        $this->beforeReading($import, $reader);
+        $this->reader = $this->getReader($import, $filePath, $readerType, $disk);
+        $this->loadSpreadsheet($import);
 
         $sheets = [];
         foreach ($this->sheetImports as $index => $sheetImport) {
@@ -126,27 +148,27 @@ class Reader
             }
         }
 
-        $this->afterReading($import);
+        $this->afterImport($import);
 
         return $sheets;
     }
 
     /**
-     * @param object              $import
-     * @param string|UploadedFile $filePath
-     * @param string              $readerType
-     * @param string|null         $disk
+     * @param  object  $import
+     * @param  string|UploadedFile  $filePath
+     * @param  string  $readerType
+     * @param  string|null  $disk
      *
-     * @throws Exceptions\SheetNotFoundException
+     * @return Collection
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      * @throws \PhpOffice\PhpSpreadsheet\Exception
      * @throws NoTypeDetectedException
-     * @return Collection
+     * @throws Exceptions\SheetNotFoundException
      */
     public function toCollection($import, $filePath, string $readerType, string $disk = null): Collection
     {
-        $reader = $this->getReader($import, $filePath, $readerType, $disk);
-        $this->beforeReading($import, $reader);
+        $this->reader = $this->getReader($import, $filePath, $readerType, $disk);
+        $this->loadSpreadsheet($import);
 
         $sheets = new Collection();
         foreach ($this->sheetImports as $index => $sheetImport) {
@@ -157,13 +179,13 @@ class Reader
             }
         }
 
-        $this->afterReading($import);
+        $this->afterImport($import);
 
         return $sheets;
     }
 
     /**
-     * @return object
+     * @return Spreadsheet
      */
     public function getDelegate()
     {
@@ -171,13 +193,120 @@ class Reader
     }
 
     /**
+     * @param  object  $import
+     */
+    public function loadSpreadsheet($import)
+    {
+        $this->sheetImports = $this->buildSheetImports($import);
+
+        $this->readSpreadsheet();
+
+        // When no multiple sheets, use the main import object
+        // for each loaded sheet in the spreadsheet
+        if (!$import instanceof WithMultipleSheets) {
+            $this->sheetImports = array_fill(0, $this->spreadsheet->getSheetCount(), $import);
+        }
+
+        $this->beforeImport($import);
+    }
+
+    public function readSpreadsheet()
+    {
+        $this->spreadsheet = $this->reader->load(
+            $this->currentFile->getLocalPath()
+        );
+    }
+
+    /**
+     * @param  object  $import
+     */
+    public function beforeImport($import)
+    {
+        $this->raise(new BeforeImport($this, $import));
+    }
+
+    /**
+     * @param  object  $import
+     */
+    public function afterImport($import)
+    {
+        $this->raise(new AfterImport($this, $import));
+
+        $this->garbageCollect();
+    }
+
+    /**
+     * @return IReader
+     */
+    public function getPhpSpreadsheetReader(): IReader
+    {
+        return $this->reader;
+    }
+
+    /**
+     * @param  object  $import
+     *
+     * @return array
+     */
+    public function getWorksheets($import): array
+    {
+        // Csv doesn't have worksheets.
+        if (!method_exists($this->reader, 'listWorksheetNames')) {
+            return ['Worksheet' => $import];
+        }
+
+        $worksheets     = [];
+        $worksheetNames = $this->reader->listWorksheetNames($this->currentFile->getLocalPath());
+        if ($import instanceof WithMultipleSheets) {
+            $sheetImports = $import->sheets();
+
+            // Load specific sheets.
+            if (method_exists($this->reader, 'setLoadSheetsOnly')) {
+                $this->reader->setLoadSheetsOnly(array_keys($sheetImports));
+            }
+
+            foreach ($sheetImports as $index => $sheetImport) {
+                // Translate index to name.
+                if (is_numeric($index)) {
+                    $index = $worksheetNames[$index] ?? $index;
+                }
+
+                // Specify with worksheet name should have which import.
+                $worksheets[$index] = $sheetImport;
+            }
+        } else {
+            // Each worksheet the same import class.
+            foreach ($worksheetNames as $name) {
+                $worksheets[$name] = $import;
+            }
+        }
+
+        return $worksheets;
+    }
+
+    /**
+     * @return array
+     */
+    public function getTotalRows(): array
+    {
+        $info = $this->reader->listWorksheetInfo($this->currentFile->getLocalPath());
+
+        $totalRows = [];
+        foreach ($info as $sheet) {
+            $totalRows[$sheet['worksheetName']] = $sheet['totalRows'];
+        }
+
+        return $totalRows;
+    }
+
+    /**
      * @param $import
      * @param $sheetImport
      * @param $index
      *
-     * @throws SheetNotFoundException
-     * @throws \PhpOffice\PhpSpreadsheet\Exception
      * @return Sheet|null
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
+     * @throws SheetNotFoundException
      */
     protected function getSheet($import, $sheetImport, $index)
     {
@@ -201,12 +330,11 @@ class Reader
     }
 
     /**
-     * @param object  $import
-     * @param IReader $reader
+     * @param  object  $import
      *
      * @return array
      */
-    private function buildSheetImports($import, IReader $reader): array
+    private function buildSheetImports($import): array
     {
         $sheetImports = [];
         if ($import instanceof WithMultipleSheets) {
@@ -215,10 +343,10 @@ class Reader
             // When only sheet names are given and the reader has
             // an option to load only the selected sheets.
             if (
-                method_exists($reader, 'setLoadSheetsOnly')
+                method_exists($this->reader, 'setLoadSheetsOnly')
                 && count(array_filter(array_keys($sheetImports), 'is_numeric')) === 0
             ) {
-                $reader->setLoadSheetsOnly(array_keys($sheetImports));
+                $this->reader->setLoadSheetsOnly(array_keys($sheetImports));
             }
         }
 
@@ -226,16 +354,16 @@ class Reader
     }
 
     /**
-     * @param object              $import
-     * @param string|UploadedFile $filePath
-     * @param string|null         $readerType
-     * @param string              $disk
+     * @param  object  $import
+     * @param  string|UploadedFile  $filePath
+     * @param  string|null  $readerType
+     * @param  string  $disk
      *
-     * @throws InvalidArgumentException
+     * @return IReader
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      * @throws NoTypeDetectedException
      * @throws \PhpOffice\PhpSpreadsheet\Reader\Exception
-     * @return IReader
+     * @throws InvalidArgumentException
      */
     private function getReader($import, $filePath, string $readerType = null, string $disk = null): IReader
     {
@@ -252,7 +380,8 @@ class Reader
             Cell::setValueBinder($import);
         }
 
-        $temporaryFile     = $shouldQueue ? $this->temporaryFileFactory->make() : $this->temporaryFileFactory->makeLocal();
+        $fileExtension     = pathinfo($filePath, PATHINFO_EXTENSION);
+        $temporaryFile     = $shouldQueue ? $this->temporaryFileFactory->make($fileExtension) : $this->temporaryFileFactory->makeLocal(null, $fileExtension);
         $this->currentFile = $temporaryFile->copyFrom(
             $filePath,
             $disk
@@ -263,39 +392,6 @@ class Reader
             $this->currentFile,
             $readerType
         );
-    }
-
-    /**
-     * @param object  $import
-     * @param IReader $reader
-     *
-     * @throws Exception
-     */
-    private function beforeReading($import, IReader $reader)
-    {
-        $this->sheetImports = $this->buildSheetImports($import, $reader);
-
-        $this->spreadsheet = $reader->load(
-            $this->currentFile->getLocalPath()
-        );
-
-        // When no multiple sheets, use the main import object
-        // for each loaded sheet in the spreadsheet
-        if (!$import instanceof WithMultipleSheets) {
-            $this->sheetImports = array_fill(0, $this->spreadsheet->getSheetCount(), $import);
-        }
-
-        $this->raise(new BeforeImport($this, $import));
-    }
-
-    /**
-     * @param object $import
-     */
-    private function afterReading($import)
-    {
-        $this->raise(new AfterImport($this, $import));
-
-        $this->garbageCollect();
     }
 
     /**

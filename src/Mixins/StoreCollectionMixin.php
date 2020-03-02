@@ -4,8 +4,8 @@ namespace Maatwebsite\Excel\Mixins;
 
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\Exportable;
-use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\FromCollection;
+use Maatwebsite\Excel\Concerns\WithHeadings;
 
 class StoreCollectionMixin
 {
@@ -51,7 +51,13 @@ class StoreCollectionMixin
                  */
                 public function headings(): array
                 {
-                    return $this->withHeadings ? $this->collection->collapse()->keys()->all() : [];
+                    if (!$this->withHeadings) {
+                        return [];
+                    }
+
+                    return is_array($first = $this->collection->first())
+                        ? $this->collection->collapse()->keys()->all()
+                        : array_keys($first->toArray());
                 }
             };
 

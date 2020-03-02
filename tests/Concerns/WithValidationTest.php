@@ -2,15 +2,17 @@
 
 namespace Maatwebsite\Excel\Tests\Concerns;
 
-use Illuminate\Validation\Rule;
-use Maatwebsite\Excel\Tests\TestCase;
 use Illuminate\Database\Eloquent\Model;
-use Maatwebsite\Excel\Concerns\ToModel;
+use Illuminate\Validation\Rule;
 use Maatwebsite\Excel\Concerns\Importable;
+use Maatwebsite\Excel\Concerns\OnEachRow;
+use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithValidation;
-use Maatwebsite\Excel\Concerns\WithBatchInserts;
+use Maatwebsite\Excel\Row;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
+use Maatwebsite\Excel\Tests\TestCase;
 use Maatwebsite\Excel\Validators\ValidationException;
 
 class WithValidationTest extends TestCase
@@ -423,6 +425,52 @@ class WithValidationTest extends TestCase
             public function batchSize(): int
             {
                 return 2;
+            }
+
+            /**
+             * @return array
+             */
+            public function rules(): array
+            {
+                return [
+                    'email' => Rule::in(['patrick@maatwebsite.nl']),
+                ];
+            }
+        };
+
+        try {
+            $import->import('import-users-with-headings.xlsx');
+        } catch (ValidationException $e) {
+            $this->validateFailure($e, 3, 'email', [
+                'The selected email is invalid.',
+            ]);
+        }
+
+        $this->assertInstanceOf(ValidationException::class, $e ?? null);
+    }
+
+    /**
+     * @test
+     */
+    public function can_validate_using_oneachrow()
+    {
+        $import = new class implements OnEachRow, WithHeadingRow, WithValidation {
+            use Importable;
+
+            /**
+             * @param Row $row
+             *
+             * @return Model|null
+             */
+            public function onRow(Row $row)
+            {
+                $values = $row->toArray();
+
+                return new User([
+                    'name'     => $values['name'],
+                    'email'    => $values['email'],
+                    'password' => 'secret',
+                ]);
             }
 
             /**

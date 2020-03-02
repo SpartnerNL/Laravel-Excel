@@ -2,10 +2,9 @@
 
 namespace Maatwebsite\Excel\Tests\Concerns;
 
-use Illuminate\Support\Collection;
-use Maatwebsite\Excel\Tests\TestCase;
 use Maatwebsite\Excel\Tests\Data\Stubs\QueuedExport;
 use Maatwebsite\Excel\Tests\Data\Stubs\SheetWith100Rows;
+use Maatwebsite\Excel\Tests\TestCase;
 
 class FromCollectionTest extends TestCase
 {
