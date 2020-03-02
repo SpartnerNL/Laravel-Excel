@@ -37,7 +37,7 @@ class DownloadQueryMacro
                 }
 
                 /**
-                 * @return \Illuminate\Database\Query\Builder
+                 * @return Builder
                  */
                 public function query()
                 {
@@ -53,7 +53,7 @@ class DownloadQueryMacro
                         return [];
                     }
 
-                    $firstRow = $this->query->first();
+                    $firstRow = (clone $this->query)->first();
 
                     if ($firstRow) {
                         return array_keys(Sheet::mapArraybleRow($firstRow));

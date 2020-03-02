@@ -8,6 +8,7 @@ use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Files\Filesystem;
 use Maatwebsite\Excel\Files\TemporaryFile;
 use Maatwebsite\Excel\Helpers\FileTypeDetector;
+use Maatwebsite\Excel\Jobs\QueueExport;
 
 class Excel implements Exporter, Importer
 {
@@ -43,11 +44,6 @@ class Excel implements Exporter, Importer
     protected $writer;
 
     /**
-     * @var QueuedWriter
-     */
-    protected $queuedWriter;
-
-    /**
      * @var Filesystem
      */
     protected $filesystem;
@@ -59,20 +55,17 @@ class Excel implements Exporter, Importer
 
     /**
      * @param Writer       $writer
-     * @param QueuedWriter $queuedWriter
      * @param Reader       $reader
      * @param Filesystem   $filesystem
      */
     public function __construct(
         Writer $writer,
-        QueuedWriter $queuedWriter,
         Reader $reader,
         Filesystem $filesystem
     ) {
         $this->writer       = $writer;
         $this->reader       = $reader;
         $this->filesystem   = $filesystem;
-        $this->queuedWriter = $queuedWriter;
     }
 
     /**
@@ -90,9 +83,9 @@ class Excel implements Exporter, Importer
     /**
      * {@inheritdoc}
      */
-    public function store($export, string $filePath, string $diskName = null, string $writerType = null, $diskOptions = [])
+    public function store($export, string $filePath, string $diskName = null, string $writerType = null, $diskOptions = [], bool $allowQueue = true)
     {
-        if ($export instanceof ShouldQueue) {
+        if ($allowQueue && $export instanceof ShouldQueue) {
             return $this->queue($export, $filePath, $diskName, $writerType, $diskOptions);
         }
 
@@ -115,13 +108,7 @@ class Excel implements Exporter, Importer
     {
         $writerType = FileTypeDetector::detectStrict($filePath, $writerType);
 
-        return $this->queuedWriter->store(
-            $export,
-            $filePath,
-            $disk,
-            $writerType,
-            $diskOptions
-        );
+        return QueueExport::dispatch($export, $filePath, $disk, $writerType, $diskOptions);
     }
 
     /**
@@ -185,8 +172,8 @@ class Excel implements Exporter, Importer
      * @param string|null $fileName
      * @param string      $writerType
      *
-     * @throws \PhpOffice\PhpSpreadsheet\Exception
      * @return TemporaryFile
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
      */
     protected function export($export, string $fileName, string $writerType = null): TemporaryFile
     {

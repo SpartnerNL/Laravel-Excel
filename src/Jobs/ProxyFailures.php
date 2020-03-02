@@ -11,8 +11,8 @@ trait ProxyFailures
      */
     public function failed(Throwable $e)
     {
-        if (method_exists($this->sheetExport, 'failed')) {
-            $this->sheetExport->failed($e);
+        if (method_exists($this->export, 'failed')) {
+            $this->export->failed($e);
         }
     }
 }

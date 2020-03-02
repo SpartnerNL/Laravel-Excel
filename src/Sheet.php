@@ -4,6 +4,7 @@ namespace Maatwebsite\Excel;
 
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Collection;
+use Illuminate\Support\LazyCollection;
 use Maatwebsite\Excel\Concerns\FromArray;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\FromGenerator;
@@ -201,7 +202,7 @@ class Sheet
             $this->fromView($sheetExport);
         } else {
             if ($sheetExport instanceof FromQuery) {
-                $this->fromQuery($sheetExport, $this->worksheet);
+                $this->fromQuery($sheetExport);
             }
 
             if ($sheetExport instanceof FromCollection) {
@@ -392,13 +393,10 @@ class Sheet
 
     /**
      * @param FromQuery $sheetExport
-     * @param Worksheet $worksheet
      */
-    public function fromQuery(FromQuery $sheetExport, Worksheet $worksheet)
+    public function fromQuery(FromQuery $sheetExport)
     {
-        $sheetExport->query()->chunk($this->getChunkSize($sheetExport), function ($chunk) use ($sheetExport, $worksheet) {
-            $this->appendRows($chunk, $sheetExport);
-        });
+        $this->appendRows($sheetExport->query()->cursor(), $sheetExport);
     }
 
     /**
@@ -406,7 +404,7 @@ class Sheet
      */
     public function fromCollection(FromCollection $sheetExport)
     {
-        $this->appendRows($sheetExport->collection()->all(), $sheetExport);
+        $this->appendRows($sheetExport->collection()->lazy(), $sheetExport);
     }
 
     /**
@@ -532,7 +530,7 @@ class Sheet
      */
     public function appendRows($rows, $sheetExport)
     {
-        $rows = (new Collection($rows))->flatMap(function ($row) use ($sheetExport) {
+        LazyCollection::make($rows)->flatMap(function ($row) use ($sheetExport) {
             if ($sheetExport instanceof WithMapping) {
                 $row = $sheetExport->map($row);
             }
@@ -540,13 +538,13 @@ class Sheet
             return ArrayHelper::ensureMultipleRows(
                 static::mapArraybleRow($row)
             );
-        })->toArray();
-
-        $this->append(
-            $rows,
-            $sheetExport instanceof WithCustomStartCell ? $sheetExport->startCell() : null,
-            $this->hasStrictNullComparison($sheetExport)
-        );
+        })->chunk(1000)->each(function (LazyCollection $rows) use ($sheetExport) {
+            $this->append(
+                $rows->toArray(),
+                $sheetExport instanceof WithCustomStartCell ? $sheetExport->startCell() : null,
+                $this->hasStrictNullComparison($sheetExport)
+            );
+        });
     }
 
     /**
@@ -628,19 +626,5 @@ class Sheet
     private function hasStrictNullComparison($sheetExport): bool
     {
         return $sheetExport instanceof WithStrictNullComparison;
-    }
-
-    /**
-     * @param object|WithCustomChunkSize $export
-     *
-     * @return int
-     */
-    private function getChunkSize($export): int
-    {
-        if ($export instanceof WithCustomChunkSize) {
-            return $export->chunkSize();
-        }
-
-        return $this->chunkSize;
     }
 }

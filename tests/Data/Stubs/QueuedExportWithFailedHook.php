@@ -3,6 +3,7 @@
 namespace Maatwebsite\Excel\Tests\Data\Stubs;
 
 use Exception;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Database\Eloquent\Collection;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromCollection;
