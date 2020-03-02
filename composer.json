@@ -22,14 +22,14 @@
   "require": {
     "ext-json": "*",
     "php": "^7.0",
-    "phpoffice/phpspreadsheet": "^1.10",
+    "phpoffice/phpspreadsheet": "^1.11",
     "illuminate/support": "5.5.*|5.6.*|5.7.*|5.8.*|^6.0|^7.0"
   },
   "require-dev": {
-    "orchestra/testbench": "^4.0",
-    "phpunit/phpunit": "^8.0",
-    "mockery/mockery": "^1.1",
-    "orchestra/database": "^4.0",
+    "orchestra/testbench": "^5.0",
+    "phpunit/phpunit": "^8.5",
+    "mockery/mockery": "^1.3",
+    "orchestra/database": "^5.0",
     "predis/predis": "^1.1"
   },
   "autoload": {
