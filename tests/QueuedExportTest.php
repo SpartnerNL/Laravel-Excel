@@ -2,7 +2,6 @@
 
 namespace Maatwebsite\Excel\Tests;
 
-use Maatwebsite\Excel\Jobs\AppendDataToSheet;
 use Maatwebsite\Excel\Tests\Data\Stubs\AfterQueueExportJob;
 use Maatwebsite\Excel\Tests\Data\Stubs\EloquentCollectionWithMappingExport;
 use Maatwebsite\Excel\Tests\Data\Stubs\QueuedExport;
@@ -75,7 +74,6 @@ class QueuedExportTest extends TestCase
         try {
             $export->queue('queued-export.xlsx');
         } catch (Throwable $e) {
-
         }
 
         $this->assertTrue(app('queue-has-failed'));

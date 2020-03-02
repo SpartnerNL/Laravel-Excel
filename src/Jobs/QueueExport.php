@@ -61,6 +61,7 @@ class QueueExport implements ShouldQueue
     {
         $excel->store($this->export, $this->filePath, $this->disk, $this->writerType, $this->diskOptions, false);
     }
+
     /**
      * Get the middleware the job should be dispatched through.
      *
@@ -69,6 +70,5 @@ class QueueExport implements ShouldQueue
     public function middleware()
     {
         return (method_exists($this->export, 'middleware')) ? $this->export->middleware() : [];
-
     }
 }
