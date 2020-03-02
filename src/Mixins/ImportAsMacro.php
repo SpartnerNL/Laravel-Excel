@@ -3,8 +3,8 @@
 namespace Maatwebsite\Excel\Mixins;
 
 use Illuminate\Database\Eloquent\Model;
-use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\Importable;
+use Maatwebsite\Excel\Concerns\ToModel;
 
 class ImportAsMacro
 {

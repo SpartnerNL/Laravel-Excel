@@ -3,9 +3,8 @@
 namespace Maatwebsite\Excel\Tests\Mixins;
 
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Maatwebsite\Excel\Tests\TestCase;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
+use Maatwebsite\Excel\Tests\TestCase;
 
 class ImportAsMacroTest extends TestCase
 {

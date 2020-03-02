@@ -2,9 +2,9 @@
 
 namespace Maatwebsite\Excel\Config;
 
-use PhpOffice\PhpSpreadsheet\Settings;
-use PhpOffice\PhpSpreadsheet\Cell\Cell;
 use Maatwebsite\Excel\Cache\CacheManager;
+use PhpOffice\PhpSpreadsheet\Cell\Cell;
+use PhpOffice\PhpSpreadsheet\Settings;
 
 class SettingsProvider
 {

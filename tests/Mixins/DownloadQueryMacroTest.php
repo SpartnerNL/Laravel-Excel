@@ -2,10 +2,10 @@
 
 namespace Maatwebsite\Excel\Tests\Mixins;
 
-use Maatwebsite\Excel\Excel;
-use Maatwebsite\Excel\Tests\TestCase;
-use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Maatwebsite\Excel\Excel;
+use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
+use Maatwebsite\Excel\Tests\TestCase;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class DownloadQueryMacroTest extends TestCase

@@ -4,9 +4,9 @@ namespace Maatwebsite\Excel\Tests\Cache;
 
 use Illuminate\Cache\ArrayStore;
 use Illuminate\Cache\Repository;
-use Maatwebsite\Excel\Tests\TestCase;
 use Maatwebsite\Excel\Cache\BatchCache;
 use Maatwebsite\Excel\Cache\MemoryCache;
+use Maatwebsite\Excel\Tests\TestCase;
 
 class BatchCacheTest extends TestCase
 {

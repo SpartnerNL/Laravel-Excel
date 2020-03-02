@@ -2,11 +2,11 @@
 
 namespace Maatwebsite\Excel\Imports\Persistence;
 
-use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Maatwebsite\Excel\Transactions\TransactionHandler;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Support\Collection;
+use Maatwebsite\Excel\Transactions\TransactionHandler;
 
 class CascadePersistManager
 {

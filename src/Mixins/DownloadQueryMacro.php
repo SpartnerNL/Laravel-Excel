@@ -2,11 +2,11 @@
 
 namespace Maatwebsite\Excel\Mixins;
 
-use Maatwebsite\Excel\Sheet;
 use Illuminate\Database\Eloquent\Builder;
-use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\Exportable;
+use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Sheet;
 
 class DownloadQueryMacro
 {

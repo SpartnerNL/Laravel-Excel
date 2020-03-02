@@ -3,8 +3,8 @@
 namespace Maatwebsite\Excel\Cache;
 
 use Illuminate\Support\Manager;
-use Psr\SimpleCache\CacheInterface;
 use Maatwebsite\Excel\Config\Configuration;
+use Psr\SimpleCache\CacheInterface;
 
 class CacheManager extends Manager
 {

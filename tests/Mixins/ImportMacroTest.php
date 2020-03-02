@@ -2,9 +2,9 @@
 
 namespace Maatwebsite\Excel\Tests\Mixins;
 
-use Maatwebsite\Excel\Tests\TestCase;
-use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
+use Maatwebsite\Excel\Tests\TestCase;
 
 class ImportMacroTest extends TestCase
 {

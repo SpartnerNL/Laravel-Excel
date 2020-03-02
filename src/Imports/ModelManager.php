@@ -2,16 +2,16 @@
 
 namespace Maatwebsite\Excel\Imports;
 
-use Throwable;
-use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
-use Maatwebsite\Excel\Concerns\ToModel;
+use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\SkipsOnError;
+use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithValidation;
-use Maatwebsite\Excel\Validators\RowValidator;
 use Maatwebsite\Excel\Exceptions\RowSkippedException;
-use Maatwebsite\Excel\Validators\ValidationException;
 use Maatwebsite\Excel\Imports\Persistence\CascadePersistManager;
+use Maatwebsite\Excel\Validators\RowValidator;
+use Maatwebsite\Excel\Validators\ValidationException;
+use Throwable;
 
 class ModelManager
 {

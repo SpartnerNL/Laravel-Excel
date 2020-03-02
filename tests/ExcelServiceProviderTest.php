@@ -2,10 +2,10 @@
 
 namespace Maatwebsite\Excel\Tests;
 
+use Illuminate\Foundation\Console\Kernel;
+use Maatwebsite\Excel\Cache\MemoryCache;
 use Maatwebsite\Excel\Excel;
 use PhpOffice\PhpSpreadsheet\Settings;
-use Maatwebsite\Excel\Cache\MemoryCache;
-use Illuminate\Foundation\Console\Kernel;
 
 class ExcelServiceProviderTest extends TestCase
 {

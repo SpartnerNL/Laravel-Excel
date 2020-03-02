@@ -3,11 +3,11 @@
 namespace Maatwebsite\Excel\Factories;
 
 use Maatwebsite\Excel\Concerns\MapsCsvSettings;
-use PhpOffice\PhpSpreadsheet\Reader\BaseReader;
 use Maatwebsite\Excel\Concerns\WithCustomCsvSettings;
 use Maatwebsite\Excel\Exceptions\NoTypeDetectedException;
 use Maatwebsite\Excel\Files\TemporaryFile;
 use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Reader\BaseReader;
 use PhpOffice\PhpSpreadsheet\Reader\Csv;
 use PhpOffice\PhpSpreadsheet\Reader\Exception;
 use PhpOffice\PhpSpreadsheet\Reader\IReader;
