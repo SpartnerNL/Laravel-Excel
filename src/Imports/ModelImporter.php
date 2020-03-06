@@ -39,6 +39,10 @@ class ModelImporter
         $withMapping      = $import instanceof WithMapping;
         $withCalcFormulas = $import instanceof WithCalculatedFormulas;
 
+        if ($startRow > $worksheet->getHighestRow()) {
+            return;
+        }
+
         $i = 0;
         foreach ($worksheet->getRowIterator($startRow, $endRow) as $spreadSheetRow) {
             $i++;
