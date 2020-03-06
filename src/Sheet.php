@@ -302,6 +302,10 @@ class Sheet
         $endRow     = EndRowFinder::find($import, $startRow);
         $headingRow = HeadingRowExtractor::extract($this->worksheet, $import);
 
+        if ($startRow > $this->worksheet->getHighestRow()) {
+            return [];
+        }
+
         $rows = [];
         foreach ($this->worksheet->getRowIterator($startRow, $endRow) as $row) {
             $row = (new Row($row, $headingRow))->toArray($nullValue, $calculateFormulas, $formatData);
