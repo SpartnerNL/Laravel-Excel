@@ -32,16 +32,16 @@ class ModelImporter
      */
     public function import(Worksheet $worksheet, ToModel $import, int $startRow = 1)
     {
+        if ($startRow > $worksheet->getHighestRow()) {
+            return;
+        }
+
         $headingRow       = HeadingRowExtractor::extract($worksheet, $import);
         $batchSize        = $import instanceof WithBatchInserts ? $import->batchSize() : 1;
         $endRow           = EndRowFinder::find($import, $startRow);
         $progessBar       = $import instanceof WithProgressBar;
         $withMapping      = $import instanceof WithMapping;
         $withCalcFormulas = $import instanceof WithCalculatedFormulas;
-
-        if ($startRow > $worksheet->getHighestRow()) {
-            return;
-        }
 
         $i = 0;
         foreach ($worksheet->getRowIterator($startRow, $endRow) as $spreadSheetRow) {

@@ -299,12 +299,12 @@ class Sheet
      */
     public function toArray($import, int $startRow = null, $nullValue = null, $calculateFormulas = false, $formatData = false)
     {
-        $endRow     = EndRowFinder::find($import, $startRow);
-        $headingRow = HeadingRowExtractor::extract($this->worksheet, $import);
-
         if ($startRow > $this->worksheet->getHighestRow()) {
             return [];
         }
+
+        $endRow     = EndRowFinder::find($import, $startRow);
+        $headingRow = HeadingRowExtractor::extract($this->worksheet, $import);
 
         $rows = [];
         foreach ($this->worksheet->getRowIterator($startRow, $endRow) as $row) {
