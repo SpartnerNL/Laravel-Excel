@@ -387,8 +387,8 @@ class Sheet
      */
     public function fromQuery(FromQuery $sheetExport, Worksheet $worksheet)
     {
-        $sheetExport->query()->chunk($this->getChunkSize($sheetExport), function ($chunk) use ($sheetExport, $worksheet) {
-            $this->appendRows($chunk->cursor(), $sheetExport);
+        $sheetExport->query()->cursor()->chunk($this->getChunkSize($sheetExport), function ($chunk) use ($sheetExport, $worksheet) {
+            $this->appendRows($chunk, $sheetExport);
         });
     }
 
