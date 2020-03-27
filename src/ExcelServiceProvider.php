@@ -24,12 +24,12 @@ class ExcelServiceProvider extends ServiceProvider
         if ($this->app->runningInConsole()) {
 
             $this->publishes([
-                __DIR__.'/Console/stubs/export.model.stub' => base_path('stubs/export.model.stub'),
-                __DIR__.'/Console/stubs/export.plain.stub' => base_path('stubs/export.plain.stub'),
-                __DIR__.'/Console/stubs/export.query.stub' => base_path('stubs/export.query.stub'),
-                __DIR__.'/Console/stubs/export.query-model.stub' => base_path('stubs/export.query-model.stub'),
-                __DIR__.'/Console/stubs/import.collection.stub' => base_path('stubs/import.collection.stub'),
-                __DIR__.'/Console/stubs/import.model.stub' => base_path('stubs/import.model.stub'),
+                __DIR__ . '/Console/stubs/export.model.stub'       => base_path('stubs/export.model.stub'),
+                __DIR__ . '/Console/stubs/export.plain.stub'       => base_path('stubs/export.plain.stub'),
+                __DIR__ . '/Console/stubs/export.query.stub'       => base_path('stubs/export.query.stub'),
+                __DIR__ . '/Console/stubs/export.query-model.stub' => base_path('stubs/export.query-model.stub'),
+                __DIR__ . '/Console/stubs/import.collection.stub'  => base_path('stubs/import.collection.stub'),
+                __DIR__ . '/Console/stubs/import.model.stub'       => base_path('stubs/import.model.stub'),
             ], 'stubs');
 
             if ($this->app instanceof LumenApplication) {
