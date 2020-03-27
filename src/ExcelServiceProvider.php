@@ -22,7 +22,6 @@ class ExcelServiceProvider extends ServiceProvider
     public function boot()
     {
         if ($this->app->runningInConsole()) {
-
             $this->publishes([
                 __DIR__ . '/Console/stubs/export.model.stub'       => base_path('stubs/export.model.stub'),
                 __DIR__ . '/Console/stubs/export.plain.stub'       => base_path('stubs/export.plain.stub'),
