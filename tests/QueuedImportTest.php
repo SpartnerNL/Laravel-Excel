@@ -106,10 +106,7 @@ class QueuedImportTest extends TestCase
                 $this->assertStringContains('.xlsx', $tempFile->getLocalPath());
             }
         });
-
-        $chain = (new QueuedImport())->queue('import-batches.xlsx');
-
-        $this->assertInstanceOf(PendingDispatch::class, $chain);
+        (new QueuedImport())->queue('import-batches.xlsx');
     }
 
     /**
