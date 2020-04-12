@@ -233,7 +233,7 @@ class Sheet
             $this->registerListeners($import->registerEvents());
         }
 
-        $this->raise(new BeforeSheet($this, $this->exportable));
+        $this->raise(new BeforeSheet($this, $import));
 
         if ($import instanceof WithProgressBar && !$import instanceof WithChunkReading) {
             $import->getConsoleOutput()->progressStart($this->worksheet->getHighestRow());
@@ -281,7 +281,7 @@ class Sheet
             }
         }
 
-        $this->raise(new AfterSheet($this, $this->exportable));
+        $this->raise(new AfterSheet($this, $import));
 
         if ($import instanceof WithProgressBar && !$import instanceof WithChunkReading) {
             $import->getConsoleOutput()->progressFinish();
