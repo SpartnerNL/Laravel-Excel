@@ -20,9 +20,9 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
  * @method static void matchByRegex()
  * @method static void doNotMatchByRegex()
  * @method static void assertDownloaded(string $fileName, callable $callback = null)
- * @method static void assertStored(string $filePath, string $disk = null, callable $callback = null)
- * @method static void assertQueued(string $filePath, string $disk = null, callable $callback = null)
- * @method static void assertImported(string $filePath, string $disk = null, callable $callback = null)
+ * @method static void assertStored(string $filePath, string|callable $disk = null, callable $callback = null)
+ * @method static void assertQueued(string $filePath, string|callable $disk = null, callable $callback = null)
+ * @method static void assertImported(string $filePath, string|callable $disk = null, callable $callback = null)
  */
 class Excel extends Facade
 {
