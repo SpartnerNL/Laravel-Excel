@@ -4,6 +4,7 @@ namespace Maatwebsite\Excel\Jobs;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Maatwebsite\Excel\Concerns\WithChunkOffset;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithCustomValueBinder;
 use Maatwebsite\Excel\Concerns\WithEvents;
@@ -97,6 +98,10 @@ class ReadChunk implements ShouldQueue
      */
     public function handle(TransactionHandler $transaction)
     {
+        if ($this->import instanceof WithChunkOffset) {
+            $this->import->setChunkOffset($this->startRow);
+        }
+
         if ($this->sheetImport instanceof WithCustomValueBinder) {
             Cell::setValueBinder($this->sheetImport);
         }
