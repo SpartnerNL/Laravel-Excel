@@ -32,6 +32,10 @@ class ModelImporter
      */
     public function import(Worksheet $worksheet, ToModel $import, int $startRow = 1)
     {
+        if ($startRow > $worksheet->getHighestRow()) {
+            return;
+        }
+
         $headingRow       = HeadingRowExtractor::extract($worksheet, $import);
         $batchSize        = $import instanceof WithBatchInserts ? $import->batchSize() : 1;
         $endRow           = EndRowFinder::find($import, $startRow);

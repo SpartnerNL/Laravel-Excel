@@ -299,6 +299,10 @@ class Sheet
      */
     public function toArray($import, int $startRow = null, $nullValue = null, $calculateFormulas = false, $formatData = false)
     {
+        if ($startRow > $this->worksheet->getHighestRow()) {
+            return [];
+        }
+
         $endRow     = EndRowFinder::find($import, $startRow);
         $headingRow = HeadingRowExtractor::extract($this->worksheet, $import);
 

@@ -6,6 +6,7 @@
 !import-users.xlsx
 !import-users-with-duplicates.xlsx
 !import-users-with-headings.xlsx
+!import-empty-users-with-headings.xlsx
 !import-users-with-different-heading-row.xlsx
 !import-batches.xlsx
 !import-batches.csv
