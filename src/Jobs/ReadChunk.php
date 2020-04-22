@@ -97,6 +97,10 @@ class ReadChunk implements ShouldQueue
      */
     public function handle(TransactionHandler $transaction)
     {
+        if (method_exists($this->import, 'setChunkOffset')) {
+            $this->import->setChunkOffset($this->startRow);
+        }
+
         if ($this->sheetImport instanceof WithCustomValueBinder) {
             Cell::setValueBinder($this->sheetImport);
         }
