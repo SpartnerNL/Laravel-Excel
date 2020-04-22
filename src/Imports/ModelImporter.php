@@ -42,6 +42,7 @@ class ModelImporter
         $progessBar       = $import instanceof WithProgressBar;
         $withMapping      = $import instanceof WithMapping;
         $withCalcFormulas = $import instanceof WithCalculatedFormulas;
+        $rememberRow      = method_exists($import, 'setRowNumber');
 
         $i = 0;
         foreach ($worksheet->getRowIterator($startRow, $endRow) as $spreadSheetRow) {
@@ -49,6 +50,10 @@ class ModelImporter
 
             $row      = new Row($spreadSheetRow, $headingRow);
             $rowArray = $row->toArray(null, $withCalcFormulas);
+
+            if ($rememberRow){
+                $import->setRowNumber($row->getIndex());
+            }
 
             if ($withMapping) {
                 $rowArray = $import->map($rowArray);
