@@ -2,8 +2,6 @@
 
 namespace Maatwebsite\Excel\Concerns;
 
-use InvalidArgumentException;
-
 trait RemembersRowNumber
 {
     /**

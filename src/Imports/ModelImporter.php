@@ -51,7 +51,7 @@ class ModelImporter
             $row      = new Row($spreadSheetRow, $headingRow);
             $rowArray = $row->toArray(null, $withCalcFormulas);
 
-            if ($rememberRow){
+            if ($rememberRow) {
                 $import->setRowNumber($row->getIndex());
             }
 
