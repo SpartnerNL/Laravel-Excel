@@ -94,6 +94,24 @@ class QueuedImportTest extends TestCase
     /**
      * @test
      */
+    public function can_keep_extension_for_temp_file_on_remote_disk()
+    {
+        config()->set('excel.temporary_files.remote_disk', 'test');
+
+        Queue::before(function (JobProcessing $event) {
+            if ($event->job->resolveName() === ReadChunk::class) {
+                /** @var TemporaryFile $tempFile */
+                $tempFile = $this->inspectJobProperty($event->job, 'temporaryFile');
+
+                $this->assertStringContains('.xlsx', $tempFile->getLocalPath());
+            }
+        });
+        (new QueuedImport())->queue('import-batches.xlsx');
+    }
+
+    /**
+     * @test
+     */
     public function can_queue_import_with_remote_temp_disk_and_prefix()
     {
         config()->set('excel.temporary_files.remote_disk', 'test');
