@@ -2,9 +2,7 @@
 
 namespace Maatwebsite\Excel\Concerns;
 
-use InvalidArgumentException;
-
-trait ChunkOffset
+trait RememberChunkOffset
 {
     /**
      * @var int|null
@@ -24,10 +22,6 @@ trait ChunkOffset
      */
     public function getChunkOffset()
     {
-        if (!$this instanceof WithChunkOffset) {
-            throw new InvalidArgumentException('Importable should implement WithChunkOffset to get the Offset.');
-        }
-
         return $this->chunkOffset;
     }
 }

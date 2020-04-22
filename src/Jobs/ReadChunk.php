@@ -98,7 +98,7 @@ class ReadChunk implements ShouldQueue
      */
     public function handle(TransactionHandler $transaction)
     {
-        if ($this->import instanceof WithChunkOffset) {
+        if (method_exists($this->import, 'setChunkOffset')) {
             $this->import->setChunkOffset($this->startRow);
         }
 
