@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Maatwebsite\Excel\Tests\Concerns;
-
 
 use InvalidArgumentException;
 use Maatwebsite\Excel\Concerns\ChunkOffset;
