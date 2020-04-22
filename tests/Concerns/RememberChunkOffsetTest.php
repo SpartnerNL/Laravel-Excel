@@ -5,7 +5,6 @@ namespace Maatwebsite\Excel\Tests\Concerns;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\RememberChunkOffset;
 use Maatwebsite\Excel\Concerns\ToArray;
-use Maatwebsite\Excel\Concerns\WithChunkOffset;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Tests\TestCase;
 
@@ -16,7 +15,7 @@ class RememberChunkOffsetTest extends TestCase
      */
     public function can_set_and_get_chunk_offset()
     {
-        $import = new class implements WithChunkOffset {
+        $import = new class {
             use Importable;
             use RememberChunkOffset;
         };
