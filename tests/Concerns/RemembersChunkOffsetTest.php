@@ -3,12 +3,12 @@
 namespace Maatwebsite\Excel\Tests\Concerns;
 
 use Maatwebsite\Excel\Concerns\Importable;
-use Maatwebsite\Excel\Concerns\RememberChunkOffset;
+use Maatwebsite\Excel\Concerns\RemembersChunkOffset;
 use Maatwebsite\Excel\Concerns\ToArray;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Tests\TestCase;
 
-class RememberChunkOffsetTest extends TestCase
+class RemembersChunkOffsetTest extends TestCase
 {
     /**
      * @test
@@ -17,7 +17,7 @@ class RememberChunkOffsetTest extends TestCase
     {
         $import = new class {
             use Importable;
-            use RememberChunkOffset;
+            use RemembersChunkOffset;
         };
 
         $import->setChunkOffset(50);
@@ -32,7 +32,7 @@ class RememberChunkOffsetTest extends TestCase
     {
         $import = new class implements ToArray, WithChunkReading {
             use Importable;
-            use RememberChunkOffset;
+            use RemembersChunkOffset;
 
             public $offsets = [];
 

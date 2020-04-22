@@ -2,7 +2,7 @@
 
 namespace Maatwebsite\Excel\Concerns;
 
-trait RememberChunkOffset
+trait RemembersChunkOffset
 {
     /**
      * @var int|null
