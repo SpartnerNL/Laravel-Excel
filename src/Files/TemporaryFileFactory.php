@@ -67,7 +67,7 @@ class TemporaryFileFactory
 
         return new RemoteTemporaryFile(
             $this->temporaryDisk,
-            $filename,
+            config('excel.temporary_files.remote_prefix') . $filename,
             $this->makeLocal($filename)
         );
     }

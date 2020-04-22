@@ -5,11 +5,13 @@ namespace Maatwebsite\Excel\Tests\Concerns;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Validation\Rule;
 use Maatwebsite\Excel\Concerns\Importable;
+use Maatwebsite\Excel\Concerns\OnEachRow;
 use Maatwebsite\Excel\Concerns\SkipsFailures;
 use Maatwebsite\Excel\Concerns\SkipsOnFailure;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithValidation;
+use Maatwebsite\Excel\Row;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
 use Maatwebsite\Excel\Tests\TestCase;
 use Maatwebsite\Excel\Validators\Failure;
@@ -207,6 +209,57 @@ class SkipsOnFailureTest extends TestCase
         $this->assertEquals(2, $failure->row());
         $this->assertEquals('1', $failure->attribute());
         $this->assertEquals(['The selected 1 is invalid.'], $failure->errors());
+
+        // Shouldn't have rollbacked other imported rows.
+        $this->assertDatabaseHas('users', [
+            'email' => 'patrick@maatwebsite.nl',
+        ]);
+
+        // Should have skipped inserting
+        $this->assertDatabaseMissing('users', [
+            'email' => 'taylor@laravel.com',
+        ]);
+    }
+
+    /**
+     * @test
+     */
+    public function can_validate_using_oneachrow_and_skipsonfailure()
+    {
+        $import = new class implements OnEachRow, WithValidation, SkipsOnFailure {
+            use Importable, SkipsFailures;
+
+            /**
+             * @param Row $row
+             *
+             * @return Model|null
+             */
+            public function onRow(Row $row)
+            {
+                $row = $row->toArray();
+
+                return User::create([
+                    'name'     => $row[0],
+                    'email'    => $row[1],
+                    'password' => 'secret',
+                ]);
+            }
+
+            /**
+             * @return array
+             */
+            public function rules(): array
+            {
+                return [
+                    '1' => Rule::in(['patrick@maatwebsite.nl']),
+                ];
+            }
+        };
+        $this->assertEmpty(User::all());
+
+        $import->import('import-users.xlsx');
+
+        $this->assertCount(1, $import->failures());
 
         // Shouldn't have rollbacked other imported rows.
         $this->assertDatabaseHas('users', [

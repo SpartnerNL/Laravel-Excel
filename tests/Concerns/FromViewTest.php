@@ -101,7 +101,7 @@ class FromViewTest extends TestCase
             /**
              * @return SheetForUsersFromView[]
              */
-            public function sheets() : array
+            public function sheets(): array
             {
                 return [
                     new SheetForUsersFromView($this->users->forPage(1, 100)),

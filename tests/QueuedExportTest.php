@@ -87,6 +87,21 @@ class QueuedExportTest extends TestCase
     /**
      * @test
      */
+    public function can_queue_export_with_remote_temp_disk_and_prefix()
+    {
+        config()->set('excel.temporary_files.remote_disk', 'test');
+        config()->set('excel.temporary_files.remote_prefix', 'tmp/');
+
+        $export = new QueuedExport();
+
+        $export->queue('queued-export.xlsx')->chain([
+            new AfterQueueExportJob(__DIR__ . '/Data/Disks/Local/queued-export.xlsx'),
+        ]);
+    }
+
+    /**
+     * @test
+     */
     public function can_implicitly_queue_an_export()
     {
         $export = new ShouldQueueExport();
