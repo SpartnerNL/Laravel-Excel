@@ -22,7 +22,7 @@ trait ChunkOffset
     /**
      * @return int|null
      */
-    protected function getChunkOffset()
+    public function getChunkOffset()
     {
         if (!$this instanceof WithChunkOffset) {
             throw new InvalidArgumentException('Importable should implement WithChunkOffset to get the Offset.');
