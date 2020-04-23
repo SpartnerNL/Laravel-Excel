@@ -1,11 +1,11 @@
 <?php
 
 use Illuminate\Support\Facades\Queue;
-use Maatwebsite\Excel\Jobs\ReadChunk;
-use Maatwebsite\Excel\Tests\TestCase;
-use Maatwebsite\Excel\Jobs\QueueImport;
 use Maatwebsite\Excel\Jobs\AfterImportJob;
+use Maatwebsite\Excel\Jobs\QueueImport;
+use Maatwebsite\Excel\Jobs\ReadChunk;
 use Maatwebsite\Excel\Tests\Data\Stubs\QueueImportWithoutJobChaining;
+use Maatwebsite\Excel\Tests\TestCase;
 
 class ShouldQueueWithoutChainTest extends TestCase
 {
@@ -47,7 +47,7 @@ class ShouldQueueWithoutChainTest extends TestCase
         Queue::assertPushed(ReadChunk::class, 2);
         Queue::assertPushed(AfterImportJob::class, 1);
         Queue::assertPushed(AfterImportJob::class, function ($import) {
-            return ! is_null($import->delay);
+            return !is_null($import->delay);
         });
         Queue::assertNotPushed(QueueImport::class);
     }
@@ -59,7 +59,7 @@ class ShouldQueueWithoutChainTest extends TestCase
      {
         Queue::fake();
 
-        $import = new QueueImportWithoutJobChaining();
+        $import        = new QueueImportWithoutJobChaining();
         $import->queue = 'queue-name';
 
         $import->import('import-users.xlsx');
