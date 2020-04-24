@@ -26,7 +26,7 @@ class ShouldQueueWithoutChainTest extends TestCase
     public function can_import_to_model_in_chunks()
     {
         DB::connection()->enableQueryLog();
-        
+
         $import = new QueueImportWithoutJobChaining();
         $import->import('import-users.xlsx');
 
@@ -55,8 +55,8 @@ class ShouldQueueWithoutChainTest extends TestCase
     /**
      * @test
      */
-     public function  a_queue_name_can_be_specified_when_importing()
-     {
+    public function  a_queue_name_can_be_specified_when_importing()
+    {
         Queue::fake();
 
         $import        = new QueueImportWithoutJobChaining();
@@ -66,5 +66,5 @@ class ShouldQueueWithoutChainTest extends TestCase
 
         Queue::assertPushedOn('queue-name', ReadChunk::class);
         Queue::assertPushedOn('queue-name', AfterImportJob::class);
-     }
+    }
 }
