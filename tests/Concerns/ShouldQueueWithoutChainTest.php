@@ -55,7 +55,7 @@ class ShouldQueueWithoutChainTest extends TestCase
     /**
      * @test
      */
-    public function  a_queue_name_can_be_specified_when_importing()
+    public function a_queue_name_can_be_specified_when_importing()
     {
         Queue::fake();
 
