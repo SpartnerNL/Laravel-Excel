@@ -16,20 +16,14 @@ class RemembersRowNumberTest extends TestCase
      */
     public function can_set_and_get_row_number()
     {
-        $import = new class implements RemembersRowNumber {
+        $import = new class {
             use Importable;
-
-            public $rowNumber;
-
-            public function setRowNumber(int $rowNumber)
-            {
-                $this->rowNumber = $rowNumber;
-            }
+            use RemembersRowNumber;
         };
 
-        $import->setRowNumber(50);
+        $import->rememberRowNumber(50);
 
-        $this->assertEquals(50, $import->rowNumber);
+        $this->assertEquals(50, $import->getRowNumber());
     }
 
     /**
@@ -37,21 +31,17 @@ class RemembersRowNumberTest extends TestCase
      */
     public function can_access_row_number_on_import_to_model()
     {
-        $import = new class implements ToModel, RemembersRowNumber {
+        $import = new class implements ToModel {
             use Importable;
+            use RemembersRowNumber;
 
-            private $rowNumber;
             public $rowNumbers = [];
 
             public function model(array $row)
             {
-                $this->rowNumbers[] = $this->rowNumber;
+                $this->rowNumbers[] = $this->getRowNumber();
             }
 
-            public function setRowNumber(int $rowNumber)
-            {
-                $this->rowNumber = $rowNumber;
-            }
         };
 
         $import->import('import-batches.xlsx');
@@ -64,10 +54,10 @@ class RemembersRowNumberTest extends TestCase
      */
     public function can_access_row_number_on_import_to_array_in_chunks()
     {
-        $import = new class implements ToModel, WithChunkReading, RemembersRowNumber {
+        $import = new class implements ToModel, WithChunkReading {
             use Importable;
+            use RemembersRowNumber;
 
-            private $rowNumber;
             public $rowNumbers = [];
 
             public function chunkSize(): int
@@ -77,12 +67,7 @@ class RemembersRowNumberTest extends TestCase
 
             public function model(array $row)
             {
-                $this->rowNumbers[] = $this->rowNumber;
-            }
-
-            public function setRowNumber(int $rowNumber)
-            {
-                $this->rowNumber = $rowNumber;
+                $this->rowNumbers[] = $this->getRowNumber();
             }
         };
 
@@ -96,10 +81,10 @@ class RemembersRowNumberTest extends TestCase
      */
     public function can_access_row_number_on_import_to_array_in_chunks_with_batch_inserts()
     {
-        $import = new class implements ToModel, WithChunkReading, WithBatchInserts, RemembersRowNumber {
+        $import = new class implements ToModel, WithChunkReading, WithBatchInserts {
             use Importable;
+            use RemembersRowNumber;
 
-            private $rowNumber;
             public $rowNumbers = [];
 
             public function chunkSize(): int
@@ -115,11 +100,6 @@ class RemembersRowNumberTest extends TestCase
             public function batchSize(): int
             {
                 return 50;
-            }
-
-            public function setRowNumber(int $rowNumber)
-            {
-                $this->rowNumber = $rowNumber;
             }
         };
 

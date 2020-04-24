@@ -84,7 +84,7 @@ class ModelManager
     public function toModels(ToModel $import, array $attributes, $rowNumber = null): Collection
     {
         if ($this->remembersRowNumber) {
-            $import->setRowNumber($rowNumber);
+            $import->rememberRowNumber($rowNumber);
         }
 
         $model = $import->model($attributes);
