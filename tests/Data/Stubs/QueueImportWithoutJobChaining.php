@@ -2,19 +2,19 @@
 
 namespace Maatwebsite\Excel\Tests\Data\Stubs;
 
-use Maatwebsite\Excel\Reader;
-use PHPUnit\Framework\Assert;
-use Maatwebsite\Excel\Concerns\ToModel;
-use Maatwebsite\Excel\Events\AfterImport;
 use Maatwebsite\Excel\Concerns\Importable;
-use Maatwebsite\Excel\Concerns\WithEvents;
-use Maatwebsite\Excel\Events\BeforeImport;
-use Maatwebsite\Excel\Concerns\WithChunkReading;
-use Maatwebsite\Excel\Concerns\WithoutJobChaining;
-use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
 use Maatwebsite\Excel\Concerns\ShouldQueueWithoutChain;
+use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Concerns\WithChunkReading;
+use Maatwebsite\Excel\Concerns\WithEvents;
+use Maatwebsite\Excel\Events\AfterImport;
+use Maatwebsite\Excel\Events\BeforeImport;
+use Maatwebsite\Excel\Reader;
+use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
+use PHPUnit\Framework\Assert;
 
-class QueueImportWithoutJobChaining implements ToModel, WithChunkReading, WithEvents, ShouldQueueWithoutChain {
+class QueueImportWithoutJobChaining implements ToModel, WithChunkReading, WithEvents, ShouldQueueWithoutChain
+{
     use Importable;
 
     public $queue;
@@ -56,7 +56,7 @@ class QueueImportWithoutJobChaining implements ToModel, WithChunkReading, WithEv
             AfterImport::class  => function (AfterImport $event) {
                 Assert::assertInstanceOf(Reader::class, $event->reader);
                 $this->after = true;
-            }
+            },
         ];
     }
-};
+}
