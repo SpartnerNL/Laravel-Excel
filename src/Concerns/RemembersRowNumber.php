@@ -4,6 +4,9 @@ namespace Maatwebsite\Excel\Concerns;
 
 trait RemembersRowNumber
 {
+    /**
+     * @var int
+     */
     protected $rowNumber;
 
     /**
@@ -15,7 +18,7 @@ trait RemembersRowNumber
     }
 
     /**
-     *
+     * @return int|null
      */
     public function getRowNumber()
     {

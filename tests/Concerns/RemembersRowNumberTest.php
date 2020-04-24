@@ -41,7 +41,6 @@ class RemembersRowNumberTest extends TestCase
             {
                 $this->rowNumbers[] = $this->getRowNumber();
             }
-
         };
 
         $import->import('import-batches.xlsx');
