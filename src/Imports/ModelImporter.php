@@ -43,6 +43,8 @@ class ModelImporter
         $withMapping      = $import instanceof WithMapping;
         $withCalcFormulas = $import instanceof WithCalculatedFormulas;
 
+        $this->manager->setRemembersRowNumber(method_exists($import, 'rememberRowNumber'));
+
         $i = 0;
         foreach ($worksheet->getRowIterator($startRow, $endRow) as $spreadSheetRow) {
             $i++;
