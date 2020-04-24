@@ -16,14 +16,20 @@ class RemembersRowNumberTest extends TestCase
      */
     public function can_set_and_get_row_number()
     {
-        $import = new class {
+        $import = new class implements RemembersRowNumber {
             use Importable;
-            use RemembersRowNumber;
+
+            public $rowNumber;
+
+            public function setRowNumber(int $rowNumber)
+            {
+                $this->rowNumber = $rowNumber;
+            }
         };
 
         $import->setRowNumber(50);
 
-        $this->assertEquals(50, $import->getRowNumber());
+        $this->assertEquals(50, $import->rowNumber);
     }
 
     /**
@@ -31,15 +37,20 @@ class RemembersRowNumberTest extends TestCase
      */
     public function can_access_row_number_on_import_to_model()
     {
-        $import = new class implements ToModel {
+        $import = new class implements ToModel, RemembersRowNumber {
             use Importable;
-            use RemembersRowNumber;
 
+            private $rowNumber;
             public $rowNumbers = [];
 
             public function model(array $row)
             {
-                $this->rowNumbers[] = $this->getRowNumber();
+                $this->rowNumbers[] = $this->rowNumber;
+            }
+
+            public function setRowNumber(int $rowNumber)
+            {
+                $this->rowNumber = $rowNumber;
             }
         };
 
@@ -53,10 +64,10 @@ class RemembersRowNumberTest extends TestCase
      */
     public function can_access_row_number_on_import_to_array_in_chunks()
     {
-        $import = new class implements ToModel, WithChunkReading {
+        $import = new class implements ToModel, WithChunkReading, RemembersRowNumber {
             use Importable;
-            use RemembersRowNumber;
 
+            private $rowNumber;
             public $rowNumbers = [];
 
             public function chunkSize(): int
@@ -66,7 +77,12 @@ class RemembersRowNumberTest extends TestCase
 
             public function model(array $row)
             {
-                $this->rowNumbers[] = $this->getRowNumber();
+                $this->rowNumbers[] = $this->rowNumber;
+            }
+
+            public function setRowNumber(int $rowNumber)
+            {
+                $this->rowNumber = $rowNumber;
             }
         };
 
@@ -80,10 +96,10 @@ class RemembersRowNumberTest extends TestCase
      */
     public function can_access_row_number_on_import_to_array_in_chunks_with_batch_inserts()
     {
-        $import = new class implements ToModel, WithChunkReading, WithBatchInserts {
+        $import = new class implements ToModel, WithChunkReading, WithBatchInserts, RemembersRowNumber {
             use Importable;
-            use RemembersRowNumber;
 
+            private $rowNumber;
             public $rowNumbers = [];
 
             public function chunkSize(): int
@@ -93,12 +109,17 @@ class RemembersRowNumberTest extends TestCase
 
             public function model(array $row)
             {
-                $this->rowNumbers[] = $this->getRowNumber();
+                $this->rowNumbers[] = $this->rowNumber;
             }
 
             public function batchSize(): int
             {
                 return 50;
+            }
+
+            public function setRowNumber(int $rowNumber)
+            {
+                $this->rowNumber = $rowNumber;
             }
         };
 

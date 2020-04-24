@@ -23,6 +23,10 @@ class ModelManager
      * @var RowValidator
      */
     private $validator;
+    /**
+     * @var bool
+     */
+    private $remembersRowNumber = false;
 
     /**
      * @param RowValidator $validator
@@ -39,6 +43,14 @@ class ModelManager
     public function add(int $row, array $attributes)
     {
         $this->rows[$row] = $attributes;
+    }
+
+    /**
+     * @param bool $remembersRowNumber
+     */
+    public function setRemembersRowNumber(bool $remembersRowNumber)
+    {
+        $this->remembersRowNumber = $remembersRowNumber;
     }
 
     /**
@@ -71,7 +83,7 @@ class ModelManager
      */
     public function toModels(ToModel $import, array $attributes, $rowNumber = null): Collection
     {
-        if (method_exists($import, 'setRowNumber')) {
+        if ($this->remembersRowNumber) {
             $import->setRowNumber($rowNumber);
         }
 
