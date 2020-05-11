@@ -2,15 +2,22 @@
 
 namespace Maatwebsite\Excel\Tests;
 
+use Exception;
 use Illuminate\Foundation\Bus\PendingDispatch;
+use Illuminate\Foundation\Testing\Assert;
+use Illuminate\Queue\Events\JobExceptionOccurred;
+use Illuminate\Queue\Events\JobProcessed;
 use Illuminate\Queue\Events\JobProcessing;
 use Illuminate\Support\Facades\Queue;
 use Maatwebsite\Excel\Concerns\Importable;
+use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Files\RemoteTemporaryFile;
 use Maatwebsite\Excel\Files\TemporaryFile;
 use Maatwebsite\Excel\Jobs\ReadChunk;
 use Maatwebsite\Excel\Tests\Data\Stubs\AfterQueueImportJob;
 use Maatwebsite\Excel\Tests\Data\Stubs\QueuedImport;
+use Throwable;
 
 class QueuedImportTest extends TestCase
 {
@@ -124,5 +131,27 @@ class QueuedImportTest extends TestCase
         ]);
 
         $this->assertInstanceOf(PendingDispatch::class, $chain);
+    }
+
+    /**
+     * @test
+     */
+    public function can_automatically_delete_temp_file_on_failure()
+    {
+        $tempFile = '';
+
+        Queue::exceptionOccurred(function (JobExceptionOccurred $event) use (&$tempFile) {
+            if ($event->job->resolveName() === ReadChunk::class) {
+                $tempFile = $this->inspectJobProperty($event->job, 'temporaryFile');
+            }
+        });
+
+        try {
+            (new QueuedImport())->queue('import-batches.xlsx');
+        } catch (Throwable $e) {
+            $this->assertEquals('Something went wrong in the chunk', $e->getMessage());
+        }
+
+        $this->assertFalse($tempFile->exists());
     }
 }
