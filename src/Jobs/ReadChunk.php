@@ -148,6 +148,8 @@ class ReadChunk implements ShouldQueue
      */
     public function failed(Throwable $e)
     {
+        $this->temporaryFile->delete();
+
         if ($this->import instanceof WithEvents) {
             $this->registerListeners($this->import->registerEvents());
             $this->raise(new ImportFailed($e));
