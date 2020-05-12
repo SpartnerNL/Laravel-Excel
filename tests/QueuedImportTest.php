@@ -17,6 +17,7 @@ use Maatwebsite\Excel\Files\TemporaryFile;
 use Maatwebsite\Excel\Jobs\ReadChunk;
 use Maatwebsite\Excel\Tests\Data\Stubs\AfterQueueImportJob;
 use Maatwebsite\Excel\Tests\Data\Stubs\QueuedImport;
+use Maatwebsite\Excel\Tests\Data\Stubs\QueuedImportWithFailure;
 use Throwable;
 
 class QueuedImportTest extends TestCase
@@ -147,7 +148,7 @@ class QueuedImportTest extends TestCase
         });
 
         try {
-            (new QueuedImport())->queue('import-batches.xlsx');
+            (new QueuedImportWithFailure())->queue('import-batches.xlsx');
         } catch (Throwable $e) {
             $this->assertEquals('Something went wrong in the chunk', $e->getMessage());
         }
