@@ -149,7 +149,7 @@ class ReadChunk implements ShouldQueue
      */
     public function failed(Throwable $e)
     {
-        if($this->temporaryFile instanceof RemoteTemporaryFile) {
+        if ($this->temporaryFile instanceof RemoteTemporaryFile) {
             $this->temporaryFile->deleteLocalCopy();
         }
 
