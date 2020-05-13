@@ -132,7 +132,31 @@ class QueuedImportTest extends TestCase
     /**
      * @test
      */
-    public function can_automatically_delete_temp_file_on_failure()
+    public function can_automatically_delete_temp_file_on_failure_when_using_remote_disk()
+    {
+        config()->set('excel.temporary_files.remote_disk', 'test');
+        $tempFile = '';
+
+        Queue::exceptionOccurred(function (JobExceptionOccurred $event) use (&$tempFile) {
+            if ($event->job->resolveName() === ReadChunk::class) {
+                $tempFile = $this->inspectJobProperty($event->job, 'temporaryFile');
+            }
+        });
+
+        try {
+            (new QueuedImportWithFailure())->queue('import-batches.xlsx');
+        } catch (Throwable $e) {
+            $this->assertEquals('Something went wrong in the chunk', $e->getMessage());
+        }
+
+        $this->assertFalse($tempFile->existsLocally());
+        $this->assertTrue($tempFile->exists());
+    }
+
+    /**
+     * @test
+     */
+    public function cannot_automatically_delete_temp_file_on_failure_when_using_local_disk()
     {
         $tempFile = '';
 
@@ -148,6 +172,6 @@ class QueuedImportTest extends TestCase
             $this->assertEquals('Something went wrong in the chunk', $e->getMessage());
         }
 
-        $this->assertFalse($tempFile->exists());
+        $this->assertTrue($tempFile->exists());
     }
 }

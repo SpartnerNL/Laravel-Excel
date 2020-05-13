@@ -54,6 +54,14 @@ class RemoteTemporaryFile extends TemporaryFile
     /**
      * @return bool
      */
+    public function existsLocally(): bool
+    {
+        return $this->localTemporaryFile->exists();
+    }
+
+    /**
+     * @return bool
+     */
     public function exists(): bool
     {
         return $this->disk()->exists($this->filename);
@@ -62,9 +70,17 @@ class RemoteTemporaryFile extends TemporaryFile
     /**
      * @return bool
      */
+    public function deleteLocalCopy(): bool
+    {
+        return $this->localTemporaryFile->delete();
+    }
+
+    /**
+     * @return bool
+     */
     public function delete(): bool
     {
-        $this->localTemporaryFile->delete();
+        $this->deleteLocalCopy();
 
         return $this->disk()->delete($this->filename);
     }

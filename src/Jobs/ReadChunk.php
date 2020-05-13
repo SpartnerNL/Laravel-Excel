@@ -8,6 +8,7 @@ use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithCustomValueBinder;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Events\ImportFailed;
+use Maatwebsite\Excel\Files\RemoteTemporaryFile;
 use Maatwebsite\Excel\Files\TemporaryFile;
 use Maatwebsite\Excel\Filters\ChunkReadFilter;
 use Maatwebsite\Excel\HasEventBus;
@@ -148,7 +149,9 @@ class ReadChunk implements ShouldQueue
      */
     public function failed(Throwable $e)
     {
-        $this->temporaryFile->delete();
+        if ($this->temporaryFile instanceof RemoteTemporaryFile) {
+            $this->temporaryFile->deleteLocalCopy();
+        }
 
         if ($this->import instanceof WithEvents) {
             $this->registerListeners($this->import->registerEvents());
