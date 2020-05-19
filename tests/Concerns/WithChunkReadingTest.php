@@ -46,8 +46,8 @@ class WithChunkReadingTest extends TestCase
         $import = new class implements ToModel, WithChunkReading, WithEvents {
             use Importable;
 
-            public $before = false;
-            public $after  = false;
+            public $before = 0;
+            public $after  = 0;
 
             /**
              * @param  array  $row
@@ -79,11 +79,11 @@ class WithChunkReadingTest extends TestCase
                 return [
                     BeforeImport::class => function (BeforeImport $event) {
                         Assert::assertInstanceOf(Reader::class, $event->reader);
-                        $this->before = true;
+                        $this->before++;
                     },
                     AfterImport::class  => function (AfterImport $event) {
                         Assert::assertInstanceOf(Reader::class, $event->reader);
-                        $this->after = true;
+                        $this->after++;
                     },
                 ];
             }
@@ -94,8 +94,8 @@ class WithChunkReadingTest extends TestCase
         $this->assertCount(2, DB::getQueryLog());
         DB::connection()->disableQueryLog();
 
-        $this->assertTrue($import->before, 'BeforeImport was not called.');
-        $this->assertTrue($import->after, 'AfterImport was not called.');
+        $this->assertEquals(1, $import->before, 'BeforeImport was not called or called more than once.');
+        $this->assertEquals(1, $import->after, 'AfterImport was not called or called more than once.');
     }
 
     /**
