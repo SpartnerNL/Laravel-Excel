@@ -182,5 +182,21 @@ return [
         'remote_disk'   => null,
         'remote_prefix' => null,
 
+        /*
+        |--------------------------------------------------------------------------
+        | Force Resync
+        |--------------------------------------------------------------------------
+        |
+        | When dealing with a multi server setup as above, it's possible
+        | for the clean up that occurs after entire queue has been run to only
+        | cleanup the server that the last AfterImportJob runs on. The rest of the server
+        | would still have the local temporary file stored on it. In this case your
+        | local storage limits can be exceeded and future imports won't be processed.
+        | To mitigate this you can set this config value to be true, so that after every
+        | queued chunk is processed the local temporary file is deleted on the server that
+        | processed it.
+        |
+        */
+        'force_resync_remote' => null,
     ],
 ];
