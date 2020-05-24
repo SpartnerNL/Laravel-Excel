@@ -81,7 +81,7 @@ class RemoteTemporaryFile extends TemporaryFile
     public function delete(): bool
     {
         // we don't need to delete local copy as it's deleted at end of each chunk
-        if(!config('excel.temporary_files.force_resync_remote')) {
+        if (!config('excel.temporary_files.force_resync_remote')) {
             $this->deleteLocalCopy();
         }
 

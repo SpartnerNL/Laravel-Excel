@@ -169,11 +169,11 @@ class ReadChunk implements ShouldQueue
 
     private function cleanUpTempFile()
     {
-        if(!config('excel.temporary_files.force_resync_remote')) {
+        if (!config('excel.temporary_files.force_resync_remote')) {
             return true;
         }
 
-        if(!$this->temporaryFile instanceof RemoteTemporaryFile) {
+        if (!$this->temporaryFile instanceof RemoteTemporaryFile) {
             return true;
         }
 
