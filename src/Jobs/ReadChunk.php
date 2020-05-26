@@ -131,6 +131,8 @@ class ReadChunk implements ShouldQueue
         if ($sheet->getHighestRow() < $this->startRow) {
             $sheet->disconnect();
 
+            $this->cleanUpTempFile();
+
             return;
         }
 
@@ -141,6 +143,8 @@ class ReadChunk implements ShouldQueue
             );
 
             $sheet->disconnect();
+
+            $this->cleanUpTempFile();
         });
     }
 
@@ -161,5 +165,18 @@ class ReadChunk implements ShouldQueue
                 $this->import->failed($e);
             }
         }
+    }
+
+    private function cleanUpTempFile()
+    {
+        if (!config('excel.temporary_files.force_resync_remote')) {
+            return true;
+        }
+
+        if (!$this->temporaryFile instanceof RemoteTemporaryFile) {
+            return true;
+        }
+
+        return $this->temporaryFile->deleteLocalCopy();
     }
 }

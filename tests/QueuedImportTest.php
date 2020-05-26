@@ -4,11 +4,14 @@ namespace Maatwebsite\Excel\Tests;
 
 use Illuminate\Foundation\Bus\PendingDispatch;
 use Illuminate\Queue\Events\JobExceptionOccurred;
+use Illuminate\Queue\Events\JobProcessed;
 use Illuminate\Queue\Events\JobProcessing;
+use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Queue;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Files\RemoteTemporaryFile;
 use Maatwebsite\Excel\Files\TemporaryFile;
+use Maatwebsite\Excel\Jobs\AfterImportJob;
 use Maatwebsite\Excel\Jobs\ReadChunk;
 use Maatwebsite\Excel\Tests\Data\Stubs\AfterQueueImportJob;
 use Maatwebsite\Excel\Tests\Data\Stubs\QueuedImport;
@@ -173,5 +176,28 @@ class QueuedImportTest extends TestCase
         }
 
         $this->assertTrue($tempFile->exists());
+    }
+
+    /**
+     * @test
+     */
+    public function can_force_remote_download_and_deletion_for_each_chunk_on_queue()
+    {
+        config()->set('excel.temporary_files.remote_disk', 'test');
+        config()->set('excel.temporary_files.force_resync_remote', true);
+        Bus::fake([AfterImportJob::class]);
+
+        Queue::after(function (JobProcessed $event) {
+            if ($event->job->resolveName() === ReadChunk::class) {
+                $tempFile = $this->inspectJobProperty($event->job, 'temporaryFile');
+
+                // Should not exist locally after each chunk
+                $this->assertFalse(
+                    $tempFile->existsLocally()
+                );
+            }
+        });
+
+        (new QueuedImport())->queue('import-batches.xlsx');
     }
 }
