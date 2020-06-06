@@ -91,6 +91,16 @@ class ReadChunk implements ShouldQueue
     }
 
     /**
+     * Get the middleware the job should be dispatched through.
+     *
+     * @return array
+     */
+    public function middleware()
+    {
+        return (method_exists($this->import, 'middleware')) ? $this->import->middleware() : [];
+    }
+
+    /**
      * @param  TransactionHandler  $transaction
      *
      * @throws \Maatwebsite\Excel\Exceptions\SheetNotFoundException
