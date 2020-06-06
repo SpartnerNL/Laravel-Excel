@@ -16,6 +16,7 @@ use Maatwebsite\Excel\Jobs\ReadChunk;
 use Maatwebsite\Excel\Tests\Data\Stubs\AfterQueueImportJob;
 use Maatwebsite\Excel\Tests\Data\Stubs\QueuedImport;
 use Maatwebsite\Excel\Tests\Data\Stubs\QueuedImportWithFailure;
+use Maatwebsite\Excel\Tests\Data\Stubs\QueuedImportWithMiddlewareException;
 use Throwable;
 
 class QueuedImportTest extends TestCase
@@ -200,4 +201,17 @@ class QueuedImportTest extends TestCase
 
         (new QueuedImport())->queue('import-batches.xlsx');
     }
+
+    /**
+     * @test
+     */
+    public function can_add_middleware_to_a_queued_import()
+    {
+        try {
+            (new QueuedImportWithMiddlewareException())->queue('import-batches.xlsx');
+        } catch (Throwable $e) {
+            $this->assertEquals('Something went wrong in the middleware', $e->getMessage());
+        }
+    }
 }
+
