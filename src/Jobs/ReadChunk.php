@@ -101,6 +101,16 @@ class ReadChunk implements ShouldQueue
     }
 
     /**
+     * Determine the time at which the job should timeout.
+     *
+     * @return \DateTime
+     */
+    public function retryUntil()
+    {
+        return (method_exists($this->import, 'retryUntil')) ? $this->import->retryUntil() : null;
+    }
+
+    /**
      * @param  TransactionHandler  $transaction
      *
      * @throws \Maatwebsite\Excel\Exceptions\SheetNotFoundException
