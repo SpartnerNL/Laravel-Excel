@@ -16,7 +16,9 @@ use Maatwebsite\Excel\Jobs\ReadChunk;
 use Maatwebsite\Excel\Tests\Data\Stubs\AfterQueueImportJob;
 use Maatwebsite\Excel\Tests\Data\Stubs\QueuedImport;
 use Maatwebsite\Excel\Tests\Data\Stubs\QueuedImportWithFailure;
+use Maatwebsite\Excel\Tests\Data\Stubs\QueuedImportWithMiddleware;
 use Maatwebsite\Excel\Tests\Data\Stubs\QueuedImportWithMiddlewareException;
+use Maatwebsite\Excel\Tests\Data\Stubs\QueuedImportWithRetryUntil;
 use Throwable;
 
 class QueuedImportTest extends TestCase
@@ -205,12 +207,24 @@ class QueuedImportTest extends TestCase
     /**
      * @test
      */
-    public function can_add_middleware_to_a_queued_import()
+    public function can_define_middleware_method_on_queued_import()
     {
         try {
-            (new QueuedImportWithMiddlewareException())->queue('import-batches.xlsx');
+            (new QueuedImportWithMiddleware())->queue('import-batches.xlsx');
         } catch (Throwable $e) {
-            $this->assertEquals('Something went wrong in the middleware', $e->getMessage());
+            $this->assertEquals('Job reached middleware method', $e->getMessage());
+        }
+    }
+
+    /**
+     * @test
+     */
+    public function can_define_retry_until_method_on_queued_import()
+    {
+        try {
+            (new QueuedImportWithRetryUntil())->queue('import-batches.xlsx');
+        } catch (Throwable $e) {
+            $this->assertEquals('Job reached retryUntil method', $e->getMessage());
         }
     }
 }

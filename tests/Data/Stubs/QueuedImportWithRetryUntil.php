@@ -9,7 +9,7 @@ use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\Group;
 
-class QueuedImportWithMiddlewareException implements ShouldQueue, ToModel, WithChunkReading
+class QueuedImportWithRetryUntil implements ShouldQueue, ToModel, WithChunkReading
 {
     use Importable;
 
@@ -25,18 +25,23 @@ class QueuedImportWithMiddlewareException implements ShouldQueue, ToModel, WithC
         ]);
     }
 
-    public function middleware()
-    {
-        return [function() {
-            throw new \Exception('Something went wrong in the middleware');
-        }];
-    }
-
     /**
      * @return int
      */
     public function chunkSize(): int
     {
         return 100;
+    }
+
+    /**
+     * Determine the time at which the job should timeout.
+     *
+     * @return \DateTime
+     */
+    public function retryUntil()
+    {
+        throw new \Exception('Job reached retryUntil method');
+
+        return now()->addSeconds(5);
     }
 }
