@@ -17,7 +17,6 @@ use Maatwebsite\Excel\Tests\Data\Stubs\AfterQueueImportJob;
 use Maatwebsite\Excel\Tests\Data\Stubs\QueuedImport;
 use Maatwebsite\Excel\Tests\Data\Stubs\QueuedImportWithFailure;
 use Maatwebsite\Excel\Tests\Data\Stubs\QueuedImportWithMiddleware;
-use Maatwebsite\Excel\Tests\Data\Stubs\QueuedImportWithMiddlewareException;
 use Maatwebsite\Excel\Tests\Data\Stubs\QueuedImportWithRetryUntil;
 use Throwable;
 

@@ -27,7 +27,7 @@ class QueuedImportWithMiddleware implements ShouldQueue, ToModel, WithChunkReadi
 
     public function middleware()
     {
-        return [function() {
+        return [function () {
             throw new \Exception('Job reached middleware method');
         }];
     }
