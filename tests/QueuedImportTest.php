@@ -16,6 +16,8 @@ use Maatwebsite\Excel\Jobs\ReadChunk;
 use Maatwebsite\Excel\Tests\Data\Stubs\AfterQueueImportJob;
 use Maatwebsite\Excel\Tests\Data\Stubs\QueuedImport;
 use Maatwebsite\Excel\Tests\Data\Stubs\QueuedImportWithFailure;
+use Maatwebsite\Excel\Tests\Data\Stubs\QueuedImportWithMiddleware;
+use Maatwebsite\Excel\Tests\Data\Stubs\QueuedImportWithRetryUntil;
 use Throwable;
 
 class QueuedImportTest extends TestCase
@@ -199,5 +201,29 @@ class QueuedImportTest extends TestCase
         });
 
         (new QueuedImport())->queue('import-batches.xlsx');
+    }
+
+    /**
+     * @test
+     */
+    public function can_define_middleware_method_on_queued_import()
+    {
+        try {
+            (new QueuedImportWithMiddleware())->queue('import-batches.xlsx');
+        } catch (Throwable $e) {
+            $this->assertEquals('Job reached middleware method', $e->getMessage());
+        }
+    }
+
+    /**
+     * @test
+     */
+    public function can_define_retry_until_method_on_queued_import()
+    {
+        try {
+            (new QueuedImportWithRetryUntil())->queue('import-batches.xlsx');
+        } catch (Throwable $e) {
+            $this->assertEquals('Job reached retryUntil method', $e->getMessage());
+        }
     }
 }

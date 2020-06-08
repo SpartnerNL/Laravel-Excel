@@ -91,6 +91,26 @@ class ReadChunk implements ShouldQueue
     }
 
     /**
+     * Get the middleware the job should be dispatched through.
+     *
+     * @return array
+     */
+    public function middleware()
+    {
+        return (method_exists($this->import, 'middleware')) ? $this->import->middleware() : [];
+    }
+
+    /**
+     * Determine the time at which the job should timeout.
+     *
+     * @return \DateTime
+     */
+    public function retryUntil()
+    {
+        return (method_exists($this->import, 'retryUntil')) ? $this->import->retryUntil() : null;
+    }
+
+    /**
      * @param  TransactionHandler  $transaction
      *
      * @throws \Maatwebsite\Excel\Exceptions\SheetNotFoundException
