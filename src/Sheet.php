@@ -532,6 +532,10 @@ class Sheet
                 $row = $sheetExport->map($row);
             }
 
+            if ($sheetExport instanceof WithCustomValueBinder) {
+                SpreadsheetCell::setValueBinder($sheetExport);
+            }
+
             return ArrayHelper::ensureMultipleRows(
                 static::mapArraybleRow($row)
             );
