@@ -37,13 +37,9 @@ class ImportMakeCommand extends GeneratorCommand
      */
     protected function getStub()
     {
-        if ($this->option('model')) {
-            $stub = '/stubs/import.model.stub';
-        }
-
-        $stub = $stub ?? '/stubs/import.collection.stub';
-
-        return __DIR__ . $stub;
+        return $this->option('model')
+            ? $this->resolveStubPath('/stubs/import.model.stub')
+            : $this->resolveStubPath('/stubs/import.collection.stub');
     }
 
     /**
