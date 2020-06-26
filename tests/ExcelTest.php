@@ -72,7 +72,7 @@ class ExcelTest extends TestCase
 
         @unlink($path);
 
-        $this->assertFileNotExists($path);
+        $this->assertFileDoesNotExist($path);
 
         $response = $this->SUT->store($export, $name);
 
@@ -91,7 +91,7 @@ class ExcelTest extends TestCase
 
         @unlink($path);
 
-        $this->assertFileNotExists($path);
+        $this->assertFileDoesNotExist($path);
 
         $response = $this->SUT->store($export, $name, 'test');
 
@@ -110,7 +110,7 @@ class ExcelTest extends TestCase
 
         @unlink($path);
 
-        $this->assertFileNotExists($path);
+        $this->assertFileDoesNotExist($path);
 
         $response = $this->SUT->store($export, $name);
 
@@ -141,7 +141,7 @@ class ExcelTest extends TestCase
 
         @unlink($path);
 
-        $this->assertFileNotExists($path);
+        $this->assertFileDoesNotExist($path);
 
         $response = $this->SUT->store($export, $name);
 
@@ -175,7 +175,7 @@ class ExcelTest extends TestCase
             {
                 return [
                     'line_ending'            => PHP_EOL,
-                    'enclosure'              => '',
+                    'enclosure'              => '"',
                     'delimiter'              => ';',
                     'include_separator_line' => true,
                     'excel_compatibility'    => false,
@@ -188,8 +188,8 @@ class ExcelTest extends TestCase
         $contents = file_get_contents(__DIR__ . '/Data/Disks/Local/filename.csv');
 
         $this->assertStringContains('sep=;', $contents);
-        $this->assertStringContains('A1;B1', $contents);
-        $this->assertStringContains('A2;B2', $contents);
+        $this->assertStringContains('"A1";"B1"', $contents);
+        $this->assertStringContains('"A2";"B2"', $contents);
     }
 
     /**

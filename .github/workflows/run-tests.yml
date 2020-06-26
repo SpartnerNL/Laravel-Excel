@@ -73,6 +73,6 @@ jobs:
           composer update --${{ matrix.dependency-version }} --prefer-dist --no-interaction --no-suggest
 
       - name: Execute tests
-        run: vendor/bin/phpunit --verbose --testdox --configuration phpunit.xml.dist
+        run: vendor/bin/phpunit --testdox --configuration phpunit.xml.dist
         env:
           DB_PORT: ${{ job.services.mysql.ports[3306] }}
