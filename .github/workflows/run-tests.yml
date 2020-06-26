@@ -12,7 +12,7 @@ jobs:
 
     services:
       mysql:
-        image: mysql:5.7
+        image: mysql:8
         env:
           MYSQL_DATABASE: laravel_excel
           MYSQL_ALLOW_EMPTY_PASSWORD: yes
@@ -23,8 +23,8 @@ jobs:
     strategy:
       matrix:
         php: [7.4, 7.3, 7.2]
-        laravel: [7.*, 6.*, 5.8.*, 5.7.*, 5.6.*, 5.5.*]
-        dependency-version: [prefer-lowest, prefer-stable]
+        laravel: [7.*, 6.*, 5.8.*]
+        dependency-version: [prefer-stable]
         os: [ubuntu-latest]
         include:
           - laravel: 7.*
@@ -33,22 +33,8 @@ jobs:
             testbench: 4.*
           - laravel: 5.8.*
             testbench: 3.8.*
-          - laravel: 5.7.*
-            testbench: 3.7.*
-          - laravel: 5.6.*
-            testbench: 3.6.*
-          - laravel: 5.5.*
-            testbench: 3.5.*
 
-        exclude:
-          - laravel: 5.7.*
-            php: 7.4
-          - laravel: 5.6.*
-            php: 7.4
-          - laravel: 5.5.*
-            php: 7.4
-
-    name: PHP${{ matrix.php }} - L${{ matrix.laravel }} - ${{ matrix.dependency-version }}
+    name: PHP${{ matrix.php }} - L${{ matrix.laravel }}
 
     steps:
       - name: Checkout code
