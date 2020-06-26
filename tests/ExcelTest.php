@@ -72,7 +72,7 @@ class ExcelTest extends TestCase
 
         @unlink($path);
 
-        $this->assertFileDoesNotExist($path);
+        $this->assertFileMissing($path);
 
         $response = $this->SUT->store($export, $name);
 
@@ -91,7 +91,7 @@ class ExcelTest extends TestCase
 
         @unlink($path);
 
-        $this->assertFileDoesNotExist($path);
+        $this->assertFileMissing($path);
 
         $response = $this->SUT->store($export, $name, 'test');
 
@@ -110,7 +110,7 @@ class ExcelTest extends TestCase
 
         @unlink($path);
 
-        $this->assertFileDoesNotExist($path);
+        $this->assertFileMissing($path);
 
         $response = $this->SUT->store($export, $name);
 
@@ -141,7 +141,7 @@ class ExcelTest extends TestCase
 
         @unlink($path);
 
-        $this->assertFileDoesNotExist($path);
+        $this->assertFileMissing($path);
 
         $response = $this->SUT->store($export, $name);
 

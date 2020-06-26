@@ -132,4 +132,16 @@ class TestCase extends OrchestraTestCase
             static::assertThat($haystack, new StringContains($needle, false), $message);
         }
     }
+
+    /**
+     * @param string $path
+     */
+    protected function assertFileMissing(string $path)
+    {
+        if (method_exists($this, 'assertFileDoesNotExist')) {
+            $this->assertFileDoesNotExist($path);
+        } else {
+            $this->assertFileNotExists($path);
+        }
+    }
 }
