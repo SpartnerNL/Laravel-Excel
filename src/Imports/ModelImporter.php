@@ -38,7 +38,7 @@ class ModelImporter
 
         $headingRow       = HeadingRowExtractor::extract($worksheet, $import);
         $batchSize        = $import instanceof WithBatchInserts ? $import->batchSize() : 1;
-        $endRow           = EndRowFinder::find($import, $startRow);
+        $endRow           = EndRowFinder::find($import, $startRow, $worksheet->getHighestRow());
         $progessBar       = $import instanceof WithProgressBar;
         $withMapping      = $import instanceof WithMapping;
         $withCalcFormulas = $import instanceof WithCalculatedFormulas;

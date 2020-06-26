@@ -108,4 +108,32 @@ class WithLimitTest extends TestCase
 
         $import->import('import-users.xlsx');
     }
+
+    /**
+     * @test
+     */
+    public function can_set_limit_bigger_than_row_size()
+    {
+        $import = new class implements ToArray, WithLimit {
+            use Importable;
+
+            /**
+             * @param array $array
+             */
+            public function array(array $array)
+            {
+                Assert::assertCount(2, $array);
+            }
+
+            /**
+             * @return int
+             */
+            public function limit(): int
+            {
+                return 10;
+            }
+        };
+
+        $import->import('import-users.xlsx');
+    }
 }

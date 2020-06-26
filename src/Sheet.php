@@ -315,7 +315,7 @@ class Sheet
             return [];
         }
 
-        $endRow     = EndRowFinder::find($import, $startRow);
+        $endRow     = EndRowFinder::find($import, $startRow. $this->worksheet->getHighestRow());
         $headingRow = HeadingRowExtractor::extract($this->worksheet, $import);
 
         $rows = [];
