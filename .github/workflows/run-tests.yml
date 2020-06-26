@@ -12,7 +12,7 @@ jobs:
 
     services:
       mysql:
-        image: mysql:8
+        image: mysql:5.7
         env:
           MYSQL_DATABASE: laravel_excel
           MYSQL_ALLOW_EMPTY_PASSWORD: yes
