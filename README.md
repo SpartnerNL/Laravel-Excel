@@ -26,8 +26,8 @@ exports and imports.
 </h4>
 
 <p align="center">
-  <a href="https://travis-ci.org/Maatwebsite/Laravel-Excel">
-    <img src="https://travis-ci.org/Maatwebsite/Laravel-Excel.svg?branch=3.1" alt="Build Status">
+  <a href="https://github.com/Maatwebsite/Laravel-Excel/actions">
+    <img src="https://github.com/Maatwebsite/Laravel-Excel/workflows/Run%20tests/badge.svg?branch=3.1" alt="Github Actions">
   </a>
 
   <a href="https://styleci.io/repos/14259390">
