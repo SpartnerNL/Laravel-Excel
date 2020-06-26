@@ -3,9 +3,12 @@
 namespace Maatwebsite\Excel\Tests\Concerns;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\OnEachRow;
+use Maatwebsite\Excel\Concerns\ToArray;
+use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
@@ -162,8 +165,8 @@ class WithValidationTest extends TestCase
                 return [
                     '1' => new class implements \Illuminate\Contracts\Validation\Rule {
                         /**
-                         * @param  string $attribute
-                         * @param  mixed  $value
+                         * @param string $attribute
+                         * @param mixed  $value
                          *
                          * @return bool
                          */
@@ -471,6 +474,76 @@ class WithValidationTest extends TestCase
                     'email'    => $values['email'],
                     'password' => 'secret',
                 ]);
+            }
+
+            /**
+             * @return array
+             */
+            public function rules(): array
+            {
+                return [
+                    'email' => Rule::in(['patrick@maatwebsite.nl']),
+                ];
+            }
+        };
+
+        try {
+            $import->import('import-users-with-headings.xlsx');
+        } catch (ValidationException $e) {
+            $this->validateFailure($e, 3, 'email', [
+                'The selected email is invalid.',
+            ]);
+        }
+
+        $this->assertInstanceOf(ValidationException::class, $e ?? null);
+    }
+
+    /**
+     * @test
+     */
+    public function can_validate_using_collection()
+    {
+        $import = new class implements ToCollection, WithHeadingRow, WithValidation {
+            use Importable;
+
+            public function collection(Collection $rows)
+            {
+                //
+            }
+
+            /**
+             * @return array
+             */
+            public function rules(): array
+            {
+                return [
+                    'email' => Rule::in(['patrick@maatwebsite.nl']),
+                ];
+            }
+        };
+
+        try {
+            $import->import('import-users-with-headings.xlsx');
+        } catch (ValidationException $e) {
+            $this->validateFailure($e, 3, 'email', [
+                'The selected email is invalid.',
+            ]);
+        }
+
+        $this->assertInstanceOf(ValidationException::class, $e ?? null);
+    }
+
+    /**
+     * @test
+     */
+    public function can_validate_using_array()
+    {
+        $import = new class implements ToArray, WithHeadingRow, WithValidation {
+            use Importable;
+
+            public function array(array $rows)
+            {
+                //
             }
 
             /**

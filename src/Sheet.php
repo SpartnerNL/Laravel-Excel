@@ -249,11 +249,23 @@ class Sheet
             }
 
             if ($import instanceof ToCollection) {
-                $import->collection($this->toCollection($import, $startRow, null, $calculatesFormulas));
+                $rows = $this->toCollection($import, $startRow, null, $calculatesFormulas);
+
+                if ($import instanceof WithValidation) {
+                    $this->validate($import, $startRow, $rows);
+                }
+
+                $import->collection($rows);
             }
 
             if ($import instanceof ToArray) {
-                $import->array($this->toArray($import, $startRow, null, $calculatesFormulas));
+                $rows = $this->toArray($import, $startRow, null, $calculatesFormulas);
+
+                if ($import instanceof WithValidation) {
+                    $this->validate($import, $startRow, $rows);
+                }
+
+                $import->array($rows);
             }
         }
 
@@ -335,9 +347,23 @@ class Sheet
      */
     public function toCollection($import, int $startRow = null, $nullValue = null, $calculateFormulas = false, $formatData = false): Collection
     {
-        return new Collection(array_map(function (array $row) {
+        $rows = $this->toArray($import, $startRow, $nullValue, $calculateFormulas, $formatData);
+
+        return (new Collection(array_map(function (array $row) {
             return new Collection($row);
-        }, $this->toArray($import, $startRow, $nullValue, $calculateFormulas, $formatData)));
+        }, $rows)));
+    }
+
+    protected function validate(WithValidation $import, int $startRow, $rows)
+    {
+        $toValidate = (new Collection($rows))->mapWithKeys(function ($row, $index) use ($startRow) {
+            return [($startRow + $index) => $row];
+        });
+
+        try {
+            app(RowValidator::class)->validate($toValidate->toArray(), $import);
+        } catch (RowSkippedException $e) {
+        }
     }
 
     /**
