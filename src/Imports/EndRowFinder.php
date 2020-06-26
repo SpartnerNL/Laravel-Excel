@@ -23,7 +23,7 @@ class EndRowFinder
         $limit = $import->limit();
 
         if ($limit > $highestRow) {
-            return $highestRow;
+            return null;
         }
 
         // When no start row given,

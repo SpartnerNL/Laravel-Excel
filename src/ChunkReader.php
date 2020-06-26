@@ -43,16 +43,13 @@ class ChunkReader
         foreach ($worksheets as $name => $sheetImport) {
             $startRow = HeadingRowExtractor::determineStartRow($sheetImport);
 
-            $rowCount = $totalRows[$name];
             if ($sheetImport instanceof WithLimit) {
                 $limit = $sheetImport->limit();
 
-                if ($limit <= $rowCount) {
-                    $rowCount = $sheetImport->limit();
+                if ($limit <= $totalRows[$name]) {
+                    $totalRows[$name] = $sheetImport->limit();
                 }
             }
-
-            $totalRows[$name] = $rowCount;
 
             for ($currentRow = $startRow; $currentRow <= $totalRows[$name]; $currentRow += $chunkSize) {
                 $jobs->push(new ReadChunk(
