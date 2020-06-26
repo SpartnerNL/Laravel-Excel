@@ -349,21 +349,9 @@ class Sheet
     {
         $rows = $this->toArray($import, $startRow, $nullValue, $calculateFormulas, $formatData);
 
-        return (new Collection(array_map(function (array $row) {
+        return new Collection(array_map(function (array $row) {
             return new Collection($row);
-        }, $rows)));
-    }
-
-    protected function validate(WithValidation $import, int $startRow, $rows)
-    {
-        $toValidate = (new Collection($rows))->mapWithKeys(function ($row, $index) use ($startRow) {
-            return [($startRow + $index) => $row];
-        });
-
-        try {
-            app(RowValidator::class)->validate($toValidate->toArray(), $import);
-        } catch (RowSkippedException $e) {
-        }
+        }, $rows));
     }
 
     /**
@@ -616,6 +604,18 @@ class Sheet
     {
         $this->worksheet->disconnectCells();
         unset($this->worksheet);
+    }
+
+    protected function validate(WithValidation $import, int $startRow, $rows)
+    {
+        $toValidate = (new Collection($rows))->mapWithKeys(function ($row, $index) use ($startRow) {
+            return [($startRow + $index) => $row];
+        });
+
+        try {
+            app(RowValidator::class)->validate($toValidate->toArray(), $import);
+        } catch (RowSkippedException $e) {
+        }
     }
 
     /**
