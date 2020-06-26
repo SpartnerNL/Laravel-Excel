@@ -7,7 +7,8 @@ on:
     - cron: '0 0 * * *'
 
 jobs:
-  php-tests:
+  tests:
+    if: "!contains(github.event.head_commit.message, 'skip ci')"
     runs-on: ${{ matrix.os }}
 
     services:
