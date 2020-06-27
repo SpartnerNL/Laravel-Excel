@@ -21,7 +21,6 @@ class WithReadFilterTest extends TestCase
             public function readFilter(): IReadFilter
             {
                 return new class implements IReadFilter {
-
                     public function readCell($column, $row, $worksheetName = '')
                     {
                         // Assert read filter is being called.
