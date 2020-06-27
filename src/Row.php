@@ -3,6 +3,7 @@
 namespace Maatwebsite\Excel;
 
 use Illuminate\Support\Collection;
+use Maatwebsite\Excel\Concerns\WithColumnLimit;
 use PhpOffice\PhpSpreadsheet\Worksheet\Row as SpreadsheetRow;
 
 class Row
@@ -38,30 +39,33 @@ class Row
     }
 
     /**
-     * @param null $nullValue
-     * @param bool $calculateFormulas
-     * @param bool $formatData
+     * @param null        $nullValue
+     * @param bool        $calculateFormulas
+     * @param bool        $formatData
+     *
+     * @param string|null $endColumn
      *
      * @return Collection
      */
-    public function toCollection($nullValue = null, $calculateFormulas = false, $formatData = true): Collection
+    public function toCollection($nullValue = null, $calculateFormulas = false, $formatData = true, ?string $endColumn = null): Collection
     {
-        return new Collection($this->toArray($nullValue, $calculateFormulas, $formatData));
+        return new Collection($this->toArray($nullValue, $calculateFormulas, $formatData, $endColumn));
     }
 
     /**
-     * @param null $nullValue
-     * @param bool $calculateFormulas
-     * @param bool $formatData
+     * @param null        $nullValue
+     * @param bool        $calculateFormulas
+     * @param bool        $formatData
+     * @param string|null $endColumn
      *
      * @return array
      */
-    public function toArray($nullValue = null, $calculateFormulas = false, $formatData = true)
+    public function toArray($nullValue = null, $calculateFormulas = false, $formatData = true, ?string $endColumn = null)
     {
         $cells = [];
 
         $i = 0;
-        foreach ($this->row->getCellIterator() as $cell) {
+        foreach ($this->row->getCellIterator('A', $endColumn) as $cell) {
             $value = (new Cell($cell))->getValue($nullValue, $calculateFormulas, $formatData);
 
             if (isset($this->headingRow[$i])) {

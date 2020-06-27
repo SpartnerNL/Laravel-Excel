@@ -19,6 +19,7 @@ use Maatwebsite\Excel\Concerns\WithCalculatedFormulas;
 use Maatwebsite\Excel\Concerns\WithCharts;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithColumnFormatting;
+use Maatwebsite\Excel\Concerns\WithColumnLimit;
 use Maatwebsite\Excel\Concerns\WithCustomChunkSize;
 use Maatwebsite\Excel\Concerns\WithCustomStartCell;
 use Maatwebsite\Excel\Concerns\WithCustomValueBinder;
@@ -240,6 +241,7 @@ class Sheet
         }
 
         $calculatesFormulas = $import instanceof WithCalculatedFormulas;
+        $endColumn        = $import instanceof WithColumnLimit ? $import->endColumn() : null;
 
         if ($import instanceof WithMappedCells) {
             app(MappedReader::class)->map($import, $this->worksheet);
@@ -249,7 +251,7 @@ class Sheet
             }
 
             if ($import instanceof ToCollection) {
-                $rows = $this->toCollection($import, $startRow, null, $calculatesFormulas);
+                $rows = $this->toCollection($import, $startRow, null, $calculatesFormulas, $endColumn);
 
                 if ($import instanceof WithValidation) {
                     $this->validate($import, $startRow, $rows);
@@ -271,12 +273,13 @@ class Sheet
 
         if ($import instanceof OnEachRow) {
             $headingRow = HeadingRowExtractor::extract($this->worksheet, $import);
+            $endColumn  = $import instanceof WithColumnLimit ? $import->endColumn() : null;
 
             foreach ($this->worksheet->getRowIterator()->resetStart($startRow ?? 1) as $row) {
                 $sheetRow = new Row($row, $headingRow);
 
                 if ($import instanceof WithValidation) {
-                    $toValidate = [$sheetRow->getIndex() => $sheetRow->toArray(null, $import instanceof WithCalculatedFormulas)];
+                    $toValidate = [$sheetRow->getIndex() => $sheetRow->toArray(null, $import instanceof WithCalculatedFormulas, $endColumn)];
 
                     try {
                         app(RowValidator::class)->validate($toValidate, $import);
@@ -317,10 +320,11 @@ class Sheet
 
         $endRow     = EndRowFinder::find($import, $startRow, $this->worksheet->getHighestRow());
         $headingRow = HeadingRowExtractor::extract($this->worksheet, $import);
+        $endColumn  = $import instanceof WithColumnLimit ? $import->endColumn() : null;
 
         $rows = [];
         foreach ($this->worksheet->getRowIterator($startRow, $endRow) as $row) {
-            $row = (new Row($row, $headingRow))->toArray($nullValue, $calculateFormulas, $formatData);
+            $row = (new Row($row, $headingRow))->toArray($nullValue, $calculateFormulas, $formatData, $endColumn);
 
             if ($import instanceof WithMapping) {
                 $row = $import->map($row);

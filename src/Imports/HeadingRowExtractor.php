@@ -2,6 +2,7 @@
 
 namespace Maatwebsite\Excel\Imports;
 
+use Maatwebsite\Excel\Concerns\WithColumnLimit;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithStartRow;
 use Maatwebsite\Excel\Row;
@@ -58,7 +59,8 @@ class HeadingRowExtractor
         $headingRowNumber = self::headingRow($importable);
         $rows             = iterator_to_array($worksheet->getRowIterator($headingRowNumber, $headingRowNumber));
         $headingRow       = head($rows);
+        $endColumn        = $importable instanceof WithColumnLimit ? $importable->endColumn() : null;
 
-        return HeadingRowFormatter::format((new Row($headingRow))->toArray(null, false, false));
+        return HeadingRowFormatter::format((new Row($headingRow))->toArray(null, false, false, $endColumn));
     }
 }

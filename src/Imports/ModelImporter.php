@@ -5,6 +5,7 @@ namespace Maatwebsite\Excel\Imports;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithCalculatedFormulas;
+use Maatwebsite\Excel\Concerns\WithColumnLimit;
 use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Concerns\WithProgressBar;
 use Maatwebsite\Excel\Row;
@@ -26,9 +27,12 @@ class ModelImporter
     }
 
     /**
-     * @param Worksheet $worksheet
-     * @param ToModel   $import
-     * @param int|null  $startRow
+     * @param Worksheet   $worksheet
+     * @param ToModel     $import
+     * @param int|null    $startRow
+     * @param string|null $endColumn
+     *
+     * @throws \Maatwebsite\Excel\Validators\ValidationException
      */
     public function import(Worksheet $worksheet, ToModel $import, int $startRow = 1)
     {
@@ -42,6 +46,7 @@ class ModelImporter
         $progessBar       = $import instanceof WithProgressBar;
         $withMapping      = $import instanceof WithMapping;
         $withCalcFormulas = $import instanceof WithCalculatedFormulas;
+        $endColumn        = $import instanceof WithColumnLimit ? $import->endColumn() : null;
 
         $this->manager->setRemembersRowNumber(method_exists($import, 'rememberRowNumber'));
 
@@ -50,7 +55,7 @@ class ModelImporter
             $i++;
 
             $row      = new Row($spreadSheetRow, $headingRow);
-            $rowArray = $row->toArray(null, $withCalcFormulas);
+            $rowArray = $row->toArray(null, $withCalcFormulas, true, $endColumn);
 
             if ($withMapping) {
                 $rowArray = $import->map($rowArray);
