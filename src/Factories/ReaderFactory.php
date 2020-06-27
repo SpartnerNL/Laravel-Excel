@@ -4,8 +4,12 @@ namespace Maatwebsite\Excel\Factories;
 
 use Maatwebsite\Excel\Concerns\MapsCsvSettings;
 use Maatwebsite\Excel\Concerns\WithCustomCsvSettings;
+use Maatwebsite\Excel\Concerns\WithLimit;
+use Maatwebsite\Excel\Concerns\WithReadFilter;
+use Maatwebsite\Excel\Concerns\WithStartRow;
 use Maatwebsite\Excel\Exceptions\NoTypeDetectedException;
 use Maatwebsite\Excel\Files\TemporaryFile;
+use Maatwebsite\Excel\Filters\LimitFilter;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Reader\Csv;
 use PhpOffice\PhpSpreadsheet\Reader\Exception;
@@ -45,6 +49,15 @@ class ReaderFactory
             $reader->setEscapeCharacter(static::$escapeCharacter);
             $reader->setContiguous(static::$contiguous);
             $reader->setInputEncoding(static::$inputEncoding);
+        }
+
+        if ($import instanceof WithReadFilter) {
+            $reader->setReadFilter($import->readFilter());
+        } elseif ($import instanceof WithLimit) {
+            $reader->setReadFilter(new LimitFilter(
+                $import instanceof WithStartRow ? $import->startRow() : 1,
+                $import->limit()
+            ));
         }
 
         return $reader;

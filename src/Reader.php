@@ -143,15 +143,6 @@ class Reader
     {
         $this->reader = $this->getReader($import, $filePath, $readerType, $disk);
 
-        if ($import instanceof WithReadFilter) {
-            $this->reader->setReadFilter($import->readFilter());
-        } elseif ($import instanceof WithLimit) {
-            $this->reader->setReadFilter(new LimitFilter(
-                $import instanceof WithStartRow ? $import->startRow() : 1,
-                $import->limit()
-            ));
-        }
-
         $this->loadSpreadsheet($import);
 
         $sheets = [];
