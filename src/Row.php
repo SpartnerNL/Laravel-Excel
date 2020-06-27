@@ -3,7 +3,6 @@
 namespace Maatwebsite\Excel;
 
 use Illuminate\Support\Collection;
-use Maatwebsite\Excel\Concerns\WithColumnLimit;
 use PhpOffice\PhpSpreadsheet\Worksheet\Row as SpreadsheetRow;
 
 class Row
