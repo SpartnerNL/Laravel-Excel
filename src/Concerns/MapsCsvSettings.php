@@ -15,7 +15,7 @@ trait MapsCsvSettings
      * @var string
      */
     protected static $enclosure = '"';
-    
+
     /**
      * @var bool
      */
