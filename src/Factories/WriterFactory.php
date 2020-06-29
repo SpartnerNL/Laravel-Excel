@@ -46,6 +46,7 @@ class WriterFactory
 
             $writer->setDelimiter(static::$delimiter);
             $writer->setEnclosure(static::$enclosure);
+            $writer->setEnclosureRequired(!!static::$enclosure);
             $writer->setLineEnding(static::$lineEnding);
             $writer->setUseBOM(static::$useBom);
             $writer->setIncludeSeparatorLine(static::$includeSeparatorLine);
