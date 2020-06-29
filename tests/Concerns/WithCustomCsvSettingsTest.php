@@ -48,7 +48,7 @@ class WithCustomCsvSettingsTest extends TestCase
             {
                 return [
                     'delimiter'              => ';',
-                    'enclosure'              => '"',
+                    'enclosure'              => '',
                     'line_ending'            => PHP_EOL,
                     'use_bom'                => true,
                     'include_separator_line' => true,
@@ -62,8 +62,8 @@ class WithCustomCsvSettingsTest extends TestCase
         $contents = file_get_contents(__DIR__ . '/../Data/Disks/Local/custom-csv.csv');
 
         $this->assertStringContains('sep=;', $contents);
-        $this->assertStringContains('"A1";"B1"', $contents);
-        $this->assertStringContains('"A2";"B2"', $contents);
+        $this->assertStringContains('A1;B1', $contents);
+        $this->assertStringContains('A2;B2', $contents);
     }
 
     /**
@@ -79,7 +79,7 @@ class WithCustomCsvSettingsTest extends TestCase
             {
                 return [
                     'delimiter'        => ';',
-                    'enclosure'        => '"',
+                    'enclosure'        => '',
                     'escape_character' => '\\',
                     'contiguous'       => true,
                     'input_encoding'   => 'UTF-8',
