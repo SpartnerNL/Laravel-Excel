@@ -17,11 +17,6 @@ trait MapsCsvSettings
     protected static $enclosure = '"';
 
     /**
-     * @var bool
-     */
-    protected static $enclosureRequired = true;
-
-    /**
      * @var string
      */
     protected static $lineEnding = PHP_EOL;
@@ -63,7 +58,6 @@ trait MapsCsvSettings
     {
         static::$delimiter            = Arr::get($config, 'delimiter', static::$delimiter);
         static::$enclosure            = Arr::get($config, 'enclosure', static::$enclosure);
-        static::$enclosureRequired    = Arr::get($config, 'enclosure_required', static::$enclosureRequired);
         static::$lineEnding           = Arr::get($config, 'line_ending', static::$lineEnding);
         static::$useBom               = Arr::get($config, 'use_bom', static::$useBom);
         static::$includeSeparatorLine = Arr::get($config, 'include_separator_line', static::$includeSeparatorLine);
