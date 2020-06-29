@@ -35,7 +35,6 @@ return [
         'csv'                    => [
             'delimiter'              => ',',
             'enclosure'              => '"',
-            'enclosure_required'     => true,
             'line_ending'            => PHP_EOL,
             'use_bom'                => false,
             'include_separator_line' => false,
