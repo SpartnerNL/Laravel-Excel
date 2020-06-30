@@ -41,7 +41,6 @@ class ExcelFake implements Exporter, Importer
      */
     protected $matchByRegex = false;
 
-
     /**
      * @var object|null
      */
@@ -290,7 +289,7 @@ class ExcelFake implements Exporter, Importer
         );
     }
 
-    public function assertQueuedWithChain($chain) : void
+    public function assertQueuedWithChain($chain): void
     {
         Queue::assertPushedWithChain(get_class($this->job), $chain);
     }

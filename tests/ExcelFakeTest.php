@@ -12,7 +12,6 @@ use Maatwebsite\Excel\Facades\Excel as ExcelFacade;
 use Maatwebsite\Excel\Fakes\ExcelFake;
 use Maatwebsite\Excel\Tests\Data\Stubs\ChainedJobStub;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
-use Maatwebsite\Excel\Tests\Data\Stubs\ExportWithRegistersEventListeners;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class ExcelFakeTest extends TestCase
@@ -134,7 +133,7 @@ class ExcelFakeTest extends TestCase
         ExcelFacade::queue(
             $this->givenQueuedExport(), 'queued-filename.csv', 's3'
         )->chain([
-            new ChainedJobStub()
+            new ChainedJobStub(),
         ]);
 
         ExcelFacade::assertQueuedWithChain([
