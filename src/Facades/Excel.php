@@ -22,6 +22,7 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
  * @method static void assertDownloaded(string $fileName, callable $callback = null)
  * @method static void assertStored(string $filePath, string|callable $disk = null, callable $callback = null)
  * @method static void assertQueued(string $filePath, string|callable $disk = null, callable $callback = null)
+ * @method static void assertQueuedWithChain(array $chain)
  * @method static void assertImported(string $filePath, string|callable $disk = null, callable $callback = null)
  */
 class Excel extends Facade

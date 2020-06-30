@@ -10,7 +10,9 @@ use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Facades\Excel as ExcelFacade;
 use Maatwebsite\Excel\Fakes\ExcelFake;
+use Maatwebsite\Excel\Tests\Data\Stubs\ChainedJobStub;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
+use Maatwebsite\Excel\Tests\Data\Stubs\ExportWithRegistersEventListeners;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class ExcelFakeTest extends TestCase
@@ -120,6 +122,24 @@ class ExcelFakeTest extends TestCase
         });
         ExcelFacade::matchByRegex();
         ExcelFacade::assertQueued('/\w{6}-\w{8}\.csv/', 's3');
+    }
+
+    /**
+     * @test
+     */
+    public function can_assert_against_a_fake_queued_export_with_chain()
+    {
+        ExcelFacade::fake();
+
+        ExcelFacade::queue(
+            $this->givenQueuedExport(), 'queued-filename.csv', 's3'
+        )->chain([
+            new ChainedJobStub()
+        ]);
+
+        ExcelFacade::assertQueuedWithChain([
+            new ChainedJobStub(),
+        ]);
     }
 
     /**
