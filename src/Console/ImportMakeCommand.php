@@ -83,7 +83,6 @@ class ImportMakeCommand extends GeneratorCommand
     {
         return [
             ['model', 'm', InputOption::VALUE_OPTIONAL, 'Generate an import for the given model.'],
-            ['query', '', InputOption::VALUE_NONE, 'Generate an import for a query.'],
         ];
     }
 }
