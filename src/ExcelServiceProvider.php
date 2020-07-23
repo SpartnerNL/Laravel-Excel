@@ -39,6 +39,10 @@ class ExcelServiceProvider extends ServiceProvider
                 ], 'config');
             }
         }
+
+        $this->app->booted(function () {
+            $this->app->make(SettingsProvider::class)->provide();
+        });
     }
 
     /**

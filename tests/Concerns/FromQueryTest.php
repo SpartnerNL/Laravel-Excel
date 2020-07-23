@@ -204,6 +204,28 @@ class FromQueryTest extends TestCase
         $this->assertEquals($this->format_nested_arrays_expected_data($export->query()->get()), $contents);
     }
 
+    /**
+     * @test
+     */
+    public function can_export_from_query_with_batch_caching()
+    {
+        config()->set('excel.cache.driver', 'batch');
+
+        $export = new FromUsersQueryExport;
+
+        $response = $export->store('from-query-store.xlsx');
+
+        $this->assertTrue($response);
+
+        $contents = $this->readAsArray(__DIR__ . '/../Data/Disks/Local/from-query-store.xlsx', 'Xlsx');
+
+        $allUsers = $export->query()->get()->map(function (User $user) {
+            return array_values($user->toArray());
+        })->toArray();
+
+        $this->assertEquals($allUsers, $contents);
+    }
+
     protected function format_nested_arrays_expected_data($groups)
     {
         $expected = [];

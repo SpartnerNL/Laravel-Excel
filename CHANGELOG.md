@@ -8,6 +8,7 @@ All notable changes to this project will be documented in this file.
 - Added default spreadsheet properties config
 - Added WithColumnWidths concern
 - Added WithStyles concern.
+- Config setting to configure cell caching
 
 ### Changed
 - Sheet titles longer than 31 chars get trimmed.

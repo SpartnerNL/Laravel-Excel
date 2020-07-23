@@ -417,7 +417,7 @@ class Sheet
      */
     public function fromView(FromView $sheetExport, $sheetIndex = null)
     {
-        $temporaryFile = $this->temporaryFileFactory->makeLocal();
+        $temporaryFile = $this->temporaryFileFactory->makeLocal(null, 'html');
         $temporaryFile->put($sheetExport->view()->render());
 
         $spreadsheet = $this->worksheet->getParent();
