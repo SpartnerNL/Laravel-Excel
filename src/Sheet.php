@@ -49,6 +49,7 @@ use PhpOffice\PhpSpreadsheet\Cell\Cell as SpreadsheetCell;
 use PhpOffice\PhpSpreadsheet\Chart\Chart;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Reader\Html;
+use PhpOffice\PhpSpreadsheet\Shared\StringHelper;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Worksheet\BaseDrawing;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
@@ -160,7 +161,14 @@ class Sheet
         $this->raise(new BeforeSheet($this, $this->exportable));
 
         if ($sheetExport instanceof WithTitle) {
-            $this->worksheet->setTitle($sheetExport->title());
+            $title = $sheetExport->title();
+
+            $title = str_replace(['*', ':', '/', '\\', '?', '[', ']'], '', $title);
+            if (StringHelper::countCharacters($title) > Worksheet::SHEET_TITLE_MAXIMUM_LENGTH) {
+                $title = StringHelper::substring($title, 0, Worksheet::SHEET_TITLE_MAXIMUM_LENGTH);
+            }
+
+            $this->worksheet->setTitle($title);
         }
 
         if (($sheetExport instanceof FromQuery || $sheetExport instanceof FromCollection || $sheetExport instanceof FromArray) && $sheetExport instanceof FromView) {
