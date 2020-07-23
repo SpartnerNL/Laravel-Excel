@@ -3,7 +3,6 @@
 use Maatwebsite\Excel\Excel;
 
 return [
-
     'exports' => [
 
         /*
@@ -64,19 +63,29 @@ return [
 
     'imports'            => [
 
+        /*
+        |--------------------------------------------------------------------------
+        | Read Only
+        |--------------------------------------------------------------------------
+        |
+        | When dealing with imports, you might only be interested in the
+        | data that the sheet exists. By default we ignore all styles,
+        | however if you want to do some logic based on style data
+        | you can enable it by setting read_only to false.
+        |
+        */
         'read_only' => true,
 
+        /*
+        |--------------------------------------------------------------------------
+        | Heading Row Formatter
+        |--------------------------------------------------------------------------
+        |
+        | Configure the heading row formatter.
+        | Available options: none|slug|custom
+        |
+        */
         'heading_row' => [
-
-            /*
-            |--------------------------------------------------------------------------
-            | Heading Row Formatter
-            |--------------------------------------------------------------------------
-            |
-            | Configure the heading row formatter.
-            | Available options: none|slug|custom
-            |
-            */
             'formatter' => 'slug',
         ],
 
@@ -104,7 +113,7 @@ return [
         | Configure e.g. default title, creator, subject,...
         |
         */
-        'properties'             => [
+        'properties'  => [
             'creator'        => '',
             'lastModifiedBy' => '',
             'title'          => '',
@@ -123,9 +132,8 @@ return [
     | Extension detector
     |--------------------------------------------------------------------------
     |
-    | Configure here which writer type should be used when
-    | the package needs to guess the correct type
-    | based on the extension alone.
+    | Configure here which writer/reader type should be used when the package
+    | needs to guess the correct type based on the extension alone.
     |
     */
     'extension_detector' => [
@@ -157,39 +165,43 @@ return [
         'pdf'      => Excel::DOMPDF,
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Value Binder
+    |--------------------------------------------------------------------------
+    |
+    | PhpSpreadsheet offers a way to hook into the process of a value being
+    | written to a cell. In there some assumptions are made on how the
+    | value should be formatted. If you want to change those defaults,
+    | you can implement your own default value binder.
+    |
+    | Possible value binders:
+    |
+    | [x] Maatwebsite\Excel\DefaultValueBinder::class
+    | [x] PhpOffice\PhpSpreadsheet\Cell\StringValueBinder::class
+    | [x] PhpOffice\PhpSpreadsheet\Cell\AdvancedValueBinder::class
+    |
+    */
     'value_binder' => [
-
-        /*
-        |--------------------------------------------------------------------------
-        | Default Value Binder
-        |--------------------------------------------------------------------------
-        |
-        | PhpSpreadsheet offers a way to hook into the process of a value being
-        | written to a cell. In there some assumptions are made on how the
-        | value should be formatted. If you want to change those defaults,
-        | you can implement your own default value binder.
-        |
-        */
         'default' => Maatwebsite\Excel\DefaultValueBinder::class,
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Transaction Handler
+    |--------------------------------------------------------------------------
+    |
+    | By default the import is wrapped in a transaction. This is useful
+    | for when an import may fail and you want to retry it. With the
+    | transactions, the previous import gets rolled-back.
+    |
+    | You can disable the transaction handler by setting this to null.
+    | Or you can choose a custom made transaction handler here.
+    |
+    | Supported handlers: null|db
+    |
+    */
     'transactions' => [
-
-        /*
-        |--------------------------------------------------------------------------
-        | Transaction Handler
-        |--------------------------------------------------------------------------
-        |
-        | By default the import is wrapped in a transaction. This is useful
-        | for when an import may fail and you want to retry it. With the
-        | transactions, the previous import gets rolled-back.
-        |
-        | You can disable the transaction handler by setting this to null.
-        | Or you can choose a custom made transaction handler here.
-        |
-        | Supported handlers: null|db
-        |
-        */
         'handler' => 'db',
     ],
 
