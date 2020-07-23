@@ -95,6 +95,27 @@ return [
             'contiguous'       => false,
             'input_encoding'   => 'UTF-8',
         ],
+
+        /*
+        |--------------------------------------------------------------------------
+        | Worksheet properties
+        |--------------------------------------------------------------------------
+        |
+        | Configure e.g. default title, creator, subject,...
+        |
+        */
+        'properties'             => [
+            'creator'        => '',
+            'lastModifiedBy' => '',
+            'title'          => '',
+            'description'    => '',
+            'subject'        => '',
+            'keywords'       => '',
+            'category'       => '',
+            'manager'        => '',
+            'company'        => '',
+        ],
+
     ],
 
     /*
