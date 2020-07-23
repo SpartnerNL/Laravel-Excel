@@ -43,4 +43,4 @@ All notable changes to this project will be documented in this file.
 [Unreleased]: https://github.com/Maatwebsite/Laravel-Excel/compare/3.1.20...HEAD
 [3.1.20]: https://github.com/Maatwebsite/Laravel-Excel/compare/3.1.19...3.1.20
 
-_Older releases can be found in Github releases._
+_Older release notes can be found in Github releases._
