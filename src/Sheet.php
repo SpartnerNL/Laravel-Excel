@@ -496,7 +496,12 @@ class Sheet
     public function autoSize()
     {
         foreach ($this->buildColumnRange('A', $this->worksheet->getHighestDataColumn()) as $col) {
-            $this->worksheet->getColumnDimension($col)->setAutoSize(true);
+            $dimension = $this->worksheet->getColumnDimension($col);
+
+            // Only auto-size columns that have not have an explicit width.
+            if ($dimension->getWidth() === -1) {
+                $dimension->setAutoSize(true);
+            }
         }
     }
 

@@ -13,6 +13,9 @@ All notable changes to this project will be documented in this file.
 - Sheet titles longer than 31 chars get trimmed.
 - Sheet titles with unsupported chars get cleaned.
 
+### Fixed
+- Fixed issue with using ShouldAutosize in combination with FromView column widths.
+
 ## [3.1.20] - 2020-07-22
 
 ### Added
