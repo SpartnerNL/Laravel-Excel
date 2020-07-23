@@ -5,7 +5,6 @@ namespace Maatwebsite\Excel\Tests\Concerns;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromArray;
 use Maatwebsite\Excel\Concerns\WithColumnWidths;
-use Maatwebsite\Excel\Concerns\WithProperties;
 use Maatwebsite\Excel\Tests\TestCase;
 
 class WithColumnWidthsTest extends TestCase
