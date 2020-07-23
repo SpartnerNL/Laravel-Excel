@@ -31,6 +31,7 @@ use Maatwebsite\Excel\Concerns\WithMappedCells;
 use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Concerns\WithProgressBar;
 use Maatwebsite\Excel\Concerns\WithStrictNullComparison;
+use Maatwebsite\Excel\Concerns\WithStyles;
 use Maatwebsite\Excel\Concerns\WithTitle;
 use Maatwebsite\Excel\Concerns\WithValidation;
 use Maatwebsite\Excel\Events\AfterSheet;
@@ -389,6 +390,19 @@ class Sheet
         if ($sheetExport instanceof WithColumnWidths) {
             foreach ($sheetExport->columnWidths() as $column => $width) {
                 $this->worksheet->getColumnDimension($column)->setAutoSize(false)->setWidth($width);
+            }
+        }
+
+        if ($sheetExport instanceof WithStyles) {
+            $styles = $sheetExport->styles($this->worksheet);
+            if (is_array($styles)) {
+                foreach ($styles as $coordinate => $coordinateStyles) {
+                    if (is_numeric($coordinate)) {
+                        $coordinate = 'A' . $coordinate . ':' . $this->worksheet->getHighestColumn($coordinate) . $coordinate;
+                    }
+
+                    $this->worksheet->getStyle($coordinate)->applyFromArray($coordinateStyles);
+                }
             }
         }
 

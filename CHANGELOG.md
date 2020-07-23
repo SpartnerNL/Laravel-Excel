@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 - Added WithProperties concern
+- Added default spreadsheet properties config
+- Added WithColumnWidths concern
+- Added WithStyles concern.
+
+### Changed
+- Sheet titles longer than 31 chars get trimmed.
+- Sheet titles with unsupported chars get cleaned.
 
 ## [3.1.20] - 2020-07-22
 
