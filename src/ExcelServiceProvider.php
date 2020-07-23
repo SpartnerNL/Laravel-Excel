@@ -5,6 +5,7 @@ namespace Maatwebsite\Excel;
 use Illuminate\Support\Collection;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Lumen\Application as LumenApplication;
+use Maatwebsite\Excel\Cache\CacheManager;
 use Maatwebsite\Excel\Console\ExportMakeCommand;
 use Maatwebsite\Excel\Console\ImportMakeCommand;
 use Maatwebsite\Excel\Files\Filesystem;
@@ -54,6 +55,10 @@ class ExcelServiceProvider extends ServiceProvider
             $this->getConfigFile(),
             'excel'
         );
+
+        $this->app->bind(CacheManager::class, function() {
+            return new CacheManager($this->app);
+        });
 
         $this->app->bind(TransactionManager::class, function () {
             return new TransactionManager($this->app);
