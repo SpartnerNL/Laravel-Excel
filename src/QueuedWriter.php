@@ -58,7 +58,7 @@ class QueuedWriter
      */
     public function store($export, string $filePath, string $disk = null, string $writerType = null, $diskOptions = [])
     {
-        $extension = pathinfo($filePath, PATHINFO_EXTENSION);
+        $extension     = pathinfo($filePath, PATHINFO_EXTENSION);
         $temporaryFile = $this->temporaryFileFactory->make($extension);
 
         $jobs = $this->buildExportJobs($export, $temporaryFile, $writerType);
