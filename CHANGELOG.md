@@ -3,6 +3,9 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Added
+- Added WithProperties concern
+
 ## [3.1.20] - 2020-07-22
 
 ### Added

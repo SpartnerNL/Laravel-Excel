@@ -40,6 +40,26 @@ return [
             'include_separator_line' => false,
             'excel_compatibility'    => false,
         ],
+
+        /*
+        |--------------------------------------------------------------------------
+        | Worksheet properties
+        |--------------------------------------------------------------------------
+        |
+        | Configure e.g. default title, creator, subject,...
+        |
+        */
+        'properties'             => [
+            'creator'        => '',
+            'lastModifiedBy' => '',
+            'title'          => '',
+            'description'    => '',
+            'subject'        => '',
+            'keywords'       => '',
+            'category'       => '',
+            'manager'        => '',
+            'company'        => '',
+        ],
     ],
 
     'imports'            => [
@@ -69,11 +89,11 @@ return [
         |
         */
         'csv'         => [
-            'delimiter'              => ',',
-            'enclosure'              => '"',
-            'escape_character'       => '\\',
-            'contiguous'             => false,
-            'input_encoding'         => 'UTF-8',
+            'delimiter'        => ',',
+            'enclosure'        => '"',
+            'escape_character' => '\\',
+            'contiguous'       => false,
+            'input_encoding'   => 'UTF-8',
         ],
     ],
 
@@ -163,7 +183,7 @@ return [
         | storing reading or downloading. Here you can customize that path.
         |
         */
-        'local_path'  => sys_get_temp_dir(),
+        'local_path'          => sys_get_temp_dir(),
 
         /*
         |--------------------------------------------------------------------------
@@ -179,8 +199,8 @@ return [
         | in conjunction with queued imports and exports.
         |
         */
-        'remote_disk'   => null,
-        'remote_prefix' => null,
+        'remote_disk'         => null,
+        'remote_prefix'       => null,
 
         /*
         |--------------------------------------------------------------------------
