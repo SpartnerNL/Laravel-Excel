@@ -20,6 +20,7 @@ use Maatwebsite\Excel\Concerns\WithCharts;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithColumnFormatting;
 use Maatwebsite\Excel\Concerns\WithColumnLimit;
+use Maatwebsite\Excel\Concerns\WithColumnWidths;
 use Maatwebsite\Excel\Concerns\WithCustomChunkSize;
 use Maatwebsite\Excel\Concerns\WithCustomStartCell;
 use Maatwebsite\Excel\Concerns\WithCustomValueBinder;
@@ -375,6 +376,12 @@ class Sheet
 
         if ($sheetExport instanceof ShouldAutoSize) {
             $this->autoSize();
+        }
+
+        if ($sheetExport instanceof WithColumnWidths) {
+            foreach ($sheetExport->columnWidths() as $column => $width) {
+                $this->worksheet->getColumnDimension($column)->setAutoSize(false)->setWidth($width);
+            }
         }
 
         $this->raise(new AfterSheet($this, $this->exportable));
