@@ -56,7 +56,7 @@ class ExcelServiceProvider extends ServiceProvider
             'excel'
         );
 
-        $this->app->bind(CacheManager::class, function() {
+        $this->app->bind(CacheManager::class, function () {
             return new CacheManager($this->app);
         });
 
