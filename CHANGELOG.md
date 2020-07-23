@@ -1,0 +1,36 @@
+# Changelog
+All notable changes to this project will be documented in this file.
+
+## [Unreleased]
+
+## [3.1.20] - 2020-07-22
+
+### Added
+- Re-sycing remote temporary file
+- Remember row number
+- Remember chunk offset
+- WithColumnLimit concern
+- WithReadFilter concern
+- Publishing the stubs
+
+### Changed
+- Interacting with queued jobs
+- Retry until and middleware on queued imports
+- Using WithValidation with FromCollection & FromArray
+- Read filters for WithLimit and HeadingRowImport
+- Bump of minimum version PhpSpreadsheet
+
+### Fixed
+- Fixed test helper docblocks on the Excel facade.
+- Fix for importing with a start row beyond the highest row.
+- Fixed `BeforeSheet` and `AfterSheet` events receiving exportable instance instead of importable when calling on an Import.
+- Fix for value binders not working in queued exports.
+- Fix when using WithLimit concern when having less rows than the limit.
+- Fix AfterImport job being fired twice if not using queueing.
+- Raw() method now also available on Exportable.
+- Fix for breaking changes in PhpSpreadsheet with empty enclosures.
+
+[Unreleased]: https://github.com/Maatwebsite/Laravel-Excel/compare/3.1.20...HEAD
+[3.1.20]: https://github.com/Maatwebsite/Laravel-Excel/compare/3.1.19...3.1.20
+
+_Older releases can be found in Github releases._
