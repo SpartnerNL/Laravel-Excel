@@ -40,7 +40,7 @@ class ExcelServiceProvider extends ServiceProvider
                 ], 'config');
             }
         }
-        
+
         if ($this->app instanceof \Illuminate\Foundation\Application) {
             // Laravel
             $this->app->booted(function () {
