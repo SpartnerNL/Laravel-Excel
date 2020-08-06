@@ -3,6 +3,8 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [3.1.21] - 2020-08-06
+
 ### Added
 - Added WithProperties concern
 - Added default spreadsheet properties config
@@ -44,7 +46,8 @@ All notable changes to this project will be documented in this file.
 - Raw() method now also available on Exportable.
 - Fix for breaking changes in PhpSpreadsheet with empty enclosures.
 
-[Unreleased]: https://github.com/Maatwebsite/Laravel-Excel/compare/3.1.20...HEAD
+[Unreleased]: https://github.com/Maatwebsite/Laravel-Excel/compare/3.1.21...HEAD
+[3.1.21]: https://github.com/Maatwebsite/Laravel-Excel/compare/3.1.20...3.1.21
 [3.1.20]: https://github.com/Maatwebsite/Laravel-Excel/compare/3.1.19...3.1.20
 
 _Older release notes can be found in Github releases._
