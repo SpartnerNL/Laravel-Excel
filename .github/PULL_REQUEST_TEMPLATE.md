@@ -8,6 +8,7 @@ Mark the following tasks as done:
 * [ ] Checked the codebase to ensure that your feature doesn't already exist.
 * [ ] Checked the pull requests to ensure that another person hasn't already submitted the feature or fix.
 * [ ] Adjusted the Documentation.
+* [ ] Updated CHANGELOG.MD
 * [ ] Added tests to ensure against regression.
 
 ### Description of the Change
