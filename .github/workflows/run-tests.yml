@@ -24,10 +24,12 @@ jobs:
     strategy:
       matrix:
         php: [7.4, 7.3]
-        laravel: [7.*, 6.*, 5.8.*]
+        laravel: [8.*, 7.*, 6.*, 5.8.*]
         dependency-version: [prefer-stable]
         os: [ubuntu-latest]
         include:
+          - laravel: 8.*
+            testbench: dev-master
           - laravel: 7.*
             testbench: 5.*
           - laravel: 6.*
