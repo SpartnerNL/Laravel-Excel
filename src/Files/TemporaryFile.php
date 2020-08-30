@@ -57,7 +57,7 @@ abstract class TemporaryFile
         } elseif ($disk === null && realpath($filePath) !== false) {
             $readStream = fopen($filePath, 'rb');
         } else {
-            $readStream = app('filesystem')->disk($disk)->readStream($filePath);
+            $readStream = app('filesystem')->disk($disk)->get($filePath);
         }
 
         $this->put($readStream);
