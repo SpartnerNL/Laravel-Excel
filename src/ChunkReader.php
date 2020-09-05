@@ -3,6 +3,7 @@
 namespace Maatwebsite\Excel;
 
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Foundation\Bus\PendingDispatch;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithEvents;
@@ -67,7 +68,9 @@ class ChunkReader
         $jobs->push(new AfterImportJob($import, $reader));
 
         if ($import instanceof ShouldQueue) {
-            return QueueImport::withChain($jobs->toArray())->dispatch($import);
+            return new PendingDispatch(
+                (new QueueImport($import))->chain($jobs->toArray())
+            );
         }
 
         $jobs->each(function ($job) {

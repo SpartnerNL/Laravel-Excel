@@ -2,6 +2,7 @@
 
 namespace Maatwebsite\Excel;
 
+use Illuminate\Foundation\Bus\PendingDispatch;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\FromQuery;
@@ -70,7 +71,9 @@ class QueuedWriter
             $diskOptions
         ));
 
-        return QueueExport::withChain($jobs->toArray())->dispatch($export, $temporaryFile, $writerType);
+        return new PendingDispatch(
+            (new QueueExport($export, $temporaryFile, $writerType))->chain($jobs->toArray())
+        );
     }
 
     /**
@@ -171,7 +174,7 @@ class QueuedWriter
     }
 
     /**
-     * @param FromView     $export
+     * @param FromView      $export
      * @param TemporaryFile $temporaryFile
      * @param string        $writerType
      * @param int           $sheetIndex

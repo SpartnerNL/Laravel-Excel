@@ -28,7 +28,7 @@ class TransactionManager extends Manager
     public function createDbDriver()
     {
         return new DbTransactionHandler(
-            $this->app->get('db.connection')
+            $this->container->get('db.connection')
         );
     }
 }
