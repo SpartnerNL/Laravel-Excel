@@ -24,17 +24,17 @@ jobs:
     strategy:
       matrix:
         php: [7.4, 7.3, 7.2]
-        laravel: [8.*, 7.*, 6.*, 5.8.*]
+        laravel: [8, 7, 6, 5.8]
         dependency-version: [prefer-stable]
         os: [ubuntu-latest]
         include:
-          - laravel: 8.*
+          - laravel: 8
             testbench: 6.*
-          - laravel: 7.*
+          - laravel: 7
             testbench: 5.*
-          - laravel: 6.*
+          - laravel: 6
             testbench: 4.*
-          - laravel: 5.8.*
+          - laravel: 5.8
             testbench: 3.8.*
         exclude:
           - laravel: 8.*
@@ -61,13 +61,13 @@ jobs:
 
       - name: Install dependencies
         run: |
-          composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}"  --no-interaction --no-update
+          composer require "laravel/framework:${{ matrix.laravel }}.*" "orchestra/testbench:${{ matrix.testbench }}"  --no-interaction --no-update
           composer update --${{ matrix.dependency-version }} --prefer-dist --no-interaction --no-suggest
 
       - name: Install legacy factories
         run: |
           composer require "laravel/legacy-factories" --no-interaction --no-update
-        if: matrix.laravel == 8.0
+        if: "matrix.laravel >= 8"
 
       - name: Execute tests
         run: vendor/bin/phpunit --testdox --configuration phpunit.xml.dist
