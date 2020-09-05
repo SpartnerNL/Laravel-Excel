@@ -64,6 +64,11 @@ jobs:
           composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}"  --no-interaction --no-update
           composer update --${{ matrix.dependency-version }} --prefer-dist --no-interaction --no-suggest
 
+      - name: Install legacy factories
+        run: |
+          composer require "laravel/legacy-factories" --no-interaction --no-update
+        if: matrix.laravel == 8.0
+
       - name: Execute tests
         run: vendor/bin/phpunit --testdox --configuration phpunit.xml.dist
         env:
