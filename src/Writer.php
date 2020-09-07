@@ -146,7 +146,7 @@ class Writer
 
         $this->spreadsheet->disconnectWorksheets();
         unset($this->spreadsheet);
-        resolve(CacheManager::class)->flush();
+        app(CacheManager::class)->flush();
 
         return $temporaryFile;
     }
