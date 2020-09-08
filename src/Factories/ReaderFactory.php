@@ -38,7 +38,7 @@ class ReaderFactory
         }
 
         if (method_exists($reader, 'setReadEmptyCells')) {
-            $reader->setReadEmptyCells(!config('excel.imports.ignore_empty', true));
+            $reader->setReadEmptyCells(!config('excel.imports.ignore_empty', false));
         }
 
         if ($reader instanceof Csv) {
