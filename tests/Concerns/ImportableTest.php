@@ -102,7 +102,7 @@ class ImportableTest extends TestCase
             public function array(array $array)
             {
                 Assert::assertEquals([
-                    ['test', 'test'],
+                    ['Test', 'Test'],
                     ['test', 'test'],
                 ], $array);
             }
@@ -129,8 +129,9 @@ class ImportableTest extends TestCase
             public function array(array $array)
             {
                 Assert::assertEquals([
+                    ['Test', 'Test'],
                     ['test', 'test'],
-                    ['test', 'test'],
+                    ['', ''],
                     ['', ''],
                 ], $array);
             }
