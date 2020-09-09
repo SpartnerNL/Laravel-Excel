@@ -89,7 +89,7 @@ class ImportableTest extends TestCase
     /**
      * @test
      */
-    public function can_import_a_simple_xlsx_file_with_ignore_empty_setting()
+    public function can_import_a_simple_xlsx_file_with_ignore_empty_set_to_true()
     {
         config()->set('excel.imports.ignore_empty', true);
 
@@ -108,7 +108,35 @@ class ImportableTest extends TestCase
             }
         };
 
-        $imported = $import->import('import.xlsx');
+        $imported = $import->import('import-with-some-empty-rows.xlsx');
+
+        $this->assertInstanceOf(Importer::class, $imported);
+    }
+
+    /**
+     * @test
+     */
+    public function can_import_a_simple_xlsx_file_with_ignore_empty_set_to_false()
+    {
+        config()->set('excel.imports.ignore_empty', false);
+
+        $import = new class implements ToArray {
+            use Importable;
+
+            /**
+             * @param array $array
+             */
+            public function array(array $array)
+            {
+                Assert::assertEquals([
+                    ['test', 'test'],
+                    ['test', 'test'],
+                    ['', '']
+                ], $array);
+            }
+        };
+
+        $imported = $import->import('import-with-some-empty-rows.xlsx');
 
         $this->assertInstanceOf(Importer::class, $imported);
     }
