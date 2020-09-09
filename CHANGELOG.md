@@ -3,6 +3,9 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Added
+- Added ignore_empty setting in the config/excel.php configuration file
+
 ## [3.1.22] - 2020-09-08
 
 - Laravel 8 support
