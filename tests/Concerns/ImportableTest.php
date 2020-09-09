@@ -85,4 +85,32 @@ class ImportableTest extends TestCase
 
         $import->import('csv-with-html-tags.csv', 'local', Excel::CSV);
     }
+
+
+    /**
+     * @test
+     */
+    public function can_import_a_simple_xlsx_file_with_ignore_empty_setting()
+    {
+        config()->set('excel.imports.ignore_empty', true);
+
+        $import = new class implements ToArray {
+            use Importable;
+
+            /**
+             * @param array $array
+             */
+            public function array(array $array)
+            {
+                Assert::assertEquals([
+                    ['test', 'test'],
+                    ['test', 'test'],
+                ], $array);
+            }
+        };
+
+        $imported = $import->import('import.xlsx');
+
+        $this->assertInstanceOf(Importer::class, $imported);
+    }
 }
