@@ -86,7 +86,6 @@ class ImportableTest extends TestCase
         $import->import('csv-with-html-tags.csv', 'local', Excel::CSV);
     }
 
-
     /**
      * @test
      */
