@@ -37,6 +37,10 @@ class ReaderFactory
             $reader->setReadDataOnly(config('excel.imports.read_only', true));
         }
 
+        if (method_exists($reader, 'setReadEmptyCells')) {
+            $reader->setReadEmptyCells(!config('excel.imports.ignore_empty', false));
+        }
+
         if ($reader instanceof Csv) {
             static::applyCsvSettings(config('excel.imports.csv', []));
 
