@@ -26,6 +26,8 @@ class Excel implements Exporter, Importer
     const SLK      = 'Slk';
 
     const XML      = 'Xml';
+    
+    const Erobi    = 'Erobi';
 
     const GNUMERIC = 'Gnumeric';
 
