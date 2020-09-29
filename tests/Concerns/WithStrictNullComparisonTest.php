@@ -92,4 +92,43 @@ class WithStrictNullComparisonTest extends TestCase
 
         $this->assertEquals($expected, $actual);
     }
+
+    /**
+     * @test
+     */
+    public function exports_empty_cells()
+    {
+        $export = new class implements FromCollection, WithStrictNullComparison {
+            use Exportable;
+
+            /**
+             * @return Collection
+             */
+            public function collection()
+            {
+                return collect([
+                    ['a1', '', '', 'd1', ''],
+                    ['a2', '', '', 'd2', ''],
+                ]);
+            }
+        };
+
+        $response = $export->store('empty-cells.csv');
+
+        $this->assertTrue($response);
+
+        $file   = __DIR__ . '/../Data/Disks/Local/empty-cells.csv';
+        $actual = $this->readAsArray($file, 'Csv');
+
+        $expected = [
+            ['a1', null, null, 'd1'],
+            ['a2', null, null, 'd2'],
+        ];
+
+        $this->assertEquals($expected, $actual);
+
+        $contents = file_get_contents($file);
+        $this->assertStringContains('"a1","","","d1",""', $contents);
+        $this->assertStringContains('"a2","","","d2",""', $contents);
+    }
 }
