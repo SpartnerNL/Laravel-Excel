@@ -2,10 +2,11 @@
 
 namespace Maatwebsite\Excel;
 
+use ArrayAccess;
 use Illuminate\Support\Collection;
 use PhpOffice\PhpSpreadsheet\Worksheet\Row as SpreadsheetRow;
 
-class Row
+class Row implements ArrayAccess
 {
     use DelegatedMacroable;
 
@@ -17,7 +18,12 @@ class Row
     /**
      * @var SpreadsheetRow
      */
-    private $row;
+    protected $row;
+
+    /**
+     * @var array|null
+     */
+    protected $rowCache;
 
     /**
      * @param SpreadsheetRow $row
@@ -61,6 +67,10 @@ class Row
      */
     public function toArray($nullValue = null, $calculateFormulas = false, $formatData = true, ?string $endColumn = null)
     {
+        if (is_array($this->rowCache)) {
+            return $this->rowCache;
+        }
+
         $cells = [];
 
         $i = 0;
@@ -76,6 +86,8 @@ class Row
             $i++;
         }
 
+        $this->rowCache = $cells;
+
         return $cells;
     }
 
@@ -85,5 +97,25 @@ class Row
     public function getIndex(): int
     {
         return $this->row->getRowIndex();
+    }
+
+    public function offsetExists($offset)
+    {
+        return isset(($this->toArray())[$offset]);
+    }
+
+    public function offsetGet($offset)
+    {
+        return ($this->toArray())[$offset];
+    }
+
+    public function offsetSet($offset, $value)
+    {
+        //
+    }
+
+    public function offsetUnset($offset)
+    {
+        //
     }
 }
