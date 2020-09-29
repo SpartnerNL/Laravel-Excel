@@ -690,7 +690,11 @@ class Sheet
      */
     private function hasStrictNullComparison($sheetExport): bool
     {
-        return $sheetExport instanceof WithStrictNullComparison;
+        if ($sheetExport instanceof WithStrictNullComparison) {
+            return true;
+        }
+
+        return config('excel.exports.strict_null_comparison', false);
     }
 
     /**
