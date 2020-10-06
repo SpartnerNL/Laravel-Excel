@@ -552,7 +552,7 @@ class LaravelExcelWriter {
         $key = lcfirst(str_replace('set', '', $setter));
 
         // If is an allowed property
-        if ($this->excel->isChangeableProperty($setter))
+        if ($this->isChangeableProperty($setter))
         {
             // Set the properties
             call_user_func_array([$this->excel->getProperties(), $setter], $params);
