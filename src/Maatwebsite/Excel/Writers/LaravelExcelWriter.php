@@ -88,6 +88,21 @@ class LaravelExcelWriter {
     ];
 
     /**
+     * Allowed autofill properties
+     * @var array
+     */
+    public $allowedProperties = [
+        'creator',
+        'lastModifiedBy',
+        'description',
+        'subject',
+        'keywords',
+        'category',
+        'manager',
+        'company'
+    ];
+
+    /**
      * Path the file will be stored to
      * @var string
      */
@@ -682,7 +697,7 @@ class LaravelExcelWriter {
     public function __call($method, $params)
     {
         // If the dynamic call starts with "set"
-        if (starts_with($method, 'set') && $this->excel->isChangeableProperty($method))
+        if ($this->startsWith($method, 'set') && $this->isChangeableProperty($method))
         {
             $this->_setAttribute($method, $params);
 
@@ -710,4 +725,36 @@ class LaravelExcelWriter {
         return $this->validExtensions;
     }
 
+    /**
+     * @param string $haystack
+     * @param string $needle
+     * @return bool
+     */
+    public function startsWith($haystack, $needle)
+    {
+        $length = strlen($needle);
+
+        return substr($haystack, 0, $length) === $needle;
+    }
+
+    /**
+     * Check if the user change change the workbook property
+     * @param  string $method
+     * @return boolean
+     */
+    public function isChangeableProperty($method)
+    {
+        $name = lcfirst(str_replace('set', '', $method));
+
+        return in_array($name, $this->getAllowedProperties()) ? true : false;
+    }
+
+    /**
+     * Return all allowed properties
+     * @return array
+     */
+    public function getAllowedProperties()
+    {
+        return $this->allowedProperties;
+    }
 }

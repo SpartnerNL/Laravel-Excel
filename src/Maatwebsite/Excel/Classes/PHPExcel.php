@@ -51,18 +51,6 @@ class PHPExcel extends PHPOffice_PHPExcel {
     }
 
     /**
-     * Check if the user change change the workbook property
-     * @param  string $method
-     * @return boolean
-     */
-    public function isChangeableProperty($method)
-    {
-        $name = lcfirst(str_replace('set', '', $method));
-
-        return in_array($name, $this->getAllowedProperties()) ? true : false;
-    }
-
-    /**
      * Set default properties
      * @param array $custom
      * @return  void
