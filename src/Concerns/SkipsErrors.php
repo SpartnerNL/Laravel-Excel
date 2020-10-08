@@ -9,7 +9,7 @@ use Throwable;
 trait SkipsErrors
 {
     /**
-     * @var Failure[]
+     * @var Throwable[]
      */
     protected $errors = [];
 
