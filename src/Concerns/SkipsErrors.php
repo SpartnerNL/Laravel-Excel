@@ -3,7 +3,6 @@
 namespace Maatwebsite\Excel\Concerns;
 
 use Illuminate\Support\Collection;
-use Maatwebsite\Excel\Validators\Failure;
 use Throwable;
 
 trait SkipsErrors
