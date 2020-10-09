@@ -3,6 +3,8 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+- Added support for `withValidator` on `WithValidation` concern
+
 ## [3.1.23] - 2020-09-29
 
 ### Added

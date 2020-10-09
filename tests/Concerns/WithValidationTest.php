@@ -5,6 +5,7 @@ namespace Maatwebsite\Excel\Tests\Concerns;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Validator;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\OnEachRow;
 use Maatwebsite\Excel\Concerns\ToArray;
@@ -563,6 +564,69 @@ class WithValidationTest extends TestCase
             $this->validateFailure($e, 3, 'email', [
                 'The selected email is invalid.',
             ]);
+        }
+
+        $this->assertInstanceOf(ValidationException::class, $e ?? null);
+    }
+
+    /**
+     * @test
+     */
+    public function can_configure_validator()
+    {
+        $import = new class implements ToModel, WithValidation {
+            use Importable;
+
+            /**
+             * @param array $row
+             *
+             * @return Model|null
+             */
+            public function model(array $row)
+            {
+                return new User([
+                    'name'     => $row[0],
+                    'email'    => $row[1],
+                    'password' => 'secret',
+                ]);
+            }
+
+            /**
+             * @return array
+             */
+            public function rules(): array
+            {
+                return [
+                    '1' => 'email',
+                ];
+            }
+
+            /**
+             * Configure the validator.
+             *
+             * @param \Illuminate\Contracts\Validation\Validator $validator
+             * @return void
+             */
+            public function withValidator($validator)
+            {
+                $validator->sometimes('*.1', Rule::in(['patrick@maatwebsite.nl']), function () {
+                    return true;
+                });
+            }
+        };
+
+        try {
+            $import->import('import-users.xlsx');
+        } catch (ValidationException $e) {
+            $this->validateFailure($e, 2, '1', [
+                'The selected 1 is invalid.',
+            ]);
+
+            $this->assertEquals([
+                [
+                    'There was an error on row 2. The selected 1 is invalid.',
+                ],
+            ], $e->errors());
         }
 
         $this->assertInstanceOf(ValidationException::class, $e ?? null);
