@@ -795,8 +795,8 @@ class WithValidationTest extends TestCase
             public function model(array $row)
             {
                 return new User([
-                    'name' => $row[0],
-                    'email' => $row[1],
+                    'name'     => $row[0],
+                    'email'    => $row[1],
                     'password' => 'secret',
                 ]);
             }
@@ -860,8 +860,8 @@ class WithValidationTest extends TestCase
             public function onRow(Row $row)
             {
                 User::query()->create([
-                    'name' => $row[0],
-                    'email' => $row[1],
+                    'name'     => $row[0],
+                    'email'    => $row[1],
                     'password' => 'secret',
                 ]);
             }
