@@ -2,6 +2,7 @@
 
 namespace Maatwebsite\Excel;
 
+use Closure;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\FromArray;
@@ -282,13 +283,15 @@ class Sheet
         }
 
         if ($import instanceof OnEachRow) {
-            $headingRow = HeadingRowExtractor::extract($this->worksheet, $import);
-            $endColumn  = $import instanceof WithColumnLimit ? $import->endColumn() : null;
+            $headingRow          = HeadingRowExtractor::extract($this->worksheet, $import);
+            $endColumn           = $import instanceof WithColumnLimit ? $import->endColumn() : null;
+            $preparationCallback = $this->getPreparationCallback($import);
 
             foreach ($this->worksheet->getRowIterator()->resetStart($startRow ?? 1) as $row) {
                 $sheetRow = new Row($row, $headingRow);
 
                 if ($import instanceof WithValidation) {
+                    $sheetRow->setPreparationCallback($preparationCallback);
                     $toValidate = [$sheetRow->getIndex() => $sheetRow->toArray(null, $import instanceof WithCalculatedFormulas, $endColumn)];
 
                     try {
@@ -713,5 +716,20 @@ class Sheet
         }
 
         return $this->chunkSize;
+    }
+
+    /**
+     * @param object|WithValidation $import
+     * @return Closure|null
+     */
+    private function getPreparationCallback($import)
+    {
+        if (!$import instanceof WithValidation || !method_exists($import, 'prepareForValidation')) {
+            return null;
+        }
+
+        return function (array $data, int $index) use ($import) {
+            return $import->prepareForValidation($data, $index);
+        };
     }
 }
