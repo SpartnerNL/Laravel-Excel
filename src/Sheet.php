@@ -333,11 +333,15 @@ class Sheet
         $endColumn  = $import instanceof WithColumnLimit ? $import->endColumn() : null;
 
         $rows = [];
-        foreach ($this->worksheet->getRowIterator($startRow, $endRow) as $row) {
+        foreach ($this->worksheet->getRowIterator($startRow, $endRow) as $index => $row) {
             $row = (new Row($row, $headingRow))->toArray($nullValue, $calculateFormulas, $formatData, $endColumn);
 
             if ($import instanceof WithMapping) {
                 $row = $import->map($row);
+            }
+
+            if ($import instanceof WithValidation && method_exists($import, 'prepareForValidation')) {
+                $row = $import->prepareForValidation($row, $index);
             }
 
             $rows[] = $row;
