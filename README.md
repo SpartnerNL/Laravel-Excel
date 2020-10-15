@@ -85,7 +85,7 @@ Laravel Excel is completely free (MIT license) to use, however the package is li
 **Maatwebsite**
 Markt 2
 6231 LS Meerssen
-The Netherlands
+The Netherlandss
 
 More about the license can be found at: [https://docs.laravel-excel.com/3.1/getting-started/license.html](https://docs.laravel-excel.com/3.1/getting-started/license.html)
 
