@@ -2,6 +2,7 @@
 
 namespace Maatwebsite\Excel\Concerns;
 
+use Illuminate\Database\Eloquent\Model;
 use Throwable;
 
 interface SkipsOnError
@@ -9,5 +10,5 @@ interface SkipsOnError
     /**
      * @param Throwable $e
      */
-    public function onError(Throwable $e);
+    public function onError(Throwable $e, Model $model);
 }

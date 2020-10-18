@@ -114,7 +114,7 @@ class ModelManager
                      $model::query()->insert($models->toArray());
                  } catch (Throwable $e) {
                      if ($import instanceof SkipsOnError) {
-                         $import->onError($e);
+                         $import->onError($e, $model);
                      } else {
                          throw $e;
                      }
@@ -135,7 +135,7 @@ class ModelManager
                         $model->saveOrFail();
                     } catch (Throwable $e) {
                         if ($import instanceof SkipsOnError) {
-                            $import->onError($e);
+                            $import->onError($e, $model);
                         } else {
                             throw $e;
                         }
