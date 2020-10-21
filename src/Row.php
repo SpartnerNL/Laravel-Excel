@@ -3,6 +3,7 @@
 namespace Maatwebsite\Excel;
 
 use ArrayAccess;
+use Closure;
 use Illuminate\Support\Collection;
 use PhpOffice\PhpSpreadsheet\Worksheet\Row as SpreadsheetRow;
 
@@ -14,6 +15,11 @@ class Row implements ArrayAccess
      * @var array
      */
     protected $headingRow = [];
+
+    /**
+     * @var \Closure
+     */
+    protected $preparationCallback;
 
     /**
      * @var SpreadsheetRow
@@ -86,6 +92,10 @@ class Row implements ArrayAccess
             $i++;
         }
 
+        if (isset($this->preparationCallback)) {
+            $cells = ($this->preparationCallback)($cells, $this->row->getRowIndex());
+        }
+
         $this->rowCache = $cells;
 
         return $cells;
@@ -117,5 +127,14 @@ class Row implements ArrayAccess
     public function offsetUnset($offset)
     {
         //
+    }
+
+    /**
+     * @param \Closure $preparationCallback
+     * @internal
+     */
+    public function setPreparationCallback(Closure $preparationCallback = null)
+    {
+        $this->preparationCallback = $preparationCallback;
     }
 }

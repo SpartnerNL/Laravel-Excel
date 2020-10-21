@@ -633,6 +633,258 @@ class WithValidationTest extends TestCase
     }
 
     /**
+     * @test
+     */
+    public function can_prepare_using_toarray()
+    {
+        $import = new class implements ToArray, WithValidation {
+            use Importable;
+
+            /**
+             * @return array
+             */
+            public function rules(): array
+            {
+                return [
+                    '1' => 'email',
+                ];
+            }
+
+            /**
+             * Prepare the data for validation.
+             *
+             * @param array $row
+             * @param int $index
+             * @return array
+             */
+            public function prepareForValidation(array $row, int $index)
+            {
+                if ($index === 2) {
+                    $row[1] = 'not an email';
+                }
+
+                return $row;
+            }
+
+            /**
+             * @param array $array
+             * @return array
+             */
+            public function array(array $array)
+            {
+                return [];
+            }
+        };
+
+        try {
+            $import->import('import-users.xlsx');
+        } catch (ValidationException $e) {
+            $this->validateFailure($e, 2, '1', [
+                'The 1 must be a valid email address.',
+            ]);
+
+            $this->assertEquals([
+                [
+                    'There was an error on row 2. The 1 must be a valid email address.',
+                ],
+            ], $e->errors());
+        }
+
+        $this->assertInstanceOf(ValidationException::class, $e ?? null);
+    }
+
+    /**
+     * @test
+     */
+    public function can_prepare_using_tocollection()
+    {
+        $import = new class implements ToCollection, WithValidation {
+            use Importable;
+
+            /**
+             * @return array
+             */
+            public function rules(): array
+            {
+                return [
+                    '1' => 'email',
+                ];
+            }
+
+            /**
+             * Prepare the data for validation.
+             *
+             * @param array $row
+             * @param int $index
+             * @return array
+             */
+            public function prepareForValidation(array $row, int $index)
+            {
+                if ($index === 2) {
+                    $row[1] = 'not an email';
+                }
+
+                return $row;
+            }
+
+            /**
+             * @param \Illuminate\Support\Collection $collection
+             * @return mixed
+             */
+            public function collection(Collection $collection)
+            {
+                return collect();
+            }
+        };
+
+        try {
+            $import->import('import-users.xlsx');
+        } catch (ValidationException $e) {
+            $this->validateFailure($e, 2, '1', [
+                'The 1 must be a valid email address.',
+            ]);
+
+            $this->assertEquals([
+                [
+                    'There was an error on row 2. The 1 must be a valid email address.',
+                ],
+            ], $e->errors());
+        }
+
+        $this->assertInstanceOf(ValidationException::class, $e ?? null);
+    }
+
+    /**
+     * @test
+     */
+    public function can_prepare_using_tomodel()
+    {
+        $import = new class implements ToModel, WithValidation {
+            use Importable;
+
+            /**
+             * @return array
+             */
+            public function rules(): array
+            {
+                return [
+                    '1' => 'email',
+                ];
+            }
+
+            /**
+             * Prepare the data for validation.
+             *
+             * @param array $row
+             * @param int $index
+             * @return array
+             */
+            public function prepareForValidation(array $row, int $index)
+            {
+                if ($index === 2) {
+                    $row[1] = 'not an email';
+                }
+
+                return $row;
+            }
+
+            /**
+             * @param array $row
+             * @return \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Eloquent\Model[]|null
+             */
+            public function model(array $row)
+            {
+                return new User([
+                    'name'     => $row[0],
+                    'email'    => $row[1],
+                    'password' => 'secret',
+                ]);
+            }
+        };
+
+        try {
+            $import->import('import-users.xlsx');
+        } catch (ValidationException $e) {
+            $this->validateFailure($e, 2, '1', [
+                'The 1 must be a valid email address.',
+            ]);
+
+            $this->assertEquals([
+                [
+                    'There was an error on row 2. The 1 must be a valid email address.',
+                ],
+            ], $e->errors());
+        }
+
+        $this->assertInstanceOf(ValidationException::class, $e ?? null);
+    }
+
+    /**
+     * @test
+     */
+    public function can_prepare_using_oneachrow()
+    {
+        $import = new class implements OnEachRow, WithValidation {
+            use Importable;
+
+            /**
+             * @return array
+             */
+            public function rules(): array
+            {
+                return [
+                    '1' => 'email',
+                ];
+            }
+
+            /**
+             * Prepare the data for validation.
+             *
+             * @param array $row
+             * @param int $index
+             * @return array
+             */
+            public function prepareForValidation(array $row, int $index)
+            {
+                if ($index === 2) {
+                    $row[1] = 'not an email';
+                }
+
+                return $row;
+            }
+
+            /**
+             * @param \Maatwebsite\Excel\Row $row
+             * @return void
+             */
+            public function onRow(Row $row)
+            {
+                User::query()->create([
+                    'name'     => $row[0],
+                    'email'    => $row[1],
+                    'password' => 'secret',
+                ]);
+            }
+        };
+
+        try {
+            $import->import('import-users.xlsx');
+        } catch (ValidationException $e) {
+            $this->validateFailure($e, 2, '1', [
+                'The 1 must be a valid email address.',
+            ]);
+
+            $this->assertEquals([
+                [
+                    'There was an error on row 2. The 1 must be a valid email address.',
+                ],
+            ], $e->errors());
+        }
+
+        $this->assertInstanceOf(ValidationException::class, $e ?? null);
+    }
+
+    /**
      * @param ValidationException $e
      * @param int                 $row
      * @param string              $attribute
