@@ -39,6 +39,6 @@ class FromUsersQueryExportWithPrepareRows implements FromQuery, WithCustomChunkS
             $user->name .= '_prepared_name';
 
             return $user;
-        });
+        })->toArray();
     }
 }
