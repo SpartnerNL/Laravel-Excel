@@ -586,6 +586,10 @@ class Sheet
      */
     public function appendRows($rows, $sheetExport)
     {
+        if (method_exists($sheetExport, 'prepareRows')) {
+            $rows = $sheetExport->prepareRows($rows);
+        }
+
         $rows = (new Collection($rows))->flatMap(function ($row) use ($sheetExport) {
             if ($sheetExport instanceof WithMapping) {
                 $row = $sheetExport->map($row);
