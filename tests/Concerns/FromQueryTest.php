@@ -4,7 +4,6 @@ namespace Maatwebsite\Excel\Tests\Concerns;
 
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\DB;
-use Maatwebsite\Excel\Tests\TestCase;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\Group;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
 use Maatwebsite\Excel\Tests\Data\Stubs\FromGroupUsersQueuedQueryExport;
@@ -13,6 +12,7 @@ use Maatwebsite\Excel\Tests\Data\Stubs\FromNonEloquentQueryExport;
 use Maatwebsite\Excel\Tests\Data\Stubs\FromUsersQueryExport;
 use Maatwebsite\Excel\Tests\Data\Stubs\FromUsersQueryExportWithEagerLoad;
 use Maatwebsite\Excel\Tests\Data\Stubs\FromUsersQueryExportWithPrepareRows;
+use Maatwebsite\Excel\Tests\TestCase;
 
 class FromQueryTest extends TestCase
 {
@@ -227,26 +227,6 @@ class FromQueryTest extends TestCase
         $this->assertEquals($allUsers, $contents);
     }
 
-    protected function format_nested_arrays_expected_data($groups)
-    {
-        $expected = [];
-        foreach ($groups as $group) {
-            $group_row = [$group->name, ''];
-
-            foreach ($group->users as $key => $user) {
-                if ($key === 0) {
-                    $group_row[1] = $user->email;
-                    $expected[]   = $group_row;
-                    continue;
-                }
-
-                $expected[] = ['', $user->email];
-            }
-        }
-
-        return $expected;
-    }
-
     /**
      * @test
      */
@@ -269,5 +249,25 @@ class FromQueryTest extends TestCase
         })->toArray();
 
         $this->assertEquals($allUsers, $contents);
+    }
+
+    protected function format_nested_arrays_expected_data($groups)
+    {
+        $expected = [];
+        foreach ($groups as $group) {
+            $group_row = [$group->name, ''];
+
+            foreach ($group->users as $key => $user) {
+                if ($key === 0) {
+                    $group_row[1] = $user->email;
+                    $expected[]   = $group_row;
+                    continue;
+                }
+
+                $expected[] = ['', $user->email];
+            }
+        }
+
+        return $expected;
     }
 }
