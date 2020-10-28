@@ -263,6 +263,8 @@ class FromQueryTest extends TestCase
         $contents = $this->readAsArray(__DIR__ . '/../Data/Disks/Local/from-query-store.xlsx', 'Xlsx');
 
         $allUsers = $export->query()->get()->map(function (User $user) {
+            $user->name .= '_prepared_name';
+
             return array_values($user->toArray());
         })->toArray();
 

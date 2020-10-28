@@ -3,6 +3,7 @@
 namespace Maatwebsite\Excel\Tests\Data\Stubs;
 
 use Illuminate\Database\Query\Builder;
+use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\WithCustomChunkSize;
@@ -32,8 +33,12 @@ class FromUsersQueryExportWithPrepareRows implements FromQuery, WithCustomChunkS
      * @param iterable $rows
      * @return iterable
      */
-    public function prepareRows(iterable $rows): iterable
+    public function prepareRows($rows)
     {
-        return $rows;
+        return (new Collection($rows))->map(function ($user) {
+            $user->name .= '_prepared_name';
+
+            return $user;
+        });
     }
 }
