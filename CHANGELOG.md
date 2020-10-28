@@ -3,8 +3,17 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [3.1.24] - 2020-10-28
+
+### Added
+
 - Added support for `prepareForValidation` on `WithValidation` concern
 - Added support for `withValidator` on `WithValidation` concern
+- Added `ArrayAccess` to `Row`
+
+### Fixed
+
+- Corrected SkipsErrors doc block
 
 ## [3.1.23] - 2020-09-29
 
