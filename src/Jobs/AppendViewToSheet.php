@@ -3,11 +3,11 @@
 namespace Maatwebsite\Excel\Jobs;
 
 use Illuminate\Bus\Queueable;
-use Maatwebsite\Excel\Writer;
-use Maatwebsite\Excel\Concerns\FromView;
-use Maatwebsite\Excel\Files\TemporaryFile;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Maatwebsite\Excel\Concerns\FromView;
+use Maatwebsite\Excel\Files\TemporaryFile;
+use Maatwebsite\Excel\Writer;
 
 class AppendViewToSheet implements ShouldQueue
 {
@@ -46,6 +46,16 @@ class AppendViewToSheet implements ShouldQueue
         $this->temporaryFile = $temporaryFile;
         $this->writerType    = $writerType;
         $this->sheetIndex    = $sheetIndex;
+    }
+
+    /**
+     * Get the middleware the job should be dispatched through.
+     *
+     * @return array
+     */
+    public function middleware()
+    {
+        return (method_exists($this->sheetExport, 'middleware')) ? $this->sheetExport->middleware() : [];
     }
 
     /**

@@ -2,8 +2,8 @@
 
 namespace Maatwebsite\Excel\Exceptions;
 
-use Throwable;
 use InvalidArgumentException;
+use Throwable;
 
 class NoFilePathGivenException extends InvalidArgumentException implements LaravelExcelException
 {

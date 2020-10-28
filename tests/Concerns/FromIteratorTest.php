@@ -2,11 +2,11 @@
 
 namespace Maatwebsite\Excel\Tests\Concerns;
 
-use Iterator;
 use ArrayIterator;
-use Maatwebsite\Excel\Tests\TestCase;
+use Iterator;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromIterator;
+use Maatwebsite\Excel\Tests\TestCase;
 
 class FromIteratorTest extends TestCase
 {

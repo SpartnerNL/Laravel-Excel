@@ -2,6 +2,7 @@
 
 namespace Maatwebsite\Excel\Transactions;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Manager;
 
 class TransactionManager extends Manager
@@ -28,7 +29,7 @@ class TransactionManager extends Manager
     public function createDbDriver()
     {
         return new DbTransactionHandler(
-            $this->app->get('db.connection')
+            DB::connection()
         );
     }
 }

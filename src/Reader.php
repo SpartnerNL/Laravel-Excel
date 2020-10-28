@@ -2,30 +2,30 @@
 
 namespace Maatwebsite\Excel;
 
-use Throwable;
-use InvalidArgumentException;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Collection;
-use PhpOffice\PhpSpreadsheet\Cell\Cell;
-use Maatwebsite\Excel\Events\AfterImport;
-use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use InvalidArgumentException;
+use Maatwebsite\Excel\Concerns\SkipsUnknownSheets;
+use Maatwebsite\Excel\Concerns\WithCalculatedFormulas;
+use Maatwebsite\Excel\Concerns\WithChunkReading;
+use Maatwebsite\Excel\Concerns\WithCustomValueBinder;
 use Maatwebsite\Excel\Concerns\WithEvents;
+use Maatwebsite\Excel\Concerns\WithMultipleSheets;
+use Maatwebsite\Excel\Events\AfterImport;
 use Maatwebsite\Excel\Events\BeforeImport;
 use Maatwebsite\Excel\Events\ImportFailed;
-use Maatwebsite\Excel\Files\TemporaryFile;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use PhpOffice\PhpSpreadsheet\Reader\IReader;
-use Maatwebsite\Excel\Factories\ReaderFactory;
-use PhpOffice\PhpSpreadsheet\Reader\Exception;
-use Maatwebsite\Excel\Concerns\WithChunkReading;
-use Maatwebsite\Excel\Files\TemporaryFileFactory;
-use Maatwebsite\Excel\Concerns\SkipsUnknownSheets;
-use Maatwebsite\Excel\Concerns\WithMultipleSheets;
-use Maatwebsite\Excel\Concerns\WithCustomValueBinder;
-use Maatwebsite\Excel\Concerns\WithCalculatedFormulas;
-use Maatwebsite\Excel\Transactions\TransactionHandler;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Maatwebsite\Excel\Exceptions\SheetNotFoundException;
 use Maatwebsite\Excel\Exceptions\NoTypeDetectedException;
+use Maatwebsite\Excel\Exceptions\SheetNotFoundException;
+use Maatwebsite\Excel\Factories\ReaderFactory;
+use Maatwebsite\Excel\Files\TemporaryFile;
+use Maatwebsite\Excel\Files\TemporaryFileFactory;
+use Maatwebsite\Excel\Transactions\TransactionHandler;
+use PhpOffice\PhpSpreadsheet\Cell\Cell;
+use PhpOffice\PhpSpreadsheet\Reader\Exception;
+use PhpOffice\PhpSpreadsheet\Reader\IReader;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Throwable;
 
 class Reader
 {
@@ -62,8 +62,8 @@ class Reader
     protected $reader;
 
     /**
-     * @param  TemporaryFileFactory  $temporaryFileFactory
-     * @param  TransactionHandler  $transaction
+     * @param TemporaryFileFactory $temporaryFileFactory
+     * @param TransactionHandler   $transaction
      */
     public function __construct(TemporaryFileFactory $temporaryFileFactory, TransactionHandler $transaction)
     {
@@ -84,10 +84,10 @@ class Reader
     }
 
     /**
-     * @param  object  $import
-     * @param  string|UploadedFile  $filePath
-     * @param  string|null  $readerType
-     * @param  string|null  $disk
+     * @param object              $import
+     * @param string|UploadedFile $filePath
+     * @param string|null         $readerType
+     * @param string|null         $disk
      *
      * @return \Illuminate\Foundation\Bus\PendingDispatch|$this
      * @throws NoTypeDetectedException
@@ -124,10 +124,10 @@ class Reader
     }
 
     /**
-     * @param  object  $import
-     * @param  string|UploadedFile  $filePath
-     * @param  string  $readerType
-     * @param  string|null  $disk
+     * @param object              $import
+     * @param string|UploadedFile $filePath
+     * @param string              $readerType
+     * @param string|null         $disk
      *
      * @return array
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
@@ -138,6 +138,7 @@ class Reader
     public function toArray($import, $filePath, string $readerType, string $disk = null): array
     {
         $this->reader = $this->getReader($import, $filePath, $readerType, $disk);
+
         $this->loadSpreadsheet($import);
 
         $sheets = [];
@@ -155,10 +156,10 @@ class Reader
     }
 
     /**
-     * @param  object  $import
-     * @param  string|UploadedFile  $filePath
-     * @param  string  $readerType
-     * @param  string|null  $disk
+     * @param object              $import
+     * @param string|UploadedFile $filePath
+     * @param string              $readerType
+     * @param string|null         $disk
      *
      * @return Collection
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
@@ -206,7 +207,7 @@ class Reader
     }
 
     /**
-     * @param  object  $import
+     * @param object $import
      */
     public function loadSpreadsheet($import)
     {
@@ -231,7 +232,7 @@ class Reader
     }
 
     /**
-     * @param  object  $import
+     * @param object $import
      */
     public function beforeImport($import)
     {
@@ -239,7 +240,7 @@ class Reader
     }
 
     /**
-     * @param  object  $import
+     * @param object $import
      */
     public function afterImport($import)
     {
@@ -257,7 +258,7 @@ class Reader
     }
 
     /**
-     * @param  object  $import
+     * @param object $import
      *
      * @return array
      */
@@ -343,7 +344,7 @@ class Reader
     }
 
     /**
-     * @param  object  $import
+     * @param object $import
      *
      * @return array
      */
@@ -367,10 +368,10 @@ class Reader
     }
 
     /**
-     * @param  object  $import
-     * @param  string|UploadedFile  $filePath
-     * @param  string|null  $readerType
-     * @param  string  $disk
+     * @param object              $import
+     * @param string|UploadedFile $filePath
+     * @param string|null         $readerType
+     * @param string              $disk
      *
      * @return IReader
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException

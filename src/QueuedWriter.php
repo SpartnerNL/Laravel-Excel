@@ -2,23 +2,23 @@
 
 namespace Maatwebsite\Excel;
 
-use Traversable;
+use Illuminate\Foundation\Bus\PendingDispatch;
 use Illuminate\Support\Collection;
-use Maatwebsite\Excel\Jobs\CloseSheet;
-use Maatwebsite\Excel\Jobs\QueueExport;
-use Maatwebsite\Excel\Concerns\FromView;
-use Maatwebsite\Excel\Concerns\FromQuery;
-use Maatwebsite\Excel\Files\TemporaryFile;
-use Maatwebsite\Excel\Jobs\SerializedQuery;
-use Maatwebsite\Excel\Jobs\AppendDataToSheet;
-use Maatwebsite\Excel\Jobs\AppendViewToSheet;
-use Maatwebsite\Excel\Jobs\StoreQueuedExport;
 use Maatwebsite\Excel\Concerns\FromCollection;
-use Maatwebsite\Excel\Jobs\AppendQueryToSheet;
-use Maatwebsite\Excel\Files\TemporaryFileFactory;
-use Maatwebsite\Excel\Concerns\WithMultipleSheets;
+use Maatwebsite\Excel\Concerns\FromQuery;
+use Maatwebsite\Excel\Concerns\FromView;
 use Maatwebsite\Excel\Concerns\WithCustomChunkSize;
 use Maatwebsite\Excel\Concerns\WithCustomQuerySize;
+use Maatwebsite\Excel\Concerns\WithMultipleSheets;
+use Maatwebsite\Excel\Files\TemporaryFile;
+use Maatwebsite\Excel\Files\TemporaryFileFactory;
+use Maatwebsite\Excel\Jobs\AppendDataToSheet;
+use Maatwebsite\Excel\Jobs\AppendQueryToSheet;
+use Maatwebsite\Excel\Jobs\AppendViewToSheet;
+use Maatwebsite\Excel\Jobs\CloseSheet;
+use Maatwebsite\Excel\Jobs\QueueExport;
+use Maatwebsite\Excel\Jobs\StoreQueuedExport;
+use Traversable;
 
 class QueuedWriter
 {
@@ -59,7 +59,8 @@ class QueuedWriter
      */
     public function store($export, string $filePath, string $disk = null, string $writerType = null, $diskOptions = [])
     {
-        $temporaryFile = $this->temporaryFileFactory->make();
+        $extension     = pathinfo($filePath, PATHINFO_EXTENSION);
+        $temporaryFile = $this->temporaryFileFactory->make($extension);
 
         $jobs = $this->buildExportJobs($export, $temporaryFile, $writerType);
 
@@ -70,7 +71,9 @@ class QueuedWriter
             $diskOptions
         ));
 
-        return QueueExport::withChain($jobs->toArray())->dispatch($export, $temporaryFile, $writerType);
+        return new PendingDispatch(
+            (new QueueExport($export, $temporaryFile, $writerType))->chain($jobs->toArray())
+        );
     }
 
     /**
@@ -157,16 +160,13 @@ class QueuedWriter
         $jobs = new Collection();
 
         for ($page = 1; $page <= $spins; $page++) {
-            $serializedQuery = new SerializedQuery(
-                $query->forPage($page, $this->getChunkSize($export))
-            );
-
             $jobs->push(new AppendQueryToSheet(
                 $export,
                 $temporaryFile,
                 $writerType,
                 $sheetIndex,
-                $serializedQuery
+                $page,
+                $this->getChunkSize($export)
             ));
         }
 
@@ -174,7 +174,7 @@ class QueuedWriter
     }
 
     /**
-     * @param FromView     $export
+     * @param FromView      $export
      * @param TemporaryFile $temporaryFile
      * @param string        $writerType
      * @param int           $sheetIndex

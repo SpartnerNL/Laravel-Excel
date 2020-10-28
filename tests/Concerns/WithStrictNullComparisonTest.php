@@ -3,11 +3,11 @@
 namespace Maatwebsite\Excel\Tests\Concerns;
 
 use Illuminate\Support\Collection;
-use Maatwebsite\Excel\Tests\TestCase;
 use Maatwebsite\Excel\Concerns\Exportable;
-use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\FromCollection;
+use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithStrictNullComparison;
+use Maatwebsite\Excel\Tests\TestCase;
 
 class WithStrictNullComparisonTest extends TestCase
 {
@@ -91,5 +91,81 @@ class WithStrictNullComparisonTest extends TestCase
         ];
 
         $this->assertEquals($expected, $actual);
+    }
+
+    /**
+     * @test
+     */
+    public function exports_trailing_empty_cells()
+    {
+        $export = new class implements FromCollection, WithStrictNullComparison {
+            use Exportable;
+
+            /**
+             * @return Collection
+             */
+            public function collection()
+            {
+                return collect([
+                    ['a1', '', '', 'd1', ''],
+                    ['a2', '', '', 'd2', ''],
+                ]);
+            }
+        };
+
+        $response = $export->store('empty-cells.csv');
+
+        $this->assertTrue($response);
+
+        $file   = __DIR__ . '/../Data/Disks/Local/empty-cells.csv';
+        $actual = $this->readAsArray($file, 'Csv');
+
+        $expected = [
+            ['a1', null, null, 'd1'],
+            ['a2', null, null, 'd2'],
+        ];
+
+        $this->assertEquals($expected, $actual);
+
+        $contents = file_get_contents($file);
+        $this->assertStringContains('"a1","","","d1",""', $contents);
+        $this->assertStringContains('"a2","","","d2",""', $contents);
+    }
+
+    /**
+     * @test
+     */
+    public function exports_trailing_empty_cells_by_setting_config_strict_null_comparison()
+    {
+        config()->set('excel.exports.strict_null_comparison', false);
+
+        $export = new class implements FromCollection {
+            use Exportable;
+
+            /**
+             * @return Collection
+             */
+            public function collection()
+            {
+                return collect([
+                    ['a1', '', '', 'd1', ''],
+                    ['a2', '', '', 'd2', ''],
+                ]);
+            }
+        };
+
+        $file = __DIR__ . '/../Data/Disks/Local/empty-cells-config.csv';
+
+        $export->store('empty-cells-config.csv');
+
+        $contents = file_get_contents($file);
+        $this->assertStringContains('"a1","","","d1"', $contents);
+
+        config()->set('excel.exports.strict_null_comparison', true);
+
+        $export->store('empty-cells-config.csv');
+
+        $contents = file_get_contents($file);
+        $this->assertStringContains('"a1","","","d1",""', $contents);
     }
 }

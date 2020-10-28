@@ -1,0 +1,75 @@
+name: Run tests
+
+on:
+  push:
+  pull_request:
+  schedule:
+    - cron: '0 0 * * *'
+
+jobs:
+  tests:
+    if: "!contains(github.event.head_commit.message, 'skip ci')"
+    runs-on: ${{ matrix.os }}
+
+    services:
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_DATABASE: laravel_excel
+          MYSQL_ALLOW_EMPTY_PASSWORD: yes
+        ports:
+          - 3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
+    strategy:
+      matrix:
+        php: [7.4, 7.3, 7.2]
+        laravel: [8, 7, 6, 5.8]
+        dependency-version: [prefer-stable]
+        os: [ubuntu-latest]
+        include:
+          - laravel: 8
+            testbench: 6.*
+          - laravel: 7
+            testbench: 5.*
+          - laravel: 6
+            testbench: 4.*
+          - laravel: 5.8
+            testbench: 3.8.*
+        exclude:
+          - laravel: 8
+            php: 7.2
+
+    name: PHP${{ matrix.php }} - L${{ matrix.laravel }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Cache dependencies
+        uses: actions/cache@v2
+        with:
+          path: ~/.composer/cache/files
+          key: dependencies-laravel-${{ matrix.laravel }}-php-${{ matrix.php }}-composer-${{ hashFiles('composer.json') }}
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, mysql, pdo_mysql, bcmath, intl, gd, exif, iconv
+          coverage: none
+
+      - name: Install dependencies
+        run: |
+          composer require "laravel/framework:${{ matrix.laravel }}.*" "orchestra/testbench:${{ matrix.testbench }}"  --no-interaction --no-update
+          composer update --${{ matrix.dependency-version }} --prefer-dist --no-interaction --no-suggest
+
+      - name: Install legacy factories
+        run: |
+          composer require "laravel/legacy-factories" --no-interaction
+        if: "matrix.laravel >= 8"
+
+      - name: Execute tests
+        run: vendor/bin/phpunit --testdox --configuration phpunit.xml.dist
+        env:
+          DB_PORT: ${{ job.services.mysql.ports[3306] }}

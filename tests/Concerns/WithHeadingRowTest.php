@@ -2,14 +2,14 @@
 
 namespace Maatwebsite\Excel\Tests\Concerns;
 
-use PHPUnit\Framework\Assert;
-use Maatwebsite\Excel\Tests\TestCase;
 use Illuminate\Database\Eloquent\Model;
+use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\ToArray;
 use Maatwebsite\Excel\Concerns\ToModel;
-use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
+use Maatwebsite\Excel\Tests\TestCase;
+use PHPUnit\Framework\Assert;
 
 class WithHeadingRowTest extends TestCase
 {
@@ -130,5 +130,52 @@ class WithHeadingRowTest extends TestCase
         };
 
         $import->import('import-users-with-headings.xlsx');
+    }
+
+    /**
+     * @test
+     */
+    public function can_import_empty_rows_with_header()
+    {
+        $import = new class() implements ToArray, WithHeadingRow {
+            use Importable;
+
+            /**
+             * @param array $array
+             */
+            public function array(array $array)
+            {
+                Assert::assertEmpty($array);
+            }
+        };
+
+        $import->import('import-empty-users-with-headings.xlsx');
+    }
+
+    /**
+     * @test
+     */
+    public function can_import_empty_models_with_header()
+    {
+        $import = new class() implements ToModel, WithHeadingRow {
+            use Importable;
+
+            /**
+             * @param array $row
+             *
+             * @return Model
+             */
+            public function model(array $row): Model
+            {
+                return new User([
+                    'name'     => $row['name'],
+                    'email'    => $row['email'],
+                    'password' => 'secret',
+                ]);
+            }
+        };
+
+        $import->import('import-empty-users-with-headings.xlsx');
+        $this->assertEmpty(User::all());
     }
 }

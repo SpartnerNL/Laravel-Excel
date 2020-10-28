@@ -3,25 +3,25 @@
 namespace Maatwebsite\Excel\Tests\Concerns;
 
 use Exception;
-use Throwable;
-use Maatwebsite\Excel\Reader;
-use PHPUnit\Framework\Assert;
-use Illuminate\Support\Facades\DB;
-use Maatwebsite\Excel\Tests\TestCase;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\ToArray;
 use Maatwebsite\Excel\Concerns\ToModel;
-use Maatwebsite\Excel\Events\AfterImport;
-use Maatwebsite\Excel\Concerns\Importable;
-use Maatwebsite\Excel\Concerns\WithEvents;
-use Maatwebsite\Excel\Events\BeforeImport;
-use Maatwebsite\Excel\Events\ImportFailed;
-use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
+use Maatwebsite\Excel\Concerns\WithEvents;
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
-use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
+use Maatwebsite\Excel\Events\AfterImport;
+use Maatwebsite\Excel\Events\BeforeImport;
+use Maatwebsite\Excel\Events\ImportFailed;
+use Maatwebsite\Excel\Reader;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\Group;
+use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
+use Maatwebsite\Excel\Tests\TestCase;
+use PHPUnit\Framework\Assert;
+use Throwable;
 
 class WithChunkReadingTest extends TestCase
 {
@@ -39,15 +39,15 @@ class WithChunkReadingTest extends TestCase
     /**
      * @test
      */
-    public function can_import_to_model_in_chunks()
+    public function can_import_to_model_in_chunks_un()
     {
         DB::connection()->enableQueryLog();
 
         $import = new class implements ToModel, WithChunkReading, WithEvents {
             use Importable;
 
-            public $before = false;
-            public $after  = false;
+            public $before = 0;
+            public $after  = 0;
 
             /**
              * @param  array  $row
@@ -79,11 +79,11 @@ class WithChunkReadingTest extends TestCase
                 return [
                     BeforeImport::class => function (BeforeImport $event) {
                         Assert::assertInstanceOf(Reader::class, $event->reader);
-                        $this->before = true;
+                        $this->before++;
                     },
                     AfterImport::class  => function (AfterImport $event) {
                         Assert::assertInstanceOf(Reader::class, $event->reader);
-                        $this->after = true;
+                        $this->after++;
                     },
                 ];
             }
@@ -94,8 +94,8 @@ class WithChunkReadingTest extends TestCase
         $this->assertCount(2, DB::getQueryLog());
         DB::connection()->disableQueryLog();
 
-        $this->assertTrue($import->before, 'BeforeImport was not called.');
-        $this->assertTrue($import->after, 'AfterImport was not called.');
+        $this->assertEquals(1, $import->before, 'BeforeImport was not called or more than once.');
+        $this->assertEquals(1, $import->after, 'AfterImport was not called or more than once.');
     }
 
     /**

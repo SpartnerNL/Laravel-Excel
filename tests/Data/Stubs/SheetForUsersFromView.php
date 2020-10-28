@@ -2,10 +2,10 @@
 
 namespace Maatwebsite\Excel\Tests\Data\Stubs;
 
-use Illuminate\Support\Collection;
 use Illuminate\Contracts\View\View;
-use Maatwebsite\Excel\Concerns\FromView;
+use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\Exportable;
+use Maatwebsite\Excel\Concerns\FromView;
 
 class SheetForUsersFromView implements FromView
 {

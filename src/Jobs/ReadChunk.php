@@ -2,25 +2,37 @@
 
 namespace Maatwebsite\Excel\Jobs;
 
-use Throwable;
-use Maatwebsite\Excel\Sheet;
 use Illuminate\Bus\Queueable;
-use Maatwebsite\Excel\HasEventBus;
-use PhpOffice\PhpSpreadsheet\Cell\Cell;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Queue\InteractsWithQueue;
+use Maatwebsite\Excel\Concerns\WithChunkReading;
+use Maatwebsite\Excel\Concerns\WithCustomValueBinder;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Events\ImportFailed;
+use Maatwebsite\Excel\Files\RemoteTemporaryFile;
 use Maatwebsite\Excel\Files\TemporaryFile;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use PhpOffice\PhpSpreadsheet\Reader\IReader;
 use Maatwebsite\Excel\Filters\ChunkReadFilter;
-use Maatwebsite\Excel\Concerns\WithChunkReading;
+use Maatwebsite\Excel\HasEventBus;
 use Maatwebsite\Excel\Imports\HeadingRowExtractor;
-use Maatwebsite\Excel\Concerns\WithCustomValueBinder;
+use Maatwebsite\Excel\Sheet;
 use Maatwebsite\Excel\Transactions\TransactionHandler;
+use PhpOffice\PhpSpreadsheet\Cell\Cell;
+use PhpOffice\PhpSpreadsheet\Reader\IReader;
+use Throwable;
 
 class ReadChunk implements ShouldQueue
 {
-    use Queueable, HasEventBus;
+    use Queueable, HasEventBus, InteractsWithQueue;
+
+    /**
+     * @var int
+     */
+    public $timeout;
+
+    /**
+     * @var int
+     */
+    public $tries;
 
     /**
      * @var WithChunkReading
@@ -75,6 +87,28 @@ class ReadChunk implements ShouldQueue
         $this->sheetImport   = $sheetImport;
         $this->startRow      = $startRow;
         $this->chunkSize     = $chunkSize;
+        $this->timeout       = $import->timeout ?? null;
+        $this->tries         = $import->tries ?? null;
+    }
+
+    /**
+     * Get the middleware the job should be dispatched through.
+     *
+     * @return array
+     */
+    public function middleware()
+    {
+        return (method_exists($this->import, 'middleware')) ? $this->import->middleware() : [];
+    }
+
+    /**
+     * Determine the time at which the job should timeout.
+     *
+     * @return \DateTime
+     */
+    public function retryUntil()
+    {
+        return (method_exists($this->import, 'retryUntil')) ? $this->import->retryUntil() : null;
     }
 
     /**
@@ -85,6 +119,10 @@ class ReadChunk implements ShouldQueue
      */
     public function handle(TransactionHandler $transaction)
     {
+        if (method_exists($this->import, 'setChunkOffset')) {
+            $this->import->setChunkOffset($this->startRow);
+        }
+
         if ($this->sheetImport instanceof WithCustomValueBinder) {
             Cell::setValueBinder($this->sheetImport);
         }
@@ -114,6 +152,8 @@ class ReadChunk implements ShouldQueue
         if ($sheet->getHighestRow() < $this->startRow) {
             $sheet->disconnect();
 
+            $this->cleanUpTempFile();
+
             return;
         }
 
@@ -124,6 +164,8 @@ class ReadChunk implements ShouldQueue
             );
 
             $sheet->disconnect();
+
+            $this->cleanUpTempFile();
         });
     }
 
@@ -132,6 +174,10 @@ class ReadChunk implements ShouldQueue
      */
     public function failed(Throwable $e)
     {
+        if ($this->temporaryFile instanceof RemoteTemporaryFile) {
+            $this->temporaryFile->deleteLocalCopy();
+        }
+
         if ($this->import instanceof WithEvents) {
             $this->registerListeners($this->import->registerEvents());
             $this->raise(new ImportFailed($e));
@@ -140,5 +186,18 @@ class ReadChunk implements ShouldQueue
                 $this->import->failed($e);
             }
         }
+    }
+
+    private function cleanUpTempFile()
+    {
+        if (!config('excel.temporary_files.force_resync_remote')) {
+            return true;
+        }
+
+        if (!$this->temporaryFile instanceof RemoteTemporaryFile) {
+            return true;
+        }
+
+        return $this->temporaryFile->deleteLocalCopy();
     }
 }

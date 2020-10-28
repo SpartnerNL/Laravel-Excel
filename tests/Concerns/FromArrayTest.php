@@ -2,9 +2,9 @@
 
 namespace Maatwebsite\Excel\Tests\Concerns;
 
-use Maatwebsite\Excel\Tests\TestCase;
-use Maatwebsite\Excel\Concerns\FromArray;
 use Maatwebsite\Excel\Concerns\Exportable;
+use Maatwebsite\Excel\Concerns\FromArray;
+use Maatwebsite\Excel\Tests\TestCase;
 
 class FromArrayTest extends TestCase
 {

@@ -2,15 +2,15 @@
 
 namespace Maatwebsite\Excel\Tests\Concerns;
 
-use PHPUnit\Framework\Assert;
-use Maatwebsite\Excel\Tests\TestCase;
 use Illuminate\Database\Eloquent\Model;
+use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\ToArray;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithLimit;
-use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\WithStartRow;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
+use Maatwebsite\Excel\Tests\TestCase;
+use PHPUnit\Framework\Assert;
 
 class WithLimitTest extends TestCase
 {
@@ -103,6 +103,34 @@ class WithLimitTest extends TestCase
             public function limit(): int
             {
                 return 1;
+            }
+        };
+
+        $import->import('import-users.xlsx');
+    }
+
+    /**
+     * @test
+     */
+    public function can_set_limit_bigger_than_row_size()
+    {
+        $import = new class implements ToArray, WithLimit {
+            use Importable;
+
+            /**
+             * @param array $array
+             */
+            public function array(array $array)
+            {
+                Assert::assertCount(2, $array);
+            }
+
+            /**
+             * @return int
+             */
+            public function limit(): int
+            {
+                return 10;
             }
         };
 

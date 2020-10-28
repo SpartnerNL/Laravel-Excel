@@ -2,10 +2,10 @@
 
 namespace Maatwebsite\Excel\Concerns;
 
-use Maatwebsite\Excel\Exporter;
 use Illuminate\Foundation\Bus\PendingDispatch;
 use Maatwebsite\Excel\Exceptions\NoFilenameGivenException;
 use Maatwebsite\Excel\Exceptions\NoFilePathGivenException;
+use Maatwebsite\Excel\Exporter;
 
 trait Exportable
 {
@@ -80,6 +80,18 @@ trait Exportable
             $writerType ?? $this->writerType ?? null,
             $diskOptions ?? $this->diskOptions ?? []
         );
+    }
+
+    /**
+     * @param string|null $writerType
+     *
+     * @return string
+     */
+    public function raw($writerType = null)
+    {
+        $writerType = $writerType ?? $this->writerType ?? null;
+
+        return $this->getExporter()->raw($this, $writerType);
     }
 
     /**

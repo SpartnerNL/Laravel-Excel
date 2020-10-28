@@ -3,16 +3,16 @@
 namespace Maatwebsite\Excel\Fakes;
 
 use Illuminate\Bus\Queueable;
-use Maatwebsite\Excel\Reader;
-use PHPUnit\Framework\Assert;
-use Maatwebsite\Excel\Exporter;
-use Maatwebsite\Excel\Importer;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Queue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\PendingDispatch;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Queue;
+use Maatwebsite\Excel\Exporter;
+use Maatwebsite\Excel\Importer;
+use Maatwebsite\Excel\Reader;
+use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class ExcelFake implements Exporter, Importer
 {
@@ -40,6 +40,11 @@ class ExcelFake implements Exporter, Importer
      * @var bool
      */
     protected $matchByRegex = false;
+
+    /**
+     * @var object|null
+     */
+    protected $job;
 
     /**
      * {@inheritdoc}
@@ -75,14 +80,18 @@ class ExcelFake implements Exporter, Importer
         $this->stored[$disk ?? 'default'][$filePath] = $export;
         $this->queued[$disk ?? 'default'][$filePath] = $export;
 
-        return new PendingDispatch(new class {
+        $this->job = new class {
             use Queueable;
 
             public function handle()
             {
                 //
             }
-        });
+        };
+
+        Queue::push($this->job);
+
+        return new PendingDispatch($this->job);
     }
 
     /**
@@ -278,6 +287,11 @@ class ExcelFake implements Exporter, Importer
             $callback($queuedForDisk[$filePath]),
             "The file [{$filePath}] was not stored with the expected data."
         );
+    }
+
+    public function assertQueuedWithChain($chain): void
+    {
+        Queue::assertPushedWithChain(get_class($this->job), $chain);
     }
 
     /**

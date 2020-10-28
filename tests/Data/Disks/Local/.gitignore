@@ -6,7 +6,9 @@
 !import-users.xlsx
 !import-users-with-duplicates.xlsx
 !import-users-with-headings.xlsx
+!import-empty-users-with-headings.xlsx
 !import-users-with-different-heading-row.xlsx
+!import-with-some-empty-rows.xlsx
 !import-batches.xlsx
 !import-batches.csv
 !import-titles.tsv
@@ -17,3 +19,4 @@
 !csv-with-other-delimiter.csv
 !unknown-reader-type.zip
 !csv-with-html-tags.csv
+!import-external-reference.xls

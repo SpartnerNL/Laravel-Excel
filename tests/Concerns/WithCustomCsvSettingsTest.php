@@ -2,13 +2,13 @@
 
 namespace Maatwebsite\Excel\Tests\Concerns;
 
-use Maatwebsite\Excel\Excel;
-use PHPUnit\Framework\Assert;
 use Illuminate\Support\Collection;
-use Maatwebsite\Excel\Tests\TestCase;
-use Maatwebsite\Excel\Concerns\ToArray;
 use Maatwebsite\Excel\Concerns\FromCollection;
+use Maatwebsite\Excel\Concerns\ToArray;
 use Maatwebsite\Excel\Concerns\WithCustomCsvSettings;
+use Maatwebsite\Excel\Excel;
+use Maatwebsite\Excel\Tests\TestCase;
+use PHPUnit\Framework\Assert;
 
 class WithCustomCsvSettingsTest extends TestCase
 {
@@ -79,7 +79,7 @@ class WithCustomCsvSettingsTest extends TestCase
             {
                 return [
                     'delimiter'        => ';',
-                    'enclosure'        => '"',
+                    'enclosure'        => '',
                     'escape_character' => '\\',
                     'contiguous'       => true,
                     'input_encoding'   => 'UTF-8',
