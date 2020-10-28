@@ -12,6 +12,7 @@ use Maatwebsite\Excel\Tests\Data\Stubs\FromNonEloquentQueryExport;
 use Maatwebsite\Excel\Tests\Data\Stubs\FromNestedArraysQueryExport;
 use Maatwebsite\Excel\Tests\Data\Stubs\FromGroupUsersQueuedQueryExport;
 use Maatwebsite\Excel\Tests\Data\Stubs\FromUsersQueryExportWithEagerLoad;
+use Maatwebsite\Excel\Tests\Data\Stubs\FromUsersQueryExportWithPrepareRows;
 
 class FromQueryTest extends TestCase
 {
@@ -222,5 +223,27 @@ class FromQueryTest extends TestCase
         }
 
         return $expected;
+    }
+
+    /**
+     * @test
+     */
+    public function can_export_from_query_with_prepare_rows()
+    {
+        $export = new FromUsersQueryExportWithPrepareRows;
+
+        $this->assertTrue(method_exists($export, 'prepareRows'));
+
+        $response = $export->store('from-query-store.xlsx');
+
+        $this->assertTrue($response);
+
+        $contents = $this->readAsArray(__DIR__ . '/../Data/Disks/Local/from-query-store.xlsx', 'Xlsx');
+
+        $allUsers = $export->query()->get()->map(function (User $user) {
+            return array_values($user->toArray());
+        })->toArray();
+
+        $this->assertEquals($allUsers, $contents);
     }
 }
