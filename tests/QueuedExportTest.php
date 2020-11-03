@@ -9,6 +9,7 @@ use Maatwebsite\Excel\Files\RemoteTemporaryFile;
 use Maatwebsite\Excel\Files\TemporaryFile;
 use Maatwebsite\Excel\Jobs\AppendDataToSheet;
 use Maatwebsite\Excel\Tests\Data\Stubs\AfterQueueExportJob;
+use Maatwebsite\Excel\Tests\Data\Stubs\QueuedExportWithFailedEvents;
 use Maatwebsite\Excel\Tests\Data\Stubs\EloquentCollectionWithMappingExport;
 use Maatwebsite\Excel\Tests\Data\Stubs\QueuedExport;
 use Maatwebsite\Excel\Tests\Data\Stubs\QueuedExportWithFailedHook;
@@ -141,5 +142,20 @@ class QueuedExportTest extends TestCase
         }
 
         $this->assertTrue(app('queue-has-failed'));
+    }
+
+    /**
+     * @test
+     */
+    public function can_catch_failures_on_queue_export_job()
+    {
+        $export = new QueuedExportWithFailedEvents();
+
+        try {
+            $export->queue('queued-export.xlsx');
+        } catch (Throwable $e) {
+        }
+
+        $this->assertTrue(app('queue-has-failed-from-queue-export-job'));
     }
 }

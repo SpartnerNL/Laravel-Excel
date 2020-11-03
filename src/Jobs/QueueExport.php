@@ -7,6 +7,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 use Maatwebsite\Excel\Files\TemporaryFile;
 use Maatwebsite\Excel\Writer;
+use Throwable;
 
 class QueueExport implements ShouldQueue
 {
@@ -71,5 +72,15 @@ class QueueExport implements ShouldQueue
 
         // Write to temp file with empty sheets.
         $writer->write($sheetExport, $this->temporaryFile, $this->writerType);
+    }
+
+    /**
+     * @param Throwable $e
+     */
+    public function failed(Throwable $e)
+    {
+        if (method_exists($this->export, 'failed')) {
+            $this->export->failed($e);
+        }
     }
 }
