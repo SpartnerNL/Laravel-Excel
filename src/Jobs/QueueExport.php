@@ -48,7 +48,7 @@ class QueueExport implements ShouldQueue
      */
     public function middleware()
     {
-        return (method_exists($this->export, 'middleware')) ? $this->export->middleware() : [];;
+        return (method_exists($this->export, 'middleware')) ? $this->export->middleware() : [];
     }
 
     /**

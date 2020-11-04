@@ -75,7 +75,7 @@ class AppendQueryToSheet implements ShouldQueue
      */
     public function middleware()
     {
-        return (method_exists($this->sheetExport, 'middleware')) ? $this->sheetExport->middleware() : [];;
+        return (method_exists($this->sheetExport, 'middleware')) ? $this->sheetExport->middleware() : [];
     }
 
     /**
