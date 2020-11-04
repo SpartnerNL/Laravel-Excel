@@ -56,11 +56,7 @@ class AppendViewToSheet implements ShouldQueue
      */
     public function middleware()
     {
-        $middleware = (method_exists($this->sheetExport, 'middleware')) ? $this->sheetExport->middleware() : [];
-
-        array_unshift($middleware, new LocalizeJob($this->sheetExport));
-
-        return $middleware;
+        return (method_exists($this->sheetExport, 'middleware')) ? $this->sheetExport->middleware() : [];
     }
 
     /**
@@ -71,12 +67,14 @@ class AppendViewToSheet implements ShouldQueue
      */
     public function handle(Writer $writer)
     {
-        $writer = $writer->reopen($this->temporaryFile, $this->writerType);
+        (new LocalizeJob($this->sheetExport))->handle($this, function () use ($writer) {
+            $writer = $writer->reopen($this->temporaryFile, $this->writerType);
 
-        $sheet = $writer->getSheetByIndex($this->sheetIndex);
+            $sheet = $writer->getSheetByIndex($this->sheetIndex);
 
-        $sheet->fromView($this->sheetExport, $this->sheetIndex);
+            $sheet->fromView($this->sheetExport, $this->sheetIndex);
 
-        $writer->write($this->sheetExport, $this->temporaryFile, $this->writerType);
+            $writer->write($this->sheetExport, $this->temporaryFile, $this->writerType);
+        });
     }
 }
