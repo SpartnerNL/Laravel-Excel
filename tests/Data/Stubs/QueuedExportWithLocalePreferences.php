@@ -6,12 +6,10 @@ use Illuminate\Contracts\Translation\HasLocalePreference;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromCollection;
-use Maatwebsite\Excel\Concerns\WithEvents;
-use Maatwebsite\Excel\Events\BeforeExport;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
 use PHPUnit\Framework\Assert;
 
-class QueuedExportWithLocalePreferences implements WithEvents, FromCollection, HasLocalePreference
+class QueuedExportWithLocalePreferences implements FromCollection, HasLocalePreference
 {
     use Exportable;
 
@@ -64,17 +62,5 @@ class QueuedExportWithLocalePreferences implements WithEvents, FromCollection, H
         });
 
         return $rows;
-    }
-
-    /**
-     * @return array
-     */
-    public function registerEvents(): array
-    {
-        return [
-            BeforeExport::class => function () {
-                Assert::assertEquals('ru', app()->getLocale());
-            },
-        ];
     }
 }
