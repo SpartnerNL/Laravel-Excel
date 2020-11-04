@@ -7,7 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Files\TemporaryFile;
-use Maatwebsite\Excel\Jobs\Middleware\SetQueuedExportLocale;
+use Maatwebsite\Excel\Jobs\Middleware\LocalizeJob;
 use Maatwebsite\Excel\Writer;
 
 class AppendQueryToSheet implements ShouldQueue
@@ -77,7 +77,7 @@ class AppendQueryToSheet implements ShouldQueue
     {
         $middleware = (method_exists($this->sheetExport, 'middleware')) ? $this->sheetExport->middleware() : [];
 
-        array_unshift($middleware, new SetQueuedExportLocale($this->sheetExport));
+        array_unshift($middleware, new LocalizeJob($this->sheetExport));
 
         return $middleware;
     }

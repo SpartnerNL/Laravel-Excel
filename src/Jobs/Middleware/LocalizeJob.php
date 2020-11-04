@@ -6,23 +6,23 @@ use Closure;
 use Illuminate\Contracts\Translation\HasLocalePreference;
 use Illuminate\Support\Traits\Localizable;
 
-class SetQueuedExportLocale
+class LocalizeJob
 {
     use Localizable;
 
     /**
      * @var object
      */
-    protected $export;
+    private $localizable;
 
     /**
-     * SetQueuedExportLocale constructor.
+     * LocalizeJob constructor.
      *
-     * @param object $export
+     * @param object $localizable
      */
-    public function __construct($export)
+    public function __construct($localizable)
     {
-        $this->export = $export;
+        $this->localizable = $localizable;
     }
 
     /**
@@ -35,8 +35,8 @@ class SetQueuedExportLocale
     public function handle($job, Closure $next)
     {
         $locale = value(function () {
-            if ($this->export instanceof HasLocalePreference) {
-                return $this->export->preferredLocale();
+            if ($this->localizable instanceof HasLocalePreference) {
+                return $this->localizable->preferredLocale();
             }
 
             return null;
