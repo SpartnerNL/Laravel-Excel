@@ -6,6 +6,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 use Maatwebsite\Excel\Files\TemporaryFile;
+use Maatwebsite\Excel\Jobs\Middleware\SetQueuedExportLocale;
 use Maatwebsite\Excel\Writer;
 use Throwable;
 
@@ -47,7 +48,11 @@ class QueueExport implements ShouldQueue
      */
     public function middleware()
     {
-        return (method_exists($this->export, 'middleware')) ? $this->export->middleware() : [];
+        $middleware = (method_exists($this->export, 'middleware')) ? $this->export->middleware() : [];
+
+        array_unshift($middleware, new SetQueuedExportLocale($this->export));
+
+        return $middleware;
     }
 
     /**
