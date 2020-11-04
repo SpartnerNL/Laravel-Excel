@@ -169,10 +169,7 @@ class QueuedExportTest extends TestCase
 
         $export = new QueuedExportWithLocalePreferences('ru');
 
-        try {
-            $export->queue('queued-export.xlsx');
-        } catch (Throwable $e) {
-        }
+        $export->queue('queued-export.xlsx');
 
         $this->assertTrue(app('queue-has-correct-locale'));
 
