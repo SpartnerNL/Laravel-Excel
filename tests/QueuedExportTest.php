@@ -13,6 +13,7 @@ use Maatwebsite\Excel\Tests\Data\Stubs\EloquentCollectionWithMappingExport;
 use Maatwebsite\Excel\Tests\Data\Stubs\QueuedExport;
 use Maatwebsite\Excel\Tests\Data\Stubs\QueuedExportWithFailedEvents;
 use Maatwebsite\Excel\Tests\Data\Stubs\QueuedExportWithFailedHook;
+use Maatwebsite\Excel\Tests\Data\Stubs\QueuedExportWithLocalePreferences;
 use Maatwebsite\Excel\Tests\Data\Stubs\ShouldQueueExport;
 use Throwable;
 
@@ -157,5 +158,21 @@ class QueuedExportTest extends TestCase
         }
 
         $this->assertTrue(app('queue-has-failed-from-queue-export-job'));
+    }
+
+    /**
+     * @test
+     */
+    public function can_set_locale_on_queue_export_job()
+    {
+        $currentLocale = app()->getLocale();
+
+        $export = new QueuedExportWithLocalePreferences('ru');
+
+        $export->queue('queued-export.xlsx');
+
+        $this->assertTrue(app('queue-has-correct-locale'));
+
+        $this->assertEquals($currentLocale, app()->getLocale());
     }
 }
