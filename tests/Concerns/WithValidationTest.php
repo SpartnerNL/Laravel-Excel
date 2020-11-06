@@ -898,5 +898,8 @@ class WithValidationTest extends TestCase
         $this->assertEquals($row, $failure->row());
         $this->assertEquals($attribute, $failure->attribute());
         $this->assertEquals($messages, $failure->errors());
+        $this->assertEquals($row, $failure->jsonSerialize()['row']);
+        $this->assertEquals($attribute, $failure->jsonSerialize()['attribute']);
+        $this->assertEquals($messages, $failure->jsonSerialize()['errors']);
     }
 }

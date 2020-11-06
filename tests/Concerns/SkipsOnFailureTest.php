@@ -74,6 +74,10 @@ class SkipsOnFailureTest extends TestCase
                 Assert::assertEquals('1', $failure->attribute());
                 Assert::assertEquals(['The selected 1 is invalid.'], $failure->errors());
                 Assert::assertEquals(['Taylor Otwell', 'taylor@laravel.com'], $failure->values());
+                Assert::assertEquals(2, $failure->jsonSerialize()['row']);
+                Assert::assertEquals('1', $failure->jsonSerialize()['attribute']);
+                Assert::assertEquals(['The selected 1 is invalid.'], $failure->jsonSerialize()['errors']);
+                Assert::assertEquals(['Taylor Otwell', 'taylor@laravel.com'], $failure->jsonSerialize()['values']);
 
                 $this->failures += \count($failures);
             }
