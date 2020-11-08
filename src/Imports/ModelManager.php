@@ -114,8 +114,8 @@ class ModelManager
                      if ($import instanceof WithUpserts) {
                          $model::query()->upsert($models->toArray(), $import->uniqueBy());
                      } else {
-                        /* @var Model $model */
-                        $model::query()->insert($models->toArray());
+                         /* @var Model $model */
+                         $model::query()->insert($models->toArray());
                      }
                  } catch (Throwable $e) {
                      if ($import instanceof SkipsOnError) {

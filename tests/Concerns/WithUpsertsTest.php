@@ -8,7 +8,6 @@ use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithUpserts;
-use Maatwebsite\Excel\Tests\Data\Stubs\Database\Group;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
 use Maatwebsite\Excel\Tests\TestCase;
 
@@ -29,7 +28,7 @@ class WithUpsertsTest extends TestCase
      */
     public function can_upsert_models_in_batches()
     {
-        User::create( [
+        User::create([
             'name'      => 'Funny Banana',
             'email'     => 'patrick@maatwebsite.nl',
             'password'  => 'password',
@@ -94,7 +93,7 @@ class WithUpsertsTest extends TestCase
      */
     public function can_upsert_models_in_rows()
     {
-        User::create( [
+        User::create([
             'name'      => 'Funny Potato',
             'email'     => 'patrick@maatwebsite.nl',
             'password'  => 'password',
