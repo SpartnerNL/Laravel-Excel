@@ -227,16 +227,4 @@ class QueuedImportTest extends TestCase
             $this->assertEquals('Job reached retryUntil method', $e->getMessage());
         }
     }
-
-    /**
-     * @test
-     */
-    public function can_define_max_exceptions_on_queued_import()
-    {
-        try {
-            (new QueuedImportWithMaxExceptions())->queue('import-batches.xlsx');
-        } catch (Throwable $e) {
-            $this->assertEquals('Max Exceptions is 3', $e->getMessage());
-        }
-    }
 }
