@@ -16,7 +16,6 @@ use Maatwebsite\Excel\Jobs\ReadChunk;
 use Maatwebsite\Excel\Tests\Data\Stubs\AfterQueueImportJob;
 use Maatwebsite\Excel\Tests\Data\Stubs\QueuedImport;
 use Maatwebsite\Excel\Tests\Data\Stubs\QueuedImportWithFailure;
-use Maatwebsite\Excel\Tests\Data\Stubs\QueuedImportWithMaxExceptions;
 use Maatwebsite\Excel\Tests\Data\Stubs\QueuedImportWithMiddleware;
 use Maatwebsite\Excel\Tests\Data\Stubs\QueuedImportWithRetryUntil;
 use Throwable;
@@ -242,7 +241,7 @@ class QueuedImportTest extends TestCase
         });
 
         try {
-            $import = new QueuedImportWithFailure();
+            $import                = new QueuedImportWithFailure();
             $import->maxExceptions = 3;
             $import->queue('import-batches.xlsx');
         } catch (Throwable $e) {
