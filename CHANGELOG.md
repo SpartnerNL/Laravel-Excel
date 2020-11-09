@@ -9,6 +9,7 @@ All notable changes to this project will be documented in this file.
 - Added an ability to catch exceptions from `QueueExport` job. Just add `failed` method for your export class if needed.
 - Added an ability to set locale for queued export. Just implement `Illuminate\Contracts\Translation\HasLocalePreference` for your export.
 - Added `JsonSerializable` support in `Maatwebsite\Excel\Validators\Failure`.
+- Added `$maxExceptions` support in `Maatwebsite\Excel\Jobs\ReadChunk.php`.
 
 ## [3.1.24] - 2020-10-28
 
