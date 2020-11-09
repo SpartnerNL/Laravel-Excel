@@ -35,6 +35,11 @@ class ReadChunk implements ShouldQueue
     public $tries;
 
     /**
+     * @var int
+     */
+    public $maxExceptions;
+
+    /**
      * @var WithChunkReading
      */
     private $import;
@@ -89,6 +94,7 @@ class ReadChunk implements ShouldQueue
         $this->chunkSize     = $chunkSize;
         $this->timeout       = $import->timeout ?? null;
         $this->tries         = $import->tries ?? null;
+        $this->maxExceptions = $import->maxExceptions ?? null;
     }
 
     /**
