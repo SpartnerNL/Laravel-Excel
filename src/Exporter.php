@@ -2,9 +2,6 @@
 
 namespace Maatwebsite\Excel;
 
-use Illuminate\Foundation\Bus\PendingDispatch;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
-
 interface Exporter
 {
     /**
@@ -15,7 +12,7 @@ interface Exporter
      *
      * @throws \PhpOffice\PhpSpreadsheet\Exception
      * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
-     * @return BinaryFileResponse
+     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
      */
     public function download($export, string $fileName, string $writerType = null, array $headers = []);
 
@@ -39,7 +36,7 @@ interface Exporter
      * @param string      $writerType
      * @param mixed       $diskOptions
      *
-     * @return PendingDispatch
+     * @return \Illuminate\Foundation\Bus\PendingDispatch
      */
     public function queue($export, string $filePath, string $disk = null, string $writerType = null, $diskOptions = []);
 
