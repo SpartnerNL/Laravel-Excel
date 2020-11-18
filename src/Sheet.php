@@ -55,6 +55,7 @@ use PhpOffice\PhpSpreadsheet\Shared\StringHelper;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Worksheet\BaseDrawing;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
+use TypeError;
 
 class Sheet
 {
@@ -620,9 +621,11 @@ class Sheet
     {
         // When dealing with eloquent models, we'll skip the relations
         // as we won't be able to display them anyway.
-        if (method_exists($row, 'attributesToArray')) {
-            return $row->attributesToArray();
-        }
+        try {
+            if (method_exists($row, 'attributesToArray')) {
+                return $row->attributesToArray();
+            }
+        } catch (TypeError $exception) {}
 
         if ($row instanceof Arrayable) {
             return $row->toArray();
