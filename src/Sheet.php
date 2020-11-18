@@ -625,7 +625,8 @@ class Sheet
             if (method_exists($row, 'attributesToArray')) {
                 return $row->attributesToArray();
             }
-        } catch (TypeError $exception) {}
+        } catch (TypeError $exception) {
+        }
 
         if ($row instanceof Arrayable) {
             return $row->toArray();
