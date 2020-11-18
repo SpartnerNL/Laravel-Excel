@@ -3,6 +3,10 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Added
+
+- Add support to PHP 8.0
+
 ## [3.1.25] - 2020-11-13
 
 ### Added
