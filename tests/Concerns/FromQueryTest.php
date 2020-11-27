@@ -2,7 +2,6 @@
 
 namespace Maatwebsite\Excel\Tests\Concerns;
 
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\Group;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
@@ -16,8 +15,6 @@ use Maatwebsite\Excel\Tests\TestCase;
 
 class FromQueryTest extends TestCase
 {
-    use DatabaseTransactions;
-
     /**
      * Setup the test environment.
      */
