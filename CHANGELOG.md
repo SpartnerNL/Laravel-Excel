@@ -3,6 +3,12 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [3.1.26] - 2020-11-13
+
+### Added
+
+- PHP 8 support
+
 ## [3.1.25] - 2020-11-13
 
 ### Added
@@ -80,7 +86,8 @@ All notable changes to this project will be documented in this file.
 - Raw() method now also available on Exportable.
 - Fix for breaking changes in PhpSpreadsheet with empty enclosures.
 
-[Unreleased]: https://github.com/Maatwebsite/Laravel-Excel/compare/3.1.25...HEAD
+[Unreleased]: https://github.com/Maatwebsite/Laravel-Excel/compare/3.1.26...HEAD
+[3.1.26]: https://github.com/Maatwebsite/Laravel-Excel/compare/3.1.25...3.1.26
 [3.1.25]: https://github.com/Maatwebsite/Laravel-Excel/compare/3.1.24...3.1.25
 [3.1.24]: https://github.com/Maatwebsite/Laravel-Excel/compare/3.1.23...3.1.24
 [3.1.23]: https://github.com/Maatwebsite/Laravel-Excel/compare/3.1.22...3.1.23
