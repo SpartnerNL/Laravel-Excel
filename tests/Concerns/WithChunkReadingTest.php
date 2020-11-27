@@ -344,6 +344,10 @@ class WithChunkReadingTest extends TestCase
                          */
                         public function model(array $row)
                         {
+                            if (!array_filter($row)) {
+                                return null;
+                            }
+
                             return new Group([
                                 'name' => $row[0],
                             ]);
@@ -366,6 +370,10 @@ class WithChunkReadingTest extends TestCase
                          */
                         public function model(array $row)
                         {
+                            if (!array_filter($row)) {
+                                return null;
+                            }
+
                             return new Group([
                                 'name' => $row[0],
                             ]);
