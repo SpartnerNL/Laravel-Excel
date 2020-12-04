@@ -3,6 +3,10 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Added
+
+- Added HasReferencesToOtherSheets concern to allow import of calculated
+
 ## [3.1.26] - 2020-11-13
 
 ### Added
