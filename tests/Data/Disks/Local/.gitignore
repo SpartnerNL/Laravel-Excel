@@ -2,6 +2,7 @@
 !.gitignore
 !import.xlsx
 !import-formulas.xlsx
+!import-formulas-multiple-sheets.xlsx
 !import-multiple-sheets.xlsx
 !import-users.xlsx
 !import-users-with-duplicates.xlsx
