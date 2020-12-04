@@ -154,7 +154,7 @@ class Reader
 
         $this->loadSpreadsheet($import);
 
-        $sheets = [];
+        $sheets             = [];
         $sheetsToDisconnect = [];
         foreach ($this->sheetImports as $index => $sheetImport) {
             $calculatesFormulas = $sheetImport instanceof WithCalculatedFormulas;
@@ -196,7 +196,7 @@ class Reader
         $this->reader = $this->getReader($import, $filePath, $readerType, $disk);
         $this->loadSpreadsheet($import);
 
-        $sheets = new Collection();
+        $sheets             = new Collection();
         $sheetsToDisconnect = [];
         foreach ($this->sheetImports as $index => $sheetImport) {
             $calculatesFormulas = $sheetImport instanceof WithCalculatedFormulas;

@@ -148,7 +148,7 @@ class WithCalculatedFormulasTest extends TestCase
                         public function array(array $array)
                         {
                             Assert::assertEquals([
-                                ['1', '1']
+                                ['1', '1'],
                             ], $array);
                         }
                     },
@@ -158,7 +158,7 @@ class WithCalculatedFormulasTest extends TestCase
                         public function array(array $array)
                         {
                             Assert::assertEquals([
-                                ['2']
+                                ['2'],
                             ], $array);
                         }
                     },
