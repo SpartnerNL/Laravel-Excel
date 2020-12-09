@@ -1,7 +1,6 @@
 ---
 name: "\U0001F41B Bug Report"
-about: Report a general package issue. Please ensure your Laravel-Excel version is
-  still supported https://docs.laravel-excel.com/3.1/getting-started/support.html#supported-versions
+about: Report a general package issue. Filling in the issue template is **mandatory**, issues with out the template filled in will be **closed**. Please ensure your Laravel-Excel version is still **supported** https://docs.laravel-excel.com/3.1/getting-started/support.html#supported-versions
 title: "[BUG]"
 labels: bug
 assignees: ''
@@ -27,7 +26,7 @@ Please prefix your issue with: [BUG] .
 Put an X between the brackets if you have done the following:
 -->
 
-* [ ] Checked if your Laravel Excel version is still supported: https://docs.laravel-excel.com/3.1/getting-started/support.html#supported-versions Filling in the issue template is mandatory, issues with out the template filled in will be closed.
+* [ ] Checked if your Laravel Excel version is still supported: https://docs.laravel-excel.com/3.1/getting-started/support.html#supported-versions
 * [ ] Able to reproduce the behaviour outside of your code, the problem is isolated to Laravel Excel.
 * [ ] Checked that your issue isn't already filed.
 * [ ] Checked if no PR was submitted that fixes this problem.
