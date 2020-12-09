@@ -8,46 +8,8 @@ assignees: ''
 
 ---
 
-<!--
+Please use the Discussions tab (https://github.com/Maatwebsite/Laravel-Excel/discussions) to discuss your questions, please don't open a issue for it as we try to keep the issue tracker oriented at bugs. Questions that belongs in the Discussions tab WILL be closed.
 
-PLEASE READ: FILLING IN THE TEMPLATE IS REQUIRED!
-Issues that do not include enough information might not be picked up.
-Issues that have not been filled in using the issue template will be CLOSED.
+When asking questions please try to keep your question generic. Pasting in a big chunk of your application-specific code is hard for use to reproduce and understand. When you need application specific help you can consider our commercial support (https://laravel-excel.com/commercial-support) or perhaps try Stackoverflow Or Laracasts.
 
-Have you read Laravel-Excel's 
-contributing guidelines (https://laravel-excel.maatwebsite.nl/docs/3.1/getting-started/contributing)
-and Code Of Conduct (https://github.com/Maatwebsite/Laravel-Excel/blob/3.1/CODE_OF_CONDUCT.md)?
-By filing an Issue, you are expected to comply with it, including treating everyone with respect.
-
-Please prefix your issue with [QUESTION].
-
--->
-
-### Prerequisites
-
-<!--
-
-Put an X between the brackets if you have done the following:
-
--->
-
-* [ ] Have read and understood: https://github.com/Maatwebsite/Laravel-Excel/blob/3.1/.github/SUPPORT.md
-* [ ] Checked if your Laravel Excel version is still supported: https://docs.laravel-excel.com/3.1/getting-started/support.html#supported-versions
-* [ ] Checked that your question isn't already asked before.
-* [ ] Filled in the entire issue template
-
-### Versions
-
-<!-- Please be as exact and complete as possible when proving version numbers -->
-
-* PHP version: <!-- put your FULL (including patch number) PHP version here -->
-* Laravel version: <!-- put your FULL (including patch number) Laravel version here -->
-* Package version: <!-- put FULL (including patch number) Laravel Excel package version here -->
-
-### Description
-
-<!-- Describe your questions -->
-
-### Additional Information
-
-Any additional information, configuration or data that might be necessary to reproduce the issue.
+Thanks!
