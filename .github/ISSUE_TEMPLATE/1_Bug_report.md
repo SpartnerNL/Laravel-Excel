@@ -1,6 +1,6 @@
 ---
 name: "\U0001F41B Bug Report"
-about: Report a general package issue. Filling in the issue template is **mandatory**, issues with out it will be **closed**. Please ensure your Laravel-Excel version is still **supported** (Currently ^3.1)
+about: Report a general package issue. Filling in the issue template is mandatory, issues without it will be closed. Please ensure your Laravel-Excel version is still supported (Currently ^3.1)
 title: "[BUG]"
 labels: bug
 assignees: ''
@@ -9,8 +9,11 @@ assignees: ''
 
 <!--
 PLEASE READ: FILLING IN THE TEMPLATE IS REQUIRED!
+
 Issues that do not include enough information might not be picked up.
 Issues that have not been filled in using the issue template will be CLOSED.
+
+Please try to keep your bug report short but concise. Try to provide an easy-to-reproduce description or example. This can be done by using a reproduction repository or failing unit test. We unfortunately don't have to time to debug your application-specific code for you, if you do need help with that, please considering hiring us to help you on commercial basis.
 
 Have you read Laravel-Excel's 
 contributing guidelines (https://laravel-excel.maatwebsite.nl/docs/3.1/getting-started/contributing)
