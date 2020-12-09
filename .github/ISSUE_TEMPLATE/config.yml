@@ -1,8 +1,14 @@
 blank_issues_enabled: false
 contact_links:
-  - name: Questions
+  - name: 🧐 Questions
     url: https://github.com/Maatwebsite/Laravel-Excel/discussions
-    about: Please ask and answer questions here.
-  - name: Proposals
+    about: The issuer tracker is focused on reporting bugs or problems. Please use the Discussions tabs for questions!
+  - name: 💡 Proposals
     url: https://github.com/Maatwebsite/Laravel-Excel/discussions
-    about: Please place proposals here
+    about: If you have a 🔥 idea. Please use the Discussions tab for this!
+  - name: 📚 Documentation improvements
+    url: https://github.com/Maatwebsite/laravel-excel-docs
+    about: Our documentation is open-source, you can make a PR with your suggested changes over there.
+  - name: Commercial Support
+    url: https://laravel-excel.com/commercial-support
+    about: If you need urgent help we can offer this on commercial basis. Send us an e-mail to discuss the posibilities and our hourly rate.
