@@ -4,7 +4,7 @@ labelName: more information needed
 # The text of the comment to add to the issue in addition to the label
 commentText: >
     Thanks for submitting the ticket. Unfortunately the information you provided is incomplete. We need to know which version you use and how to reproduce it. Please include code examples. Before we can pick it up, please check (https://github.com/Maatwebsite/Laravel-Excel/blob/3.1/.github/ISSUE_TEMPLATE.md) and add the missing information.
-    To make processing of this ticket a lot easier, please make sure to check (https://laravel-excel.maatwebsite.nl/3.1/getting-started/contributing.html) and double-check if you have filled in the issue template correctly. This will allow us to pick up your ticket more efficiently. Issues that follow the guidelines correctly will get priority over other issues.
+    To make processing of this ticket a lot easier, please make sure to check (https://laravel-excel.maatwebsite.nl/3.1/getting-started/contributing.html) and double-check if you have filled in the issue template correctly. This will allow us to pick up your ticket more efficiently. Issues that don't have an issue template filled in, will be closed.
 
 # Whether or not to ensure all checkboxes are checked
 checkCheckboxes: false
