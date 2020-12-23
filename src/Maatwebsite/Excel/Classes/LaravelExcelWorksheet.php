@@ -8,6 +8,7 @@ use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Writers\CellWriter;
 use Maatwebsite\Excel\Exceptions\LaravelExcelException;
 use PHPExcel_Worksheet_PageSetup;
+use Illuminate\Support\Str;
 
 /**
  *
@@ -780,7 +781,7 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet {
      */
     protected function _setSetter($setter)
     {
-        if (starts_with($setter, 'set'))
+        if (Str::startsWith($setter, 'set'))
         {
             $key = lcfirst(str_replace('set', '', $setter));
         }
@@ -1233,7 +1234,7 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet {
     public function __call($method, $params)
     {
         // If the dynamic call starts with "with", add the var to the data array
-        if (starts_with($method, 'with'))
+        if (Str::startsWith($method, 'with'))
         {
             $key = lcfirst(str_replace('with', '', $method));
             $this->_addVars($key, reset($params));
@@ -1242,7 +1243,7 @@ class LaravelExcelWorksheet extends PHPExcel_Worksheet {
         }
 
         // If it's a setter
-        elseif (starts_with($method, 'set'))
+        elseif (Str::startsWith($method, 'set'))
         {
             // set the attribute
             $this->_setAttributes($method, $params);
