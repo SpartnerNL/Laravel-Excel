@@ -13,6 +13,7 @@ use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\FromView;
 use Maatwebsite\Excel\Concerns\OnEachRow;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
+use Maatwebsite\Excel\Concerns\SkipsEmptyRows;
 use Maatwebsite\Excel\Concerns\ToArray;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\ToModel;
@@ -290,17 +291,19 @@ class Sheet
             foreach ($this->worksheet->getRowIterator()->resetStart($startRow ?? 1) as $row) {
                 $sheetRow = new Row($row, $headingRow);
 
-                if ($import instanceof WithValidation) {
-                    $sheetRow->setPreparationCallback($preparationCallback);
-                    $toValidate = [$sheetRow->getIndex() => $sheetRow->toArray(null, $import instanceof WithCalculatedFormulas, $endColumn)];
+                if (!$import instanceof SkipsEmptyRows || ($import instanceof SkipsEmptyRows && !$sheetRow->isEmpty())) {
+                    if ($import instanceof WithValidation) {
+                        $sheetRow->setPreparationCallback($preparationCallback);
+                        $toValidate = [$sheetRow->getIndex() => $sheetRow->toArray(null, $import instanceof WithCalculatedFormulas, $endColumn)];
 
-                    try {
-                        app(RowValidator::class)->validate($toValidate, $import);
+                        try {
+                            app(RowValidator::class)->validate($toValidate, $import);
+                            $import->onRow($sheetRow);
+                        } catch (RowSkippedException $e) {
+                        }
+                    } else {
                         $import->onRow($sheetRow);
-                    } catch (RowSkippedException $e) {
                     }
-                } else {
-                    $import->onRow($sheetRow);
                 }
 
                 if ($import instanceof WithProgressBar) {
@@ -337,7 +340,13 @@ class Sheet
 
         $rows = [];
         foreach ($this->worksheet->getRowIterator($startRow, $endRow) as $index => $row) {
-            $row = (new Row($row, $headingRow))->toArray($nullValue, $calculateFormulas, $formatData, $endColumn);
+            $row = new Row($row, $headingRow);
+
+            if ($import instanceof SkipsEmptyRows && $row->isEmpty()) {
+                continue;
+            }
+
+            $row = $row->toArray($nullValue, $calculateFormulas, $formatData, $endColumn);
 
             if ($import instanceof WithMapping) {
                 $row = $import->map($row);
