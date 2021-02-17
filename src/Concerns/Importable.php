@@ -9,6 +9,8 @@ use Illuminate\Support\Collection;
 use InvalidArgumentException;
 use Maatwebsite\Excel\Exceptions\NoFilePathGivenException;
 use Maatwebsite\Excel\Importer;
+use Symfony\Component\Console\Input\StringInput;
+use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 trait Importable
@@ -114,9 +116,7 @@ trait Importable
     public function getConsoleOutput(): OutputStyle
     {
         if (!$this->output instanceof OutputStyle) {
-            throw new InvalidArgumentException(
-                'Importable has no OutputStyle. Declare one by using ->withOutput($this->output).'
-            );
+            $this->output = new OutputStyle(new StringInput(''), new NullOutput());
         }
 
         return $this->output;
