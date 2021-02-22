@@ -3,8 +3,11 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [3.1.27] - 2020-02-22
+
 ### Added
 
+- Added SkipsEmptyRows concern
 - Added HasReferencesToOtherSheets concern to allow import of calculated
 
 ## [3.1.26] - 2020-11-13
