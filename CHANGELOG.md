@@ -10,6 +10,11 @@ All notable changes to this project will be documented in this file.
 - Added SkipsEmptyRows concern
 - Added HasReferencesToOtherSheets concern to allow import of calculated
 
+## Changed
+
+- Bump minimum PhpSpreadsheet version
+- Progressbar NullOutput as fallback
+
 ## [3.1.26] - 2020-11-13
 
 ### Added
