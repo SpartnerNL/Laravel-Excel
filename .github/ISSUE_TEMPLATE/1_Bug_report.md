@@ -20,12 +20,12 @@ By filing an Issue, you are expected to comply with it, including treating every
 
 1️⃣ Is the bug applicable and reproducable to the latest version of the package and hasn't it been reported before? (Currently 3.1.x)
 
-2️⃣ What version of the package, Laravel and PHP do you use? Please be provide the FULL version number.
+2️⃣ What version of the package, Laravel and PHP do you use? Please provide the FULL version number.
 
 3️⃣ Describe your issue. Please be short, but concise.
 
-4️⃣ How can the issue be reproduced? Please provide easy-to-reproduce steps (repository, simple code example, failing unit test)
+4️⃣ How can the issue be reproduced? Please provide easy-to-reproduce steps (repository, simple code example, failing unit test).
 
 5️⃣ What should be the expected behaviour?
 
-6️⃣ Have you fill in the entire issue template? If not, your issue will be closed. Thanks for using the package! 🙌
+6️⃣ Have you filled in the entire issue template? If not, your issue will be closed. Thanks for using the package! 🙌
