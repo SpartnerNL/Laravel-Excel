@@ -82,15 +82,15 @@ class WithUpsertsTest extends TestCase
         DB::connection()->disableQueryLog();
 
         $this->assertDatabaseHas('users', [
-            'name'  => 'Patrick Brouwers',
-            'email' => 'patrick@maatwebsite.nl',
-            'password' => 'secret',
+            'name'      => 'Patrick Brouwers',
+            'email'     => 'patrick@maatwebsite.nl',
+            'password'  => 'secret',
         ]);
 
         $this->assertDatabaseHas('users', [
-            'name'  => 'Taylor Otwell',
-            'email' => 'taylor@laravel.com',
-            'password' => 'secret',
+            'name'      => 'Taylor Otwell',
+            'email'     => 'taylor@laravel.com',
+            'password'  => 'secret',
         ]);
 
         $this->assertEquals(2, User::count());
@@ -141,15 +141,15 @@ class WithUpsertsTest extends TestCase
         DB::connection()->disableQueryLog();
 
         $this->assertDatabaseHas('users', [
-            'name'  => 'Patrick Brouwers',
-            'email' => 'patrick@maatwebsite.nl',
-            'password' => 'secret',
+            'name'      => 'Patrick Brouwers',
+            'email'     => 'patrick@maatwebsite.nl',
+            'password'  => 'secret',
         ]);
 
         $this->assertDatabaseHas('users', [
-            'name'  => 'Taylor Otwell',
-            'email' => 'taylor@laravel.com',
-            'password' => 'secret',
+            'name'      => 'Taylor Otwell',
+            'email'     => 'taylor@laravel.com',
+            'password'  => 'secret',
         ]);
 
         $this->assertEquals(2, User::count());
@@ -216,15 +216,15 @@ class WithUpsertsTest extends TestCase
         DB::connection()->disableQueryLog();
 
         $this->assertDatabaseHas('users', [
-            'name'  => 'Patrick Brouwers',
-            'email' => 'patrick@maatwebsite.nl',
-            'password' => 'password',
+            'name'      => 'Patrick Brouwers',
+            'email'     => 'patrick@maatwebsite.nl',
+            'password'  => 'password',
         ]);
 
         $this->assertDatabaseHas('users', [
-            'name'  => 'Taylor Otwell',
-            'email' => 'taylor@laravel.com',
-            'password' => 'secret',
+            'name'      => 'Taylor Otwell',
+            'email'     => 'taylor@laravel.com',
+            'password'  => 'secret',
         ]);
 
         $this->assertEquals(2, User::count());
@@ -283,15 +283,15 @@ class WithUpsertsTest extends TestCase
         DB::connection()->disableQueryLog();
 
         $this->assertDatabaseHas('users', [
-            'name'  => 'Patrick Brouwers',
-            'email' => 'patrick@maatwebsite.nl',
-            'password' => 'password',
+            'name'      => 'Patrick Brouwers',
+            'email'     => 'patrick@maatwebsite.nl',
+            'password'  => 'password',
         ]);
 
         $this->assertDatabaseHas('users', [
-            'name'  => 'Taylor Otwell',
-            'email' => 'taylor@laravel.com',
-            'password' => 'secret',
+            'name'      => 'Taylor Otwell',
+            'email'     => 'taylor@laravel.com',
+            'password'  => 'secret',
         ]);
 
         $this->assertEquals(2, User::count());
