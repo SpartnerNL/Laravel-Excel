@@ -3,6 +3,14 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Added
+
+- Added WithUpsertColumns concern (#3046)
+
+### Fixed
+
+- Fixed issue with not autosizing columns (#3055)
+
 ## [3.1.27] - 2020-02-22
 
 ### Added
