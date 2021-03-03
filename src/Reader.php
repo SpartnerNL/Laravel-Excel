@@ -312,7 +312,7 @@ class Reader
             // Load specific sheets.
             if (method_exists($this->reader, 'setLoadSheetsOnly')) {
                 $this->reader->setLoadSheetsOnly(
-                    collect($worksheetNames)->only(array_keys($sheetImports))->all()
+                    collect($worksheetNames)->intersect(array_keys($sheetImports))->values()->all()
                 );
             }
 
