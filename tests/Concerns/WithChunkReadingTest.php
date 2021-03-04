@@ -315,7 +315,7 @@ class WithChunkReadingTest extends TestCase
     /**
      * @test
      */
-    public function can_import_to_model_in_chunks_and_insert_in_batches_with_multiple_sheets_objects()
+    public function can_import_to_model_in_chunks_and_insert_in_batches_with_multiple_sheets_objects_by_index()
     {
         DB::connection()->enableQueryLog();
 
@@ -359,6 +359,83 @@ class WithChunkReadingTest extends TestCase
                     },
 
                     new class implements ToModel, WithBatchInserts {
+                        /**
+                         * @param  array  $row
+                         *
+                         * @return Model|null
+                         */
+                        public function model(array $row)
+                        {
+                            return new Group([
+                                'name' => $row[0],
+                            ]);
+                        }
+
+                        /**
+                         * @return int
+                         */
+                        public function batchSize(): int
+                        {
+                            return 2000;
+                        }
+                    },
+                ];
+            }
+        };
+
+        $import->import('import-batches-multiple-sheets.xlsx');
+
+        $this->assertCount(10, DB::getQueryLog());
+        DB::connection()->disableQueryLog();
+    }
+
+    /**
+     * @test
+     */
+    public function can_import_to_model_in_chunks_and_insert_in_batches_with_multiple_sheets_objects_by_name()
+    {
+        DB::connection()->enableQueryLog();
+
+        $import = new class implements WithMultipleSheets, WithChunkReading {
+            use Importable;
+
+            /**
+             * @return int
+             */
+            public function chunkSize(): int
+            {
+                return 1000;
+            }
+
+            /**
+             * @return array
+             */
+            public function sheets(): array
+            {
+                return [
+                    'Worksheet' => new class implements ToModel, WithBatchInserts {
+                        /**
+                         * @param  array  $row
+                         *
+                         * @return Model|null
+                         */
+                        public function model(array $row)
+                        {
+                            return new Group([
+                                'name' => $row[0],
+                            ]);
+                        }
+
+                        /**
+                         * @return int
+                         */
+                        public function batchSize(): int
+                        {
+                            return 1000;
+                        }
+                    },
+
+                    'Worksheet2' => new class implements ToModel, WithBatchInserts {
                         /**
                          * @param  array  $row
                          *
