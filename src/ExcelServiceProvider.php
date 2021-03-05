@@ -86,6 +86,10 @@ class ExcelServiceProvider extends ServiceProvider
             return new Filesystem($this->app->make('filesystem'));
         });
 
+        $this->app->singleton(Writer::class, function ($app) {
+            return new Writer($app->make(TemporaryFileFactory::class));
+        });
+
         $this->app->bind('excel', function () {
             return new Excel(
                 $this->app->make(Writer::class),
