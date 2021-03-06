@@ -41,16 +41,16 @@ trait Writeable
         return $cell;
     }
 
+    public function afterWriting(Worksheet $worksheet)
+    {
+        $this->writeSize($worksheet);
+        $this->writeFilters($worksheet);
+    }
+
     protected function writeValue(Cell $cell, $value)
     {
         $this->type
             ? $cell->setValueExplicit($value, $this->type)
             : $cell->setValue($value);
-    }
-
-    public function afterWriting(Worksheet $worksheet)
-    {
-        $this->writeSize($worksheet);
-        $this->writeFilters($worksheet);
     }
 }

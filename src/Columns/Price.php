@@ -7,7 +7,7 @@ use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 
 class Price extends Column
 {
-    protected $type = DataType::TYPE_NUMERIC;
+    protected $type   = DataType::TYPE_NUMERIC;
     protected $format = NumberFormat::FORMAT_NUMBER;
 
     /**

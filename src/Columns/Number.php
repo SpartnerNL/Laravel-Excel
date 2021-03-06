@@ -2,13 +2,12 @@
 
 namespace Maatwebsite\Excel\Columns;
 
-use PhpOffice\PhpSpreadsheet\Cell\Cell;
 use PhpOffice\PhpSpreadsheet\Cell\DataType;
 use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 
 class Number extends Column
 {
-    protected $type = DataType::TYPE_NUMERIC;
+    protected $type   = DataType::TYPE_NUMERIC;
     protected $format = NumberFormat::FORMAT_NUMBER;
 
     public function withDecimals(): Column

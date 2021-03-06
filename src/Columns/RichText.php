@@ -11,13 +11,13 @@ class RichText extends Column
 {
     protected $type = DataType::TYPE_INLINE;
 
-    protected function toExcelValue($value)
-    {
-        return (new Html())->toRichTextObject($value);
-    }
-
     public function read(Cell $cell)
     {
         return RichTextReader::toHtml($cell);
+    }
+
+    protected function toExcelValue($value)
+    {
+        return (new Html())->toRichTextObject($value);
     }
 }

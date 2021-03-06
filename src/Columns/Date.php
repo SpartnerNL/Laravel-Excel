@@ -2,18 +2,17 @@
 
 namespace Maatwebsite\Excel\Columns;
 
-use DateTime;
 use Carbon\Carbon;
-use PhpOffice\PhpSpreadsheet\Cell\Cell;
+use DateTime;
 use PhpOffice\PhpSpreadsheet\Cell\DataType;
 use PhpOffice\PhpSpreadsheet\Shared\Date as ExcelDate;
 use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 
 class Date extends Column
 {
-    protected $type = DataType::TYPE_NUMERIC;
+    protected $type   = DataType::TYPE_NUMERIC;
     protected $format = NumberFormat::FORMAT_DATE_DDMMYYYY;
-    protected $time = false;
+    protected $time   = false;
 
     public function toExcelValue($value)
     {

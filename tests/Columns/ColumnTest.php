@@ -104,7 +104,7 @@ class ColumnTest extends TestCase
         // Written type and value are correct
         $this->assertEquals($dataType, $cell->getDataType());
         $this->assertEquals($expectedValue, $cell->getValue());
-        
+
         unlink($file);
     }
 

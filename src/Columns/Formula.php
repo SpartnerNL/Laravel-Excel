@@ -7,7 +7,7 @@ use PhpOffice\PhpSpreadsheet\Cell\DataType;
 
 class Formula extends Column
 {
-    protected $type = DataType::TYPE_FORMULA;
+    protected $type      = DataType::TYPE_FORMULA;
     protected $calculate = false;
 
     public function read(Cell $cell)

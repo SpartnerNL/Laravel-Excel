@@ -27,7 +27,7 @@ class ColumnCollection extends Collection
         $index   = 0;
         $columns = [];
         foreach ($concernable->columns() as $column) {
-            ++$index;
+            $index++;
             $columns[] = $column->index($index);
         }
 

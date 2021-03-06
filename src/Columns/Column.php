@@ -4,7 +4,6 @@ namespace Maatwebsite\Excel\Columns;
 
 use Illuminate\Support\Str;
 use Illuminate\Support\Traits\Macroable;
-use PhpOffice\PhpSpreadsheet\Calculation\Exception;
 use PhpOffice\PhpSpreadsheet\Cell\Cell;
 use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
