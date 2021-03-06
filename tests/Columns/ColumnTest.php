@@ -76,7 +76,7 @@ class ColumnTest extends TestCase
             [
                 RichText::make('RichText'),
                 'G2',
-                'test <span style="font-weight:bold; color:#000000; font-family:\'Calibri\'; font-size:12pt">test</span><span style="color:#000000; font-family:\'Calibri\'; font-size:12pt"> test</span>'
+                'test <span style="font-weight:bold; color:#000000; font-family:\'Calibri\'; font-size:12pt">test</span><span style="color:#000000; font-family:\'Calibri\'; font-size:12pt"> test</span>',
             ],
             [Text::make('RichText'), 'G2', 'test test test'],
 
@@ -172,7 +172,7 @@ class ColumnTest extends TestCase
             ->style([
                 'font' => [
                     'name' => 'Times New Roman',
-                ]
+                ],
             ])
             ->bold()
             ->italic()
