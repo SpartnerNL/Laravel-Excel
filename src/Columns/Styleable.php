@@ -18,7 +18,36 @@ trait Styleable
      */
     public function style(array $style)
     {
-        $this->style = array_merge_recursive($this->style, $style);
+        $this->style = array_merge_recursive($this->style ?: [], $style);
+
+        return $this;
+    }
+
+    /**
+     * @param string     $name
+     * @param float|null $size
+     *
+     * @return $this
+     */
+    public function font(string $name, $size = null)
+    {
+        $this->style['font']['name'] = $name;
+
+        if ($size) {
+            $this->textSize($size);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param float $size
+     *
+     * @return $this
+     */
+    public function textSize(float $size)
+    {
+        $this->style['font']['size'] = $size;
 
         return $this;
     }

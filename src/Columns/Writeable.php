@@ -28,10 +28,6 @@ trait Writeable
             $cell->setDataType($this->type);
         }
 
-        if ($this->format) {
-            $cell->getStyle()->getNumberFormat()->setFormatCode($this->format);
-        }
-
         $value = $this->resolveValue($data);
 
         $this->writeValue($cell, $value);
