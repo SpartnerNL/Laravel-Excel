@@ -79,7 +79,9 @@ class Writer
     {
         $this->exportable = $export;
 
-        if ($export instanceof WithEvents && !count($this->events)) {
+        $this->clearListeners();
+        
+        if ($export instanceof WithEvents) {
             $this->registerListeners($export->registerEvents());
         }
 
