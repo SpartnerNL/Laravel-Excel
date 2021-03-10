@@ -309,13 +309,6 @@ class Reader
         if ($import instanceof WithMultipleSheets) {
             $sheetImports = $import->sheets();
 
-            // Load specific sheets.
-            if (method_exists($this->reader, 'setLoadSheetsOnly')) {
-                $this->reader->setLoadSheetsOnly(
-                    collect($worksheetNames)->only(array_keys($sheetImports))->all()
-                );
-            }
-
             foreach ($sheetImports as $index => $sheetImport) {
                 // Translate index to name.
                 if (is_numeric($index)) {
@@ -325,6 +318,14 @@ class Reader
                 // Specify with worksheet name should have which import.
                 $worksheets[$index] = $sheetImport;
             }
+
+            // Load specific sheets.
+            if (method_exists($this->reader, 'setLoadSheetsOnly')) {
+                $this->reader->setLoadSheetsOnly(
+                    collect($worksheetNames)->intersect(array_keys($worksheets))->values()->all()
+                );
+            }
+
         } else {
             // Each worksheet the same import class.
             foreach ($worksheetNames as $name) {
