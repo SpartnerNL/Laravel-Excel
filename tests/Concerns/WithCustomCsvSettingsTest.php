@@ -79,7 +79,7 @@ class WithCustomCsvSettingsTest extends TestCase
             {
                 return [
                     'delimiter'        => ';',
-                    'enclosure'        => '"',
+                    'enclosure'        => '',
                     'escape_character' => '\\',
                     'contiguous'       => true,
                     'input_encoding'   => 'UTF-8',

@@ -42,6 +42,11 @@ class ExcelFake implements Exporter, Importer
     protected $matchByRegex = false;
 
     /**
+     * @var object|null
+     */
+    protected $job;
+
+    /**
      * {@inheritdoc}
      */
     public function download($export, string $fileName, string $writerType = null, array $headers = [])
@@ -75,14 +80,18 @@ class ExcelFake implements Exporter, Importer
         $this->stored[$disk ?? 'default'][$filePath] = $export;
         $this->queued[$disk ?? 'default'][$filePath] = $export;
 
-        return new PendingDispatch(new class {
+        $this->job = new class {
             use Queueable;
 
             public function handle()
             {
                 //
             }
-        });
+        };
+
+        Queue::push($this->job);
+
+        return new PendingDispatch($this->job);
     }
 
     /**
@@ -278,6 +287,11 @@ class ExcelFake implements Exporter, Importer
             $callback($queuedForDisk[$filePath]),
             "The file [{$filePath}] was not stored with the expected data."
         );
+    }
+
+    public function assertQueuedWithChain($chain): void
+    {
+        Queue::assertPushedWithChain(get_class($this->job), $chain);
     }
 
     /**

@@ -5,7 +5,6 @@ namespace Maatwebsite\Excel\Tests;
 use Illuminate\Contracts\Queue\Job;
 use Illuminate\Http\Testing\File;
 use Maatwebsite\Excel\ExcelServiceProvider;
-use Orchestra\Database\ConsoleServiceProvider;
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PHPUnit\Framework\Constraint\StringContains;
@@ -74,7 +73,6 @@ class TestCase extends OrchestraTestCase
     protected function getPackageProviders($app)
     {
         return [
-            ConsoleServiceProvider::class,
             ExcelServiceProvider::class,
         ];
     }
@@ -130,6 +128,18 @@ class TestCase extends OrchestraTestCase
             $this->assertStringContainsString($needle, $haystack, $message);
         } else {
             static::assertThat($haystack, new StringContains($needle, false), $message);
+        }
+    }
+
+    /**
+     * @param string $path
+     */
+    protected function assertFileMissing(string $path)
+    {
+        if (method_exists($this, 'assertFileDoesNotExist')) {
+            $this->assertFileDoesNotExist($path);
+        } else {
+            $this->assertFileNotExists($path);
         }
     }
 }

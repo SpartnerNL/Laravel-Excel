@@ -33,6 +33,8 @@ class OnEachRowTest extends TestCase
                     'test', 'test',
                 ], $row->toArray());
 
+                Assert::assertEquals('test', $row[0]);
+
                 $this->called++;
             }
         };

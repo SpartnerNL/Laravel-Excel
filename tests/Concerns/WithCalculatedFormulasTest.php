@@ -3,10 +3,12 @@
 namespace Maatwebsite\Excel\Tests\Concerns;
 
 use Illuminate\Database\Eloquent\Model;
+use Maatwebsite\Excel\Concerns\HasReferencesToOtherSheets;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\ToArray;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithCalculatedFormulas;
+use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 use Maatwebsite\Excel\Concerns\WithStartRow;
 use Maatwebsite\Excel\Tests\TestCase;
 use PHPUnit\Framework\Assert;
@@ -125,5 +127,45 @@ class WithCalculatedFormulasTest extends TestCase
         $import->import('import-external-reference.xls');
 
         $this->assertTrue($import->called);
+    }
+
+    /**
+     * @test
+     */
+    public function can_import_to_array_with_calculated_formulas_and_multi_sheet_references()
+    {
+        $import = new class implements WithMultipleSheets, HasReferencesToOtherSheets {
+            use Importable;
+
+            public $test = 'test1';
+
+            public function sheets(): array
+            {
+                return [
+                    new class implements ToArray, HasReferencesToOtherSheets {
+                        public $test = 'test2';
+
+                        public function array(array $array)
+                        {
+                            Assert::assertEquals([
+                                ['1', '1'],
+                            ], $array);
+                        }
+                    },
+                    new class implements ToArray, WithCalculatedFormulas, HasReferencesToOtherSheets {
+                        public $test = 'test2';
+
+                        public function array(array $array)
+                        {
+                            Assert::assertEquals([
+                                ['2'],
+                            ], $array);
+                        }
+                    },
+                ];
+            }
+        };
+
+        $import->import('import-formulas-multiple-sheets.xlsx');
     }
 }

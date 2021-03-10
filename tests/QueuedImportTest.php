@@ -3,14 +3,22 @@
 namespace Maatwebsite\Excel\Tests;
 
 use Illuminate\Foundation\Bus\PendingDispatch;
+use Illuminate\Queue\Events\JobExceptionOccurred;
+use Illuminate\Queue\Events\JobProcessed;
 use Illuminate\Queue\Events\JobProcessing;
+use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Queue;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Files\RemoteTemporaryFile;
 use Maatwebsite\Excel\Files\TemporaryFile;
+use Maatwebsite\Excel\Jobs\AfterImportJob;
 use Maatwebsite\Excel\Jobs\ReadChunk;
 use Maatwebsite\Excel\Tests\Data\Stubs\AfterQueueImportJob;
 use Maatwebsite\Excel\Tests\Data\Stubs\QueuedImport;
+use Maatwebsite\Excel\Tests\Data\Stubs\QueuedImportWithFailure;
+use Maatwebsite\Excel\Tests\Data\Stubs\QueuedImportWithMiddleware;
+use Maatwebsite\Excel\Tests\Data\Stubs\QueuedImportWithRetryUntil;
+use Throwable;
 
 class QueuedImportTest extends TestCase
 {
@@ -94,6 +102,24 @@ class QueuedImportTest extends TestCase
     /**
      * @test
      */
+    public function can_keep_extension_for_temp_file_on_remote_disk()
+    {
+        config()->set('excel.temporary_files.remote_disk', 'test');
+
+        Queue::before(function (JobProcessing $event) {
+            if ($event->job->resolveName() === ReadChunk::class) {
+                /** @var TemporaryFile $tempFile */
+                $tempFile = $this->inspectJobProperty($event->job, 'temporaryFile');
+
+                $this->assertStringContains('.xlsx', $tempFile->getLocalPath());
+            }
+        });
+        (new QueuedImport())->queue('import-batches.xlsx');
+    }
+
+    /**
+     * @test
+     */
     public function can_queue_import_with_remote_temp_disk_and_prefix()
     {
         config()->set('excel.temporary_files.remote_disk', 'test');
@@ -106,5 +132,122 @@ class QueuedImportTest extends TestCase
         ]);
 
         $this->assertInstanceOf(PendingDispatch::class, $chain);
+    }
+
+    /**
+     * @test
+     */
+    public function can_automatically_delete_temp_file_on_failure_when_using_remote_disk()
+    {
+        config()->set('excel.temporary_files.remote_disk', 'test');
+        $tempFile = '';
+
+        Queue::exceptionOccurred(function (JobExceptionOccurred $event) use (&$tempFile) {
+            if ($event->job->resolveName() === ReadChunk::class) {
+                $tempFile = $this->inspectJobProperty($event->job, 'temporaryFile');
+            }
+        });
+
+        try {
+            (new QueuedImportWithFailure())->queue('import-batches.xlsx');
+        } catch (Throwable $e) {
+            $this->assertEquals('Something went wrong in the chunk', $e->getMessage());
+        }
+
+        $this->assertFalse($tempFile->existsLocally());
+        $this->assertTrue($tempFile->exists());
+    }
+
+    /**
+     * @test
+     */
+    public function cannot_automatically_delete_temp_file_on_failure_when_using_local_disk()
+    {
+        $tempFile = '';
+
+        Queue::exceptionOccurred(function (JobExceptionOccurred $event) use (&$tempFile) {
+            if ($event->job->resolveName() === ReadChunk::class) {
+                $tempFile = $this->inspectJobProperty($event->job, 'temporaryFile');
+            }
+        });
+
+        try {
+            (new QueuedImportWithFailure())->queue('import-batches.xlsx');
+        } catch (Throwable $e) {
+            $this->assertEquals('Something went wrong in the chunk', $e->getMessage());
+        }
+
+        $this->assertTrue($tempFile->exists());
+    }
+
+    /**
+     * @test
+     */
+    public function can_force_remote_download_and_deletion_for_each_chunk_on_queue()
+    {
+        config()->set('excel.temporary_files.remote_disk', 'test');
+        config()->set('excel.temporary_files.force_resync_remote', true);
+        Bus::fake([AfterImportJob::class]);
+
+        Queue::after(function (JobProcessed $event) {
+            if ($event->job->resolveName() === ReadChunk::class) {
+                $tempFile = $this->inspectJobProperty($event->job, 'temporaryFile');
+
+                // Should not exist locally after each chunk
+                $this->assertFalse(
+                    $tempFile->existsLocally()
+                );
+            }
+        });
+
+        (new QueuedImport())->queue('import-batches.xlsx');
+    }
+
+    /**
+     * @test
+     */
+    public function can_define_middleware_method_on_queued_import()
+    {
+        try {
+            (new QueuedImportWithMiddleware())->queue('import-batches.xlsx');
+        } catch (Throwable $e) {
+            $this->assertEquals('Job reached middleware method', $e->getMessage());
+        }
+    }
+
+    /**
+     * @test
+     */
+    public function can_define_retry_until_method_on_queued_import()
+    {
+        try {
+            (new QueuedImportWithRetryUntil())->queue('import-batches.xlsx');
+        } catch (Throwable $e) {
+            $this->assertEquals('Job reached retryUntil method', $e->getMessage());
+        }
+    }
+
+    /**
+     * @test
+     */
+    public function can_define_max_exceptions_property_on_queued_import()
+    {
+        $maxExceptionsCount = 0;
+
+        Queue::exceptionOccurred(function (JobExceptionOccurred $event) use (&$maxExceptionsCount) {
+            if ($event->job->resolveName() === ReadChunk::class) {
+                $maxExceptionsCount = $this->inspectJobProperty($event->job, 'maxExceptions');
+            }
+        });
+
+        try {
+            $import                = new QueuedImportWithFailure();
+            $import->maxExceptions = 3;
+            $import->queue('import-batches.xlsx');
+        } catch (Throwable $e) {
+            $this->assertEquals('Something went wrong in the chunk', $e->getMessage());
+        }
+
+        $this->assertEquals(3, $maxExceptionsCount);
     }
 }

@@ -2,9 +2,11 @@
 
 namespace Maatwebsite\Excel;
 
+use Maatwebsite\Excel\Cache\CacheManager;
 use Maatwebsite\Excel\Concerns\WithCustomValueBinder;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
+use Maatwebsite\Excel\Concerns\WithProperties;
 use Maatwebsite\Excel\Concerns\WithTitle;
 use Maatwebsite\Excel\Events\BeforeExport;
 use Maatwebsite\Excel\Events\BeforeWriting;
@@ -49,8 +51,8 @@ class Writer
      * @param object $export
      * @param string $writerType
      *
-     * @throws \PhpOffice\PhpSpreadsheet\Exception
      * @return TemporaryFile
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
      */
     public function export($export, string $writerType): TemporaryFile
     {
@@ -65,7 +67,7 @@ class Writer
             $this->addNewSheet()->export($sheetExport);
         }
 
-        return $this->write($export, $this->temporaryFileFactory->makeLocal(), $writerType);
+        return $this->write($export, $this->temporaryFileFactory->makeLocal(null, strtolower($writerType)), $writerType);
     }
 
     /**
@@ -89,11 +91,9 @@ class Writer
             Cell::setValueBinder($export);
         }
 
-        $this->raise(new BeforeExport($this, $this->exportable));
+        $this->handleDocumentProperties($export);
 
-        if ($export instanceof WithTitle) {
-            $this->spreadsheet->getProperties()->setTitle($export->title());
-        }
+        $this->raise(new BeforeExport($this, $this->exportable));
 
         return $this;
     }
@@ -102,8 +102,8 @@ class Writer
      * @param TemporaryFile $tempFile
      * @param string        $writerType
      *
-     * @throws \PhpOffice\PhpSpreadsheet\Reader\Exception
      * @return Writer
+     * @throws \PhpOffice\PhpSpreadsheet\Reader\Exception
      */
     public function reopen(TemporaryFile $tempFile, string $writerType)
     {
@@ -118,9 +118,9 @@ class Writer
      * @param TemporaryFile $temporaryFile
      * @param string        $writerType
      *
-     * @throws \PhpOffice\PhpSpreadsheet\Exception
-     * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
      * @return TemporaryFile
+     * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
      */
     public function write($export, TemporaryFile $temporaryFile, string $writerType): TemporaryFile
     {
@@ -146,6 +146,7 @@ class Writer
 
         $this->spreadsheet->disconnectWorksheets();
         unset($this->spreadsheet);
+        app(CacheManager::class)->flush();
 
         return $temporaryFile;
     }
@@ -153,8 +154,8 @@ class Writer
     /**
      * @param int|null $sheetIndex
      *
-     * @throws \PhpOffice\PhpSpreadsheet\Exception
      * @return Sheet
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
      */
     public function addNewSheet(int $sheetIndex = null)
     {
@@ -184,8 +185,8 @@ class Writer
     /**
      * @param int $sheetIndex
      *
-     * @throws \PhpOffice\PhpSpreadsheet\Exception
      * @return Sheet
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
      */
     public function getSheetByIndex(int $sheetIndex)
     {
@@ -200,5 +201,55 @@ class Writer
     public function hasConcern($concern): bool
     {
         return $this->exportable instanceof $concern;
+    }
+
+    /**
+     * @param object $export
+     */
+    protected function handleDocumentProperties($export)
+    {
+        $properties = config('excel.exports.properties', []);
+
+        if ($export instanceof WithProperties) {
+            $properties = array_merge($properties, $export->properties());
+        }
+
+        if ($export instanceof WithTitle) {
+            $properties = array_merge($properties, ['title' => $export->title()]);
+        }
+
+        $props = $this->spreadsheet->getProperties();
+
+        foreach (array_filter($properties) as $property => $value) {
+            switch ($property) {
+                case 'title':
+                    $props->setTitle($value);
+                    break;
+                case 'description':
+                    $props->setDescription($value);
+                    break;
+                case 'creator':
+                    $props->setCreator($value);
+                    break;
+                case 'lastModifiedBy':
+                    $props->setLastModifiedBy($value);
+                    break;
+                case 'subject':
+                    $props->setSubject($value);
+                    break;
+                case 'keywords':
+                    $props->setKeywords($value);
+                    break;
+                case 'category':
+                    $props->setCategory($value);
+                    break;
+                case 'manager':
+                    $props->setManager($value);
+                    break;
+                case 'company':
+                    $props->setCompany($value);
+                    break;
+            }
+        }
     }
 }

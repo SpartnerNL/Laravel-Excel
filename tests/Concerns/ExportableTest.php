@@ -6,6 +6,7 @@ use Illuminate\Contracts\Support\Responsable;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Excel;
+use Maatwebsite\Excel\Tests\Data\Stubs\EmptyExport;
 use Maatwebsite\Excel\Tests\TestCase;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
@@ -124,5 +125,17 @@ class ExportableTest extends TestCase
         $response = $export->toResponse(request());
 
         $this->assertEquals('text/csv', $response->headers->get('Content-Type'));
+    }
+
+    /**
+     * @test
+     */
+    public function can_get_raw_export_contents()
+    {
+        $export = new EmptyExport;
+
+        $response = $export->raw(Excel::XLSX);
+
+        $this->assertNotEmpty($response);
     }
 }
