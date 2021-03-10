@@ -2,14 +2,14 @@
 
 namespace Maatwebsite\Excel\Concerns;
 
-use Maatwebsite\Excel\Events\AfterSheet;
 use Maatwebsite\Excel\Events\AfterImport;
-use Maatwebsite\Excel\Events\BeforeSheet;
+use Maatwebsite\Excel\Events\AfterSheet;
+use Maatwebsite\Excel\Events\BeforeChunkWriting;
 use Maatwebsite\Excel\Events\BeforeExport;
 use Maatwebsite\Excel\Events\BeforeImport;
-use Maatwebsite\Excel\Events\ImportFailed;
+use Maatwebsite\Excel\Events\BeforeSheet;
 use Maatwebsite\Excel\Events\BeforeWriting;
-use Maatwebsite\Excel\Events\BeforeChunkWriting;
+use Maatwebsite\Excel\Events\ImportFailed;
 
 trait RegistersEventListeners
 {
