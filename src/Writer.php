@@ -2,21 +2,22 @@
 
 namespace Maatwebsite\Excel;
 
-use Maatwebsite\Excel\Cache\CacheManager;
-use Maatwebsite\Excel\Concerns\WithCustomValueBinder;
-use Maatwebsite\Excel\Concerns\WithEvents;
-use Maatwebsite\Excel\Concerns\WithMultipleSheets;
-use Maatwebsite\Excel\Concerns\WithProperties;
-use Maatwebsite\Excel\Concerns\WithTitle;
-use Maatwebsite\Excel\Events\BeforeExport;
-use Maatwebsite\Excel\Events\BeforeWriting;
-use Maatwebsite\Excel\Factories\WriterFactory;
-use Maatwebsite\Excel\Files\RemoteTemporaryFile;
-use Maatwebsite\Excel\Files\TemporaryFile;
-use Maatwebsite\Excel\Files\TemporaryFileFactory;
 use PhpOffice\PhpSpreadsheet\Cell\Cell;
 use PhpOffice\PhpSpreadsheet\IOFactory;
+use Maatwebsite\Excel\Cache\CacheManager;
+use Maatwebsite\Excel\Concerns\WithTitle;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use Maatwebsite\Excel\Concerns\WithEvents;
+use Maatwebsite\Excel\Events\BeforeExport;
+use Maatwebsite\Excel\Files\TemporaryFile;
+use Maatwebsite\Excel\Events\BeforeWriting;
+use Maatwebsite\Excel\Concerns\WithProperties;
+use Maatwebsite\Excel\Factories\WriterFactory;
+use Maatwebsite\Excel\Events\BeforeChunkWriting;
+use Maatwebsite\Excel\Files\RemoteTemporaryFile;
+use Maatwebsite\Excel\Files\TemporaryFileFactory;
+use Maatwebsite\Excel\Concerns\WithMultipleSheets;
+use Maatwebsite\Excel\Concerns\WithCustomValueBinder;
 
 class Writer
 {
@@ -130,7 +131,7 @@ class Writer
 
         $this->spreadsheet->setActiveSheetIndex(0);
 
-        $this->raise(new BeforeWriting($this, $this->exportable));
+        $this->raise(new BeforeChunkWriting($this, $this->exportable));
 
         $writer = WriterFactory::make(
             $writerType,
