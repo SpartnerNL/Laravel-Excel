@@ -68,6 +68,8 @@ class Writer
             $this->addNewSheet()->export($sheetExport);
         }
 
+        $this->raiseBeforeWritingEvent();
+
         return $this->write($export, $this->temporaryFileFactory->makeLocal(null, strtolower($writerType)), $writerType);
     }
 
@@ -204,6 +206,14 @@ class Writer
     public function hasConcern($concern): bool
     {
         return $this->exportable instanceof $concern;
+    }
+
+     /**
+     * @return void
+     */
+    public function raiseBeforeWritingEvent(): void
+    {
+        $this->raise(new BeforeWriting($this, $this->exportable));
     }
 
     /**
