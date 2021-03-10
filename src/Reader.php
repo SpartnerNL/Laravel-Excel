@@ -325,7 +325,6 @@ class Reader
                     collect($worksheetNames)->intersect(array_keys($worksheets))->values()->all()
                 );
             }
-
         } else {
             // Each worksheet the same import class.
             foreach ($worksheetNames as $name) {
