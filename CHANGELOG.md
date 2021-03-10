@@ -3,13 +3,18 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [3.1.28] - 2020-03-10
+
 ### Added
 
 - Added WithUpsertColumns concern (#3046)
+- Added ShouldQueueWithoutChain concern (#3072)
 
 ### Fixed
 
+- Limit Phpspreadsheet version to 1.16 until bugfix release
 - Fixed issue with not autosizing columns (#3055)
+- Fix selecting worksheets by name with chunk reading (#3052)
 
 ## [3.1.27] - 2020-02-22
 
