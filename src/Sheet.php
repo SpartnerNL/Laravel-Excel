@@ -5,6 +5,8 @@ namespace Maatwebsite\Excel;
 use Closure;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Collection;
+use Maatwebsite\Excel\Columns\Column;
+use Maatwebsite\Excel\Columns\ColumnCollection;
 use Maatwebsite\Excel\Concerns\FromArray;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\FromGenerator;
@@ -22,6 +24,7 @@ use Maatwebsite\Excel\Concerns\WithCharts;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithColumnFormatting;
 use Maatwebsite\Excel\Concerns\WithColumnLimit;
+use Maatwebsite\Excel\Concerns\WithColumns;
 use Maatwebsite\Excel\Concerns\WithColumnWidths;
 use Maatwebsite\Excel\Concerns\WithCustomChunkSize;
 use Maatwebsite\Excel\Concerns\WithCustomStartCell;
@@ -81,6 +84,11 @@ class Sheet
      * @var Worksheet
      */
     private $worksheet;
+
+    /**
+     * @var ColumnCollection
+     */
+    protected $columns;
 
     /**
      * @param  Worksheet  $worksheet
@@ -150,6 +158,7 @@ class Sheet
     public function open($sheetExport)
     {
         $this->exportable = $sheetExport;
+        $this->columns    = ColumnCollection::makeFrom($sheetExport);
 
         if ($sheetExport instanceof WithCustomValueBinder) {
             SpreadsheetCell::setValueBinder($sheetExport);
@@ -176,16 +185,24 @@ class Sheet
             throw ConcernConflictException::queryOrCollectionAndView();
         }
 
-        if (!$sheetExport instanceof FromView && $sheetExport instanceof WithHeadings) {
-            if ($sheetExport instanceof WithCustomStartCell) {
-                $startCell = $sheetExport->startCell();
-            }
-
+        if ($sheetExport instanceof WithColumns) {
             $this->append(
-                ArrayHelper::ensureMultipleRows($sheetExport->headings()),
+                [$this->columns->headings()],
                 $startCell ?? null,
                 $this->hasStrictNullComparison($sheetExport)
             );
+        } else {
+            if (!$sheetExport instanceof FromView && $sheetExport instanceof WithHeadings) {
+                if ($sheetExport instanceof WithCustomStartCell) {
+                    $startCell = $sheetExport->startCell();
+                }
+
+                $this->append(
+                    ArrayHelper::ensureMultipleRows($sheetExport->headings()),
+                    $startCell ?? null,
+                    $this->hasStrictNullComparison($sheetExport)
+                );
+            }
         }
 
         if ($sheetExport instanceof WithCharts) {
@@ -206,6 +223,10 @@ class Sheet
     public function export($sheetExport)
     {
         $this->open($sheetExport);
+
+        if ($sheetExport instanceof WithColumns) {
+            $this->columns->beforeWriting($this->worksheet);
+        }
 
         if ($sheetExport instanceof FromView) {
             $this->fromView($sheetExport);
@@ -229,6 +250,10 @@ class Sheet
             if ($sheetExport instanceof FromGenerator) {
                 $this->fromGenerator($sheetExport);
             }
+        }
+
+        if ($sheetExport instanceof WithColumns) {
+            $this->columns->afterWriting($this->worksheet);
         }
 
         $this->close($sheetExport);
@@ -600,29 +625,40 @@ class Sheet
      */
     public function appendRows($rows, $sheetExport)
     {
+        $rowNumber = $this->worksheet->getHighestRow();
+
         if (method_exists($sheetExport, 'prepareRows')) {
             $rows = $sheetExport->prepareRows($rows);
         }
 
-        $rows = (new Collection($rows))->flatMap(function ($row) use ($sheetExport) {
-            if ($sheetExport instanceof WithMapping) {
-                $row = $sheetExport->map($row);
+        if ($sheetExport instanceof WithColumns) {
+            foreach ($rows as $row) {
+                ++$rowNumber;
+                $this->columns->each(function (Column $column) use ($rowNumber, $row) {
+                    $column->write($this->worksheet, $rowNumber, $row);
+                });
             }
+        } else {
+            $rows = (new Collection($rows))->flatMap(function ($row) use ($sheetExport) {
+                if ($sheetExport instanceof WithMapping) {
+                    $row = $sheetExport->map($row);
+                }
 
-            if ($sheetExport instanceof WithCustomValueBinder) {
-                SpreadsheetCell::setValueBinder($sheetExport);
-            }
+                if ($sheetExport instanceof WithCustomValueBinder) {
+                    SpreadsheetCell::setValueBinder($sheetExport);
+                }
 
-            return ArrayHelper::ensureMultipleRows(
-                static::mapArraybleRow($row)
+                return ArrayHelper::ensureMultipleRows(
+                    static::mapArraybleRow($row)
+                );
+            })->toArray();
+
+            $this->append(
+                $rows,
+                $sheetExport instanceof WithCustomStartCell ? $sheetExport->startCell() : null,
+                $this->hasStrictNullComparison($sheetExport)
             );
-        })->toArray();
-
-        $this->append(
-            $rows,
-            $sheetExport instanceof WithCustomStartCell ? $sheetExport->startCell() : null,
-            $this->hasStrictNullComparison($sheetExport)
-        );
+        }
     }
 
     /**
