@@ -2,9 +2,6 @@
 
 namespace Maatwebsite\Excel\Tests\Concerns;
 
-use Illuminate\Database\Query\Builder;
-use Illuminate\Support\Facades\DB;
-use Maatwebsite\Excel\Columns\Column;
 use Maatwebsite\Excel\Columns\Number;
 use Maatwebsite\Excel\Columns\Text;
 use Maatwebsite\Excel\Concerns\Exportable;
@@ -12,12 +9,6 @@ use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\WithColumns;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\Group;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
-use Maatwebsite\Excel\Tests\Data\Stubs\FromGroupUsersQueuedQueryExport;
-use Maatwebsite\Excel\Tests\Data\Stubs\FromNestedArraysQueryExport;
-use Maatwebsite\Excel\Tests\Data\Stubs\FromNonEloquentQueryExport;
-use Maatwebsite\Excel\Tests\Data\Stubs\FromUsersQueryExport;
-use Maatwebsite\Excel\Tests\Data\Stubs\FromUsersQueryExportWithEagerLoad;
-use Maatwebsite\Excel\Tests\Data\Stubs\FromUsersQueryExportWithPrepareRows;
 use Maatwebsite\Excel\Tests\TestCase;
 
 class WithColumnsExportTest extends TestCase
@@ -56,7 +47,6 @@ class WithColumnsExportTest extends TestCase
     public function can_export_from_query_with_columns()
     {
         $export = new class implements FromQuery, WithColumns {
-
             use Exportable;
 
             public function query()
@@ -72,7 +62,7 @@ class WithColumnsExportTest extends TestCase
                     Text::make('Email', 'email'),
                     Text::make('Custom', function (User $user) {
                         return strtoupper($user->name);
-                    })
+                    }),
                 ];
             }
         };
