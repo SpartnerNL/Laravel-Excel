@@ -79,7 +79,7 @@ class ChunkReader
         }
 
         $jobs->push($afterImportJob);
-        
+
         if ($import instanceof ShouldQueue) {
             return new PendingDispatch(
                 (new QueueImport($import))->chain($jobs->toArray())
