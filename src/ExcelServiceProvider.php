@@ -43,8 +43,8 @@ class ExcelServiceProvider extends ServiceProvider
 
         if ($this->app instanceof \Illuminate\Foundation\Application) {
             // Laravel
-            $this->app->booted(function () {
-                $this->app->make(SettingsProvider::class)->provide();
+            $this->app->booted(function ($app) {
+                $app->make(SettingsProvider::class)->provide();
             });
         } else {
             // Lumen
@@ -62,36 +62,35 @@ class ExcelServiceProvider extends ServiceProvider
             'excel'
         );
 
-        $this->app->bind(CacheManager::class, function () {
-            return new CacheManager($this->app);
+        $this->app->bind(CacheManager::class, function ($app) {
+            return new CacheManager($app);
         });
 
-        $this->app->bind(TransactionManager::class, function () {
-            return new TransactionManager($this->app);
+        $this->app->bind(TransactionManager::class, function ($app) {
+            return new TransactionManager($app);
         });
 
-        $this->app->bind(TransactionHandler::class, function () {
-            return $this->app->make(TransactionManager::class)->driver();
+        $this->app->bind(TransactionHandler::class, function ($app) {
+            return $app->make(TransactionManager::class)->driver();
         });
 
         $this->app->bind(TemporaryFileFactory::class, function () {
             return new TemporaryFileFactory(
                 config('excel.temporary_files.local_path', config('excel.exports.temp_path', storage_path('framework/laravel-excel'))),
                 config('excel.temporary_files.remote_disk')
-
             );
         });
 
-        $this->app->bind(Filesystem::class, function () {
-            return new Filesystem($this->app->make('filesystem'));
+        $this->app->bind(Filesystem::class, function ($app) {
+            return new Filesystem($app->make('filesystem'));
         });
 
-        $this->app->bind('excel', function () {
+        $this->app->bind('excel', function ($app) {
             return new Excel(
-                $this->app->make(Writer::class),
-                $this->app->make(QueuedWriter::class),
-                $this->app->make(Reader::class),
-                $this->app->make(Filesystem::class)
+                $app->make(Writer::class),
+                $app->make(QueuedWriter::class),
+                $app->make(Reader::class),
+                $app->make(Filesystem::class)
             );
         });
 

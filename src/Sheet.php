@@ -423,6 +423,8 @@ class Sheet
         }
 
         $this->raise(new AfterSheet($this, $this->exportable));
+
+        $this->clearListeners();
     }
 
     /**
