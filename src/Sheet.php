@@ -263,7 +263,7 @@ class Sheet
             }
 
             if ($import instanceof ToCollection) {
-                $rows = $this->toCollection($import, $startRow, null, $calculatesFormulas, $endColumn);
+                $rows = $this->toCollection($import, $startRow, null, $calculatesFormulas);
 
                 if ($import instanceof WithValidation) {
                     $this->validate($import, $startRow, $rows);
@@ -299,8 +299,7 @@ class Sheet
                         try {
                             app(RowValidator::class)->validate($toValidate, $import);
                             $import->onRow($sheetRow);
-                        } catch (RowSkippedException $e) {
-                        }
+                        } catch (RowSkippedException $e) { }
                     } else {
                         $import->onRow($sheetRow);
                     }
@@ -328,7 +327,7 @@ class Sheet
      *
      * @return array
      */
-    public function toArray($import, int $startRow = null, $nullValue = null, $calculateFormulas = false, $formatData = false)
+    public function toArray($import, int $startRow = null, $nullValue = null, $calculateFormulas = false, $formatData = true)
     {
         if ($startRow > $this->worksheet->getHighestRow()) {
             return [];
@@ -375,7 +374,7 @@ class Sheet
      *
      * @return Collection
      */
-    public function toCollection($import, int $startRow = null, $nullValue = null, $calculateFormulas = false, $formatData = false): Collection
+    public function toCollection($import, int $startRow = null, $nullValue = null, $calculateFormulas = false, $formatData = true): Collection
     {
         $rows = $this->toArray($import, $startRow, $nullValue, $calculateFormulas, $formatData);
 
@@ -674,8 +673,7 @@ class Sheet
 
         try {
             app(RowValidator::class)->validate($toValidate->toArray(), $import);
-        } catch (RowSkippedException $e) {
-        }
+        } catch (RowSkippedException $e) { }
     }
 
     /**
