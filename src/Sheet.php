@@ -18,6 +18,7 @@ use Maatwebsite\Excel\Concerns\ToArray;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithCalculatedFormulas;
+use Maatwebsite\Excel\Concerns\WithFormatData;
 use Maatwebsite\Excel\Concerns\WithCharts;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithColumnFormatting;
@@ -253,6 +254,7 @@ class Sheet
         }
 
         $calculatesFormulas = $import instanceof WithCalculatedFormulas;
+        $formatData         = $import instanceof WithFormatData;
         $endColumn          = $import instanceof WithColumnLimit ? $import->endColumn() : null;
 
         if ($import instanceof WithMappedCells) {
@@ -263,7 +265,7 @@ class Sheet
             }
 
             if ($import instanceof ToCollection) {
-                $rows = $this->toCollection($import, $startRow, null, $calculatesFormulas, $endColumn);
+                $rows = $this->toCollection($import, $startRow, null, $calculatesFormulas, $formatData);
 
                 if ($import instanceof WithValidation) {
                     $this->validate($import, $startRow, $rows);
@@ -273,7 +275,7 @@ class Sheet
             }
 
             if ($import instanceof ToArray) {
-                $rows = $this->toArray($import, $startRow, null, $calculatesFormulas);
+                $rows = $this->toArray($import, $startRow, null, $calculatesFormulas, $formatData);
 
                 if ($import instanceof WithValidation) {
                     $this->validate($import, $startRow, $rows);
@@ -294,13 +296,12 @@ class Sheet
                 if (!$import instanceof SkipsEmptyRows || ($import instanceof SkipsEmptyRows && !$sheetRow->isEmpty())) {
                     if ($import instanceof WithValidation) {
                         $sheetRow->setPreparationCallback($preparationCallback);
-                        $toValidate = [$sheetRow->getIndex() => $sheetRow->toArray(null, $import instanceof WithCalculatedFormulas, $endColumn)];
+                        $toValidate = [$sheetRow->getIndex() => $sheetRow->toArray(null, $import instanceof WithCalculatedFormulas, $import instanceof WithFormatData, $endColumn)];
 
                         try {
                             app(RowValidator::class)->validate($toValidate, $import);
                             $import->onRow($sheetRow);
-                        } catch (RowSkippedException $e) {
-                        }
+                        } catch (RowSkippedException $e) { }
                     } else {
                         $import->onRow($sheetRow);
                     }
@@ -674,8 +675,7 @@ class Sheet
 
         try {
             app(RowValidator::class)->validate($toValidate->toArray(), $import);
-        } catch (RowSkippedException $e) {
-        }
+        } catch (RowSkippedException $e) { }
     }
 
     /**
