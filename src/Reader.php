@@ -453,6 +453,7 @@ class Reader
      */
     private function garbageCollect()
     {
+        $this->clearListeners();
         $this->setDefaultValueBinder();
 
         // Force garbage collecting
