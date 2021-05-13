@@ -3,7 +3,6 @@
 namespace Maatwebsite\Excel\Tests\Concerns;
 
 use Carbon\Carbon;
-use Illuminate\Support\Arr;
 use Maatwebsite\Excel\Columns\Boolean;
 use Maatwebsite\Excel\Columns\Date;
 use Maatwebsite\Excel\Columns\Decimal;
@@ -39,7 +38,8 @@ class WithColumnsImportTest extends TestCase
      */
     public function can_import_from_columns_to_model()
     {
-        $import = new class implements ToModel, WithColumns {
+        $import = new class implements ToModel, WithColumns
+        {
             use Importable;
 
             public function model(array $row): string
@@ -76,7 +76,8 @@ class WithColumnsImportTest extends TestCase
      */
     public function can_import_from_columns_to_array()
     {
-        $import = new class implements ToArray, WithColumns {
+        $import = new class implements ToArray, WithColumns
+        {
             use Importable;
 
             public function array(array $array)
@@ -105,7 +106,7 @@ class WithColumnsImportTest extends TestCase
                         'html'          => 'test <span style="font-weight:bold; color:#000000; font-family:\'Calibri\'; font-size:11pt">bold</span><span style="color:#000000; font-family:\'Calibri\'; font-size:11pt"> test</span>',
                         'decimal'       => 20.5,
                         'boolean'       => false,
-                    ]
+                    ],
                 ], $array);
             }
 

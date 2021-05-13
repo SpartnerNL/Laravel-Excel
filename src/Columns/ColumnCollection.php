@@ -79,6 +79,6 @@ class ColumnCollection extends Collection
 
     protected function needsStyleInformation(): bool
     {
-        return null !== $this->first(fn(Column $column) => $column->needsStyleInformation());
+        return null !== $this->first(fn (Column $column) => $column->needsStyleInformation());
     }
 }

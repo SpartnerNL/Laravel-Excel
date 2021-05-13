@@ -46,7 +46,8 @@ class WithColumnsExportTest extends TestCase
      */
     public function can_export_from_query_with_columns()
     {
-        $export = new class implements FromQuery, WithColumns {
+        $export = new class implements FromQuery, WithColumns
+        {
             use Exportable;
 
             public function query()
