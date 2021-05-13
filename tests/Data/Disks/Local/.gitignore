@@ -23,3 +23,6 @@
 !csv-with-html-tags.csv
 !import-external-reference.xls
 !empty-worksheet.xlsx
+!columns.xlsx
+!columns_styling.xlsx
+!import-users-with-columns.xlsx
