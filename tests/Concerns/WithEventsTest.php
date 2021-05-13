@@ -117,7 +117,8 @@ class WithEventsTest extends TestCase
      */
     public function can_have_global_event_listeners()
     {
-        $event = new class {
+        $event = new class
+        {
             use Exportable;
         };
 
@@ -161,7 +162,8 @@ class WithEventsTest extends TestCase
             );
         });
 
-        $exportWithConcern = new class implements CustomConcern {
+        $exportWithConcern = new class implements CustomConcern
+        {
             use Exportable;
 
             public function custom()
@@ -178,7 +180,8 @@ class WithEventsTest extends TestCase
             ['a', 'b'],
         ], $actual);
 
-        $exportWithoutConcern = new class {
+        $exportWithoutConcern = new class
+        {
             use Exportable;
         };
 
@@ -200,7 +203,8 @@ class WithEventsTest extends TestCase
             );
         }, AfterSheet::class);
 
-        $exportWithConcern = new class implements CustomSheetConcern {
+        $exportWithConcern = new class implements CustomSheetConcern
+        {
             use Exportable;
 
             public function custom()
@@ -217,7 +221,8 @@ class WithEventsTest extends TestCase
             ['c', 'd'],
         ], $actual);
 
-        $exportWithoutConcern = new class {
+        $exportWithoutConcern = new class
+        {
             use Exportable;
         };
 

@@ -16,7 +16,8 @@ class WithStrictNullComparisonTest extends TestCase
      */
     public function exported_zero_values_are_not_null_when_exporting_with_strict_null_comparison()
     {
-        $export = new class implements FromCollection, WithHeadings, WithStrictNullComparison {
+        $export = new class implements FromCollection, WithHeadings, WithStrictNullComparison
+        {
             use Exportable;
 
             /**
@@ -57,7 +58,8 @@ class WithStrictNullComparisonTest extends TestCase
      */
     public function exported_zero_values_are_null_when_not_exporting_with_strict_null_comparison()
     {
-        $export = new class implements FromCollection, WithHeadings {
+        $export = new class implements FromCollection, WithHeadings
+        {
             use Exportable;
 
             /**
@@ -98,7 +100,8 @@ class WithStrictNullComparisonTest extends TestCase
      */
     public function exports_trailing_empty_cells()
     {
-        $export = new class implements FromCollection, WithStrictNullComparison {
+        $export = new class implements FromCollection, WithStrictNullComparison
+        {
             use Exportable;
 
             /**
@@ -139,7 +142,8 @@ class WithStrictNullComparisonTest extends TestCase
     {
         config()->set('excel.exports.strict_null_comparison', false);
 
-        $export = new class implements FromCollection {
+        $export = new class implements FromCollection
+        {
             use Exportable;
 
             /**

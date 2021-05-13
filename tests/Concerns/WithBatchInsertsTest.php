@@ -31,7 +31,8 @@ class WithBatchInsertsTest extends TestCase
     {
         DB::connection()->enableQueryLog();
 
-        $import = new class implements ToModel, WithBatchInserts {
+        $import = new class implements ToModel, WithBatchInserts
+        {
             use Importable;
 
             /**
@@ -80,7 +81,8 @@ class WithBatchInsertsTest extends TestCase
     {
         DB::connection()->enableQueryLog();
 
-        $import = new class implements ToModel, WithBatchInserts {
+        $import = new class implements ToModel, WithBatchInserts
+        {
             use Importable;
 
             /**
@@ -117,7 +119,8 @@ class WithBatchInsertsTest extends TestCase
     {
         DB::connection()->enableQueryLog();
 
-        $import = new class implements ToModel, WithBatchInserts {
+        $import = new class implements ToModel, WithBatchInserts
+        {
             use Importable;
 
             /**
@@ -165,7 +168,8 @@ class WithBatchInsertsTest extends TestCase
      */
     public function has_timestamps_when_imported_in_batches()
     {
-        $import = new class implements ToModel, WithBatchInserts {
+        $import = new class implements ToModel, WithBatchInserts
+        {
             use Importable;
 
             /**

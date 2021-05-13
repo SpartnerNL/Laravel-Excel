@@ -16,7 +16,8 @@ class WithHeadingsTest extends TestCase
      */
     public function can_export_from_collection_with_heading_row()
     {
-        $export = new class implements FromCollection, WithHeadings {
+        $export = new class implements FromCollection, WithHeadings
+        {
             use Exportable;
 
             /**
@@ -59,7 +60,8 @@ class WithHeadingsTest extends TestCase
      */
     public function can_export_from_collection_with_multiple_heading_rows()
     {
-        $export = new class implements FromCollection, WithHeadings {
+        $export = new class implements FromCollection, WithHeadings
+        {
             use Exportable;
 
             /**
@@ -106,7 +108,8 @@ class WithHeadingsTest extends TestCase
      */
     public function can_export_from_collection_with_heading_row_with_custom_start_cell()
     {
-        $export = new class implements FromCollection, WithHeadings, WithCustomStartCell {
+        $export = new class implements FromCollection, WithHeadings, WithCustomStartCell
+        {
             use Exportable;
 
             /**

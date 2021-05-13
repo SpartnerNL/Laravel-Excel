@@ -27,7 +27,8 @@ class WithCustomStartCellTest extends TestCase
      */
     public function can_store_collection_with_custom_start_cell()
     {
-        $export = new class implements FromCollection, WithCustomStartCell {
+        $export = new class implements FromCollection, WithCustomStartCell
+        {
             /**
              * @return Collection
              */

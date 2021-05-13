@@ -28,7 +28,8 @@ class WithMappedCellsTest extends TestCase
      */
     public function can_import_with_references_to_cells()
     {
-        $import = new class implements WithMappedCells, ToArray {
+        $import = new class implements WithMappedCells, ToArray
+        {
             use Importable;
 
             /**
@@ -62,7 +63,8 @@ class WithMappedCellsTest extends TestCase
      */
     public function can_import_with_references_to_cells_to_model()
     {
-        $import = new class implements WithMappedCells, ToModel {
+        $import = new class implements WithMappedCells, ToModel
+        {
             use Importable;
 
             /**

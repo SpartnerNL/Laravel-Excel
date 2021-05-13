@@ -32,7 +32,8 @@ class WithTitleTest extends TestCase
      */
     public function can_export_sheet_title_when_longer_than_max_length()
     {
-        $export = new class implements WithTitle, WithMultipleSheets {
+        $export = new class implements WithTitle, WithMultipleSheets
+        {
             use Exportable;
 
             /**

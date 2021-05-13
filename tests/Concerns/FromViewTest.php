@@ -31,7 +31,8 @@ class FromViewTest extends TestCase
         /** @var Collection|User[] $users */
         $users = factory(User::class)->times(100)->make();
 
-        $export = new class($users) implements FromView {
+        $export = new class($users) implements FromView
+        {
             use Exportable;
 
             /**
@@ -82,7 +83,8 @@ class FromViewTest extends TestCase
         /** @var Collection|User[] $users */
         $users = factory(User::class)->times(300)->make();
 
-        $export = new class($users) implements WithMultipleSheets {
+        $export = new class($users) implements WithMultipleSheets
+        {
             use Exportable;
 
             /**

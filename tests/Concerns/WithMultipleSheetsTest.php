@@ -31,7 +31,8 @@ class WithMultipleSheetsTest extends TestCase
      */
     public function can_export_with_multiple_sheets_using_collections()
     {
-        $export = new class implements WithMultipleSheets {
+        $export = new class implements WithMultipleSheets
+        {
             use Exportable;
 
             /**
@@ -62,7 +63,8 @@ class WithMultipleSheetsTest extends TestCase
         /** @var Collection|User[] $users */
         $users = factory(User::class)->times(300)->make();
 
-        $export = new class($users) implements WithMultipleSheets {
+        $export = new class($users) implements WithMultipleSheets
+        {
             use Exportable;
 
             /**
@@ -106,13 +108,15 @@ class WithMultipleSheetsTest extends TestCase
         $this->expectException(\Maatwebsite\Excel\Exceptions\SheetNotFoundException::class);
         $this->expectExceptionMessage('Your requested sheet index: 9999 is out of bounds. The actual number of sheets is 2.');
 
-        $import = new class implements WithMultipleSheets {
+        $import = new class implements WithMultipleSheets
+        {
             use Importable;
 
             public function sheets(): array
             {
                 return [
-                    9999 => new class {
+                    9999 => new class
+                    {
                     },
                 ];
             }
@@ -129,13 +133,15 @@ class WithMultipleSheetsTest extends TestCase
         $this->expectException(\Maatwebsite\Excel\Exceptions\SheetNotFoundException::class);
         $this->expectExceptionMessage('Your requested sheet name [Some Random Sheet Name] is out of bounds.');
 
-        $import = new class implements WithMultipleSheets {
+        $import = new class implements WithMultipleSheets
+        {
             use Importable;
 
             public function sheets(): array
             {
                 return [
-                    'Some Random Sheet Name' => new class {
+                    'Some Random Sheet Name' => new class
+                    {
                     },
                 ];
             }
@@ -149,7 +155,8 @@ class WithMultipleSheetsTest extends TestCase
      */
     public function unknown_sheet_name_can_be_ignored()
     {
-        $import = new class implements WithMultipleSheets, SkipsUnknownSheets {
+        $import = new class implements WithMultipleSheets, SkipsUnknownSheets
+        {
             use Importable;
 
             public $unknown;
@@ -157,7 +164,8 @@ class WithMultipleSheetsTest extends TestCase
             public function sheets(): array
             {
                 return [
-                    'Some Random Sheet Name' => new class {
+                    'Some Random Sheet Name' => new class
+                    {
                     },
                 ];
             }
@@ -181,13 +189,15 @@ class WithMultipleSheetsTest extends TestCase
      */
     public function unknown_sheet_indices_can_be_ignored_per_name()
     {
-        $import = new class implements WithMultipleSheets {
+        $import = new class implements WithMultipleSheets
+        {
             use Importable;
 
             public function sheets(): array
             {
                 return [
-                    'Some Random Sheet Name' => new class implements SkipsUnknownSheets {
+                    'Some Random Sheet Name' => new class implements SkipsUnknownSheets
+                    {
                         /**
                          * @param string|int $sheetName
                          */
@@ -208,7 +218,8 @@ class WithMultipleSheetsTest extends TestCase
      */
     public function unknown_sheet_indices_can_be_ignored()
     {
-        $import = new class implements WithMultipleSheets, SkipsUnknownSheets {
+        $import = new class implements WithMultipleSheets, SkipsUnknownSheets
+        {
             use Importable;
 
             public $unknown;
@@ -216,7 +227,8 @@ class WithMultipleSheetsTest extends TestCase
             public function sheets(): array
             {
                 return [
-                    99999 => new class {
+                    99999 => new class
+                    {
                     },
                 ];
             }
@@ -240,13 +252,15 @@ class WithMultipleSheetsTest extends TestCase
      */
     public function unknown_sheet_indices_can_be_ignored_per_sheet()
     {
-        $import = new class implements WithMultipleSheets {
+        $import = new class implements WithMultipleSheets
+        {
             use Importable;
 
             public function sheets(): array
             {
                 return [
-                    99999 => new class implements SkipsUnknownSheets {
+                    99999 => new class implements SkipsUnknownSheets
+                    {
                         /**
                          * @param string|int $sheetName
                          */
@@ -267,13 +281,15 @@ class WithMultipleSheetsTest extends TestCase
      */
     public function can_import_multiple_sheets()
     {
-        $import = new class implements WithMultipleSheets {
+        $import = new class implements WithMultipleSheets
+        {
             use Importable;
 
             public function sheets(): array
             {
                 return [
-                    new class implements ToArray {
+                    new class implements ToArray
+                    {
                         public function array(array $array)
                         {
                             Assert::assertEquals([
@@ -282,7 +298,8 @@ class WithMultipleSheetsTest extends TestCase
                             ], $array);
                         }
                     },
-                    new class implements ToArray {
+                    new class implements ToArray
+                    {
                         public function array(array $array)
                         {
                             Assert::assertEquals([
@@ -303,13 +320,15 @@ class WithMultipleSheetsTest extends TestCase
      */
     public function can_import_multiple_sheets_by_sheet_name()
     {
-        $import = new class implements WithMultipleSheets {
+        $import = new class implements WithMultipleSheets
+        {
             use Importable;
 
             public function sheets(): array
             {
                 return [
-                    'Sheet2' => new class implements ToArray {
+                    'Sheet2' => new class implements ToArray
+                    {
                         public function array(array $array)
                         {
                             Assert::assertEquals([
@@ -318,7 +337,8 @@ class WithMultipleSheetsTest extends TestCase
                             ], $array);
                         }
                     },
-                    'Sheet1' => new class implements ToArray {
+                    'Sheet1' => new class implements ToArray
+                    {
                         public function array(array $array)
                         {
                             Assert::assertEquals([
@@ -339,7 +359,8 @@ class WithMultipleSheetsTest extends TestCase
      */
     public function can_import_multiple_sheets_by_sheet_index_and_name()
     {
-        $import = new class implements WithMultipleSheets {
+        $import = new class implements WithMultipleSheets
+        {
             use Importable;
 
             public $sheets = [];
@@ -347,7 +368,8 @@ class WithMultipleSheetsTest extends TestCase
             public function __construct()
             {
                 $this->sheets = [
-                    0        => new class implements ToArray {
+                    0        => new class implements ToArray
+                    {
                         public $called = false;
 
                         public function array(array $array)
@@ -359,7 +381,8 @@ class WithMultipleSheetsTest extends TestCase
                             ], $array);
                         }
                     },
-                    'Sheet2' => new class implements ToArray {
+                    'Sheet2' => new class implements ToArray
+                    {
                         public $called = false;
 
                         public function array(array $array)
@@ -392,7 +415,8 @@ class WithMultipleSheetsTest extends TestCase
      */
     public function can_import_multiple_sheets_by_sheet_name_and_index()
     {
-        $import = new class implements WithMultipleSheets {
+        $import = new class implements WithMultipleSheets
+        {
             use Importable;
 
             public $sheets = [];
@@ -400,7 +424,8 @@ class WithMultipleSheetsTest extends TestCase
             public function __construct()
             {
                 $this->sheets = [
-                    'Sheet1' => new class implements ToArray {
+                    'Sheet1' => new class implements ToArray
+                    {
                         public $called = false;
 
                         public function array(array $array)
@@ -412,7 +437,8 @@ class WithMultipleSheetsTest extends TestCase
                             ], $array);
                         }
                     },
-                    1        => new class implements ToArray {
+                    1        => new class implements ToArray
+                    {
                         public $called = false;
 
                         public function array(array $array)

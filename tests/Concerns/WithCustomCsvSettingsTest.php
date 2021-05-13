@@ -29,7 +29,8 @@ class WithCustomCsvSettingsTest extends TestCase
      */
     public function can_store_csv_export_with_custom_settings()
     {
-        $export = new class implements FromCollection, WithCustomCsvSettings {
+        $export = new class implements FromCollection, WithCustomCsvSettings
+        {
             /**
              * @return Collection
              */
@@ -71,7 +72,8 @@ class WithCustomCsvSettingsTest extends TestCase
      */
     public function can_read_csv_import_with_custom_settings()
     {
-        $import = new class implements WithCustomCsvSettings, ToArray {
+        $import = new class implements WithCustomCsvSettings, ToArray
+        {
             /**
              * @return array
              */
@@ -106,7 +108,8 @@ class WithCustomCsvSettingsTest extends TestCase
      */
     public function cannot_read_with_wrong_delimiter()
     {
-        $import = new class implements WithCustomCsvSettings, ToArray {
+        $import = new class implements WithCustomCsvSettings, ToArray
+        {
             /**
              * @return array
              */

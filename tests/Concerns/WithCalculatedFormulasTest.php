@@ -20,7 +20,8 @@ class WithCalculatedFormulasTest extends TestCase
      */
     public function by_default_does_not_calculate_formulas()
     {
-        $import = new class implements ToArray {
+        $import = new class implements ToArray
+        {
             use Importable;
 
             public $called = false;
@@ -46,7 +47,8 @@ class WithCalculatedFormulasTest extends TestCase
      */
     public function can_import_to_array_with_calculated_formulas()
     {
-        $import = new class implements ToArray, WithCalculatedFormulas {
+        $import = new class implements ToArray, WithCalculatedFormulas
+        {
             use Importable;
 
             public $called = false;
@@ -72,7 +74,8 @@ class WithCalculatedFormulasTest extends TestCase
      */
     public function can_import_to_model_with_calculated_formulas()
     {
-        $import = new class implements ToModel, WithCalculatedFormulas {
+        $import = new class implements ToModel, WithCalculatedFormulas
+        {
             use Importable;
 
             public $called = false;
@@ -99,7 +102,8 @@ class WithCalculatedFormulasTest extends TestCase
 
     public function can_import_with_formulas_and_reference()
     {
-        $import = new class implements ToModel, WithCalculatedFormulas, WithStartRow {
+        $import = new class implements ToModel, WithCalculatedFormulas, WithStartRow
+        {
             use Importable;
 
             public $called = false;
@@ -134,7 +138,8 @@ class WithCalculatedFormulasTest extends TestCase
      */
     public function can_import_to_array_with_calculated_formulas_and_multi_sheet_references()
     {
-        $import = new class implements WithMultipleSheets, HasReferencesToOtherSheets {
+        $import = new class implements WithMultipleSheets, HasReferencesToOtherSheets
+        {
             use Importable;
 
             public $test = 'test1';
@@ -142,7 +147,8 @@ class WithCalculatedFormulasTest extends TestCase
             public function sheets(): array
             {
                 return [
-                    new class implements ToArray, HasReferencesToOtherSheets {
+                    new class implements ToArray, HasReferencesToOtherSheets
+                    {
                         public $test = 'test2';
 
                         public function array(array $array)
@@ -152,7 +158,8 @@ class WithCalculatedFormulasTest extends TestCase
                             ], $array);
                         }
                     },
-                    new class implements ToArray, WithCalculatedFormulas, HasReferencesToOtherSheets {
+                    new class implements ToArray, WithCalculatedFormulas, HasReferencesToOtherSheets
+                    {
                         public $test = 'test2';
 
                         public function array(array $array)

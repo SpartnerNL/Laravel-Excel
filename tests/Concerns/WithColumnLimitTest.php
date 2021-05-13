@@ -25,7 +25,8 @@ class WithColumnLimitTest extends TestCase
      */
     public function can_import_to_array_with_column_limit()
     {
-        $import = new class implements ToArray, WithColumnLimit {
+        $import = new class implements ToArray, WithColumnLimit
+        {
             use Importable;
 
             /**

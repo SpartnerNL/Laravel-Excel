@@ -13,7 +13,8 @@ class WithPropertiesTest extends TestCase
      */
     public function can_set_custom_document_properties()
     {
-        $export = new class implements WithProperties {
+        $export = new class implements WithProperties
+        {
             use Exportable;
 
             public function properties(): array
@@ -56,7 +57,8 @@ class WithPropertiesTest extends TestCase
         config()->set('excel.exports.properties.title', 'Default Title');
         config()->set('excel.exports.properties.description', 'Default Description');
 
-        $export = new class implements WithProperties {
+        $export = new class implements WithProperties
+        {
             use Exportable;
 
             public function properties(): array
@@ -81,7 +83,8 @@ class WithPropertiesTest extends TestCase
      */
     public function it_ignores_empty_properties()
     {
-        $export = new class implements WithProperties {
+        $export = new class implements WithProperties
+        {
             use Exportable;
 
             public function properties(): array

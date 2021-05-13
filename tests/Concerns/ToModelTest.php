@@ -31,7 +31,8 @@ class ToModelTest extends TestCase
     {
         DB::connection()->enableQueryLog();
 
-        $import = new class implements ToModel {
+        $import = new class implements ToModel
+        {
             use Importable;
 
             /**
@@ -70,7 +71,8 @@ class ToModelTest extends TestCase
      */
     public function has_timestamps_when_imported_single_model()
     {
-        $import = new class implements ToModel {
+        $import = new class implements ToModel
+        {
             use Importable;
 
             /**
@@ -103,7 +105,8 @@ class ToModelTest extends TestCase
     {
         DB::connection()->enableQueryLog();
 
-        $import = new class implements ToModel {
+        $import = new class implements ToModel
+        {
             use Importable;
 
             /**
@@ -144,7 +147,8 @@ class ToModelTest extends TestCase
     {
         DB::connection()->enableQueryLog();
 
-        $import = new class implements ToModel {
+        $import = new class implements ToModel
+        {
             use Importable;
 
             /**

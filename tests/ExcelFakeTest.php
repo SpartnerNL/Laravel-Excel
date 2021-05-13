@@ -239,7 +239,8 @@ class ExcelFakeTest extends TestCase
      */
     private function givenExport()
     {
-        return new class implements FromCollection {
+        return new class implements FromCollection
+        {
             /**
              * @return Collection
              */
@@ -255,7 +256,8 @@ class ExcelFakeTest extends TestCase
      */
     private function givenQueuedExport()
     {
-        return new class implements FromCollection, ShouldQueue {
+        return new class implements FromCollection, ShouldQueue
+        {
             /**
              * @return Collection
              */
@@ -271,7 +273,8 @@ class ExcelFakeTest extends TestCase
      */
     private function givenImport()
     {
-        return new class implements ToModel {
+        return new class implements ToModel
+        {
             /**
              * @param array $row
              *
@@ -289,7 +292,8 @@ class ExcelFakeTest extends TestCase
      */
     private function givenQueuedImport()
     {
-        return new class implements ToModel, ShouldQueue {
+        return new class implements ToModel, ShouldQueue
+        {
             /**
              * @param array $row
              *
