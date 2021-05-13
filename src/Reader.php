@@ -5,6 +5,7 @@ namespace Maatwebsite\Excel;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Collection;
 use InvalidArgumentException;
+use Maatwebsite\Excel\Columns\ColumnCollection;
 use Maatwebsite\Excel\Concerns\HasReferencesToOtherSheets;
 use Maatwebsite\Excel\Concerns\SkipsUnknownSheets;
 use Maatwebsite\Excel\Concerns\WithCalculatedFormulas;
@@ -424,6 +425,8 @@ class Reader
         if ($shouldQueue && !$import instanceof WithChunkReading) {
             throw new InvalidArgumentException('ShouldQueue is only supported in combination with WithChunkReading.');
         }
+
+        ColumnCollection::makeFrom($import)->beforeReading();
 
         if ($import instanceof WithEvents) {
             $this->registerListeners($import->registerEvents());

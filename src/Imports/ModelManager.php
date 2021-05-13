@@ -90,6 +90,10 @@ class ModelManager
 
         $model = $import->model($attributes);
 
+        if (is_string($model) && class_exists($model)) {
+            $model = $model::query()->newModelInstance($attributes);
+        }
+
         if (null !== $model) {
             return \is_array($model) ? new Collection($model) : new Collection([$model]);
         }

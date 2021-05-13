@@ -2,12 +2,14 @@
 
 namespace Maatwebsite\Excel\Imports;
 
+use Maatwebsite\Excel\Columns\ColumnCollection;
 use Maatwebsite\Excel\Concerns\SkipsEmptyRows;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithCalculatedFormulas;
 use Maatwebsite\Excel\Concerns\WithColumnLimit;
 use Maatwebsite\Excel\Concerns\WithFormatData;
+use Maatwebsite\Excel\Concerns\WithColumns;
 use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Concerns\WithProgressBar;
 use Maatwebsite\Excel\Concerns\WithValidation;
@@ -61,7 +63,11 @@ class ModelImporter
 
             $row = new Row($spreadSheetRow, $headingRow);
             if (!$import instanceof SkipsEmptyRows || ($import instanceof SkipsEmptyRows && !$row->isEmpty($withCalcFormulas))) {
-                $rowArray = $row->toArray(null, $withCalcFormulas, $formatData, $endColumn);
+                if ($import instanceof WithColumns) {
+                    $rowArray = $row->toArrayWithColumns(ColumnCollection::makeFrom($import));
+                } else {
+                    $rowArray = $row->toArray(null, $withCalcFormulas, $formatData, $endColumn);
+                }
 
                 if ($withValidation) {
                     $rowArray = $import->prepareForValidation($rowArray, $row->getIndex());

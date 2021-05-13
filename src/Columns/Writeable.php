@@ -7,20 +7,16 @@ use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
 trait Writeable
 {
-    public function beforeWriting(Worksheet $worksheet)
+    public function beforeWriting(Worksheet $worksheet): void
     {
         $this->formatColumn($worksheet);
         $this->writeStyles($worksheet);
     }
 
     /**
-     * @param Worksheet $sheet
-     * @param int       $row
-     * @param mixed     $data
-     *
-     * @return Cell
+     * @param mixed $data
      */
-    public function write(Worksheet $sheet, int $row, $data)
+    public function write(Worksheet $sheet, int $row, $data): Cell
     {
         $cell = $sheet->getCellByColumnAndRow($this->index, $row);
 
@@ -31,19 +27,18 @@ trait Writeable
         $value = $this->resolveValue($data);
 
         $this->writeValue($cell, $value);
-        $this->writeComment($cell, $data);
         $this->writeCellStyle($cell, $data);
 
         return $cell;
     }
 
-    public function afterWriting(Worksheet $worksheet)
+    public function afterWriting(Worksheet $worksheet): void
     {
         $this->writeSize($worksheet);
         $this->writeFilters($worksheet);
     }
 
-    protected function writeValue(Cell $cell, $value)
+    protected function writeValue(Cell $cell, $value): void
     {
         $this->type
             ? $cell->setValueExplicit($value, $this->type)

@@ -16,6 +16,11 @@ class RichText extends Column
         return RichTextReader::toHtml($cell);
     }
 
+    public function needsStyleInformation(): bool
+    {
+        return true;
+    }
+
     protected function toExcelValue($value)
     {
         return (new Html())->toRichTextObject($value);

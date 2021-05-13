@@ -3,6 +3,7 @@
 namespace Maatwebsite\Excel\Columns;
 
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Config;
 use Maatwebsite\Excel\Concerns\WithColumns;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
@@ -26,9 +27,13 @@ class ColumnCollection extends Collection
 
         $index   = 0;
         $columns = [];
-        foreach ($concernable->columns() as $column) {
+        foreach ($concernable->columns() as $key => $column) {
             $index++;
-            $columns[] = $column->index($index);
+            $column = $column->coordinate(
+                is_numeric($key) ? $index : $key
+            );
+
+            $columns[$column->letter()] = $column;
         }
 
         return new static($columns);
@@ -48,10 +53,32 @@ class ColumnCollection extends Collection
         });
     }
 
+    public function beforeReading()
+    {
+        if ($this->needsStyleInformation()) {
+            Config::set('excel.imports.read_only', false);
+        }
+    }
+
     public function headings(): array
     {
         return $this->map(function (Column $column) {
             return $column->title();
         })->toArray();
+    }
+
+    public function start(): string
+    {
+        return $this->first()->letter();
+    }
+
+    public function end(): string
+    {
+        return $this->last()->letter();
+    }
+
+    protected function needsStyleInformation(): bool
+    {
+        return null !== $this->first(fn(Column $column) => $column->needsStyleInformation());
     }
 }

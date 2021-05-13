@@ -15,7 +15,6 @@ class Column
     use Macroable;
     use Writeable;
     use Filterable;
-    use Commentable;
 
     /**
      * @var int
@@ -158,12 +157,55 @@ class Column
         return $this;
     }
 
+    /**
+     * @param string|int $index
+     *
+     * @return $this
+     */
+    public function coordinate($index)
+    {
+        if (is_numeric($index)) {
+            return $this->index($index);
+        }
+
+        return $this->column($index);
+    }
+
+    /**
+     * @return $this
+     */
     public function index(int $index)
     {
         $this->index  = $index;
         $this->letter = Coordinate::stringFromColumnIndex($index);
 
         return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    public function column(string $column)
+    {
+        $this->index  = Coordinate::columnIndexFromString($column);
+        $this->letter = $column;
+
+        return $this;
+    }
+
+    public function letter(): string
+    {
+        return $this->letter;
+    }
+
+    public function attribute(): string
+    {
+        return $this->attribute;
+    }
+
+    public function needsStyleInformation(): bool
+    {
+        return false;
     }
 
     /**
