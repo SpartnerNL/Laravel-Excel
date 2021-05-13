@@ -121,11 +121,7 @@ class TestCase extends OrchestraTestCase
      */
     protected function assertStringContains(string $needle, string $haystack, string $message = '')
     {
-        if (method_exists($this, 'assertStringContainsString')) {
-            $this->assertStringContainsString($needle, $haystack, $message);
-        } else {
-            static::assertThat($haystack, new StringContains($needle, false), $message);
-        }
+        $this->assertStringContainsString($needle, $haystack, $message);
     }
 
     /**
@@ -133,10 +129,12 @@ class TestCase extends OrchestraTestCase
      */
     protected function assertFileMissing(string $path)
     {
-        if (method_exists($this, 'assertFileDoesNotExist')) {
-            $this->assertFileDoesNotExist($path);
-        } else {
-            $this->assertFileNotExists($path);
-        }
+        $this->assertFileDoesNotExist($path);
+    }
+
+    protected function tearDown(): void
+    {
+        config()->set('excel.imports.read_only', true);
+        parent::tearDown();
     }
 }
