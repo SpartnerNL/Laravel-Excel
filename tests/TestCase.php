@@ -7,10 +7,15 @@ use Illuminate\Http\Testing\File;
 use Maatwebsite\Excel\ExcelServiceProvider;
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
 use PhpOffice\PhpSpreadsheet\IOFactory;
-use PHPUnit\Framework\Constraint\StringContains;
 
 class TestCase extends OrchestraTestCase
 {
+    protected function tearDown(): void
+    {
+        config()->set('excel.imports.read_only', true);
+        parent::tearDown();
+    }
+
     /**
      * @param  string  $filePath
      * @param  string  $writerType
@@ -130,11 +135,5 @@ class TestCase extends OrchestraTestCase
     protected function assertFileMissing(string $path)
     {
         $this->assertFileDoesNotExist($path);
-    }
-
-    protected function tearDown(): void
-    {
-        config()->set('excel.imports.read_only', true);
-        parent::tearDown();
     }
 }
