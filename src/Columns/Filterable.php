@@ -2,6 +2,7 @@
 
 namespace Maatwebsite\Excel\Columns;
 
+use Illuminate\Support\Arr;
 use PhpOffice\PhpSpreadsheet\Worksheet\AutoFilter\Column as FilterColumn;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
@@ -38,8 +39,10 @@ trait Filterable
         $columnFilter = $worksheet->getAutoFilter()->getColumn($this->letter);
         $columnFilter->setFilterType($this->filter);
 
-        foreach ($this->filterRules as $operator => $value) {
-            $columnFilter->createRule()->setRule($operator, $value);
+        foreach ($this->filterRules as $operator => $rules) {
+            foreach (Arr::wrap($rules) as $rule) {
+                $columnFilter->createRule()->setRule($operator, $rule);
+            }
         }
     }
 }
