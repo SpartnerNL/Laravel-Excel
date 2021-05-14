@@ -12,6 +12,7 @@ use Maatwebsite\Excel\Columns\Decimal;
 use Maatwebsite\Excel\Columns\EmptyCell;
 use Maatwebsite\Excel\Columns\Formula;
 use Maatwebsite\Excel\Columns\Number;
+use Maatwebsite\Excel\Columns\Percentage;
 use Maatwebsite\Excel\Columns\Price;
 use Maatwebsite\Excel\Columns\RichText;
 use Maatwebsite\Excel\Columns\Text;
@@ -81,6 +82,8 @@ class ColumnTest extends TestCase
             [Text::make('RichText'), 'G2', 'test test test'],
 
             [Text::make('RichText'), 'H2', 'normal text'],
+
+            [Percentage::make('Percentage'), 'I2', 0.1],
         ];
     }
 
@@ -96,8 +99,14 @@ class ColumnTest extends TestCase
         $spreadsheet = $this->read($file, 'Xlsx');
         $sheet       = $spreadsheet->getActiveSheet();
 
+        $column->index(1);
+
+        $column->beforeWriting($sheet);
+
         // Write value to A1
-        $cell = $column->index(1)->write($sheet, 1, ['attribute' => $givenValue]);
+        $cell = $column->write($sheet, 1, ['attribute' => $givenValue]);
+
+        $column->afterWriting($sheet);
 
         // Internal type and value are correct
         $this->assertEquals($dataType, $cell->getDataType());
@@ -111,7 +120,6 @@ class ColumnTest extends TestCase
         // Written type and value are correct
         $this->assertEquals($dataType, $cell->getDataType());
         $this->assertEquals($expectedValue, $cell->getValue());
-
         unlink($file);
     }
 
@@ -154,6 +162,8 @@ class ColumnTest extends TestCase
             [Text::make('Attribute'), 'text', DataType::TYPE_STRING, 'text'],
 
             [Column::make('Attribute')->type(DataType::TYPE_NUMERIC), 10.50, DataType::TYPE_NUMERIC, 10.50],
+
+            [Percentage::make('Attribute'), 0.1, DataType::TYPE_NUMERIC, 0.1],
         ];
     }
 
@@ -199,7 +209,7 @@ class ColumnTest extends TestCase
         $column = Column
             ::make('Attribute')
             ->index(1)
-           ->width(50);
+            ->width(50);
 
         $column->afterWriting($sheet);
         $column->write($sheet, 1, ['attribute' => 'test']);
