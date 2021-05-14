@@ -631,13 +631,13 @@ class Sheet
      */
     public function appendRows($rows, $sheetExport)
     {
-        $rowNumber = $this->worksheet->getHighestRow();
-
         if (method_exists($sheetExport, 'prepareRows')) {
             $rows = $sheetExport->prepareRows($rows);
         }
 
         if ($sheetExport instanceof WithColumns) {
+            $rowNumber = $this->worksheet->getHighestRow();
+
             foreach ($rows as $row) {
                 $rowNumber++;
                 $this->columns->each(function (Column $column) use ($rowNumber, $row) {
