@@ -3,7 +3,6 @@
 namespace Maatwebsite\Excel\Columns;
 
 use PhpOffice\PhpSpreadsheet\Cell\Cell;
-use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
 trait Readable
 {

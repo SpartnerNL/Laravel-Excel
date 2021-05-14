@@ -44,6 +44,7 @@ trait Writeable
             ? $cell->setValueExplicit($value, $this->type)
             : $cell->setValue($value);
     }
+
     /**
      * @param mixed $data
      *
