@@ -2,6 +2,7 @@
 
 namespace Maatwebsite\Excel\Columns;
 
+use PhpOffice\PhpSpreadsheet\Cell\Cell;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
 trait Styleable
@@ -19,6 +20,18 @@ trait Styleable
     public function style(array $style)
     {
         $this->style = array_merge_recursive($this->style ?: [], $style);
+
+        return $this;
+    }
+
+    /**
+     * @param callable $cellStyle
+     *
+     * @return $this
+     */
+    public function withCellStyling(callable $cellStyle)
+    {
+        $this->cellStyling = $cellStyle;
 
         return $this;
     }
@@ -91,5 +104,10 @@ trait Styleable
         }
 
         $worksheet->getStyle($this->letter)->applyFromArray($this->getStyle());
+    }
+
+    protected function writeCellStyle(Cell $cell, $data)
+    {
+        (new CellStyle())->apply($cell, $data, $this->cellStyling);
     }
 }

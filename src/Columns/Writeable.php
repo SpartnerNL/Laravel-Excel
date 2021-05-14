@@ -44,4 +44,29 @@ trait Writeable
             ? $cell->setValueExplicit($value, $this->type)
             : $cell->setValue($value);
     }
+    /**
+     * @param mixed $data
+     *
+     * @return mixed
+     */
+    protected function resolveValue($data)
+    {
+        if (is_callable($this->attribute)) {
+            return ($this->attribute)($data);
+        }
+
+        return $this->toExcelValue(
+            $data[$this->attribute] ?? null
+        );
+    }
+
+    /**
+     * @param mixed $value
+     *
+     * @return mixed
+     */
+    protected function toExcelValue($value)
+    {
+        return $value;
+    }
 }

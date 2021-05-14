@@ -38,6 +38,11 @@ trait Sizeable
         return $this;
     }
 
+    public function shouldAutoSize(): bool
+    {
+        return $this->autoSize;
+    }
+
     public function writeSize(Worksheet $worksheet)
     {
         $dimension = $worksheet->getColumnDimension($this->letter);
