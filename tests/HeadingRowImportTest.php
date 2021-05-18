@@ -107,7 +107,6 @@ class HeadingRowImportTest extends TestCase
         ], $headings);
     }
 
-
     /**
      * @test
      */
