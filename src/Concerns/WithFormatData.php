@@ -3,5 +3,5 @@
 namespace Maatwebsite\Excel\Concerns;
 
 interface WithFormatData
-{ 
+{
 }

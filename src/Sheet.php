@@ -301,7 +301,7 @@ class Sheet
                         try {
                             app(RowValidator::class)->validate($toValidate, $import);
                             $import->onRow($sheetRow);
-                        } catch (RowSkippedException $e) { 
+                        } catch (RowSkippedException $e) {
                         }
                     } else {
                         $import->onRow($sheetRow);
@@ -676,7 +676,7 @@ class Sheet
 
         try {
             app(RowValidator::class)->validate($toValidate->toArray(), $import);
-        } catch (RowSkippedException $e) { 
+        } catch (RowSkippedException $e) {
         }
     }
 
