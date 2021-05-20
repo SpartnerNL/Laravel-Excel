@@ -7,7 +7,9 @@ use Illuminate\Http\Request;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Excel;
 use Maatwebsite\Excel\Exporter;
+use Maatwebsite\Excel\Exceptions\NoFilePathGivenException;
 use Maatwebsite\Excel\Tests\Data\Stubs\EmptyExport;
+use Maatwebsite\Excel\Tests\Data\Stubs\UsersExport;
 use Maatwebsite\Excel\Tests\TestCase;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
@@ -16,17 +18,13 @@ class ExportableTest extends TestCase
     /**
      * @test
      */
-    public function needs_to_have_a_file_name_when_downloading()
+    public function no_filename_given_will_auto_generate_a_filename()
     {
-        $this->expectException(\Maatwebsite\Excel\Exceptions\NoFilenameGivenException::class);
-        $this->expectExceptionMessage('A filename needs to be passed in order to download the export');
+        $export = new UsersExport();
 
-        $export = new class
-        {
-            use Exportable;
-        };
+        $response = $export->download();
 
-        $export->download();
+        $this->assertEquals('attachment; filename=users-export.xlsx', $response->headers->get('Content-Disposition'));
     }
 
     /**
@@ -34,7 +32,7 @@ class ExportableTest extends TestCase
      */
     public function needs_to_have_a_file_name_when_storing()
     {
-        $this->expectException(\Maatwebsite\Excel\Exceptions\NoFilePathGivenException::class);
+        $this->expectException(NoFilePathGivenException::class);
         $this->expectExceptionMessage('A filepath needs to be passed in order to store the export');
 
         $export = new class
@@ -50,7 +48,7 @@ class ExportableTest extends TestCase
      */
     public function needs_to_have_a_file_name_when_queuing()
     {
-        $this->expectException(\Maatwebsite\Excel\Exceptions\NoFilePathGivenException::class);
+        $this->expectException(NoFilePathGivenException::class);
         $this->expectExceptionMessage('A filepath needs to be passed in order to store the export');
 
         $export = new class
@@ -64,17 +62,13 @@ class ExportableTest extends TestCase
     /**
      * @test
      */
-    public function responsable_needs_to_have_file_name_configured_inside_the_export()
+    public function responsables_auto_generated_a_file_name()
     {
-        $this->expectException(\Maatwebsite\Excel\Exceptions\NoFilenameGivenException::class);
-        $this->expectExceptionMessage('A filename needs to be passed in order to download the export');
+        $export = new UsersExport();
 
-        $export = new class implements Responsable
-        {
-            use Exportable;
-        };
+        $response = $export->toResponse(new Request());
 
-        $export->toResponse(new Request());
+        $this->assertEquals('attachment; filename=users-export.xlsx', $response->headers->get('Content-Disposition'));
     }
 
     /**

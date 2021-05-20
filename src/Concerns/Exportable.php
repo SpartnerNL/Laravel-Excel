@@ -3,6 +3,7 @@
 namespace Maatwebsite\Excel\Concerns;
 
 use Illuminate\Foundation\Bus\PendingDispatch;
+use Illuminate\Support\Str;
 use Maatwebsite\Excel\Exceptions\NoFilenameGivenException;
 use Maatwebsite\Excel\Exceptions\NoFilePathGivenException;
 use Maatwebsite\Excel\Exporter;
@@ -20,12 +21,8 @@ trait Exportable
     public function download(string $fileName = null, string $writerType = null, array $headers = null)
     {
         $headers    = $headers ?? $this->headers ?? [];
-        $fileName   = $fileName ?? $this->fileName ?? null;
         $writerType = $writerType ?? $this->writerType ?? null;
-
-        if (null === $fileName) {
-            throw new NoFilenameGivenException();
-        }
+        $fileName   = $fileName ?? $this->fileName ?? Str::snake(class_basename($this), '-') . '.' . (strtolower($writerType) ?: 'xlsx');
 
         return $this->getExporter()->download($this, $fileName, $writerType, $headers);
     }
