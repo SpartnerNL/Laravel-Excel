@@ -20,7 +20,8 @@ class SkipsEmptyRowsTest extends TestCase
      */
     public function skips_empty_rows_when_importing_to_collection()
     {
-        $import = new class implements ToCollection, SkipsEmptyRows {
+        $import = new class implements ToCollection, SkipsEmptyRows
+        {
             use Importable;
 
             public $called = false;
@@ -50,7 +51,8 @@ class SkipsEmptyRowsTest extends TestCase
      */
     public function skips_empty_rows_when_importing_on_each_row()
     {
-        $import = new class implements OnEachRow, SkipsEmptyRows {
+        $import = new class implements OnEachRow, SkipsEmptyRows
+        {
             use Importable;
 
             public $rows = 0;
@@ -76,7 +78,8 @@ class SkipsEmptyRowsTest extends TestCase
      */
     public function skips_empty_rows_when_importing_to_model()
     {
-        $import = new class implements ToModel, SkipsEmptyRows {
+        $import = new class implements ToModel, SkipsEmptyRows
+        {
             use Importable;
 
             public $rows = 0;

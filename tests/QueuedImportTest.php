@@ -41,7 +41,8 @@ class QueuedImportTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Importable should implement ShouldQueue to be queued.');
 
-        $import = new class {
+        $import = new class
+        {
             use Importable;
         };
 

@@ -15,7 +15,8 @@ class RemembersChunkOffsetTest extends TestCase
      */
     public function can_set_and_get_chunk_offset()
     {
-        $import = new class {
+        $import = new class
+        {
             use Importable;
             use RemembersChunkOffset;
         };
@@ -30,7 +31,8 @@ class RemembersChunkOffsetTest extends TestCase
      */
     public function can_access_chunk_offset_on_import_to_array_in_chunks()
     {
-        $import = new class implements ToArray, WithChunkReading {
+        $import = new class implements ToArray, WithChunkReading
+        {
             use Importable;
             use RemembersChunkOffset;
 

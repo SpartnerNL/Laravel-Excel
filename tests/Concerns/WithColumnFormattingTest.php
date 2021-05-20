@@ -19,7 +19,8 @@ class WithColumnFormattingTest extends TestCase
      */
     public function can_export_with_column_formatting()
     {
-        $export = new class() implements FromCollection, WithMapping, WithColumnFormatting {
+        $export = new class() implements FromCollection, WithMapping, WithColumnFormatting
+        {
             use Exportable;
 
             /**

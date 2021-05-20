@@ -16,7 +16,8 @@ class ImportableTest extends TestCase
      */
     public function can_import_a_simple_xlsx_file()
     {
-        $import = new class implements ToArray {
+        $import = new class implements ToArray
+        {
             use Importable;
 
             /**
@@ -41,7 +42,8 @@ class ImportableTest extends TestCase
      */
     public function can_import_a_simple_xlsx_file_from_uploaded_file()
     {
-        $import = new class implements ToArray {
+        $import = new class implements ToArray
+        {
             use Importable;
 
             /**
@@ -64,7 +66,8 @@ class ImportableTest extends TestCase
      */
     public function can_import_a_simple_csv_file_with_html_tags_inside()
     {
-        $import = new class implements ToArray {
+        $import = new class implements ToArray
+        {
             use Importable;
 
             /**
@@ -93,7 +96,8 @@ class ImportableTest extends TestCase
     {
         config()->set('excel.imports.ignore_empty', true);
 
-        $import = new class implements ToArray {
+        $import = new class implements ToArray
+        {
             use Importable;
 
             /**
@@ -120,7 +124,8 @@ class ImportableTest extends TestCase
     {
         config()->set('excel.imports.ignore_empty', false);
 
-        $import = new class implements ToArray {
+        $import = new class implements ToArray
+        {
             use Importable;
 
             /**

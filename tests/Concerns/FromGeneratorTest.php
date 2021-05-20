@@ -14,7 +14,8 @@ class FromGeneratorTest extends TestCase
      */
     public function can_export_from_generator()
     {
-        $export = new class implements FromGenerator {
+        $export = new class implements FromGenerator
+        {
             use Exportable;
 
             /**

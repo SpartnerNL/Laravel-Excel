@@ -15,12 +15,14 @@ class WithReadFilterTest extends TestCase
      */
     public function can_register_custom_read_filter()
     {
-        $export = new class implements WithReadFilter {
+        $export = new class implements WithReadFilter
+        {
             use Importable;
 
             public function readFilter(): IReadFilter
             {
-                return new class implements IReadFilter {
+                return new class implements IReadFilter
+                {
                     public function readCell($column, $row, $worksheetName = '')
                     {
                         // Assert read filter is being called.

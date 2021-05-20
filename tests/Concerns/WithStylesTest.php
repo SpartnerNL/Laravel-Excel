@@ -15,7 +15,8 @@ class WithStylesTest extends TestCase
      */
     public function can_configure_styles()
     {
-        $export = new class implements FromArray, WithStyles {
+        $export = new class implements FromArray, WithStyles
+        {
             use Exportable;
 
             public function styles(Worksheet $sheet)

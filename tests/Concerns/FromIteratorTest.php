@@ -15,7 +15,8 @@ class FromIteratorTest extends TestCase
      */
     public function can_export_from_iterator()
     {
-        $export = new class implements FromIterator {
+        $export = new class implements FromIterator
+        {
             use Exportable;
 
             /**

@@ -80,7 +80,8 @@ class ExcelFake implements Exporter, Importer
         $this->stored[$disk ?? 'default'][$filePath] = $export;
         $this->queued[$disk ?? 'default'][$filePath] = $export;
 
-        $this->job = new class {
+        $this->job = new class
+        {
             use Queueable;
 
             public function handle()
@@ -177,7 +178,8 @@ class ExcelFake implements Exporter, Importer
         $this->queued[$disk ?? 'default'][$filePath]   = $import;
         $this->imported[$disk ?? 'default'][$filePath] = $import;
 
-        return new PendingDispatch(new class {
+        return new PendingDispatch(new class
+        {
             use Queueable;
 
             public function handle()

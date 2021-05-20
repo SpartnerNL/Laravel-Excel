@@ -43,7 +43,8 @@ class WithChunkReadingTest extends TestCase
     {
         DB::connection()->enableQueryLog();
 
-        $import = new class implements ToModel, WithChunkReading, WithEvents {
+        $import = new class implements ToModel, WithChunkReading, WithEvents
+        {
             use Importable;
 
             public $before = 0;
@@ -105,7 +106,8 @@ class WithChunkReadingTest extends TestCase
     {
         DB::connection()->enableQueryLog();
 
-        $import = new class implements ToModel, WithChunkReading, WithBatchInserts {
+        $import = new class implements ToModel, WithChunkReading, WithBatchInserts
+        {
             use Importable;
 
             /**
@@ -150,7 +152,8 @@ class WithChunkReadingTest extends TestCase
     {
         DB::connection()->enableQueryLog();
 
-        $import = new class implements ToModel, WithChunkReading, WithBatchInserts, WithHeadingRow {
+        $import = new class implements ToModel, WithChunkReading, WithBatchInserts, WithHeadingRow
+        {
             use Importable;
 
             /**
@@ -195,7 +198,8 @@ class WithChunkReadingTest extends TestCase
     {
         DB::connection()->enableQueryLog();
 
-        $import = new class implements ToModel, WithChunkReading, WithBatchInserts {
+        $import = new class implements ToModel, WithChunkReading, WithBatchInserts
+        {
             use Importable;
 
             /**
@@ -240,7 +244,8 @@ class WithChunkReadingTest extends TestCase
     {
         DB::connection()->enableQueryLog();
 
-        $import = new class implements ToModel, WithChunkReading, WithBatchInserts {
+        $import = new class implements ToModel, WithChunkReading, WithBatchInserts
+        {
             use Importable;
 
             /**
@@ -283,7 +288,8 @@ class WithChunkReadingTest extends TestCase
      */
     public function can_import_to_array_in_chunks()
     {
-        $import = new class implements ToArray, WithChunkReading {
+        $import = new class implements ToArray, WithChunkReading
+        {
             use Importable;
 
             public $called = 0;
@@ -319,7 +325,8 @@ class WithChunkReadingTest extends TestCase
     {
         DB::connection()->enableQueryLog();
 
-        $import = new class implements WithMultipleSheets, WithChunkReading {
+        $import = new class implements WithMultipleSheets, WithChunkReading
+        {
             use Importable;
 
             /**
@@ -336,7 +343,8 @@ class WithChunkReadingTest extends TestCase
             public function sheets(): array
             {
                 return [
-                    new class implements ToModel, WithBatchInserts {
+                    new class implements ToModel, WithBatchInserts
+                    {
                         /**
                          * @param  array  $row
                          *
@@ -358,7 +366,8 @@ class WithChunkReadingTest extends TestCase
                         }
                     },
 
-                    new class implements ToModel, WithBatchInserts {
+                    new class implements ToModel, WithBatchInserts
+                    {
                         /**
                          * @param  array  $row
                          *
@@ -396,7 +405,8 @@ class WithChunkReadingTest extends TestCase
     {
         DB::connection()->enableQueryLog();
 
-        $import = new class implements WithMultipleSheets, WithChunkReading {
+        $import = new class implements WithMultipleSheets, WithChunkReading
+        {
             use Importable;
 
             /**
@@ -413,7 +423,8 @@ class WithChunkReadingTest extends TestCase
             public function sheets(): array
             {
                 return [
-                    'Worksheet' => new class implements ToModel, WithBatchInserts {
+                    'Worksheet' => new class implements ToModel, WithBatchInserts
+                    {
                         /**
                          * @param  array  $row
                          *
@@ -435,7 +446,8 @@ class WithChunkReadingTest extends TestCase
                         }
                     },
 
-                    'Worksheet2' => new class implements ToModel, WithBatchInserts {
+                    'Worksheet2' => new class implements ToModel, WithBatchInserts
+                    {
                         /**
                          * @param  array  $row
                          *
@@ -471,7 +483,8 @@ class WithChunkReadingTest extends TestCase
      */
     public function can_catch_job_failed_in_chunks()
     {
-        $import = new class implements ToModel, WithChunkReading, WithEvents {
+        $import = new class implements ToModel, WithChunkReading, WithEvents
+        {
             use Importable;
 
             public $failed = false;

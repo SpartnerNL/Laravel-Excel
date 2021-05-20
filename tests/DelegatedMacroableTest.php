@@ -18,7 +18,8 @@ class DelegatedMacroableTest extends TestCase
      */
     public function can_call_methods_from_delegate()
     {
-        $export = new class implements WithEvents {
+        $export = new class implements WithEvents
+        {
             use RegistersEventListeners, Exportable;
 
             public static function beforeExport(BeforeExport $event)
@@ -41,7 +42,8 @@ class DelegatedMacroableTest extends TestCase
             $called = true;
         });
 
-        $export = new class implements WithEvents {
+        $export = new class implements WithEvents
+        {
             use RegistersEventListeners, Exportable;
 
             public static function beforeExport(BeforeExport $event)
@@ -66,7 +68,8 @@ class DelegatedMacroableTest extends TestCase
             $called = true;
         });
 
-        $export = new class implements WithEvents {
+        $export = new class implements WithEvents
+        {
             use RegistersEventListeners, Exportable;
 
             public static function beforeSheet(BeforeSheet $event)

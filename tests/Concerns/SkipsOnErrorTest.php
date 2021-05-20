@@ -30,7 +30,8 @@ class SkipsOnErrorTest extends TestCase
      */
     public function can_skip_on_error()
     {
-        $import = new class implements ToModel, SkipsOnError {
+        $import = new class implements ToModel, SkipsOnError
+        {
             use Importable;
 
             public $errors = 0;
@@ -81,7 +82,8 @@ class SkipsOnErrorTest extends TestCase
      */
     public function can_skip_errors_and_collect_all_errors_at_the_end()
     {
-        $import = new class implements ToModel, SkipsOnError {
+        $import = new class implements ToModel, SkipsOnError
+        {
             use Importable, SkipsErrors;
 
             /**

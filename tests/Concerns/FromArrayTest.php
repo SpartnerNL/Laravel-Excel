@@ -13,7 +13,8 @@ class FromArrayTest extends TestCase
      */
     public function can_export_from_array()
     {
-        $export = new class implements FromArray {
+        $export = new class implements FromArray
+        {
             use Exportable;
 
             /**

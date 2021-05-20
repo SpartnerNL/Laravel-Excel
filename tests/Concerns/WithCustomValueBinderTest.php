@@ -26,7 +26,8 @@ class WithCustomValueBinderTest extends TestCase
     {
         Carbon::setTestNow(new Carbon('2018-08-07 18:00:00'));
 
-        $export = new class extends DefaultValueBinder implements FromCollection, WithCustomValueBinder {
+        $export = new class extends DefaultValueBinder implements FromCollection, WithCustomValueBinder
+        {
             use Exportable;
 
             /**
@@ -102,7 +103,8 @@ class WithCustomValueBinderTest extends TestCase
      */
     public function can_set_a_value_binder_on_import()
     {
-        $import = new class extends DefaultValueBinder implements WithCustomValueBinder, ToArray {
+        $import = new class extends DefaultValueBinder implements WithCustomValueBinder, ToArray
+        {
             /**
              * {@inheritdoc}
              */

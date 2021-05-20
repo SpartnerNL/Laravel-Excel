@@ -14,7 +14,8 @@ class WithColumnWidthsTest extends TestCase
      */
     public function can_set_column_width()
     {
-        $export = new class implements FromArray, WithColumnWidths {
+        $export = new class implements FromArray, WithColumnWidths
+        {
             use Exportable;
 
             public function columnWidths(): array

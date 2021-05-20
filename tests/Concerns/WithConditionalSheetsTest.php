@@ -25,7 +25,8 @@ class WithConditionalSheetsTest extends TestCase
      */
     public function can_select_which_sheets_will_be_imported()
     {
-        $import = new class implements WithMultipleSheets {
+        $import = new class implements WithMultipleSheets
+        {
             use Importable, WithConditionalSheets;
 
             public $sheets = [];
@@ -38,7 +39,8 @@ class WithConditionalSheetsTest extends TestCase
             public function init()
             {
                 $this->sheets = [
-                    'Sheet1' => new class implements ToArray {
+                    'Sheet1' => new class implements ToArray
+                    {
                         public $called = false;
 
                         public function array(array $array)
@@ -46,7 +48,8 @@ class WithConditionalSheetsTest extends TestCase
                             $this->called = true;
                         }
                     },
-                    'Sheet2' => new class implements ToArray {
+                    'Sheet2' => new class implements ToArray
+                    {
                         public $called = false;
 
                         public function array(array $array)

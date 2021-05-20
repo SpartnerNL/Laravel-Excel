@@ -16,7 +16,8 @@ class RemembersRowNumberTest extends TestCase
      */
     public function can_set_and_get_row_number()
     {
-        $import = new class {
+        $import = new class
+        {
             use Importable;
             use RemembersRowNumber;
         };
@@ -31,7 +32,8 @@ class RemembersRowNumberTest extends TestCase
      */
     public function can_access_row_number_on_import_to_model()
     {
-        $import = new class implements ToModel {
+        $import = new class implements ToModel
+        {
             use Importable;
             use RemembersRowNumber;
 
@@ -53,7 +55,8 @@ class RemembersRowNumberTest extends TestCase
      */
     public function can_access_row_number_on_import_to_array_in_chunks()
     {
-        $import = new class implements ToModel, WithChunkReading {
+        $import = new class implements ToModel, WithChunkReading
+        {
             use Importable;
             use RemembersRowNumber;
 
@@ -80,7 +83,8 @@ class RemembersRowNumberTest extends TestCase
      */
     public function can_access_row_number_on_import_to_array_in_chunks_with_batch_inserts()
     {
-        $import = new class implements ToModel, WithChunkReading, WithBatchInserts {
+        $import = new class implements ToModel, WithChunkReading, WithBatchInserts
+        {
             use Importable;
             use RemembersRowNumber;
 

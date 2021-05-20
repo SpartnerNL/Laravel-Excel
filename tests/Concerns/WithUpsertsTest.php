@@ -42,7 +42,8 @@ class WithUpsertsTest extends TestCase
 
         DB::connection()->enableQueryLog();
 
-        $import = new class implements ToModel, WithBatchInserts, WithUpserts {
+        $import = new class implements ToModel, WithBatchInserts, WithUpserts
+        {
             use Importable;
 
             /**
@@ -109,7 +110,8 @@ class WithUpsertsTest extends TestCase
 
         DB::connection()->enableQueryLog();
 
-        $import = new class implements ToModel, WithUpserts {
+        $import = new class implements ToModel, WithUpserts
+        {
             use Importable;
 
             /**
@@ -168,7 +170,8 @@ class WithUpsertsTest extends TestCase
 
         DB::connection()->enableQueryLog();
 
-        $import = new class implements ToModel, WithBatchInserts, WithUpserts, WithUpsertColumns {
+        $import = new class implements ToModel, WithBatchInserts, WithUpserts, WithUpsertColumns
+        {
             use Importable;
 
             /**
@@ -243,7 +246,8 @@ class WithUpsertsTest extends TestCase
 
         DB::connection()->enableQueryLog();
 
-        $import = new class implements ToModel, WithUpserts, WithUpsertColumns {
+        $import = new class implements ToModel, WithUpserts, WithUpsertColumns
+        {
             use Importable;
 
             /**
