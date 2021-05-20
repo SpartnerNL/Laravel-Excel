@@ -16,6 +16,8 @@ use Maatwebsite\Excel\Columns\Percentage;
 use Maatwebsite\Excel\Columns\Price;
 use Maatwebsite\Excel\Columns\RichText;
 use Maatwebsite\Excel\Columns\Text;
+use Maatwebsite\Excel\Tests\Data\Stubs\Database\Group;
+use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
 use Maatwebsite\Excel\Tests\TestCase;
 use PhpOffice\PhpSpreadsheet\Cell\DataType;
 use PhpOffice\PhpSpreadsheet\IOFactory;
@@ -195,6 +197,41 @@ class ColumnTest extends TestCase
         $this->assertTrue($cell->getStyle()->getFont()->getBold());
         $this->assertTrue($cell->getStyle()->getFont()->getItalic());
         $this->assertEquals(16, $cell->getStyle()->getFont()->getSize());
+    }
+
+    /**
+     * @test
+     */
+    public function can_write_models_to_column()
+    {
+        $file = __DIR__ . '/../Data/Disks/Local/columns_export.xlsx';
+        copy(__DIR__ . '/../Data/Disks/Local/empty-worksheet.xlsx', $file);
+
+        $spreadsheet = new Spreadsheet();
+        $sheet       = $spreadsheet->getActiveSheet();
+
+        $user = new User(['name' => 'Patrick']);
+        $user->setRelation('group', new Group(['name' => 'Admin']));
+
+        Column::make('Name')->column('A')->write($sheet, 1, $user);
+        Column::make('Group', 'group.name')->column('B')->write($sheet, 1, $user);
+        Column::make('Name And Group', function (User $user) {
+            return $user->name . ' - ' . $user->group->name;
+        })->column('C')->write($sheet, 1, $user);
+
+        $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+        $writer->save($file);
+
+        $spreadsheet = $this->read($file, 'Xlsx');
+        $a1          = $spreadsheet->getActiveSheet()->getCell('A1');
+        $b1          = $spreadsheet->getActiveSheet()->getCell('B1');
+        $c1          = $spreadsheet->getActiveSheet()->getCell('C1');
+
+        // Written type and value are correct
+        $this->assertEquals('Patrick', $a1->getValue());
+        $this->assertEquals('Admin', $b1->getValue());
+        $this->assertEquals('Patrick - Admin', $c1->getValue());
+        unlink($file);
     }
 
     /**

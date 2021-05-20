@@ -2,6 +2,7 @@
 
 namespace Maatwebsite\Excel\Columns;
 
+use Illuminate\Support\Arr;
 use PhpOffice\PhpSpreadsheet\Cell\Cell;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
@@ -57,7 +58,7 @@ trait Writeable
         }
 
         return $this->toExcelValue(
-            $data[$this->attribute] ?? null
+            Arr::get($data, $this->attribute)
         );
     }
 
