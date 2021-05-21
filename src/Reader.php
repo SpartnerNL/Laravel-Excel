@@ -11,6 +11,7 @@ use Maatwebsite\Excel\Concerns\WithCalculatedFormulas;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithCustomValueBinder;
 use Maatwebsite\Excel\Concerns\WithEvents;
+use Maatwebsite\Excel\Concerns\WithFormatData;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 use Maatwebsite\Excel\Events\AfterImport;
 use Maatwebsite\Excel\Events\BeforeImport;
@@ -158,8 +159,9 @@ class Reader
         $sheetsToDisconnect = [];
         foreach ($this->sheetImports as $index => $sheetImport) {
             $calculatesFormulas = $sheetImport instanceof WithCalculatedFormulas;
+            $formatData         = $sheetImport instanceof WithFormatData;
             if ($sheet = $this->getSheet($import, $sheetImport, $index)) {
-                $sheets[$index] = $sheet->toArray($sheetImport, $sheet->getStartRow($sheetImport), null, $calculatesFormulas);
+                $sheets[$index] = $sheet->toArray($sheetImport, $sheet->getStartRow($sheetImport), null, $calculatesFormulas, $formatData);
 
                 // when using WithCalculatedFormulas we need to keep the sheet until all sheets are imported
                 if (!($sheetImport instanceof HasReferencesToOtherSheets)) {
@@ -200,8 +202,9 @@ class Reader
         $sheetsToDisconnect = [];
         foreach ($this->sheetImports as $index => $sheetImport) {
             $calculatesFormulas = $sheetImport instanceof WithCalculatedFormulas;
+            $formatData         = $sheetImport instanceof WithFormatData;
             if ($sheet = $this->getSheet($import, $sheetImport, $index)) {
-                $sheets->put($index, $sheet->toCollection($sheetImport, $sheet->getStartRow($sheetImport), null, $calculatesFormulas));
+                $sheets->put($index, $sheet->toCollection($sheetImport, $sheet->getStartRow($sheetImport), null, $calculatesFormulas, $formatData));
 
                 // when using WithCalculatedFormulas we need to keep the sheet until all sheets are imported
                 if (!($sheetImport instanceof HasReferencesToOtherSheets)) {
