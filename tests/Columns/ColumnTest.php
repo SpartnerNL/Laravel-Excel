@@ -4,8 +4,6 @@ namespace Maatwebsite\Excel\Tests\Columns;
 
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
-use Illuminate\Database\Eloquent\Model;
-use Maatwebsite\Excel\Cell;
 use Maatwebsite\Excel\Columns\Boolean;
 use Maatwebsite\Excel\Columns\Column;
 use Maatwebsite\Excel\Columns\Date;
@@ -256,12 +254,12 @@ class ColumnTest extends TestCase
 
         $column = Hyperlink
             ::make('Name')
-            ->url(fn(array $data) => $data['link'])
+            ->url(fn (array $data) => $data['link'])
             ->tooltip('Open link');
 
         $column->column('A')->write($sheet, 1, [
             'name' => 'Maatwebsite',
-            'link' => 'https://maatwebsite.com'
+            'link' => 'https://maatwebsite.com',
         ]);
 
         $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
