@@ -8,6 +8,11 @@ use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
 trait Writeable
 {
+    /**
+     * @var callable[]
+     */
+    protected $writingCallback = [];
+
     public function beforeWriting(Worksheet $worksheet): void
     {
         $this->formatColumn($worksheet);
@@ -33,6 +38,16 @@ trait Writeable
         return $cell;
     }
 
+    /**
+     * @return $this
+     */
+    public function writing(callable $writingCallback)
+    {
+        $this->writingCallback[] = $writingCallback;
+
+        return $this;
+    }
+
     public function afterWriting(Worksheet $worksheet): void
     {
         $this->writeSize($worksheet);
@@ -44,6 +59,12 @@ trait Writeable
         $this->type
             ? $cell->setValueExplicit($value, $this->type)
             : $cell->setValue($value);
+
+        foreach ($this->writingCallback as $callback) {
+            if (is_callable($callback)) {
+                $callback($cell);
+            }
+        }
     }
 
     /**

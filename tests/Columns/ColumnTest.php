@@ -4,6 +4,7 @@ namespace Maatwebsite\Excel\Tests\Columns;
 
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
+use Maatwebsite\Excel\Cell;
 use Maatwebsite\Excel\Columns\Boolean;
 use Maatwebsite\Excel\Columns\Column;
 use Maatwebsite\Excel\Columns\Date;
@@ -101,12 +102,18 @@ class ColumnTest extends TestCase
         $spreadsheet = $this->read($file, 'Xlsx');
         $sheet       = $spreadsheet->getActiveSheet();
 
-        $column->index(1);
+        $calledWritingCallback = false;
+        $column->index(1)->writing(function ($cell) use(&$calledWritingCallback) {
+            $this->assertInstanceOf(\PhpOffice\PhpSpreadsheet\Cell\Cell::class, $cell);
+            $calledWritingCallback = true;
+        });
 
         $column->beforeWriting($sheet);
 
         // Write value to A1
         $cell = $column->write($sheet, 1, ['attribute' => $givenValue]);
+
+        $this->assertTrue($calledWritingCallback);
 
         $column->afterWriting($sheet);
 
