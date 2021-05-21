@@ -56,7 +56,7 @@ class RowValidator
                     $row,
                     $attributeName,
                     str_replace($attribute, $attributeName, $messages),
-                    $rows[$row]
+                    $rows[$row] ?? []
                 );
             }
 
