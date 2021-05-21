@@ -4,6 +4,7 @@ namespace Maatwebsite\Excel\Tests\Columns;
 
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
+use Illuminate\Database\Eloquent\Model;
 use Maatwebsite\Excel\Cell;
 use Maatwebsite\Excel\Columns\Boolean;
 use Maatwebsite\Excel\Columns\Column;
@@ -12,6 +13,7 @@ use Maatwebsite\Excel\Columns\DateTime;
 use Maatwebsite\Excel\Columns\Decimal;
 use Maatwebsite\Excel\Columns\EmptyCell;
 use Maatwebsite\Excel\Columns\Formula;
+use Maatwebsite\Excel\Columns\Hyperlink;
 use Maatwebsite\Excel\Columns\Number;
 use Maatwebsite\Excel\Columns\Percentage;
 use Maatwebsite\Excel\Columns\Price;
@@ -103,7 +105,7 @@ class ColumnTest extends TestCase
         $sheet       = $spreadsheet->getActiveSheet();
 
         $calledWritingCallback = false;
-        $column->index(1)->writing(function ($cell) use(&$calledWritingCallback) {
+        $column->index(1)->writing(function ($cell) use (&$calledWritingCallback) {
             $this->assertInstanceOf(\PhpOffice\PhpSpreadsheet\Cell\Cell::class, $cell);
             $calledWritingCallback = true;
         });
@@ -238,6 +240,40 @@ class ColumnTest extends TestCase
         $this->assertEquals('Patrick', $a1->getValue());
         $this->assertEquals('Admin', $b1->getValue());
         $this->assertEquals('Patrick - Admin', $c1->getValue());
+        unlink($file);
+    }
+
+    /**
+     * @test
+     */
+    public function can_write_hyperlink()
+    {
+        $file = __DIR__ . '/../Data/Disks/Local/columns_export.xlsx';
+        copy(__DIR__ . '/../Data/Disks/Local/empty-worksheet.xlsx', $file);
+
+        $spreadsheet = new Spreadsheet();
+        $sheet       = $spreadsheet->getActiveSheet();
+
+        $column = Hyperlink
+            ::make('Name')
+            ->url(fn(array $data) => $data['link'])
+            ->tooltip('Open link');
+
+        $column->column('A')->write($sheet, 1, [
+            'name' => 'Maatwebsite',
+            'link' => 'https://maatwebsite.com'
+        ]);
+
+        $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+        $writer->save($file);
+
+        $spreadsheet = $this->read($file, 'Xlsx');
+        $a1          = $spreadsheet->getActiveSheet()->getCell('A1');
+
+        // Written type and value are correct
+        $this->assertEquals('Maatwebsite', $a1->getValue());
+        $this->assertEquals('https://maatwebsite.com', $a1->getHyperlink()->getUrl());
+        $this->assertEquals('Open link', $a1->getHyperlink()->getTooltip());
         unlink($file);
     }
 

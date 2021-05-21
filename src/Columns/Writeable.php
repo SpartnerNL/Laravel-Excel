@@ -2,6 +2,7 @@
 
 namespace Maatwebsite\Excel\Columns;
 
+use Closure;
 use Illuminate\Support\Arr;
 use PhpOffice\PhpSpreadsheet\Cell\Cell;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
@@ -74,7 +75,7 @@ trait Writeable
      */
     protected function resolveValue($data)
     {
-        if (is_callable($this->attribute)) {
+        if ($this->attribute instanceof Closure) {
             return ($this->attribute)($data);
         }
 
