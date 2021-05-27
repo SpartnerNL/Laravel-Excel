@@ -57,6 +57,11 @@ class Column
     protected $cellStyling;
 
     /**
+     * @var Column[]
+     */
+    protected $columns = [];
+
+    /**
      * @param string          $title
      * @param string|callable $attribute
      */
@@ -75,6 +80,16 @@ class Column
     public static function make(string $title, $attribute = null)
     {
         return new static($title, $attribute ?: Str::snake($title));
+    }
+
+    /**
+     * @return static
+     */
+    public static function multiple(Column ...$columns)
+    {
+        return tap(new static('', ''), function (Column $column) use ($columns) {
+            $column->columns = $columns;
+        });
     }
 
     /**
@@ -165,6 +180,28 @@ class Column
     public function needsStyleInformation(): bool
     {
         return false;
+    }
+
+    public function hasMultiple(): bool
+    {
+        return count($this->columns) > 0;
+    }
+
+    /**
+     * @return Column[]
+     */
+    public function columns(): array
+    {
+        if (!$this->hasMultiple()) {
+            return [$this];
+        }
+
+        return $this->columns;
+    }
+
+    public function getIndex(): ?int
+    {
+        return $this->index;
     }
 
     protected function formatColumn(Worksheet $worksheet)

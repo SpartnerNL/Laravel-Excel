@@ -2,6 +2,7 @@
 
 namespace Maatwebsite\Excel\Columns;
 
+use Closure;
 use PhpOffice\PhpSpreadsheet\Cell\Cell;
 
 trait Readable
@@ -13,21 +14,29 @@ trait Readable
      */
     public function read(Cell $cell)
     {
-        if ($this->formatted) {
-            $cell->getStyle()->getNumberFormat()->setFormatCode($this->format);
+        $value = $this->cast(
+            $this->value($cell)
+        );
 
-            $value = $cell->getFormattedValue();
-        } else {
-            $value = $cell->getCalculatedValue();
-        }
-
-        $value = $this->cast($value);
-
-        if (is_callable($this->attribute)) {
-            return ($this->attribute)($value);
+        if ($this->attribute instanceof Closure) {
+            return ($this->attribute)($value, $cell);
         }
 
         return $value;
+    }
+
+    /**
+     * @return mixed
+     */
+    protected function value(Cell $cell)
+    {
+        if ($this->formatted) {
+            $cell->getStyle()->getNumberFormat()->setFormatCode($this->format);
+
+            return $cell->getFormattedValue();
+        }
+
+        return $cell->getCalculatedValue();
     }
 
     /**

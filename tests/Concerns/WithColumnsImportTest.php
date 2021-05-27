@@ -8,6 +8,7 @@ use Maatwebsite\Excel\Columns\Date;
 use Maatwebsite\Excel\Columns\Decimal;
 use Maatwebsite\Excel\Columns\EmptyCell;
 use Maatwebsite\Excel\Columns\Formula;
+use Maatwebsite\Excel\Columns\Hyperlink;
 use Maatwebsite\Excel\Columns\Number;
 use Maatwebsite\Excel\Columns\Price;
 use Maatwebsite\Excel\Columns\RichText;
@@ -16,8 +17,10 @@ use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\ToArray;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithColumns;
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
 use Maatwebsite\Excel\Tests\TestCase;
+use PhpOffice\PhpSpreadsheet\Cell\Cell;
 use PHPUnit\Framework\Assert;
 
 class WithColumnsImportTest extends TestCase
@@ -38,8 +41,7 @@ class WithColumnsImportTest extends TestCase
      */
     public function can_import_from_columns_to_model()
     {
-        $import = new class implements ToModel, WithColumns
-        {
+        $import = new class implements ToModel, WithColumns {
             use Importable;
 
             public function model(array $row): string
@@ -76,36 +78,39 @@ class WithColumnsImportTest extends TestCase
      */
     public function can_import_from_columns_to_array()
     {
-        $import = new class implements ToArray, WithColumns
-        {
+        $import = new class implements ToArray, WithColumns {
             use Importable;
 
             public function array(array $array)
             {
                 Assert::assertEquals([
                     [
-                        'name'          => 'Patrick Brouwers',
-                        'email'         => 'patrick@maatwebsite.nl',
-                        'date_of_birth' => Carbon::make('1993-02-07'),
-                        'number'        => 1000,
-                        'percentage'    => 1.0,
-                        'price'         => 100,
-                        'formula'       => '=1+1',
-                        'html'          => 'test <span style="font-weight:bold; color:#000000; font-family:\'Calibri\'; font-size:11pt">bold</span><span style="color:#000000; font-family:\'Calibri\'; font-size:11pt"> test</span>',
-                        'decimal'       => 10.5,
-                        'boolean'       => true,
+                        'name'           => 'Patrick Brouwers',
+                        'email'          => 'patrick@maatwebsite.nl',
+                        'date_of_birth'  => Carbon::make('1993-02-07'),
+                        'number'         => 1000,
+                        'percentage'     => 1.0,
+                        'price'          => 100,
+                        'formula'        => '=1+1',
+                        'html'           => 'test <span style="font-weight:bold; color:#000000; font-family:\'Calibri\'; font-size:11pt">bold</span><span style="color:#000000; font-family:\'Calibri\'; font-size:11pt"> test</span>',
+                        'decimal'        => 10.5,
+                        'boolean'        => true,
+                        'hyperlink_name' => 'Maatwebsite',
+                        'hyperlink_url'  => 'https://maatwebsite.com/',
                     ],
                     [
-                        'name'          => 'Taylor Otwell',
-                        'email'         => 'taylor@laravel.com',
-                        'date_of_birth' => Carbon::make('1986-05-28'),
-                        'number'        => 2000,
-                        'percentage'    => 2.0,
-                        'price'         => 200,
-                        'formula'       => '=2+3',
-                        'html'          => 'test <span style="font-weight:bold; color:#000000; font-family:\'Calibri\'; font-size:11pt">bold</span><span style="color:#000000; font-family:\'Calibri\'; font-size:11pt"> test</span>',
-                        'decimal'       => 20.5,
-                        'boolean'       => false,
+                        'name'           => 'Taylor Otwell',
+                        'email'          => 'taylor@laravel.com',
+                        'date_of_birth'  => Carbon::make('1986-05-28'),
+                        'number'         => 2000,
+                        'percentage'     => 2.0,
+                        'price'          => 200,
+                        'formula'        => '=2+3',
+                        'html'           => 'test <span style="font-weight:bold; color:#000000; font-family:\'Calibri\'; font-size:11pt">bold</span><span style="color:#000000; font-family:\'Calibri\'; font-size:11pt"> test</span>',
+                        'decimal'        => 20.5,
+                        'boolean'        => false,
+                        'hyperlink_name' => 'Laravel',
+                        'hyperlink_url'  => 'https://laravel.com/',
                     ],
                 ], $array);
             }
@@ -124,10 +129,51 @@ class WithColumnsImportTest extends TestCase
                     'J' => RichText::make('html'),
                     'K' => Decimal::make('decimal'),
                     'L' => Boolean::make('boolean'),
+                    'M' => [
+                        Hyperlink::make('hyperlink_name'),
+                        Hyperlink::make('hyperlink_url')->url(),
+                    ],
                 ];
             }
         };
 
         $import->import('import-users-with-columns.xlsx');
+    }
+
+    /**
+     * @test
+     */
+    public function can_import_from_columns_with_heading_row()
+    {
+        $import = new class implements ToArray, WithHeadingRow, WithColumns {
+            use Importable;
+
+            public function array(array $array)
+            {
+                Assert::assertEquals([
+                    [
+                        'name'         => 'Patrick Brouwers',
+                        'email'        => 'patrick@maatwebsite.nl',
+                        'non_existing' => null,
+                    ],
+                    [
+                        'name'         => 'Taylor Otwell',
+                        'email'        => 'taylor@laravel.com',
+                        'non_existing' => null,
+                    ],
+                ], $array);
+            }
+
+            public function columns(): array
+            {
+                return [
+                    'name'         => Text::make('name'),
+                    'email'        => Text::make('email'),
+                    'non_existing' => Text::make('non_existing'),
+                ];
+            }
+        };
+
+        $import->import('import-users-with-columns-heading.xlsx');
     }
 }

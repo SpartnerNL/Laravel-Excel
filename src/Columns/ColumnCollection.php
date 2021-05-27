@@ -5,6 +5,8 @@ namespace Maatwebsite\Excel\Columns;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Config;
 use Maatwebsite\Excel\Concerns\WithColumns;
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
 class ColumnCollection extends Collection
@@ -19,19 +21,34 @@ class ColumnCollection extends Collection
      *
      * @return ColumnCollection
      */
-    public static function makeFrom($concernable): ColumnCollection
+    public static function makeFrom($concernable, ?array $headingRow = null): ColumnCollection
     {
         if (!$concernable instanceof WithColumns) {
             return new static([]);
         }
 
+        $headingMap = is_array($headingRow) ? array_flip($headingRow) : [];
+        $headingMap = array_map(fn(int $index) => Coordinate::stringFromColumnIndex($index + 1), $headingMap);
+
         $index   = 0;
         $columns = [];
         foreach ($concernable->columns() as $key => $column) {
+            if (is_array($column)) {
+                $column = Column::multiple(...$column);
+            }
+
             $index++;
-            $column = $column->coordinate(
-                is_numeric($key) ? $index : $key
-            );
+            $coordinate = is_numeric($key) ? $index : $key;
+
+            if ($concernable instanceof WithHeadingRow) {
+                if (!isset($headingMap[$key])) {
+                    $column = EmptyCell::make($column->title());
+                }
+
+                $coordinate = $headingMap[$key] ?? 99 - $index;
+            }
+
+            $column = $column->coordinate($coordinate);
 
             $columns[$column->letter()] = $column;
         }
@@ -67,18 +84,18 @@ class ColumnCollection extends Collection
         })->toArray();
     }
 
-    public function start(): string
+    public function start(): ?string
     {
-        return $this->first()->letter();
+        return $this->sortBy(fn(Column $column) => $column->getIndex())->first()->letter();
     }
 
-    public function end(): string
+    public function end(): ?string
     {
-        return $this->last()->letter();
+        return $this->sortByDesc(fn(Column $column) => $column->getIndex())->first()->letter();
     }
 
     protected function needsStyleInformation(): bool
     {
-        return null !== $this->first(fn (Column $column) => $column->needsStyleInformation());
+        return null !== $this->first(fn(Column $column) => $column->needsStyleInformation());
     }
 }

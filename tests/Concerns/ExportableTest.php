@@ -8,6 +8,8 @@ use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Excel;
 use Maatwebsite\Excel\Exporter;
 use Maatwebsite\Excel\Exceptions\NoFilePathGivenException;
+use Maatwebsite\Excel\Tests\Data\Stubs\Database\Group;
+use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
 use Maatwebsite\Excel\Tests\Data\Stubs\EmptyExport;
 use Maatwebsite\Excel\Tests\Data\Stubs\UsersExport;
 use Maatwebsite\Excel\Tests\TestCase;
@@ -15,6 +17,17 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class ExportableTest extends TestCase
 {
+    /**
+     * Setup the test environment.
+     */
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->loadLaravelMigrations(['--database' => 'testing']);
+        $this->loadMigrationsFrom(dirname(__DIR__) . '/Data/Stubs/Database/Migrations');
+    }
+
     /**
      * @test
      */

@@ -2,6 +2,7 @@
 
 namespace Maatwebsite\Excel\Columns;
 
+use PhpOffice\PhpSpreadsheet\Cell\Cell;
 use PhpOffice\PhpSpreadsheet\Cell\DataType;
 
 class EmptyCell extends Column
@@ -17,5 +18,10 @@ class EmptyCell extends Column
     public static function make(string $title = null, $attribute = null): Column
     {
         return parent::make($title ?: '', $attribute);
+    }
+
+    public function read(Cell $cell)
+    {
+        return null;
     }
 }

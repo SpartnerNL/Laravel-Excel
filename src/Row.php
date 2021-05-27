@@ -4,10 +4,12 @@ namespace Maatwebsite\Excel;
 
 use ArrayAccess;
 use Closure;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Columns\Column;
 use Maatwebsite\Excel\Columns\ColumnCollection;
 use Maatwebsite\Excel\Columns\EmptyCell;
+use Maatwebsite\Excel\Columns\Split;
 use PhpOffice\PhpSpreadsheet\Worksheet\Row as SpreadsheetRow;
 
 class Row implements ArrayAccess
@@ -55,16 +57,20 @@ class Row implements ArrayAccess
     public function toArrayWithColumns(ColumnCollection $columns): array
     {
         $row = [];
-        foreach ($this->row->getCellIterator($columns->start(), $columns->end()) as $cell) {
+        foreach ($this->row->getCellIterator($columns->start() ?: 'A', $columns->end()) as $cell) {
             /** @var Column $column */
-            $column = $columns->get($cell->getColumn());
+            foreach (Arr::wrap($columns->get($cell->getColumn())) as $column) {
+                // Skip columns that were not requested.
+                if (!$column) {
+                    continue;
+                }
 
-            // Skip columns that were not requested.
-            if (!$column || $column instanceof EmptyCell) {
-                continue;
+                foreach ($column->columns() as $col) {
+                    if ($col->title()) {
+                        $row[$col->title()] = $col->read($cell);
+                    }
+                }
             }
-
-            $row[$column->title()] = $column->read($cell);
         }
 
         return $row;

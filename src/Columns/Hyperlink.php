@@ -26,6 +26,16 @@ class Hyperlink extends Column
      */
     protected $tooltip;
 
+    /**
+     * @var bool
+     */
+    protected $wantsUrl = false;
+
+    /**
+     * @var bool
+     */
+    protected $wantsTooltip = false;
+
     protected function __construct(string $title, $attribute)
     {
         parent::__construct($title, $attribute);
@@ -38,13 +48,32 @@ class Hyperlink extends Column
         });
     }
 
+    protected function value(Cell $cell)
+    {
+        if ($this->wantsUrl) {
+            return $cell->getHyperlink()->getUrl();
+        }
+
+        if ($this->wantsTooltip) {
+            return $cell->getHyperlink()->getTooltip();
+        }
+
+        return parent::value($cell);
+    }
+
     /**
-     * @param callable|string $url
+     * @param callable|string|null $url
      *
      * @return $this
      */
-    public function url($url)
+    public function url($url = null)
     {
+        if (null === $url) {
+            $this->wantsUrl = true;
+
+            return $this;
+        }
+
         if (is_callable($url)) {
             $this->urlCallback = $url;
         } else {
@@ -55,12 +84,18 @@ class Hyperlink extends Column
     }
 
     /**
-     * @param callable|string $tooltip
+     * @param callable|string|null $tooltip
      *
      * @return $this
      */
-    public function tooltip($tooltip)
+    public function tooltip($tooltip = null)
     {
+        if (null === $tooltip) {
+            $this->wantsTooltip = true;
+
+            return $this;
+        }
+
         if (is_callable($tooltip)) {
             $this->tooltipCallback = $tooltip;
         } else {
