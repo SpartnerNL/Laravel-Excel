@@ -48,19 +48,6 @@ class Hyperlink extends Column
         });
     }
 
-    protected function value(Cell $cell)
-    {
-        if ($this->wantsUrl) {
-            return $cell->getHyperlink()->getUrl();
-        }
-
-        if ($this->wantsTooltip) {
-            return $cell->getHyperlink()->getTooltip();
-        }
-
-        return parent::value($cell);
-    }
-
     /**
      * @param callable|string|null $url
      *
@@ -103,6 +90,19 @@ class Hyperlink extends Column
         }
 
         return $this;
+    }
+
+    protected function value(Cell $cell)
+    {
+        if ($this->wantsUrl) {
+            return $cell->getHyperlink()->getUrl();
+        }
+
+        if ($this->wantsTooltip) {
+            return $cell->getHyperlink()->getTooltip();
+        }
+
+        return parent::value($cell);
     }
 
     protected function resolveValue($data)

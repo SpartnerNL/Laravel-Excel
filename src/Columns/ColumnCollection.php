@@ -28,7 +28,7 @@ class ColumnCollection extends Collection
         }
 
         $headingMap = is_array($headingRow) ? array_flip($headingRow) : [];
-        $headingMap = array_map(fn(int $index) => Coordinate::stringFromColumnIndex($index + 1), $headingMap);
+        $headingMap = array_map(fn (int $index) => Coordinate::stringFromColumnIndex($index + 1), $headingMap);
 
         $index   = 0;
         $columns = [];
@@ -86,16 +86,16 @@ class ColumnCollection extends Collection
 
     public function start(): ?string
     {
-        return $this->sortBy(fn(Column $column) => $column->getIndex())->first()->letter();
+        return $this->sortBy(fn (Column $column) => $column->getIndex())->first()->letter();
     }
 
     public function end(): ?string
     {
-        return $this->sortByDesc(fn(Column $column) => $column->getIndex())->first()->letter();
+        return $this->sortByDesc(fn (Column $column) => $column->getIndex())->first()->letter();
     }
 
     protected function needsStyleInformation(): bool
     {
-        return null !== $this->first(fn(Column $column) => $column->needsStyleInformation());
+        return null !== $this->first(fn (Column $column) => $column->needsStyleInformation());
     }
 }
