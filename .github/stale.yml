@@ -1,0 +1,16 @@
+# Number of days of inactivity before an issue becomes stale
+daysUntilStale: 60
+# Number of days of inactivity before a stale issue is closed
+daysUntilClose: 1
+# Issues with these labels will never be considered stale
+exemptLabels:
+  - pinned
+# Label to use when marking an issue as stale
+staleLabel: stale
+# Comment to post when marking an issue as stale. Set to `false` to disable
+markComment: false
+# Comment to post when closing a stale issue. Set to `false` to disable
+closeComment: >
+  This bug report has been automatically closed because it has not had
+  recent activity. If this is still an active bug, please comment to reopen. 
+  Thank you for your contributions. 
