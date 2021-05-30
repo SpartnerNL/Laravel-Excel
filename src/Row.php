@@ -104,9 +104,9 @@ class Row implements ArrayAccess
     /**
      * @return bool
      */
-    public function isEmpty(): bool
+    public function isEmpty($calculateFormulas = false): bool
     {
-        return count(array_filter($this->toArray(null, false, false))) === 0;
+        return count(array_filter($this->toArray(null, $calculateFormulas, false))) === 0;
     }
 
     /**
