@@ -23,7 +23,6 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\ImageContent;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
 use Maatwebsite\Excel\Tests\TestCase;
-use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
 use PHPUnit\Framework\Assert;
 
 class WithColumnsImportTest extends TestCase
@@ -44,7 +43,8 @@ class WithColumnsImportTest extends TestCase
      */
     public function can_import_from_columns_to_model()
     {
-        $import = new class implements ToModel, WithColumns {
+        $import = new class implements ToModel, WithColumns
+        {
             use Importable;
 
             public function model(array $row): string
@@ -81,7 +81,8 @@ class WithColumnsImportTest extends TestCase
      */
     public function can_import_from_columns_to_array()
     {
-        $import = new class implements ToArray, WithColumns {
+        $import = new class implements ToArray, WithColumns
+        {
             use Importable;
 
             public function array(array $array)
@@ -165,7 +166,8 @@ class WithColumnsImportTest extends TestCase
      */
     public function can_import_from_columns_with_heading_row()
     {
-        $import = new class implements ToArray, WithHeadingRow, WithColumns {
+        $import = new class implements ToArray, WithHeadingRow, WithColumns
+        {
             use Importable;
 
             public function array(array $array)

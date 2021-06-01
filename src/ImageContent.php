@@ -68,10 +68,10 @@ class ImageContent
             case MemoryDrawing::MIMETYPE_GIF:
                 $extension = 'gif';
                 break;
-            case MemoryDrawing::MIMETYPE_JPEG :
+            case MemoryDrawing::MIMETYPE_JPEG:
                 $extension = 'jpg';
                 break;
-            case MemoryDrawing::MIMETYPE_PNG :
+            case MemoryDrawing::MIMETYPE_PNG:
             default:
                 $extension = 'png';
                 break;
