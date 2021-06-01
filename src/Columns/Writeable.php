@@ -33,7 +33,7 @@ trait Writeable
 
         $value = $this->resolveValue($data);
 
-        $this->writeValue($cell, $value);
+        $this->writeValue($sheet, $cell, $value);
         $this->writeCellStyle($cell, $data);
 
         return $cell;
@@ -55,7 +55,7 @@ trait Writeable
         $this->writeFilters($worksheet);
     }
 
-    protected function writeValue(Cell $cell, $value): void
+    protected function writeValue(Worksheet $worksheet, Cell $cell, $value): void
     {
         $this->type
             ? $cell->setValueExplicit($value, $this->type)

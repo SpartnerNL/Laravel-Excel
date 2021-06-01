@@ -3,12 +3,14 @@
 namespace Maatwebsite\Excel\Tests\Concerns;
 
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Columns\Boolean;
 use Maatwebsite\Excel\Columns\Date;
 use Maatwebsite\Excel\Columns\Decimal;
 use Maatwebsite\Excel\Columns\EmptyCell;
 use Maatwebsite\Excel\Columns\Formula;
 use Maatwebsite\Excel\Columns\Hyperlink;
+use Maatwebsite\Excel\Columns\Image;
 use Maatwebsite\Excel\Columns\Number;
 use Maatwebsite\Excel\Columns\Price;
 use Maatwebsite\Excel\Columns\RichText;
@@ -18,8 +20,10 @@ use Maatwebsite\Excel\Concerns\ToArray;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithColumns;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use Maatwebsite\Excel\ImageContent;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
 use Maatwebsite\Excel\Tests\TestCase;
+use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
 use PHPUnit\Framework\Assert;
 
 class WithColumnsImportTest extends TestCase
@@ -40,8 +44,7 @@ class WithColumnsImportTest extends TestCase
      */
     public function can_import_from_columns_to_model()
     {
-        $import = new class implements ToModel, WithColumns
-        {
+        $import = new class implements ToModel, WithColumns {
             use Importable;
 
             public function model(array $row): string
@@ -78,8 +81,7 @@ class WithColumnsImportTest extends TestCase
      */
     public function can_import_from_columns_to_array()
     {
-        $import = new class implements ToArray, WithColumns
-        {
+        $import = new class implements ToArray, WithColumns {
             use Importable;
 
             public function array(array $array)
@@ -98,6 +100,7 @@ class WithColumnsImportTest extends TestCase
                         'boolean'        => true,
                         'hyperlink_name' => 'Maatwebsite',
                         'hyperlink_url'  => 'https://maatwebsite.com/',
+                        'logo'           => 'image1.png',
                     ],
                     [
                         'name'           => 'Taylor Otwell',
@@ -112,6 +115,7 @@ class WithColumnsImportTest extends TestCase
                         'boolean'        => false,
                         'hyperlink_name' => 'Laravel',
                         'hyperlink_url'  => 'https://laravel.com/',
+                        'logo'           => 'image1.png',
                     ],
                 ], $array);
             }
@@ -134,6 +138,21 @@ class WithColumnsImportTest extends TestCase
                         Hyperlink::make('hyperlink_name'),
                         Hyperlink::make('hyperlink_url')->url(),
                     ],
+                    'N' => Image::make('logo', function ($image) {
+                        Assert::assertInstanceOf(ImageContent::class, $image);
+                        Assert::assertEquals('png', $image->extension());
+
+                        $path = 'logos/logo-import.png';
+
+                        // Try to store the image
+                        $image->store($path, 'test');
+
+                        // Assert that the image is actually uploaded
+                        Assert::assertTrue(Storage::disk('test')->exists($path));
+                        Storage::disk('test')->delete($path);
+
+                        return $image->filename();
+                    }),
                 ];
             }
         };
@@ -146,8 +165,7 @@ class WithColumnsImportTest extends TestCase
      */
     public function can_import_from_columns_with_heading_row()
     {
-        $import = new class implements ToArray, WithHeadingRow, WithColumns
-        {
+        $import = new class implements ToArray, WithHeadingRow, WithColumns {
             use Importable;
 
             public function array(array $array)

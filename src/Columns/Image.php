@@ -2,6 +2,7 @@
 
 namespace Maatwebsite\Excel\Columns;
 
+use Maatwebsite\Excel\ImageContent;
 use PhpOffice\PhpSpreadsheet\Cell\Cell;
 use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
@@ -25,7 +26,21 @@ class Image extends Column
         return $this;
     }
 
-    protected function writeValue(Worksheet $worksheet, Cell $cell, $value)
+    /**
+     * @return mixed
+     */
+    protected function value(Cell $cell)
+    {
+        foreach ($cell->getParent()->getParent()->getDrawingCollection() as $drawing) {
+            if ($drawing->getCoordinates() === $cell->getCoordinate()) {
+                return ImageContent::from($drawing);
+            }
+        }
+
+        return null;
+    }
+
+    protected function writeValue(Worksheet $worksheet, Cell $cell, $value): void
     {
         $drawing = new Drawing();
         $drawing->setCoordinates($cell->getCoordinate());

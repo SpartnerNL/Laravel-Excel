@@ -4,6 +4,7 @@ namespace Maatwebsite\Excel\Tests\Columns;
 
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
+use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Columns\Boolean;
 use Maatwebsite\Excel\Columns\Column;
 use Maatwebsite\Excel\Columns\Date;
@@ -12,6 +13,7 @@ use Maatwebsite\Excel\Columns\Decimal;
 use Maatwebsite\Excel\Columns\EmptyCell;
 use Maatwebsite\Excel\Columns\Formula;
 use Maatwebsite\Excel\Columns\Hyperlink;
+use Maatwebsite\Excel\Columns\Image;
 use Maatwebsite\Excel\Columns\Number;
 use Maatwebsite\Excel\Columns\Percentage;
 use Maatwebsite\Excel\Columns\Price;
@@ -25,6 +27,7 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Shared\Date as ExcelDate;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Worksheet\AutoFilter\Column as FilterColumn;
+use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
 
 class ColumnTest extends TestCase
 {
@@ -209,6 +212,36 @@ class ColumnTest extends TestCase
     /**
      * @test
      */
+    public function can_write_column_with_image()
+    {
+        $spreadsheet = new Spreadsheet();
+        $sheet       = $spreadsheet->getActiveSheet();
+
+        $filepath = Storage::disk('local')->path('icon.png');
+
+        // Write value to A1
+        $column = Image
+            ::make('Logo', function () use ($filepath) {
+                return $filepath;
+            })
+            ->height(45.0)
+            ->width(100);
+
+        $column->beforeWriting($sheet);
+        $column->write($sheet, 1, []);
+
+        /** @var Drawing $drawing */
+        $drawing = $sheet->getDrawingCollection()[0];
+
+        $this->assertEquals('icon.png', $drawing->getFilename());
+        $this->assertEquals($filepath, $drawing->getPath());
+        $this->assertEquals(45.0, $drawing->getHeight());
+        $this->assertEquals(100, $drawing->getWidth());
+    }
+
+    /**
+     * @test
+     */
     public function can_write_models_to_column()
     {
         $file = __DIR__ . '/../Data/Disks/Local/columns_export.xlsx';
@@ -254,7 +287,7 @@ class ColumnTest extends TestCase
 
         $column = Hyperlink
             ::make('Name')
-            ->url(fn (array $data) => $data['link'])
+            ->url(fn(array $data) => $data['link'])
             ->tooltip('Open link');
 
         $column->column('A')->write($sheet, 1, [
