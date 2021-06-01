@@ -60,7 +60,7 @@ class ModelImporter
             $i++;
 
             $row = new Row($spreadSheetRow, $headingRow);
-            if (!$import instanceof SkipsEmptyRows || ($import instanceof SkipsEmptyRows && !$row->isEmpty())) {
+            if (!$import instanceof SkipsEmptyRows || ($import instanceof SkipsEmptyRows && !$row->isEmpty($withCalcFormulas))) {
                 $rowArray = $row->toArray(null, $withCalcFormulas, $formatData, $endColumn);
 
                 if ($withValidation) {
