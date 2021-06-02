@@ -3,6 +3,15 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Added
+
+- Custom heading row formatter can use column index (#3166)
+- Added WithFormatData concern (#3154)
+
+### Fixed
+
+- Create failures of rows than didn't exists but where requested in row validation
+
 ## [3.1.30] - 2021-04-06
 
 ### Added

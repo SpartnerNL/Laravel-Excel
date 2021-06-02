@@ -53,6 +53,28 @@ class HeadingRowImportTest extends TestCase
     /**
      * @test
      */
+    public function can_import_only_heading_row_with_custom_heading_row_formatter_with_key()
+    {
+        HeadingRowFormatter::extend('custom', function ($value, $key) {
+            return $key;
+        });
+
+        HeadingRowFormatter::default('custom');
+
+        $import = new HeadingRowImport();
+
+        $headings = $import->toArray('import-users-with-headings.xlsx');
+
+        $this->assertEquals([
+            [
+                [0, 1],
+            ],
+        ], $headings);
+    }
+
+    /**
+     * @test
+     */
     public function can_import_only_heading_row_with_custom_row_number()
     {
         $import = new HeadingRowImport(2);
@@ -81,6 +103,30 @@ class HeadingRowImportTest extends TestCase
             ],
             [
                 ['2a1', '2b1'], // slugged first row of sheet 2
+            ],
+        ], $headings);
+    }
+
+    /**
+     * @test
+     */
+    public function can_import_only_heading_row_for_multiple_sheets_with_key()
+    {
+        HeadingRowFormatter::extend('custom', function ($value, $key) {
+            return $key;
+        });
+
+        HeadingRowFormatter::default('custom');
+        $import = new HeadingRowImport();
+
+        $headings = $import->toArray('import-multiple-sheets.xlsx');
+
+        $this->assertEquals([
+            [
+                [0, 1], // slugged first row of sheet 1
+            ],
+            [
+                [0, 1], // slugged first row of sheet 2
             ],
         ], $headings);
     }
