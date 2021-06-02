@@ -50,7 +50,6 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 
-<<<<<<< HEAD
 - Custom heading row formatter can use column index (#3166)
 - Added WithFormatData concern (#3154)
 
