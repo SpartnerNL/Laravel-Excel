@@ -1,5 +1,4 @@
 * text eol=lf
-*.xlsx eol=crlf
 
 /.github export-ignore
 /tests export-ignore
