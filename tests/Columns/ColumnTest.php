@@ -217,14 +217,16 @@ class ColumnTest extends TestCase
         $spreadsheet = new Spreadsheet();
         $sheet       = $spreadsheet->getActiveSheet();
 
-        $filepath = Storage::disk('local')->path('icon.png');
+        Storage::disk('local')->delete('avatar.png');
+        Storage::disk('local')->copy('icon.png', 'avatar.png');
+        $filepath = Storage::disk('local')->path('avatar.png');
 
         // Write value to A1
         $column = Image
             ::make('Logo', function () use ($filepath) {
                 return $filepath;
             })
-            ->height(45.0)
+            ->height(61.0)
             ->width(100);
 
         $column->beforeWriting($sheet);
@@ -233,9 +235,9 @@ class ColumnTest extends TestCase
         /** @var Drawing $drawing */
         $drawing = $sheet->getDrawingCollection()[0];
 
-        $this->assertEquals('icon.png', $drawing->getFilename());
+        $this->assertEquals('avatar.png', $drawing->getFilename());
         $this->assertEquals($filepath, $drawing->getPath());
-        $this->assertEquals(45.0, $drawing->getHeight());
+        $this->assertEquals(61.0, $drawing->getHeight());
         $this->assertEquals(100, $drawing->getWidth());
     }
 
@@ -287,7 +289,7 @@ class ColumnTest extends TestCase
 
         $column = Hyperlink
             ::make('Name')
-            ->url(fn (array $data) => $data['link'])
+            ->url(fn(array $data) => $data['link'])
             ->tooltip('Open link');
 
         $column->column('A')->write($sheet, 1, [

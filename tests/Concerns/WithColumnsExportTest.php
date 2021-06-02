@@ -2,9 +2,12 @@
 
 namespace Maatwebsite\Excel\Tests\Concerns;
 
+use Illuminate\Support\Facades\Storage;
+use Maatwebsite\Excel\Columns\Image;
 use Maatwebsite\Excel\Columns\Number;
 use Maatwebsite\Excel\Columns\Text;
 use Maatwebsite\Excel\Concerns\Exportable;
+use Maatwebsite\Excel\Concerns\FromArray;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\WithColumns;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\Group;
@@ -46,8 +49,7 @@ class WithColumnsExportTest extends TestCase
      */
     public function can_export_from_query_with_columns()
     {
-        $export = new class implements FromQuery, WithColumns
-        {
+        $export = new class implements FromQuery, WithColumns {
             use Exportable;
 
             public function query()
@@ -79,5 +81,63 @@ class WithColumnsExportTest extends TestCase
         })->prepend(['ID', 'Name', 'Email', 'Custom'])->values()->toArray();
 
         $this->assertEquals($expected, $contents);
+    }
+
+    /**
+     * @test
+     */
+    public function can_export_from_array_with_columns()
+    {
+        Storage::disk('local')->delete('avatar.png');
+        Storage::disk('local')->copy('icon.png', 'avatar.png');
+
+        $export = new class implements FromArray, WithColumns {
+            use Exportable;
+
+            public function array(): array
+            {
+                return [
+                    [
+                        'id' => 1,
+                    ],
+                    [
+                        'id' => 2,
+                    ]
+                ];
+            }
+
+            public function columns(): array
+            {
+                return [
+                    Number::make('ID', 'id'),
+                    Image::make('Avatar', function () {
+                        return Storage::disk('local')->path('avatar.png');
+                    })->height(25)
+                ];
+            }
+        };
+
+        $response = $export->store('with-columns-export.xlsx');
+
+        $this->assertTrue($response);
+
+        $spreadsheet = $this->read(__DIR__ . '/../Data/Disks/Local/with-columns-export.xlsx', 'Xlsx');
+
+        $this->assertCount(2, $spreadsheet->getActiveSheet()->getDrawingCollection());
+
+        $this->assertEquals([
+            [
+                'ID',
+                'Avatar',
+            ],
+            [
+                1,
+                null,
+            ],
+            [
+                2,
+                null,
+            ]
+        ], $spreadsheet->getActiveSheet()->toArray());
     }
 }

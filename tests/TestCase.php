@@ -7,6 +7,7 @@ use Illuminate\Http\Testing\File;
 use Maatwebsite\Excel\ExcelServiceProvider;
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
 use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
 class TestCase extends OrchestraTestCase
 {
@@ -16,14 +17,7 @@ class TestCase extends OrchestraTestCase
         parent::tearDown();
     }
 
-    /**
-     * @param  string  $filePath
-     * @param  string  $writerType
-     * @return \PhpOffice\PhpSpreadsheet\Spreadsheet
-     *
-     * @throws \PhpOffice\PhpSpreadsheet\Reader\Exception
-     */
-    public function read(string $filePath, string $writerType)
+    public function read(string $filePath, string $writerType): Spreadsheet
     {
         $reader = IOFactory::createReader($writerType);
 
