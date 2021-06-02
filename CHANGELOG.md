@@ -3,6 +3,8 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [3.1.31] - 2021-06-02
+
 ### Added
 
 - Custom heading row formatter can use column index (#3166)
@@ -11,6 +13,8 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 
 - Create failures of rows than didn't exists but where requested in row validation
+- Fix Bug Formulas are not calculated when import implements WithCalculatedFormulas with SkipsEmptyRows #3127
+- PhpSpreadsheet 1.18 support
 
 ## [3.1.30] - 2021-04-06
 
