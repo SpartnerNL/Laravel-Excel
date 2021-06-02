@@ -44,6 +44,8 @@ class Image extends Column
     {
         $drawing = new Drawing();
         $drawing->setCoordinates($cell->getCoordinate());
+        $drawing->setPath(realpath($value));
+        $drawing->setWorksheet($worksheet);
 
         if ($this->height) {
             $drawing->setHeight($this->height);
@@ -53,8 +55,5 @@ class Image extends Column
         if ($this->width) {
             $drawing->setWidth($this->width);
         }
-
-        $drawing->setPath(realpath($value));
-        $drawing->setWorksheet($worksheet);
     }
 }
