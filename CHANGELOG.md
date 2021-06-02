@@ -137,7 +137,7 @@ All notable changes to this project will be documented in this file.
 - Fix for breaking changes in PhpSpreadsheet with empty enclosures.
 
 [Unreleased]: https://github.com/Maatwebsite/Laravel-Excel/compare/3.1.31...HEAD
-[3.1.30]: https://github.com/Maatwebsite/Laravel-Excel/compare/3.1.30...3.1.31
+[3.1.31]: https://github.com/Maatwebsite/Laravel-Excel/compare/3.1.30...3.1.31
 [3.1.30]: https://github.com/Maatwebsite/Laravel-Excel/compare/3.1.29...3.1.30
 [3.1.29]: https://github.com/Maatwebsite/Laravel-Excel/compare/3.1.28...3.1.29
 [3.1.28]: https://github.com/Maatwebsite/Laravel-Excel/compare/3.1.27...3.1.28
