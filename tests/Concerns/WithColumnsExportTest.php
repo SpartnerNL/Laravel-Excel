@@ -101,11 +101,11 @@ class WithColumnsExportTest extends TestCase
             {
                 return [
                     [
-                        'id' => 1,
+                        'id'     => 1,
                         'avatar' => 'avatar-1.jpg',
                     ],
                     [
-                        'id' => 2,
+                        'id'     => 2,
                         'avatar' => 'avatar-2.jpg',
                     ],
                 ];
