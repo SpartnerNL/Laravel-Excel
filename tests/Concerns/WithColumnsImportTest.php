@@ -101,7 +101,7 @@ class WithColumnsImportTest extends TestCase
                         'boolean'        => true,
                         'hyperlink_name' => 'Maatwebsite',
                         'hyperlink_url'  => 'https://maatwebsite.com/',
-                        'logo'           => 'image1.png',
+                        'logo'           => 'image1.jpg',
                     ],
                     [
                         'name'           => 'Taylor Otwell',
@@ -116,7 +116,7 @@ class WithColumnsImportTest extends TestCase
                         'boolean'        => false,
                         'hyperlink_name' => 'Laravel',
                         'hyperlink_url'  => 'https://laravel.com/',
-                        'logo'           => 'image1.png',
+                        'logo'           => 'image1.jpg',
                     ],
                 ], $array);
             }
@@ -141,9 +141,9 @@ class WithColumnsImportTest extends TestCase
                     ],
                     'N' => Image::make('logo', function ($image) {
                         Assert::assertInstanceOf(ImageContent::class, $image);
-                        Assert::assertEquals('png', $image->extension());
+                        Assert::assertEquals('jpg', $image->extension());
 
-                        $path = 'logos/logo-import.png';
+                        $path = 'logos/logo-import.jpg';
 
                         // Try to store the image
                         $image->store($path, 'test');
