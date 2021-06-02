@@ -49,7 +49,8 @@ class WithColumnsExportTest extends TestCase
      */
     public function can_export_from_query_with_columns()
     {
-        $export = new class implements FromQuery, WithColumns {
+        $export = new class implements FromQuery, WithColumns
+        {
             use Exportable;
 
             public function query()
@@ -91,7 +92,8 @@ class WithColumnsExportTest extends TestCase
         Storage::disk('local')->delete('avatar.png');
         Storage::disk('local')->copy('icon.png', 'avatar.png');
 
-        $export = new class implements FromArray, WithColumns {
+        $export = new class implements FromArray, WithColumns
+        {
             use Exportable;
 
             public function array(): array
@@ -102,7 +104,7 @@ class WithColumnsExportTest extends TestCase
                     ],
                     [
                         'id' => 2,
-                    ]
+                    ],
                 ];
             }
 
@@ -112,7 +114,7 @@ class WithColumnsExportTest extends TestCase
                     Number::make('ID', 'id'),
                     Image::make('Avatar', function () {
                         return Storage::disk('local')->path('avatar.png');
-                    })->height(25)
+                    })->height(25),
                 ];
             }
         };
@@ -137,7 +139,7 @@ class WithColumnsExportTest extends TestCase
             [
                 2,
                 null,
-            ]
+            ],
         ], $spreadsheet->getActiveSheet()->toArray());
     }
 }

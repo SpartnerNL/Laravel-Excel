@@ -289,7 +289,7 @@ class ColumnTest extends TestCase
 
         $column = Hyperlink
             ::make('Name')
-            ->url(fn(array $data) => $data['link'])
+            ->url(fn (array $data) => $data['link'])
             ->tooltip('Open link');
 
         $column->column('A')->write($sheet, 1, [
