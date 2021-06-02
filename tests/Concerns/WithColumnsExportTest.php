@@ -89,9 +89,9 @@ class WithColumnsExportTest extends TestCase
      */
     public function can_export_from_array_with_columns()
     {
-        Storage::disk('local')->delete(['avatar-1.png', 'avatar-2.png']);
-        Storage::disk('local')->copy('icon.png', 'avatar-1.png');
-        Storage::disk('local')->copy('icon.png', 'avatar-2.png');
+        Storage::disk('local')->delete(['avatar-1.jpg', 'avatar-2.jpg']);
+        Storage::disk('local')->copy('icon.jpg', 'avatar-1.jpg');
+        Storage::disk('local')->copy('icon.jpg', 'avatar-2.jpg');
 
         $export = new class implements FromArray, WithColumns
         {
@@ -101,12 +101,12 @@ class WithColumnsExportTest extends TestCase
             {
                 return [
                     [
-                        'id'     => 1,
-                        'avatar' => 'avatar-1.png',
+                        'id' => 1,
+                        'avatar' => 'avatar-1.jpg',
                     ],
                     [
-                        'id'     => 2,
-                        'avatar' => 'avatar-2.png',
+                        'id' => 2,
+                        'avatar' => 'avatar-2.jpg',
                     ],
                 ];
             }

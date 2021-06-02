@@ -217,9 +217,9 @@ class ColumnTest extends TestCase
         $spreadsheet = new Spreadsheet();
         $sheet       = $spreadsheet->getActiveSheet();
 
-        Storage::disk('local')->delete('avatar.png');
-        Storage::disk('local')->copy('icon.png', 'avatar.png');
-        $filepath = Storage::disk('local')->path('avatar.png');
+        Storage::disk('local')->delete('avatar.jpg');
+        Storage::disk('local')->copy('icon.jpg', 'avatar.jpg');
+        $filepath = Storage::disk('local')->path('avatar.jpg');
 
         // Write value to A1
         $column = Image
@@ -235,7 +235,7 @@ class ColumnTest extends TestCase
         /** @var Drawing $drawing */
         $drawing = $sheet->getDrawingCollection()[0];
 
-        $this->assertEquals('avatar.png', $drawing->getFilename());
+        $this->assertEquals('avatar.jpg', $drawing->getFilename());
         $this->assertEquals($filepath, $drawing->getPath());
         $this->assertEquals(61.0, $drawing->getHeight());
         $this->assertEquals(100, $drawing->getWidth());
