@@ -114,7 +114,7 @@ class WithColumnsExportTest extends TestCase
                     Number::make('ID', 'id'),
                     Image::make('Avatar', function () {
                         return Storage::disk('local')->path('avatar.png');
-                    })->height(25),
+                    })->height(25)->width(100),
                 ];
             }
         };
