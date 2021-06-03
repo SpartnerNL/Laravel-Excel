@@ -1,45 +1,26 @@
 <!--
 PLEASE READ: FILLING IN THE TEMPLATE IS REQUIRED!
-PLEASE CHOOSE AN ISSUE TYPE FROM https://github.com/Maatwebsite/Laravel-Excel/issues/new/choose
-Issues that have not been filled in using the issue template will be closed.
+PLEASE ONLY USE THE ISSUE TRACKER FOR REPORTING BUGS. FOR QUESTIONS USE DISCUSSIONS.
+
+Issues without the issue template will be CLOSED.
+
+Have you read Laravel-Excel's contributing guidelines (https://laravel-excel.maatwebsite.nl/docs/3.1/getting-started/contributing)
+and Code Of Conduct (https://github.com/Maatwebsite/Laravel-Excel/blob/3.1/CODE_OF_CONDUCT.md)?
+By filing an Issue, you are expected to comply with it, including treating everyone with respect.
 -->
 
-### Prerequisites
+1️⃣ Is the bug applicable and reproducable to the latest version of the package and hasn't it been reported before? (Currently 3.1.x)
 
-<!--
-Put an X between the brackets if you have done the following:
--->
+2️⃣ What version of the package, Laravel and PHP do you use? Please provide the FULL version number.
 
-* [ ] Checked if your Laravel Excel version is still supported: https://docs.laravel-excel.com/3.1/getting-started/support.html#supported-versions
-* [ ] Able to reproduce the behaviour outside of your code, the problem is isolated to Laravel Excel.
-* [ ] Checked that your issue isn't already filed.
-* [ ] Checked if no PR was submitted that fixes this problem.
-* [ ] Filled in the entire issue template
+- Laravel Excel version: [e.g. 3.1.30]
+- Laravel version: [e.g. 8.3.1]
+- PHP version: [e.g. 7.4.0]
 
-### Versions
+3️⃣ Describe your issue. Please be short, but concise.
 
-<!-- Please be as exact and complete as possible when proving version numbers -->
+4️⃣ How can the issue be reproduced? Please provide easy-to-reproduce steps (repository, simple code example, failing unit test).
 
-* PHP version: <!-- put your FULL (including patch number) PHP version here -->
-* Laravel version: <!-- put your FULL (including patch number) Laravel version here -->
-* Package version: <!-- put FULL (including patch number) Laravel Excel package version here -->
+5️⃣ What should be the expected behaviour?
 
-### Description
-
-<!-- Describe the issue -->
-
-### Steps to Reproduce
-
-<!-- How can this issue be reproduced? Provide an Excel file or reproduction repository to help us reproduce the issue easily.  -->
-
-**Expected behavior:**
-
-<!-- What you expect to happen -->
-
-**Actual behavior:** 
-
-<!-- What actually happens. Please include screenshots, strack traces and anything that can help us understand the issue. -->
-
-### Additional Information
-
-Any additional information, configuration or data that might be necessary to reproduce the issue.
+6️⃣ Have you filled in the entire issue template? If not, your issue will be closed. Thanks for using the package! 🙌
