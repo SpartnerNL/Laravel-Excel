@@ -112,7 +112,7 @@ class ColumnCollection extends Collection
 
     public function sortByColumn(): self
     {
-        return $this->sort(fn (Column $column) => $column->getIndex());
+        return $this->sortBy(fn (Column $column) => $column->getIndex());
     }
 
     protected function needsStyleInformation(): bool

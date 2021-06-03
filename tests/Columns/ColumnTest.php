@@ -7,6 +7,7 @@ use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Columns\Boolean;
 use Maatwebsite\Excel\Columns\Column;
+use Maatwebsite\Excel\Columns\ColumnCollection;
 use Maatwebsite\Excel\Columns\Date;
 use Maatwebsite\Excel\Columns\DateTime;
 use Maatwebsite\Excel\Columns\Decimal;
@@ -289,7 +290,7 @@ class ColumnTest extends TestCase
 
         $column = Hyperlink
             ::make('Name')
-            ->url(fn (array $data) => $data['link'])
+            ->url(fn(array $data) => $data['link'])
             ->tooltip('Open link');
 
         $column->column('A')->write($sheet, 1, [
@@ -367,10 +368,19 @@ class ColumnTest extends TestCase
             ->index(1)
             ->autoFilter();
 
-        $column->afterWriting($sheet);
+        ColumnCollection::make([
+            $column,
+            Column
+                ::make('Attribute2')
+                ->index(2)
+                ->autoFilter(),
+            Column
+                ::make('Attribute3')
+                ->index(3)
+        ])->afterWriting($spreadsheet->getActiveSheet());
         $column->write($sheet, 1, ['attribute' => 'test']);
 
-        $this->assertEquals('A1:A1', $sheet->getAutoFilter()->getRange());
+        $this->assertEquals('A1:B1', $sheet->getAutoFilter()->getRange());
         $this->assertEquals(FilterColumn::AUTOFILTER_FILTERTYPE_FILTER, $sheet->getAutoFilter()->getColumn('A')->getFilterType());
     }
 }
