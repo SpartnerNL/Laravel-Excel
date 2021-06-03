@@ -28,7 +28,7 @@ class ColumnCollection extends Collection
         }
 
         $headingMap = is_array($headingRow) ? array_flip($headingRow) : [];
-        $headingMap = array_map(fn (int $index) => Coordinate::stringFromColumnIndex($index + 1), $headingMap);
+        $headingMap = array_map(fn(int $index) => Coordinate::stringFromColumnIndex($index + 1), $headingMap);
 
         $index   = 0;
         $columns = [];
@@ -65,6 +65,22 @@ class ColumnCollection extends Collection
 
     public function afterWriting(Worksheet $worksheet)
     {
+        $this->sortByColumn()->filter(fn(Column $column) => $column->hasAutoFilter())->pipe(function (self $columns) use ($worksheet) {
+            if ($columns->isEmpty()) {
+                return;
+            }
+
+            /** @var Column $start */
+            $start = $columns->first();
+
+            /** @var Column $end */
+            $end = $columns->last() ?: $start;
+
+            $worksheet->setAutoFilter(
+                $start->letter() . '1:' . $end->letter() . $worksheet->getHighestRow()
+            );
+        });
+
         $this->each(function (Column $column) use ($worksheet) {
             $column->afterWriting($worksheet);
         });
@@ -86,16 +102,21 @@ class ColumnCollection extends Collection
 
     public function start(): ?string
     {
-        return $this->sortBy(fn (Column $column) => $column->getIndex())->first()->letter();
+        return $this->sortByColumn()->first()->letter();
     }
 
     public function end(): ?string
     {
-        return $this->sortByDesc(fn (Column $column) => $column->getIndex())->first()->letter();
+        return $this->sortByDesc(fn(Column $column) => $column->getIndex())->first()->letter();
+    }
+
+    public function sortByColumn(): self
+    {
+        return $this->sort(fn(Column $column) => $column->getIndex());
     }
 
     protected function needsStyleInformation(): bool
     {
-        return null !== $this->first(fn (Column $column) => $column->needsStyleInformation());
+        return null !== $this->first(fn(Column $column) => $column->needsStyleInformation());
     }
 }

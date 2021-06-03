@@ -18,9 +18,12 @@ trait Filterable
      */
     protected $filterRules = [];
 
-    public function autoFilter(array $rules = [])
+    /**
+     * @return $this
+     */
+    public function autoFilter(array $rules = [], string $filter = FilterColumn::AUTOFILTER_FILTERTYPE_FILTER)
     {
-        $this->filter      = FilterColumn::AUTOFILTER_FILTERTYPE_FILTER;
+        $this->filter      = $filter;
         $this->filterRules = $rules;
 
         return $this;
@@ -28,13 +31,9 @@ trait Filterable
 
     public function writeFilters(Worksheet $worksheet)
     {
-        if (!$this->filter) {
+        if (!$this->filter || ($this->filter === FilterColumn::AUTOFILTER_FILTERTYPE_FILTER && 0 === count($this->filterRules))) {
             return;
         }
-
-        $worksheet->setAutoFilter(
-            $worksheet->calculateWorksheetDimension()
-        );
 
         $columnFilter = $worksheet->getAutoFilter()->getColumn($this->letter);
         $columnFilter->setFilterType($this->filter);
@@ -44,5 +43,10 @@ trait Filterable
                 $columnFilter->createRule()->setRule($operator, $rule);
             }
         }
+    }
+
+    public function hasAutoFilter(): bool
+    {
+        return null !== $this->filter;
     }
 }

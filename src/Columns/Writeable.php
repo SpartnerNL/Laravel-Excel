@@ -51,7 +51,7 @@ trait Writeable
 
     public function afterWriting(Worksheet $worksheet): void
     {
-        $this->writeSize($worksheet);
+        $this->writeColumnDimensions($worksheet);
         $this->writeFilters($worksheet);
     }
 
