@@ -290,7 +290,7 @@ class ColumnTest extends TestCase
 
         $column = Hyperlink
             ::make('Name')
-            ->url(fn(array $data) => $data['link'])
+            ->url(fn (array $data) => $data['link'])
             ->tooltip('Open link');
 
         $column->column('A')->write($sheet, 1, [
@@ -376,7 +376,7 @@ class ColumnTest extends TestCase
                 ->autoFilter(),
             Column
                 ::make('Attribute3')
-                ->index(3)
+                ->index(3),
         ])->afterWriting($spreadsheet->getActiveSheet());
         $column->write($sheet, 1, ['attribute' => 'test']);
 
