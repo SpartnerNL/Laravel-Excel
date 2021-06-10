@@ -3,6 +3,10 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Fixed
+
+- Make commands detect model directory now (#3213)
+
 ## [3.1.31] - 2021-06-02
 
 ### Added
