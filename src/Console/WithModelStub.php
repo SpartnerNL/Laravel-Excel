@@ -48,8 +48,8 @@ trait WithModelStub
         }
 
         $model = is_dir(app_path('Models'))
-            ? $rootNamespace.'Models\\'.$model
-            : $rootNamespace.$model;
+            ? $rootNamespace . 'Models\\' . $model
+            : $rootNamespace . $model;
 
         return $model;
     }
