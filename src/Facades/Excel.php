@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
  * @method static BinaryFileResponse download(object $export, string $fileName, string $writerType = null, array $headers = [])
  * @method static bool store(object $export, string $filePath, string $disk = null, string $writerType = null, $diskOptions = [])
  * @method static PendingDispatch queue(object $export, string $filePath, string $disk = null, string $writerType = null, $diskOptions = [])
+ * @method static string raw(object $export, string $writerType)
  * @method static BaseExcel import(object $import, string|UploadedFile $filePath, string $disk = null, string $readerType = null)
  * @method static array toArray(object $import, string|UploadedFile $filePath, string $disk = null, string $readerType = null)
  * @method static Collection toCollection(object $import, string|UploadedFile $filePath, string $disk = null, string $readerType = null)
@@ -24,6 +25,7 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
  * @method static void assertStored(string $filePath, string|callable $disk = null, callable $callback = null)
  * @method static void assertQueued(string $filePath, string|callable $disk = null, callable $callback = null)
  * @method static void assertQueuedWithChain(array $chain)
+ * @method static void assertExportedInRaw(string $classname, callable $callback = null)
  * @method static void assertImported(string $filePath, string|callable $disk = null, callable $callback = null)
  */
 class Excel extends Facade
