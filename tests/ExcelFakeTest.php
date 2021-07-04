@@ -144,6 +144,23 @@ class ExcelFakeTest extends TestCase
     /**
      * @test
      */
+    public function can_assert_against_a_fake_raw_export()
+    {
+        ExcelFacade::fake();
+
+        $response = ExcelFacade::raw($this->givenExport(), \Maatwebsite\Excel\Excel::XLSX);
+
+        $this->assertIsString($response);
+
+        ExcelFacade::assertExportedInRaw(get_class($this->givenExport()));
+        ExcelFacade::assertExportedInRaw(get_class($this->givenExport()), function (FromCollection $export) {
+            return $export->collection()->contains('foo');
+        });
+    }
+
+    /**
+     * @test
+     */
     public function can_assert_against_a_fake_import()
     {
         ExcelFacade::fake();

@@ -34,6 +34,11 @@ class ExcelFake implements Exporter, Importer
     /**
      * @var array
      */
+    protected $raws = [];
+
+    /**
+     * @var array
+     */
     protected $imported = [];
 
     /**
@@ -103,6 +108,8 @@ class ExcelFake implements Exporter, Importer
      */
     public function raw($export, string $writerType)
     {
+        $this->raws[get_class($export)] = $export;
+
         return 'RAW-CONTENTS';
     }
 
@@ -294,6 +301,24 @@ class ExcelFake implements Exporter, Importer
     public function assertQueuedWithChain($chain): void
     {
         Queue::assertPushedWithChain(get_class($this->job), $chain);
+    }
+
+    /**
+     * @param string        $classname
+     * @param callable|null $callback
+     */
+    public function assertExportedInRaw(string $classname, $callback = null)
+    {
+        Assert::assertArrayHasKey($classname, $this->raws, sprintf('%s is not exported in raw', $classname));
+
+        $callback = $callback ?: function () {
+            return true;
+        };
+
+        Assert::assertTrue(
+            $callback($this->raws[$classname]),
+            "The [{$classname}] export was not exported in raw with the expected data."
+        );
     }
 
     /**
