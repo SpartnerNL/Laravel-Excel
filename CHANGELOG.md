@@ -3,6 +3,12 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [3.1.32] - 2021-07-08
+
+### Added
+
+- Add assertExportedInRaw assertion (#3255)
+
 ### Fixed
 
 - Make commands detect model directory now (#3213)
@@ -140,7 +146,8 @@ All notable changes to this project will be documented in this file.
 - Raw() method now also available on Exportable.
 - Fix for breaking changes in PhpSpreadsheet with empty enclosures.
 
-[Unreleased]: https://github.com/Maatwebsite/Laravel-Excel/compare/3.1.31...HEAD
+[Unreleased]: https://github.com/Maatwebsite/Laravel-Excel/compare/3.1.32...HEAD
+[3.1.32]: https://github.com/Maatwebsite/Laravel-Excel/compare/3.1.31...3.1.32
 [3.1.31]: https://github.com/Maatwebsite/Laravel-Excel/compare/3.1.30...3.1.31
 [3.1.30]: https://github.com/Maatwebsite/Laravel-Excel/compare/3.1.29...3.1.30
 [3.1.29]: https://github.com/Maatwebsite/Laravel-Excel/compare/3.1.28...3.1.29
