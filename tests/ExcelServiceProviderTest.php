@@ -5,10 +5,24 @@ namespace Maatwebsite\Excel\Tests;
 use Illuminate\Contracts\Console\Kernel;
 use Maatwebsite\Excel\Cache\MemoryCache;
 use Maatwebsite\Excel\Excel;
+use Maatwebsite\Excel\Tests\Data\Stubs\CustomTransactionHandler;
+use Maatwebsite\Excel\Transactions\TransactionManager;
 use PhpOffice\PhpSpreadsheet\Settings;
 
 class ExcelServiceProviderTest extends TestCase
 {
+    /**
+     * @test
+     */
+    public function custom_transaction_handler_is_bound()
+    {
+        $this->app->make(TransactionManager::class)->extend('handler', function () {
+            return new CustomTransactionHandler;
+        });
+
+        $this->assertInstanceOf(CustomTransactionHandler::class, $this->app->make(TransactionManager::class)->driver('handler'));
+    }
+
     /**
      * @test
      */
