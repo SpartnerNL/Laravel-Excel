@@ -1,4 +1,8 @@
---- 
+name: "Bug Report"
+description: "Report a general package issue. Filling in the issue template is mandatory, issues without it will be closed. Please ensure your Laravel-Excel version is still supported (Currently ^3.1)"
+title: "[Bug]: "
+labels: 
+  - bug
 body: 
   - 
     attributes: 
@@ -59,8 +63,3 @@ body:
     type: textarea
     validations: 
       required: true
-description: "Report a general package issue. Filling in the issue template is mandatory, issues without it will be closed. Please ensure your Laravel-Excel version is still supported (Currently ^3.1)"
-labels: 
-  - bug
-name: "Bug Report"
-title: "[Bug]: "
