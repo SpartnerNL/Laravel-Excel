@@ -37,12 +37,6 @@ body:
     required: true  
 - type: textarea
   attributes:
-    label: Describe your issue
-    description: Describe the problem you're seeing, Please be short, but concise.
-  validations:
-    required: true
-- type: textarea
-  attributes:
     label: How can the issue be reproduced?
     description: Please provide easy-to-reproduce steps (repository, simple code example, failing unit test). Please don't paste your entire code, but create a reproducable scenario that can be tested using a simple User model in a blank Laravel installation.
   validations:
