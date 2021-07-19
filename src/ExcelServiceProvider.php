@@ -66,7 +66,7 @@ class ExcelServiceProvider extends ServiceProvider
             return new CacheManager($app);
         });
 
-        $this->app->bind(TransactionManager::class, function ($app) {
+        $this->app->singleton(TransactionManager::class, function ($app) {
             return new TransactionManager($app);
         });
 
