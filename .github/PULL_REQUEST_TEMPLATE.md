@@ -9,4 +9,12 @@ Filling out the template is required. Any pull request that does not include eno
 
 4️⃣ Any drawbacks? Possible breaking changes?
 
-5️⃣ Thanks for contributing! 🙌
+5️⃣ Mark the following tasks as done:
+
+- [ ] Checked the codebase to ensure that your feature doesn't already exist.
+- [ ] Take note of the contributing guidelines.
+- [ ] Checked the pull requests to ensure that another person hasn't already submitted a fix.
+- [ ] Added tests to ensure against regression.
+- [ ] Updated the changelog
+
+6️⃣ Thanks for contributing! 🙌
