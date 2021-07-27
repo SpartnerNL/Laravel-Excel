@@ -184,8 +184,8 @@ class ExportableTest extends TestCase
         {
             use Exportable;
 
-            public $disk = 's3';
-            public $writerType = Excel::CSV;
+            public $disk        = 's3';
+            public $writerType  = Excel::CSV;
             public $diskOptions = ['visibility' => 'private'];
         };
 
@@ -205,8 +205,8 @@ class ExportableTest extends TestCase
         {
             use Exportable;
 
-            public $disk = 's3';
-            public $writerType = Excel::CSV;
+            public $disk        = 's3';
+            public $writerType  = Excel::CSV;
             public $diskOptions = ['visibility' => 'private'];
         };
 
