@@ -52,7 +52,7 @@ trait Exportable
             $filePath,
             $disk ?? $this->disk ?? null,
             $writerType ?? $this->writerType ?? null,
-            $diskOptions ?? $this->diskOptions ?? []
+            $diskOptions ?: $this->diskOptions ?? []
         );
     }
 
@@ -78,7 +78,7 @@ trait Exportable
             $filePath,
             $disk ?? $this->disk ?? null,
             $writerType ?? $this->writerType ?? null,
-            $diskOptions ?? $this->diskOptions ?? []
+            $diskOptions ?: $this->diskOptions ?? []
         );
     }
 
