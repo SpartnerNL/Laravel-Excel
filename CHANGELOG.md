@@ -7,6 +7,7 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 
 - Make TransactionManager a singleton (#3270)
+- Fix Exportable disk options (#3296)
 
 ## [3.1.32] - 2021-07-08
 
