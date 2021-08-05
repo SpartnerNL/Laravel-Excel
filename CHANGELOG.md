@@ -8,6 +8,7 @@ All notable changes to this project will be documented in this file.
 
 - Make TransactionManager a singleton (#3270)
 - Fix Exportable disk options (#3296)
+- Delete temporary file after exception in import class  (#3312)
 
 ## [3.1.32] - 2021-07-08
 

@@ -131,6 +131,7 @@ class Reader
             $this->afterImport($import);
         } catch (Throwable $e) {
             $this->raise(new ImportFailed($e));
+            $this->garbageCollect();
             throw $e;
         }
 
