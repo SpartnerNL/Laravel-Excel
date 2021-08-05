@@ -6,6 +6,10 @@ All notable changes to this project will be documented in this file.
 
 ### Fixed
 
+- Delete temporary file after exception in import class
+
+### Fixed
+
 - Make TransactionManager a singleton (#3270)
 - Fix Exportable disk options (#3296)
 
