@@ -235,6 +235,24 @@ class ExcelFakeTest extends TestCase
     /**
      * @test
      */
+    public function can_assert_against_a_fake_queued_import_with_chain()
+    {
+        ExcelFacade::fake();
+
+        ExcelFacade::queueImport(
+            $this->givenQueuedImport(), 'queued-filename.csv', 's3'
+        )->chain([
+            new ChainedJobStub(),
+        ]);
+
+        ExcelFacade::assertQueuedWithChain([
+            new ChainedJobStub(),
+        ]);
+    }
+
+    /**
+     * @test
+     */
     public function a_callback_can_be_passed_as_the_second_argument_when_asserting_against_a_faked_queued_export()
     {
         ExcelFacade::fake();
