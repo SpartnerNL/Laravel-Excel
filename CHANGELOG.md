@@ -7,6 +7,8 @@ All notable changes to this project will be documented in this file.
 ### Changed
 
 - Change default local_path configuration
+- Fix queueImport function to be able to assert chained jobs
+
 
 ## [3.1.33] - 2021-08-12
 
