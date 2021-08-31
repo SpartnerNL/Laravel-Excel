@@ -185,7 +185,7 @@ class ExcelFake implements Exporter, Importer
         $this->queued[$disk ?? 'default'][$filePath]   = $import;
         $this->imported[$disk ?? 'default'][$filePath] = $import;
 
-        return new PendingDispatch(new class
+        $this->job = new class
         {
             use Queueable;
 
@@ -193,7 +193,11 @@ class ExcelFake implements Exporter, Importer
             {
                 //
             }
-        });
+        };
+
+        Queue::push($this->job);
+
+        return new PendingDispatch($this->job);
     }
 
     /**
