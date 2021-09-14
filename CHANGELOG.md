@@ -4,13 +4,11 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
-- Skipped failure no longer persists in `ToCollection` and `ToArray`.
-
 ### Changed
 
 - Change default local_path configuration
 - Fix queueImport function to be able to assert chained jobs
-
+- Skipped failure no longer persists in `ToCollection` and `ToArray`.
 
 ## [3.1.33] - 2021-08-12
 
