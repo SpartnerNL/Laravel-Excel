@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+- Skipped failure no longer persists in `ToCollection` and `ToArray`.
+
 ### Changed
 
 - Change default local_path configuration
