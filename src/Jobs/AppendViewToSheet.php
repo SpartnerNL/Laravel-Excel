@@ -36,11 +36,11 @@ class AppendViewToSheet implements ShouldQueue
     public $sheetExport;
 
     /**
-     * @param FromView        $sheetExport
-     * @param TemporaryFile $temporaryFile
-     * @param string        $writerType
-     * @param int           $sheetIndex
-     * @param array         $data
+     * @param  FromView  $sheetExport
+     * @param  TemporaryFile  $temporaryFile
+     * @param  string  $writerType
+     * @param  int  $sheetIndex
+     * @param  array  $data
      */
     public function __construct(FromView $sheetExport, TemporaryFile $temporaryFile, string $writerType, int $sheetIndex)
     {
@@ -61,7 +61,7 @@ class AppendViewToSheet implements ShouldQueue
     }
 
     /**
-     * @param Writer $writer
+     * @param  Writer  $writer
      *
      * @throws \PhpOffice\PhpSpreadsheet\Exception
      * @throws \PhpOffice\PhpSpreadsheet\Reader\Exception

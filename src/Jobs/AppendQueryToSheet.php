@@ -46,12 +46,12 @@ class AppendQueryToSheet implements ShouldQueue
     public $chunkSize;
 
     /**
-     * @param FromQuery       $sheetExport
-     * @param TemporaryFile   $temporaryFile
-     * @param string          $writerType
-     * @param int             $sheetIndex
-     * @param int             $page
-     * @param int             $chunkSize
+     * @param  FromQuery  $sheetExport
+     * @param  TemporaryFile  $temporaryFile
+     * @param  string  $writerType
+     * @param  int  $sheetIndex
+     * @param  int  $page
+     * @param  int  $chunkSize
      */
     public function __construct(
         FromQuery $sheetExport,
@@ -80,7 +80,7 @@ class AppendQueryToSheet implements ShouldQueue
     }
 
     /**
-     * @param Writer $writer
+     * @param  Writer  $writer
      *
      * @throws \PhpOffice\PhpSpreadsheet\Exception
      * @throws \PhpOffice\PhpSpreadsheet\Reader\Exception

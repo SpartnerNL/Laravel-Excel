@@ -40,11 +40,11 @@ class AppendDataToSheet implements ShouldQueue
     public $sheetExport;
 
     /**
-     * @param object        $sheetExport
-     * @param TemporaryFile $temporaryFile
-     * @param string        $writerType
-     * @param int           $sheetIndex
-     * @param array         $data
+     * @param  object  $sheetExport
+     * @param  TemporaryFile  $temporaryFile
+     * @param  string  $writerType
+     * @param  int  $sheetIndex
+     * @param  array  $data
      */
     public function __construct($sheetExport, TemporaryFile $temporaryFile, string $writerType, int $sheetIndex, array $data)
     {
@@ -66,7 +66,7 @@ class AppendDataToSheet implements ShouldQueue
     }
 
     /**
-     * @param Writer $writer
+     * @param  Writer  $writer
      *
      * @throws \PhpOffice\PhpSpreadsheet\Exception
      * @throws \PhpOffice\PhpSpreadsheet\Reader\Exception
