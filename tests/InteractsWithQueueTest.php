@@ -8,7 +8,7 @@ use Maatwebsite\Excel\Jobs\AppendQueryToSheet;
 use Maatwebsite\Excel\Jobs\AppendViewToSheet;
 use Maatwebsite\Excel\Jobs\ReadChunk;
 
-class InteractWithQueueTest extends TestCase
+class InteractsWithQueueTest extends TestCase
 {
     /**
      * Setup the test environment.
