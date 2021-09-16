@@ -5,13 +5,14 @@ namespace Maatwebsite\Excel\Jobs;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
 use Maatwebsite\Excel\Files\TemporaryFile;
 use Maatwebsite\Excel\Jobs\Middleware\LocalizeJob;
 use Maatwebsite\Excel\Writer;
 
 class AppendDataToSheet implements ShouldQueue
 {
-    use Queueable, Dispatchable, ProxyFailures;
+    use Queueable, Dispatchable, ProxyFailures, InteractsWithQueue;
 
     /**
      * @var array
