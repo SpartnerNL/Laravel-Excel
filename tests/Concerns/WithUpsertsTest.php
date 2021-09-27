@@ -47,8 +47,7 @@ class WithUpsertsTest extends TestCase
             use Importable;
 
             /**
-             * @param array $row
-             *
+             * @param  array  $row
              * @return Model|null
              */
             public function model(array $row)
@@ -115,8 +114,7 @@ class WithUpsertsTest extends TestCase
             use Importable;
 
             /**
-             * @param array $row
-             *
+             * @param  array  $row
              * @return Model|Model[]|null
              */
             public function model(array $row)
@@ -175,8 +173,7 @@ class WithUpsertsTest extends TestCase
             use Importable;
 
             /**
-             * @param array $row
-             *
+             * @param  array  $row
              * @return Model|null
              */
             public function model(array $row)
@@ -251,8 +248,7 @@ class WithUpsertsTest extends TestCase
             use Importable;
 
             /**
-             * @param array $row
-             *
+             * @param  array  $row
              * @return Model|Model[]|null
              */
             public function model(array $row)

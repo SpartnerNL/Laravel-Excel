@@ -25,9 +25,9 @@ class RemoteTemporaryFile extends TemporaryFile
     private $localTemporaryFile;
 
     /**
-     * @param string             $disk
-     * @param string             $filename
-     * @param LocalTemporaryFile $localTemporaryFile
+     * @param  string  $disk
+     * @param  string  $filename
+     * @param  LocalTemporaryFile  $localTemporaryFile
      */
     public function __construct(string $disk, string $filename, LocalTemporaryFile $localTemporaryFile)
     {
@@ -133,7 +133,7 @@ class RemoteTemporaryFile extends TemporaryFile
     }
 
     /**
-     * @param string|resource $contents
+     * @param  string|resource  $contents
      */
     public function put($contents)
     {

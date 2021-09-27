@@ -10,8 +10,7 @@ trait WithModelStub
     /**
      * Build the model replacement values.
      *
-     * @param  array $replace
-     *
+     * @param  array  $replace
      * @return array
      */
     protected function buildModelReplacements(array $replace): array
@@ -27,8 +26,7 @@ trait WithModelStub
     /**
      * Get the fully-qualified model class name.
      *
-     * @param  string $model
-     *
+     * @param  string  $model
      * @return string
      */
     protected function parseModel($model): string

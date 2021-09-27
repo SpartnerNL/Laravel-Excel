@@ -5,8 +5,7 @@ namespace Maatwebsite\Excel\Exceptions;
 class SheetNotFoundException extends \Exception implements LaravelExcelException
 {
     /**
-     * @param string $name
-     *
+     * @param  string  $name
      * @return SheetNotFoundException
      */
     public static function byName(string $name): SheetNotFoundException
@@ -15,9 +14,8 @@ class SheetNotFoundException extends \Exception implements LaravelExcelException
     }
 
     /**
-     * @param int $index
-     * @param int $sheetCount
-     *
+     * @param  int  $index
+     * @param  int  $sheetCount
      * @return SheetNotFoundException
      */
     public static function byIndex(int $index, int $sheetCount): SheetNotFoundException

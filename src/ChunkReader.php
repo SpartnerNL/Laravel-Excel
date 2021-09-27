@@ -21,10 +21,9 @@ use Throwable;
 class ChunkReader
 {
     /**
-     * @param WithChunkReading $import
-     * @param Reader           $reader
-     * @param TemporaryFile    $temporaryFile
-     *
+     * @param  WithChunkReading  $import
+     * @param  Reader  $reader
+     * @param  TemporaryFile  $temporaryFile
      * @return \Illuminate\Foundation\Bus\PendingDispatch|null
      */
     public function read(WithChunkReading $import, Reader $reader, TemporaryFile $temporaryFile)

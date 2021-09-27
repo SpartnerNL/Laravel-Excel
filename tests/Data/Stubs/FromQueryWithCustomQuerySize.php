@@ -38,8 +38,7 @@ class FromQueryWithCustomQuerySize implements FromQuery, WithCustomQuerySize, Wi
     }
 
     /**
-     * @param Group $row
-     *
+     * @param  Group  $row
      * @return array
      */
     public function map($row): array

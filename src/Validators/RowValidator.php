@@ -17,7 +17,7 @@ class RowValidator
     private $validator;
 
     /**
-     * @param Factory $validator
+     * @param  Factory  $validator
      */
     public function __construct(Factory $validator)
     {
@@ -25,8 +25,8 @@ class RowValidator
     }
 
     /**
-     * @param array          $rows
-     * @param WithValidation $import
+     * @param  array  $rows
+     * @param  WithValidation  $import
      *
      * @throws ValidationException
      * @throws RowSkippedException
@@ -73,8 +73,7 @@ class RowValidator
     }
 
     /**
-     * @param WithValidation $import
-     *
+     * @param  WithValidation  $import
      * @return array
      */
     private function messages(WithValidation $import): array
@@ -85,8 +84,7 @@ class RowValidator
     }
 
     /**
-     * @param WithValidation $import
-     *
+     * @param  WithValidation  $import
      * @return array
      */
     private function attributes(WithValidation $import): array
@@ -97,8 +95,7 @@ class RowValidator
     }
 
     /**
-     * @param WithValidation $import
-     *
+     * @param  WithValidation  $import
      * @return array
      */
     private function rules(WithValidation $import): array
@@ -107,8 +104,7 @@ class RowValidator
     }
 
     /**
-     * @param array $elements
-     *
+     * @param  array  $elements
      * @return array
      */
     private function formatKey(array $elements): array
@@ -121,8 +117,7 @@ class RowValidator
     }
 
     /**
-     * @param string|object|callable|array $rules
-     *
+     * @param  string|object|callable|array  $rules
      * @return string|array
      */
     private function formatRule($rules)

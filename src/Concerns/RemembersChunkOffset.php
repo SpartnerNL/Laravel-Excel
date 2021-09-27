@@ -10,7 +10,7 @@ trait RemembersChunkOffset
     protected $chunkOffset;
 
     /**
-     * @param int $chunkOffset
+     * @param  int  $chunkOffset
      */
     public function setChunkOffset(int $chunkOffset)
     {

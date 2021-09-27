@@ -58,10 +58,10 @@ class Excel implements Exporter, Importer
     private $reader;
 
     /**
-     * @param Writer       $writer
-     * @param QueuedWriter $queuedWriter
-     * @param Reader       $reader
-     * @param Filesystem   $filesystem
+     * @param  Writer  $writer
+     * @param  QueuedWriter  $queuedWriter
+     * @param  Reader  $reader
+     * @param  Filesystem  $filesystem
      */
     public function __construct(
         Writer $writer,
@@ -181,12 +181,12 @@ class Excel implements Exporter, Importer
     }
 
     /**
-     * @param object      $export
-     * @param string|null $fileName
-     * @param string      $writerType
+     * @param  object  $export
+     * @param  string|null  $fileName
+     * @param  string  $writerType
+     * @return TemporaryFile
      *
      * @throws \PhpOffice\PhpSpreadsheet\Exception
-     * @return TemporaryFile
      */
     protected function export($export, string $fileName, string $writerType = null): TemporaryFile
     {

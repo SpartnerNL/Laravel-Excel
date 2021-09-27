@@ -17,7 +17,7 @@ class MemoryCache implements CacheInterface
     protected $cache = [];
 
     /**
-     * @param int|null $memoryLimit
+     * @param  int|null  $memoryLimit
      */
     public function __construct(int $memoryLimit = null)
     {

@@ -37,8 +37,7 @@ class SkipsOnErrorTest extends TestCase
             public $errors = 0;
 
             /**
-             * @param array $row
-             *
+             * @param  array  $row
              * @return Model|null
              */
             public function model(array $row)
@@ -51,7 +50,7 @@ class SkipsOnErrorTest extends TestCase
             }
 
             /**
-             * @param Throwable $e
+             * @param  Throwable  $e
              */
             public function onError(Throwable $e)
             {
@@ -87,8 +86,7 @@ class SkipsOnErrorTest extends TestCase
             use Importable, SkipsErrors;
 
             /**
-             * @param array $row
-             *
+             * @param  array  $row
              * @return Model|null
              */
             public function model(array $row)

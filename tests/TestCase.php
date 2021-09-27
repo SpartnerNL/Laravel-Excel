@@ -12,11 +12,11 @@ use PHPUnit\Framework\Constraint\StringContains;
 class TestCase extends OrchestraTestCase
 {
     /**
-     * @param string $filePath
-     * @param string $writerType
+     * @param  string  $filePath
+     * @param  string  $writerType
+     * @return \PhpOffice\PhpSpreadsheet\Spreadsheet
      *
      * @throws \PhpOffice\PhpSpreadsheet\Reader\Exception
-     * @return \PhpOffice\PhpSpreadsheet\Spreadsheet
      */
     public function read(string $filePath, string $writerType)
     {
@@ -26,9 +26,8 @@ class TestCase extends OrchestraTestCase
     }
 
     /**
-     * @param string      $filePath
-     * @param string|null $filename
-     *
+     * @param  string  $filePath
+     * @param  string|null  $filename
      * @return File
      */
     public function givenUploadedFile(string $filePath, string $filename = null): File
@@ -45,12 +44,12 @@ class TestCase extends OrchestraTestCase
     }
 
     /**
-     * @param string   $filePath
-     * @param string   $writerType
-     * @param int|null $sheetIndex
+     * @param  string  $filePath
+     * @param  string  $writerType
+     * @param  int|null  $sheetIndex
+     * @return array
      *
      * @throws \PhpOffice\PhpSpreadsheet\Exception
-     * @return array
      */
     protected function readAsArray(string $filePath, string $writerType, int $sheetIndex = null)
     {
@@ -66,8 +65,7 @@ class TestCase extends OrchestraTestCase
     }
 
     /**
-     * @param \Illuminate\Foundation\Application $app
-     *
+     * @param  \Illuminate\Foundation\Application  $app
      * @return array
      */
     protected function getPackageProviders($app)
@@ -78,7 +76,7 @@ class TestCase extends OrchestraTestCase
     }
 
     /**
-     * @param \Illuminate\Foundation\Application $app
+     * @param  \Illuminate\Foundation\Application  $app
      */
     protected function getEnvironmentSetUp($app)
     {
@@ -104,9 +102,8 @@ class TestCase extends OrchestraTestCase
     }
 
     /**
-     * @param Job    $job
-     * @param string $property
-     *
+     * @param  Job  $job
+     * @param  string  $property
      * @return mixed
      */
     protected function inspectJobProperty(Job $job, string $property)
@@ -118,9 +115,9 @@ class TestCase extends OrchestraTestCase
     }
 
     /**
-     * @param string $needle
-     * @param string $haystack
-     * @param string $message
+     * @param  string  $needle
+     * @param  string  $haystack
+     * @param  string  $message
      */
     protected function assertStringContains(string $needle, string $haystack, string $message = '')
     {
@@ -132,7 +129,7 @@ class TestCase extends OrchestraTestCase
     }
 
     /**
-     * @param string $path
+     * @param  string  $path
      */
     protected function assertFileMissing(string $path)
     {

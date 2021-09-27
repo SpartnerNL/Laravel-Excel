@@ -13,9 +13,8 @@ trait DelegatedMacroable
     /**
      * Dynamically handle calls to the class.
      *
-     * @param  string $method
+     * @param  string  $method
      * @param  array  $parameters
-     *
      * @return mixed
      */
     public function __call($method, $parameters)

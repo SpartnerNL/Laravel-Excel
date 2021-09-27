@@ -35,8 +35,7 @@ class FromUsersQueryExportWithMapping implements FromQuery, WithMapping, WithEve
     }
 
     /**
-     * @param User $row
-     *
+     * @param  User  $row
      * @return array
      */
     public function map($row): array

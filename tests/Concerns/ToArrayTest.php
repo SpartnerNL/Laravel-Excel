@@ -21,7 +21,7 @@ class ToArrayTest extends TestCase
             public $called = false;
 
             /**
-             * @param array $array
+             * @param  array  $array
              */
             public function array(array $array)
             {
@@ -51,7 +51,7 @@ class ToArrayTest extends TestCase
             public $called = 0;
 
             /**
-             * @param array $array
+             * @param  array  $array
              */
             public function array(array $array)
             {

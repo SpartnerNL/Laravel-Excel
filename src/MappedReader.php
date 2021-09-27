@@ -14,8 +14,8 @@ use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 class MappedReader
 {
     /**
-     * @param WithMappedCells $import
-     * @param Worksheet       $worksheet
+     * @param  WithMappedCells  $import
+     * @param  Worksheet  $worksheet
      *
      * @throws \PhpOffice\PhpSpreadsheet\Exception
      */

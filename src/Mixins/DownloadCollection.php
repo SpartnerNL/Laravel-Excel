@@ -32,8 +32,8 @@ class DownloadCollection
                 private $collection;
 
                 /**
-                 * @param Collection $collection
-                 * @param bool       $withHeading
+                 * @param  Collection  $collection
+                 * @param  bool  $withHeading
                  */
                 public function __construct(Collection $collection, bool $withHeading = false)
                 {

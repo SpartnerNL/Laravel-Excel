@@ -311,8 +311,7 @@ class ExcelFakeTest extends TestCase
         return new class implements ToModel
         {
             /**
-             * @param array $row
-             *
+             * @param  array  $row
              * @return Model|null
              */
             public function model(array $row)
@@ -330,8 +329,7 @@ class ExcelFakeTest extends TestCase
         return new class implements ToModel, ShouldQueue
         {
             /**
-             * @param array $row
-             *
+             * @param  array  $row
              * @return Model|null
              */
             public function model(array $row)

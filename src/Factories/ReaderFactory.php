@@ -20,12 +20,12 @@ class ReaderFactory
     use MapsCsvSettings;
 
     /**
-     * @param object        $import
-     * @param TemporaryFile $file
-     * @param string        $readerType
+     * @param  object  $import
+     * @param  TemporaryFile  $file
+     * @param  string  $readerType
+     * @return IReader
      *
      * @throws Exception
-     * @return IReader
      */
     public static function make($import, TemporaryFile $file, string $readerType = null): IReader
     {
@@ -68,10 +68,10 @@ class ReaderFactory
     }
 
     /**
-     * @param TemporaryFile $temporaryFile
+     * @param  TemporaryFile  $temporaryFile
+     * @return string
      *
      * @throws NoTypeDetectedException
-     * @return string
      */
     private static function identify(TemporaryFile $temporaryFile): string
     {

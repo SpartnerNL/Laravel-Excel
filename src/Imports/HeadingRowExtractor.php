@@ -16,8 +16,7 @@ class HeadingRowExtractor
     const DEFAULT_HEADING_ROW = 1;
 
     /**
-     * @param WithHeadingRow|mixed $importable
-     *
+     * @param  WithHeadingRow|mixed  $importable
      * @return int
      */
     public static function headingRow($importable): int
@@ -28,8 +27,7 @@ class HeadingRowExtractor
     }
 
     /**
-     * @param WithHeadingRow|mixed $importable
-     *
+     * @param  WithHeadingRow|mixed  $importable
      * @return int
      */
     public static function determineStartRow($importable): int
@@ -45,9 +43,8 @@ class HeadingRowExtractor
     }
 
     /**
-     * @param Worksheet            $worksheet
-     * @param WithHeadingRow|mixed $importable
-     *
+     * @param  Worksheet  $worksheet
+     * @param  WithHeadingRow|mixed  $importable
      * @return array
      */
     public static function extract(Worksheet $worksheet, $importable): array

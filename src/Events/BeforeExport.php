@@ -17,8 +17,8 @@ class BeforeExport extends Event
     private $exportable;
 
     /**
-     * @param Writer $writer
-     * @param object $exportable
+     * @param  Writer  $writer
+     * @param  object  $exportable
      */
     public function __construct(Writer $writer, $exportable)
     {

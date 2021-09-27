@@ -10,7 +10,7 @@ class LocalTemporaryFile extends TemporaryFile
     private $filePath;
 
     /**
-     * @param string $filePath
+     * @param  string  $filePath
      */
     public function __construct(string $filePath)
     {

@@ -25,8 +25,8 @@ class AfterImportJob implements ShouldQueue
     private $reader;
 
     /**
-     * @param object $import
-     * @param Reader $reader
+     * @param  object  $import
+     * @param  Reader  $reader
      */
     public function __construct($import, Reader $reader)
     {
@@ -45,7 +45,7 @@ class AfterImportJob implements ShouldQueue
     }
 
     /**
-     * @param Throwable $e
+     * @param  Throwable  $e
      */
     public function failed(Throwable $e)
     {

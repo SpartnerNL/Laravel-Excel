@@ -14,8 +14,7 @@ class QueuedImportWithMiddleware implements ShouldQueue, ToModel, WithChunkReadi
     use Importable;
 
     /**
-     * @param array $row
-     *
+     * @param  array  $row
      * @return Model|null
      */
     public function model(array $row)

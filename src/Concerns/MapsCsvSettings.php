@@ -52,7 +52,7 @@ trait MapsCsvSettings
     protected static $inputEncoding = 'UTF-8';
 
     /**
-     * @param array $config
+     * @param  array  $config
      */
     public static function applyCsvSettings(array $config)
     {

@@ -30,7 +30,7 @@ class WithColumnLimitTest extends TestCase
             use Importable;
 
             /**
-             * @param array $array
+             * @param  array  $array
              */
             public function array(array $array)
             {

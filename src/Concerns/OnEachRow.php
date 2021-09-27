@@ -7,7 +7,7 @@ use Maatwebsite\Excel\Row;
 interface OnEachRow
 {
     /**
-     * @param Row $row
+     * @param  Row  $row
      */
     public function onRow(Row $row);
 }

@@ -25,7 +25,7 @@ class WithFormatDataTest extends TestCase
             public $called = false;
 
             /**
-             * @param array $array
+             * @param  array  $array
              */
             public function array(array $array)
             {
@@ -53,7 +53,7 @@ class WithFormatDataTest extends TestCase
             public $called = false;
 
             /**
-             * @param array $array
+             * @param  array  $array
              */
             public function array(array $array)
             {
@@ -80,8 +80,7 @@ class WithFormatDataTest extends TestCase
             public $called = false;
 
             /**
-             * @param array $row
-             *
+             * @param  array  $row
              * @return Model|null
              */
             public function collection(collection $collection)
@@ -112,8 +111,7 @@ class WithFormatDataTest extends TestCase
             public $called = false;
 
             /**
-             * @param array $row
-             *
+             * @param  array  $row
              * @return Model|null
              */
             public function collection(collection $collection)
@@ -143,8 +141,7 @@ class WithFormatDataTest extends TestCase
             public $called = false;
 
             /**
-             * @param array $row
-             *
+             * @param  array  $row
              * @return Model|null
              */
             public function model(array $row)
@@ -175,8 +172,7 @@ class WithFormatDataTest extends TestCase
             public $called = false;
 
             /**
-             * @param array $row
-             *
+             * @param  array  $row
              * @return Model|null
              */
             public function model(array $row)

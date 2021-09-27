@@ -23,7 +23,6 @@ class QueueImportWithoutJobChaining implements ToModel, WithChunkReading, WithEv
 
     /**
      * @param  array  $row
-     *
      * @return Model|null
      */
     public function model(array $row)

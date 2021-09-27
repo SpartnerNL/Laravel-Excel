@@ -28,7 +28,7 @@ class WithCalculatedFormulasTest extends TestCase
             public $called = false;
 
             /**
-             * @param array $array
+             * @param  array  $array
              */
             public function array(array $array)
             {
@@ -55,7 +55,7 @@ class WithCalculatedFormulasTest extends TestCase
             public $called = false;
 
             /**
-             * @param array $array
+             * @param  array  $array
              */
             public function array(array $array)
             {
@@ -82,8 +82,7 @@ class WithCalculatedFormulasTest extends TestCase
             public $called = false;
 
             /**
-             * @param array $row
-             *
+             * @param  array  $row
              * @return Model|null
              */
             public function model(array $row)
@@ -110,8 +109,7 @@ class WithCalculatedFormulasTest extends TestCase
             public $called = false;
 
             /**
-             * @param array $row
-             *
+             * @param  array  $row
              * @return Model|null
              */
             public function model(array $row)
@@ -189,7 +187,7 @@ class WithCalculatedFormulasTest extends TestCase
             public $called = false;
 
             /**
-             * @param array $array
+             * @param  array  $array
              */
             public function array(array $array)
             {
@@ -216,8 +214,7 @@ class WithCalculatedFormulasTest extends TestCase
             public $called = false;
 
             /**
-             * @param array $row
-             *
+             * @param  array  $row
              * @return Model|null
              */
             public function model(array $row)

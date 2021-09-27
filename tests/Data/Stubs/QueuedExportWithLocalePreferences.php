@@ -21,7 +21,7 @@ class QueuedExportWithLocalePreferences implements FromCollection, HasLocalePref
     /**
      * QueuedExportWithLocalePreferences constructor.
      *
-     * @param string $locale
+     * @param  string  $locale
      */
     public function __construct(string $locale)
     {
@@ -50,7 +50,7 @@ class QueuedExportWithLocalePreferences implements FromCollection, HasLocalePref
     }
 
     /**
-     * @param iterable $rows
+     * @param  iterable  $rows
      * @return iterable
      */
     public function prepareRows($rows)

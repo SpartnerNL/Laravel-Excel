@@ -23,7 +23,7 @@ class SheetWith100Rows implements FromCollection, WithTitle, ShouldAutoSize, Wit
     private $title;
 
     /**
-     * @param string $title
+     * @param  string  $title
      */
     public function __construct(string $title)
     {
@@ -57,7 +57,7 @@ class SheetWith100Rows implements FromCollection, WithTitle, ShouldAutoSize, Wit
     }
 
     /**
-     * @param BeforeWriting $event
+     * @param  BeforeWriting  $event
      */
     public static function beforeWriting(BeforeWriting $event)
     {

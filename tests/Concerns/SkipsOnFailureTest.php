@@ -41,8 +41,7 @@ class SkipsOnFailureTest extends TestCase
             public $failures = 0;
 
             /**
-             * @param array $row
-             *
+             * @param  array  $row
              * @return Model|null
              */
             public function model(array $row)
@@ -65,7 +64,7 @@ class SkipsOnFailureTest extends TestCase
             }
 
             /**
-             * @param Failure[] $failures
+             * @param  Failure[]  $failures
              */
             public function onFailure(Failure ...$failures)
             {
@@ -111,8 +110,7 @@ class SkipsOnFailureTest extends TestCase
             public $failures = 0;
 
             /**
-             * @param array $row
-             *
+             * @param  array  $row
              * @return Model|null
              */
             public function model(array $row)
@@ -135,7 +133,7 @@ class SkipsOnFailureTest extends TestCase
             }
 
             /**
-             * @param Failure[] $failures
+             * @param  Failure[]  $failures
              */
             public function onFailure(Failure ...$failures)
             {
@@ -182,8 +180,7 @@ class SkipsOnFailureTest extends TestCase
             use Importable, SkipsFailures;
 
             /**
-             * @param array $row
-             *
+             * @param  array  $row
              * @return Model|null
              */
             public function model(array $row)
@@ -238,8 +235,7 @@ class SkipsOnFailureTest extends TestCase
             use Importable, SkipsFailures;
 
             /**
-             * @param Row $row
-             *
+             * @param  Row  $row
              * @return Model|null
              */
             public function onRow(Row $row)

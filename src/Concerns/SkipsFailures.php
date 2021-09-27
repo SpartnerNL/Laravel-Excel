@@ -13,7 +13,7 @@ trait SkipsFailures
     protected $failures = [];
 
     /**
-     * @param Failure ...$failures
+     * @param  Failure  ...$failures
      */
     public function onFailure(Failure ...$failures)
     {

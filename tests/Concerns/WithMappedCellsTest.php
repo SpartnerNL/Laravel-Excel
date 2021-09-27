@@ -44,7 +44,7 @@ class WithMappedCellsTest extends TestCase
             }
 
             /**
-             * @param array $array
+             * @param  array  $array
              */
             public function array(array $array)
             {
@@ -79,8 +79,7 @@ class WithMappedCellsTest extends TestCase
             }
 
             /**
-             * @param array $array
-             *
+             * @param  array  $array
              * @return User
              */
             public function model(array $array)

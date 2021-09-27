@@ -17,8 +17,8 @@ class LimitFilter implements IReadFilter
     private $endRow;
 
     /**
-     * @param int $startRow
-     * @param int $limit
+     * @param  int  $startRow
+     * @param  int  $limit
      */
     public function __construct(int $startRow, int $limit)
     {
@@ -27,10 +27,9 @@ class LimitFilter implements IReadFilter
     }
 
     /**
-     * @param string $column
-     * @param int    $row
-     * @param string $worksheetName
-     *
+     * @param  string  $column
+     * @param  int  $row
+     * @param  string  $worksheetName
      * @return bool
      */
     public function readCell($column, $row, $worksheetName = '')

@@ -12,7 +12,7 @@ class Filesystem
     private $filesystem;
 
     /**
-     * @param Factory $filesystem
+     * @param  Factory  $filesystem
      */
     public function __construct(Factory $filesystem)
     {
@@ -20,9 +20,8 @@ class Filesystem
     }
 
     /**
-     * @param string|null $disk
-     * @param array       $diskOptions
-     *
+     * @param  string|null  $disk
+     * @param  array  $diskOptions
      * @return Disk
      */
     public function disk(string $disk = null, array $diskOptions = []): Disk

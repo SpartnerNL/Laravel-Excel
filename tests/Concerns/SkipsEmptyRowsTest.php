@@ -27,7 +27,7 @@ class SkipsEmptyRowsTest extends TestCase
             public $called = false;
 
             /**
-             * @param Collection $collection
+             * @param  Collection  $collection
              */
             public function collection(Collection $collection)
             {
@@ -58,7 +58,7 @@ class SkipsEmptyRowsTest extends TestCase
             public $rows = 0;
 
             /**
-             * @param Row $row
+             * @param  Row  $row
              */
             public function onRow(Row $row)
             {
@@ -85,8 +85,7 @@ class SkipsEmptyRowsTest extends TestCase
             public $rows = 0;
 
             /**
-             * @param array $row
-             *
+             * @param  array  $row
              * @return Model|Model[]|null
              */
             public function model(array $row)

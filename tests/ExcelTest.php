@@ -269,7 +269,7 @@ class ExcelTest extends TestCase
         $import = new class implements ToArray
         {
             /**
-             * @param array $array
+             * @param  array  $array
              */
             public function array(array $array)
             {
@@ -293,7 +293,7 @@ class ExcelTest extends TestCase
         $import = new class implements ToArray, WithCustomCsvSettings
         {
             /**
-             * @param array $array
+             * @param  array  $array
              */
             public function array(array $array)
             {
@@ -334,7 +334,7 @@ class ExcelTest extends TestCase
         $import1 = new class implements ToArray
         {
             /**
-             * @param array $array
+             * @param  array  $array
              */
             public function array(array $array)
             {
@@ -348,7 +348,7 @@ class ExcelTest extends TestCase
         $import2 = new class implements ToArray
         {
             /**
-             * @param array $array
+             * @param  array  $array
              */
             public function array(array $array)
             {
@@ -374,7 +374,7 @@ class ExcelTest extends TestCase
         $import = new class implements ToArray
         {
             /**
-             * @param array $array
+             * @param  array  $array
              */
             public function array(array $array)
             {
@@ -396,7 +396,7 @@ class ExcelTest extends TestCase
         $import = new class implements ToArray
         {
             /**
-             * @param array $array
+             * @param  array  $array
              */
             public function array(array $array)
             {
@@ -420,7 +420,7 @@ class ExcelTest extends TestCase
         $import = new class implements ToArray
         {
             /**
-             * @param array $array
+             * @param  array  $array
              */
             public function array(array $array)
             {
@@ -444,7 +444,7 @@ class ExcelTest extends TestCase
         $import = new class implements ToArray
         {
             /**
-             * @param array $array
+             * @param  array  $array
              */
             public function array(array $array)
             {
@@ -463,7 +463,7 @@ class ExcelTest extends TestCase
         $import = new class implements ToArray
         {
             /**
-             * @param array $array
+             * @param  array  $array
              */
             public function array(array $array)
             {

@@ -12,8 +12,8 @@ class ValidationException extends IlluminateValidationException
     protected $failures;
 
     /**
-     * @param IlluminateValidationException $previous
-     * @param array                         $failures
+     * @param  IlluminateValidationException  $previous
+     * @param  array  $failures
      */
     public function __construct(IlluminateValidationException $previous, array $failures)
     {
