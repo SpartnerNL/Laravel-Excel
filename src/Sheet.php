@@ -660,7 +660,7 @@ class Sheet
     }
 
     /**
-     * @return  Collection|array
+     * @return Collection|array
      */
     protected function validated(WithValidation $import, int $startRow, $rows)
     {

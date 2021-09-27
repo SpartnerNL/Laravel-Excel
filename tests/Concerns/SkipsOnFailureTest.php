@@ -288,8 +288,7 @@ class SkipsOnFailureTest extends TestCase
             use Importable, SkipsFailures;
 
             /**
-             * @param Row $row
-             *
+             * @param  Row  $row
              * @return Model|null
              */
             public function collection(Collection $rows)
