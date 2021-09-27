@@ -175,10 +175,9 @@ class BatchCacheTest extends TestCase
      * Construct a BatchCache with a in memory store
      * and an array cache, pretending to be a persistence store.
      *
-     * @param array    $memory
-     * @param array    $persisted
-     * @param int|null $memoryLimit
-     *
+     * @param  array  $memory
+     * @param  array  $persisted
+     * @param  int|null  $memoryLimit
      * @return BatchCache
      */
     private function givenCache(array $memory = [], array $persisted = [], int $memoryLimit = null): BatchCache

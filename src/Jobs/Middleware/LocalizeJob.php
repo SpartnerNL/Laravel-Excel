@@ -18,7 +18,7 @@ class LocalizeJob
     /**
      * LocalizeJob constructor.
      *
-     * @param object $localizable
+     * @param  object  $localizable
      */
     public function __construct($localizable)
     {
@@ -28,8 +28,8 @@ class LocalizeJob
     /**
      * Handles the job.
      *
-     * @param mixed $job
-     * @param Closure $next
+     * @param  mixed  $job
+     * @param  Closure  $next
      * @return mixed
      */
     public function handle($job, Closure $next)

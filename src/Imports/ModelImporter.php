@@ -22,7 +22,7 @@ class ModelImporter
     private $manager;
 
     /**
-     * @param ModelManager $manager
+     * @param  ModelManager  $manager
      */
     public function __construct(ModelManager $manager)
     {
@@ -30,10 +30,10 @@ class ModelImporter
     }
 
     /**
-     * @param Worksheet   $worksheet
-     * @param ToModel     $import
-     * @param int|null    $startRow
-     * @param string|null $endColumn
+     * @param  Worksheet  $worksheet
+     * @param  ToModel  $import
+     * @param  int|null  $startRow
+     * @param  string|null  $endColumn
      *
      * @throws \Maatwebsite\Excel\Validators\ValidationException
      */

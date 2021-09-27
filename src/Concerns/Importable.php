@@ -21,12 +21,12 @@ trait Importable
     protected $output;
 
     /**
-     * @param string|UploadedFile|null $filePath
-     * @param string|null              $disk
-     * @param string|null              $readerType
+     * @param  string|UploadedFile|null  $filePath
+     * @param  string|null  $disk
+     * @param  string|null  $readerType
+     * @return Importer|PendingDispatch
      *
      * @throws NoFilePathGivenException
-     * @return Importer|PendingDispatch
      */
     public function import($filePath = null, string $disk = null, string $readerType = null)
     {
@@ -41,12 +41,12 @@ trait Importable
     }
 
     /**
-     * @param string|UploadedFile|null $filePath
-     * @param string|null              $disk
-     * @param string|null              $readerType
+     * @param  string|UploadedFile|null  $filePath
+     * @param  string|null  $disk
+     * @param  string|null  $readerType
+     * @return array
      *
      * @throws NoFilePathGivenException
-     * @return array
      */
     public function toArray($filePath = null, string $disk = null, string $readerType = null): array
     {
@@ -61,12 +61,12 @@ trait Importable
     }
 
     /**
-     * @param string|UploadedFile|null $filePath
-     * @param string|null              $disk
-     * @param string|null              $readerType
+     * @param  string|UploadedFile|null  $filePath
+     * @param  string|null  $disk
+     * @param  string|null  $readerType
+     * @return Collection
      *
      * @throws NoFilePathGivenException
-     * @return Collection
      */
     public function toCollection($filePath = null, string $disk = null, string $readerType = null): Collection
     {
@@ -81,13 +81,13 @@ trait Importable
     }
 
     /**
-     * @param string|UploadedFile|null $filePath
-     * @param string|null              $disk
-     * @param string|null              $readerType
+     * @param  string|UploadedFile|null  $filePath
+     * @param  string|null  $disk
+     * @param  string|null  $readerType
+     * @return PendingDispatch
      *
      * @throws NoFilePathGivenException
      * @throws InvalidArgumentException
-     * @return PendingDispatch
      */
     public function queue($filePath = null, string $disk = null, string $readerType = null)
     {
@@ -99,8 +99,7 @@ trait Importable
     }
 
     /**
-     * @param OutputStyle $output
-     *
+     * @param  OutputStyle  $output
      * @return $this
      */
     public function withOutput(OutputStyle $output)
@@ -123,10 +122,10 @@ trait Importable
     }
 
     /**
-     * @param UploadedFile|string|null $filePath
+     * @param  UploadedFile|string|null  $filePath
+     * @return UploadedFile|string
      *
      * @throws NoFilePathGivenException
-     * @return UploadedFile|string
      */
     private function getFilePath($filePath = null)
     {

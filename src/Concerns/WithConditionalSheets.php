@@ -10,8 +10,7 @@ trait WithConditionalSheets
     protected $conditionallySelectedSheets = [];
 
     /**
-     * @param string|array $sheets
-     *
+     * @param  string|array  $sheets
      * @return $this
      */
     public function onlySheets($sheets)

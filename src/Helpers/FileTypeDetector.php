@@ -8,11 +8,11 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 class FileTypeDetector
 {
     /**
-     * @param             $filePath
-     * @param string|null $type
+     * @param  $filePath
+     * @param  string|null  $type
+     * @return string|null
      *
      * @throws NoTypeDetectedException
-     * @return string|null
      */
     public static function detect($filePath, string $type = null)
     {
@@ -35,11 +35,11 @@ class FileTypeDetector
     }
 
     /**
-     * @param string      $filePath
-     * @param string|null $type
+     * @param  string  $filePath
+     * @param  string|null  $type
+     * @return string
      *
      * @throws NoTypeDetectedException
-     * @return string
      */
     public static function detectStrict(string $filePath, string $type = null): string
     {

@@ -17,7 +17,7 @@ trait HasEventBus
     /**
      * Register local event listeners.
      *
-     * @param array $listeners
+     * @param  array  $listeners
      */
     public function registerListeners(array $listeners)
     {
@@ -34,8 +34,8 @@ trait HasEventBus
     /**
      * Register a global event listener.
      *
-     * @param string   $event
-     * @param callable $listener
+     * @param  string  $event
+     * @param  callable  $listener
      */
     public static function listen(string $event, callable $listener)
     {
@@ -43,7 +43,7 @@ trait HasEventBus
     }
 
     /**
-     * @param object $event
+     * @param  object  $event
      */
     public function raise($event)
     {
@@ -53,8 +53,7 @@ trait HasEventBus
     }
 
     /**
-     * @param object $event
-     *
+     * @param  object  $event
      * @return callable[]
      */
     public function listeners($event): array

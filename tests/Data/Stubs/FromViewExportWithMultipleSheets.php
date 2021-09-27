@@ -16,7 +16,7 @@ class FromViewExportWithMultipleSheets implements WithMultipleSheets
     protected $users;
 
     /**
-     * @param Collection $users
+     * @param  Collection  $users
      */
     public function __construct(Collection $users)
     {

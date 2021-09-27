@@ -15,8 +15,7 @@ class QueuedImport implements ShouldQueue, ToModel, WithChunkReading, WithBatchI
     use Importable;
 
     /**
-     * @param array $row
-     *
+     * @param  array  $row
      * @return Model|null
      */
     public function model(array $row)

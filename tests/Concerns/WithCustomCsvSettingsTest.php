@@ -89,7 +89,7 @@ class WithCustomCsvSettingsTest extends TestCase
             }
 
             /**
-             * @param array $array
+             * @param  array  $array
              */
             public function array(array $array)
             {
@@ -121,7 +121,7 @@ class WithCustomCsvSettingsTest extends TestCase
             }
 
             /**
-             * @param array $array
+             * @param  array  $array
              */
             public function array(array $array)
             {

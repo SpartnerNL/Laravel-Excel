@@ -23,8 +23,7 @@ class WithMappingExport implements FromCollection, WithMapping
     }
 
     /**
-     * @param mixed $row
-     *
+     * @param  mixed  $row
      * @return array
      */
     public function map($row): array

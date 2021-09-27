@@ -27,7 +27,7 @@ class QueuedExportWithFailedEvents implements WithMultipleSheets, WithEvents
     }
 
     /**
-     * @param Throwable $exception
+     * @param  Throwable  $exception
      */
     public function failed(Throwable $exception)
     {

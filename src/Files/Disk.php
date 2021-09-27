@@ -28,9 +28,9 @@ class Disk
     protected $diskOptions;
 
     /**
-     * @param IlluminateFilesystem  $disk
-     * @param string|null $name
-     * @param array       $diskOptions
+     * @param  IlluminateFilesystem  $disk
+     * @param  string|null  $name
+     * @param  array  $diskOptions
      */
     public function __construct(IlluminateFilesystem $disk, string $name = null, array $diskOptions = [])
     {
@@ -40,9 +40,8 @@ class Disk
     }
 
     /**
-     * @param string $name
-     * @param array  $arguments
-     *
+     * @param  string  $name
+     * @param  array  $arguments
      * @return mixed
      */
     public function __call($name, $arguments)
@@ -51,9 +50,8 @@ class Disk
     }
 
     /**
-     * @param string          $destination
-     * @param string|resource $contents
-     *
+     * @param  string  $destination
+     * @param  string|resource  $contents
      * @return bool
      */
     public function put(string $destination, $contents): bool
@@ -62,9 +60,8 @@ class Disk
     }
 
     /**
-     * @param TemporaryFile $source
-     * @param string        $destination
-     *
+     * @param  TemporaryFile  $source
+     * @param  string  $destination
      * @return bool
      */
     public function copy(TemporaryFile $source, string $destination): bool
@@ -90,7 +87,7 @@ class Disk
     }
 
     /**
-     * @param string $filename
+     * @param  string  $filename
      */
     public function touch(string $filename)
     {

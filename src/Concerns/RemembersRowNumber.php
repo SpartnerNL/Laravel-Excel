@@ -10,7 +10,7 @@ trait RemembersRowNumber
     protected $rowNumber;
 
     /**
-     * @param int $rowNumber
+     * @param  int  $rowNumber
      */
     public function rememberRowNumber(int $rowNumber)
     {

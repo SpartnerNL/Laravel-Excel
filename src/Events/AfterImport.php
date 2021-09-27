@@ -17,8 +17,8 @@ class AfterImport extends Event
     private $importable;
 
     /**
-     * @param Reader $reader
-     * @param object $importable
+     * @param  Reader  $reader
+     * @param  object  $importable
      */
     public function __construct(Reader $reader, $importable)
     {

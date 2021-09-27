@@ -7,7 +7,7 @@ use Throwable;
 trait ProxyFailures
 {
     /**
-     * @param Throwable $e
+     * @param  Throwable  $e
      */
     public function failed(Throwable $e)
     {

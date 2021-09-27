@@ -30,8 +30,8 @@ class StoreCollection
                 private $collection;
 
                 /**
-                 * @param Collection $collection
-                 * @param bool       $withHeadings
+                 * @param  Collection  $collection
+                 * @param  bool  $withHeadings
                  */
                 public function __construct(Collection $collection, bool $withHeadings = false)
                 {

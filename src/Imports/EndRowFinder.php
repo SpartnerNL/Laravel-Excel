@@ -7,11 +7,9 @@ use Maatwebsite\Excel\Concerns\WithLimit;
 class EndRowFinder
 {
     /**
-     * @param object|WithLimit $import
-     * @param int              $startRow
-     *
-     * @param int|null         $highestRow
-     *
+     * @param  object|WithLimit  $import
+     * @param  int  $startRow
+     * @param  int|null  $highestRow
      * @return int|null
      */
     public static function find($import, int $startRow = null, int $highestRow = null)

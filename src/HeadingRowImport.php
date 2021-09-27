@@ -18,7 +18,7 @@ class HeadingRowImport implements WithStartRow, WithLimit, WithMapping
     private $headingRow;
 
     /**
-     * @param int $headingRow
+     * @param  int  $headingRow
      */
     public function __construct(int $headingRow = 1)
     {
@@ -42,8 +42,7 @@ class HeadingRowImport implements WithStartRow, WithLimit, WithMapping
     }
 
     /**
-     * @param mixed $row
-     *
+     * @param  mixed  $row
      * @return array
      */
     public function map($row): array

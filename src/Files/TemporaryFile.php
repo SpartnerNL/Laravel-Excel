@@ -45,9 +45,8 @@ abstract class TemporaryFile
     }
 
     /**
-     * @param string|UploadedFile $filePath
-     * @param string|null         $disk
-     *
+     * @param  string|UploadedFile  $filePath
+     * @param  string|null  $disk
      * @return TemporaryFile
      */
     public function copyFrom($filePath, string $disk = null): TemporaryFile

@@ -7,7 +7,7 @@ use Maatwebsite\Excel\Validators\Failure;
 interface SkipsOnFailure
 {
     /**
-     * @param Failure[] $failures
+     * @param  Failure[]  $failures
      */
     public function onFailure(Failure ...$failures);
 }

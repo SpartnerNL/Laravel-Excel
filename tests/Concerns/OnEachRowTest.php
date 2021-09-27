@@ -22,7 +22,7 @@ class OnEachRowTest extends TestCase
             public $called = 0;
 
             /**
-             * @param Row $row
+             * @param  Row  $row
              */
             public function onRow(Row $row)
             {

@@ -38,7 +38,7 @@ class Writer
     protected $temporaryFileFactory;
 
     /**
-     * @param TemporaryFileFactory $temporaryFileFactory
+     * @param  TemporaryFileFactory  $temporaryFileFactory
      */
     public function __construct(TemporaryFileFactory $temporaryFileFactory)
     {
@@ -48,10 +48,10 @@ class Writer
     }
 
     /**
-     * @param object $export
-     * @param string $writerType
-     *
+     * @param  object  $export
+     * @param  string  $writerType
      * @return TemporaryFile
+     *
      * @throws \PhpOffice\PhpSpreadsheet\Exception
      */
     public function export($export, string $writerType): TemporaryFile
@@ -71,8 +71,7 @@ class Writer
     }
 
     /**
-     * @param object $export
-     *
+     * @param  object  $export
      * @return $this
      */
     public function open($export)
@@ -99,10 +98,10 @@ class Writer
     }
 
     /**
-     * @param TemporaryFile $tempFile
-     * @param string        $writerType
-     *
+     * @param  TemporaryFile  $tempFile
+     * @param  string  $writerType
      * @return Writer
+     *
      * @throws \PhpOffice\PhpSpreadsheet\Reader\Exception
      */
     public function reopen(TemporaryFile $tempFile, string $writerType)
@@ -114,11 +113,11 @@ class Writer
     }
 
     /**
-     * @param object        $export
-     * @param TemporaryFile $temporaryFile
-     * @param string        $writerType
-     *
+     * @param  object  $export
+     * @param  TemporaryFile  $temporaryFile
+     * @param  string  $writerType
      * @return TemporaryFile
+     *
      * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
      * @throws \PhpOffice\PhpSpreadsheet\Exception
      */
@@ -153,9 +152,9 @@ class Writer
     }
 
     /**
-     * @param int|null $sheetIndex
-     *
+     * @param  int|null  $sheetIndex
      * @return Sheet
+     *
      * @throws \PhpOffice\PhpSpreadsheet\Exception
      */
     public function addNewSheet(int $sheetIndex = null)
@@ -184,9 +183,9 @@ class Writer
     }
 
     /**
-     * @param int $sheetIndex
-     *
+     * @param  int  $sheetIndex
      * @return Sheet
+     *
      * @throws \PhpOffice\PhpSpreadsheet\Exception
      */
     public function getSheetByIndex(int $sheetIndex)
@@ -195,8 +194,7 @@ class Writer
     }
 
     /**
-     * @param string $concern
-     *
+     * @param  string  $concern
      * @return bool
      */
     public function hasConcern($concern): bool
@@ -205,7 +203,7 @@ class Writer
     }
 
     /**
-     * @param object $export
+     * @param  object  $export
      */
     protected function handleDocumentProperties($export)
     {

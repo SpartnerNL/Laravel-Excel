@@ -23,8 +23,7 @@ class FromGroupUsersQueuedQueryExport implements FromQuery, WithCustomChunkSize,
     }
 
     /**
-     * @param mixed $row
-     *
+     * @param  mixed  $row
      * @return array
      */
     public function map($row): array

@@ -30,7 +30,7 @@ class FromUsersQueryExportWithPrepareRows implements FromQuery, WithCustomChunkS
     }
 
     /**
-     * @param iterable $rows
+     * @param  iterable  $rows
      * @return iterable
      */
     public function prepareRows($rows)

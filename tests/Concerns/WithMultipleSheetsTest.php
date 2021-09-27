@@ -73,7 +73,7 @@ class WithMultipleSheetsTest extends TestCase
             protected $users;
 
             /**
-             * @param Collection $users
+             * @param  Collection  $users
              */
             public function __construct(Collection $users)
             {
@@ -171,7 +171,7 @@ class WithMultipleSheetsTest extends TestCase
             }
 
             /**
-             * @param string|int $sheetName
+             * @param  string|int  $sheetName
              */
             public function onUnknownSheet($sheetName)
             {
@@ -199,7 +199,7 @@ class WithMultipleSheetsTest extends TestCase
                     'Some Random Sheet Name' => new class implements SkipsUnknownSheets
                     {
                         /**
-                         * @param string|int $sheetName
+                         * @param  string|int  $sheetName
                          */
                         public function onUnknownSheet($sheetName)
                         {
@@ -234,7 +234,7 @@ class WithMultipleSheetsTest extends TestCase
             }
 
             /**
-             * @param string|int $sheetName
+             * @param  string|int  $sheetName
              */
             public function onUnknownSheet($sheetName)
             {
@@ -262,7 +262,7 @@ class WithMultipleSheetsTest extends TestCase
                     99999 => new class implements SkipsUnknownSheets
                     {
                         /**
-                         * @param string|int $sheetName
+                         * @param  string|int  $sheetName
                          */
                         public function onUnknownSheet($sheetName)
                         {

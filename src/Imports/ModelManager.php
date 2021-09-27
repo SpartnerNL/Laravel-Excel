@@ -31,7 +31,7 @@ class ModelManager
     private $remembersRowNumber = false;
 
     /**
-     * @param RowValidator $validator
+     * @param  RowValidator  $validator
      */
     public function __construct(RowValidator $validator)
     {
@@ -39,8 +39,8 @@ class ModelManager
     }
 
     /**
-     * @param int   $row
-     * @param array $attributes
+     * @param  int  $row
+     * @param  array  $attributes
      */
     public function add(int $row, array $attributes)
     {
@@ -48,7 +48,7 @@ class ModelManager
     }
 
     /**
-     * @param bool $remembersRowNumber
+     * @param  bool  $remembersRowNumber
      */
     public function setRemembersRowNumber(bool $remembersRowNumber)
     {
@@ -56,8 +56,8 @@ class ModelManager
     }
 
     /**
-     * @param ToModel $import
-     * @param bool    $massInsert
+     * @param  ToModel  $import
+     * @param  bool  $massInsert
      *
      * @throws ValidationException
      */
@@ -77,10 +77,9 @@ class ModelManager
     }
 
     /**
-     * @param ToModel $import
-     * @param array   $attributes
-     *
-     * @param int|null $rowNumber
+     * @param  ToModel  $import
+     * @param  array  $attributes
+     * @param  int|null  $rowNumber
      * @return Model[]|Collection
      */
     public function toModels(ToModel $import, array $attributes, $rowNumber = null): Collection
@@ -99,7 +98,7 @@ class ModelManager
     }
 
     /**
-     * @param ToModel $import
+     * @param  ToModel  $import
      */
     private function massFlush(ToModel $import)
     {
@@ -134,7 +133,7 @@ class ModelManager
     }
 
     /**
-     * @param ToModel $import
+     * @param  ToModel  $import
      */
     private function singleFlush(ToModel $import)
     {
@@ -164,8 +163,7 @@ class ModelManager
     }
 
     /**
-     * @param Model $model
-     *
+     * @param  Model  $model
      * @return Model
      */
     private function prepare(Model $model): Model
@@ -192,7 +190,7 @@ class ModelManager
     }
 
     /**
-     * @param WithValidation $import
+     * @param  WithValidation  $import
      *
      * @throws ValidationException
      */

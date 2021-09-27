@@ -17,8 +17,8 @@ class BatchCache implements CacheInterface
     protected $memory;
 
     /**
-     * @param CacheInterface $cache
-     * @param MemoryCache    $memory
+     * @param  CacheInterface  $cache
+     * @param  MemoryCache  $memory
      */
     public function __construct(CacheInterface $cache, MemoryCache $memory)
     {

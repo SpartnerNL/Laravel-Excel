@@ -52,7 +52,6 @@ class WithChunkReadingTest extends TestCase
 
             /**
              * @param  array  $row
-             *
              * @return Model|null
              */
             public function model(array $row)
@@ -112,7 +111,6 @@ class WithChunkReadingTest extends TestCase
 
             /**
              * @param  array  $row
-             *
              * @return Model|null
              */
             public function model(array $row)
@@ -158,7 +156,6 @@ class WithChunkReadingTest extends TestCase
 
             /**
              * @param  array  $row
-             *
              * @return Model|null
              */
             public function model(array $row)
@@ -204,7 +201,6 @@ class WithChunkReadingTest extends TestCase
 
             /**
              * @param  array  $row
-             *
              * @return Model|null
              */
             public function model(array $row)
@@ -250,7 +246,6 @@ class WithChunkReadingTest extends TestCase
 
             /**
              * @param  array  $row
-             *
              * @return Model|null
              */
             public function model(array $row)
@@ -347,7 +342,6 @@ class WithChunkReadingTest extends TestCase
                     {
                         /**
                          * @param  array  $row
-                         *
                          * @return Model|null
                          */
                         public function model(array $row)
@@ -370,7 +364,6 @@ class WithChunkReadingTest extends TestCase
                     {
                         /**
                          * @param  array  $row
-                         *
                          * @return Model|null
                          */
                         public function model(array $row)
@@ -427,7 +420,6 @@ class WithChunkReadingTest extends TestCase
                     {
                         /**
                          * @param  array  $row
-                         *
                          * @return Model|null
                          */
                         public function model(array $row)
@@ -450,7 +442,6 @@ class WithChunkReadingTest extends TestCase
                     {
                         /**
                          * @param  array  $row
-                         *
                          * @return Model|null
                          */
                         public function model(array $row)
@@ -491,7 +482,6 @@ class WithChunkReadingTest extends TestCase
 
             /**
              * @param  array  $row
-             *
              * @return Model|null
              */
             public function model(array $row)

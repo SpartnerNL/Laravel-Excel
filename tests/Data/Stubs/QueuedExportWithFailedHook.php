@@ -33,8 +33,7 @@ class QueuedExportWithFailedHook implements FromCollection, WithMapping
     }
 
     /**
-     * @param User $user
-     *
+     * @param  User  $user
      * @return array
      */
     public function map($user): array
@@ -43,7 +42,7 @@ class QueuedExportWithFailedHook implements FromCollection, WithMapping
     }
 
     /**
-     * @param Exception $exception
+     * @param  Exception  $exception
      */
     public function failed(Exception $exception)
     {

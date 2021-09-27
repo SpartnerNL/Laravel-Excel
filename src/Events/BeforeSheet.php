@@ -17,8 +17,8 @@ class BeforeSheet extends Event
     private $exportable;
 
     /**
-     * @param Sheet  $sheet
-     * @param object $exportable
+     * @param  Sheet  $sheet
+     * @param  object  $exportable
      */
     public function __construct(Sheet $sheet, $exportable)
     {

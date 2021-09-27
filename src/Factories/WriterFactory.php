@@ -19,12 +19,12 @@ class WriterFactory
     use MapsCsvSettings;
 
     /**
-     * @param string      $writerType
-     * @param Spreadsheet $spreadsheet
-     * @param object      $export
+     * @param  string  $writerType
+     * @param  Spreadsheet  $spreadsheet
+     * @param  object  $export
+     * @return IWriter
      *
      * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
-     * @return IWriter
      */
     public static function make(string $writerType, Spreadsheet $spreadsheet, $export): IWriter
     {
@@ -70,7 +70,6 @@ class WriterFactory
 
     /**
      * @param $export
-     *
      * @return bool
      */
     private static function includesCharts($export): bool
