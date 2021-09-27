@@ -265,7 +265,7 @@ class Sheet
                 $rows = $this->toCollection($import, $startRow, null, $calculatesFormulas, $formatData);
 
                 if ($import instanceof WithValidation) {
-                    $this->validate($import, $startRow, $rows);
+                    $rows = $this->validated($import, $startRow, $rows);
                 }
 
                 $import->collection($rows);
@@ -275,7 +275,7 @@ class Sheet
                 $rows = $this->toArray($import, $startRow, null, $calculatesFormulas, $formatData);
 
                 if ($import instanceof WithValidation) {
-                    $this->validate($import, $startRow, $rows);
+                    $rows = $this->validated($import, $startRow, $rows);
                 }
 
                 $import->array($rows);
@@ -659,7 +659,10 @@ class Sheet
         unset($this->worksheet);
     }
 
-    protected function validate(WithValidation $import, int $startRow, $rows)
+    /**
+     * @return  Collection|array
+     */
+    protected function validated(WithValidation $import, int $startRow, $rows)
     {
         $toValidate = (new Collection($rows))->mapWithKeys(function ($row, $index) use ($startRow) {
             return [($startRow + $index) => $row];
@@ -668,7 +671,12 @@ class Sheet
         try {
             app(RowValidator::class)->validate($toValidate->toArray(), $import);
         } catch (RowSkippedException $e) {
+            foreach ($e->skippedRows() as $row) {
+                unset($rows[$row - $startRow]);
+            }
         }
+
+        return $rows;
     }
 
     /**

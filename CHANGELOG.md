@@ -8,8 +8,8 @@ All notable changes to this project will be documented in this file.
 
 - Change default local_path configuration
 - Fix queueImport function to be able to assert chained jobs
+- Skipped failure no longer persists in `ToCollection` and `ToArray`.
 - Fix missing InteractsWithQueue trait in AppendToSheet jobs
-
 
 ## [3.1.33] - 2021-08-12
 

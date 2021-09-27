@@ -3,11 +3,13 @@
 namespace Maatwebsite\Excel\Tests\Concerns;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\OnEachRow;
 use Maatwebsite\Excel\Concerns\SkipsFailures;
 use Maatwebsite\Excel\Concerns\SkipsOnFailure;
+use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithValidation;
@@ -247,6 +249,58 @@ class SkipsOnFailureTest extends TestCase
                     'email'    => $row[1],
                     'password' => 'secret',
                 ]);
+            }
+
+            /**
+             * @return array
+             */
+            public function rules(): array
+            {
+                return [
+                    '1' => Rule::in(['patrick@maatwebsite.nl']),
+                ];
+            }
+        };
+        $this->assertEmpty(User::all());
+
+        $import->import('import-users.xlsx');
+
+        $this->assertCount(1, $import->failures());
+
+        // Shouldn't have rollbacked other imported rows.
+        $this->assertDatabaseHas('users', [
+            'email' => 'patrick@maatwebsite.nl',
+        ]);
+
+        // Should have skipped inserting
+        $this->assertDatabaseMissing('users', [
+            'email' => 'taylor@laravel.com',
+        ]);
+    }
+
+    /**
+     * @test
+     */
+    public function can_validate_using_tocollection_and_skipsonfailure()
+    {
+        $import = new class implements ToCollection, WithValidation, SkipsOnFailure
+        {
+            use Importable, SkipsFailures;
+
+            /**
+             * @param Row $row
+             *
+             * @return Model|null
+             */
+            public function collection(Collection $rows)
+            {
+                $rows = $rows->each(function ($row) {
+                    return User::create([
+                        'name'     => $row[0],
+                        'email'    => $row[1],
+                        'password' => 'secret',
+                    ]);
+                });
             }
 
             /**
