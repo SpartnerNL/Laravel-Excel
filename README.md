@@ -19,7 +19,7 @@ exports and imports.
   <span> · </span>
   <a href="https://course.laravel-excel.com">Video Course</a>
   <span> · </span>
-  <a href="https://github.com/Maatwebsite/Laravel-Nova-Excel">Nova</a>
+  <a href="https://github.com/SpartnerSoftware/Laravel-Nova-Excel">Nova</a>
   <span> · </span>
   <a href="https://medium.com/maatwebsite/laravel-excel/home">Blog</a>
   <span> · </span>
@@ -29,8 +29,8 @@ exports and imports.
 </h4>
 
 <p align="center">
-  <a href="https://github.com/Maatwebsite/Laravel-Excel/actions">
-    <img src="https://github.com/Maatwebsite/Laravel-Excel/workflows/Run%20tests/badge.svg?branch=3.1" alt="Github Actions">
+  <a href="https://github.com/SpartnerSoftware/Laravel-Excel/actions">
+    <img src="https://github.com/SpartnerSoftware/Laravel-Excel/workflows/Run%20tests/badge.svg?branch=3.1" alt="Github Actions">
   </a>
 
   <a href="https://styleci.io/repos/14259390">
@@ -67,7 +67,7 @@ exports and imports.
 
 You can find the full documentation of Laravel Excel [on the website](https://docs.laravel-excel.com).
 
-We welcome suggestions for improving our docs. The documentation repository can be found at [https://github.com/Maatwebsite/laravel-excel-docs](https://github.com/Maatwebsite/laravel-excel-docs).
+We welcome suggestions for improving our docs. The documentation repository can be found at [https://github.com/SpartnerSoftware/laravel-excel-docs](https://github.com/SpartnerSoftware/laravel-excel-docs).
 
 Some articles and tutorials can be found on our blog: https://medium.com/maatwebsite/laravel-excel/home
 
