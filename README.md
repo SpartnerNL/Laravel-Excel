@@ -30,7 +30,7 @@ exports and imports.
 
 <p align="center">
   <a href="https://github.com/SparterNL/Laravel-Excel/actions">
-    <img src="https://github.com/SparterNL/Laravel-Excel/workflows/Run%20tests/badge.svg?branch=3.1" alt="Github Actions">
+    <img src="https://github.com/Maatwebsite/Laravel-Excel/workflows/Run%20tests/badge.svg?branch=3.1" alt="Github Actions">
   </a>
 
   <a href="https://styleci.io/repos/14259390">
