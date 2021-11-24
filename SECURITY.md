@@ -12,4 +12,4 @@ Version | Security Fixes Until
 
 ## Reporting a Vulnerability
 
-If you discover a security vulnerability within Laravel Excel, please send an email to Patrick Brouwers at patrick@maatwebsite.nl. All security vulnerabilities will be promptly addressed.
+If you discover a security vulnerability within Laravel Excel, please send an email to Patrick Brouwers at patrick@spartner.nl. All security vulnerabilities will be promptly addressed.
