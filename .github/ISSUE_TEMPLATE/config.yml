@@ -1,13 +1,13 @@
 blank_issues_enabled: false
 contact_links:
   - name: 🧐 Questions
-    url: https://github.com/Maatwebsite/Laravel-Excel/discussions
+    url: https://github.com/SpartnerSoftware/Laravel-Excel/discussions
     about: The issuer tracker is focused on reporting bugs or problems. Please use the Discussions tabs for questions!
   - name: 💡 Proposals
-    url: https://github.com/Maatwebsite/Laravel-Excel/discussions
+    url: https://github.com/SpartnerSoftware/Laravel-Excel/discussions
     about: If you have a 🔥 idea. Please use the Discussions tab for this!
   - name: 📚 Documentation improvements
-    url: https://github.com/Maatwebsite/laravel-excel-docs
+    url: https://github.com/SpartnerSoftware/laravel-excel-docs
     about: Our documentation is open-source, you can make a PR with your suggested changes over there.
   - name: Commercial Support
     url: https://laravel-excel.com/commercial-support
