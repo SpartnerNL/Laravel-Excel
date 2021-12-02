@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [3.1.34] - 2021-12-2
+
 ### Changed
 
 - Change default local_path configuration
