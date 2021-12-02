@@ -114,22 +114,22 @@ class Row implements ArrayAccess
         return $this->row->getRowIndex();
     }
 
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         return isset(($this->toArray())[$offset]);
     }
 
-    public function offsetGet($offset)
+    public function offsetGet($offset): mixed
     {
         return ($this->toArray())[$offset];
     }
 
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         //
     }
 
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         //
     }
