@@ -73,19 +73,19 @@ class WithColumnLimitTest extends TestCase
                         'Test1',
                         'Test2',
                         null,
-                        null
+                        null,
                     ],
                     [
                         'Test3',
                         'Test4',
                         null,
-                        null
+                        null,
                     ],
                     [
                         'Test5',
                         'Test6',
                         null,
-                        null
+                        null,
                     ],
                 ], $array);
             }

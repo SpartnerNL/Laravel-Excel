@@ -99,7 +99,7 @@ class Row implements ArrayAccess
     }
 
     /**
-     * @param bool        $calculateFormulas
+     * @param bool  $calculateFormulas
      * @param string|null $endColumn
      * @return bool
      */
