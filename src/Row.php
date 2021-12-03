@@ -99,8 +99,8 @@ class Row implements ArrayAccess
     }
 
     /**
-     * @param bool  $calculateFormulas
-     * @param string|null $endColumn
+     * @param  bool  $calculateFormulas
+     * @param  string|null  $endColumn
      * @return bool
      */
     public function isEmpty($calculateFormulas = false, ?string $endColumn = null): bool
