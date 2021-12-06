@@ -32,6 +32,7 @@ class WithColumnFormattingTest extends TestCase
                     [Carbon::createFromDate(2018, 3, 6)],
                     [Carbon::createFromDate(2018, 3, 7)],
                     [Carbon::createFromDate(2018, 3, 8)],
+                    [Carbon::createFromDate(2021, 12, 6), 100]
                 ]);
             }
 
@@ -43,6 +44,7 @@ class WithColumnFormattingTest extends TestCase
             {
                 return [
                     Date::dateTimeToExcel($row[0]),
+                    isset($row[1]) ? $row[1] : null
                 ];
             }
 
@@ -53,9 +55,11 @@ class WithColumnFormattingTest extends TestCase
             {
                 return [
                     'A' => NumberFormat::FORMAT_DATE_DDMMYYYY,
+                    'B4:B4' => NumberFormat::FORMAT_CURRENCY_EUR,
                 ];
             }
         };
+
 
         $response = $export->store('with-column-formatting-store.xlsx');
 
@@ -64,9 +68,10 @@ class WithColumnFormattingTest extends TestCase
         $actual = $this->readAsArray(__DIR__ . '/../Data/Disks/Local/with-column-formatting-store.xlsx', 'Xlsx');
 
         $expected = [
-            ['06/03/2018'],
-            ['07/03/2018'],
-            ['08/03/2018'],
+            ['06/03/2018', null],
+            ['07/03/2018', null],
+            ['08/03/2018', null],
+            ['06/12/2021', '100 €']
         ];
 
         $this->assertEquals($expected, $actual);
