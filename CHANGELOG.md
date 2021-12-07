@@ -7,6 +7,7 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 
 - Fix `SkipsEmptyRows` support with the `WithColumnLimit` concern
+- formatColumn added range support
 
 ## [3.1.34] - 2021-12-2
 
@@ -24,7 +25,7 @@ All notable changes to this project will be documented in this file.
 
 - Make TransactionManager a singleton (#3270)
 - Fix Exportable disk options (#3296)
-- Delete temporary file after exception in import class  (#3312)
+- Delete temporary file after exception in import class (#3312)
 
 ## [3.1.32] - 2021-07-08
 
@@ -45,8 +46,10 @@ All notable changes to this project will be documented in this file.
 
 ### Fixed
 
-- Create failures of rows than didn't exists but where requested in row validation
-- Fix Bug Formulas are not calculated when import implements WithCalculatedFormulas with SkipsEmptyRows #3127
+- Create failures of rows than didn't exists but where requested in row
+  validation
+- Fix Bug Formulas are not calculated when import implements
+  WithCalculatedFormulas with SkipsEmptyRows #3127
 - PhpSpreadsheet 1.18 support
 
 ## [3.1.30] - 2021-04-06
@@ -96,9 +99,12 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 
-- Added an ability to prepare rows before appending rows to sheet. Just add `prepareRows` method for your export class if needed.
-- Added an ability to catch exceptions from `QueueExport` job. Just add `failed` method for your export class if needed.
-- Added an ability to set locale for queued export. Just implement `Illuminate\Contracts\Translation\HasLocalePreference` for your export.
+- Added an ability to prepare rows before appending rows to sheet. Just add
+  `prepareRows` method for your export class if needed.
+- Added an ability to catch exceptions from `QueueExport` job. Just add `failed`
+  method for your export class if needed.
+- Added an ability to set locale for queued export. Just implement
+  `Illuminate\Contracts\Translation\HasLocalePreference` for your export.
 - Added `JsonSerializable` support in `Maatwebsite\Excel\Validators\Failure`.
 - Added `$maxExceptions` support in `Maatwebsite\Excel\Jobs\ReadChunk.php`.
 - Added support to upsert models by implementing the `WithUpserts` concern.
@@ -144,7 +150,8 @@ All notable changes to this project will be documented in this file.
 
 ### Fixed
 
-- Fixed issue with using ShouldAutosize in combination with FromView column widths.
+- Fixed issue with using ShouldAutosize in combination with FromView column
+  widths.
 
 ## [3.1.20] - 2020-07-22
 
@@ -169,7 +176,8 @@ All notable changes to this project will be documented in this file.
 
 - Fixed test helper docblocks on the Excel facade.
 - Fix for importing with a start row beyond the highest row.
-- Fixed `BeforeSheet` and `AfterSheet` events receiving exportable instance instead of importable when calling on an Import.
+- Fixed `BeforeSheet` and `AfterSheet` events receiving exportable instance
+  instead of importable when calling on an Import.
 - Fix for value binders not working in queued exports.
 - Fix when using WithLimit concern when having less rows than the limit.
 - Fix AfterImport job being fired twice if not using queueing.
