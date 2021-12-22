@@ -340,7 +340,7 @@ class Sheet
         foreach ($this->worksheet->getRowIterator($startRow, $endRow) as $index => $row) {
             $row = new Row($row, $headingRow);
 
-            if ($import instanceof SkipsEmptyRows && $row->isEmpty($calculateFormulas)) {
+            if ($import instanceof SkipsEmptyRows && $row->isEmpty($calculateFormulas, $endColumn)) {
                 continue;
             }
 
