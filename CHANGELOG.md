@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file.
 
 ### Fixed
 
+- Added `flush_writing` configuration to avoid flushing the cache exporting files
 - Fix `SkipsEmptyRows` support with the `WithColumnLimit` concern
 - formatColumn added range support
 

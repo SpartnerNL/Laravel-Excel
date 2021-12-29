@@ -3,6 +3,7 @@
 namespace Maatwebsite\Excel\Tests;
 
 use Illuminate\Queue\Events\JobProcessing;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Queue;
 use Maatwebsite\Excel\Excel;
 use Maatwebsite\Excel\Files\RemoteTemporaryFile;
@@ -174,5 +175,49 @@ class QueuedExportTest extends TestCase
         $this->assertTrue(app('queue-has-correct-locale'));
 
         $this->assertEquals($currentLocale, app()->getLocale());
+    }
+
+    /**
+     * @test
+     */
+    public function can_queue_export_flushing_the_cache()
+    {
+        config()->set('excel.cache.driver', 'illuminate');
+        config()->set('excel.cache.flush_writing', true);
+
+        Cache::put('test', 'test');
+
+        $export = new QueuedExport();
+
+        $export->queue('queued-export.xlsx')->chain([
+            new AfterQueueExportJob(__DIR__ . '/Data/Disks/Local/queued-export.xlsx'),
+        ]);
+
+        $array = $this->readAsArray(__DIR__ . '/Data/Disks/Local/queued-export.xlsx', Excel::XLSX);
+        $this->assertCount(100, $array);
+
+        $this->assertNull(Cache::get('test'));
+    }
+
+    /**
+     * @test
+     */
+    public function can_queue_export_not_flushing_the_cache()
+    {
+        config()->set('excel.cache.driver', 'illuminate');
+        config()->set('excel.cache.flush_writing', false);
+
+        Cache::put('test', 'test');
+
+        $export = new QueuedExport();
+
+        $export->queue('queued-export.xlsx')->chain([
+            new AfterQueueExportJob(__DIR__ . '/Data/Disks/Local/queued-export.xlsx'),
+        ]);
+
+        $array = $this->readAsArray(__DIR__ . '/Data/Disks/Local/queued-export.xlsx', Excel::XLSX);
+        $this->assertCount(100, $array);
+
+        $this->assertEquals('test', Cache::get('test'));
     }
 }

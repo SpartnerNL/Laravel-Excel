@@ -226,7 +226,7 @@ return [
         | Drivers: memory|illuminate|batch
         |
         */
-        'driver'     => 'memory',
+        'driver'        => 'memory',
 
         /*
         |--------------------------------------------------------------------------
@@ -238,7 +238,7 @@ return [
         | Here you can tweak the memory limit to your liking.
         |
         */
-        'batch'     => [
+        'batch'         => [
             'memory_limit' => 60000,
         ],
 
@@ -254,9 +254,22 @@ return [
         | at "null" it will use the default store.
         |
         */
-        'illuminate' => [
+        'illuminate'    => [
             'store' => null,
         ],
+
+        /*
+        |--------------------------------------------------------------------------
+        | Clear cache writing
+        |--------------------------------------------------------------------------
+        |
+        | When using the "illuminate" caching driver, exporting files,
+        | the default writer instance will flush the cache at the end
+        | of its process. You can set this to true if you want to avoid
+        | flushing the cache.
+        |
+        */
+        'flush_writing' => true,
     ],
 
     /*
