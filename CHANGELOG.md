@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file.
 
 ### Fixed
 
+- Removed cache flush exporting files
 - Fix `SkipsEmptyRows` support with the `WithColumnLimit` concern
 - formatColumn added range support
 
