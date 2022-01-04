@@ -4,11 +4,13 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [3.1.35] - 2022-01-04
+
 ### Fixed
 
-- Removed cache flush exporting files
+- Removed cache flush for cell caching as this is already handled by PhpSpreadsheet
 - Fix `SkipsEmptyRows` support with the `WithColumnLimit` concern
-- formatColumn added range support
+- Added range support to FormatColumn
 
 ## [3.1.34] - 2021-12-2
 
@@ -185,7 +187,8 @@ All notable changes to this project will be documented in this file.
 - Raw() method now also available on Exportable.
 - Fix for breaking changes in PhpSpreadsheet with empty enclosures.
 
-[Unreleased]: https://github.com/Maatwebsite/Laravel-Excel/compare/3.1.34...HEAD
+[Unreleased]: https://github.com/Maatwebsite/Laravel-Excel/compare/3.1.35...HEAD
+[3.1.35]: https://github.com/Maatwebsite/Laravel-Excel/compare/3.1.34...3.1.35
 [3.1.34]: https://github.com/Maatwebsite/Laravel-Excel/compare/3.1.33...3.1.34
 [3.1.33]: https://github.com/Maatwebsite/Laravel-Excel/compare/3.1.32...3.1.33
 [3.1.32]: https://github.com/Maatwebsite/Laravel-Excel/compare/3.1.31...3.1.32
