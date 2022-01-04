@@ -183,7 +183,6 @@ class QueuedExportTest extends TestCase
     public function can_queue_export_not_flushing_the_cache()
     {
         config()->set('excel.cache.driver', 'illuminate');
-        config()->set('excel.cache.flush_writing', false);
 
         Cache::put('test', 'test');
 
