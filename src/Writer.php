@@ -2,7 +2,6 @@
 
 namespace Maatwebsite\Excel;
 
-use Maatwebsite\Excel\Cache\CacheManager;
 use Maatwebsite\Excel\Concerns\WithCustomValueBinder;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
