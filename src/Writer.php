@@ -146,9 +146,6 @@ class Writer
         $this->clearListeners();
         $this->spreadsheet->disconnectWorksheets();
         unset($this->spreadsheet);
-        if (config('excel.cache.flush_writing', true)) {
-            app(CacheManager::class)->flush();
-        }
 
         return $temporaryFile;
     }

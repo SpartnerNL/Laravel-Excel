@@ -180,28 +180,6 @@ class QueuedExportTest extends TestCase
     /**
      * @test
      */
-    public function can_queue_export_flushing_the_cache()
-    {
-        config()->set('excel.cache.driver', 'illuminate');
-        config()->set('excel.cache.flush_writing', true);
-
-        Cache::put('test', 'test');
-
-        $export = new QueuedExport();
-
-        $export->queue('queued-export.xlsx')->chain([
-            new AfterQueueExportJob(__DIR__ . '/Data/Disks/Local/queued-export.xlsx'),
-        ]);
-
-        $array = $this->readAsArray(__DIR__ . '/Data/Disks/Local/queued-export.xlsx', Excel::XLSX);
-        $this->assertCount(100, $array);
-
-        $this->assertNull(Cache::get('test'));
-    }
-
-    /**
-     * @test
-     */
     public function can_queue_export_not_flushing_the_cache()
     {
         config()->set('excel.cache.driver', 'illuminate');
