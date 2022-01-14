@@ -92,7 +92,10 @@ class Excel implements Exporter, Importer
      */
     public function store($export, string $filePath, string $diskName = null, string $writerType = null, $diskOptions = [])
     {
-        if ($export instanceof ShouldQueue) {
+        if (
+            $export instanceof ShouldQueue ||
+            (method_exists($export, 'shouldQueue') && $export->shouldQueue())
+        ) {
             return $this->queue($export, $filePath, $diskName, $writerType, $diskOptions);
         }
 
