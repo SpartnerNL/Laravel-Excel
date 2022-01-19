@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file.
 
 - Fix return type of `FromQuery::query()`
 - Support Laravel 9
+- Added a config setting to specify DB connection
 
 ## [3.1.35] - 2022-01-04
 
