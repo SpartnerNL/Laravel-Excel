@@ -29,7 +29,7 @@ class TransactionManager extends Manager
     public function createDbDriver()
     {
         return new DbTransactionHandler(
-            DB::connection()
+            DB::connection(config('excel.transactions.db.connection'))
         );
     }
 }
