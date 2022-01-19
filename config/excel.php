@@ -276,9 +276,9 @@ return [
     */
     'transactions' => [
         'handler' => 'db',
-        'db' => [
+        'db'      => [
             'connection' => null,
-        ]
+        ],
     ],
 
     'temporary_files' => [
