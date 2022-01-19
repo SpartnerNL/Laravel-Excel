@@ -277,7 +277,7 @@ return [
     'transactions' => [
         'handler' => 'db',
         'db' => [
-            'connection' => null
+            'connection' => null,
         ]
     ],
 
