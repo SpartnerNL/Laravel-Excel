@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 ## [Unreleased]
 
 - Fix return type of `FromQuery::query()`
+- Support Laravel 9
 
 ## [3.1.35] - 2022-01-04
 
