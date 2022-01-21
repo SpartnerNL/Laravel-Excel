@@ -21,7 +21,7 @@ exports and imports.
   <span> · </span>
   <a href="https://course.laravel-excel.com">Video Course</a>
   <span> · </span>
-  <a href="https://github.com/SparterNL/Laravel-Nova-Excel">Nova</a>
+  <a href="https://github.com/SpartnerNL/Laravel-Nova-Excel">Nova</a>
   <span> · </span>
   <a href="https://medium.com/maatwebsite/laravel-excel/home">Blog</a>
   <span> · </span>
@@ -31,7 +31,7 @@ exports and imports.
 </h4>
 
 <p align="center">
-  <a href="https://github.com/SparterNL/Laravel-Excel/actions">
+  <a href="https://github.com/SpartnerNL/Laravel-Excel/actions">
     <img src="https://github.com/Maatwebsite/Laravel-Excel/workflows/Run%20tests/badge.svg?branch=3.1" alt="Github Actions">
   </a>
 
@@ -69,7 +69,7 @@ exports and imports.
 
 You can find the full documentation of Laravel Excel [on the website](https://docs.laravel-excel.com).
 
-We welcome suggestions for improving our docs. The documentation repository can be found at [https://github.com/SparterNL/laravel-excel-docs](https://github.com/SparterNL/laravel-excel-docs).
+We welcome suggestions for improving our docs. The documentation repository can be found at [https://github.com/SpartnerNL/laravel-excel-docs](https://github.com/SpartnerNL/laravel-excel-docs).
 
 Some articles and tutorials can be found on our blog: https://medium.com/maatwebsite/laravel-excel/home
 
@@ -79,20 +79,20 @@ Some articles and tutorials can be found on our blog: https://medium.com/maatweb
 
 Laravel Excel is created with love and care by Spartner (formerly known as Maatwebsite) to give back to the Laravel community. It is completely free (MIT license) to use, however the package is licensed as Postcardware. This means that if it makes it to your production environment, we would very much appreciate receiving a postcard from your hometown.
 
-**Spartner**  
-Markt 2  
-6231 LS Meerssen  
-The Netherlands. 
+**Spartner**
+Markt 2
+6231 LS Meerssen
+The Netherlands.
 
 More about the license can be found at: [https://docs.laravel-excel.com/3.1/getting-started/license.html](https://docs.laravel-excel.com/3.1/getting-started/license.html)
 
 ## Created by Spartner (formerly Maatwebsite)
 
-We are a strategic development partner, creating web-based custom built software from Laravel. In need of a digital solution for your challenge? Give us a call. 
+We are a strategic development partner, creating web-based custom built software from Laravel. In need of a digital solution for your challenge? Give us a call.
 
-https://spartner.software  
-info@spartner.nl  
-+31 (0) 10 - 7449312  
+https://spartner.software
+info@spartner.nl
++31 (0) 10 - 7449312
 
 ## :wrench: Supported Versions
 
