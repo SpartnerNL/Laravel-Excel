@@ -20,7 +20,7 @@
     ],
     "require": {
         "php": ">=5.5",
-        "stzoran1/phpofficephpexcel": "^1.8.1",
+        "stzoran1/phpofficephpexcel": "^1.9.0",
         "illuminate/cache": "^5.0",
         "illuminate/config": "^5.0",
         "illuminate/filesystem": "^5.0",
