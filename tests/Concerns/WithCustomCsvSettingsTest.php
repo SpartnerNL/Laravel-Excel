@@ -54,7 +54,7 @@ class WithCustomCsvSettingsTest extends TestCase
                     'use_bom'                => true,
                     'include_separator_line' => true,
                     'excel_compatibility'    => false,
-                    'output_encoding'        => 'UTF-8',
+                    'output_encoding'        => '',
                 ];
             }
         };
