@@ -54,6 +54,7 @@ class WithCustomCsvSettingsTest extends TestCase
                     'use_bom'                => true,
                     'include_separator_line' => true,
                     'excel_compatibility'    => false,
+                    'output_encoding'        => '',
                 ];
             }
         };
@@ -65,6 +66,55 @@ class WithCustomCsvSettingsTest extends TestCase
         $this->assertStringContains('sep=;', $contents);
         $this->assertStringContains('A1;B1', $contents);
         $this->assertStringContains('A2;B2', $contents);
+    }
+
+    /**
+     * @test
+     */
+    public function can_store_csv_export_with_custom_encoding()
+    {
+        $export = new class implements FromCollection, WithCustomCsvSettings
+        {
+            /**
+             * @return Collection
+             */
+            public function collection()
+            {
+                return collect([
+                    ['A1', '€ŠšŽžŒœŸ'],
+                    ['A2', 'åßàèòìù'],
+                ]);
+            }
+
+            /**
+             * @return array
+             */
+            public function getCsvSettings(): array
+            {
+                return [
+                    'delimiter'              => ';',
+                    'enclosure'              => '',
+                    'line_ending'            => PHP_EOL,
+                    'use_bom'                => false,
+                    'include_separator_line' => true,
+                    'excel_compatibility'    => false,
+                    'output_encoding'        => 'ISO-8859-15',
+                ];
+            }
+        };
+
+        $this->SUT->store($export, 'custom-csv-iso.csv');
+
+        $contents = file_get_contents(__DIR__ . '/../Data/Disks/Local/custom-csv-iso.csv');
+
+        Assert::assertEquals('ISO-8859-15', mb_detect_encoding($contents, 'ISO-8859-15', true));
+        Assert::assertFalse(mb_detect_encoding($contents, 'UTF-8', true));
+
+        $contents = mb_convert_encoding($contents, 'UTF-8', 'ISO-8859-15');
+
+        $this->assertStringContains('sep=;', $contents);
+        $this->assertStringContains('A1;€ŠšŽžŒœŸ', $contents);
+        $this->assertStringContains('A2;åßàèòìù', $contents);
     }
 
     /**

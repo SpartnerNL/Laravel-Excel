@@ -56,6 +56,7 @@ class WriterFactory
             $writer->setUseBOM(static::$useBom);
             $writer->setIncludeSeparatorLine(static::$includeSeparatorLine);
             $writer->setExcelCompatibility(static::$excelCompatibility);
+            $writer->setOutputEncoding(static::$outputEncoding);
         }
 
         // Calculation settings
