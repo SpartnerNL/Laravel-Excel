@@ -54,7 +54,7 @@ trait MapsCsvSettings
     /**
      * @var string
      */
-    protected static $outputEncoding = 'UTF-8';
+    protected static $outputEncoding = '';
 
     /**
      * @param  array  $config
