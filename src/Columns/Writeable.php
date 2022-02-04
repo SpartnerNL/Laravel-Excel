@@ -5,6 +5,7 @@ namespace Maatwebsite\Excel\Columns;
 use Closure;
 use Illuminate\Support\Arr;
 use PhpOffice\PhpSpreadsheet\Cell\Cell;
+use PhpOffice\PhpSpreadsheet\Cell\DataType;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
 trait Writeable
@@ -57,9 +58,13 @@ trait Writeable
 
     protected function writeValue(Worksheet $worksheet, Cell $cell, $value): void
     {
-        $this->type
-            ? $cell->setValueExplicit($value, $this->type)
-            : $cell->setValue($value);
+        if (null === $value && $this->nullable) {
+            $cell->setValueExplicit($value, DataType::TYPE_NULL);
+        } else {
+            $this->type
+                ? $cell->setValueExplicit($value, $this->type)
+                : $cell->setValue($value);
+        }
 
         foreach ($this->writingCallback as $callback) {
             if (is_callable($callback)) {
@@ -78,9 +83,13 @@ trait Writeable
             return ($this->attribute)($data);
         }
 
-        return $this->toExcelValue(
-            Arr::get($data, $this->attribute)
-        );
+        $value = Arr::get($data, $this->attribute);
+
+        if ($this->nullable && null === $value) {
+            return null;
+        }
+
+        return $this->toExcelValue($value);
     }
 
     /**

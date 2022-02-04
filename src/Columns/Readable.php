@@ -13,9 +13,13 @@ trait Readable
      */
     public function read(Cell $cell)
     {
-        $value = $this->cast(
-            $this->value($cell)
-        );
+        $value = $this->value($cell);
+
+        if ($this->nullable && blank($value)) {
+            return null;
+        }
+
+        $value = $this->cast($value);
 
         if ($this->attribute instanceof Closure) {
             return ($this->attribute)($value, $cell);

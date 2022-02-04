@@ -2,6 +2,7 @@
 
 namespace Maatwebsite\Excel\Columns;
 
+use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\ImageContent;
 use PhpOffice\PhpSpreadsheet\Cell\Cell;
 use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
@@ -15,12 +16,29 @@ class Image extends Column
     protected $height;
 
     /**
+     * @var string|null
+     */
+    protected $disk = null;
+
+    /**
      * @param  int|null  $height
      * @return $this
      */
     public function height(int $height)
     {
         $this->height = $height;
+
+        return $this;
+    }
+
+    /**
+     * @param string|null $disk
+     *
+     * @return $this
+     */
+    public function disk(string $disk)
+    {
+        $this->disk = $disk;
 
         return $this;
     }
@@ -54,5 +72,14 @@ class Image extends Column
         if ($this->width) {
             $drawing->setWidth($this->width);
         }
+    }
+
+    /**
+     * @param  mixed  $value
+     * @return mixed
+     */
+    protected function toExcelValue($value)
+    {
+        return Storage::disk($this->disk)->path($value);
     }
 }

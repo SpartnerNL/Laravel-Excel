@@ -61,6 +61,8 @@ class Column
      */
     protected $columns = [];
 
+    protected $nullable = false;
+
     /**
      * @param  string  $title
      * @param  string|callable  $attribute
@@ -124,6 +126,16 @@ class Column
     public function formatted()
     {
         $this->formatted = true;
+
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    public function nullable()
+    {
+        $this->nullable = true;
 
         return $this;
     }

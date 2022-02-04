@@ -17,6 +17,15 @@ class Number extends Column
         return $this;
     }
 
+    public function toExcelValue($value)
+    {
+        if ($this->format === NumberFormat::FORMAT_NUMBER) {
+            return (int) $value;
+        }
+
+        return (float) $value;
+    }
+
     public function cast($value)
     {
         if ($this->format === NumberFormat::FORMAT_NUMBER) {

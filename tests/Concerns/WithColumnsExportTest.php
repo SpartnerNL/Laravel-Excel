@@ -118,6 +118,7 @@ class WithColumnsExportTest extends TestCase
                     Image::make('Avatar', function (array $row) {
                         return Storage::disk('local')->path($row['avatar']);
                     })->height(25),
+                    Image::make('Avatar2', 'avatar')->disk('local')->height(25),
                 ];
             }
         };
@@ -128,19 +129,22 @@ class WithColumnsExportTest extends TestCase
 
         $spreadsheet = $this->read(__DIR__ . '/../Data/Disks/Local/with-columns-export.xlsx', 'Xlsx');
 
-        $this->assertCount(2, $spreadsheet->getActiveSheet()->getDrawingCollection());
+        $this->assertCount(4, $spreadsheet->getActiveSheet()->getDrawingCollection());
 
         $this->assertEquals([
             [
                 'ID',
                 'Avatar',
+                'Avatar2',
             ],
             [
                 1,
                 null,
+                null,
             ],
             [
                 2,
+                null,
                 null,
             ],
         ], $spreadsheet->getActiveSheet()->toArray());
