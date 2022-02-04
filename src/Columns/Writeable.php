@@ -21,7 +21,7 @@ trait Writeable
     }
 
     /**
-     * @param mixed $data
+     * @param  mixed  $data
      */
     public function write(Worksheet $sheet, int $row, $data): Cell
     {
@@ -69,8 +69,7 @@ trait Writeable
     }
 
     /**
-     * @param mixed $data
-     *
+     * @param  mixed  $data
      * @return mixed
      */
     protected function resolveValue($data)
@@ -85,8 +84,7 @@ trait Writeable
     }
 
     /**
-     * @param mixed $value
-     *
+     * @param  mixed  $value
      * @return mixed
      */
     protected function toExcelValue($value)

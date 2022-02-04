@@ -17,8 +17,7 @@ class ColumnCollection extends Collection
     protected $items;
 
     /**
-     * @param object|WithColumns $concernable
-     *
+     * @param  object|WithColumns  $concernable
      * @return ColumnCollection
      */
     public static function makeFrom($concernable, ?array $headingRow = null): ColumnCollection

@@ -13,8 +13,7 @@ trait Styleable
     protected $style;
 
     /**
-     * @param array $style
-     *
+     * @param  array  $style
      * @return $this
      */
     public function style(array $style)
@@ -25,8 +24,7 @@ trait Styleable
     }
 
     /**
-     * @param callable $cellStyle
-     *
+     * @param  callable  $cellStyle
      * @return $this
      */
     public function withCellStyling(callable $cellStyle)
@@ -37,9 +35,8 @@ trait Styleable
     }
 
     /**
-     * @param string     $name
-     * @param float|null $size
-     *
+     * @param  string  $name
+     * @param  float|null  $size
      * @return $this
      */
     public function font(string $name, $size = null)
@@ -54,8 +51,7 @@ trait Styleable
     }
 
     /**
-     * @param float $size
-     *
+     * @param  float  $size
      * @return $this
      */
     public function textSize(float $size)
@@ -66,8 +62,7 @@ trait Styleable
     }
 
     /**
-     * @param bool $bold
-     *
+     * @param  bool  $bold
      * @return $this
      */
     public function bold(bool $bold = true)
@@ -78,8 +73,7 @@ trait Styleable
     }
 
     /**
-     * @param bool $italic
-     *
+     * @param  bool  $italic
      * @return $this
      */
     public function italic(bool $italic = true)

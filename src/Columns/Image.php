@@ -15,8 +15,7 @@ class Image extends Column
     protected $height;
 
     /**
-     * @param int|null $height
-     *
+     * @param  int|null  $height
      * @return $this
      */
     public function height(int $height)

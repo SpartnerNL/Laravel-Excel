@@ -10,9 +10,8 @@ class EmptyCell extends Column
     protected $type = DataType::TYPE_NULL;
 
     /**
-     * @param string|null          $title
-     * @param string|callable|null $attribute
-     *
+     * @param  string|null  $title
+     * @param  string|callable|null  $attribute
      * @return $this
      */
     public static function make(string $title = null, $attribute = null): Column

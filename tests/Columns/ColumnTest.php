@@ -189,8 +189,7 @@ class ColumnTest extends TestCase
         $sheet       = $spreadsheet->getActiveSheet();
 
         // Write value to A1
-        $column = Column
-            ::make('Attribute')
+        $column = Column::make('Attribute')
             ->index(1)
             ->style([
                 'font' => [
@@ -223,8 +222,7 @@ class ColumnTest extends TestCase
         $filepath = Storage::disk('local')->path('avatar.jpg');
 
         // Write value to A1
-        $column = Image
-            ::make('Logo', function () use ($filepath) {
+        $column = Image::make('Logo', function () use ($filepath) {
                 return $filepath;
             })
             ->height(61.0)
@@ -288,8 +286,7 @@ class ColumnTest extends TestCase
         $spreadsheet = new Spreadsheet();
         $sheet       = $spreadsheet->getActiveSheet();
 
-        $column = Hyperlink
-            ::make('Name')
+        $column = Hyperlink::make('Name')
             ->url(fn (array $data) => $data['link'])
             ->tooltip('Open link');
 
@@ -320,8 +317,7 @@ class ColumnTest extends TestCase
         $sheet       = $spreadsheet->getActiveSheet();
 
         // Write value to A1
-        $column = Column
-            ::make('Attribute')
+        $column = Column::make('Attribute')
             ->index(1)
             ->width(50);
 
@@ -340,8 +336,7 @@ class ColumnTest extends TestCase
         $sheet       = $spreadsheet->getActiveSheet();
 
         // Write value to A1
-        $column = Column
-            ::make('Attribute')
+        $column = Column::make('Attribute')
             ->index(1)
             ->autoSize();
 
@@ -363,19 +358,16 @@ class ColumnTest extends TestCase
         $this->assertNull($sheet->getAutoFilter()->getRange());
 
         // Write value to A1
-        $column = Column
-            ::make('Attribute')
+        $column = Column::make('Attribute')
             ->index(1)
             ->autoFilter();
 
         ColumnCollection::make([
             $column,
-            Column
-                ::make('Attribute2')
+            Column::make('Attribute2')
                 ->index(2)
                 ->autoFilter(),
-            Column
-                ::make('Attribute3')
+            Column::make('Attribute3')
                 ->index(3),
         ])->afterWriting($spreadsheet->getActiveSheet());
         $column->write($sheet, 1, ['attribute' => 'test']);

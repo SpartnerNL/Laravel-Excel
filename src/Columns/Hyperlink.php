@@ -49,8 +49,7 @@ class Hyperlink extends Column
     }
 
     /**
-     * @param callable|string|null $url
-     *
+     * @param  callable|string|null  $url
      * @return $this
      */
     public function url($url = null)
@@ -71,8 +70,7 @@ class Hyperlink extends Column
     }
 
     /**
-     * @param callable|string|null $tooltip
-     *
+     * @param  callable|string|null  $tooltip
      * @return $this
      */
     public function tooltip($tooltip = null)

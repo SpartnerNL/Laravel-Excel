@@ -8,8 +8,7 @@ use PhpOffice\PhpSpreadsheet\Cell\Cell;
 trait Readable
 {
     /**
-     * @param Cell $cell
-     *
+     * @param  Cell  $cell
      * @return mixed
      */
     public function read(Cell $cell)
@@ -40,8 +39,7 @@ trait Readable
     }
 
     /**
-     * @param mixed $value
-     *
+     * @param  mixed  $value
      * @return mixed
      */
     protected function cast($value)

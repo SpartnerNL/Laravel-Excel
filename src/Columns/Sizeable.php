@@ -27,8 +27,7 @@ trait Sizeable
     protected $collapsed = false;
 
     /**
-     * @param int|null $width
-     *
+     * @param  int|null  $width
      * @return $this
      */
     public function width(int $width)

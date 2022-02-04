@@ -104,6 +104,7 @@ class Sheet
      * @param  Spreadsheet  $spreadsheet
      * @param  string|int  $index
      * @return Sheet
+     *
      * @throws \PhpOffice\PhpSpreadsheet\Exception
      * @throws SheetNotFoundException
      */
@@ -120,6 +121,7 @@ class Sheet
      * @param  Spreadsheet  $spreadsheet
      * @param  int  $index
      * @return Sheet
+     *
      * @throws \PhpOffice\PhpSpreadsheet\Exception
      * @throws SheetNotFoundException
      */
@@ -136,6 +138,7 @@ class Sheet
      * @param  Spreadsheet  $spreadsheet
      * @param  string  $name
      * @return Sheet
+     *
      * @throws SheetNotFoundException
      */
     public static function byName(Spreadsheet $spreadsheet, string $name): Sheet

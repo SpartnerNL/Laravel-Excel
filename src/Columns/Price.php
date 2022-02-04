@@ -11,8 +11,7 @@ class Price extends Column
     protected $format = NumberFormat::FORMAT_NUMBER;
 
     /**
-     * @param string $currency
-     *
+     * @param  string  $currency
      * @return $this
      */
     public function currency(string $currency)

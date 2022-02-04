@@ -62,8 +62,8 @@ class Column
     protected $columns = [];
 
     /**
-     * @param string          $title
-     * @param string|callable $attribute
+     * @param  string  $title
+     * @param  string|callable  $attribute
      */
     protected function __construct(string $title, $attribute)
     {
@@ -72,9 +72,8 @@ class Column
     }
 
     /**
-     * @param string                    $title
-     * @param string|callable|EmptyCell $attribute
-     *
+     * @param  string  $title
+     * @param  string|callable|EmptyCell  $attribute
      * @return static
      */
     public static function make(string $title, $attribute = null)
@@ -93,8 +92,7 @@ class Column
     }
 
     /**
-     * @param string $type
-     *
+     * @param  string  $type
      * @return $this
      */
     public function type(string $type)
@@ -105,8 +103,7 @@ class Column
     }
 
     /**
-     * @param string $format
-     *
+     * @param  string  $format
      * @return $this
      */
     public function format(string $format)
@@ -132,8 +129,7 @@ class Column
     }
 
     /**
-     * @param string|int $index
-     *
+     * @param  string|int  $index
      * @return $this
      */
     public function coordinate($index)

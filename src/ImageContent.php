@@ -24,8 +24,7 @@ class ImageContent
     }
 
     /**
-     * @param BaseDrawing|Drawing|MemoryDrawing $drawing
-     *
+     * @param  BaseDrawing|Drawing|MemoryDrawing  $drawing
      * @return static
      */
     public static function from($drawing): self
@@ -89,9 +88,9 @@ class ImageContent
     }
 
     /**
-     * @param string      $path
-     * @param string|null $disk
-     * @param mixed       $options
+     * @param  string  $path
+     * @param  string|null  $disk
+     * @param  mixed  $options
      */
     public function store(string $path, ?string $disk = null, $options = []): void
     {

@@ -9,8 +9,7 @@ class Boolean extends Column
     protected $type = DataType::TYPE_BOOL;
 
     /**
-     * @param mixed $value
-     *
+     * @param  mixed  $value
      * @return bool
      */
     protected function cast($value): bool
@@ -19,8 +18,7 @@ class Boolean extends Column
     }
 
     /**
-     * @param mixed $value
-     *
+     * @param  mixed  $value
      * @return bool
      */
     protected function toExcelValue($value): bool
