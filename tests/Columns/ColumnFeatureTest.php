@@ -224,8 +224,8 @@ class ColumnFeatureTest extends TestCase
 
         // Write value to A1
         $column = Image::make('Logo', function () use ($filepath) {
-                return $filepath;
-            })
+            return $filepath;
+        })
             ->height(61.0)
             ->width(100);
 

@@ -32,8 +32,7 @@ class Image extends Column
     }
 
     /**
-     * @param string|null $disk
-     *
+     * @param  string|null  $disk
      * @return $this
      */
     public function disk(string $disk)

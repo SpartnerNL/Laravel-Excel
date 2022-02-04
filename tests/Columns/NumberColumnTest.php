@@ -2,7 +2,6 @@
 
 namespace Maatwebsite\Excel\Tests\Columns;
 
-use Maatwebsite\Excel\Columns\Column;
 use Maatwebsite\Excel\Columns\Number;
 use PhpOffice\PhpSpreadsheet\Cell\DataType;
 use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
@@ -10,7 +9,7 @@ use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 class NumberColumnTest extends BaseColumnTest
 {
     /**
-     * @param mixed $given
+     * @param  mixed  $given
      *
      * @test
      * @dataProvider exportValues
@@ -18,7 +17,7 @@ class NumberColumnTest extends BaseColumnTest
     public function can_write_column_values_explicitly($given, $expected)
     {
         $this->write(Number::make('Number Column'), [
-            'number_column' => $given
+            'number_column' => $given,
         ]);
 
         $this->assertCellValue($expected);
@@ -37,7 +36,7 @@ class NumberColumnTest extends BaseColumnTest
     }
 
     /**
-     * @param mixed $given
+     * @param  mixed  $given
      *
      * @test
      * @dataProvider decimalValues
@@ -45,7 +44,7 @@ class NumberColumnTest extends BaseColumnTest
     public function can_export_number_with_decimals($given, $expected)
     {
         $this->write(Number::make('Number Column')->withDecimals(), [
-            'number_column' => $given
+            'number_column' => $given,
         ]);
 
         $this->assertCellValue($expected);
@@ -64,7 +63,7 @@ class NumberColumnTest extends BaseColumnTest
     }
 
     /**
-     * @param mixed $given
+     * @param  mixed  $given
      *
      * @test
      * @dataProvider importValues
@@ -92,7 +91,7 @@ class NumberColumnTest extends BaseColumnTest
     }
 
     /**
-     * @param mixed $given
+     * @param  mixed  $given
      *
      * @test
      * @dataProvider importDecimalValues

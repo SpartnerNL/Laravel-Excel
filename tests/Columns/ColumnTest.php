@@ -13,20 +13,20 @@ class ColumnTest extends BaseColumnTest
     public function can_write_a_nullable_column()
     {
         /**
-         * NULL VALUE
+         * NULL VALUE.
          */
         $this->write(Column::make('Column')->nullable(), [
-            'column' => null
+            'column' => null,
         ]);
 
         $this->assertCellValue(null);
         $this->assertCellDataType(DataType::TYPE_NULL);
 
         /**
-         * NON-NULL VALUE
+         * NON-NULL VALUE.
          */
         $this->write(Column::make('Column')->nullable(), [
-            'column' => 'Text'
+            'column' => 'Text',
         ]);
 
         $this->assertCellValue('Text');
@@ -39,7 +39,7 @@ class ColumnTest extends BaseColumnTest
     public function can_read_nullable_columns()
     {
         /**
-         * NULL VALUE
+         * NULL VALUE.
          */
         $this->givenCellValue(null, DataType::TYPE_NULL);
 
@@ -50,7 +50,7 @@ class ColumnTest extends BaseColumnTest
         $this->assertSame(null, $value);
 
         /**
-         * EMPTY CELL
+         * EMPTY CELL.
          */
         $this->givenCellValue('', DataType::TYPE_STRING);
 
@@ -61,7 +61,7 @@ class ColumnTest extends BaseColumnTest
         $this->assertSame(null, $value);
 
         /**
-         * NON-NULL VALUE
+         * NON-NULL VALUE.
          */
         $this->givenCellValue('Text', DataType::TYPE_STRING);
 
@@ -71,5 +71,4 @@ class ColumnTest extends BaseColumnTest
 
         $this->assertSame('Text', $value);
     }
-
 }

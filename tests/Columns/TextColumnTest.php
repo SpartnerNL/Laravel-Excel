@@ -9,7 +9,7 @@ use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 class TextColumnTest extends BaseColumnTest
 {
     /**
-     * @param mixed $given
+     * @param  mixed  $given
      *
      * @test
      * @dataProvider exportValues
@@ -17,7 +17,7 @@ class TextColumnTest extends BaseColumnTest
     public function can_write_column_values_explicitly($given, string $expected)
     {
         $this->write(Text::make('Text Column'), [
-            'text_column' => $given
+            'text_column' => $given,
         ]);
 
         $this->assertCellValue($expected);
@@ -36,7 +36,7 @@ class TextColumnTest extends BaseColumnTest
     }
 
     /**
-     * @param mixed $given
+     * @param  mixed  $given
      *
      * @test
      * @dataProvider importValues

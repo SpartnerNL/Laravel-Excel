@@ -36,7 +36,7 @@ abstract class BaseColumnTest extends TestCase
     }
 
     /**
-     * @param mixed $value
+     * @param  mixed  $value
      */
     protected function givenCellValue($value, string $dataType, string $numberFormat = NumberFormat::FORMAT_GENERAL): void
     {
@@ -59,7 +59,7 @@ abstract class BaseColumnTest extends TestCase
     }
 
     /**
-     * @param mixed $expected
+     * @param  mixed  $expected
      */
     protected function assertCellValue($expected)
     {
