@@ -23,7 +23,7 @@ jobs:
 
     strategy:
       matrix:
-        php: [7.4, 8.0]
+        php: [7.4, 8.0, 8.1]
         laravel: [9, 8]
         dependency-version: [prefer-stable]
         os: [ubuntu-latest]
