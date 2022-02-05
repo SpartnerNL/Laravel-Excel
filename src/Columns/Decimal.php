@@ -14,4 +14,9 @@ class Decimal extends Column
     {
         return (float) $value;
     }
+
+    public function toExcelValue($value)
+    {
+        return (float) $value;
+    }
 }
