@@ -9,6 +9,7 @@ All notable changes to this project will be documented in this file.
 - Added a config setting to specify DB connection
 - Added a config setting to specify CSV output encoding
 - Added an ability to specify CSV ouput encoding through csvSettings
+- Fix calling isEmpty without second parameters endColumn in Sheet and ModelImporter Classes
 
 ## [3.1.35] - 2022-01-04
 
