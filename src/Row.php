@@ -7,6 +7,7 @@ use Closure;
 use Illuminate\Support\Collection;
 use PhpOffice\PhpSpreadsheet\Worksheet\Row as SpreadsheetRow;
 
+/** @mixin SpreadsheetRow */
 class Row implements ArrayAccess
 {
     use DelegatedMacroable;

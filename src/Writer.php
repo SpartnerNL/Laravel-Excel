@@ -17,6 +17,7 @@ use PhpOffice\PhpSpreadsheet\Cell\Cell;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
+/** @mixin Spreadsheet */
 class Writer
 {
     use DelegatedMacroable, HasEventBus;
