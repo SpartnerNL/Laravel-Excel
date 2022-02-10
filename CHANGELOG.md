@@ -4,12 +4,14 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+- Add `@mixin` docblock to all macroable classes to allow for IDE autocompletion of delegate classes
+
+## [3.1.36] - 2022-02-03
 - Fix return type of `FromQuery::query()`
 - Support Laravel 9
 - Added a config setting to specify DB connection
 - Added a config setting to specify CSV output encoding
 - Added an ability to specify CSV ouput encoding through csvSettings
-- Add `@mixin` docblock to all macroable classes to allow for IDE autocompletion of delegate classes
 
 ## [3.1.35] - 2022-01-04
 
@@ -194,7 +196,8 @@ All notable changes to this project will be documented in this file.
 - Raw() method now also available on Exportable.
 - Fix for breaking changes in PhpSpreadsheet with empty enclosures.
 
-[Unreleased]: https://github.com/Maatwebsite/Laravel-Excel/compare/3.1.35...HEAD
+[Unreleased]: https://github.com/Maatwebsite/Laravel-Excel/compare/3.1.36...HEAD
+[3.1.35]: https://github.com/Maatwebsite/Laravel-Excel/compare/3.1.35...3.1.36
 [3.1.35]: https://github.com/Maatwebsite/Laravel-Excel/compare/3.1.34...3.1.35
 [3.1.34]: https://github.com/Maatwebsite/Laravel-Excel/compare/3.1.33...3.1.34
 [3.1.33]: https://github.com/Maatwebsite/Laravel-Excel/compare/3.1.32...3.1.33
