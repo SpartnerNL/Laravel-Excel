@@ -29,6 +29,7 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Throwable;
 
+/** @mixin Spreadsheet */
 class Reader
 {
     use DelegatedMacroable, HasEventBus;

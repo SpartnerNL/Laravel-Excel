@@ -58,6 +58,7 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Worksheet\BaseDrawing;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
+/** @mixin Worksheet */
 class Sheet
 {
     use DelegatedMacroable, HasEventBus;
