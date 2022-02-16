@@ -83,9 +83,8 @@ class StoreCollectionTest extends TestCase
     /** @test */
     public function can_store_a_model_collection_with_headings_as_excel()
     {
-        $this->withFactories(__DIR__ . '/../Data/Stubs/Database/Factories');
-
-        $collection = factory(User::class, 2)->make();
+        
+        $collection = User::factory()->count(2)->make();
 
         $response = $collection->storeExcel('model-collection-headers-store.xlsx', null, Excel::XLSX, true);
 

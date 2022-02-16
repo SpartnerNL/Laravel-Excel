@@ -20,7 +20,7 @@ class FromViewTest extends TestCase
     {
         parent::setUp();
 
-        $this->withFactories(__DIR__ . '/../Data/Stubs/Database/Factories');
+        
     }
 
     /**
@@ -29,7 +29,7 @@ class FromViewTest extends TestCase
     public function can_export_from_view()
     {
         /** @var Collection|User[] $users */
-        $users = factory(User::class)->times(100)->make();
+        $users = User::factory()->count(100)->make();
 
         $export = new class($users) implements FromView
         {
@@ -81,7 +81,7 @@ class FromViewTest extends TestCase
     public function can_export_multiple_sheets_from_view()
     {
         /** @var Collection|User[] $users */
-        $users = factory(User::class)->times(300)->make();
+        $users = User::factory()->count(300)->make();
 
         $export = new class($users) implements WithMultipleSheets
         {

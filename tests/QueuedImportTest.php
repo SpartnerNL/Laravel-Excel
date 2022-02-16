@@ -57,7 +57,7 @@ class QueuedImportTest extends TestCase
         $import = new QueuedImport();
 
         $chain = $import->queue('import-batches.xlsx')->chain([
-            new AfterQueueImportJob(5000),
+            new AfterQueueImportJob(500),
         ]);
 
         $this->assertInstanceOf(PendingDispatch::class, $chain);

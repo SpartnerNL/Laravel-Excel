@@ -23,22 +23,22 @@ class FromQueryTest extends TestCase
         parent::setUp();
 
         $this->loadLaravelMigrations(['--database' => 'testing']);
-        $this->withFactories(__DIR__ . '/../Data/Stubs/Database/Factories');
+        
         $this->loadMigrationsFrom(dirname(__DIR__) . '/Data/Stubs/Database/Migrations');
 
-        $group = factory(Group::class)->create([
+        $group = Group::factory()->create([
             'name' => 'Group 1',
         ]);
 
-        factory(User::class)->times(100)->create()->each(function (User $user) use ($group) {
+        User::factory()->count(100)->create()->each(function (User $user) use ($group) {
             $user->groups()->save($group);
         });
 
-        $group_two = factory(Group::class)->create([
+        $group_two = Group::factory()->create([
             'name' => 'Group 2',
         ]);
 
-        factory(User::class)->times(5)->create()->each(function (User $user) use ($group_two) {
+        User::factory()->count(5)->create()->each(function (User $user) use ($group_two) {
             $user->groups()->save($group_two);
         });
     }

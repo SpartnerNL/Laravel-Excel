@@ -17,7 +17,7 @@ class WithConditionalSheetsTest extends TestCase
     {
         parent::setUp();
 
-        $this->withFactories(__DIR__ . '/../Data/Stubs/Database/Factories');
+        
     }
 
     /**
