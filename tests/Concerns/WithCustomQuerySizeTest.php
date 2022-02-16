@@ -18,8 +18,8 @@ class WithCustomQuerySizeTest extends TestCase
         parent::setUp();
 
         $this->loadLaravelMigrations(['--database' => 'testing']);
+
         $this->loadMigrationsFrom(dirname(__DIR__) . '/Data/Stubs/Database/Migrations');
-        
 
         Group::factory()->times(5)->create()->each(function ($group) {
             $group->users()->attach(User::factory()->count(rand(1, 3))->create());

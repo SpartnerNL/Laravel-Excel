@@ -20,15 +20,16 @@ class User extends Model
      */
     protected $hidden = ['password', 'email_verified_at'];
 
-    protected static function newFactory() {
-        return new UserFactory();
-    }
-
     /**
      * @return BelongsToMany
      */
     public function groups(): BelongsToMany
     {
         return $this->belongsToMany(Group::class);
+    }
+
+    protected static function newFactory()
+    {
+        return new UserFactory();
     }
 }

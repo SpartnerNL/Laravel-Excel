@@ -18,7 +18,6 @@ class QueuedViewExportTest extends TestCase
         parent::setUp();
 
         $this->loadLaravelMigrations(['--database' => 'testing']);
-        
     }
 
     /**

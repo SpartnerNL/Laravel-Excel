@@ -15,15 +15,16 @@ class Group extends Model
 
     protected $guarded = [];
 
-    protected static function newFactory() {
-        return new GroupFactory();
-    }
-
     /**
      * @return BelongsToMany
      */
     public function users(): BelongsToMany
     {
         return $this->belongsToMany(User::class);
+    }
+
+    protected static function newFactory()
+    {
+        return new GroupFactory();
     }
 }

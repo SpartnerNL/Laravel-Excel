@@ -22,8 +22,6 @@ class WithMultipleSheetsTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-
-        
     }
 
     /**

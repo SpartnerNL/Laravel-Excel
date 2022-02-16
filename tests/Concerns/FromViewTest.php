@@ -19,8 +19,6 @@ class FromViewTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-
-        
     }
 
     /**
