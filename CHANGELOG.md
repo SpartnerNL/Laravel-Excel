@@ -5,6 +5,8 @@ All notable changes to this project will be documented in this file.
 ## [Unreleased]
 
 - Add `@mixin` docblock to all macroable classes to allow for IDE autocompletion of delegate classes
+- Dropped support of Laravel 7 and below
+- Set minimum PHP Version to 7.3 as needed for Laravel 8
 
 ## [3.1.36] - 2022-02-03
 - Fix return type of `FromQuery::query()`
