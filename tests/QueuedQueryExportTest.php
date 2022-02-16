@@ -17,7 +17,6 @@ class QueuedQueryExportTest extends TestCase
         parent::setUp();
 
         $this->loadLaravelMigrations(['--database' => 'testing']);
-        
 
         User::factory()->count(100)->create([]);
     }
