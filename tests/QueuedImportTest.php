@@ -54,6 +54,8 @@ class QueuedImportTest extends TestCase
      */
     public function can_queue_an_import()
     {
+        Queue::fake();
+
         $import = new QueuedImport();
 
         $chain = $import->queue('import-batches.xlsx')->chain([
