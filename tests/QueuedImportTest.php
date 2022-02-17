@@ -54,6 +54,8 @@ class QueuedImportTest extends TestCase
      */
     public function can_queue_an_import()
     {
+        Queue::fake();
+
         $import = new QueuedImport();
 
         $chain = $import->queue('import-batches.xlsx')->chain([
@@ -68,6 +70,8 @@ class QueuedImportTest extends TestCase
      */
     public function can_queue_import_with_remote_temp_disk()
     {
+        Queue::fake();
+
         config()->set('excel.temporary_files.remote_disk', 'test');
 
         // Delete the local temp file before each read chunk job
@@ -123,6 +127,8 @@ class QueuedImportTest extends TestCase
      */
     public function can_queue_import_with_remote_temp_disk_and_prefix()
     {
+        Queue::fake();
+
         config()->set('excel.temporary_files.remote_disk', 'test');
         config()->set('excel.temporary_files.remote_prefix', 'tmp/');
 
@@ -140,6 +146,8 @@ class QueuedImportTest extends TestCase
      */
     public function can_automatically_delete_temp_file_on_failure_when_using_remote_disk()
     {
+        Queue::fake();
+
         config()->set('excel.temporary_files.remote_disk', 'test');
         $tempFile = '';
 
