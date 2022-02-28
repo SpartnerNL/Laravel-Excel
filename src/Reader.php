@@ -151,7 +151,7 @@ class Reader
      * @throws NoTypeDetectedException
      * @throws Exceptions\SheetNotFoundException
      */
-    public function toArray($import, $filePath, string $readerType, string $disk = null): array
+    public function toArray($import, $filePath, string $readerType = null, string $disk = null): array
     {
         $this->reader = $this->getReader($import, $filePath, $readerType, $disk);
 
@@ -195,7 +195,7 @@ class Reader
      * @throws NoTypeDetectedException
      * @throws Exceptions\SheetNotFoundException
      */
-    public function toCollection($import, $filePath, string $readerType, string $disk = null): Collection
+    public function toCollection($import, $filePath, string $readerType = null, string $disk = null): Collection
     {
         $this->reader = $this->getReader($import, $filePath, $readerType, $disk);
         $this->loadSpreadsheet($import);
