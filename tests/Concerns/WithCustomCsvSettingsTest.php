@@ -120,6 +120,42 @@ class WithCustomCsvSettingsTest extends TestCase
     /**
      * @test
      */
+    public function can_read_csv_with_auto_detecting_delimiter()
+    {
+        $import = new class implements WithCustomCsvSettings, ToArray
+        {
+            /**
+             * @return array
+             */
+            public function getCsvSettings(): array
+            {
+                return [
+                    'delimiter'        => null,
+                    'enclosure'        => '',
+                    'escape_character' => '\\',
+                    'contiguous'       => true,
+                    'input_encoding'   => 'UTF-8',
+                ];
+            }
+
+            /**
+             * @param  array  $array
+             */
+            public function array(array $array)
+            {
+                Assert::assertEquals([
+                    ['A1', 'B1'],
+                    ['A2', 'B2'],
+                ], $array);
+            }
+        };
+
+        $this->SUT->import($import, 'csv-with-other-delimiter.csv');
+    }
+
+    /**
+     * @test
+     */
     public function can_read_csv_import_with_custom_settings()
     {
         $import = new class implements WithCustomCsvSettings, ToArray
