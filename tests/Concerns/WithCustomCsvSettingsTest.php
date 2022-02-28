@@ -124,9 +124,9 @@ class WithCustomCsvSettingsTest extends TestCase
     public function can_read_csv_with_auto_detecting_delimiter_semicolon()
     {
         $this->assertEquals([
-           [
-               ['a1', 'b1']
-           ]
+            [
+                ['a1', 'b1'],
+            ],
         ], (new HeadingRowImport())->toArray('csv-with-other-delimiter.csv'));
     }
 
@@ -137,11 +137,10 @@ class WithCustomCsvSettingsTest extends TestCase
     {
         $this->assertEquals([
             [
-                ['a1', 'b1']
-            ]
+                ['a1', 'b1'],
+            ],
         ], (new HeadingRowImport())->toArray('csv-with-comma.csv'));
     }
-
 
     /**
      * @test
