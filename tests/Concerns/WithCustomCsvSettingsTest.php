@@ -7,6 +7,7 @@ use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\ToArray;
 use Maatwebsite\Excel\Concerns\WithCustomCsvSettings;
 use Maatwebsite\Excel\Excel;
+use Maatwebsite\Excel\HeadingRowImport;
 use Maatwebsite\Excel\Tests\TestCase;
 use PHPUnit\Framework\Assert;
 
@@ -120,38 +121,27 @@ class WithCustomCsvSettingsTest extends TestCase
     /**
      * @test
      */
-    public function can_read_csv_with_auto_detecting_delimiter()
+    public function can_read_csv_with_auto_detecting_delimiter_semicolon()
     {
-        $import = new class implements WithCustomCsvSettings, ToArray
-        {
-            /**
-             * @return array
-             */
-            public function getCsvSettings(): array
-            {
-                return [
-                    'delimiter'        => null,
-                    'enclosure'        => '',
-                    'escape_character' => '\\',
-                    'contiguous'       => true,
-                    'input_encoding'   => 'UTF-8',
-                ];
-            }
-
-            /**
-             * @param  array  $array
-             */
-            public function array(array $array)
-            {
-                Assert::assertEquals([
-                    ['A1', 'B1'],
-                    ['A2', 'B2'],
-                ], $array);
-            }
-        };
-
-        $this->SUT->import($import, 'csv-with-other-delimiter.csv');
+        $this->assertEquals([
+           [
+               ['a1', 'b1']
+           ]
+        ], (new HeadingRowImport())->toArray('csv-with-other-delimiter.csv'));
     }
+
+    /**
+     * @test
+     */
+    public function can_read_csv_with_auto_detecting_delimiter_comma()
+    {
+        $this->assertEquals([
+            [
+                ['a1', 'b1']
+            ]
+        ], (new HeadingRowImport())->toArray('csv-with-comma.csv'));
+    }
+
 
     /**
      * @test
