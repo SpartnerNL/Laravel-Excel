@@ -82,7 +82,12 @@ class Row implements ArrayAccess
             $value = (new Cell($cell))->getValue($nullValue, $calculateFormulas, $formatData);
 
             if (isset($this->headingRow[$i])) {
-                $cells[$this->headingRow[$i]] = $value;
+                $header_counts = array_count_values($this->headingRow);
+                if($header_counts[$this->headingRow[$i]] > 1){
+                    $cells[$this->headingRow[$i]][] = $value;
+                } else {
+                    $cells[$this->headingRow[$i]] = $value;
+                }
             } else {
                 $cells[] = $value;
             }
