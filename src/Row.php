@@ -86,7 +86,7 @@ class Row implements ArrayAccess
 
             if (isset($this->headingRow[$i])) {
                 //when using WithGroupedHeaders we need to check if header key is used more than once
-                if($withGroupedHeaders && array_count_values($this->headingRow)[$this->headingRow[$i]] > 1){
+                if ($withGroupedHeaders && array_count_values($this->headingRow)[$this->headingRow[$i]] > 1) {
                     //if so push value to array
                     $cells[$this->headingRow[$i]][] = $value;
                 } else {
