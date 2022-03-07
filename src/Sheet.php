@@ -29,6 +29,7 @@ use Maatwebsite\Excel\Concerns\WithCustomValueBinder;
 use Maatwebsite\Excel\Concerns\WithDrawings;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\WithFormatData;
+use Maatwebsite\Excel\Concerns\WithGroupedHeaders;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMappedCells;
 use Maatwebsite\Excel\Concerns\WithMapping;
@@ -294,7 +295,7 @@ class Sheet
                 if (!$import instanceof SkipsEmptyRows || ($import instanceof SkipsEmptyRows && !$sheetRow->isEmpty($calculatesFormulas))) {
                     if ($import instanceof WithValidation) {
                         $sheetRow->setPreparationCallback($preparationCallback);
-                        $toValidate = [$sheetRow->getIndex() => $sheetRow->toArray(null, $import instanceof WithCalculatedFormulas, $import instanceof WithFormatData, $endColumn)];
+                        $toValidate = [$sheetRow->getIndex() => $sheetRow->toArray(null, $import instanceof WithCalculatedFormulas, $import instanceof WithFormatData, $endColumn, $import instanceof WithGroupedHeaders)];
 
                         try {
                             app(RowValidator::class)->validate($toValidate, $import);
@@ -345,7 +346,7 @@ class Sheet
                 continue;
             }
 
-            $row = $row->toArray($nullValue, $calculateFormulas, $formatData, $endColumn);
+            $row = $row->toArray($nullValue, $calculateFormulas, $formatData, $endColumn, $import instanceof WithGroupedHeaders);
 
             if ($import instanceof WithMapping) {
                 $row = $import->map($row);

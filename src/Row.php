@@ -5,6 +5,7 @@ namespace Maatwebsite\Excel;
 use ArrayAccess;
 use Closure;
 use Illuminate\Support\Collection;
+use Maatwebsite\Excel\Concerns\WithGroupedHeaders;
 use PhpOffice\PhpSpreadsheet\Worksheet\Row as SpreadsheetRow;
 
 /** @mixin SpreadsheetRow */
@@ -55,11 +56,12 @@ class Row implements ArrayAccess
      * @param  bool  $calculateFormulas
      * @param  bool  $formatData
      * @param  string|null  $endColumn
+     * @param  bool  $withGroupedHeaders
      * @return Collection
      */
-    public function toCollection($nullValue = null, $calculateFormulas = false, $formatData = true, ?string $endColumn = null): Collection
+    public function toCollection($nullValue = null, $calculateFormulas = false, $formatData = true, ?string $endColumn = null, $withGroupedHeaders = false): Collection
     {
-        return new Collection($this->toArray($nullValue, $calculateFormulas, $formatData, $endColumn));
+        return new Collection($this->toArray($nullValue, $calculateFormulas, $formatData, $endColumn, $withGroupedHeaders));
     }
 
     /**
@@ -67,9 +69,10 @@ class Row implements ArrayAccess
      * @param  bool  $calculateFormulas
      * @param  bool  $formatData
      * @param  string|null  $endColumn
+     * @param  bool  $withGroupedHeaders
      * @return array
      */
-    public function toArray($nullValue = null, $calculateFormulas = false, $formatData = true, ?string $endColumn = null)
+    public function toArray($nullValue = null, $calculateFormulas = false, $formatData = true, ?string $endColumn = null, $withGroupedHeaders = false)
     {
         if (is_array($this->rowCache)) {
             return $this->rowCache;
@@ -82,7 +85,13 @@ class Row implements ArrayAccess
             $value = (new Cell($cell))->getValue($nullValue, $calculateFormulas, $formatData);
 
             if (isset($this->headingRow[$i])) {
-                $cells[$this->headingRow[$i]] = $value;
+                //when using WithGroupedHeaders we need to check if header key is used more than once
+                if($withGroupedHeaders && array_count_values($this->headingRow)[$this->headingRow[$i]] > 1){
+                    //if so push value to array
+                    $cells[$this->headingRow[$i]][] = $value;
+                } else {
+                    $cells[$this->headingRow[$i]] = $value;
+                }
             } else {
                 $cells[] = $value;
             }
@@ -106,7 +115,7 @@ class Row implements ArrayAccess
      */
     public function isEmpty($calculateFormulas = false, ?string $endColumn = null): bool
     {
-        return count(array_filter($this->toArray(null, $calculateFormulas, false, $endColumn))) === 0;
+        return count(array_filter($this->toArray(null, $calculateFormulas, false, $endColumn, false))) === 0;
     }
 
     /**

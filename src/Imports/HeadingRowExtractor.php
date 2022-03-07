@@ -58,6 +58,6 @@ class HeadingRowExtractor
         $headingRow       = head($rows);
         $endColumn        = $importable instanceof WithColumnLimit ? $importable->endColumn() : null;
 
-        return HeadingRowFormatter::format((new Row($headingRow))->toArray(null, false, false, $endColumn));
+        return HeadingRowFormatter::format((new Row($headingRow))->toArray(null, false, false, $endColumn, false));
     }
 }
