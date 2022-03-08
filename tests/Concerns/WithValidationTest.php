@@ -8,6 +8,7 @@ use Illuminate\Validation\Rule;
 use Illuminate\Validation\Validator;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\OnEachRow;
+use Maatwebsite\Excel\Concerns\SkipsEmptyRows;
 use Maatwebsite\Excel\Concerns\ToArray;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\ToModel;
@@ -830,6 +831,72 @@ class WithValidationTest extends TestCase
     public function can_prepare_using_oneachrow()
     {
         $import = new class implements OnEachRow, WithValidation
+        {
+            use Importable;
+
+            /**
+             * @return array
+             */
+            public function rules(): array
+            {
+                return [
+                    '1' => 'email',
+                ];
+            }
+
+            /**
+             * Prepare the data for validation.
+             *
+             * @param  array  $row
+             * @param  int  $index
+             * @return array
+             */
+            public function prepareForValidation(array $row, int $index)
+            {
+                if ($index === 2) {
+                    $row[1] = 'not an email';
+                }
+
+                return $row;
+            }
+
+            /**
+             * @param  \Maatwebsite\Excel\Row  $row
+             * @return void
+             */
+            public function onRow(Row $row)
+            {
+                User::query()->create([
+                    'name'     => $row[0],
+                    'email'    => $row[1],
+                    'password' => 'secret',
+                ]);
+            }
+        };
+
+        try {
+            $import->import('import-users.xlsx');
+        } catch (ValidationException $e) {
+            $this->validateFailure($e, 2, '1', [
+                'The 1 must be a valid email address.',
+            ]);
+
+            $this->assertEquals([
+                [
+                    'There was an error on row 2. The 1 must be a valid email address.',
+                ],
+            ], $e->errors());
+        }
+
+        $this->assertInstanceOf(ValidationException::class, $e ?? null);
+    }
+
+    /**
+     * @test
+     */
+    public function can_prepare_using_skipsemptyrows()
+    {
+        $import = new class implements OnEachRow, WithValidation, SkipsEmptyRows
         {
             use Importable;
 
