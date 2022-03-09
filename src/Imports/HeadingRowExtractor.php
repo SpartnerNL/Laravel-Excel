@@ -3,6 +3,7 @@
 namespace Maatwebsite\Excel\Imports;
 
 use Maatwebsite\Excel\Concerns\WithColumnLimit;
+use Maatwebsite\Excel\Concerns\WithGroupedHeaders;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithStartRow;
 use Maatwebsite\Excel\Row;
@@ -59,5 +60,26 @@ class HeadingRowExtractor
         $endColumn        = $importable instanceof WithColumnLimit ? $importable->endColumn() : null;
 
         return HeadingRowFormatter::format((new Row($headingRow))->toArray(null, false, false, $endColumn));
+    }
+
+    /**
+     * @param  array $headingRow
+     * @param  WithGroupedHeaders|mixed  $importable
+     * @return array
+     */
+    public static function extractGrouping($headingRow, $importable){
+        $headerIsGrouped = array_fill(0,count($headingRow),false);
+
+        if(!$importable instanceof WithGroupedHeaders){
+            return $headerIsGrouped;
+        }
+       
+        array_walk($headerIsGrouped,function(&$value, $key) use ($headingRow){
+            if(array_count_values($headingRow)[$headingRow[$key]] > 1){
+                $value = true;
+            }
+        });
+
+        return $headerIsGrouped;
     }
 }
