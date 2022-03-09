@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+- Adds concern `WithGroupedHeaders` to allow imported sheets to group the values of columns with the same header in an array
+
 ## [3.1.37] - 2022-02-28
 
 ### Fixed
