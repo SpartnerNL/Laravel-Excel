@@ -39,8 +39,8 @@ class Row implements ArrayAccess
      */
     public function __construct(SpreadsheetRow $row, array $headingRow = [], array $headerIsGrouped = [])
     {
-        $this->row        = $row;
-        $this->headingRow = $headingRow;
+        $this->row             = $row;
+        $this->headingRow      = $headingRow;
         $this->headerIsGrouped = $headerIsGrouped;
     }
 
@@ -84,8 +84,8 @@ class Row implements ArrayAccess
             $value = (new Cell($cell))->getValue($nullValue, $calculateFormulas, $formatData);
 
             if (isset($this->headingRow[$i])) {
-                if(!$this->headerIsGrouped[$i]){
-                    $cells[$this->headingRow[$i]] = $value;    
+                if (!$this->headerIsGrouped[$i]) {
+                    $cells[$this->headingRow[$i]] = $value;
                 } else {
                     $cells[$this->headingRow[$i]][] = $value;
                 }
