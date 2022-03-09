@@ -10,6 +10,9 @@ use Maatwebsite\Excel\Concerns\WithGroupedHeaders;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Tests\TestCase;
 use PHPUnit\Framework\Assert;
+use Maatwebsite\Excel\Row;
+use Maatwebsite\Excel\Concerns\OnEachRow;
+use Maatwebsite\Excel\Concerns\ToModel;
 
 class WithGroupedHeadersTest extends TestCase
 {
@@ -45,16 +48,38 @@ class WithGroupedHeadersTest extends TestCase
                             'laravel',
                             'excel',
                         ],
-                    ],
+                    ]
+                ], $array);
+            }
+        };
+
+        $import->import('import-users-with-grouped-headers.xlsx');
+    }
+
+    /**
+     * @test
+     */
+    public function can_import_oneachrow_with_grouped_headers()
+    {
+        $import = new class implements OnEachRow, WithHeadingRow, WithGroupedHeaders
+        {
+            use Importable;
+
+             /**
+             * @param  \Maatwebsite\Excel\Row  $row
+             * @return void
+             */
+            public function onRow(Row $row)
+            {
+                Assert::assertEquals(
                     [
-                        'name'    => 'Taylor Otwell',
-                        'email'   => 'taylor@laravel.com',
+                        'name'    => 'Patrick Brouwers',
+                        'email'   => 'patrick@maatwebsite.nl',
                         'options' => [
                             'laravel',
                             'excel',
                         ],
-                    ],
-                ], $array);
+                    ], $row->toArray());
             }
         };
 
@@ -83,14 +108,6 @@ class WithGroupedHeadersTest extends TestCase
                     [
                         'name'    => 'Patrick Brouwers',
                         'email'   => 'patrick@maatwebsite.nl',
-                        'options' => [
-                            'laravel',
-                            'excel',
-                        ],
-                    ],
-                    [
-                        'name'    => 'Taylor Otwell',
-                        'email'   => 'taylor@laravel.com',
                         'options' => [
                             'laravel',
                             'excel',
