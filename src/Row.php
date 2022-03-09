@@ -112,7 +112,7 @@ class Row implements ArrayAccess
      */
     public function isEmpty($calculateFormulas = false, ?string $endColumn = null): bool
     {
-        return count(array_filter($this->toArray(null, $calculateFormulas, false, $endColumn, false))) === 0;
+        return count(array_filter($this->toArray(null, $calculateFormulas, false, $endColumn))) === 0;
     }
 
     /**
