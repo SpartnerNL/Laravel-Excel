@@ -63,19 +63,20 @@ class HeadingRowExtractor
     }
 
     /**
-     * @param  array $headingRow
+     * @param  array  $headingRow
      * @param  WithGroupedHeaders|mixed  $importable
      * @return array
      */
-    public static function extractGrouping($headingRow, $importable){
-        $headerIsGrouped = array_fill(0,count($headingRow),false);
+    public static function extractGrouping($headingRow, $importable)
+    {
+        $headerIsGrouped = array_fill(0, count($headingRow), false);
 
-        if(!$importable instanceof WithGroupedHeaders){
+        if (!$importable instanceof WithGroupedHeaders) {
             return $headerIsGrouped;
         }
-       
-        array_walk($headerIsGrouped,function(&$value, $key) use ($headingRow){
-            if(array_count_values($headingRow)[$headingRow[$key]] > 1){
+
+        array_walk($headerIsGrouped, function (&$value, $key) use ($headingRow) {
+            if (array_count_values($headingRow)[$headingRow[$key]] > 1) {
                 $value = true;
             }
         });
