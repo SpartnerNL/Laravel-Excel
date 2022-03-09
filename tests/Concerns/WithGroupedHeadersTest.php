@@ -4,15 +4,14 @@ namespace Maatwebsite\Excel\Tests\Concerns;
 
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\Importable;
+use Maatwebsite\Excel\Concerns\OnEachRow;
 use Maatwebsite\Excel\Concerns\ToArray;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithGroupedHeaders;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use Maatwebsite\Excel\Row;
 use Maatwebsite\Excel\Tests\TestCase;
 use PHPUnit\Framework\Assert;
-use Maatwebsite\Excel\Row;
-use Maatwebsite\Excel\Concerns\OnEachRow;
-use Maatwebsite\Excel\Concerns\ToModel;
 
 class WithGroupedHeadersTest extends TestCase
 {
@@ -48,7 +47,7 @@ class WithGroupedHeadersTest extends TestCase
                             'laravel',
                             'excel',
                         ],
-                    ]
+                    ],
                 ], $array);
             }
         };
@@ -65,7 +64,7 @@ class WithGroupedHeadersTest extends TestCase
         {
             use Importable;
 
-             /**
+            /**
              * @param  \Maatwebsite\Excel\Row  $row
              * @return void
              */
