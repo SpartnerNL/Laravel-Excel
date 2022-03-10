@@ -9,13 +9,13 @@ use Maatwebsite\Excel\Concerns\OnEachRow;
 use Maatwebsite\Excel\Concerns\ToArray;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\ToModel;
-use Maatwebsite\Excel\Concerns\WithGroupedHeaders;
+use Maatwebsite\Excel\Concerns\WithGroupedHeadingRow;
 use Maatwebsite\Excel\Row;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
 use Maatwebsite\Excel\Tests\TestCase;
 use PHPUnit\Framework\Assert;
 
-class WithGroupedHeadersTest extends TestCase
+class WithGroupedHeadingRowTest extends TestCase
 {
     /**
      * Setup the test environment.
@@ -33,7 +33,7 @@ class WithGroupedHeadersTest extends TestCase
      */
     public function can_import_to_array_with_grouped_headers()
     {
-        $import = new class implements ToArray, WithGroupedHeaders
+        $import = new class implements ToArray, WithGroupedHeadingRow
         {
             use Importable;
 
@@ -63,7 +63,7 @@ class WithGroupedHeadersTest extends TestCase
      */
     public function can_import_oneachrow_with_grouped_headers()
     {
-        $import = new class implements OnEachRow, WithGroupedHeaders
+        $import = new class implements OnEachRow, WithGroupedHeadingRow
         {
             use Importable;
 
@@ -93,7 +93,7 @@ class WithGroupedHeadersTest extends TestCase
      */
     public function can_import_to_collection_with_grouped_headers()
     {
-        $import = new class implements ToCollection, WithGroupedHeaders
+        $import = new class implements ToCollection, WithGroupedHeadingRow
         {
             use Importable;
 
@@ -129,7 +129,7 @@ class WithGroupedHeadersTest extends TestCase
      */
     public function can_import_each_row_to_model_with_grouped_headers()
     {
-        $import = new class implements ToModel, WithGroupedHeaders
+        $import = new class implements ToModel, WithGroupedHeadingRow
         {
             use Importable;
 

@@ -3,7 +3,7 @@
 namespace Maatwebsite\Excel\Imports;
 
 use Maatwebsite\Excel\Concerns\WithColumnLimit;
-use Maatwebsite\Excel\Concerns\WithGroupedHeaders;
+use Maatwebsite\Excel\Concerns\WithGroupedHeadingRow;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithStartRow;
 use Maatwebsite\Excel\Row;
@@ -64,14 +64,14 @@ class HeadingRowExtractor
 
     /**
      * @param  array  $headingRow
-     * @param  WithGroupedHeaders|mixed  $importable
+     * @param  WithGroupedHeadingRow|mixed  $importable
      * @return array
      */
     public static function extractGrouping($headingRow, $importable)
     {
         $headerIsGrouped = array_fill(0, count($headingRow), false);
 
-        if (!$importable instanceof WithGroupedHeaders) {
+        if (!$importable instanceof WithGroupedHeadingRow) {
             return $headerIsGrouped;
         }
 
