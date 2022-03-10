@@ -291,9 +291,12 @@ class Sheet
             foreach ($this->worksheet->getRowIterator()->resetStart($startRow ?? 1) as $row) {
                 $sheetRow = new Row($row, $headingRow);
 
+                if ($import instanceof WithValidation) {
+                    $sheetRow->setPreparationCallback($preparationCallback);
+                }
+
                 if (!$import instanceof SkipsEmptyRows || ($import instanceof SkipsEmptyRows && !$sheetRow->isEmpty($calculatesFormulas))) {
                     if ($import instanceof WithValidation) {
-                        $sheetRow->setPreparationCallback($preparationCallback);
                         $toValidate = [$sheetRow->getIndex() => $sheetRow->toArray(null, $import instanceof WithCalculatedFormulas, $import instanceof WithFormatData, $endColumn)];
 
                         try {

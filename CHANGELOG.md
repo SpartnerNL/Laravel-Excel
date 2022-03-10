@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+- Added failing test for `prepareForValidation` callback not being called when using `SkipsEmptyRows`
+
 ## [3.1.37] - 2022-02-28
 
 ### Fixed
