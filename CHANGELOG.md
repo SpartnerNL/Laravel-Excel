@@ -4,6 +4,7 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+- Adds concern `WithGroupedHeadingRow` to allow imported sheets to group the values of columns with the same header in an array
 - Added failing test for `prepareForValidation` callback not being called when using `SkipsEmptyRows`
 
 ## [3.1.37] - 2022-02-28

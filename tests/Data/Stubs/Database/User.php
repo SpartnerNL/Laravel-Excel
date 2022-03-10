@@ -15,7 +15,14 @@ class User extends Model
     /**
      * @var array
      */
-    protected $hidden = ['password', 'email_verified_at'];
+    protected $casts = [
+        'options' => 'array',
+    ];
+
+    /**
+     * @var array
+     */
+    protected $hidden = ['password', 'email_verified_at', 'options'];
 
     /**
      * @return BelongsToMany

@@ -13,12 +13,14 @@ use Maatwebsite\Excel\Concerns\ToArray;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
+use Maatwebsite\Excel\Concerns\WithGroupedHeadingRow;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithValidation;
 use Maatwebsite\Excel\Row;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
 use Maatwebsite\Excel\Tests\TestCase;
 use Maatwebsite\Excel\Validators\ValidationException;
+use PHPUnit\Framework\Assert;
 
 class WithValidationTest extends TestCase
 {
@@ -396,6 +398,68 @@ class WithValidationTest extends TestCase
         } catch (ValidationException $e) {
             $this->validateFailure($e, 3, 'email', [
                 'The selected email is invalid.',
+            ]);
+        }
+
+        $this->assertInstanceOf(ValidationException::class, $e ?? null);
+    }
+
+    /**
+     * @test
+     */
+    public function can_validate_rows_with_grouped_headings()
+    {
+        $import = new class implements ToModel, WithGroupedHeadingRow, WithValidation
+        {
+            use Importable;
+
+            /**
+             * Prepare the data for validation.
+             *
+             * @param  array  $row
+             * @param  int  $index
+             * @return array
+             */
+            public function prepareForValidation(array $row, int $index)
+            {
+                if ($index === 2) {
+                    Assert::assertIsArray($row['options']);
+                    $row['options'] = 'not an array';
+                }
+
+                return $row;
+            }
+
+            /**
+             * @param  array  $row
+             * @return Model|null
+             */
+            public function model(array $row)
+            {
+                return new User([
+                    'name'     => $row['name'],
+                    'email'    => $row['email'],
+                    'password' => 'secret',
+                    'options'  => $row['options'],
+                ]);
+            }
+
+            /**
+             * @return array
+             */
+            public function rules(): array
+            {
+                return [
+                    'options' => 'array',
+                ];
+            }
+        };
+
+        try {
+            $import->import('import-users-with-grouped-headers.xlsx');
+        } catch (ValidationException $e) {
+            $this->validateFailure($e, 2, 'options', [
+                'The options must be an array.',
             ]);
         }
 
