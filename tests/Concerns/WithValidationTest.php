@@ -3,7 +3,6 @@
 namespace Maatwebsite\Excel\Tests\Concerns;
 
 use Illuminate\Database\Eloquent\Model;
-use PHPUnit\Framework\Assert;
 use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Validator;
@@ -21,6 +20,7 @@ use Maatwebsite\Excel\Row;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
 use Maatwebsite\Excel\Tests\TestCase;
 use Maatwebsite\Excel\Validators\ValidationException;
+use PHPUnit\Framework\Assert;
 
 class WithValidationTest extends TestCase
 {
