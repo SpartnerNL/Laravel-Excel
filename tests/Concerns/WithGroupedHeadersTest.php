@@ -2,18 +2,18 @@
 
 namespace Maatwebsite\Excel\Tests\Concerns;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\OnEachRow;
 use Maatwebsite\Excel\Concerns\ToArray;
 use Maatwebsite\Excel\Concerns\ToCollection;
+use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithGroupedHeaders;
 use Maatwebsite\Excel\Row;
+use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
 use Maatwebsite\Excel\Tests\TestCase;
 use PHPUnit\Framework\Assert;
-use Maatwebsite\Excel\Concerns\ToModel;
-use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
-use Illuminate\Database\Eloquent\Model;
 
 class WithGroupedHeadersTest extends TestCase
 {
@@ -124,7 +124,7 @@ class WithGroupedHeadersTest extends TestCase
         $this->assertTrue($import->called);
     }
 
-     /**
+    /**
      * @test
      */
     public function can_import_each_row_to_model_with_grouped_headers()
@@ -143,7 +143,7 @@ class WithGroupedHeadersTest extends TestCase
                     'name'     => $row['name'],
                     'email'    => $row['email'],
                     'password' => 'secret',
-                    'options'  => $row['options']
+                    'options'  => $row['options'],
                 ]);
             }
         };
@@ -153,7 +153,7 @@ class WithGroupedHeadersTest extends TestCase
         $this->assertDatabaseHas('users', [
             'name'    => 'Patrick Brouwers',
             'email'   => 'patrick@maatwebsite.nl',
-            'options' => '["laravel","excel"]'
+            'options' => '["laravel","excel"]',
         ]);
     }
 }
