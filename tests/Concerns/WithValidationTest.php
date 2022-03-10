@@ -3,6 +3,7 @@
 namespace Maatwebsite\Excel\Tests\Concerns;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Testing\Assert;
 use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Validator;
@@ -412,6 +413,23 @@ class WithValidationTest extends TestCase
         {
             use Importable;
 
+             /**
+             * Prepare the data for validation.
+             *
+             * @param  array  $row
+             * @param  int  $index
+             * @return array
+             */
+            public function prepareForValidation(array $row, int $index)
+            {
+                if ($index === 2) {
+                    Assert::assertIsArray($row['options']);
+                    $row['options'] = 'not an array';
+                }
+
+                return $row;
+            }
+
             /**
              * @param  array  $row
              * @return Model|null
@@ -432,7 +450,7 @@ class WithValidationTest extends TestCase
             public function rules(): array
             {
                 return [
-                    'options' => 'array:invalid',
+                    'options' => 'array',
                 ];
             }
         };
