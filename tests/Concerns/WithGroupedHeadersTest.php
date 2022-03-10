@@ -39,7 +39,7 @@ class WithGroupedHeadersTest extends TestCase
 
             /**
              * @param  array  $array
-             */php
+             */
             public function array(array $array)
             {
                 Assert::assertEquals([
