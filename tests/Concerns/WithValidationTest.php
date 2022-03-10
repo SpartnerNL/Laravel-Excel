@@ -422,7 +422,7 @@ class WithValidationTest extends TestCase
                     'name'     => $row['name'],
                     'email'    => $row['email'],
                     'password' => 'secret',
-                    'options'  => $row['options']
+                    'options'  => $row['options'],
                 ]);
             }
 
@@ -432,7 +432,7 @@ class WithValidationTest extends TestCase
             public function rules(): array
             {
                 return [
-                    'options' => 'array:invalid', 
+                    'options' => 'array:invalid',
                 ];
             }
         };
