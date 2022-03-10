@@ -2,6 +2,6 @@
 
 namespace Maatwebsite\Excel\Concerns;
 
-interface WithGroupedHeaders
+interface WithGroupedHeaders extends WithHeadingRow
 {
 }

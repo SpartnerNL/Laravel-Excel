@@ -8,10 +8,12 @@ use Maatwebsite\Excel\Concerns\OnEachRow;
 use Maatwebsite\Excel\Concerns\ToArray;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithGroupedHeaders;
-use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Row;
 use Maatwebsite\Excel\Tests\TestCase;
 use PHPUnit\Framework\Assert;
+use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
+use Illuminate\Database\Eloquent\Model;
 
 class WithGroupedHeadersTest extends TestCase
 {
@@ -23,6 +25,7 @@ class WithGroupedHeadersTest extends TestCase
         parent::setUp();
 
         $this->loadLaravelMigrations(['--database' => 'testing']);
+        $this->loadMigrationsFrom(dirname(__DIR__) . '/Data/Stubs/Database/Migrations');
     }
 
     /**
@@ -30,13 +33,13 @@ class WithGroupedHeadersTest extends TestCase
      */
     public function can_import_to_array_with_grouped_headers()
     {
-        $import = new class implements ToArray, WithHeadingRow, WithGroupedHeaders
+        $import = new class implements ToArray, WithGroupedHeaders
         {
             use Importable;
 
             /**
              * @param  array  $array
-             */
+             */php
             public function array(array $array)
             {
                 Assert::assertEquals([
@@ -60,7 +63,7 @@ class WithGroupedHeadersTest extends TestCase
      */
     public function can_import_oneachrow_with_grouped_headers()
     {
-        $import = new class implements OnEachRow, WithHeadingRow, WithGroupedHeaders
+        $import = new class implements OnEachRow, WithGroupedHeaders
         {
             use Importable;
 
@@ -90,7 +93,7 @@ class WithGroupedHeadersTest extends TestCase
      */
     public function can_import_to_collection_with_grouped_headers()
     {
-        $import = new class implements ToCollection, WithHeadingRow, WithGroupedHeaders
+        $import = new class implements ToCollection, WithGroupedHeaders
         {
             use Importable;
 
@@ -119,5 +122,38 @@ class WithGroupedHeadersTest extends TestCase
         $import->import('import-users-with-grouped-headers.xlsx');
 
         $this->assertTrue($import->called);
+    }
+
+     /**
+     * @test
+     */
+    public function can_import_each_row_to_model_with_grouped_headers()
+    {
+        $import = new class implements ToModel, WithGroupedHeaders
+        {
+            use Importable;
+
+            /**
+             * @param  array  $row
+             * @return Model
+             */
+            public function model(array $row): Model
+            {
+                return new User([
+                    'name'     => $row['name'],
+                    'email'    => $row['email'],
+                    'password' => 'secret',
+                    'options'  => $row['options']
+                ]);
+            }
+        };
+
+        $import->import('import-users-with-grouped-headers.xlsx');
+
+        $this->assertDatabaseHas('users', [
+            'name'    => 'Patrick Brouwers',
+            'email'   => 'patrick@maatwebsite.nl',
+            'options' => '["laravel","excel"]'
+        ]);
     }
 }
