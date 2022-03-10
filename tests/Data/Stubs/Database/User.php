@@ -16,7 +16,7 @@ class User extends Model
      * @var array
      */
     protected $casts = [
-        'options' => 'array'
+        'options' => 'array',
     ];
 
     /**
