@@ -3,7 +3,7 @@
 namespace Maatwebsite\Excel\Tests\Concerns;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Foundation\Testing\Assert;
+use PHPUnit\Framework\Assert;
 use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Validator;
