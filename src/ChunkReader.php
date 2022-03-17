@@ -6,6 +6,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\PendingDispatch;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ShouldQueueWithoutChain;
+use Maatwebsite\Excel\Concerns\SkipsAfterImportJob;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\WithLimit;
@@ -70,7 +71,10 @@ class ChunkReader
         $afterImportJob = new AfterImportJob($import, $reader);
 
         if ($import instanceof ShouldQueueWithoutChain) {
-            $jobs->push($afterImportJob->delay($delayCleanup));
+
+            if (!$import instanceof SkipsAfterImportJob) {
+                $jobs->push($afterImportJob->delay($delayCleanup));
+            }
 
             return $jobs->each(function ($job) use ($queue) {
                 dispatch($job->onQueue($queue));
