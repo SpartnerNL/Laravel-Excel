@@ -17,7 +17,7 @@ trait ExtendedQueueable
     public function chain($chain)
     {
         collect($chain)->each(function ($job) {
-            $serialized = method_exists($this, 'serializeJob') ? $this->serializeJob($job) : serialize($job);
+            $serialized      = method_exists($this, 'serializeJob') ? $this->serializeJob($job) : serialize($job);
             $this->chained[] = $serialized;
         });
 
