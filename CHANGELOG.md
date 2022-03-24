@@ -4,8 +4,15 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [3.1.38] - 2022-03-24
+
+### Changed
+
 - Adds concern `WithGroupedHeadingRow` to allow imported sheets to group the values of columns with the same header in an array
-- Added failing test for `prepareForValidation` callback not being called when using `SkipsEmptyRows`
+
+### Fixed
+
+- Fix for `prepareForValidation` callback not being called when using `SkipsEmptyRows`
 
 ## [3.1.37] - 2022-02-28
 
@@ -210,7 +217,8 @@ All notable changes to this project will be documented in this file.
 - Raw() method now also available on Exportable.
 - Fix for breaking changes in PhpSpreadsheet with empty enclosures.
 
-[Unreleased]: https://github.com/Maatwebsite/Laravel-Excel/compare/3.1.37...HEAD
+[Unreleased]: https://github.com/Maatwebsite/Laravel-Excel/compare/3.1.38...HEAD
+[3.1.38]: https://github.com/Maatwebsite/Laravel-Excel/compare/3.1.37...3.1.38
 [3.1.37]: https://github.com/Maatwebsite/Laravel-Excel/compare/3.1.36...3.1.37
 [3.1.36]: https://github.com/Maatwebsite/Laravel-Excel/compare/3.1.35...3.1.36
 [3.1.35]: https://github.com/Maatwebsite/Laravel-Excel/compare/3.1.34...3.1.35
