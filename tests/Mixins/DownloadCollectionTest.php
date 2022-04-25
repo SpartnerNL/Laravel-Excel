@@ -86,4 +86,24 @@ class DownloadCollectionTest extends TestCase
 
         $this->assertEquals(['name', 'password'], collect($array)->first());
     }
+
+    /**
+     * @test
+     */
+    public function can_set_custom_response_headers()
+    {
+        $collection = new Collection([
+            ['column_1' => 'test', 'column_2' => 'test'],
+            ['column_1' => 'test2', 'column_2' => 'test2'],
+        ]);
+
+        $responseHeaders = [
+            'CUSTOMER-HEADER-1' => 'CUSTOMER-HEADER1-VAL',
+            'CUSTOMER-HEADER-2' => 'CUSTOMER-HEADER2-VAL',
+        ];
+        /** @var BinaryFileResponse $response */
+        $response = $collection->downloadExcel('collection-download.xlsx', Excel::XLSX, false, $responseHeaders);
+        $this->assertTrue($response->headers->contains('CUSTOMER-HEADER-1', 'CUSTOMER-HEADER1-VAL'));
+        $this->assertTrue($response->headers->contains('CUSTOMER-HEADER-2', 'CUSTOMER-HEADER2-VAL'));
+    }
 }
