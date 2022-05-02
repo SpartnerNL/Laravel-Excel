@@ -26,7 +26,6 @@ use Maatwebsite\Excel\Concerns\WithColumnWidths;
 use Maatwebsite\Excel\Concerns\WithCustomChunkSize;
 use Maatwebsite\Excel\Concerns\WithCustomStartCell;
 use Maatwebsite\Excel\Concerns\WithCustomValueBinder;
-use Maatwebsite\Excel\Concerns\WithDefaultStyles;
 use Maatwebsite\Excel\Concerns\WithDrawings;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\WithFormatData;

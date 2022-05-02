@@ -3,15 +3,10 @@
 namespace Maatwebsite\Excel\Tests\Concerns;
 
 use Maatwebsite\Excel\Concerns\Exportable;
-use Maatwebsite\Excel\Concerns\FromArray;
 use Maatwebsite\Excel\Concerns\WithBackgroundColor;
-use Maatwebsite\Excel\Concerns\WithDefaultStyles;
-use Maatwebsite\Excel\Concerns\WithStyles;
 use Maatwebsite\Excel\Tests\TestCase;
 use PhpOffice\PhpSpreadsheet\Style\Color;
 use PhpOffice\PhpSpreadsheet\Style\Fill;
-use PhpOffice\PhpSpreadsheet\Style\Style;
-use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
 class WithBackgroundColorTest extends TestCase
 {
@@ -51,8 +46,8 @@ class WithBackgroundColorTest extends TestCase
             public function backgroundColor()
             {
                 return [
-                    'fillType' => Fill::FILL_GRADIENT_LINEAR,
-                    'startColor' => ['argb' => Color::COLOR_RED]
+                    'fillType'   => Fill::FILL_GRADIENT_LINEAR,
+                    'startColor' => ['argb' => Color::COLOR_RED],
                 ];
             }
         };

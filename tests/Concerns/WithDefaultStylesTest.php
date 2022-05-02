@@ -5,11 +5,9 @@ namespace Maatwebsite\Excel\Tests\Concerns;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromArray;
 use Maatwebsite\Excel\Concerns\WithDefaultStyles;
-use Maatwebsite\Excel\Concerns\WithStyles;
 use Maatwebsite\Excel\Tests\TestCase;
 use PhpOffice\PhpSpreadsheet\Style\Fill;
 use PhpOffice\PhpSpreadsheet\Style\Style;
-use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
 class WithDefaultStylesTest extends TestCase
 {
@@ -27,8 +25,8 @@ class WithDefaultStylesTest extends TestCase
                 return [
                     'fill' => [
                         'fillType'   => Fill::FILL_SOLID,
-                        'startColor' => ['argb' => 'fff2f2f2']
-                    ]
+                        'startColor' => ['argb' => 'fff2f2f2'],
+                    ],
                 ];
             }
 
