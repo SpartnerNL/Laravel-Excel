@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [3.1.40] - 2022-05-02
+
+### Changed
+
+- Adds `WithDefaultStyles` concern to allow configuring the workbook default styles.
+- Adds `WithBackgroundColor` concern to allow configuring the workbook default background color.
+
 ## [3.1.39] - 2022-04-23
 
 ### Fixed
@@ -223,7 +230,8 @@ All notable changes to this project will be documented in this file.
 - Raw() method now also available on Exportable.
 - Fix for breaking changes in PhpSpreadsheet with empty enclosures.
 
-[Unreleased]: https://github.com/Maatwebsite/Laravel-Excel/compare/3.1.39...HEAD
+[Unreleased]: https://github.com/Maatwebsite/Laravel-Excel/compare/3.1.40...HEAD
+[3.1.40]: https://github.com/Maatwebsite/Laravel-Excel/compare/3.1.39...3.1.40
 [3.1.39]: https://github.com/Maatwebsite/Laravel-Excel/compare/3.1.38...3.1.39
 [3.1.38]: https://github.com/Maatwebsite/Laravel-Excel/compare/3.1.37...3.1.38
 [3.1.37]: https://github.com/Maatwebsite/Laravel-Excel/compare/3.1.36...3.1.37
