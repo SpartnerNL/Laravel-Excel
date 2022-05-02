@@ -10,6 +10,7 @@ All notable changes to this project will be documented in this file.
 
 - Adds `WithDefaultStyles` concern to allow configuring the workbook default styles.
 - Adds `WithBackgroundColor` concern to allow configuring the workbook default background color.
+- Expose the ability to set custom response headers when exporting collections via Exportable
 
 ## [3.1.39] - 2022-04-23
 
