@@ -26,6 +26,7 @@ use Maatwebsite\Excel\Concerns\WithColumnWidths;
 use Maatwebsite\Excel\Concerns\WithCustomChunkSize;
 use Maatwebsite\Excel\Concerns\WithCustomStartCell;
 use Maatwebsite\Excel\Concerns\WithCustomValueBinder;
+use Maatwebsite\Excel\Concerns\WithDefaultStyles;
 use Maatwebsite\Excel\Concerns\WithDrawings;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\WithFormatData;
@@ -409,6 +410,15 @@ class Sheet
         if ($sheetExport instanceof WithColumnWidths) {
             foreach ($sheetExport->columnWidths() as $column => $width) {
                 $this->worksheet->getColumnDimension($column)->setAutoSize(false)->setWidth($width);
+            }
+        }
+
+        if ($sheetExport instanceof WithDefaultStyles) {
+            $defaultStyle = $this->worksheet->getParent()->getDefaultStyle();
+            $styles = $sheetExport->defaultStyles($defaultStyle);
+
+            if (is_array($styles)) {
+                $defaultStyle->applyFromArray($styles);
             }
         }
 
