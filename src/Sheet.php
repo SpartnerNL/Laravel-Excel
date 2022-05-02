@@ -413,15 +413,6 @@ class Sheet
             }
         }
 
-        if ($sheetExport instanceof WithDefaultStyles) {
-            $defaultStyle = $this->worksheet->getParent()->getDefaultStyle();
-            $styles = $sheetExport->defaultStyles($defaultStyle);
-
-            if (is_array($styles)) {
-                $defaultStyle->applyFromArray($styles);
-            }
-        }
-
         if ($sheetExport instanceof WithStyles) {
             $styles = $sheetExport->styles($this->worksheet);
             if (is_array($styles)) {
