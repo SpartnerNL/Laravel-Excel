@@ -7,6 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Maatwebsite\Excel\Concerns\FromQuery;
+use Maatwebsite\Excel\Concerns\WithChunkEvents;
 use Maatwebsite\Excel\Files\TemporaryFile;
 use Maatwebsite\Excel\Jobs\Middleware\LocalizeJob;
 use Maatwebsite\Excel\Writer;
@@ -14,6 +15,7 @@ use Maatwebsite\Excel\Writer;
 class AppendQueryToSheet implements ShouldQueue
 {
     use Queueable, Dispatchable, ProxyFailures, InteractsWithQueue;
+    use WithChunkEvents;
 
     /**
      * @var TemporaryFile
@@ -87,7 +89,7 @@ class AppendQueryToSheet implements ShouldQueue
      */
     public function handle(Writer $writer)
     {
-        (new LocalizeJob($this->sheetExport))->handle($this, function () use ($writer) {
+        (new LocalizeJob($this->sheetExport))->handle($this, $this->withEventHandling(function () use ($writer) {
             $writer = $writer->reopen($this->temporaryFile, $this->writerType);
 
             $sheet = $writer->getSheetByIndex($this->sheetIndex);
@@ -97,6 +99,6 @@ class AppendQueryToSheet implements ShouldQueue
             $sheet->appendRows($query->get(), $this->sheetExport);
 
             $writer->write($this->sheetExport, $this->temporaryFile, $this->writerType);
-        });
+        }, $this->sheetExport));
     }
 }
