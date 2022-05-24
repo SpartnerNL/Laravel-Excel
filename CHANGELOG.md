@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Fixed
+
+- Fix temporary local files not being cleaned up when setting force_resync_remote config to true (#3623)
+
 ## [3.1.40] - 2022-05-02
 
 ### Changed
