@@ -372,7 +372,7 @@ class ExcelFake implements Exporter, Importer
             $results = preg_grep($key, $files);
             Assert::assertGreaterThan(0, count($results), $message);
             Assert::assertEquals(1, count($results), "More than one result matches the file name expression '$key'.");
-           
+
             return array_values($results)[0];
         }
         Assert::assertArrayHasKey($key, $disk, $message);
