@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Added
+- Added two new events: BeforeChunk and AfterChunk for chunked exports
+
 ## [3.1.39] - 2022-04-23
 
 ### Fixed
