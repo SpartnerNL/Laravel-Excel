@@ -52,6 +52,33 @@ exports and imports.
   </a>
 </p>
 
+```php
+
+    public function export()
+    {
+
+        $user = request()->user();
+
+        $batch = (new UsersExport)->queue($path, 'public');
+
+        $batch->then(function (Batch $batch) use ($user) {
+
+            dump('Batch successful');
+
+        })->catch(function (Batch $batch, Throwable $e) use ($user) {
+            // First batch job failure detected...
+
+        })->finally(function (Batch $batch) use ($user) {
+
+            dump('Batch finished');
+            NotifyUserOfCompletedExport::dispatch($user);
+
+        })->onConnection('redis')->allowFailures()->onQueue('exports')->name("Users Export")->dispatch();
+
+    }
+
+```
+
 ## ✨ Features
 
 - **Easily export collections to Excel.** Supercharge your Laravel collections and export them directly to an Excel or CSV document. Exporting has never been so easy.
