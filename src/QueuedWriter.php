@@ -2,8 +2,15 @@
 
 namespace Maatwebsite\Excel;
 
+use App\Mail\SSAAdmin\ImportBatchFinished;
+use App\Mail\SSAAdmin\ImportBatchJobFailureDetected;
+use App\Mail\SSAAdmin\ImportBatchSuccessful;
+use Carbon\Carbon;
+use Illuminate\Bus\Batch;
 use Illuminate\Foundation\Bus\PendingDispatch;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Bus;
+use Illuminate\Support\Facades\Mail;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\FromView;
@@ -70,9 +77,19 @@ class QueuedWriter
             $diskOptions
         ));
 
-        return new PendingDispatch(
-            (new QueueExport($export, $temporaryFile, $writerType))->chain($jobs->toArray())
-        );
+        //dump($jobs->toArray());
+
+
+        return Bus::batch([
+
+            new QueueExport($export, $temporaryFile, $writerType, $jobs->toArray()),
+
+        ]);
+
+//        return new PendingDispatch(
+//            //(new QueueExport($export, $temporaryFile, $writerType))->chain($jobs->toArray())
+//            new QueueExport($export, $temporaryFile, $writerType, $jobs->toArray())
+//        );
     }
 
     /**

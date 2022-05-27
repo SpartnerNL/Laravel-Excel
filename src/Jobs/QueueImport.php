@@ -2,12 +2,15 @@
 
 namespace Maatwebsite\Excel\Jobs;
 
+use Illuminate\Bus\Batchable;
+use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
 
 class QueueImport implements ShouldQueue
 {
-    use ExtendedQueueable, Dispatchable;
+    use Queueable, Dispatchable, Batchable, InteractsWithQueue;
 
     /**
      * @var int
@@ -32,6 +35,14 @@ class QueueImport implements ShouldQueue
 
     public function handle()
     {
-        //
+        if(!empty($this->batch())) {
+
+            if ($this->batch()->cancelled()) {
+                // Determine if the batch has been cancelled...
+
+                return;
+            }
+
+        }
     }
 }

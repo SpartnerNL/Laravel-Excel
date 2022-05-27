@@ -2,14 +2,16 @@
 
 namespace Maatwebsite\Excel\Jobs;
 
+use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Queue\InteractsWithQueue;
 use Maatwebsite\Excel\Files\Filesystem;
 use Maatwebsite\Excel\Files\TemporaryFile;
 
 class StoreQueuedExport implements ShouldQueue
 {
-    use Queueable;
+    use Queueable, Batchable, InteractsWithQueue;
 
     /**
      * @var string
@@ -49,6 +51,17 @@ class StoreQueuedExport implements ShouldQueue
      */
     public function handle(Filesystem $filesystem)
     {
+
+        if(!empty($this->batch())) {
+
+            if ($this->batch()->cancelled()) {
+                // Determine if the batch has been cancelled...
+
+                return;
+            }
+
+        }
+
         $filesystem->disk($this->disk, $this->diskOptions)->copy(
             $this->temporaryFile,
             $this->filePath

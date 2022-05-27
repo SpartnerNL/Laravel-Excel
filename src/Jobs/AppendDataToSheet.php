@@ -2,6 +2,7 @@
 
 namespace Maatwebsite\Excel\Jobs;
 
+use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -12,7 +13,7 @@ use Maatwebsite\Excel\Writer;
 
 class AppendDataToSheet implements ShouldQueue
 {
-    use Queueable, Dispatchable, ProxyFailures, InteractsWithQueue;
+    use Queueable, Dispatchable, ProxyFailures, InteractsWithQueue, Batchable;
 
     /**
      * @var array
@@ -73,6 +74,17 @@ class AppendDataToSheet implements ShouldQueue
      */
     public function handle(Writer $writer)
     {
+
+        if(!empty($this->batch())) {
+
+            if ($this->batch()->cancelled()) {
+                // Determine if the batch has been cancelled...
+
+                return;
+            }
+
+        }
+
         (new LocalizeJob($this->sheetExport))->handle($this, function () use ($writer) {
             $writer = $writer->reopen($this->temporaryFile, $this->writerType);
 

@@ -2,15 +2,17 @@
 
 namespace Maatwebsite\Excel\Jobs;
 
+use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Queue\InteractsWithQueue;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Files\TemporaryFile;
 use Maatwebsite\Excel\Writer;
 
 class CloseSheet implements ShouldQueue
 {
-    use Queueable, ProxyFailures;
+    use Queueable, ProxyFailures, Batchable, InteractsWithQueue;
 
     /**
      * @var object
@@ -54,6 +56,17 @@ class CloseSheet implements ShouldQueue
      */
     public function handle(Writer $writer)
     {
+
+        if(!empty($this->batch())) {
+
+            if ($this->batch()->cancelled()) {
+                // Determine if the batch has been cancelled...
+
+                return;
+            }
+
+        }
+
         $writer = $writer->reopen(
             $this->temporaryFile,
             $this->writerType

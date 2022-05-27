@@ -2,8 +2,11 @@
 
 namespace Maatwebsite\Excel\Jobs;
 
+use Illuminate\Bus\Batchable;
+use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 use Maatwebsite\Excel\Files\TemporaryFile;
 use Maatwebsite\Excel\Jobs\Middleware\LocalizeJob;
@@ -12,7 +15,7 @@ use Throwable;
 
 class QueueExport implements ShouldQueue
 {
-    use ExtendedQueueable, Dispatchable;
+    use Dispatchable, Batchable, Queueable, InteractsWithQueue;
 
     /**
      * @var object
@@ -29,16 +32,19 @@ class QueueExport implements ShouldQueue
      */
     private $temporaryFile;
 
+    private $jobs_for_batch;
+
     /**
      * @param  object  $export
      * @param  TemporaryFile  $temporaryFile
      * @param  string  $writerType
      */
-    public function __construct($export, TemporaryFile $temporaryFile, string $writerType)
+    public function __construct($export, TemporaryFile $temporaryFile, string $writerType, $jobs_for_batch = array())
     {
         $this->export        = $export;
         $this->writerType    = $writerType;
         $this->temporaryFile = $temporaryFile;
+        $this->jobs_for_batch = $jobs_for_batch;
     }
 
     /**
@@ -58,6 +64,31 @@ class QueueExport implements ShouldQueue
      */
     public function handle(Writer $writer)
     {
+
+        //dump($this->batch()->id);
+
+
+        if(!empty($this->batch())) {
+
+            if ($this->batch()->cancelled()) {
+                // Determine if the batch has been cancelled...
+
+                return;
+            }
+
+//            foreach ($this->jobs_for_batch as $jobs_for_batch) {
+//
+//                $this->batch()->add($jobs_for_batch);
+//
+//            }
+
+            //dump($this->jobs_for_batch);
+
+            $this->batch()->add($this->jobs_for_batch);
+
+
+        }
+
         (new LocalizeJob($this->export))->handle($this, function () use ($writer) {
             $writer->open($this->export);
 
