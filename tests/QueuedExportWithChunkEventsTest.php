@@ -26,7 +26,7 @@ class QueuedExportWithChunkEventsTest extends TestCase
     /**
      * @test
      */
-    public function can_queue_an_export()
+    public function queued_export_calls_chunk_events()
     {
         $export = new QueuedExportWithChunkEvents();
 
