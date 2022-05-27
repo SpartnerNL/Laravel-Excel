@@ -10,13 +10,12 @@ class AfterChunk
     private $exportable;
 
     /**
-     * @param object $exportable
+     * @param  object  $exportable
      */
     public function __construct($exportable)
     {
         $this->exportable = $exportable;
     }
-
 
     /**
      * @return object

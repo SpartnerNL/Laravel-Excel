@@ -2,28 +2,26 @@
 
 namespace Maatwebsite\Excel\Concerns;
 
-use Illuminate\Testing\Fluent\Concerns\Has;
 use Maatwebsite\Excel\Events\AfterChunk;
 use Maatwebsite\Excel\Events\BeforeChunk;
 use Maatwebsite\Excel\HasEventBus;
-use Maatwebsite\Excel\Jobs\AppendQueryToSheet;
 
 trait WithChunkEvents
 {
     use HasEventBus;
 
     /**
-     * @param callable $callable
-     * @param          $exportable
-     *
+     * @param  callable  $callable
+     * @param  $exportable
      * @return \Closure
      */
-    protected function withEventHandling(callable $callable, $exportable) {
-        if(!$exportable instanceof WithEvents) {
+    protected function withEventHandling(callable $callable, $exportable)
+    {
+        if (!$exportable instanceof WithEvents) {
             return $callable;
         }
 
-        return function() use ($callable, $exportable) {
+        return function () use ($callable, $exportable) {
             $this->prepareEventBus($exportable)
                 ->beforeChunk($exportable);
 
@@ -33,11 +31,13 @@ trait WithChunkEvents
                 ->garbageCollect();
         };
     }
+
     /**
      * @return $this
      */
-    protected function prepareEventBus($exportable) {
-        if($exportable instanceof WithEvents){
+    protected function prepareEventBus($exportable)
+    {
+        if ($exportable instanceof WithEvents) {
             $this->registerListeners($exportable->registerEvents());
         }
 
@@ -46,10 +46,10 @@ trait WithChunkEvents
 
     /**
      * @param $exportable
-     *
      * @return $this
      */
-    protected function beforeChunk($exportable) {
+    protected function beforeChunk($exportable)
+    {
         $this->raise(new BeforeChunk($exportable));
 
         return $this;
@@ -57,10 +57,10 @@ trait WithChunkEvents
 
     /**
      * @param $exportable
-     *
      * @return $this
      */
-    protected function afterChunk($exportable) {
+    protected function afterChunk($exportable)
+    {
         $this->raise(new AfterChunk($exportable));
 
         return $this;

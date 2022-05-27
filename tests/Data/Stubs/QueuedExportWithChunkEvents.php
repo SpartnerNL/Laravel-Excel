@@ -27,12 +27,12 @@ class QueuedExportWithChunkEvents implements WithEvents, WithCustomChunkSize, Fr
         return [
             BeforeChunk::class  => function (BeforeChunk $event) {
                 (new Group([
-                    'name' => 'before'
+                    'name' => 'before',
                 ]))->save();
             },
             AfterChunk::class => function (AfterChunk $event) {
                 (new Group([
-                    'name' => 'after'
+                    'name' => 'after',
                 ]))->save();
             },
         ];

@@ -23,7 +23,6 @@ class QueuedExportWithChunkEventsTest extends TestCase
         factory(User::class)->times(100)->create([]);
     }
 
-
     /**
      * @test
      */
@@ -39,9 +38,8 @@ class QueuedExportWithChunkEventsTest extends TestCase
         // which will create groups named 'before' and 'after' for
         // BeforeChunk and AfterChunk events
         $beforeCount = Group::query()->where('name', 'before')->count();
-        $afterCount = Group::query()->where('name', 'after')->count();
+        $afterCount  = Group::query()->where('name', 'after')->count();
         $this->assertSame(10, $beforeCount);
         $this->assertSame(10, $afterCount);
     }
-
 }
