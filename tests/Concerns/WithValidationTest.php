@@ -91,7 +91,8 @@ class WithValidationTest extends TestCase
      */
     public function can_validate_simple_to_array()
     {
-        $import = new class implements WithArrayValidation {
+        $import = new class implements WithArrayValidation
+        {
             use Importable;
 
             public function rules(): array
