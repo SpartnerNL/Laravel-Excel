@@ -67,8 +67,9 @@ class QueuedExportTest extends TestCase
                     $tempFile->exists()
                 );
 
-                $this->assertTrue(
-                    unlink($tempFile->getLocalPath())
+                // File was deleted locally
+                $this->assertFalse(
+                    file_exists($tempFile->getLocalPath())
                 );
 
                 $jobs++;
