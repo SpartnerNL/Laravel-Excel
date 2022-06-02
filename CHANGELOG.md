@@ -4,8 +4,9 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
-### Fixes
+### Fixed
 
+- Fix temporary local files not being cleaned up when setting force_resync_remote config to true (#3623)
 - Fix testing for multiple stored files by regex matching (#3631).
 
 ## [3.1.40] - 2022-05-02
