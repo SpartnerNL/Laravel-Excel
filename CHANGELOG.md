@@ -6,6 +6,8 @@ All notable changes to this project will be documented in this file.
 
 ## [3.1.40] - 2022-05-02
 
+- Fix testing for multiple stored files by regex matching (#3631).
+
 ### Changed
 
 - Adds `WithDefaultStyles` concern to allow configuring the workbook default styles.
