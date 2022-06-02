@@ -17,7 +17,6 @@ use Maatwebsite\Excel\Concerns\SkipsEmptyRows;
 use Maatwebsite\Excel\Concerns\ToArray;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\ToModel;
-use Maatwebsite\Excel\Concerns\WithArrayValidation;
 use Maatwebsite\Excel\Concerns\WithCalculatedFormulas;
 use Maatwebsite\Excel\Concerns\WithCharts;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
@@ -357,11 +356,11 @@ class Sheet
                 $row = $import->map($row);
             }
 
-            if ($import instanceof WithValidation && method_exists($import, 'prepareForValidation')) {
-                $row = $import->prepareForValidation($row, $index);
-            }
+            if ($import instanceof WithValidation) {
+                if (method_exists($import, 'prepareForValidation')) {
+                    $row = $import->prepareForValidation($row, $index);
+                }
 
-            if ($import instanceof WithArrayValidation) {
                 $rows = $this->validated($import, $startRow, $rows);
             }
 
