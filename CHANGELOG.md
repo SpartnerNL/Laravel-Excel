@@ -1,8 +1,12 @@
+
 # Changelog
 
 All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
+
+### Changed
+- Adds `WithArrayValidation` concern to allow validations with `Excel::toArray`
 
 ### Fixed
 

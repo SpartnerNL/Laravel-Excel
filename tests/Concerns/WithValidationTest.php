@@ -12,6 +12,7 @@ use Maatwebsite\Excel\Concerns\SkipsEmptyRows;
 use Maatwebsite\Excel\Concerns\ToArray;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Concerns\WithArrayValidation;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithGroupedHeadingRow;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
@@ -83,6 +84,36 @@ class WithValidationTest extends TestCase
         }
 
         $this->assertInstanceOf(ValidationException::class, $e ?? null);
+    }
+
+    /**
+     * @test
+     */
+    public function can_validate_simple_to_array()
+    {
+        $import = new class implements WithArrayValidation
+        {
+            use Importable;
+
+            public function rules(): array
+            {
+                return ['phone' => 'required'];
+            }
+        };
+
+        try {
+            $import->toArray('import-users-with-headings.xlsx');
+        } catch (ValidationException $e) {
+            $this->validateFailure($e, 1, 'phone', [
+                'The phone field is required.',
+            ]);
+
+            $this->assertEquals([
+                [
+                    'There was an error on row 1. The phone field is required.',
+                ],
+            ], $e->errors());
+        }
     }
 
     /**
