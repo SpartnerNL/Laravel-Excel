@@ -68,6 +68,26 @@ class ExcelFakeTest extends TestCase
     /**
      * @test
      */
+    public function can_assert_regex_against_a_fake_stored_export_with_multiple_files()
+    {
+        ExcelFacade::fake();
+
+        $response = ExcelFacade::store($this->givenExport(), 'stored-filename-one.csv', 's3');
+
+        $this->assertTrue($response);
+
+        $response = ExcelFacade::store($this->givenExport(), 'stored-filename-two.csv', 's3');
+
+        $this->assertTrue($response);
+
+        ExcelFacade::matchByRegex();
+        ExcelFacade::assertStored('/\w{6}-\w{8}-one\.csv/', 's3');
+        ExcelFacade::assertStored('/\w{6}-\w{8}-two\.csv/', 's3');
+    }
+
+    /**
+     * @test
+     */
     public function a_callback_can_be_passed_as_the_second_argument_when_asserting_against_a_faked_stored_export()
     {
         ExcelFacade::fake();
