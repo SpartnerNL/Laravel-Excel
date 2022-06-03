@@ -5,6 +5,7 @@ namespace Maatwebsite\Excel\Tests\Concerns;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\Importable;
+use Maatwebsite\Excel\Concerns\IsRowEmpty;
 use Maatwebsite\Excel\Concerns\OnEachRow;
 use Maatwebsite\Excel\Concerns\SkipsEmptyRows;
 use Maatwebsite\Excel\Concerns\ToCollection;
@@ -99,5 +100,38 @@ class SkipsEmptyRowsTest extends TestCase
         $import->import('import-empty-rows.xlsx');
 
         $this->assertEquals(3, $import->rows);
+    }
+
+    /**
+     * @test
+     */
+    public function custom_skips_rows_when_importing_to_collection()
+    {
+        $import = new class implements SkipsEmptyRows, IsRowEmpty, ToCollection {
+            use Importable;
+
+            public $called = false;
+
+            /**
+             * @param Collection $collection
+             */
+            public function collection(Collection $collection)
+            {
+                $this->called = true;
+
+                Assert::assertEquals([
+                    ['Test1', 'Test2'],
+                    ['Test3', 'Test4'],
+                ], $collection->toArray());
+            }
+
+            public function isEmptyWhen(array $row)
+            {
+                return $row[0] == 'Test5' && $row[1] == 'Test6';
+            }
+        };
+
+        $import->import('import-empty-rows.xlsx');
+        $this->assertTrue($import->called);
     }
 }
