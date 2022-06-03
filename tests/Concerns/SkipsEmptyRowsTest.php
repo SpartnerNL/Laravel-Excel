@@ -107,13 +107,14 @@ class SkipsEmptyRowsTest extends TestCase
      */
     public function custom_skips_rows_when_importing_to_collection()
     {
-        $import = new class implements SkipsEmptyRows, IsRowEmpty, ToCollection {
+        $import = new class implements SkipsEmptyRows, IsRowEmpty, ToCollection
+        {
             use Importable;
 
             public $called = false;
 
             /**
-             * @param Collection $collection
+             * @param  Collection  $collection
              */
             public function collection(Collection $collection)
             {
