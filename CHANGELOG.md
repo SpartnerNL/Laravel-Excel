@@ -7,6 +7,7 @@ All notable changes to this project will be documented in this file.
 
 ### Changed
 - Support `WithValidation` concern to allow validations with `Excel::toArray()` and `Excel::toCollection()`
+- Cast empty headings to indexed integer
 
 ### Fixed
 
