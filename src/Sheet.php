@@ -11,7 +11,6 @@ use Maatwebsite\Excel\Concerns\FromGenerator;
 use Maatwebsite\Excel\Concerns\FromIterator;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\FromView;
-use Maatwebsite\Excel\Concerns\IsRowEmpty;
 use Maatwebsite\Excel\Concerns\OnEachRow;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\SkipsEmptyRows;
@@ -353,7 +352,7 @@ class Sheet
 
             $row = $row->toArray($nullValue, $calculateFormulas, $formatData, $endColumn);
 
-            if ($import instanceof IsRowEmpty && $import->isEmptyWhen($row)) {
+            if (method_exists($import, 'isEmptyWhen') && $import->isEmptyWhen($row)) {
                 continue;
             }
 
