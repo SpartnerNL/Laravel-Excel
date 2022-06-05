@@ -3,8 +3,10 @@
 namespace Maatwebsite\Excel\Tests\Concerns;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\ToArray;
+use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
@@ -179,5 +181,33 @@ class WithHeadingRowTest extends TestCase
 
         $import->import('import-empty-users-with-headings.xlsx');
         $this->assertEmpty(User::all());
+    }
+
+    /**
+     * @test
+     */
+    public function can_cast_empty_headers_to_indexed_int()
+    {
+        $import = new class() implements ToCollection, WithHeadingRow
+        {
+            use Importable;
+
+            public $called = false;
+
+            public function collection(Collection $collection)
+            {
+                $this->called = true;
+
+                Assert::assertEquals([
+                    0 => 0,
+                    1 => 'email',
+                    2 => 'status',
+                    3 => 3,
+                ], $collection->first()->keys()->toArray());
+            }
+        };
+
+        $import->import('import-users-with-mixed-headings.xlsx');
+        $this->assertTrue($import->called);
     }
 }
