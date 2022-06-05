@@ -91,6 +91,10 @@ class HeadingRowFormatter
             return $formatter($value, $key);
         }
 
+        if (empty($value)) {
+            return $key;
+        }
+
         if (static::$formatter === self::FORMATTER_SLUG) {
             return Str::slug($value, '_');
         }
