@@ -100,4 +100,38 @@ class SkipsEmptyRowsTest extends TestCase
 
         $this->assertEquals(3, $import->rows);
     }
+
+    /**
+     * @test
+     */
+    public function custom_skips_rows_when_importing_to_collection()
+    {
+        $import = new class implements SkipsEmptyRows, ToCollection
+        {
+            use Importable;
+
+            public $called = false;
+
+            /**
+             * @param  Collection  $collection
+             */
+            public function collection(Collection $collection)
+            {
+                $this->called = true;
+
+                Assert::assertEquals([
+                    ['Test1', 'Test2'],
+                    ['Test3', 'Test4'],
+                ], $collection->toArray());
+            }
+
+            public function isEmptyWhen(array $row)
+            {
+                return $row[0] == 'Test5' && $row[1] == 'Test6';
+            }
+        };
+
+        $import->import('import-empty-rows.xlsx');
+        $this->assertTrue($import->called);
+    }
 }
