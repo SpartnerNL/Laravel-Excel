@@ -1,4 +1,3 @@
-
 # Changelog
 
 All notable changes to this project will be documented in this file.
@@ -6,9 +5,11 @@ All notable changes to this project will be documented in this file.
 ## [Unreleased]
 
 ### Changed
+
 - Support `WithValidation` concern to allow validations with `Excel::toArray()` and `Excel::toCollection()`
 - Cast empty headings to indexed integer
 - Adds `isEmptyWhen` to customize is row empty logic.
+- Added concern 'SkipsAfterImportJob' for instance of 'ShouldQueueWithoutChain' to prevent file being deleted before every queue chunk is processed.
 
 ### Fixed
 
@@ -44,18 +45,22 @@ All notable changes to this project will be documented in this file.
 ## [3.1.37] - 2022-02-28
 
 ### Fixed
+
 - Add `@mixin` docblock to all macroable classes to allow for IDE autocompletion of delegate classes
 - Fix issue with `Excel::toArray` not allowing nullable reader types for uploaded files
 
 ### Changed
+
 - Change default Csv Import to auto-detect the delimiter when not explicitly defined
 
 ## [3.1.36] - 2022-02-03
 
 ### Fixed
+
 - Fix return type of `FromQuery::query()`
 
 ## Changed
+
 - Support Laravel 9
 - Added a config setting to specify DB connection
 - Added a config setting to specify CSV output encoding
@@ -244,7 +249,7 @@ All notable changes to this project will be documented in this file.
 - Raw() method now also available on Exportable.
 - Fix for breaking changes in PhpSpreadsheet with empty enclosures.
 
-[Unreleased]: https://github.com/Maatwebsite/Laravel-Excel/compare/3.1.40...HEAD
+[unreleased]: https://github.com/Maatwebsite/Laravel-Excel/compare/3.1.40...HEAD
 [3.1.40]: https://github.com/Maatwebsite/Laravel-Excel/compare/3.1.39...3.1.40
 [3.1.39]: https://github.com/Maatwebsite/Laravel-Excel/compare/3.1.38...3.1.39
 [3.1.38]: https://github.com/Maatwebsite/Laravel-Excel/compare/3.1.37...3.1.38
