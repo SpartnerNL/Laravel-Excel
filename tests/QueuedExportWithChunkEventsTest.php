@@ -18,8 +18,7 @@ class QueuedExportWithChunkEventsTest extends TestCase
 
         $this->loadLaravelMigrations(['--database' => 'testing']);
         $this->withFactories(__DIR__ . '/Data/Stubs/Database/Factories');
-        $this->loadMigrationsFrom(dirname(__DIR__) . '/Data/Stubs/Database/Migrations');
-
+        $this->loadMigrationsFrom(dirname(__DIR__) . '/tests/Data/Stubs/Database/Migrations');
         factory(User::class)->times(100)->create([]);
     }
 
