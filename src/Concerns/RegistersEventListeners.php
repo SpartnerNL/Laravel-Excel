@@ -2,8 +2,10 @@
 
 namespace Maatwebsite\Excel\Concerns;
 
+use Maatwebsite\Excel\Events\AfterChunk;
 use Maatwebsite\Excel\Events\AfterImport;
 use Maatwebsite\Excel\Events\AfterSheet;
+use Maatwebsite\Excel\Events\BeforeChunk;
 use Maatwebsite\Excel\Events\BeforeExport;
 use Maatwebsite\Excel\Events\BeforeImport;
 use Maatwebsite\Excel\Events\BeforeSheet;
@@ -45,6 +47,14 @@ trait RegistersEventListeners
 
         if (method_exists($this, 'afterSheet')) {
             $listeners[AfterSheet::class] = [static::class, 'afterSheet'];
+        }
+
+        if (method_exists($this, 'beforeChunk')) {
+            $listeners[BeforeChunk::class] = [static::class, 'beforeChunk'];
+        }
+
+        if (method_exists($this, 'afterChunk')) {
+            $listeners[AfterChunk::class] = [static::class, 'afterChunk'];
         }
 
         return $listeners;
