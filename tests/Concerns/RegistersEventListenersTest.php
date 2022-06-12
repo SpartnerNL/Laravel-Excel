@@ -136,7 +136,7 @@ class RegistersEventListenersTest extends TestCase
 
         // it's 24 because beforeExport, beforeWriting, beforeSheet and afterSheet are fired once
         // and beforeChunk and afterChunk are fired once per chunk, there are 10 chunks
-        $this->assertDatabaseCount('groups', 24);
+        $this->assertSame(24, Group::query()->count());
     }
 
     /**
