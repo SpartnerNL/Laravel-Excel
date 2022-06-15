@@ -351,7 +351,7 @@ class WithValidationTest extends TestCase
             $import->import('import-users.xlsx');
         } catch (ValidationException $e) {
             $this->validateFailure($e, 2, 'conditional_required_unless_column', [
-                'The conditional_required_unless_column field is required unless 2.1 is patrick@maatwebsite.nl.',
+                'The conditional_required_unless_column field is required unless 2.1 is in patrick@maatwebsite.nl.',
             ]);
         }
 
