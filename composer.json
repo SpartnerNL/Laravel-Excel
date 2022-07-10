@@ -22,7 +22,7 @@
   "require": {
     "ext-json": "*",
     "php": "^7.0|^8.0",
-    "phpoffice/phpspreadsheet": "^1.24",
+    "phpoffice/phpspreadsheet": "^1.21",
     "illuminate/support": "5.8.*|^6.0|^7.0|^8.0|^9.0"
   },
   "require-dev": {
