@@ -6,6 +6,9 @@ All notable changes to this project will be documented in this file.
 ## [Unreleased]
 
 ### Changed
+- Fix missing return types (#3731).
+
+### Changed
 - Support `WithValidation` concern to allow validations with `Excel::toArray()` and `Excel::toCollection()`
 - Cast empty headings to indexed integer
 - Adds `isEmptyWhen` to customize is row empty logic.
