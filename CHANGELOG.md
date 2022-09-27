@@ -15,6 +15,7 @@ All notable changes to this project will be documented in this file.
 - Fix temporary local files not being cleaned up when setting force_resync_remote config to true (#3623)
 - Fix testing for multiple stored files by regex matching (#3631).
 - Allow `required_unless` rule (#3660)
+- Fix MemoryCache compatibility issues with Psr\SimpleCache\CacheInterface
 
 ## [3.1.40] - 2022-05-02
 
