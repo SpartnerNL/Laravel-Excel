@@ -352,7 +352,7 @@ class Sheet
 
             $row = $row->toArray($nullValue, $calculateFormulas, $formatData, $endColumn);
 
-            if (method_exists($import, 'isEmptyWhen') && $import->isEmptyWhen($row)) {
+            if ($import && method_exists($import, 'isEmptyWhen') && $import->isEmptyWhen($row)) {
                 continue;
             }
 
