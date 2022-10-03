@@ -260,7 +260,7 @@ class ExcelTest extends TestCase
             ]),
         ]), $import->toCollection('import.xlsx'));
     }
-    
+
     /**
      * @test
      */
