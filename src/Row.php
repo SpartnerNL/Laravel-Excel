@@ -105,7 +105,7 @@ class Row implements ArrayAccess
             $cells = ($this->preparationCallback)($cells, $this->row->getRowIndex());
         }
 
-        $this->rowCache = $cells;
+        $this->rowCache           = $cells;
         $this->rowCacheFormatData = $formatData;
 
         return $cells;
