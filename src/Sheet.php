@@ -352,7 +352,7 @@ class Sheet
 
             $row = $row->toArray($nullValue, $calculateFormulas, $formatData, $endColumn);
 
-            if (method_exists($import, 'isEmptyWhen') && $import->isEmptyWhen($row)) {
+            if ($import && method_exists($import, 'isEmptyWhen') && $import->isEmptyWhen($row)) {
                 continue;
             }
 
@@ -360,12 +360,8 @@ class Sheet
                 $row = $import->map($row);
             }
 
-            if ($import instanceof WithValidation) {
-                if (method_exists($import, 'prepareForValidation')) {
-                    $row = $import->prepareForValidation($row, $index);
-                }
-
-                $rows = $this->validated($import, $startRow, $rows);
+            if ($import instanceof WithValidation && method_exists($import, 'prepareForValidation')) {
+                $row = $import->prepareForValidation($row, $index);
             }
 
             $rows[] = $row;

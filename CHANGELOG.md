@@ -1,4 +1,3 @@
-
 # Changelog
 
 All notable changes to this project will be documented in this file.
@@ -6,7 +5,6 @@ All notable changes to this project will be documented in this file.
 ## [Unreleased]
 
 ### Changed
-- Support `WithValidation` concern to allow validations with `Excel::toArray()` and `Excel::toCollection()`
 - Cast empty headings to indexed integer
 - Adds `isEmptyWhen` to customize is row empty logic.
 
@@ -15,6 +13,7 @@ All notable changes to this project will be documented in this file.
 - Fix temporary local files not being cleaned up when setting force_resync_remote config to true (#3623)
 - Fix testing for multiple stored files by regex matching (#3631).
 - Allow `required_unless` rule (#3660)
+- Fix output of `WithFormatData` in combination with `SkipsEmptyRows` (#3760)
 
 ## [3.1.40] - 2022-05-02
 

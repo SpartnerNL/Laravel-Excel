@@ -4,6 +4,7 @@ namespace Maatwebsite\Excel\Tests\Concerns;
 
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\Importable;
+use Maatwebsite\Excel\Concerns\SkipsEmptyRows;
 use Maatwebsite\Excel\Concerns\ToArray;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\ToModel;
@@ -47,6 +48,34 @@ class WithFormatDataTest extends TestCase
     {
         config()->set('excel.imports.read_only', false);
         $import = new class implements ToArray, WithFormatData
+        {
+            use Importable;
+
+            public $called = false;
+
+            /**
+             * @param  array  $array
+             */
+            public function array(array $array)
+            {
+                $this->called = true;
+
+                Assert::assertSame('5/12/2021', $array[0][0]);
+            }
+        };
+
+        $import->import('import-format-data.xlsx');
+
+        $this->assertTrue($import->called);
+    }
+
+    /**
+     * @test
+     */
+    public function can_import_to_array_with_format_data_and_skips_empty_rows()
+    {
+        config()->set('excel.imports.read_only', false);
+        $import = new class implements ToArray, WithFormatData, SkipsEmptyRows
         {
             use Importable;
 

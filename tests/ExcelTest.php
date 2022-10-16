@@ -264,6 +264,19 @@ class ExcelTest extends TestCase
     /**
      * @test
      */
+    public function can_import_a_simple_xlsx_file_to_collection_without_import_object()
+    {
+        $this->assertEquals(new Collection([
+            new Collection([
+                new Collection(['test', 'test']),
+                new Collection(['test', 'test']),
+            ]),
+        ]), ExcelFacade::toCollection(null, 'import.xlsx'));
+    }
+
+    /**
+     * @test
+     */
     public function can_import_a_simple_xlsx_file()
     {
         $import = new class implements ToArray
