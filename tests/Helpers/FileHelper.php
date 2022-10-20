@@ -20,6 +20,7 @@ class FileHelper
             foreach ($scan as $path) {
                 self::recursiveDelete($path);
             }
+
             return @rmdir($fileName);
         }
     }
