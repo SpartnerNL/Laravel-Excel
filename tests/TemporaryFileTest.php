@@ -7,7 +7,8 @@ use Maatwebsite\Excel\Tests\Helpers\FileHelper;
 
 class TemporaryFileTest extends TestCase
 {
-    private string $defaultDirectoryPermissions;
+    private $defaultDirectoryPermissions;
+    private $defaultFilePermissions;
 
     /**
      * Setup the test environment.
@@ -19,6 +20,12 @@ class TemporaryFileTest extends TestCase
         $path = FileHelper::absolutePath('rights-test-permissions', 'local');
         mkdir($path);
         $this->defaultDirectoryPermissions = substr(sprintf('%o', fileperms($path)), -4);
+
+        $filePath = $path . DIRECTORY_SEPARATOR . 'file-permissions';
+        touch($filePath);
+        $this->defaultFilePermissions = substr(sprintf('%o', fileperms($filePath)), -4);
+
+        @unlink($filePath);
         @rmdir($path);
     }
 
@@ -38,8 +45,8 @@ class TemporaryFileTest extends TestCase
         $temporaryFile->put('data-set');
 
         $this->assertFileExists($temporaryFile->getLocalPath());
-        $this->assertEquals('0770', $this->defaultDirectoryPermissions);
-        $this->assertEquals('0640', substr(sprintf('%o', fileperms($temporaryFile->getLocalPath())), -4));
+        $this->assertEquals($this->defaultDirectoryPermissions, substr(sprintf('%o', fileperms(dirname($temporaryFile->getLocalPath()))), -4));
+        $this->assertEquals($this->defaultFilePermissions, substr(sprintf('%o', fileperms($temporaryFile->getLocalPath())), -4));
     }
 
     /**
@@ -60,7 +67,7 @@ class TemporaryFileTest extends TestCase
 
         $this->assertFileExists($temporaryFile->getLocalPath());
         $this->assertEquals('0700', substr(sprintf('%o', fileperms(dirname($temporaryFile->getLocalPath()))), -4));
-        $this->assertEquals('0640', substr(sprintf('%o', fileperms($temporaryFile->getLocalPath())), -4));
+        $this->assertEquals($this->defaultFilePermissions, substr(sprintf('%o', fileperms($temporaryFile->getLocalPath())), -4));
     }
 
     /**
@@ -80,7 +87,7 @@ class TemporaryFileTest extends TestCase
         $temporaryFile->put('data-set');
 
         $this->assertFileExists($temporaryFile->getLocalPath());
-        $this->assertEquals('0770', $this->defaultDirectoryPermissions);
+        $this->assertEquals($this->defaultDirectoryPermissions, substr(sprintf('%o', fileperms(dirname($temporaryFile->getLocalPath()))), -4));
         $this->assertEquals('0600', substr(sprintf('%o', fileperms($temporaryFile->getLocalPath())), -4));
     }
 }

@@ -296,9 +296,20 @@ return [
         |
         */
         'local_path'        => storage_path('framework/cache/laravel-excel'),
+
+        /*
+        |--------------------------------------------------------------------------
+        | Local Temporary Path Permissions
+        |--------------------------------------------------------------------------
+        |
+        | Permissions is an array with the permission flags for the directory (dir)
+        | and the create file (file).
+        | If omitted the default permissions of the filesystem will be used.
+        |
+        */
         'local_permissions' => [
-            'dir'  => 0770,
-            'file' => 0640,
+            // 'dir'  => 0770,
+            // 'file' => 0640,
         ],
 
         /*
