@@ -7,6 +7,21 @@ use Maatwebsite\Excel\Tests\Helpers\FileHelper;
 
 class TemporaryFileTest extends TestCase
 {
+    private string $defaultDirectoryPermissions;
+
+    /**
+     * Setup the test environment.
+     */
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $path = FileHelper::absolutePath('rights-test-permissions', 'local');
+        mkdir($path);
+        $this->defaultDirectoryPermissions = substr(sprintf('%o', fileperms($path)), -4);
+        @rmdir($path);
+    }
+
     /**
      * @test
      */
@@ -23,7 +38,7 @@ class TemporaryFileTest extends TestCase
         $temporaryFile->put('data-set');
 
         $this->assertFileExists($temporaryFile->getLocalPath());
-        $this->assertEquals('0770', substr(sprintf('%o', fileperms(dirname($temporaryFile->getLocalPath()))), -4));
+        $this->assertEquals('0770', $this->defaultDirectoryPermissions);
         $this->assertEquals('0640', substr(sprintf('%o', fileperms($temporaryFile->getLocalPath())), -4));
     }
 
@@ -65,7 +80,7 @@ class TemporaryFileTest extends TestCase
         $temporaryFile->put('data-set');
 
         $this->assertFileExists($temporaryFile->getLocalPath());
-        $this->assertEquals('0770', substr(sprintf('%o', fileperms(dirname($temporaryFile->getLocalPath()))), -4));
+        $this->assertEquals('0770', $this->defaultDirectoryPermissions);
         $this->assertEquals('0600', substr(sprintf('%o', fileperms($temporaryFile->getLocalPath())), -4));
     }
 }
