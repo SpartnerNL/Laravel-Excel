@@ -7,6 +7,7 @@ All notable changes to this project will be documented in this file.
 ### Changed
 - Cast empty headings to indexed integer
 - Adds `isEmptyWhen` to customize is row empty logic.
+- Support temporary file and directory rights configuration (#3766)
 
 ### Fixed
 
