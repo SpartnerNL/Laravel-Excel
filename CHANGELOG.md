@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 ## [Unreleased]
 
 ### Changed
+- Added typehints in classes extending Psr CacheInterface
 - Cast empty headings to indexed integer
 - Adds `isEmptyWhen` to customize is row empty logic.
 
