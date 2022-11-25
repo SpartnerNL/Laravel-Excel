@@ -94,7 +94,14 @@ class RemoteTemporaryFile extends TemporaryFile
     public function sync(): TemporaryFile
     {
         if (!$this->localTemporaryFile->exists()) {
-            touch($this->localTemporaryFile->getLocalPath());
+            $localPath = $this->localTemporaryFile->getLocalPath();
+
+            // create path first if it doesn't already exist
+            if (!file_exists(dirname($localPath))) {
+                mkdir(dirname($localPath), 0777, true);
+            }
+
+            touch($localPath);
         }
 
         $this->disk()->copy(
