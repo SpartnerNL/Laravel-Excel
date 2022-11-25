@@ -14,6 +14,7 @@ All notable changes to this project will be documented in this file.
 - Fix testing for multiple stored files by regex matching (#3631).
 - Allow `required_unless` rule (#3660)
 - Fix output of `WithFormatData` in combination with `SkipsEmptyRows` (#3760)
+- Fix 'No such file or directory' error when creating remote temporary file
 
 ## [3.1.40] - 2022-05-02
 
