@@ -56,6 +56,7 @@ class WithCustomCsvSettingsTest extends TestCase
                     'include_separator_line' => true,
                     'excel_compatibility'    => false,
                     'output_encoding'        => '',
+                    'test_auto_detect'       => false,
                 ];
             }
         };
