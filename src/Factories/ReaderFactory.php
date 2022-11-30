@@ -53,7 +53,9 @@ class ReaderFactory
             $reader->setEscapeCharacter(static::$escapeCharacter);
             $reader->setContiguous(static::$contiguous);
             $reader->setInputEncoding(static::$inputEncoding);
-            $reader->setTestAutoDetect(static::$testAutoDetect);
+            if (method_exists($reader, 'setTestAutoDetect')) {
+                $reader->setTestAutoDetect(static::$testAutoDetect);
+            }
         }
 
         if ($import instanceof WithReadFilter) {
