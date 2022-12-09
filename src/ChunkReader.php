@@ -82,7 +82,7 @@ class ChunkReader
         if ($import instanceof ShouldQueue) {
             return (new PendingDispatch(
                 (new QueueImport($import))->chain($jobs->toArray())
-            ))->onQueue($import->queue);
+            ))->onQueue($import->queue ?? "");
         }
 
         $jobs->each(function ($job) {
