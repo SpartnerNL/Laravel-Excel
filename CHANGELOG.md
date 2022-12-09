@@ -12,6 +12,7 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 
 - Fix output of `WithFormatData` in combination with `SkipsEmptyRows` (#3760)
+- Fixed specifying queue name in constructor in implicit queued imports/exports
 
 ### Changed
 
