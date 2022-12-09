@@ -70,9 +70,9 @@ class QueuedWriter
             $diskOptions
         ));
 
-        return new PendingDispatch(
+        return (new PendingDispatch(
             (new QueueExport($export, $temporaryFile, $writerType))->chain($jobs->toArray())
-        );
+        ))->onQueue($export->queue);
     }
 
     /**
