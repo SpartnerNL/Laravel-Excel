@@ -72,7 +72,7 @@ class QueuedWriter
 
         return (new PendingDispatch(
             (new QueueExport($export, $temporaryFile, $writerType))->chain($jobs->toArray())
-        ))->onQueue($export->queue ?? "");
+        ))->onQueue($export->queue ?? '');
     }
 
     /**
