@@ -11,6 +11,7 @@ use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithEvents;
+use Maatwebsite\Excel\Concerns\WithFormatData;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 use Maatwebsite\Excel\Events\AfterImport;
@@ -283,7 +284,7 @@ class WithChunkReadingTest extends TestCase
      */
     public function can_import_to_array_in_chunks()
     {
-        $import = new class implements ToArray, WithChunkReading
+        $import = new class implements ToArray, WithChunkReading, WithFormatData
         {
             use Importable;
 
@@ -521,5 +522,38 @@ class WithChunkReadingTest extends TestCase
         }
 
         $this->assertTrue($import->failed, 'ImportFailed event was not called.');
+    }
+
+    /**
+     * @test
+     */
+    public function can_import_to_array_and_format_in_chunks()
+    {
+        config()->set('excel.imports.read_only', false);
+
+        $import = new class implements ToArray, WithChunkReading, WithFormatData
+        {
+            use Importable;
+
+            /**
+             * @param  array  $array
+             */
+            public function array(array $array)
+            {
+                Assert::assertCount(1, $array);
+                Assert::assertCount(1, $array[0]);
+                Assert::assertIsString($array[0][0]);
+            }
+
+            /**
+             * @return int
+             */
+            public function chunkSize(): int
+            {
+                return 1;
+            }
+        };
+
+        $import->import('import-batches-with-date.xlsx');
     }
 }
