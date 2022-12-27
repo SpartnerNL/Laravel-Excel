@@ -9,6 +9,11 @@ All notable changes to this project will be documented in this file.
 
 ## [3.1.44] - 2022-10-14
 
+### Added
+- Compatibility with psr/cache: "3.0"
+
+## [3.1.44] - 2022-10-14
+
 ### Fixed
 
 - Fix output of `WithFormatData` in combination with `SkipsEmptyRows` (#3760)
