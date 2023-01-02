@@ -17,8 +17,8 @@ class BatchCacheDeprecated implements CacheInterface
     protected $memory;
 
     /**
-     * @param CacheInterface $cache
-     * @param MemoryCacheDeprecated    $memory
+     * @param  CacheInterface  $cache
+     * @param  MemoryCacheDeprecated  $memory
      */
     public function __construct(CacheInterface $cache, MemoryCacheDeprecated $memory)
     {

@@ -2,7 +2,6 @@
 
 namespace Maatwebsite\Excel\Cache;
 
-use Composer\Semver\VersionParser;
 use Psr\SimpleCache\CacheInterface;
 
 class MemoryCacheDeprecated implements CacheInterface
@@ -18,7 +17,7 @@ class MemoryCacheDeprecated implements CacheInterface
     protected $cache = [];
 
     /**
-     * @param int|null $memoryLimit
+     * @param  int|null  $memoryLimit
      */
     public function __construct(int $memoryLimit = null)
     {
