@@ -5,7 +5,9 @@ namespace Maatwebsite\Excel\Cache;
 use Composer\Semver\VersionParser;
 use Psr\SimpleCache\CacheInterface;
 
-if (PHP_VERSION_ID >= 70400 && \Composer\InstalledVersions::satisfies(new VersionParser, 'psr/simple-cache', '^3.0')) {
+dd(\Composer\InstalledVersions::satisfies(new VersionParser, 'psr/simple-cache', '^3.0'));
+
+if (PHP_VERSION_ID >= 80000 && \Composer\InstalledVersions::satisfies(new VersionParser, 'psr/simple-cache', '^3.0')) {
     class MemoryCache implements CacheInterface
     {
         /**
