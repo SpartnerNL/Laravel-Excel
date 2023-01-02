@@ -5,7 +5,7 @@ namespace Maatwebsite\Excel\Cache;
 use Composer\Semver\VersionParser;
 use Psr\SimpleCache\CacheInterface;
 
-if (\Composer\InstalledVersions::satisfies(new VersionParser, 'psr/cache', '^3.0')) {
+if (\Composer\InstalledVersions::satisfies(new VersionParser, 'psr/simple-cache', '^3.0')) {
     class MemoryCache implements CacheInterface
     {
         /**
@@ -19,7 +19,7 @@ if (\Composer\InstalledVersions::satisfies(new VersionParser, 'psr/cache', '^3.0
         protected $cache = [];
 
         /**
-         * @param int|null $memoryLimit
+         * @param  int|null  $memoryLimit
          */
         public function __construct(int $memoryLimit = null)
         {
@@ -152,7 +152,7 @@ if (\Composer\InstalledVersions::satisfies(new VersionParser, 'psr/cache', '^3.0
         protected $cache = [];
 
         /**
-         * @param int|null $memoryLimit
+         * @param  int|null  $memoryLimit
          */
         public function __construct(int $memoryLimit = null)
         {
