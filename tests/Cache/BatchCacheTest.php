@@ -2,11 +2,16 @@
 
 namespace Maatwebsite\Excel\Tests\Cache;
 
+use Composer\InstalledVersions;
+use Composer\Semver\VersionParser;
 use Illuminate\Cache\ArrayStore;
 use Illuminate\Cache\Repository;
 use Maatwebsite\Excel\Cache\BatchCache;
+use Maatwebsite\Excel\Cache\BatchCacheDeprecated;
+use Maatwebsite\Excel\Cache\CacheManager;
 use Maatwebsite\Excel\Cache\MemoryCache;
 use Maatwebsite\Excel\Tests\TestCase;
+use Psr\SimpleCache\CacheInterface;
 
 class BatchCacheTest extends TestCase
 {
@@ -178,17 +183,26 @@ class BatchCacheTest extends TestCase
      * @param  array  $memory
      * @param  array  $persisted
      * @param  int|null  $memoryLimit
-     * @return BatchCache
+     * @return CacheInterface
      */
-    private function givenCache(array $memory = [], array $persisted = [], int $memoryLimit = null): BatchCache
+    private function givenCache(array $memory = [], array $persisted = [], int $memoryLimit = null): CacheInterface
     {
-        $this->memory = new MemoryCache($memoryLimit);
+        config()->set('excel.cache.batch.memory_limit', $memoryLimit ?: 60000);
+
+        $this->memory = $this->app->make(CacheManager::class)->createMemoryDriver();
         $this->memory->setMultiple($memory);
 
         $store = new ArrayStore();
         $store->putMany($persisted, 10000);
 
         $this->cache = new Repository($store);
+
+        if (!InstalledVersions::satisfies(new VersionParser, 'psr/simple-cache', '^3.0')) {
+            return new BatchCacheDeprecated(
+                $this->cache,
+                $this->memory
+            );
+        }
 
         return new BatchCache(
             $this->cache,
