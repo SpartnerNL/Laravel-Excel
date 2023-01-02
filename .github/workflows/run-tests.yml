@@ -82,11 +82,7 @@ jobs:
       - name: Install dependencies
         run: |
           composer require "laravel/framework:${{ matrix.laravel }}.*" "orchestra/testbench:${{ matrix.testbench }}"  --no-interaction --no-update
-
-      - name: Update dependencies for PHP version
-        run: |
-          composer update --${{ matrix.dependency-version }} --no-interaction --no-suggest
-          composer update psr/simple-cache --with-all-dependencies
+          composer update --${{ matrix.dependency-version }} --no-interaction
 
       - name: Install legacy factories
         run: |
