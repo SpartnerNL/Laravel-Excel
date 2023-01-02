@@ -86,6 +86,7 @@ jobs:
       - name: Update dependencies for PHP version
         run: |
           composer update --${{ matrix.dependency-version }} --no-interaction --no-suggest
+          composer update psr/simple-cache --with-all-dependencies
 
       - name: Install legacy factories
         run: |
