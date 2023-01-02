@@ -5,7 +5,7 @@ namespace Maatwebsite\Excel\Cache;
 use Composer\Semver\VersionParser;
 use Psr\SimpleCache\CacheInterface;
 
-if (\Composer\InstalledVersions::satisfies(new VersionParser, 'psr/simple-cache', '^3.0')) {
+if (PHP_VERSION_ID >= 70400 && \Composer\InstalledVersions::satisfies(new VersionParser, 'psr/simple-cache', '^3.0')) {
     class BatchCache implements CacheInterface
     {
         /**
