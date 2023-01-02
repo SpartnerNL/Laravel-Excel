@@ -19,8 +19,8 @@ if (\Composer\InstalledVersions::satisfies(new VersionParser, 'psr/simple-cache'
         protected $memory;
 
         /**
-         * @param  CacheInterface  $cache
-         * @param  MemoryCache  $memory
+         * @param CacheInterface $cache
+         * @param MemoryCache    $memory
          */
         public function __construct(CacheInterface $cache, MemoryCache $memory)
         {
@@ -156,8 +156,8 @@ if (\Composer\InstalledVersions::satisfies(new VersionParser, 'psr/simple-cache'
         protected $memory;
 
         /**
-         * @param  CacheInterface  $cache
-         * @param  MemoryCache  $memory
+         * @param CacheInterface $cache
+         * @param MemoryCache    $memory
          */
         public function __construct(CacheInterface $cache, MemoryCache $memory)
         {
