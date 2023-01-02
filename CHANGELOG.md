@@ -4,8 +4,13 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [3.1.45] - 2023-01-02
+
 ### Added
 - Add support for ignoring PHP auto_detect_line_endings INI directive
+
+### Fixed
+- Fix the PSR simple cache dependency mess to maintain backwards compatability and support 3.0 of the interface.
 
 ## [3.1.44] - 2022-10-14
 
