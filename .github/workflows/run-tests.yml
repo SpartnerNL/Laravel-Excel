@@ -43,6 +43,12 @@ jobs:
         exclude:
           - laravel: 10
             php: 8.0
+          - laravel: 10
+            php: 7.4
+          - laravel: 10
+            php: 7.3
+          - laravel: 10
+            php: 7.2
           - laravel: 9
             php: 7.4
           - laravel: 9
