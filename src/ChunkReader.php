@@ -87,7 +87,7 @@ class ChunkReader
 
         $jobs->each(function ($job) {
             try {
-                function_exists('dispatch_sync')
+                version_compare(app()->version(), '10.0.0', '>=')
                     ? dispatch_sync($job)
                     : dispatch_now($job);
             } catch (Throwable $e) {
