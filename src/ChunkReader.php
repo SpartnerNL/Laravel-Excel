@@ -6,7 +6,6 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\PendingDispatch;
-use Illuminate\Pipeline\Pipeline;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\Jobs\SyncJob;
 use Illuminate\Support\Collection;
@@ -36,10 +35,9 @@ class ChunkReader
     }
 
     /**
-     * @param WithChunkReading $import
-     * @param Reader           $reader
-     * @param TemporaryFile    $temporaryFile
-     *
+     * @param  WithChunkReading  $import
+     * @param  Reader  $reader
+     * @param  TemporaryFile  $temporaryFile
      * @return \Illuminate\Foundation\Bus\PendingDispatch|null
      */
     public function read(WithChunkReading $import, Reader $reader, TemporaryFile $temporaryFile)
@@ -124,9 +122,8 @@ class ChunkReader
     /**
      * Dispatch a command to its appropriate handler in the current process without using the synchronous queue.
      *
-     * @param object $command
-     * @param mixed  $handler
-     *
+     * @param  object  $command
+     * @param  mixed  $handler
      * @return mixed
      */
     protected function dispatchNow($command, $handler = null)
