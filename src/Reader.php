@@ -102,7 +102,7 @@ class Reader
         $this->reader = $this->getReader($import, $filePath, $readerType, $disk);
 
         if ($import instanceof WithChunkReading) {
-            return (new ChunkReader)->read($import, $this, $this->currentFile);
+            return app(ChunkReader::class)->read($import, $this, $this->currentFile);
         }
 
         try {
