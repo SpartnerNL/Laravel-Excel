@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+- support Laravel 10
+
 ## [3.1.45] - 2023-01-02
 
 ### Added

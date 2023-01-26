@@ -87,7 +87,9 @@ class ChunkReader
 
         $jobs->each(function ($job) {
             try {
-                dispatch_now($job);
+                function_exists('dispatch_now')
+                    ? dispatch_now($job)
+                    : dispatch_sync($job);
             } catch (Throwable $e) {
                 if (method_exists($job, 'failed')) {
                     $job->failed($e);
