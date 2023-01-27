@@ -4,7 +4,9 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
-- support Laravel 10
+## [3.1.46] - 2023-01-27
+
+- Support Laravel 10
 
 ## [3.1.45] - 2023-01-02
 
@@ -264,7 +266,13 @@ All notable changes to this project will be documented in this file.
 - Raw() method now also available on Exportable.
 - Fix for breaking changes in PhpSpreadsheet with empty enclosures.
 
-[Unreleased]: https://github.com/Maatwebsite/Laravel-Excel/compare/3.1.40...HEAD
+[Unreleased]: https://github.com/Maatwebsite/Laravel-Excel/compare/3.1.46...HEAD
+[3.1.46]: https://github.com/Maatwebsite/Laravel-Excel/compare/3.1.45...3.1.46
+[3.1.45]: https://github.com/Maatwebsite/Laravel-Excel/compare/3.1.44...3.1.45
+[3.1.44]: https://github.com/Maatwebsite/Laravel-Excel/compare/3.1.43...3.1.44
+[3.1.43]: https://github.com/Maatwebsite/Laravel-Excel/compare/3.1.42...3.1.43
+[3.1.42]: https://github.com/Maatwebsite/Laravel-Excel/compare/3.1.41...3.1.42
+[3.1.41]: https://github.com/Maatwebsite/Laravel-Excel/compare/3.1.40...3.1.41
 [3.1.40]: https://github.com/Maatwebsite/Laravel-Excel/compare/3.1.39...3.1.40
 [3.1.39]: https://github.com/Maatwebsite/Laravel-Excel/compare/3.1.38...3.1.39
 [3.1.38]: https://github.com/Maatwebsite/Laravel-Excel/compare/3.1.37...3.1.38
