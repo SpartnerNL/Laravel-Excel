@@ -102,8 +102,8 @@ jobs:
 
       - name: Install legacy factories
         run: |
-          composer remove "laravel/legacy-factories" --no-interaction
-        if: "matrix.laravel < 8"
+          composer require "laravel/legacy-factories" --no-interaction
+        if: "matrix.laravel >= 8"
 
       - name: Execute tests
         run: vendor/bin/phpunit --testdox --configuration phpunit.xml.dist
