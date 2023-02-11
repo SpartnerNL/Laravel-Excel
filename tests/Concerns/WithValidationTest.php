@@ -75,7 +75,7 @@ class WithValidationTest extends TestCase
                 'The selected 1(field)? is invalid.',
             ]);
 
-            $this->assertMatchesRegularExpression(
+            $this->assertRegex(
                 '/There was an error on row 2. The selected 1 (field)?is invalid./',
                 $e->errors()[0][0]
             );
@@ -128,7 +128,7 @@ class WithValidationTest extends TestCase
                 'Value in column 1 is not an allowed e-mail.',
             ]);
 
-            $this->assertMatchesRegularExpression(
+            $this->assertRegex(
                 '/There was an error on row 2. Value in column 1 is not an allowed e-mail./',
                 $e->errors()[0][0]
             );
@@ -198,7 +198,7 @@ class WithValidationTest extends TestCase
                 'Value is not an allowed e-mail.',
             ]);
 
-            $this->assertMatchesRegularExpression(
+            $this->assertRegex(
                 '/There was an error on row 2. Value is not an allowed e-mail./',
                 $e->errors()[0][0]
             );
@@ -730,7 +730,7 @@ class WithValidationTest extends TestCase
                 'The selected 1 is invalid.',
             ]);
 
-            $this->assertMatchesRegularExpression(
+            $this->assertRegex(
                 '/There was an error on row 2. The selected 1 (field)?is invalid./',
                 $e->errors()[0][0]
             );
@@ -791,7 +791,7 @@ class WithValidationTest extends TestCase
                 'The 1( field)? must be a valid email address.',
             ]);
 
-            $this->assertMatchesRegularExpression(
+            $this->assertRegex(
                 '/There was an error on row 2. The 1( field)? must be a valid email address./',
                 $e->errors()[0][0]
             );
@@ -852,7 +852,7 @@ class WithValidationTest extends TestCase
                 'The 1( field)? must be a valid email address.',
             ]);
 
-            $this->assertMatchesRegularExpression(
+            $this->assertRegex(
                 '/There was an error on row 2. The 1( field)? must be a valid email address./',
                 $e->errors()[0][0]
             );
@@ -917,7 +917,7 @@ class WithValidationTest extends TestCase
                 'The 1( field)? must be a valid email address.',
             ]);
 
-            $this->assertMatchesRegularExpression(
+            $this->assertRegex(
                 '/There was an error on row 2. The 1( field)? must be a valid email address./',
                 $e->errors()[0][0]
             );
@@ -982,7 +982,7 @@ class WithValidationTest extends TestCase
                 'The 1( field)? must be a valid email address.',
             ]);
 
-            $this->assertMatchesRegularExpression(
+            $this->assertRegex(
                 '/There was an error on row 2. The 1( field)? must be a valid email address./',
                 $e->errors()[0][0]
             );
@@ -1047,7 +1047,7 @@ class WithValidationTest extends TestCase
                 'The 1( field)? must be a valid email address.',
             ]);
 
-            $this->assertMatchesRegularExpression(
+            $this->assertRegex(
                 '/There was an error on row 2. The 1( field)? must be a valid email address./',
                 $e->errors()[0][0]
             );
@@ -1072,7 +1072,7 @@ class WithValidationTest extends TestCase
         $this->assertEquals($row, $failure->jsonSerialize()['row']);
         $this->assertEquals($attribute, $failure->jsonSerialize()['attribute']);
 
-        $this->assertMatchesRegularExpression('/' . $messages[0] . '/', $failure->errors()[0]);
-        $this->assertMatchesRegularExpression('/' . $messages[0] . '/', $failure->jsonSerialize()['errors'][0]);
+        $this->assertRegex('/' . $messages[0] . '/', $failure->errors()[0]);
+        $this->assertRegex('/' . $messages[0] . '/', $failure->jsonSerialize()['errors'][0]);
     }
 }
