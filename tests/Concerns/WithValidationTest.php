@@ -40,12 +40,12 @@ class WithValidationTest extends TestCase
      */
     public function can_validate_rows()
     {
-        $import = new class implements ToModel, WithValidation {
+        $import = new class implements ToModel, WithValidation
+        {
             use Importable;
 
             /**
-             * @param array $row
-             *
+             * @param  array  $row
              * @return Model|null
              */
             public function model(array $row)
@@ -89,12 +89,12 @@ class WithValidationTest extends TestCase
      */
     public function can_validate_rows_with_closure_validation_rules()
     {
-        $import = new class implements ToModel, WithValidation {
+        $import = new class implements ToModel, WithValidation
+        {
             use Importable;
 
             /**
-             * @param array $row
-             *
+             * @param  array  $row
              * @return Model|null
              */
             public function model(array $row)
@@ -142,12 +142,12 @@ class WithValidationTest extends TestCase
      */
     public function can_validate_rows_with_custom_validation_rule_objects()
     {
-        $import = new class implements ToModel, WithValidation {
+        $import = new class implements ToModel, WithValidation
+        {
             use Importable;
 
             /**
-             * @param array $row
-             *
+             * @param  array  $row
              * @return Model|null
              */
             public function model(array $row)
@@ -165,11 +165,11 @@ class WithValidationTest extends TestCase
             public function rules(): array
             {
                 return [
-                    '1' => new class implements \Illuminate\Contracts\Validation\Rule {
+                    '1' => new class implements \Illuminate\Contracts\Validation\Rule
+                    {
                         /**
-                         * @param string $attribute
-                         * @param mixed  $value
-                         *
+                         * @param  string  $attribute
+                         * @param  mixed  $value
                          * @return bool
                          */
                         public function passes($attribute, $value)
@@ -212,12 +212,12 @@ class WithValidationTest extends TestCase
      */
     public function can_validate_rows_with_conditionality()
     {
-        $import = new class implements ToModel, WithValidation {
+        $import = new class implements ToModel, WithValidation
+        {
             use Importable;
 
             /**
-             * @param array $row
-             *
+             * @param  array  $row
              * @return Model|null
              */
             public function model(array $row)
@@ -256,12 +256,12 @@ class WithValidationTest extends TestCase
      */
     public function can_validate_rows_with_unless_conditionality()
     {
-        $import = new class implements ToModel, WithValidation {
+        $import = new class implements ToModel, WithValidation
+        {
             use Importable;
 
             /**
-             * @param array $row
-             *
+             * @param  array  $row
              * @return Model|null
              */
             public function model(array $row)
@@ -300,12 +300,12 @@ class WithValidationTest extends TestCase
      */
     public function can_validate_with_custom_attributes()
     {
-        $import = new class implements ToModel, WithValidation {
+        $import = new class implements ToModel, WithValidation
+        {
             use Importable;
 
             /**
-             * @param array $row
-             *
+             * @param  array  $row
              * @return Model|null
              */
             public function model(array $row)
@@ -352,12 +352,12 @@ class WithValidationTest extends TestCase
      */
     public function can_validate_with_custom_message()
     {
-        $import = new class implements ToModel, WithValidation {
+        $import = new class implements ToModel, WithValidation
+        {
             use Importable;
 
             /**
-             * @param array $row
-             *
+             * @param  array  $row
              * @return Model|null
              */
             public function model(array $row)
@@ -406,12 +406,12 @@ class WithValidationTest extends TestCase
      */
     public function can_validate_rows_with_headings()
     {
-        $import = new class implements ToModel, WithHeadingRow, WithValidation {
+        $import = new class implements ToModel, WithHeadingRow, WithValidation
+        {
             use Importable;
 
             /**
-             * @param array $row
-             *
+             * @param  array  $row
              * @return Model|null
              */
             public function model(array $row)
@@ -450,15 +450,15 @@ class WithValidationTest extends TestCase
      */
     public function can_validate_rows_with_grouped_headings()
     {
-        $import = new class implements ToModel, WithGroupedHeadingRow, WithValidation {
+        $import = new class implements ToModel, WithGroupedHeadingRow, WithValidation
+        {
             use Importable;
 
             /**
              * Prepare the data for validation.
              *
-             * @param array $row
-             * @param int   $index
-             *
+             * @param  array  $row
+             * @param  int  $index
              * @return array
              */
             public function prepareForValidation(array $row, int $index)
@@ -472,8 +472,7 @@ class WithValidationTest extends TestCase
             }
 
             /**
-             * @param array $row
-             *
+             * @param  array  $row
              * @return Model|null
              */
             public function model(array $row)
@@ -513,12 +512,12 @@ class WithValidationTest extends TestCase
      */
     public function can_validate_rows_in_batches()
     {
-        $import = new class implements ToModel, WithHeadingRow, WithBatchInserts, WithValidation {
+        $import = new class implements ToModel, WithHeadingRow, WithBatchInserts, WithValidation
+        {
             use Importable;
 
             /**
-             * @param array $row
-             *
+             * @param  array  $row
              * @return Model|null
              */
             public function model(array $row)
@@ -565,12 +564,12 @@ class WithValidationTest extends TestCase
      */
     public function can_validate_using_oneachrow()
     {
-        $import = new class implements OnEachRow, WithHeadingRow, WithValidation {
+        $import = new class implements OnEachRow, WithHeadingRow, WithValidation
+        {
             use Importable;
 
             /**
-             * @param Row $row
-             *
+             * @param  Row  $row
              * @return Model|null
              */
             public function onRow(Row $row)
@@ -611,7 +610,8 @@ class WithValidationTest extends TestCase
      */
     public function can_validate_using_collection()
     {
-        $import = new class implements ToCollection, WithHeadingRow, WithValidation {
+        $import = new class implements ToCollection, WithHeadingRow, WithValidation
+        {
             use Importable;
 
             public function collection(Collection $rows)
@@ -646,7 +646,8 @@ class WithValidationTest extends TestCase
      */
     public function can_validate_using_array()
     {
-        $import = new class implements ToArray, WithHeadingRow, WithValidation {
+        $import = new class implements ToArray, WithHeadingRow, WithValidation
+        {
             use Importable;
 
             public function array(array $rows)
@@ -681,12 +682,12 @@ class WithValidationTest extends TestCase
      */
     public function can_configure_validator()
     {
-        $import = new class implements ToModel, WithValidation {
+        $import = new class implements ToModel, WithValidation
+        {
             use Importable;
 
             /**
-             * @param array $row
-             *
+             * @param  array  $row
              * @return Model|null
              */
             public function model(array $row)
@@ -711,8 +712,7 @@ class WithValidationTest extends TestCase
             /**
              * Configure the validator.
              *
-             * @param \Illuminate\Contracts\Validation\Validator $validator
-             *
+             * @param  \Illuminate\Contracts\Validation\Validator  $validator
              * @return void
              */
             public function withValidator($validator)
@@ -744,7 +744,8 @@ class WithValidationTest extends TestCase
      */
     public function can_prepare_using_toarray()
     {
-        $import = new class implements ToArray, WithValidation {
+        $import = new class implements ToArray, WithValidation
+        {
             use Importable;
 
             /**
@@ -760,9 +761,8 @@ class WithValidationTest extends TestCase
             /**
              * Prepare the data for validation.
              *
-             * @param array $row
-             * @param int   $index
-             *
+             * @param  array  $row
+             * @param  int  $index
              * @return array
              */
             public function prepareForValidation(array $row, int $index)
@@ -775,8 +775,7 @@ class WithValidationTest extends TestCase
             }
 
             /**
-             * @param array $array
-             *
+             * @param  array  $array
              * @return array
              */
             public function array(array $array)
@@ -806,7 +805,8 @@ class WithValidationTest extends TestCase
      */
     public function can_prepare_using_tocollection()
     {
-        $import = new class implements ToCollection, WithValidation {
+        $import = new class implements ToCollection, WithValidation
+        {
             use Importable;
 
             /**
@@ -822,9 +822,8 @@ class WithValidationTest extends TestCase
             /**
              * Prepare the data for validation.
              *
-             * @param array $row
-             * @param int   $index
-             *
+             * @param  array  $row
+             * @param  int  $index
              * @return array
              */
             public function prepareForValidation(array $row, int $index)
@@ -837,8 +836,7 @@ class WithValidationTest extends TestCase
             }
 
             /**
-             * @param \Illuminate\Support\Collection $collection
-             *
+             * @param  \Illuminate\Support\Collection  $collection
              * @return mixed
              */
             public function collection(Collection $collection)
@@ -868,7 +866,8 @@ class WithValidationTest extends TestCase
      */
     public function can_prepare_using_tomodel()
     {
-        $import = new class implements ToModel, WithValidation {
+        $import = new class implements ToModel, WithValidation
+        {
             use Importable;
 
             /**
@@ -884,9 +883,8 @@ class WithValidationTest extends TestCase
             /**
              * Prepare the data for validation.
              *
-             * @param array $row
-             * @param int   $index
-             *
+             * @param  array  $row
+             * @param  int  $index
              * @return array
              */
             public function prepareForValidation(array $row, int $index)
@@ -899,8 +897,7 @@ class WithValidationTest extends TestCase
             }
 
             /**
-             * @param array $row
-             *
+             * @param  array  $row
              * @return \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Eloquent\Model[]|null
              */
             public function model(array $row)
@@ -934,7 +931,8 @@ class WithValidationTest extends TestCase
      */
     public function can_prepare_using_oneachrow()
     {
-        $import = new class implements OnEachRow, WithValidation {
+        $import = new class implements OnEachRow, WithValidation
+        {
             use Importable;
 
             /**
@@ -950,9 +948,8 @@ class WithValidationTest extends TestCase
             /**
              * Prepare the data for validation.
              *
-             * @param array $row
-             * @param int   $index
-             *
+             * @param  array  $row
+             * @param  int  $index
              * @return array
              */
             public function prepareForValidation(array $row, int $index)
@@ -965,8 +962,7 @@ class WithValidationTest extends TestCase
             }
 
             /**
-             * @param \Maatwebsite\Excel\Row $row
-             *
+             * @param  \Maatwebsite\Excel\Row  $row
              * @return void
              */
             public function onRow(Row $row)
@@ -1000,7 +996,8 @@ class WithValidationTest extends TestCase
      */
     public function can_prepare_using_skipsemptyrows()
     {
-        $import = new class implements OnEachRow, WithValidation, SkipsEmptyRows {
+        $import = new class implements OnEachRow, WithValidation, SkipsEmptyRows
+        {
             use Importable;
 
             /**
@@ -1016,9 +1013,8 @@ class WithValidationTest extends TestCase
             /**
              * Prepare the data for validation.
              *
-             * @param array $row
-             * @param int   $index
-             *
+             * @param  array  $row
+             * @param  int  $index
              * @return array
              */
             public function prepareForValidation(array $row, int $index)
@@ -1031,8 +1027,7 @@ class WithValidationTest extends TestCase
             }
 
             /**
-             * @param \Maatwebsite\Excel\Row $row
-             *
+             * @param  \Maatwebsite\Excel\Row  $row
              * @return void
              */
             public function onRow(Row $row)
@@ -1062,10 +1057,10 @@ class WithValidationTest extends TestCase
     }
 
     /**
-     * @param ValidationException $e
-     * @param int                 $row
-     * @param string              $attribute
-     * @param array               $messages
+     * @param  ValidationException  $e
+     * @param  int  $row
+     * @param  string  $attribute
+     * @param  array  $messages
      */
     private function validateFailure(ValidationException $e, int $row, string $attribute, array $messages)
     {
