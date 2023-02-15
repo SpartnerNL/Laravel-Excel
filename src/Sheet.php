@@ -397,7 +397,7 @@ class Sheet
         if ($sheetExport instanceof WithDrawings) {
             $this->addDrawings($sheetExport->drawings());
         }
-        
+
         $this->exportable = $sheetExport;
 
         if ($sheetExport instanceof WithColumnFormatting) {
