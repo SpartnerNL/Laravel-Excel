@@ -143,8 +143,8 @@ class ReadChunk implements ShouldQueue
         );
 
         $this->reader->setReadFilter($filter);
-        $this->reader->setReadDataOnly(true);
-        $this->reader->setReadEmptyCells(false);
+        $this->reader->setReadDataOnly(config('excel.imports.read_only', true));
+        $this->reader->setReadEmptyCells(!config('excel.imports.ignore_empty', false));
 
         $spreadsheet = $this->reader->load(
             $this->temporaryFile->sync()->getLocalPath()
