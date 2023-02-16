@@ -192,10 +192,6 @@ class Sheet
         if ($sheetExport instanceof WithCharts) {
             $this->addCharts($sheetExport->charts());
         }
-
-        if ($sheetExport instanceof WithDrawings) {
-            $this->addDrawings($sheetExport->drawings());
-        }
     }
 
     /**
@@ -398,6 +394,10 @@ class Sheet
      */
     public function close($sheetExport)
     {
+        if ($sheetExport instanceof WithDrawings) {
+            $this->addDrawings($sheetExport->drawings());
+        }
+
         $this->exportable = $sheetExport;
 
         if ($sheetExport instanceof WithColumnFormatting) {
