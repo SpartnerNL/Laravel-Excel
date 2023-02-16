@@ -4,8 +4,14 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [3.1.47] - 2023-02-16
+
+- Support Laravel 10
+
 ### Fixed
+
 - Fix Bug Multiple drawings change the behavior of the startCell (#3865).
+- Allow configuring read data only in chunks as well.
 
 ## [3.1.46] - 2023-01-27
 
@@ -269,7 +275,8 @@ All notable changes to this project will be documented in this file.
 - Raw() method now also available on Exportable.
 - Fix for breaking changes in PhpSpreadsheet with empty enclosures.
 
-[Unreleased]: https://github.com/Maatwebsite/Laravel-Excel/compare/3.1.46...HEAD
+[Unreleased]: https://github.com/Maatwebsite/Laravel-Excel/compare/3.1.47...HEAD
+[3.1.47]: https://github.com/Maatwebsite/Laravel-Excel/compare/3.1.46...3.1.47
 [3.1.46]: https://github.com/Maatwebsite/Laravel-Excel/compare/3.1.45...3.1.46
 [3.1.45]: https://github.com/Maatwebsite/Laravel-Excel/compare/3.1.44...3.1.45
 [3.1.44]: https://github.com/Maatwebsite/Laravel-Excel/compare/3.1.43...3.1.44
