@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Fixed
+- Fix Bug Multiple drawings change the behavior of the startCell (#3865).
+
 ## [3.1.46] - 2023-01-27
 
 - Support Laravel 10
