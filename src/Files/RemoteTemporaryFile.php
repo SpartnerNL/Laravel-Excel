@@ -2,6 +2,8 @@
 
 namespace Maatwebsite\Excel\Files;
 
+use Illuminate\Support\Str;
+
 class RemoteTemporaryFile extends TemporaryFile
 {
     /**
@@ -94,7 +96,8 @@ class RemoteTemporaryFile extends TemporaryFile
     public function sync(): TemporaryFile
     {
         if (!$this->localTemporaryFile->exists()) {
-            $this->localTemporaryFile = resolve(TemporaryFileFactory::class)->makeLocal($this->filename);
+            $this->localTemporaryFile = resolve(TemporaryFileFactory::class)
+                ->makeLocal(Str::afterLast($this->filename, '/'));
         }
 
         $this->disk()->copy(
