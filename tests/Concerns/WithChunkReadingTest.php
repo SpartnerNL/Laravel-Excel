@@ -566,11 +566,11 @@ class WithChunkReadingTest extends TestCase
     /**
      * @test
      */
-    public function can_import_to_array_and_keep_format_in_chunks()
+    public function can_import_to_array_in_chunks_without_formatting()
     {
         config()->set('excel.imports.read_only', true);
 
-        $import = new class implements ToArray, WithChunkReading, WithFormatData
+        $import = new class implements ToArray, WithChunkReading
         {
             use Importable;
 

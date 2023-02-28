@@ -70,7 +70,7 @@ class WithColumnFormattingTest extends TestCase
             ['06/03/2018', null],
             ['07/03/2018', null],
             ['08/03/2018', null],
-            ['06/12/2021', '100 €'],
+            ['06/12/2021', '100.00 €'],
         ];
 
         $this->assertEquals($expected, $actual);
