@@ -152,8 +152,6 @@ class SkipsEmptyRowsTest extends TestCase
             public function model(array $row)
             {
                 Assert::assertEquals('Not empty', $row[0]);
-
-                return new \Maatwebsite\Excel\Tests\Data\Stubs\Database\User();
             }
 
             public function isEmptyWhen(array $row): bool
