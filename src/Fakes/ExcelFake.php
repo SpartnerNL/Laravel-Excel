@@ -64,10 +64,10 @@ class ExcelFake implements Exporter, Importer
     /**
      * {@inheritdoc}
      */
-    public function store($export, string $filePath, string $disk = null, string $writerType = null, $diskOptions = [])
+    public function store($export, string $filePath, string $diskName = null, string $writerType = null, $diskOptions = [])
     {
         if ($export instanceof ShouldQueue) {
-            return $this->queue($export, $filePath, $disk, $writerType);
+            return $this->queue($export, $filePath, $diskName, $writerType);
         }
 
         $this->stored[$disk ?? 'default'][$filePath] = $export;
