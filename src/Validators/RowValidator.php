@@ -3,6 +3,7 @@
 namespace Maatwebsite\Excel\Validators;
 
 use Illuminate\Contracts\Validation\Factory;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException as IlluminateValidationException;
 use Maatwebsite\Excel\Concerns\SkipsOnFailure;
@@ -47,7 +48,7 @@ class RowValidator
             $validator->validate();
         } catch (IlluminateValidationException $e) {
             $failures = [];
-            foreach ($e->errors() as $attribute => $messages) {
+            foreach ($this->formatErrors($e->errors()) as $attribute => $messages) {
                 $row           = strtok($attribute, '.');
                 $attributeName = strtok('');
                 $attributeName = $attributes['*.' . $attributeName] ?? $attributeName;
@@ -141,5 +142,27 @@ class RowValidator
         }
 
         return $rules;
+    }
+
+    private function formatErrors(array $errors)
+    {
+        $results = [];
+
+        foreach ($errors as $key => $value) {
+            Arr::set($results, $key, $value);
+        }
+
+        $errors = $results;
+
+        ksort($errors);
+        $errorDots = [];
+
+        foreach ($errors as $row => $error) {
+            foreach ($error as $attribute => $messages) {
+                $errorDots["{$row}.{$attribute}"] = $messages;
+            }
+        }
+
+        return $errorDots;
     }
 }
