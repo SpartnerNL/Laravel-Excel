@@ -38,6 +38,11 @@ class ReadChunk implements ShouldQueue
      * @var int
      */
     public $maxExceptions;
+    
+    /**
+     * @var int
+     */
+    public $backoff;
 
     /**
      * @var WithChunkReading
@@ -95,6 +100,7 @@ class ReadChunk implements ShouldQueue
         $this->timeout       = $import->timeout ?? null;
         $this->tries         = $import->tries ?? null;
         $this->maxExceptions = $import->maxExceptions ?? null;
+        $this->backoff       = method_exists($import, 'backoff') ? $import->backoff() : ($import->backoff ?? null);
     }
 
     /**
