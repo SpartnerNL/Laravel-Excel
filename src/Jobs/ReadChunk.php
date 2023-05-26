@@ -129,6 +129,10 @@ class ReadChunk implements ShouldQueue
             $this->import->setChunkOffset($this->startRow);
         }
 
+        if (method_exists($this->sheetImport, 'setChunkOffset')) {
+            $this->sheetImport->setChunkOffset($this->startRow);
+        }
+
         if ($this->sheetImport instanceof WithCustomValueBinder) {
             Cell::setValueBinder($this->sheetImport);
         }
