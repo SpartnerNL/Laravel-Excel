@@ -134,4 +134,35 @@ class SkipsEmptyRowsTest extends TestCase
         $import->import('import-empty-rows.xlsx');
         $this->assertTrue($import->called);
     }
+
+    /**
+     * @test
+     */
+    public function custom_skips_rows_when_importing_to_model()
+    {
+        $import = new class implements SkipsEmptyRows, ToModel
+        {
+            use Importable;
+
+            public $called = false;
+
+            /**
+             * @param  array  $row
+             */
+            public function model(array $row)
+            {
+                Assert::assertEquals('Not empty', $row[0]);
+            }
+
+            public function isEmptyWhen(array $row): bool
+            {
+                $this->called = true;
+
+                return $row[0] === 'Empty';
+            }
+        };
+
+        $import->import('skip-empty-rows-with-is-empty-when.xlsx');
+        $this->assertTrue($import->called);
+    }
 }
