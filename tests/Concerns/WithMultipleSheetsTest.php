@@ -115,8 +115,7 @@ class WithMultipleSheetsTest extends TestCase
             public function sheets(): array
             {
                 return [
-                    9999 => new class
-                    {
+                    9999 => new class {
                     },
                 ];
             }
@@ -140,8 +139,7 @@ class WithMultipleSheetsTest extends TestCase
             public function sheets(): array
             {
                 return [
-                    'Some Random Sheet Name' => new class
-                    {
+                    'Some Random Sheet Name' => new class {
                     },
                 ];
             }
@@ -164,8 +162,7 @@ class WithMultipleSheetsTest extends TestCase
             public function sheets(): array
             {
                 return [
-                    'Some Random Sheet Name' => new class
-                    {
+                    'Some Random Sheet Name' => new class {
                     },
                 ];
             }
@@ -227,8 +224,7 @@ class WithMultipleSheetsTest extends TestCase
             public function sheets(): array
             {
                 return [
-                    99999 => new class
-                    {
+                    99999 => new class {
                     },
                 ];
             }

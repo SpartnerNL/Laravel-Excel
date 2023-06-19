@@ -5,7 +5,6 @@ namespace Maatwebsite\Excel\Tests\Concerns;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
-use Illuminate\Validation\Validator;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\OnEachRow;
 use Maatwebsite\Excel\Concerns\SkipsEmptyRows;

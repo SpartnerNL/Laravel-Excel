@@ -64,6 +64,10 @@ class ModelImporter
             if (!$import instanceof SkipsEmptyRows || ($import instanceof SkipsEmptyRows && !$row->isEmpty($withCalcFormulas))) {
                 $rowArray = $row->toArray(null, $withCalcFormulas, $formatData, $endColumn);
 
+                if ($import instanceof SkipsEmptyRows && method_exists($import, 'isEmptyWhen') && $import->isEmptyWhen($rowArray)) {
+                    continue;
+                }
+
                 if ($withValidation) {
                     $rowArray = $import->prepareForValidation($rowArray, $row->getIndex());
                 }

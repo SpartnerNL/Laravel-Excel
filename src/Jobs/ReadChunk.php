@@ -40,6 +40,11 @@ class ReadChunk implements ShouldQueue
     public $maxExceptions;
 
     /**
+     * @var int
+     */
+    public $backoff;
+
+    /**
      * @var WithChunkReading
      */
     private $import;
@@ -95,6 +100,7 @@ class ReadChunk implements ShouldQueue
         $this->timeout       = $import->timeout ?? null;
         $this->tries         = $import->tries ?? null;
         $this->maxExceptions = $import->maxExceptions ?? null;
+        $this->backoff       = method_exists($import, 'backoff') ? $import->backoff() : ($import->backoff ?? null);
     }
 
     /**
@@ -127,6 +133,10 @@ class ReadChunk implements ShouldQueue
     {
         if (method_exists($this->import, 'setChunkOffset')) {
             $this->import->setChunkOffset($this->startRow);
+        }
+
+        if (method_exists($this->sheetImport, 'setChunkOffset')) {
+            $this->sheetImport->setChunkOffset($this->startRow);
         }
 
         if ($this->sheetImport instanceof WithCustomValueBinder) {
