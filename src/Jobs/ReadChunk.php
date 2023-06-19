@@ -38,7 +38,7 @@ class ReadChunk implements ShouldQueue
      * @var int
      */
     public $maxExceptions;
-    
+
     /**
      * @var int
      */
