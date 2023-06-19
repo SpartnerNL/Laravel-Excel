@@ -355,9 +355,9 @@ class Reader
     }
 
     /**
-     * @param $import
-     * @param $sheetImport
-     * @param $index
+     * @param  $import
+     * @param  $sheetImport
+     * @param  $index
      * @return Sheet|null
      *
      * @throws \PhpOffice\PhpSpreadsheet\Exception

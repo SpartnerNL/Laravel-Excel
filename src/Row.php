@@ -137,13 +137,13 @@ class Row implements ArrayAccess
     #[\ReturnTypeWillChange]
     public function offsetExists($offset)
     {
-        return isset(($this->toArray())[$offset]);
+        return isset($this->toArray()[$offset]);
     }
 
     #[\ReturnTypeWillChange]
     public function offsetGet($offset)
     {
-        return ($this->toArray())[$offset];
+        return $this->toArray()[$offset];
     }
 
     #[\ReturnTypeWillChange]
