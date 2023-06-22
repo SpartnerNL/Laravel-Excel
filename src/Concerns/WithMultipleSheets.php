@@ -5,7 +5,7 @@ namespace Maatwebsite\Excel\Concerns;
 interface WithMultipleSheets
 {
     /**
-     * @return array
+     * @return iterable
      */
     public function sheets(): iterable;
 }
