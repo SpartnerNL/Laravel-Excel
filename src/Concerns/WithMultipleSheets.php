@@ -7,5 +7,5 @@ interface WithMultipleSheets
     /**
      * @return array
      */
-    public function sheets(): array;
+    public function sheets(): iterable;
 }
