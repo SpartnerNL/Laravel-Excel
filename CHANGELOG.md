@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Added
+- WithMultipleSheets interface sheets() method return type change to iterable.
+
 ### Fixed
 - Bug preventing WithChunkReading from working with multiple sheets when using ToCollection or ToArray   
 
