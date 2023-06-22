@@ -461,4 +461,31 @@ class WithMultipleSheetsTest extends TestCase
             $this->assertTrue($sheet->called);
         }
     }
+
+    /**
+     * @test
+     */
+    public function can_export_with_multiple_sheets_using_generators()
+    {
+        $export = new class implements WithMultipleSheets
+        {
+            use Exportable;
+
+            /**
+             * @return \Generator
+             */
+            public function sheets(): array
+            {
+                foreach(['A', 'B', 'C'] as $a) {
+                    yield new SheetWith100Rows($a);
+                }
+            }
+        };
+
+        $export->store('from-view.xlsx');
+
+        $this->assertCount(100, $this->readAsArray(__DIR__ . '/../Data/Disks/Local/from-view.xlsx', 'Xlsx', 0));
+        $this->assertCount(100, $this->readAsArray(__DIR__ . '/../Data/Disks/Local/from-view.xlsx', 'Xlsx', 1));
+        $this->assertCount(100, $this->readAsArray(__DIR__ . '/../Data/Disks/Local/from-view.xlsx', 'Xlsx', 2));
+    }
 }
