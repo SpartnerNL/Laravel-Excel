@@ -476,7 +476,7 @@ class WithMultipleSheetsTest extends TestCase
              */
             public function sheets(): iterable
             {
-                foreach(['A', 'B', 'C'] as $a) {
+                foreach (['A', 'B', 'C'] as $a) {
                     yield new SheetWith100Rows($a);
                 }
             }
