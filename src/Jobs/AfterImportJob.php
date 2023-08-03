@@ -2,8 +2,11 @@
 
 namespace Maatwebsite\Excel\Jobs;
 
+use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Events\ImportFailed;
 use Maatwebsite\Excel\HasEventBus;
@@ -12,7 +15,7 @@ use Throwable;
 
 class AfterImportJob implements ShouldQueue
 {
-    use Queueable, HasEventBus;
+    use Batchable, Queueable, HasEventBus, Dispatchable, ProxyFailures, InteractsWithQueue;
 
     /**
      * @var WithEvents
@@ -36,6 +39,11 @@ class AfterImportJob implements ShouldQueue
 
     public function handle()
     {
+        // Determine if the batch has been cancelled...
+        if ($this->batch()->cancelled()) {
+            return;
+        }
+
         if ($this->import instanceof ShouldQueue && $this->import instanceof WithEvents) {
             $this->reader->clearListeners();
             $this->reader->registerListeners($this->import->registerEvents());
