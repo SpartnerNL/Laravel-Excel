@@ -2,8 +2,10 @@
 
 namespace Maatwebsite\Excel\Jobs;
 
+use Illuminate\Bus\Batchable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 use Maatwebsite\Excel\Files\TemporaryFile;
 use Maatwebsite\Excel\Jobs\Middleware\LocalizeJob;
@@ -12,7 +14,7 @@ use Throwable;
 
 class QueueExport implements ShouldQueue
 {
-    use ExtendedQueueable, Dispatchable;
+    use Batchable, ExtendedQueueable, Dispatchable, InteractsWithQueue;
 
     /**
      * @var object
@@ -58,6 +60,11 @@ class QueueExport implements ShouldQueue
      */
     public function handle(Writer $writer)
     {
+        // Determine if the batch has been cancelled...
+        if ($this->batch()->cancelled()) {
+            return;
+        }
+
         (new LocalizeJob($this->export))->handle($this, function () use ($writer) {
             $writer->open($this->export);
 
