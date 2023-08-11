@@ -44,6 +44,7 @@ class OnEachRowTest extends TestCase
 
         $this->assertEquals(2, $import->called);
     }
+
     /**
      * @test
      */
