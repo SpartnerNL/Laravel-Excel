@@ -17,19 +17,19 @@ class BatchCache implements CacheInterface
     protected $memory;
 
     /**
-     * @var null|int|\DateTimeInterface|callable
+     * @var null|int|\DateInterval|callable
      */
     protected $defaultTTL = null;
 
     /**
      * @param  CacheInterface  $cache
      * @param  MemoryCache  $memory
-     * @param  null|int|\DateTimeInterface|callable  $defaultTTL
+     * @param  null|int|\DateInterval|callable  $defaultTTL
      */
     public function __construct(
         CacheInterface $cache,
         MemoryCache $memory,
-        null|int|\DateTimeInterface|callable $defaultTTL = null
+        null|int|\DateInterval|callable $defaultTTL = null
     ) {
         $this->cache  = $cache;
         $this->memory = $memory;
