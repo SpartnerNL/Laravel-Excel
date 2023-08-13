@@ -30,8 +30,7 @@ class BatchCache implements CacheInterface
         CacheInterface $cache,
         MemoryCache $memory,
         null|int|\DateTimeInterface $defaultTTL = null
-    )
-    {
+    ) {
         $this->cache  = $cache;
         $this->memory = $memory;
         $this->defaultTTL = $defaultTTL;
