@@ -17,19 +17,19 @@ class BatchCache implements CacheInterface
     protected $memory;
 
     /**
-     * @var null|int|\DateTimeInterface
+     * @var null|int|\DateTimeInterface|callable
      */
     protected $defaultTTL = null;
 
     /**
      * @param  CacheInterface  $cache
      * @param  MemoryCache  $memory
-     * @param  null|int|\DateTimeInterface  $defaultTTL
+     * @param  null|int|\DateTimeInterface|callable  $defaultTTL
      */
     public function __construct(
         CacheInterface $cache,
         MemoryCache $memory,
-        null|int|\DateTimeInterface $defaultTTL = null
+        null|int|\DateTimeInterface|callable $defaultTTL = null
     ) {
         $this->cache  = $cache;
         $this->memory = $memory;
@@ -54,7 +54,7 @@ class BatchCache implements CacheInterface
     public function set(string $key, mixed $value, null|int|\DateInterval $ttl = null): bool
     {
         if (func_num_args() < 3) {
-            $ttl = $this->defaultTTL;
+            $ttl = value($this->defaultTTL);
         }
 
         $this->memory->set($key, $value, $ttl);
@@ -122,7 +122,7 @@ class BatchCache implements CacheInterface
     public function setMultiple(iterable $values, null|int|\DateInterval $ttl = null): bool
     {
         if (func_num_args() === 1) {
-            $ttl = $this->defaultTTL;
+            $ttl = value($this->defaultTTL);
         }
 
         $this->memory->setMultiple($values, $ttl);
