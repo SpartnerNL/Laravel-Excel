@@ -29,7 +29,7 @@ class BatchCacheDeprecated implements CacheInterface
     public function __construct(
         CacheInterface $cache,
         MemoryCacheDeprecated $memory,
-        null|int|\DateTimeInterface|callable $defaultTTL = null
+        $defaultTTL = null
     ) {
         $this->cache  = $cache;
         $this->memory = $memory;
