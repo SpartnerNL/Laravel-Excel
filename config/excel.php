@@ -259,6 +259,18 @@ return [
         'illuminate' => [
             'store' => null,
         ],
+
+        /*
+        |--------------------------------------------------------------------------
+        | Cache TTL
+        |--------------------------------------------------------------------------
+        |
+        | The TTL of items written to cache. If you want to explicitly keep the items
+        | cached indefinitely, set this to -1. If you want to rely on your cache
+        | driver's settings, set to null.
+        |
+         */
+        'default_ttl' => null,
     ],
 
     /*

@@ -65,7 +65,8 @@ class CacheManager extends Manager
 
         return new BatchCache(
             $this->createIlluminateDriver(),
-            $this->createMemoryDriver()
+            $this->createMemoryDriver(),
+            config('excel.cache.ttl')
         );
     }
 
