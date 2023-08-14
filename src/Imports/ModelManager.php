@@ -119,9 +119,11 @@ class ModelManager
                              $import->uniqueBy(),
                              $import instanceof WithUpsertColumns ? $import->upsertColumns() : null
                          );
-                     } else {
-                         $model::query()->insert($models->toArray());
+
+                         return;
                      }
+
+                     $model::query()->insert($models->toArray());
                  } catch (Throwable $e) {
                      if ($import instanceof SkipsOnError) {
                          $import->onError($e);
@@ -148,9 +150,11 @@ class ModelManager
                                 $import->uniqueBy(),
                                 $import instanceof WithUpsertColumns ? $import->upsertColumns() : null
                             );
-                        } else {
-                            $model->saveOrFail();
+
+                            return;
                         }
+
+                        $model->saveOrFail();
                     } catch (Throwable $e) {
                         if ($import instanceof SkipsOnError) {
                             $import->onError($e);
