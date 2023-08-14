@@ -262,12 +262,14 @@ return [
 
         /*
         |--------------------------------------------------------------------------
-        | Cache TTL
+        | Cache Time-to-live (TTL)
         |--------------------------------------------------------------------------
         |
-        | The TTL of items written to cache. If you want to explicitly keep the items
-        | cached indefinitely, set this to -1. If you want to rely on your cache
-        | driver's settings, set to null.
+        | The TTL of items written to cache. If you want to keep the items cached
+        | indefinitely, set this to null.  Otherwise, set a number of seconds,
+        | a \DateInterval, or a callable.
+        |
+        | Allowable types: callable|\DateInterval|int|null
         |
          */
         'default_ttl' => null,
