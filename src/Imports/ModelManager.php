@@ -125,11 +125,7 @@ class ModelManager
 
                      $model::query()->insert($models->toArray());
                  } catch (Throwable $e) {
-                     if ($import instanceof SkipsOnError) {
-                         $import->onError($e);
-                     } else {
-                         throw $e;
-                     }
+                     $this->handleException($import, $e);
                  }
              });
     }
@@ -156,11 +152,7 @@ class ModelManager
 
                         $model->saveOrFail();
                     } catch (Throwable $e) {
-                        if ($import instanceof SkipsOnError) {
-                            $import->onError($e);
-                        } else {
-                            throw $e;
-                        }
+                        $this->handleException($import, $e);
                     }
                 });
             });
@@ -215,5 +207,14 @@ class ModelManager
     private function rows(): Collection
     {
         return new Collection($this->rows);
+    }
+
+    private function handleException(ToModel $import, Throwable $e): void
+    {
+        if (! $import instanceof SkipsOnError) {
+            throw $e;
+        }
+
+        $import->onError($e);
     }
 }
