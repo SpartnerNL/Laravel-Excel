@@ -53,7 +53,7 @@ class BatchCache implements CacheInterface
      */
     public function set(string $key, mixed $value, null|int|\DateInterval $ttl = null): bool
     {
-        if (func_num_args() < 3) {
+        if (func_num_args() === 2) {
             $ttl = value($this->defaultTTL);
         }
 
