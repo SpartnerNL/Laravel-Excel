@@ -31,8 +31,8 @@ class BatchCacheDeprecated implements CacheInterface
         MemoryCacheDeprecated $memory,
         $defaultTTL = null
     ) {
-        $this->cache  = $cache;
-        $this->memory = $memory;
+        $this->cache      = $cache;
+        $this->memory     = $memory;
         $this->defaultTTL = $defaultTTL;
     }
 

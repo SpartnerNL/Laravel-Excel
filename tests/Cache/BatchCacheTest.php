@@ -8,12 +8,12 @@ use DateInterval;
 use Illuminate\Cache\ArrayStore;
 use Illuminate\Cache\Events\KeyWritten;
 use Illuminate\Cache\Repository;
+use Illuminate\Support\Facades\Event;
 use Maatwebsite\Excel\Cache\BatchCache;
 use Maatwebsite\Excel\Cache\BatchCacheDeprecated;
 use Maatwebsite\Excel\Cache\CacheManager;
 use Maatwebsite\Excel\Cache\MemoryCache;
 use Maatwebsite\Excel\Tests\TestCase;
-use Illuminate\Support\Facades\Event;
 use Psr\SimpleCache\CacheInterface;
 
 class BatchCacheTest extends TestCase
@@ -181,6 +181,7 @@ class BatchCacheTest extends TestCase
 
     /**
      * @test
+     *
      * @dataProvider defaultTTLDataProvider
      */
     public function it_writes_to_cache_with_default_ttl($defaultTTL, $receivedAs)
@@ -195,9 +196,9 @@ class BatchCacheTest extends TestCase
 
         $dispatchedCollection = Event::dispatched(
             KeyWritten::class,
-            function(KeyWritten $event) use ($expectedTTL) {
+            function (KeyWritten $event) use ($expectedTTL) {
                 return $event->seconds === $expectedTTL;
-        });
+            });
 
         $this->assertCount(2, $dispatchedCollection);
     }
@@ -216,7 +217,7 @@ class BatchCacheTest extends TestCase
 
         $dispatchedCollection = Event::dispatched(
             KeyWritten::class,
-            function(KeyWritten $event) {
+            function (KeyWritten $event) {
                 return $event->seconds === 60;
             });
 
@@ -236,7 +237,7 @@ class BatchCacheTest extends TestCase
 
         $dispatchedCollection = Event::dispatched(
             KeyWritten::class,
-            function(KeyWritten $event) {
+            function (KeyWritten $event) {
                 return $event->seconds === null;
             });
 
@@ -247,8 +248,10 @@ class BatchCacheTest extends TestCase
     {
         return [
             'null (forever)' => [null, null],
-            'int value' => [$value = rand(1, 100), $value],
-            'callable' => [$closure = function() { return 199; }, $closure],
+            'int value'      => [$value = rand(1, 100), $value],
+            'callable'       => [$closure = function () {
+                return 199;
+            }, $closure],
         ];
     }
 
