@@ -88,13 +88,7 @@ class ModelManager
             $import->rememberRowNumber($rowNumber);
         }
 
-        $model = $import->model($attributes);
-
-        if (null !== $model) {
-            return \is_array($model) ? new Collection($model) : new Collection([$model]);
-        }
-
-        return new Collection([]);
+        return Collection::wrap($import->model($attributes));
     }
 
     /**
