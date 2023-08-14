@@ -4,6 +4,7 @@ namespace Maatwebsite\Excel\Tests\Cache;
 
 use Composer\InstalledVersions;
 use Composer\Semver\VersionParser;
+use DateInterval;
 use Illuminate\Cache\ArrayStore;
 use Illuminate\Cache\Events\KeyWritten;
 use Illuminate\Cache\Repository;
@@ -197,6 +198,47 @@ class BatchCacheTest extends TestCase
             function(KeyWritten $event) use ($expectedTTL) {
                 return $event->seconds === $expectedTTL;
         });
+
+        $this->assertCount(2, $dispatchedCollection);
+    }
+
+    /**
+     * @test
+     */
+    public function it_writes_to_cache_with_a_dateinterval_ttl()
+    {
+        // DateInterval is 1 minute
+        config()->set('excel.cache.default_ttl', new DateInterval('PT1M'));
+
+        $cache = $this->givenCache(['A1' => 'A1-value'], [], 1);
+        $this->cache->setEventDispatcher(Event::fake());
+        $cache->set('A2', 'A2-value');
+
+        $dispatchedCollection = Event::dispatched(
+            KeyWritten::class,
+            function(KeyWritten $event) {
+                return $event->seconds === 60;
+            });
+
+        $this->assertCount(2, $dispatchedCollection);
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_override_default_ttl()
+    {
+        config()->set('excel.cache.default_ttl', 1);
+
+        $cache = $this->givenCache(['A1' => 'A1-value'], [], 1);
+        $this->cache->setEventDispatcher(Event::fake());
+        $cache->set('A2', 'A2-value', null);
+
+        $dispatchedCollection = Event::dispatched(
+            KeyWritten::class,
+            function(KeyWritten $event) {
+                return $event->seconds === null;
+            });
 
         $this->assertCount(2, $dispatchedCollection);
     }
