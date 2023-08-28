@@ -9,6 +9,7 @@ use Illuminate\Foundation\Bus\PendingDispatch;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\Jobs\SyncJob;
 use Illuminate\Support\Collection;
+use Maatwebsite\Excel\Concerns\ShouldQueueWithFifo;
 use Maatwebsite\Excel\Concerns\ShouldQueueWithoutChain;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithEvents;
@@ -35,9 +36,9 @@ class ChunkReader
     }
 
     /**
-     * @param  WithChunkReading  $import
-     * @param  Reader  $reader
-     * @param  TemporaryFile  $temporaryFile
+     * @param WithChunkReading $import
+     * @param Reader $reader
+     * @param TemporaryFile $temporaryFile
      * @return \Illuminate\Foundation\Bus\PendingDispatch|null
      */
     public function read(WithChunkReading $import, Reader $reader, TemporaryFile $temporaryFile)
@@ -46,10 +47,10 @@ class ChunkReader
             $reader->beforeImport($import);
         }
 
-        $chunkSize    = $import->chunkSize();
-        $totalRows    = $reader->getTotalRows();
-        $worksheets   = $reader->getWorksheets($import);
-        $queue        = property_exists($import, 'queue') ? $import->queue : null;
+        $chunkSize = $import->chunkSize();
+        $totalRows = $reader->getTotalRows();
+        $worksheets = $reader->getWorksheets($import);
+        $queue = property_exists($import, 'queue') ? $import->queue : null;
         $delayCleanup = property_exists($import, 'delayCleanup') ? $import->delayCleanup : 600;
 
         if ($import instanceof WithProgressBar) {
@@ -84,7 +85,9 @@ class ChunkReader
         $afterImportJob = new AfterImportJob($import, $reader);
 
         if ($import instanceof ShouldQueueWithoutChain) {
-            $jobs->push($afterImportJob->delay($delayCleanup));
+            $delay = $import instanceof ShouldQueueWithFifo ? null : $delayCleanup;
+
+            $jobs->push($afterImportJob->delay($delay));
 
             return $jobs->each(function ($job) use ($queue) {
                 dispatch($job->onQueue($queue));
@@ -124,8 +127,8 @@ class ChunkReader
     /**
      * Dispatch a command to its appropriate handler in the current process without using the synchronous queue.
      *
-     * @param  object  $command
-     * @param  mixed  $handler
+     * @param object $command
+     * @param mixed $handler
      * @return mixed
      */
     protected function dispatchNow($command, $handler = null)
