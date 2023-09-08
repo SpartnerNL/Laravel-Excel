@@ -8,6 +8,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithCustomValueBinder;
 use Maatwebsite\Excel\Concerns\WithEvents;
+use Maatwebsite\Excel\Events\AfterChunk;
 use Maatwebsite\Excel\Events\ImportFailed;
 use Maatwebsite\Excel\Files\RemoteTemporaryFile;
 use Maatwebsite\Excel\Files\TemporaryFile;
@@ -182,6 +183,8 @@ class ReadChunk implements ShouldQueue
             $sheet->disconnect();
 
             $this->cleanUpTempFile();
+
+            $sheet->raise(new AfterChunk($sheet, $this->import, $this->startRow));
         });
     }
 
@@ -204,7 +207,7 @@ class ReadChunk implements ShouldQueue
         }
     }
 
-    private function cleanUpTempFile()
+    private function cleanUpTempFile(): bool
     {
         if (!config('excel.temporary_files.force_resync_remote')) {
             return true;
