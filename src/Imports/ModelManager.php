@@ -205,7 +205,7 @@ class ModelManager
 
     private function handleException(ToModel $import, Throwable $e): void
     {
-        if (! $import instanceof SkipsOnError) {
+        if (!$import instanceof SkipsOnError) {
             throw $e;
         }
 
