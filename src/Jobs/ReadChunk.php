@@ -5,6 +5,7 @@ namespace Maatwebsite\Excel\Jobs;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Support\Facades\Cache;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithCustomValueBinder;
 use Maatwebsite\Excel\Concerns\WithEvents;
@@ -80,6 +81,11 @@ class ReadChunk implements ShouldQueue
     private $chunkSize;
 
     /**
+     * @var string
+     */
+    private $uniqueId;
+
+    /**
      * @param  WithChunkReading  $import
      * @param  IReader  $reader
      * @param  TemporaryFile  $temporaryFile
@@ -101,6 +107,21 @@ class ReadChunk implements ShouldQueue
         $this->tries         = $import->tries ?? null;
         $this->maxExceptions = $import->maxExceptions ?? null;
         $this->backoff       = method_exists($import, 'backoff') ? $import->backoff() : ($import->backoff ?? null);
+    }
+
+    public function getUniqueId(): string
+    {
+        if (!isset($this->uniqueId)) {
+            $this->uniqueId = uniqid();
+            Cache::set('laravel-excel/read-chunk/' . $this->uniqueId, true);
+        }
+
+        return $this->uniqueId;
+    }
+
+    public static function isComplete(string $id): bool
+    {
+        return !Cache::has('laravel-excel/read-chunk/' . $id);
     }
 
     /**
@@ -183,6 +204,10 @@ class ReadChunk implements ShouldQueue
 
             $this->cleanUpTempFile();
         });
+
+        if (!empty($this->uniqueId)) {
+            Cache::delete('laravel-excel/read-chunk/' . $this->uniqueId);
+        }
     }
 
     /**
