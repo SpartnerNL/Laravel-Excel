@@ -105,14 +105,14 @@ class ShouldQueueWithoutChainTest extends TestCase
         self::assertTrue(ReadChunk::isComplete($chunks->first()->getUniqueId()));
         self::assertFalse(ReadChunk::isComplete($chunks->last()->getUniqueId()));
 
-        Event::listen(function (JobProcessed $event) {
+        Event::listen(JobProcessed::class, function (JobProcessed $event) {
             self::assertTrue($event->job->isReleased());
         });
         $fake->push($afterImport);
         Event::forget(JobProcessed::class);
         $fake->push($chunks->last());
 
-        Event::listen(function (JobProcessed $event) {
+        Event::listen(JobProcessed::class, function (JobProcessed $event) {
             self::assertFalse($event->job->isReleased());
         });
         $fake->push($afterImport);
