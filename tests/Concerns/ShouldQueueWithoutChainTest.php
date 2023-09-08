@@ -97,6 +97,7 @@ class ShouldQueueWithoutChainTest extends TestCase
         if (!method_exists($fake, 'except')) {
             /** @var SyncQueue $queue */
             $fake = app(SyncQueue::class);
+            $fake->setContainer(app());
         } else {
             $fake->except([AfterImportJob::class, ReadChunk::class]);
         }
