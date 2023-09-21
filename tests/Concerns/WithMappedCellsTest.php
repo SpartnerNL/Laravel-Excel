@@ -38,8 +38,14 @@ class WithMappedCellsTest extends TestCase
             public function mapping(): array
             {
                 return [
-                    'name'  => 'B1',
-                    'email' => 'B2',
+                    [
+                        'name'  => 'B1',
+                        'email' => 'B2',
+                    ],
+                    [
+                        'name'  => 'D1',
+                        'email' => 'D2',
+                    ],
                 ];
             }
 
@@ -49,8 +55,14 @@ class WithMappedCellsTest extends TestCase
             public function array(array $array)
             {
                 Assert::assertEquals([
-                    'name'  => 'Patrick Brouwers',
-                    'email' => 'patrick@maatwebsite.nl',
+                    [
+                        'name'  => 'Patrick Brouwers',
+                        'email' => 'patrick@maatwebsite.nl',
+                    ],
+                    [
+                        'name'  => 'Typingbeaver',
+                        'email' => 'typingbeaver@mailbox.org',
+                    ],
                 ], $array);
             }
         };
@@ -73,8 +85,14 @@ class WithMappedCellsTest extends TestCase
             public function mapping(): array
             {
                 return [
-                    'name'  => 'B1',
-                    'email' => 'B2',
+                    [
+                        'name'  => 'B1',
+                        'email' => 'B2',
+                    ],
+                    [
+                        'name'  => 'D1',
+                        'email' => 'D2',
+                    ],
                 ];
             }
 
@@ -85,13 +103,20 @@ class WithMappedCellsTest extends TestCase
             public function model(array $array)
             {
                 Assert::assertEquals([
-                    'name'  => 'Patrick Brouwers',
-                    'email' => 'patrick@maatwebsite.nl',
+                    [
+                        'name'  => 'Patrick Brouwers',
+                        'email' => 'patrick@maatwebsite.nl',
+                    ],
+                    [
+                        'name'  => 'Typingbeaver',
+                        'email' => 'typingbeaver@mailbox.org',
+                    ],
                 ], $array);
 
-                $array['password'] = Str::random();
-
-                return new User($array);
+                foreach ($array as $user) {
+                    $user['password'] = Str::random();
+                    return new User($user);
+                }
             }
         };
 
@@ -100,6 +125,10 @@ class WithMappedCellsTest extends TestCase
         $this->assertDatabaseHas('users', [
             'name'  => 'Patrick Brouwers',
             'email' => 'patrick@maatwebsite.nl',
+        ]);
+        $this->assertDatabaseHas('users', [
+            'name'  => 'Typingbeaver',
+            'email' => 'typingbeaver@mailbox.org',
         ]);
     }
 }
