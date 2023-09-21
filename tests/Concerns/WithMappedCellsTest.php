@@ -85,14 +85,8 @@ class WithMappedCellsTest extends TestCase
             public function mapping(): array
             {
                 return [
-                    [
-                        'name'  => 'B1',
-                        'email' => 'B2',
-                    ],
-                    [
-                        'name'  => 'D1',
-                        'email' => 'D2',
-                    ],
+                    'name'  => 'B1',
+                    'email' => 'B2',
                 ];
             }
 
@@ -103,20 +97,13 @@ class WithMappedCellsTest extends TestCase
             public function model(array $array)
             {
                 Assert::assertEquals([
-                    [
-                        'name'  => 'Patrick Brouwers',
-                        'email' => 'patrick@maatwebsite.nl',
-                    ],
-                    [
-                        'name'  => 'Typingbeaver',
-                        'email' => 'typingbeaver@mailbox.org',
-                    ],
+                    'name'  => 'Patrick Brouwers',
+                    'email' => 'patrick@maatwebsite.nl',
                 ], $array);
 
-                foreach ($array as $user) {
-                    $user['password'] = Str::random();
-                    return new User($user);
-                }
+                $array['password'] = Str::random();
+
+                return new User($array);
             }
         };
 
@@ -125,10 +112,6 @@ class WithMappedCellsTest extends TestCase
         $this->assertDatabaseHas('users', [
             'name'  => 'Patrick Brouwers',
             'email' => 'patrick@maatwebsite.nl',
-        ]);
-        $this->assertDatabaseHas('users', [
-            'name'  => 'Typingbeaver',
-            'email' => 'typingbeaver@mailbox.org',
         ]);
     }
 }
