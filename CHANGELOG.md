@@ -5,7 +5,8 @@ All notable changes to this project will be documented in this file.
 ## [Unreleased]
 
 ### Fixed
-- Bug preventing WithChunkReading from working with multiple sheets when using ToCollection or ToArray   
+- Allow mapping array for mapped import to be multi-dimensional (#3999)
+- Bug preventing WithChunkReading from working with multiple sheets when using ToCollection or ToArray
 
 ## [3.1.47] - 2023-02-16
 
