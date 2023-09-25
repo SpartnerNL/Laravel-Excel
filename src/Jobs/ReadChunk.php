@@ -82,12 +82,12 @@ class ReadChunk implements ShouldQueue
     /**
      * @var string
      */
-    private $queue;
+    public $queue;
 
     /**
      * @var string
      */
-    private $connection;
+    public $connection;
 
     /**
      * @param  WithChunkReading  $import
