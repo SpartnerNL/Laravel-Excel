@@ -84,6 +84,7 @@ class ChunkReader
         $afterImportJob = new AfterImportJob($import, $reader);
 
         if ($import instanceof ShouldQueueWithoutChain) {
+            $afterImportJob->setInterval($delayCleanup);
             $afterImportJob->setDependencies($jobs);
             $jobs->push($afterImportJob->delay($delayCleanup));
 

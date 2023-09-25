@@ -31,6 +31,8 @@ class AfterImportJob implements ShouldQueue
      */
     private $dependencyIds = [];
 
+    private $interval = 60;
+
     /**
      * @param  object  $import
      * @param  Reader  $reader
@@ -39,6 +41,11 @@ class AfterImportJob implements ShouldQueue
     {
         $this->import = $import;
         $this->reader = $reader;
+    }
+
+    public function setInterval(int $interval)
+    {
+        $this->interval = $interval;
     }
 
     public function setDependencies(Collection $jobs)
@@ -54,7 +61,7 @@ class AfterImportJob implements ShouldQueue
             if (!ReadChunk::isComplete($id)) {
                 // Until there is no jobs left to run we put this job back into the queue every minute
                 // Note: this will do nothing in a SyncQueue but that's desired, because in a SyncQueue jobs run in order
-                $this->release(60);
+                $this->release($this->interval);
 
                 return;
             }
