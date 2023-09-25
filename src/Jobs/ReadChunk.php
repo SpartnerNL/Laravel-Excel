@@ -204,10 +204,6 @@ class ReadChunk implements ShouldQueue
 
             $this->cleanUpTempFile();
         });
-
-        if (!empty($this->uniqueId)) {
-            Cache::delete('laravel-excel/read-chunk/' . $this->uniqueId);
-        }
     }
 
     /**
@@ -215,9 +211,7 @@ class ReadChunk implements ShouldQueue
      */
     public function failed(Throwable $e)
     {
-        if ($this->temporaryFile instanceof RemoteTemporaryFile) {
-            $this->temporaryFile->deleteLocalCopy();
-        }
+        $this->cleanUpTempFile();
 
         if ($this->import instanceof WithEvents) {
             $this->registerListeners($this->import->registerEvents());
@@ -231,6 +225,10 @@ class ReadChunk implements ShouldQueue
 
     private function cleanUpTempFile()
     {
+        if (!empty($this->uniqueId)) {
+            Cache::delete('laravel-excel/read-chunk/' . $this->uniqueId);
+        }
+
         if (!config('excel.temporary_files.force_resync_remote')) {
             return true;
         }
