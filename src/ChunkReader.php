@@ -50,6 +50,7 @@ class ChunkReader
         $totalRows    = $reader->getTotalRows();
         $worksheets   = $reader->getWorksheets($import);
         $queue        = property_exists($import, 'queue') ? $import->queue : null;
+        $delayCleanup = property_exists($import, 'cleanupInterval') ? $import->cleanupInterval : 60;
 
         if ($import instanceof WithProgressBar) {
             $import->getConsoleOutput()->progressStart(array_sum($totalRows));
@@ -84,7 +85,7 @@ class ChunkReader
 
         if ($import instanceof ShouldQueueWithoutChain) {
             $afterImportJob->setDependencies($jobs);
-            $jobs->push($afterImportJob->delay(60));
+            $jobs->push($afterImportJob->delay($delayCleanup));
 
             return $jobs->each(function ($job) use ($queue) {
                 dispatch($job->onQueue($queue));
