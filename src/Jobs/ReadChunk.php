@@ -211,7 +211,7 @@ class ReadChunk implements ShouldQueue
      */
     public function failed(Throwable $e)
     {
-        $this->cleanUpTempFile();
+        $this->cleanUpTempFile(true);
 
         if ($this->import instanceof WithEvents) {
             $this->registerListeners($this->import->registerEvents());
@@ -223,13 +223,13 @@ class ReadChunk implements ShouldQueue
         }
     }
 
-    private function cleanUpTempFile()
+    private function cleanUpTempFile(bool $force = false): bool
     {
         if (!empty($this->uniqueId)) {
             Cache::delete('laravel-excel/read-chunk/' . $this->uniqueId);
         }
 
-        if (!config('excel.temporary_files.force_resync_remote')) {
+        if (!$force && !config('excel.temporary_files.force_resync_remote')) {
             return true;
         }
 
