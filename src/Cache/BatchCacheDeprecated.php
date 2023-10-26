@@ -2,8 +2,8 @@
 
 namespace Maatwebsite\Excel\Cache;
 
-use Psr\SimpleCache\CacheInterface;
 use Illuminate\Support\Facades\Cache;
+use Psr\SimpleCache\CacheInterface;
 
 class BatchCacheDeprecated implements CacheInterface
 {

@@ -2,7 +2,6 @@
 
 namespace Maatwebsite\Excel\Tests;
 
-use Illuminate\Foundation\Bus\PendingChain;
 use Illuminate\Foundation\Bus\PendingDispatch;
 use Illuminate\Queue\Events\JobExceptionOccurred;
 use Illuminate\Queue\Events\JobProcessed;

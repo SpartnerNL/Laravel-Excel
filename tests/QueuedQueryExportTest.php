@@ -7,7 +7,6 @@ use Maatwebsite\Excel\Tests\Data\Stubs\AfterQueueExportJob;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
 use Maatwebsite\Excel\Tests\Data\Stubs\FromUsersQueryExport;
 use Maatwebsite\Excel\Tests\Data\Stubs\FromUsersQueryExportWithMapping;
-use Maatwebsite\Excel\Tests\Data\Stubs\QueuedQueryExport;
 
 class QueuedQueryExportTest extends TestCase
 {
