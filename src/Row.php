@@ -43,6 +43,11 @@ class Row implements ArrayAccess
     protected $rowCacheFormatData;
 
     /**
+     * @var string|null
+     */
+    protected $rowCacheEndColumn;
+
+    /**
      * @param  SpreadsheetRow  $row
      * @param  array  $headingRow
      * @param  array  $headerIsGrouped
@@ -83,7 +88,7 @@ class Row implements ArrayAccess
      */
     public function toArray($nullValue = null, $calculateFormulas = false, $formatData = true, ?string $endColumn = null)
     {
-        if (is_array($this->rowCache) && ($this->rowCacheFormatData === $formatData)) {
+        if (is_array($this->rowCache) && ($this->rowCacheFormatData === $formatData) && ($this->rowCacheEndColumn === $endColumn)) {
             return $this->rowCache;
         }
 
@@ -112,6 +117,7 @@ class Row implements ArrayAccess
 
         $this->rowCache           = $cells;
         $this->rowCacheFormatData = $formatData;
+        $this->rowCacheEndColumn  = $endColumn;
 
         return $cells;
     }

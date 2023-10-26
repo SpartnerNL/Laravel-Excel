@@ -5,10 +5,10 @@ All notable changes to this project will be documented in this file.
 ## [Unreleased]
 
 ### Fixed
-- Bug preventing WithChunkReading from working with multiple sheets when using ToCollection or ToArray  
+- Bug preventing WithChunkReading from working with multiple sheets when using ToCollection or ToArray   
+- Row::toArray() now always respects the endColumn
 - Bug that could delete the import file before all the jobs had finished when using WithChunkReading and ShouldQueueWithoutChain
 - Fixed issue where isEmptyWhen was not being called when using OnEachRow
-
 
 ## [3.1.47] - 2023-02-16
 
