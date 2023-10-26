@@ -2,6 +2,7 @@
 
 namespace Maatwebsite\Excel\Cache;
 
+use Illuminate\Support\Facades\Cache;
 use Psr\SimpleCache\CacheInterface;
 
 class BatchCache implements CacheInterface
@@ -34,6 +35,18 @@ class BatchCache implements CacheInterface
         $this->cache      = $cache;
         $this->memory     = $memory;
         $this->defaultTTL = $defaultTTL;
+    }
+
+    public function __sleep()
+    {
+        return ['memory'];
+    }
+
+    public function __wakeup()
+    {
+        $this->cache = Cache::driver(
+            config('excel.cache.illuminate.store')
+        );
     }
 
     /**

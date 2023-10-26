@@ -12,18 +12,13 @@ class AfterSheet extends Event
     public $sheet;
 
     /**
-     * @var object
-     */
-    private $exportable;
-
-    /**
      * @param  Sheet  $sheet
      * @param  object  $exportable
      */
     public function __construct(Sheet $sheet, $exportable)
     {
         $this->sheet      = $sheet;
-        $this->exportable = $exportable;
+        parent::__construct($exportable);
     }
 
     /**
@@ -32,14 +27,6 @@ class AfterSheet extends Event
     public function getSheet(): Sheet
     {
         return $this->sheet;
-    }
-
-    /**
-     * @return object
-     */
-    public function getConcernable()
-    {
-        return $this->exportable;
     }
 
     /**
