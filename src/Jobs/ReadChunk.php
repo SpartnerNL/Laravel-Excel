@@ -45,6 +45,16 @@ class ReadChunk implements ShouldQueue
     public $backoff;
 
     /**
+     * @var string
+     */
+    public $queue;
+
+    /**
+     * @var string
+     */
+    public $connection;
+
+    /**
      * @var WithChunkReading
      */
     private $import;
@@ -78,16 +88,6 @@ class ReadChunk implements ShouldQueue
      * @var int
      */
     private $chunkSize;
-
-    /**
-     * @var string
-     */
-    public $queue;
-
-    /**
-     * @var string
-     */
-    public $connection;
 
     /**
      * @param  WithChunkReading  $import
