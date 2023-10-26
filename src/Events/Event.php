@@ -10,7 +10,7 @@ abstract class Event
     /**
      * @var object
      */
-    private $concernable;
+    protected $concernable;
 
     /**
      * @param  object  $concernable
