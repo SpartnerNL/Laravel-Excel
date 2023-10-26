@@ -2,16 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## [Unreleased]
-
-### Added
-- AfterChunk and AfterBatch events
-
-### Fixed
-- Bug preventing WithChunkReading from working with multiple sheets when using ToCollection or ToArray   
-- Row::toArray() now always respects the endColumn
-- Bug that could delete the import file before all the jobs had finished when using WithChunkReading and ShouldQueueWithoutChain
-- Fixed issue where isEmptyWhen was not being called when using OnEachRow
+Please view https://github.com/SpartnerNL/Laravel-Excel/releases for the most recent changelog
 
 ## [3.1.47] - 2023-02-16
 
