@@ -272,7 +272,7 @@ return [
         | Allowable types: callable|\DateInterval|int|null
         |
          */
-        'default_ttl' => null,
+        'default_ttl' => 10800,
     ],
 
     /*
