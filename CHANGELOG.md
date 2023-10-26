@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file.
 
 ### Fixed
 - Bug preventing WithChunkReading from working with multiple sheets when using ToCollection or ToArray   
+- Fixed issue where isEmptyWhen was not being called when using OnEachRow
 
 ## [3.1.47] - 2023-02-16
 
