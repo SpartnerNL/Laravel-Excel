@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Added
+- AfterChunk and AfterBatch events
+
 ### Fixed
 - Bug preventing WithChunkReading from working with multiple sheets when using ToCollection or ToArray   
 - Row::toArray() now always respects the endColumn

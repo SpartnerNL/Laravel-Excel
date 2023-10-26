@@ -3,6 +3,8 @@
 namespace Maatwebsite\Excel\Tests\Concerns;
 
 use Maatwebsite\Excel\Concerns\Exportable;
+use Maatwebsite\Excel\Events\AfterBatch;
+use Maatwebsite\Excel\Events\AfterChunk;
 use Maatwebsite\Excel\Events\AfterImport;
 use Maatwebsite\Excel\Events\AfterSheet;
 use Maatwebsite\Excel\Events\BeforeExport;
@@ -17,6 +19,7 @@ use Maatwebsite\Excel\Tests\Data\Stubs\CustomConcern;
 use Maatwebsite\Excel\Tests\Data\Stubs\CustomSheetConcern;
 use Maatwebsite\Excel\Tests\Data\Stubs\ExportWithEvents;
 use Maatwebsite\Excel\Tests\Data\Stubs\ImportWithEvents;
+use Maatwebsite\Excel\Tests\Data\Stubs\ImportWithEventsChunksAndBatches;
 use Maatwebsite\Excel\Tests\TestCase;
 use Maatwebsite\Excel\Writer;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
@@ -65,36 +68,101 @@ class WithEventsTest extends TestCase
      */
     public function import_events_get_called()
     {
-        $event = new ImportWithEvents();
+        $import = new ImportWithEvents();
 
         $eventsTriggered = 0;
 
-        $event->beforeImport = function ($event) use (&$eventsTriggered) {
+        $import->beforeImport = function ($event) use (&$eventsTriggered) {
             $this->assertInstanceOf(BeforeImport::class, $event);
             $this->assertInstanceOf(Reader::class, $event->getReader());
             $eventsTriggered++;
         };
 
-        $event->afterImport = function ($event) use (&$eventsTriggered) {
+        $import->afterImport = function ($event) use (&$eventsTriggered) {
             $this->assertInstanceOf(AfterImport::class, $event);
             $this->assertInstanceOf(Reader::class, $event->getReader());
             $eventsTriggered++;
         };
 
-        $event->beforeSheet = function ($event) use (&$eventsTriggered) {
+        $import->beforeSheet = function ($event) use (&$eventsTriggered) {
             $this->assertInstanceOf(BeforeSheet::class, $event);
             $this->assertInstanceOf(Sheet::class, $event->getSheet());
             $eventsTriggered++;
         };
 
-        $event->afterSheet = function ($event) use (&$eventsTriggered) {
+        $import->afterSheet = function ($event) use (&$eventsTriggered) {
             $this->assertInstanceOf(AfterSheet::class, $event);
             $this->assertInstanceOf(Sheet::class, $event->getSheet());
             $eventsTriggered++;
         };
 
-        $event->import('import.xlsx');
+        $import->import('import.xlsx');
         $this->assertEquals(4, $eventsTriggered);
+    }
+
+    /**
+     * @test
+     */
+    public function import_chunked_events_get_called()
+    {
+        $import = new ImportWithEventsChunksAndBatches();
+
+        $beforeImport = 0;
+        $afterImport  = 0;
+        $beforeSheet  = 0;
+        $afterSheet   = 0;
+        $afterBatch   = 0;
+        $afterChunk   = 0;
+
+        $import->beforeImport = function (BeforeImport $event) use (&$beforeImport) {
+            $this->assertInstanceOf(Reader::class, $event->getReader());
+            // Ensure event is fired only once
+            $this->assertEquals(0, $beforeImport, 'Before import called twice');
+            $beforeImport++;
+        };
+
+        $import->afterImport = function (AfterImport $event) use (&$afterImport) {
+            $this->assertInstanceOf(Reader::class, $event->getReader());
+            $this->assertEquals(0, $afterImport, 'After import called twice');
+            $afterImport++;
+        };
+
+        $import->beforeSheet = function (BeforeSheet $event) use (&$beforeSheet) {
+            $this->assertInstanceOf(Sheet::class, $event->getSheet());
+            $beforeSheet++;
+        };
+
+        $import->afterSheet = function (AfterSheet $event) use (&$afterSheet) {
+            $this->assertInstanceOf(Sheet::class, $event->getSheet());
+            $afterSheet++;
+        };
+
+        $import->afterBatch = function (AfterBatch $event) use ($import, &$afterBatch) {
+            $this->assertEquals(
+                $import->batchSize(),
+                $event->getBatchSize(),
+                'Wrong Batch size'
+            );
+            $this->assertEquals(
+                $afterBatch * $import->batchSize() + 1,
+                $event->getStartRow(),
+                'Wrong batch start row');
+            $afterBatch++;
+        };
+
+        $import->afterChunk = function (AfterChunk $event) use ($import, &$afterChunk) {
+            $this->assertEquals(
+                $event->getStartRow(),
+                $afterChunk * $import->chunkSize() + 1,
+                'Wrong chunk start row');
+            $afterChunk++;
+        };
+
+        $import->import('import-batches.xlsx');
+        $this->assertEquals(10, $afterSheet);
+        $this->assertEquals(10, $beforeSheet);
+        $this->assertEquals(50, $afterBatch);
+        $this->assertEquals(10, $afterChunk);
     }
 
     /**

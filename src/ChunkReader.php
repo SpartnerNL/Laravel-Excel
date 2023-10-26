@@ -14,7 +14,6 @@ use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\WithLimit;
 use Maatwebsite\Excel\Concerns\WithProgressBar;
-use Maatwebsite\Excel\Events\BeforeImport;
 use Maatwebsite\Excel\Files\TemporaryFile;
 use Maatwebsite\Excel\Imports\HeadingRowExtractor;
 use Maatwebsite\Excel\Jobs\AfterImportJob;
@@ -42,7 +41,7 @@ class ChunkReader
      */
     public function read(WithChunkReading $import, Reader $reader, TemporaryFile $temporaryFile)
     {
-        if ($import instanceof WithEvents && isset($import->registerEvents()[BeforeImport::class])) {
+        if ($import instanceof WithEvents) {
             $reader->beforeImport($import);
         }
 

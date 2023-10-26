@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Cache;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithCustomValueBinder;
 use Maatwebsite\Excel\Concerns\WithEvents;
+use Maatwebsite\Excel\Events\AfterChunk;
 use Maatwebsite\Excel\Events\ImportFailed;
 use Maatwebsite\Excel\Files\RemoteTemporaryFile;
 use Maatwebsite\Excel\Files\TemporaryFile;
@@ -215,6 +216,8 @@ class ReadChunk implements ShouldQueue
             $sheet->disconnect();
 
             $this->cleanUpTempFile();
+
+            $sheet->raise(new AfterChunk($sheet, $this->import, $this->startRow));
         });
     }
 
