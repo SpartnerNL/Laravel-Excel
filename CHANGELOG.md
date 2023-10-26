@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file.
 
 Please view https://github.com/SpartnerNL/Laravel-Excel/releases for the most recent changelog
 
+### Fixed
+- A bug where the package would attempt to create a temporary file in the wrong directory when using a multi-server setup with non-identical storage paths.
+
 ## [3.1.47] - 2023-02-16
 
 - Support Laravel 10
