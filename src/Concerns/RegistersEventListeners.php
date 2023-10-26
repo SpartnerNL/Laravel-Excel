@@ -21,21 +21,19 @@ trait RegistersEventListeners
     public function registerEvents(): array
     {
         $listenersClasses = [
-            BeforeExport::class,
-            BeforeWriting::class,
-            BeforeImport::class,
-            AfterImport::class,
-            AfterBatch::class,
-            AfterChunk::class,
-            AfterChunk::class,
-            ImportFailed::class,
-            BeforeSheet::class,
-            AfterSheet::class,
+            BeforeExport::class => 'beforeExport',
+            BeforeWriting::class => 'beforeWriting',
+            BeforeImport::class => 'beforeImport',
+            AfterImport::class => 'afterImport',
+            AfterBatch::class => 'afterBatch',
+            AfterChunk::class => 'afterChunk',
+            ImportFailed::class => 'importFailed',
+            BeforeSheet::class => 'beforeSheet',
+            AfterSheet::class => 'afterSheet',
         ];
         $listeners = [];
 
-        foreach ($listenersClasses as $class) {
-            $name = (new ReflectionClass($class))->getShortName();
+        foreach ($listenersClasses as $class => $name) {
             // Method names are case insensitive in php
             if (method_exists($this, $name)) {
                 // Allow methods to not be static
