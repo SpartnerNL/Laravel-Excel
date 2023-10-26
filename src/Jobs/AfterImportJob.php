@@ -4,6 +4,8 @@ namespace Maatwebsite\Excel\Jobs;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Events\ImportFailed;
 use Maatwebsite\Excel\HasEventBus;
@@ -12,7 +14,7 @@ use Throwable;
 
 class AfterImportJob implements ShouldQueue
 {
-    use Queueable, HasEventBus;
+    use HasEventBus, InteractsWithQueue, Queueable;
 
     /**
      * @var WithEvents
@@ -25,6 +27,13 @@ class AfterImportJob implements ShouldQueue
     private $reader;
 
     /**
+     * @var iterable
+     */
+    private $dependencyIds = [];
+
+    private $interval = 60;
+
+    /**
      * @param  object  $import
      * @param  Reader  $reader
      */
@@ -34,8 +43,30 @@ class AfterImportJob implements ShouldQueue
         $this->reader = $reader;
     }
 
+    public function setInterval(int $interval)
+    {
+        $this->interval = $interval;
+    }
+
+    public function setDependencies(Collection $jobs)
+    {
+        $this->dependencyIds = $jobs->map(function (ReadChunk $job) {
+            return $job->getUniqueId();
+        })->all();
+    }
+
     public function handle()
     {
+        foreach ($this->dependencyIds as $id) {
+            if (!ReadChunk::isComplete($id)) {
+                // Until there is no jobs left to run we put this job back into the queue every minute
+                // Note: this will do nothing in a SyncQueue but that's desired, because in a SyncQueue jobs run in order
+                $this->release($this->interval);
+
+                return;
+            }
+        }
+
         if ($this->import instanceof ShouldQueue && $this->import instanceof WithEvents) {
             $this->reader->clearListeners();
             $this->reader->registerListeners($this->import->registerEvents());

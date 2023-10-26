@@ -5,6 +5,7 @@ namespace Maatwebsite\Excel\Jobs;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Support\Facades\Cache;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithCustomValueBinder;
 use Maatwebsite\Excel\Concerns\WithEvents;
@@ -90,6 +91,11 @@ class ReadChunk implements ShouldQueue
     private $chunkSize;
 
     /**
+     * @var string
+     */
+    private $uniqueId;
+
+    /**
      * @param  WithChunkReading  $import
      * @param  IReader  $reader
      * @param  TemporaryFile  $temporaryFile
@@ -113,6 +119,21 @@ class ReadChunk implements ShouldQueue
         $this->backoff       = method_exists($import, 'backoff') ? $import->backoff() : ($import->backoff ?? null);
         $this->connection    = property_exists($import, 'connection') ? $import->connection : null;
         $this->queue         = property_exists($import, 'queue') ? $import->queue : null;
+    }
+
+    public function getUniqueId(): string
+    {
+        if (!isset($this->uniqueId)) {
+            $this->uniqueId = uniqid();
+            Cache::set('laravel-excel/read-chunk/' . $this->uniqueId, true);
+        }
+
+        return $this->uniqueId;
+    }
+
+    public static function isComplete(string $id): bool
+    {
+        return !Cache::has('laravel-excel/read-chunk/' . $id);
     }
 
     /**
@@ -202,9 +223,7 @@ class ReadChunk implements ShouldQueue
      */
     public function failed(Throwable $e)
     {
-        if ($this->temporaryFile instanceof RemoteTemporaryFile) {
-            $this->temporaryFile->deleteLocalCopy();
-        }
+        $this->cleanUpTempFile(true);
 
         if ($this->import instanceof WithEvents) {
             $this->registerListeners($this->import->registerEvents());
@@ -216,9 +235,13 @@ class ReadChunk implements ShouldQueue
         }
     }
 
-    private function cleanUpTempFile()
+    private function cleanUpTempFile(bool $force = false): bool
     {
-        if (!config('excel.temporary_files.force_resync_remote')) {
+        if (!empty($this->uniqueId)) {
+            Cache::delete('laravel-excel/read-chunk/' . $this->uniqueId);
+        }
+
+        if (!$force && !config('excel.temporary_files.force_resync_remote')) {
             return true;
         }
 

@@ -106,7 +106,7 @@ class Reader
         }
 
         try {
-            $this->loadSpreadsheet($import, $this->reader);
+            $this->loadSpreadsheet($import);
 
             ($this->transaction)(function () use ($import) {
                 $sheetsToDisconnect = [];
