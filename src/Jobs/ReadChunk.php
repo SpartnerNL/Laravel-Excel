@@ -80,6 +80,16 @@ class ReadChunk implements ShouldQueue
     private $chunkSize;
 
     /**
+     * @var string
+     */
+    public $queue;
+
+    /**
+     * @var string
+     */
+    public $connection;
+
+    /**
      * @param  WithChunkReading  $import
      * @param  IReader  $reader
      * @param  TemporaryFile  $temporaryFile
@@ -101,6 +111,8 @@ class ReadChunk implements ShouldQueue
         $this->tries         = $import->tries ?? null;
         $this->maxExceptions = $import->maxExceptions ?? null;
         $this->backoff       = method_exists($import, 'backoff') ? $import->backoff() : ($import->backoff ?? null);
+        $this->connection    = property_exists($import, 'connection') ? $import->connection : null;
+        $this->queue         = property_exists($import, 'queue') ? $import->queue : null;
     }
 
     /**
