@@ -46,6 +46,16 @@ class ReadChunk implements ShouldQueue
     public $backoff;
 
     /**
+     * @var string
+     */
+    public $queue;
+
+    /**
+     * @var string
+     */
+    public $connection;
+
+    /**
      * @var WithChunkReading
      */
     private $import;
@@ -107,6 +117,8 @@ class ReadChunk implements ShouldQueue
         $this->tries         = $import->tries ?? null;
         $this->maxExceptions = $import->maxExceptions ?? null;
         $this->backoff       = method_exists($import, 'backoff') ? $import->backoff() : ($import->backoff ?? null);
+        $this->connection    = property_exists($import, 'connection') ? $import->connection : null;
+        $this->queue         = property_exists($import, 'queue') ? $import->queue : null;
     }
 
     public function getUniqueId(): string
