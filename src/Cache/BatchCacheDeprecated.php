@@ -18,13 +18,23 @@ class BatchCacheDeprecated implements CacheInterface
     protected $memory;
 
     /**
+     * @var null|int|\DateTimeInterface|callable
+     */
+    protected $defaultTTL = null;
+
+    /**
      * @param  CacheInterface  $cache
      * @param  MemoryCacheDeprecated  $memory
+     * @param  int|\DateTimeInterface|callable|null  $defaultTTL
      */
-    public function __construct(CacheInterface $cache, MemoryCacheDeprecated $memory)
-    {
-        $this->cache  = $cache;
-        $this->memory = $memory;
+    public function __construct(
+        CacheInterface $cache,
+        MemoryCacheDeprecated $memory,
+        $defaultTTL = null
+    ) {
+        $this->cache      = $cache;
+        $this->memory     = $memory;
+        $this->defaultTTL = $defaultTTL;
     }
 
     public function __sleep()
@@ -56,6 +66,10 @@ class BatchCacheDeprecated implements CacheInterface
      */
     public function set($key, $value, $ttl = null)
     {
+        if (func_num_args() === 2) {
+            $ttl = value($this->defaultTTL);
+        }
+
         $this->memory->set($key, $value, $ttl);
 
         if ($this->memory->reachedMemoryLimit()) {
@@ -120,6 +134,10 @@ class BatchCacheDeprecated implements CacheInterface
      */
     public function setMultiple($values, $ttl = null)
     {
+        if (func_num_args() === 1) {
+            $ttl = value($this->defaultTTL);
+        }
+
         $this->memory->setMultiple($values, $ttl);
 
         if ($this->memory->reachedMemoryLimit()) {
