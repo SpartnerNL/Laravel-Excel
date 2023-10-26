@@ -37,7 +37,7 @@ class ChunkReader
      * @param  WithChunkReading  $import
      * @param  Reader  $reader
      * @param  TemporaryFile  $temporaryFile
-     * @return \Illuminate\Foundation\Bus\PendingDispatch|null
+     * @return PendingDispatch|Collection|null
      */
     public function read(WithChunkReading $import, Reader $reader, TemporaryFile $temporaryFile)
     {
@@ -49,7 +49,7 @@ class ChunkReader
         $totalRows    = $reader->getTotalRows();
         $worksheets   = $reader->getWorksheets($import);
         $queue        = property_exists($import, 'queue') ? $import->queue : null;
-        $delayCleanup = property_exists($import, 'delayCleanup') ? $import->delayCleanup : 600;
+        $delayCleanup = property_exists($import, 'cleanupInterval') ? $import->cleanupInterval : 60;
 
         if ($import instanceof WithProgressBar) {
             $import->getConsoleOutput()->progressStart(array_sum($totalRows));
@@ -83,6 +83,8 @@ class ChunkReader
         $afterImportJob = new AfterImportJob($import, $reader);
 
         if ($import instanceof ShouldQueueWithoutChain) {
+            $afterImportJob->setInterval($delayCleanup);
+            $afterImportJob->setDependencies($jobs);
             $jobs->push($afterImportJob->delay($delayCleanup));
 
             return $jobs->each(function ($job) use ($queue) {

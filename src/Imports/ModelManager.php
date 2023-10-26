@@ -88,13 +88,7 @@ class ModelManager
             $import->rememberRowNumber($rowNumber);
         }
 
-        $model = $import->model($attributes);
-
-        if (null !== $model) {
-            return \is_array($model) ? new Collection($model) : new Collection([$model]);
-        }
-
-        return new Collection([]);
+        return Collection::wrap($import->model($attributes));
     }
 
     /**
@@ -119,15 +113,13 @@ class ModelManager
                              $import->uniqueBy(),
                              $import instanceof WithUpsertColumns ? $import->upsertColumns() : null
                          );
-                     } else {
-                         $model::query()->insert($models->toArray());
+
+                         return;
                      }
+
+                     $model::query()->insert($models->toArray());
                  } catch (Throwable $e) {
-                     if ($import instanceof SkipsOnError) {
-                         $import->onError($e);
-                     } else {
-                         throw $e;
-                     }
+                     $this->handleException($import, $e);
                  }
              });
     }
@@ -148,15 +140,13 @@ class ModelManager
                                 $import->uniqueBy(),
                                 $import instanceof WithUpsertColumns ? $import->upsertColumns() : null
                             );
-                        } else {
-                            $model->saveOrFail();
+
+                            return;
                         }
+
+                        $model->saveOrFail();
                     } catch (Throwable $e) {
-                        if ($import instanceof SkipsOnError) {
-                            $import->onError($e);
-                        } else {
-                            throw $e;
-                        }
+                        $this->handleException($import, $e);
                     }
                 });
             });
@@ -211,5 +201,14 @@ class ModelManager
     private function rows(): Collection
     {
         return new Collection($this->rows);
+    }
+
+    private function handleException(ToModel $import, Throwable $e): void
+    {
+        if (!$import instanceof SkipsOnError) {
+            throw $e;
+        }
+
+        $import->onError($e);
     }
 }
