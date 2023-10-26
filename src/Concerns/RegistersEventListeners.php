@@ -11,7 +11,6 @@ use Maatwebsite\Excel\Events\BeforeImport;
 use Maatwebsite\Excel\Events\BeforeSheet;
 use Maatwebsite\Excel\Events\BeforeWriting;
 use Maatwebsite\Excel\Events\ImportFailed;
-use ReflectionClass;
 
 trait RegistersEventListeners
 {
@@ -21,15 +20,15 @@ trait RegistersEventListeners
     public function registerEvents(): array
     {
         $listenersClasses = [
-            BeforeExport::class => 'beforeExport',
+            BeforeExport::class  => 'beforeExport',
             BeforeWriting::class => 'beforeWriting',
-            BeforeImport::class => 'beforeImport',
-            AfterImport::class => 'afterImport',
-            AfterBatch::class => 'afterBatch',
-            AfterChunk::class => 'afterChunk',
-            ImportFailed::class => 'importFailed',
-            BeforeSheet::class => 'beforeSheet',
-            AfterSheet::class => 'afterSheet',
+            BeforeImport::class  => 'beforeImport',
+            AfterImport::class   => 'afterImport',
+            AfterBatch::class    => 'afterBatch',
+            AfterChunk::class    => 'afterChunk',
+            ImportFailed::class  => 'importFailed',
+            BeforeSheet::class   => 'beforeSheet',
+            AfterSheet::class    => 'afterSheet',
         ];
         $listeners = [];
 
