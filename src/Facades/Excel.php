@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 /**
  * @method static BinaryFileResponse download(object $export, string $fileName, string $writerType = null, array $headers = [])
- * @method static bool store(object $export, string $filePath, string $disk = null, string $writerType = null, $diskOptions = [])
+ * @method static bool store(object $export, string $filePath, string $diskName = null, string $writerType = null, $diskOptions = [])
  * @method static PendingDispatch queue(object $export, string $filePath, string $disk = null, string $writerType = null, $diskOptions = [])
  * @method static string raw(object $export, string $writerType)
  * @method static BaseExcel import(object $import, string|UploadedFile $filePath, string $disk = null, string $readerType = null)
