@@ -2,10 +2,13 @@
 
 namespace Maatwebsite\Excel\Concerns;
 
+/**
+ * @template RowType of mixed
+ */
 interface WithMapping
 {
     /**
-     * @param  mixed  $row
+     * @param  RowType  $row
      * @return array
      */
     public function map($row): array;
