@@ -2,11 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## [Unreleased]
-
-### Fixed
-- Allow mapping array for mapped import to be multi-dimensional (#3999)
-- Bug preventing WithChunkReading from working with multiple sheets when using ToCollection or ToArray
+Please view https://github.com/SpartnerNL/Laravel-Excel/releases for the most recent changelog
 
 ## [3.1.47] - 2023-02-16
 
