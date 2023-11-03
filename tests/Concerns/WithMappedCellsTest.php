@@ -61,6 +61,53 @@ class WithMappedCellsTest extends TestCase
     /**
      * @test
      */
+    public function can_import_with_nested_references_to_cells()
+    {
+        $import = new class implements WithMappedCells, ToArray
+        {
+            use Importable;
+
+            /**
+             * @return array
+             */
+            public function mapping(): array
+            {
+                return [
+                    [
+                        'name'  => 'B1',
+                        'email' => 'B2',
+                    ],
+                    [
+                        'name'  => 'D1',
+                        'email' => 'D2',
+                    ],
+                ];
+            }
+
+            /**
+             * @param  array  $array
+             */
+            public function array(array $array)
+            {
+                Assert::assertEquals([
+                    [
+                        'name'  => 'Patrick Brouwers',
+                        'email' => 'patrick@maatwebsite.nl',
+                    ],
+                    [
+                        'name'  => 'Typingbeaver',
+                        'email' => 'typingbeaver@mailbox.org',
+                    ],
+                ], $array);
+            }
+        };
+
+        $import->import('mapped-import.xlsx');
+    }
+
+    /**
+     * @test
+     */
     public function can_import_with_references_to_cells_to_model()
     {
         $import = new class implements WithMappedCells, ToModel
