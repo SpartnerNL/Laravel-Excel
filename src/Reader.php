@@ -102,11 +102,11 @@ class Reader
         $this->reader = $this->getReader($import, $filePath, $readerType, $disk);
 
         if ($import instanceof WithChunkReading) {
-            return (new ChunkReader)->read($import, $this, $this->currentFile);
+            return app(ChunkReader::class)->read($import, $this, $this->currentFile);
         }
 
         try {
-            $this->loadSpreadsheet($import, $this->reader);
+            $this->loadSpreadsheet($import);
 
             ($this->transaction)(function () use ($import) {
                 $sheetsToDisconnect = [];
@@ -355,9 +355,9 @@ class Reader
     }
 
     /**
-     * @param $import
-     * @param $sheetImport
-     * @param $index
+     * @param  $import
+     * @param  $sheetImport
+     * @param  $index
      * @return Sheet|null
      *
      * @throws \PhpOffice\PhpSpreadsheet\Exception

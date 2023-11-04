@@ -2,8 +2,11 @@
 
 namespace Maatwebsite\Excel\Tests;
 
+use Composer\InstalledVersions;
+use Composer\Semver\VersionParser;
 use Illuminate\Contracts\Console\Kernel;
 use Maatwebsite\Excel\Cache\MemoryCache;
+use Maatwebsite\Excel\Cache\MemoryCacheDeprecated;
 use Maatwebsite\Excel\Excel;
 use Maatwebsite\Excel\Tests\Data\Stubs\CustomTransactionHandler;
 use Maatwebsite\Excel\Transactions\TransactionManager;
@@ -61,9 +64,17 @@ class ExcelServiceProviderTest extends TestCase
         $driver = config('excel.cache.driver');
 
         $this->assertEquals('memory', $driver);
-        $this->assertInstanceOf(
-            MemoryCache::class,
-            Settings::getCache()
-        );
+
+        if (InstalledVersions::satisfies(new VersionParser, 'psr/simple-cache', '^3.0')) {
+            $this->assertInstanceOf(
+                MemoryCache::class,
+                Settings::getCache()
+            );
+        } else {
+            $this->assertInstanceOf(
+                MemoryCacheDeprecated::class,
+                Settings::getCache()
+            );
+        }
     }
 }

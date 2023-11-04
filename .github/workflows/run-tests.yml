@@ -23,11 +23,13 @@ jobs:
 
     strategy:
       matrix:
-        php: [7.2, 7.3, 7.4, 8.0, 8.1]
-        laravel: [9, 8, 7, 6, 5.8]
+        php: [7.4, 8.0, 8.1, 8.2, 8.3]
+        laravel: [10, 9, 8, 7, 6, 5.8]
         dependency-version: [prefer-stable]
         os: [ubuntu-latest]
         include:
+          - laravel: 10
+            testbench: 8.*
           - laravel: 9
             testbench: 7.*
           - laravel: 8
@@ -39,35 +41,45 @@ jobs:
           - laravel: 5.8
             testbench: 3.8.*
         exclude:
-          - laravel: 9
+          - laravel: 10
+            php: 8.0
+          - laravel: 10
             php: 7.4
           - laravel: 9
-            php: 7.3
-          - laravel: 9
-            php: 7.2
-          - laravel: 8
-            php: 7.2
+            php: 7.4
           - laravel: 7
             php: 8.0
           - laravel: 7
             php: 8.1
+          - laravel: 7
+            php: 8.2
+          - laravel: 7
+            php: 8.3
           - laravel: 6
             php: 8.0
           - laravel: 6
             php: 8.1
+          - laravel: 6
+            php: 8.2
+          - laravel: 6
+            php: 8.3
           - laravel: 5.8
             php: 8.0
           - laravel: 5.8
             php: 8.1
+          - laravel: 5.8
+            php: 8.2
+          - laravel: 5.8
+            php: 8.3 
 
     name: PHP${{ matrix.php }} - L${{ matrix.laravel }}
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Cache dependencies
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ~/.composer/cache/files
           key: dependency-cache-laravel-${{ matrix.laravel }}-php-${{ matrix.php }}-composer-${{ hashFiles('composer.json') }}
@@ -82,7 +94,7 @@ jobs:
       - name: Install dependencies
         run: |
           composer require "laravel/framework:${{ matrix.laravel }}.*" "orchestra/testbench:${{ matrix.testbench }}"  --no-interaction --no-update
-          composer update --${{ matrix.dependency-version }} --prefer-dist --no-interaction --no-suggest
+          composer update --${{ matrix.dependency-version }} --no-interaction
 
       - name: Install legacy factories
         run: |

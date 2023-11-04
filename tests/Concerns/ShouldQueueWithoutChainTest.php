@@ -1,5 +1,8 @@
 <?php
 
+use Illuminate\Queue\Events\JobProcessed;
+use Illuminate\Queue\SyncQueue;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Queue;
 use Maatwebsite\Excel\Jobs\AfterImportJob;
 use Maatwebsite\Excel\Jobs\QueueImport;
@@ -66,5 +69,53 @@ class ShouldQueueWithoutChainTest extends TestCase
 
         Queue::assertPushedOn('queue-name', ReadChunk::class);
         Queue::assertPushedOn('queue-name', AfterImportJob::class);
+    }
+
+    /**
+     * @test
+     */
+    public function the_cleanup_only_runs_when_all_jobs_are_done()
+    {
+        $fake = Queue::fake();
+
+        if (method_exists($fake, 'serializeAndRestore')) {
+            $fake->serializeAndRestore(); // More realism
+        }
+
+        $import = new QueueImportWithoutJobChaining();
+
+        $import->import('import-users.xlsx');
+
+        $jobs   = Queue::pushedJobs();
+        $chunks = collect($jobs[ReadChunk::class])->pluck('job');
+        $chunks->each(function (ReadChunk $chunk) {
+            self::assertFalse(ReadChunk::isComplete($chunk->getUniqueId()));
+        });
+        self::assertCount(2, $chunks);
+        $afterImport = $jobs[AfterImportJob::class][0]['job'];
+
+        if (!method_exists($fake, 'except')) {
+            /** @var SyncQueue $queue */
+            $fake = app(SyncQueue::class);
+            $fake->setContainer(app());
+        } else {
+            $fake->except([AfterImportJob::class, ReadChunk::class]);
+        }
+        $fake->push($chunks->first());
+        self::assertTrue(ReadChunk::isComplete($chunks->first()->getUniqueId()));
+        self::assertFalse(ReadChunk::isComplete($chunks->last()->getUniqueId()));
+
+        Event::listen(JobProcessed::class, function (JobProcessed $event) {
+            self::assertTrue($event->job->isReleased());
+        });
+        $fake->push($afterImport);
+        Event::forget(JobProcessed::class);
+        $fake->push($chunks->last());
+
+        Event::listen(JobProcessed::class, function (JobProcessed $event) {
+            self::assertFalse($event->job->isReleased());
+        });
+        $fake->push($afterImport);
+        Event::forget(JobProcessed::class);
     }
 }

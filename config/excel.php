@@ -259,6 +259,20 @@ return [
         'illuminate' => [
             'store' => null,
         ],
+
+        /*
+        |--------------------------------------------------------------------------
+        | Cache Time-to-live (TTL)
+        |--------------------------------------------------------------------------
+        |
+        | The TTL of items written to cache. If you want to keep the items cached
+        | indefinitely, set this to null.  Otherwise, set a number of seconds,
+        | a \DateInterval, or a callable.
+        |
+        | Allowable types: callable|\DateInterval|int|null
+        |
+         */
+        'default_ttl' => 10800,
     ],
 
     /*

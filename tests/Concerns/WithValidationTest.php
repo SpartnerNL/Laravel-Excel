@@ -5,7 +5,6 @@ namespace Maatwebsite\Excel\Tests\Concerns;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
-use Illuminate\Validation\Validator;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\OnEachRow;
 use Maatwebsite\Excel\Concerns\SkipsEmptyRows;
@@ -72,14 +71,13 @@ class WithValidationTest extends TestCase
             $import->import('import-users.xlsx');
         } catch (ValidationException $e) {
             $this->validateFailure($e, 2, '1', [
-                'The selected 1 is invalid.',
+                'The selected 1(field)? is invalid.',
             ]);
 
-            $this->assertEquals([
-                [
-                    'There was an error on row 2. The selected 1 is invalid.',
-                ],
-            ], $e->errors());
+            $this->assertRegex(
+                '/There was an error on row 2. The selected 1 (field)?is invalid./',
+                $e->errors()[0][0]
+            );
         }
 
         $this->assertInstanceOf(ValidationException::class, $e ?? null);
@@ -129,11 +127,10 @@ class WithValidationTest extends TestCase
                 'Value in column 1 is not an allowed e-mail.',
             ]);
 
-            $this->assertEquals([
-                [
-                    'There was an error on row 2. Value in column 1 is not an allowed e-mail.',
-                ],
-            ], $e->errors());
+            $this->assertRegex(
+                '/There was an error on row 2. Value in column 1 is not an allowed e-mail./',
+                $e->errors()[0][0]
+            );
         }
 
         $this->assertInstanceOf(ValidationException::class, $e ?? null);
@@ -200,11 +197,10 @@ class WithValidationTest extends TestCase
                 'Value is not an allowed e-mail.',
             ]);
 
-            $this->assertEquals([
-                [
-                    'There was an error on row 2. Value is not an allowed e-mail.',
-                ],
-            ], $e->errors());
+            $this->assertRegex(
+                '/There was an error on row 2. Value is not an allowed e-mail./',
+                $e->errors()[0][0]
+            );
         }
 
         $this->assertInstanceOf(ValidationException::class, $e ?? null);
@@ -503,7 +499,7 @@ class WithValidationTest extends TestCase
             $import->import('import-users-with-grouped-headers.xlsx');
         } catch (ValidationException $e) {
             $this->validateFailure($e, 2, 'options', [
-                'The options must be an array.',
+                'The options( field)? must be an array.',
             ]);
         }
 
@@ -733,11 +729,10 @@ class WithValidationTest extends TestCase
                 'The selected 1 is invalid.',
             ]);
 
-            $this->assertEquals([
-                [
-                    'There was an error on row 2. The selected 1 is invalid.',
-                ],
-            ], $e->errors());
+            $this->assertRegex(
+                '/There was an error on row 2. The selected 1 (field)?is invalid./',
+                $e->errors()[0][0]
+            );
         }
 
         $this->assertInstanceOf(ValidationException::class, $e ?? null);
@@ -792,14 +787,13 @@ class WithValidationTest extends TestCase
             $import->import('import-users.xlsx');
         } catch (ValidationException $e) {
             $this->validateFailure($e, 2, '1', [
-                'The 1 must be a valid email address.',
+                'The 1( field)? must be a valid email address.',
             ]);
 
-            $this->assertEquals([
-                [
-                    'There was an error on row 2. The 1 must be a valid email address.',
-                ],
-            ], $e->errors());
+            $this->assertRegex(
+                '/There was an error on row 2. The 1( field)? must be a valid email address./',
+                $e->errors()[0][0]
+            );
         }
 
         $this->assertInstanceOf(ValidationException::class, $e ?? null);
@@ -854,14 +848,13 @@ class WithValidationTest extends TestCase
             $import->import('import-users.xlsx');
         } catch (ValidationException $e) {
             $this->validateFailure($e, 2, '1', [
-                'The 1 must be a valid email address.',
+                'The 1( field)? must be a valid email address.',
             ]);
 
-            $this->assertEquals([
-                [
-                    'There was an error on row 2. The 1 must be a valid email address.',
-                ],
-            ], $e->errors());
+            $this->assertRegex(
+                '/There was an error on row 2. The 1( field)? must be a valid email address./',
+                $e->errors()[0][0]
+            );
         }
 
         $this->assertInstanceOf(ValidationException::class, $e ?? null);
@@ -920,14 +913,13 @@ class WithValidationTest extends TestCase
             $import->import('import-users.xlsx');
         } catch (ValidationException $e) {
             $this->validateFailure($e, 2, '1', [
-                'The 1 must be a valid email address.',
+                'The 1( field)? must be a valid email address.',
             ]);
 
-            $this->assertEquals([
-                [
-                    'There was an error on row 2. The 1 must be a valid email address.',
-                ],
-            ], $e->errors());
+            $this->assertRegex(
+                '/There was an error on row 2. The 1( field)? must be a valid email address./',
+                $e->errors()[0][0]
+            );
         }
 
         $this->assertInstanceOf(ValidationException::class, $e ?? null);
@@ -986,14 +978,13 @@ class WithValidationTest extends TestCase
             $import->import('import-users.xlsx');
         } catch (ValidationException $e) {
             $this->validateFailure($e, 2, '1', [
-                'The 1 must be a valid email address.',
+                'The 1( field)? must be a valid email address.',
             ]);
 
-            $this->assertEquals([
-                [
-                    'There was an error on row 2. The 1 must be a valid email address.',
-                ],
-            ], $e->errors());
+            $this->assertRegex(
+                '/There was an error on row 2. The 1( field)? must be a valid email address./',
+                $e->errors()[0][0]
+            );
         }
 
         $this->assertInstanceOf(ValidationException::class, $e ?? null);
@@ -1052,14 +1043,13 @@ class WithValidationTest extends TestCase
             $import->import('import-users.xlsx');
         } catch (ValidationException $e) {
             $this->validateFailure($e, 2, '1', [
-                'The 1 must be a valid email address.',
+                'The 1( field)? must be a valid email address.',
             ]);
 
-            $this->assertEquals([
-                [
-                    'There was an error on row 2. The 1 must be a valid email address.',
-                ],
-            ], $e->errors());
+            $this->assertRegex(
+                '/There was an error on row 2. The 1( field)? must be a valid email address./',
+                $e->errors()[0][0]
+            );
         }
 
         $this->assertInstanceOf(ValidationException::class, $e ?? null);
@@ -1078,9 +1068,10 @@ class WithValidationTest extends TestCase
 
         $this->assertEquals($row, $failure->row());
         $this->assertEquals($attribute, $failure->attribute());
-        $this->assertEquals($messages, $failure->errors());
         $this->assertEquals($row, $failure->jsonSerialize()['row']);
         $this->assertEquals($attribute, $failure->jsonSerialize()['attribute']);
-        $this->assertEquals($messages, $failure->jsonSerialize()['errors']);
+
+        $this->assertRegex('/' . $messages[0] . '/', $failure->errors()[0]);
+        $this->assertRegex('/' . $messages[0] . '/', $failure->jsonSerialize()['errors'][0]);
     }
 }

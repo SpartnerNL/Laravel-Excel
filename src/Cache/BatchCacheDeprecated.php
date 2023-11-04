@@ -5,7 +5,7 @@ namespace Maatwebsite\Excel\Cache;
 use Illuminate\Support\Facades\Cache;
 use Psr\SimpleCache\CacheInterface;
 
-class BatchCache implements CacheInterface
+class BatchCacheDeprecated implements CacheInterface
 {
     /**
      * @var CacheInterface
@@ -13,24 +13,24 @@ class BatchCache implements CacheInterface
     protected $cache;
 
     /**
-     * @var MemoryCache
+     * @var MemoryCacheDeprecated
      */
     protected $memory;
 
     /**
-     * @var null|int|\DateInterval|callable
+     * @var null|int|\DateTimeInterface|callable
      */
     protected $defaultTTL = null;
 
     /**
      * @param  CacheInterface  $cache
-     * @param  MemoryCache  $memory
-     * @param  null|int|\DateInterval|callable  $defaultTTL
+     * @param  MemoryCacheDeprecated  $memory
+     * @param  int|\DateTimeInterface|callable|null  $defaultTTL
      */
     public function __construct(
         CacheInterface $cache,
-        MemoryCache $memory,
-        null|int|\DateInterval|callable $defaultTTL = null
+        MemoryCacheDeprecated $memory,
+        $defaultTTL = null
     ) {
         $this->cache      = $cache;
         $this->memory     = $memory;
@@ -52,7 +52,7 @@ class BatchCache implements CacheInterface
     /**
      * {@inheritdoc}
      */
-    public function get(string $key, mixed $default = null): mixed
+    public function get($key, $default = null)
     {
         if ($this->memory->has($key)) {
             return $this->memory->get($key);
@@ -64,7 +64,7 @@ class BatchCache implements CacheInterface
     /**
      * {@inheritdoc}
      */
-    public function set(string $key, mixed $value, null|int|\DateInterval $ttl = null): bool
+    public function set($key, $value, $ttl = null)
     {
         if (func_num_args() === 2) {
             $ttl = value($this->defaultTTL);
@@ -82,7 +82,7 @@ class BatchCache implements CacheInterface
     /**
      * {@inheritdoc}
      */
-    public function delete(string $key): bool
+    public function delete($key)
     {
         if ($this->memory->has($key)) {
             return $this->memory->delete($key);
@@ -94,7 +94,7 @@ class BatchCache implements CacheInterface
     /**
      * {@inheritdoc}
      */
-    public function clear(): bool
+    public function clear()
     {
         $this->memory->clear();
 
@@ -104,7 +104,7 @@ class BatchCache implements CacheInterface
     /**
      * {@inheritdoc}
      */
-    public function getMultiple(iterable $keys, mixed $default = null): iterable
+    public function getMultiple($keys, $default = null)
     {
         // Check if all keys are still in memory
         $memory              = $this->memory->getMultiple($keys, $default);
@@ -132,7 +132,7 @@ class BatchCache implements CacheInterface
     /**
      * {@inheritdoc}
      */
-    public function setMultiple(iterable $values, null|int|\DateInterval $ttl = null): bool
+    public function setMultiple($values, $ttl = null)
     {
         if (func_num_args() === 1) {
             $ttl = value($this->defaultTTL);
@@ -150,7 +150,7 @@ class BatchCache implements CacheInterface
     /**
      * {@inheritdoc}
      */
-    public function deleteMultiple(iterable $keys): bool
+    public function deleteMultiple($keys)
     {
         $keys = is_array($keys) ? $keys : iterator_to_array($keys);
 
@@ -162,7 +162,7 @@ class BatchCache implements CacheInterface
     /**
      * {@inheritdoc}
      */
-    public function has(string $key): bool
+    public function has($key)
     {
         if ($this->memory->has($key)) {
             return true;

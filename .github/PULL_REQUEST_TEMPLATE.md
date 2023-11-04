@@ -15,6 +15,5 @@ Filling out the template is required. Any pull request that does not include eno
 - [ ] Take note of the contributing guidelines.
 - [ ] Checked the pull requests to ensure that another person hasn't already submitted a fix.
 - [ ] Added tests to ensure against regression.
-- [ ] Updated the changelog
 
 6️⃣  Thanks for contributing! 🙌

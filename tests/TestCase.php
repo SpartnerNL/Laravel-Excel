@@ -139,4 +139,13 @@ class TestCase extends OrchestraTestCase
             $this->assertFileNotExists($path);
         }
     }
+
+    protected function assertRegex(string $pattern, string $string)
+    {
+        if (method_exists($this, 'assertMatchesRegularExpression')) {
+            $this->assertMatchesRegularExpression($pattern, $string);
+        } else {
+            $this->assertRegExp($pattern, $string);
+        }
+    }
 }
