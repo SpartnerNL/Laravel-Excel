@@ -32,7 +32,6 @@ Please view https://github.com/SpartnerNL/Laravel-Excel/releases for the most re
 - Fix output of `WithFormatData` in combination with `SkipsEmptyRows` (#3760)
 
 ### Changed
-
 - Cast empty headings to indexed integer (#3646)
 - Adds `isEmptyWhen` to customize is row empty logic. (#3645)
 
