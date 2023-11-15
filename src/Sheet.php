@@ -5,6 +5,7 @@ namespace Maatwebsite\Excel;
 use Closure;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Collection;
+use Illuminate\Support\LazyCollection;
 use Maatwebsite\Excel\Concerns\FromArray;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\FromGenerator;
@@ -474,7 +475,17 @@ class Sheet
      */
     public function fromCollection(FromCollection $sheetExport)
     {
-        $this->appendRows($sheetExport->collection()->all(), $sheetExport);
+        $collection = $sheetExport->collection();
+
+        ray($collection);
+        
+        if ($collection instanceof LazyCollection) {
+            $rows = $sheetExport->collection()->collect();
+        } else {
+            $rows = $sheetExport->collection()->all();
+        }
+        
+        $this->appendRows($rows, $sheetExport);
     }
 
     /**
