@@ -476,8 +476,6 @@ class Sheet
     public function fromCollection(FromCollection $sheetExport)
     {
         $collection = $sheetExport->collection();
-
-        ray($collection);
         
         if ($collection instanceof LazyCollection) {
             $rows = $sheetExport->collection()->collect();
