@@ -4,6 +4,7 @@ namespace Maatwebsite\Excel\Tests\Concerns;
 
 use Maatwebsite\Excel\Tests\Data\Stubs\QueuedExport;
 use Maatwebsite\Excel\Tests\Data\Stubs\SheetWith100Rows;
+use Maatwebsite\Excel\Tests\Data\Stubs\SheetWithLazyCollection;
 use Maatwebsite\Excel\Tests\TestCase;
 
 class FromCollectionTest extends TestCase
@@ -46,5 +47,21 @@ class FromCollectionTest extends TestCase
             $this->assertEquals($sheet->collection()->toArray(), $worksheet->toArray());
             $this->assertEquals($sheet->title(), $worksheet->getTitle());
         }
+    }
+
+    /**
+     * @test
+     */
+    public function can_export_from_lazy_collection()
+    {
+        $export = new SheetWithLazyCollection('MyTitle');
+
+        $response = $export->store('from-lazy-collection-store.xlsx');
+
+        $this->assertTrue($response);
+
+        $contents = $this->readAsArray(__DIR__ . '/../Data/Disks/Local/from-lazy-collection-store.xlsx', 'Xlsx');
+
+        $this->assertEquals($export->collection()->collect()->toArray(), $contents);
     }
 }
