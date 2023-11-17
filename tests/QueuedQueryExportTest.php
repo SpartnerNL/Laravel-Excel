@@ -92,11 +92,11 @@ class QueuedQueryExportTest extends TestCase
      */
     public function can_queue_scout_export()
     {
-        $export = new FromUsersScoutExport();
-
-        if ($export->query() instanceof NullEngine) {
+        if (!class_exists('\Laravel\Scout\Engines\DatabaseEngine')) {
             $this->markTestSkipped('Laravel Scout is too old');
         } else {
+
+            $export = new FromUsersScoutExport();
 
             $export->queue('queued-scout-export.xlsx')->chain([
                 new AfterQueueExportJob(__DIR__ . '/Data/Disks/Local/queued-scout-export.xlsx'),

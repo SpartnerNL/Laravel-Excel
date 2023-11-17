@@ -275,11 +275,11 @@ class FromQueryTest extends TestCase
      */
     public function can_export_from_scout()
     {
-        $export = new FromUsersScoutExport;
-
-        if ($export->query() instanceof NullEngine) {
+        if (!class_exists('\Laravel\Scout\Engines\DatabaseEngine')) {
             $this->markTestSkipped('Laravel Scout is too old');
         } else {
+
+            $export = new FromUsersScoutExport;
 
             $response = $export->store('from-scout-store.xlsx');
 
