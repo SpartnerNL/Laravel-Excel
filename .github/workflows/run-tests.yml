@@ -93,7 +93,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          composer require "laravel/framework:${{ matrix.laravel }}.*" "orchestra/testbench:${{ matrix.testbench }}" "laravel/scout:${{ matrix.testbench }}"  --no-interaction --no-update
+          composer require "laravel/framework:${{ matrix.laravel }}.*" "orchestra/testbench:${{ matrix.testbench }}" "laravel/scout:${{ matrix.laravel }}"  --no-interaction --no-update
           composer update --${{ matrix.dependency-version }} --no-interaction
 
       - name: Install legacy factories
