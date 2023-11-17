@@ -29,22 +29,22 @@ jobs:
         os: [ubuntu-latest]
         include:
           - laravel: 10
-            scout: 10
+            scout: 10.*
             testbench: 8.*
           - laravel: 9
-            scout: 9
+            scout: 9.*
             testbench: 7.*
           - laravel: 8
-            scout: 8
+            scout: 8.*
             testbench: 6.*
           - laravel: 7
-            scout: 7
+            scout: 7.2.*
             testbench: 5.*
           - laravel: 6
-            scout: 7
+            scout: 7.1.*
             testbench: 4.*
           - laravel: 5.8
-            scout: 7
+            scout: 7.1.*
             testbench: 3.8.*
         exclude:
           - laravel: 10
