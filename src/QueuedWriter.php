@@ -184,8 +184,8 @@ class QueuedWriter
     private function exportScout(
         FromQuery $export,
         TemporaryFile $temporaryFile,
-        string        $writerType,
-        int           $sheetIndex
+        string $writerType,
+        int $sheetIndex
     ): Collection {
         $jobs = new Collection();
 
