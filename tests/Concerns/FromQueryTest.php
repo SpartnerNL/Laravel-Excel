@@ -3,7 +3,6 @@
 namespace Maatwebsite\Excel\Tests\Concerns;
 
 use Illuminate\Support\Facades\DB;
-use Laravel\Scout\Engines\NullEngine;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\Group;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
 use Maatwebsite\Excel\Tests\Data\Stubs\FromGroupUsersQueuedQueryExport;
@@ -150,7 +149,7 @@ class FromQueryTest extends TestCase
         $contents = $this->readAsArray(__DIR__ . '/../Data/Disks/Local/from-query-without-eloquent.xlsx', 'Xlsx');
 
         $allUsers = $export->query()->get()->map(function ($row) {
-            return array_values((array)$row);
+            return array_values((array) $row);
         })->all();
 
         $this->assertEquals($allUsers, $contents);
@@ -168,7 +167,7 @@ class FromQueryTest extends TestCase
         $contents = $this->readAsArray(__DIR__ . '/../Data/Disks/Local/from-query-without-eloquent.xlsx', 'Xlsx');
 
         $allUsers = $export->query()->get()->map(function ($row) {
-            return array_values((array)$row);
+            return array_values((array) $row);
         })->all();
 
         $this->assertEquals($allUsers, $contents);
@@ -250,26 +249,6 @@ class FromQueryTest extends TestCase
         $this->assertEquals($allUsers, $contents);
     }
 
-    protected function format_nested_arrays_expected_data($groups)
-    {
-        $expected = [];
-        foreach ($groups as $group) {
-            $group_row = [$group->name, ''];
-
-            foreach ($group->users as $key => $user) {
-                if ($key === 0) {
-                    $group_row[1] = $user->email;
-                    $expected[] = $group_row;
-                    continue;
-                }
-
-                $expected[] = ['', $user->email];
-            }
-        }
-
-        return $expected;
-    }
-
     /**
      * @test
      */
@@ -278,7 +257,6 @@ class FromQueryTest extends TestCase
         if (!class_exists('\Laravel\Scout\Engines\DatabaseEngine')) {
             $this->markTestSkipped('Laravel Scout is too old');
         } else {
-
             $export = new FromUsersScoutExport;
 
             $response = $export->store('from-scout-store.xlsx');
@@ -293,5 +271,25 @@ class FromQueryTest extends TestCase
 
             $this->assertEquals($allUsers, $contents);
         }
+    }
+
+    protected function format_nested_arrays_expected_data($groups)
+    {
+        $expected = [];
+        foreach ($groups as $group) {
+            $group_row = [$group->name, ''];
+
+            foreach ($group->users as $key => $user) {
+                if ($key === 0) {
+                    $group_row[1] = $user->email;
+                    $expected[]   = $group_row;
+                    continue;
+                }
+
+                $expected[] = ['', $user->email];
+            }
+        }
+
+        return $expected;
     }
 }

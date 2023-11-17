@@ -5,8 +5,8 @@ namespace Maatwebsite\Excel\Tests\Data\Stubs\Database;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Laravel\Scout\Engines\DatabaseEngine;
-use Laravel\Scout\Engines\NullEngine;
 use Laravel\Scout\Engines\Engine;
+use Laravel\Scout\Engines\NullEngine;
 use Laravel\Scout\Searchable;
 
 class User extends Model

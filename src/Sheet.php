@@ -479,7 +479,7 @@ class Sheet
      */
     public function fromScout(FromQuery $sheetExport, Worksheet $worksheet)
     {
-        $scout = $sheetExport->query();
+        $scout     = $sheetExport->query();
         $chunkSize = $this->getChunkSize($sheetExport);
 
         $chunk = $scout->paginate($chunkSize);

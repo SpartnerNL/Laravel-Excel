@@ -2,7 +2,6 @@
 
 namespace Maatwebsite\Excel\Tests;
 
-use Laravel\Scout\Engines\NullEngine;
 use Maatwebsite\Excel\SettingsProvider;
 use Maatwebsite\Excel\Tests\Data\Stubs\AfterQueueExportJob;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
@@ -95,7 +94,6 @@ class QueuedQueryExportTest extends TestCase
         if (!class_exists('\Laravel\Scout\Engines\DatabaseEngine')) {
             $this->markTestSkipped('Laravel Scout is too old');
         } else {
-
             $export = new FromUsersScoutExport();
 
             $export->queue('queued-scout-export.xlsx')->chain([
