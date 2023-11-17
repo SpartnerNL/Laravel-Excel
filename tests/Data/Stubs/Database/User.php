@@ -5,6 +5,7 @@ namespace Maatwebsite\Excel\Tests\Data\Stubs\Database;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Laravel\Scout\Engines\DatabaseEngine;
+use Laravel\Scout\Engines\NullEngine;
 use Laravel\Scout\Engines\Engine;
 use Laravel\Scout\Searchable;
 
@@ -39,6 +40,6 @@ class User extends Model
 
     public function searchableUsing(): Engine
     {
-        return new DatabaseEngine();
+        return class_exists('\Laravel\Scout\Engines\DatabaseEngine') ? new DatabaseEngine() : new NullEngine();
     }
 }
