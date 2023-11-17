@@ -2,6 +2,7 @@
 
 namespace Maatwebsite\Excel\Tests;
 
+use Laravel\Scout\Engines\NullEngine;
 use Maatwebsite\Excel\SettingsProvider;
 use Maatwebsite\Excel\Tests\Data\Stubs\AfterQueueExportJob;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
@@ -93,15 +94,20 @@ class QueuedQueryExportTest extends TestCase
     {
         $export = new FromUsersScoutExport();
 
-        $export->queue('queued-scout-export.xlsx')->chain([
-            new AfterQueueExportJob(__DIR__ . '/Data/Disks/Local/queued-scout-export.xlsx'),
-        ]);
+        if ($export->query() instanceof NullEngine) {
+            $this->markTestSkipped('Laravel Scout is too old');
+        } else {
 
-        $actual = $this->readAsArray(__DIR__ . '/Data/Disks/Local/queued-scout-export.xlsx', 'Xlsx');
+            $export->queue('queued-scout-export.xlsx')->chain([
+                new AfterQueueExportJob(__DIR__ . '/Data/Disks/Local/queued-scout-export.xlsx'),
+            ]);
 
-        $this->assertCount(100, $actual);
+            $actual = $this->readAsArray(__DIR__ . '/Data/Disks/Local/queued-scout-export.xlsx', 'Xlsx');
 
-        // 6 of the 7 columns in export, excluding the "hidden" password column.
-        $this->assertCount(6, $actual[0]);
+            $this->assertCount(100, $actual);
+
+            // 6 of the 7 columns in export, excluding the "hidden" password column.
+            $this->assertCount(6, $actual[0]);
+        }
     }
 }

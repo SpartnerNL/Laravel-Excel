@@ -3,6 +3,7 @@
 namespace Maatwebsite\Excel\Tests\Concerns;
 
 use Illuminate\Support\Facades\DB;
+use Laravel\Scout\Engines\NullEngine;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\Group;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
 use Maatwebsite\Excel\Tests\Data\Stubs\FromGroupUsersQueuedQueryExport;
@@ -149,7 +150,7 @@ class FromQueryTest extends TestCase
         $contents = $this->readAsArray(__DIR__ . '/../Data/Disks/Local/from-query-without-eloquent.xlsx', 'Xlsx');
 
         $allUsers = $export->query()->get()->map(function ($row) {
-            return array_values((array) $row);
+            return array_values((array)$row);
         })->all();
 
         $this->assertEquals($allUsers, $contents);
@@ -167,7 +168,7 @@ class FromQueryTest extends TestCase
         $contents = $this->readAsArray(__DIR__ . '/../Data/Disks/Local/from-query-without-eloquent.xlsx', 'Xlsx');
 
         $allUsers = $export->query()->get()->map(function ($row) {
-            return array_values((array) $row);
+            return array_values((array)$row);
         })->all();
 
         $this->assertEquals($allUsers, $contents);
@@ -258,7 +259,7 @@ class FromQueryTest extends TestCase
             foreach ($group->users as $key => $user) {
                 if ($key === 0) {
                     $group_row[1] = $user->email;
-                    $expected[]   = $group_row;
+                    $expected[] = $group_row;
                     continue;
                 }
 
@@ -276,16 +277,21 @@ class FromQueryTest extends TestCase
     {
         $export = new FromUsersScoutExport;
 
-        $response = $export->store('from-scout-store.xlsx');
+        if ($export->query() instanceof NullEngine) {
+            $this->markTestSkipped('Laravel Scout is too old');
+        } else {
 
-        $this->assertTrue($response);
+            $response = $export->store('from-scout-store.xlsx');
 
-        $contents = $this->readAsArray(__DIR__ . '/../Data/Disks/Local/from-scout-store.xlsx', 'Xlsx');
+            $this->assertTrue($response);
 
-        $allUsers = $export->query()->get()->map(function (User $user) {
-            return array_values($user->toArray());
-        })->toArray();
+            $contents = $this->readAsArray(__DIR__ . '/../Data/Disks/Local/from-scout-store.xlsx', 'Xlsx');
 
-        $this->assertEquals($allUsers, $contents);
+            $allUsers = $export->query()->get()->map(function (User $user) {
+                return array_values($user->toArray());
+            })->toArray();
+
+            $this->assertEquals($allUsers, $contents);
+        }
     }
 }
