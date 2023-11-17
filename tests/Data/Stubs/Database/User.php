@@ -4,9 +4,14 @@ namespace Maatwebsite\Excel\Tests\Data\Stubs\Database;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Laravel\Scout\Engines\DatabaseEngine;
+use Laravel\Scout\Engines\Engine;
+use Laravel\Scout\Searchable;
 
 class User extends Model
 {
+    use Searchable;
+
     /**
      * @var array
      */
@@ -30,5 +35,10 @@ class User extends Model
     public function groups(): BelongsToMany
     {
         return $this->belongsToMany(Group::class);
+    }
+
+    public function searchableUsing(): Engine
+    {
+        return new DatabaseEngine();
     }
 }

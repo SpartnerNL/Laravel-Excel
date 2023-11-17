@@ -11,6 +11,7 @@ use Maatwebsite\Excel\Tests\Data\Stubs\FromNonEloquentQueryExport;
 use Maatwebsite\Excel\Tests\Data\Stubs\FromUsersQueryExport;
 use Maatwebsite\Excel\Tests\Data\Stubs\FromUsersQueryExportWithEagerLoad;
 use Maatwebsite\Excel\Tests\Data\Stubs\FromUsersQueryExportWithPrepareRows;
+use Maatwebsite\Excel\Tests\Data\Stubs\FromUsersScoutExport;
 use Maatwebsite\Excel\Tests\TestCase;
 
 class FromQueryTest extends TestCase
@@ -266,5 +267,25 @@ class FromQueryTest extends TestCase
         }
 
         return $expected;
+    }
+
+    /**
+     * @test
+     */
+    public function can_export_from_scout()
+    {
+        $export = new FromUsersScoutExport;
+
+        $response = $export->store('from-scout-store.xlsx');
+
+        $this->assertTrue($response);
+
+        $contents = $this->readAsArray(__DIR__ . '/../Data/Disks/Local/from-scout-store.xlsx', 'Xlsx');
+
+        $allUsers = $export->query()->get()->map(function (User $user) {
+            return array_values($user->toArray());
+        })->toArray();
+
+        $this->assertEquals($allUsers, $contents);
     }
 }

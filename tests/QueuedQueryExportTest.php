@@ -7,6 +7,7 @@ use Maatwebsite\Excel\Tests\Data\Stubs\AfterQueueExportJob;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
 use Maatwebsite\Excel\Tests\Data\Stubs\FromUsersQueryExport;
 use Maatwebsite\Excel\Tests\Data\Stubs\FromUsersQueryExportWithMapping;
+use Maatwebsite\Excel\Tests\Data\Stubs\FromUsersScoutExport;
 
 class QueuedQueryExportTest extends TestCase
 {
@@ -83,5 +84,24 @@ class QueuedQueryExportTest extends TestCase
         // Only 1 column when using map()
         $this->assertCount(1, $actual[0]);
         $this->assertEquals(User::value('name'), $actual[0][0]);
+    }
+
+    /**
+     * @test
+     */
+    public function can_queue_scout_export()
+    {
+        $export = new FromUsersScoutExport();
+
+        $export->queue('queued-scout-export.xlsx')->chain([
+            new AfterQueueExportJob(__DIR__ . '/Data/Disks/Local/queued-scout-export.xlsx'),
+        ]);
+
+        $actual = $this->readAsArray(__DIR__ . '/Data/Disks/Local/queued-scout-export.xlsx', 'Xlsx');
+
+        $this->assertCount(100, $actual);
+
+        // 6 of the 7 columns in export, excluding the "hidden" password column.
+        $this->assertCount(6, $actual[0]);
     }
 }
