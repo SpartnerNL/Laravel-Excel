@@ -90,11 +90,10 @@ class AppendQueryToSheet implements ShouldQueue
     public function handle(Writer $writer)
     {
         (new LocalizeJob($this->sheetExport))->handle($this, function () use ($writer) {
-
             if ($this->sheetExport instanceof WithEvents) {
                 $this->registerListeners($this->sheetExport->registerEvents());
             }
-            
+
             $writer = $writer->reopen($this->temporaryFile, $this->writerType);
 
             $sheet = $writer->getSheetByIndex($this->sheetIndex);
