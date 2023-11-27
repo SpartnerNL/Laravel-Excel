@@ -10,6 +10,7 @@ use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Events\AfterChunk;
 use Maatwebsite\Excel\Files\TemporaryFile;
+use Maatwebsite\Excel\HasEventBus;
 use Maatwebsite\Excel\Jobs\Middleware\LocalizeJob;
 use Maatwebsite\Excel\Writer;
 
