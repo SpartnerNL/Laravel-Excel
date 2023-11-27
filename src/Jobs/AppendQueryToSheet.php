@@ -105,7 +105,7 @@ class AppendQueryToSheet implements ShouldQueue
 
             $writer->write($this->sheetExport, $this->temporaryFile, $this->writerType);
 
-            $this->raise(new AfterChunk($sheet, $this->sheetExport, $this->page * $this->chunkSize));
+            $this->raise(new AfterChunk($sheet, $this->sheetExport, ($this->page - 1) * $this->chunkSize));
             $this->clearListeners();
         });
     }
