@@ -256,21 +256,22 @@ class FromQueryTest extends TestCase
     {
         if (!class_exists('\Laravel\Scout\Engines\DatabaseEngine')) {
             $this->markTestSkipped('Laravel Scout is too old');
-        } else {
-            $export = new FromUsersScoutExport;
-
-            $response = $export->store('from-scout-store.xlsx');
-
-            $this->assertTrue($response);
-
-            $contents = $this->readAsArray(__DIR__ . '/../Data/Disks/Local/from-scout-store.xlsx', 'Xlsx');
-
-            $allUsers = $export->query()->get()->map(function (User $user) {
-                return array_values($user->toArray());
-            })->toArray();
-
-            $this->assertEquals($allUsers, $contents);
+            return;
         }
+
+        $export = new FromUsersScoutExport;
+
+        $response = $export->store('from-scout-store.xlsx');
+
+        $this->assertTrue($response);
+
+        $contents = $this->readAsArray(__DIR__ . '/../Data/Disks/Local/from-scout-store.xlsx', 'Xlsx');
+
+        $allUsers = $export->query()->get()->map(function (User $user) {
+            return array_values($user->toArray());
+        })->toArray();
+
+        $this->assertEquals($allUsers, $contents);
     }
 
     protected function format_nested_arrays_expected_data($groups)

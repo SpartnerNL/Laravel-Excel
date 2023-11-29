@@ -93,19 +93,20 @@ class QueuedQueryExportTest extends TestCase
     {
         if (!class_exists('\Laravel\Scout\Engines\DatabaseEngine')) {
             $this->markTestSkipped('Laravel Scout is too old');
-        } else {
-            $export = new FromUsersScoutExport();
-
-            $export->queue('queued-scout-export.xlsx')->chain([
-                new AfterQueueExportJob(__DIR__ . '/Data/Disks/Local/queued-scout-export.xlsx'),
-            ]);
-
-            $actual = $this->readAsArray(__DIR__ . '/Data/Disks/Local/queued-scout-export.xlsx', 'Xlsx');
-
-            $this->assertCount(100, $actual);
-
-            // 6 of the 7 columns in export, excluding the "hidden" password column.
-            $this->assertCount(6, $actual[0]);
+            return;
         }
+
+        $export = new FromUsersScoutExport();
+
+        $export->queue('queued-scout-export.xlsx')->chain([
+            new AfterQueueExportJob(__DIR__ . '/Data/Disks/Local/queued-scout-export.xlsx'),
+        ]);
+
+        $actual = $this->readAsArray(__DIR__ . '/Data/Disks/Local/queued-scout-export.xlsx', 'Xlsx');
+
+        $this->assertCount(100, $actual);
+
+        // 6 of the 7 columns in export, excluding the "hidden" password column.
+        $this->assertCount(6, $actual[0]);
     }
 }

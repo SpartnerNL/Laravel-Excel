@@ -466,11 +466,12 @@ class Sheet
     {
         if ($sheetExport->query() instanceof \Laravel\Scout\Builder) {
             $this->fromScout($sheetExport, $worksheet);
-        } else {
-            $sheetExport->query()->chunk($this->getChunkSize($sheetExport), function ($chunk) use ($sheetExport) {
-                $this->appendRows($chunk, $sheetExport);
-            });
+            return;
         }
+
+        $sheetExport->query()->chunk($this->getChunkSize($sheetExport), function ($chunk) use ($sheetExport) {
+            $this->appendRows($chunk, $sheetExport);
+        });
     }
 
     /**

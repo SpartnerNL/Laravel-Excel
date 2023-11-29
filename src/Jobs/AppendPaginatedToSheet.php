@@ -109,8 +109,9 @@ class AppendPaginatedToSheet implements ShouldQueue
     {
         if ($query instanceof \Laravel\Scout\Builder) {
             return $query->paginate($this->perPage, 'page', $this->page)->items();
-        } else {
-            return $query->forPage($this->page, $this->perPage)->get();
         }
+
+        // Fallback
+        return $query->forPage($this->page, $this->perPage)->get();
     }
 }
