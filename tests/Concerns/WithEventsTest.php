@@ -30,8 +30,8 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class WithEventsTest extends TestCase
 {
-
     use WithFaker;
+
     /**
      * @test
      */
