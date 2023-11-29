@@ -43,7 +43,7 @@ class User extends Model
     /**
      * Laravel Scout under <=8 provides only
      * — NullEngine, that is searches nothing and not applicable for tests and
-     * — AlgoliaEngine, that is 3-d party dependent and not applicable for tests too
+     * — AlgoliaEngine, that is 3-d party dependent and not applicable for tests too.
      *
      * The only test-ready engine is DatabaseEngine that comes with Scout >8
      *

@@ -466,6 +466,7 @@ class Sheet
     {
         if ($sheetExport->query() instanceof \Laravel\Scout\Builder) {
             $this->fromScout($sheetExport, $worksheet);
+
             return;
         }
 

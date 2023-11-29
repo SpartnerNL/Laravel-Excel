@@ -256,6 +256,7 @@ class FromQueryTest extends TestCase
     {
         if (!class_exists('\Laravel\Scout\Engines\DatabaseEngine')) {
             $this->markTestSkipped('Laravel Scout is too old');
+
             return;
         }
 
