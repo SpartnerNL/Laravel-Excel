@@ -2,6 +2,7 @@
 
 namespace Maatwebsite\Excel;
 
+use Illuminate\Support\Arr;
 use Maatwebsite\Excel\Concerns\WithBackgroundColor;
 use Maatwebsite\Excel\Concerns\WithCustomValueBinder;
 use Maatwebsite\Excel\Concerns\WithDefaultStyles;
@@ -164,6 +165,11 @@ class Writer
             $this->spreadsheet,
             $export
         );
+
+        if ($temporaryFile instanceof RemoteTemporaryFile && !$temporaryFile->existsLocally()) {
+            $temporaryFile = resolve(TemporaryFileFactory::class)
+                ->makeLocal(Arr::last(explode('/', $temporaryFile->getLocalPath())));
+        }
 
         $writer->save(
             $temporaryFile->getLocalPath()
