@@ -16,8 +16,6 @@ class ExportWithEventsChunks implements WithEvents, FromQuery, ShouldQueue, With
 {
     use Exportable;
 
-    public bool $after = false;
-
     public function registerEvents(): array
     {
         return [
