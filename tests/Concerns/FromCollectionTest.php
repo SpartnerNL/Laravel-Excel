@@ -66,7 +66,7 @@ class FromCollectionTest extends TestCase
 
         $this->assertEquals(
             $export->collection()->map(
-                function(array $item) {
+                function (array $item) {
                     return array_values($item);
                 }
             )->toArray(),
