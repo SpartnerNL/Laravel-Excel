@@ -4,7 +4,6 @@ namespace Maatwebsite\Excel\Tests\Concerns;
 
 use Illuminate\Foundation\Bus\PendingDispatch;
 use Maatwebsite\Excel\Tests\Data\Stubs\EloquentLazyCollectionExport;
-use Maatwebsite\Excel\Tests\Data\Stubs\FromGroupUsersQueuedQueryExport;
 use Maatwebsite\Excel\Tests\Data\Stubs\QueuedExport;
 use Maatwebsite\Excel\Tests\Data\Stubs\SheetWith100Rows;
 use Maatwebsite\Excel\Tests\TestCase;
