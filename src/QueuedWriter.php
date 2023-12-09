@@ -149,7 +149,7 @@ class QueuedWriter
         TemporaryFile $temporaryFile,
         string $writerType,
         int $sheetIndex
-    ):Collection {
+    ): Collection {
         $query = $export->query();
 
         if ($query instanceof \Laravel\Scout\Builder) {
