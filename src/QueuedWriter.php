@@ -111,14 +111,14 @@ class QueuedWriter
      * @param  TemporaryFile  $temporaryFile
      * @param  string  $writerType
      * @param  int  $sheetIndex
-     * @return Collection
+     * @return Collection|LazyCollection
      */
     private function exportCollection(
         FromCollection $export,
         TemporaryFile $temporaryFile,
         string $writerType,
         int $sheetIndex
-    ): Collection {
+    ) {
         return $export
             ->collection()
             ->chunk($this->getChunkSize($export))
