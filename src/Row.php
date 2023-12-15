@@ -97,7 +97,7 @@ class Row implements ArrayAccess
         $i = 0;
         foreach ($this->row->getCellIterator('A', $endColumn) as $cell) {
             $value = (new Cell($cell))->getValue($nullValue, $calculateFormulas, $formatData);
-
+            $value = $this->cleanValue($value);
             if (isset($this->headingRow[$i])) {
                 if (!$this->headerIsGrouped[$i]) {
                     $cells[$this->headingRow[$i]] = $value;
@@ -120,6 +120,18 @@ class Row implements ArrayAccess
         $this->rowCacheEndColumn  = $endColumn;
 
         return $cells;
+    }
+
+    private function cleanValue($value): mixed 
+    {
+        if(!is_string($value)){
+            return $value
+        }
+        $cleaned = preg_replace('~^[\s\x{FEFF}\x{200B}]+|[\s\x{FEFF}\x{200B}]+$~u', '', $value) ?? trim($value);
+        if($cleaned === ''){
+            return null;
+        }
+        return $cleaned;
     }
 
     /**
