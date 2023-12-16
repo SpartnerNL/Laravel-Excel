@@ -297,6 +297,56 @@ class WithValidationTest extends TestCase
     /**
      * @test
      */
+    public function can_validate_rows_with_combined_rules_with_colons()
+    {
+        $import = new class implements ToModel, WithValidation
+        {
+            use Importable;
+
+            /**
+             * @param  array  $row
+             * @return Model|null
+             */
+            public function model(array $row)
+            {
+                return new User([
+                    'name'     => $row[0],
+                    'email'    => $row[1],
+                    'password' => 'secret',
+                ]);
+            }
+
+            /**
+             * @return array
+             */
+            public function rules(): array
+            {
+                return [
+                    '1' => 'required_with:0|unique:users,email',
+                ];
+            }
+        };
+
+        $import->import('import-users.xlsx');
+
+        $this->assertDatabaseHas('users', [
+            'email' => 'patrick@maatwebsite.nl',
+        ]);
+
+        try {
+            $import->import('import-users.xlsx');
+        } catch (ValidationException $e) {
+            $this->validateFailure($e, 1, '1', [
+                'The 1 has already been taken.',
+            ]);
+        }
+
+        $this->assertInstanceOf(ValidationException::class, $e ?? null);
+    }
+
+    /**
+     * @test
+     */
     public function can_validate_with_custom_attributes()
     {
         $import = new class implements ToModel, WithValidation
