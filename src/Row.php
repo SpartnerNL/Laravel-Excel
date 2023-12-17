@@ -126,15 +126,18 @@ class Row implements ArrayAccess
         return $cells;
     }
 
-    private function cleanValue($value): mixed 
+    private function cleanValue($value)
     {
         if(!is_string($value)){
+
             return $value
         }
         $cleaned = preg_replace('~^[\s\x{FEFF}\x{200B}]+|[\s\x{FEFF}\x{200B}]+$~u', '', $value) ?? trim($value);
         if($cleaned === ''){
+
             return null;
         }
+
         return $cleaned;
     }
 
