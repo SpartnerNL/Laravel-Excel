@@ -47,6 +47,8 @@ class Row implements ArrayAccess
      */
     protected $rowCacheEndColumn;
 
+    public static $trimStrings = false;
+
     /**
      * @param  SpreadsheetRow  $row
      * @param  array  $headingRow
@@ -97,7 +99,9 @@ class Row implements ArrayAccess
         $i = 0;
         foreach ($this->row->getCellIterator('A', $endColumn) as $cell) {
             $value = (new Cell($cell))->getValue($nullValue, $calculateFormulas, $formatData);
-            $value = $this->cleanValue($value);
+            if (self::$trimStrings){
+                $value = $this->cleanValue($value);                
+            }
             if (isset($this->headingRow[$i])) {
                 if (!$this->headerIsGrouped[$i]) {
                     $cells[$this->headingRow[$i]] = $value;
