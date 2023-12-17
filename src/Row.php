@@ -99,7 +99,7 @@ class Row implements ArrayAccess
         $i = 0;
         foreach ($this->row->getCellIterator('A', $endColumn) as $cell) {
             $value = (new Cell($cell))->getValue($nullValue, $calculateFormulas, $formatData);
-            if (self::$trimStrings){
+            if (self::$trimStrings) {
                 $value = $this->cleanValue($value);                
             }
             if (isset($this->headingRow[$i])) {
@@ -124,21 +124,6 @@ class Row implements ArrayAccess
         $this->rowCacheEndColumn  = $endColumn;
 
         return $cells;
-    }
-
-    private function cleanValue($value)
-    {
-        if(!is_string($value)){
-
-            return $value;
-        }
-        $cleaned = preg_replace('~^[\s\x{FEFF}\x{200B}]+|[\s\x{FEFF}\x{200B}]+$~u', '', $value) ?? trim($value);
-        if($cleaned === ''){
-
-            return null;
-        }
-
-        return $cleaned;
     }
 
     /**
@@ -191,5 +176,20 @@ class Row implements ArrayAccess
     public function setPreparationCallback(Closure $preparationCallback = null)
     {
         $this->preparationCallback = $preparationCallback;
+    }
+
+    private function cleanValue($value)
+    {
+        if(!is_string($value)){
+
+            return $value;
+        }
+        $cleaned = preg_replace('~^[\s\x{FEFF}\x{200B}]+|[\s\x{FEFF}\x{200B}]+$~u', '', $value) ?? trim($value);
+        if($cleaned === ''){
+
+            return null;
+        }
+
+        return $cleaned;
     }
 }
