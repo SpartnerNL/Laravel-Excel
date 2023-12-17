@@ -130,7 +130,7 @@ class Row implements ArrayAccess
     {
         if(!is_string($value)){
 
-            return $value
+            return $value;
         }
         $cleaned = preg_replace('~^[\s\x{FEFF}\x{200B}]+|[\s\x{FEFF}\x{200B}]+$~u', '', $value) ?? trim($value);
         if($cleaned === ''){
