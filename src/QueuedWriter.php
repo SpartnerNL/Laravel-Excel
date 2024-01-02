@@ -13,7 +13,6 @@ use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 use Maatwebsite\Excel\Files\TemporaryFile;
 use Maatwebsite\Excel\Files\TemporaryFileFactory;
 use Maatwebsite\Excel\Jobs\AppendDataToSheet;
-use Maatwebsite\Excel\Jobs\AppendPaginatedToSheet;
 use Maatwebsite\Excel\Jobs\AppendQueryToSheet;
 use Maatwebsite\Excel\Jobs\AppendViewToSheet;
 use Maatwebsite\Excel\Jobs\CloseSheet;
@@ -151,10 +150,6 @@ class QueuedWriter
     ): Collection {
         $query = $export->query();
 
-        if ($query instanceof \Laravel\Scout\Builder) {
-            return $this->exportScout($export, $temporaryFile, $writerType, $sheetIndex);
-        }
-
         $count = $export instanceof WithCustomQuerySize ? $export->querySize() : $query->count();
         $spins = ceil($count / $this->getChunkSize($export));
 
@@ -162,46 +157,6 @@ class QueuedWriter
 
         for ($page = 1; $page <= $spins; $page++) {
             $jobs->push(new AppendQueryToSheet(
-                $export,
-                $temporaryFile,
-                $writerType,
-                $sheetIndex,
-                $page,
-                $this->getChunkSize($export)
-            ));
-        }
-
-        return $jobs;
-    }
-
-    /**
-     * @param  FromQuery  $export
-     * @param  TemporaryFile  $temporaryFile
-     * @param  string  $writerType
-     * @param  int  $sheetIndex
-     * @return Collection
-     */
-    private function exportScout(
-        FromQuery $export,
-        TemporaryFile $temporaryFile,
-        string $writerType,
-        int $sheetIndex
-    ): Collection {
-        $jobs = new Collection();
-
-        $chunk = $export->query()->paginate($this->getChunkSize($export));
-        // Append first page
-        $jobs->push(new AppendDataToSheet(
-            $export,
-            $temporaryFile,
-            $writerType,
-            $sheetIndex,
-            $chunk->items()
-        ));
-
-        // Append rest of pages
-        for ($page = 2; $page <= $chunk->lastPage(); $page++) {
-            $jobs->push(new AppendPaginatedToSheet(
                 $export,
                 $temporaryFile,
                 $writerType,

@@ -464,34 +464,9 @@ class Sheet
      */
     public function fromQuery(FromQuery $sheetExport, Worksheet $worksheet)
     {
-        if ($sheetExport->query() instanceof \Laravel\Scout\Builder) {
-            $this->fromScout($sheetExport, $worksheet);
-
-            return;
-        }
-
         $sheetExport->query()->chunk($this->getChunkSize($sheetExport), function ($chunk) use ($sheetExport) {
             $this->appendRows($chunk, $sheetExport);
         });
-    }
-
-    /**
-     * @param  FromQuery  $sheetExport
-     * @param  Worksheet  $worksheet
-     */
-    public function fromScout(FromQuery $sheetExport, Worksheet $worksheet)
-    {
-        $scout     = $sheetExport->query();
-        $chunkSize = $this->getChunkSize($sheetExport);
-
-        $chunk = $scout->paginate($chunkSize);
-        // Append first page
-        $this->appendRows($chunk->items(), $sheetExport);
-
-        // Append rest of pages
-        for ($page = 2; $page <= $chunk->lastPage(); $page++) {
-            $this->appendRows($scout->paginate($chunkSize, 'page', $page)->items(), $sheetExport);
-        }
     }
 
     /**
