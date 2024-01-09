@@ -4,6 +4,7 @@ namespace Maatwebsite\Excel\Tests\Concerns;
 
 use Illuminate\Foundation\Bus\PendingDispatch;
 use Maatwebsite\Excel\Tests\Data\Stubs\EloquentLazyCollectionExport;
+use Maatwebsite\Excel\Tests\Data\Stubs\EloquentLazyCollectionQueuedExport;
 use Maatwebsite\Excel\Tests\Data\Stubs\QueuedExport;
 use Maatwebsite\Excel\Tests\Data\Stubs\SheetWith100Rows;
 use Maatwebsite\Excel\Tests\TestCase;
@@ -57,9 +58,33 @@ class FromCollectionTest extends TestCase
     {
         $export = new EloquentLazyCollectionExport();
 
+        $export->store('from-lazy-collection-store.xlsx');
+
+        $contents = $this->readAsArray(__DIR__ . '/../Data/Disks/Local/from-lazy-collection-store.xlsx', 'Xlsx');
+
+        $this->assertEquals(
+            $export->collection()->map(
+                function (array $item) {
+                    return array_values($item);
+                }
+            )->toArray(),
+            $contents
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function can_export_from_lazy_collection_with_queue()
+    {
+        $export = new EloquentLazyCollectionQueuedExport();
+
         $response = $export->queue('from-lazy-collection-store.xlsx');
 
         $this->assertTrue($response instanceof PendingDispatch);
+
+        // Force dispatching via __destruct.
+        unset($response);
 
         $contents = $this->readAsArray(__DIR__ . '/../Data/Disks/Local/from-lazy-collection-store.xlsx', 'Xlsx');
 

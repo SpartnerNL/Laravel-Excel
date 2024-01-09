@@ -7,7 +7,7 @@ use Illuminate\Support\LazyCollection;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromCollection;
 
-class EloquentLazyCollectionExport implements FromCollection
+class EloquentLazyCollectionQueuedExport implements FromCollection, ShouldQueue
 {
     use Exportable;
 
