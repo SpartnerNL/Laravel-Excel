@@ -102,10 +102,10 @@ jobs:
           composer require "laravel/framework:${{ matrix.laravel }}.*" "orchestra/testbench:${{ matrix.testbench }}" "laravel/scout:${{ matrix.scout }}"  --no-interaction --no-update
           composer update --${{ matrix.dependency-version }} --no-interaction
 
-      - name: Remove legacy factories for older versions
+      - name: Install legacy factories
         run: |
-          composer remove "laravel/legacy-factories" --no-interaction
-        if: "matrix.laravel < 8"
+          composer require "laravel/legacy-factories" --no-interaction
+        if: "matrix.laravel >= 8"
 
       - name: Execute tests
         run: vendor/bin/phpunit --testdox --configuration phpunit.xml.dist
