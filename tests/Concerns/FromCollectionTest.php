@@ -56,6 +56,12 @@ class FromCollectionTest extends TestCase
      */
     public function can_export_from_lazy_collection()
     {
+        if (!class_exists('\Illuminate\Support\LazyCollection')) {
+            $this->markTestSkipped('Skipping test because LazyCollection is not supported');
+
+            return;
+        }
+
         $export = new EloquentLazyCollectionExport();
 
         $export->store('from-lazy-collection-store.xlsx');
@@ -77,6 +83,12 @@ class FromCollectionTest extends TestCase
      */
     public function can_export_from_lazy_collection_with_queue()
     {
+        if (!class_exists('\Illuminate\Support\LazyCollection')) {
+            $this->markTestSkipped('Skipping test because LazyCollection is not supported');
+
+            return;
+        }
+
         $export = new EloquentLazyCollectionQueuedExport();
 
         $response = $export->queue('from-lazy-collection-store.xlsx');
