@@ -134,7 +134,7 @@ class RowValidator
             return $rules;
         }
 
-        if (Str::contains($rules, 'required_') && preg_match('/(.*):(.*),(.*)/', $rules, $matches)) {
+        if (Str::contains($rules, 'required_') && preg_match('/(.*?):(.*),(.*)/', $rules, $matches)) {
             $column = Str::startsWith($matches[2], '*.') ? $matches[2] : '*.' . $matches[2];
 
             return $matches[1] . ':' . $column . ',' . $matches[3];
