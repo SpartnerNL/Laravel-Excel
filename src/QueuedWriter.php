@@ -4,6 +4,7 @@ namespace Maatwebsite\Excel;
 
 use Illuminate\Foundation\Bus\PendingDispatch;
 use Illuminate\Support\Collection;
+use Illuminate\Support\LazyCollection;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\FromView;
@@ -110,14 +111,14 @@ class QueuedWriter
      * @param  TemporaryFile  $temporaryFile
      * @param  string  $writerType
      * @param  int  $sheetIndex
-     * @return Collection
+     * @return Collection|LazyCollection
      */
     private function exportCollection(
         FromCollection $export,
         TemporaryFile $temporaryFile,
         string $writerType,
         int $sheetIndex
-    ): Collection {
+    ) {
         return $export
             ->collection()
             ->chunk($this->getChunkSize($export))
