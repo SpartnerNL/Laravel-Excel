@@ -2,7 +2,7 @@
 
 namespace Maatwebsite\Excel;
 
-use Illuminate\Support\Facades\Pipeline;
+use Illuminate\Pipeline\Pipeline;
 use PhpOffice\PhpSpreadsheet\Calculation\Exception;
 use PhpOffice\PhpSpreadsheet\Cell\Cell as SpreadsheetCell;
 use PhpOffice\PhpSpreadsheet\RichText\RichText;
@@ -78,6 +78,6 @@ class Cell
             }
         }
 
-        return Pipeline::send($value)->through(config('excel.imports.cells.middleware', []))->thenReturn();
+        return resolve(Pipeline::class)->through(config('excel.imports.cells.middleware', []))->thenReturn();
     }
 }
