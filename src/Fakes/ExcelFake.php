@@ -63,7 +63,8 @@ class ExcelFake implements Exporter, Importer
 
     /**
      * {@inheritdoc}
-     * @param string|null $diskName Fallback for usage with named properties
+     *
+     * @param  string|null  $diskName  Fallback for usage with named properties
      */
     public function store($export, string $filePath, string $disk = null, string $writerType = null, $diskOptions = [], string $diskName = null)
     {

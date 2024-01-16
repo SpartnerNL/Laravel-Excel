@@ -89,7 +89,8 @@ class Excel implements Exporter, Importer
 
     /**
      * {@inheritdoc}
-     * @param string|null $disk Fallback for usage with named properties
+     *
+     * @param  string|null  $disk  Fallback for usage with named properties
      */
     public function store($export, string $filePath, string $diskName = null, string $writerType = null, $diskOptions = [], string $disk = null)
     {
