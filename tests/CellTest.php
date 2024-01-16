@@ -13,6 +13,8 @@ class CellTest extends TestCase
      */
     public function can_get_cell_value()
     {
+        config()->set('excel.imports.cells.middleware', []);
+
         $worksheet = $this->read(__DIR__ . '/Data/Disks/Local/import-middleware.xlsx', 'Xlsx');
 
         $this->assertEquals('test', Cell::make($worksheet->getActiveSheet(), 'A1')->getValue());
@@ -33,6 +35,8 @@ class CellTest extends TestCase
         $worksheet = $this->read(__DIR__ . '/Data/Disks/Local/import-middleware.xlsx', 'Xlsx');
 
         $this->assertEquals('', Cell::make($worksheet->getActiveSheet(), 'A2')->getValue());
+
+        config()->set('excel.imports.cells.middleware', []);
     }
 
     /**
@@ -48,5 +52,7 @@ class CellTest extends TestCase
         $worksheet = $this->read(__DIR__ . '/Data/Disks/Local/import-middleware.xlsx', 'Xlsx');
 
         $this->assertEquals(null, Cell::make($worksheet->getActiveSheet(), 'A2')->getValue());
+
+        config()->set('excel.imports.cells.middleware', []);
     }
 }
