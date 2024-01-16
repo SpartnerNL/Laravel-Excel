@@ -72,22 +72,6 @@ class WithEventsTest extends TestCase
     /**
      * @test
      */
-    public function export_chunked_events_get_called()
-    {
-        $this->loadLaravelMigrations(['--database' => 'testing']);
-        User::query()->create([
-            'name'           => $this->faker->name,
-            'email'          => $this->faker->unique()->safeEmail,
-            'password'       => '$2y$10$TKh8H1.PfQx37YgCzwiKb.KjNyWgaHb9cbcoQgdIVFlYg7B77UdFm', // secret
-            'remember_token' => Str::random(10),
-        ]);
-        $export = new ExportWithEventsChunks();
-        $export->queue('filename.xlsx');
-    }
-
-    /**
-     * @test
-     */
     public function import_events_get_called()
     {
         $import = new ImportWithEvents();
@@ -320,5 +304,35 @@ class WithEventsTest extends TestCase
         $actual = $this->readAsArray(__DIR__ . '/../Data/Disks/Local/without-custom-concern.xlsx', 'Xlsx');
 
         $this->assertEquals([[null]], $actual);
+    }
+
+    /**
+     * @test
+     */
+    public function export_chunked_events_get_called()
+    {
+        $this->loadLaravelMigrations(['--database' => 'testing']);
+
+        User::query()->truncate();
+
+        User::query()->create([
+            'name'           => $this->faker->name,
+            'email'          => $this->faker->unique()->safeEmail,
+            'password'       => '$2y$10$TKh8H1.PfQx37YgCzwiKb.KjNyWgaHb9cbcoQgdIVFlYg7B77UdFm', // secret
+            'remember_token' => Str::random(10),
+        ]);
+
+        User::query()->create([
+            'name'           => $this->faker->name,
+            'email'          => $this->faker->unique()->safeEmail,
+            'password'       => '$2y$10$TKh8H1.PfQx37YgCzwiKb.KjNyWgaHb9cbcoQgdIVFlYg7B77UdFm', // secret
+            'remember_token' => Str::random(10),
+        ]);
+
+        $export = new ExportWithEventsChunks();
+        $export->queue('filename.xlsx');
+
+        // Chunk size is 1, so we expect 2 chunks to be executed with a total of 2 users
+        $this->assertEquals(2, ExportWithEventsChunks::$calledEvent);
     }
 }

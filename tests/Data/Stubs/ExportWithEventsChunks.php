@@ -16,10 +16,13 @@ class ExportWithEventsChunks implements WithEvents, FromQuery, ShouldQueue, With
 {
     use Exportable;
 
+    public static $calledEvent = 0;
+
     public function registerEvents(): array
     {
         return [
             AfterChunk::class => function (AfterChunk $event) {
+                ExportWithEventsChunks::$calledEvent++;
                 Assert::assertInstanceOf(ExportWithEventsChunks::class, $event->getConcernable());
             },
         ];
