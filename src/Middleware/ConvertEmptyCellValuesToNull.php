@@ -5,8 +5,7 @@ namespace Maatwebsite\Excel\Middleware;
 class ConvertEmptyCellValuesToNull extends CellMiddleware
 {
     /**
-     * @param mixed $value
-     *
+     * @param  mixed  $value
      * @return mixed
      */
     public function __invoke($value, callable $next)

@@ -15,7 +15,7 @@ class CellTest extends TestCase
     {
         $worksheet = $this->read(__DIR__ . '/Data/Disks/Local/import-middleware.xlsx', 'Xlsx');
 
-        $this->assertEquals('test',  Cell::make($worksheet->getActiveSheet(), 'A1')->getValue());
+        $this->assertEquals('test', Cell::make($worksheet->getActiveSheet(), 'A1')->getValue());
 
         // By default spaces are not removed
         $this->assertEquals('       ', Cell::make($worksheet->getActiveSheet(), 'A2')->getValue());
@@ -32,7 +32,7 @@ class CellTest extends TestCase
 
         $worksheet = $this->read(__DIR__ . '/Data/Disks/Local/import-middleware.xlsx', 'Xlsx');
 
-        $this->assertEquals('',  Cell::make($worksheet->getActiveSheet(), 'A2')->getValue());
+        $this->assertEquals('', Cell::make($worksheet->getActiveSheet(), 'A2')->getValue());
     }
 
     /**
@@ -47,6 +47,6 @@ class CellTest extends TestCase
 
         $worksheet = $this->read(__DIR__ . '/Data/Disks/Local/import-middleware.xlsx', 'Xlsx');
 
-        $this->assertEquals(null,  Cell::make($worksheet->getActiveSheet(), 'A2')->getValue());
+        $this->assertEquals(null, Cell::make($worksheet->getActiveSheet(), 'A2')->getValue());
     }
 }
