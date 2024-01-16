@@ -2,6 +2,8 @@
 
 namespace Maatwebsite\Excel\Tests\Concerns;
 
+use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Str;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Events\AfterBatch;
 use Maatwebsite\Excel\Events\AfterChunk;
@@ -17,7 +19,9 @@ use Maatwebsite\Excel\Sheet;
 use Maatwebsite\Excel\Tests\Data\Stubs\BeforeExportListener;
 use Maatwebsite\Excel\Tests\Data\Stubs\CustomConcern;
 use Maatwebsite\Excel\Tests\Data\Stubs\CustomSheetConcern;
+use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
 use Maatwebsite\Excel\Tests\Data\Stubs\ExportWithEvents;
+use Maatwebsite\Excel\Tests\Data\Stubs\ExportWithEventsChunks;
 use Maatwebsite\Excel\Tests\Data\Stubs\ImportWithEvents;
 use Maatwebsite\Excel\Tests\Data\Stubs\ImportWithEventsChunksAndBatches;
 use Maatwebsite\Excel\Tests\TestCase;
@@ -26,6 +30,8 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class WithEventsTest extends TestCase
 {
+    use WithFaker;
+
     /**
      * @test
      */
@@ -61,6 +67,22 @@ class WithEventsTest extends TestCase
 
         $this->assertInstanceOf(BinaryFileResponse::class, $event->download('filename.xlsx'));
         $this->assertEquals(4, $eventsTriggered);
+    }
+
+    /**
+     * @test
+     */
+    public function export_chunked_events_get_called()
+    {
+        $this->loadLaravelMigrations(['--database' => 'testing']);
+        User::query()->create([
+            'name'           => $this->faker->name,
+            'email'          => $this->faker->unique()->safeEmail,
+            'password'       => '$2y$10$TKh8H1.PfQx37YgCzwiKb.KjNyWgaHb9cbcoQgdIVFlYg7B77UdFm', // secret
+            'remember_token' => Str::random(10),
+        ]);
+        $export = new ExportWithEventsChunks();
+        $export->queue('filename.xlsx');
     }
 
     /**
