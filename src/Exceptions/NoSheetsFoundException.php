@@ -6,5 +6,4 @@ use LogicException;
 
 class NoSheetsFoundException extends LogicException implements LaravelExcelException
 {
-
 }

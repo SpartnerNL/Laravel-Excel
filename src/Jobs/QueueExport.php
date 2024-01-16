@@ -6,7 +6,6 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 use Maatwebsite\Excel\Exceptions\NoSheetsFoundException;
-use Maatwebsite\Excel\Exceptions\NoTypeDetectedException;
 use Maatwebsite\Excel\Files\TemporaryFile;
 use Maatwebsite\Excel\Jobs\Middleware\LocalizeJob;
 use Maatwebsite\Excel\Writer;
@@ -32,9 +31,9 @@ class QueueExport implements ShouldQueue
     private $temporaryFile;
 
     /**
-     * @param object        $export
-     * @param TemporaryFile $temporaryFile
-     * @param string        $writerType
+     * @param  object  $export
+     * @param  TemporaryFile  $temporaryFile
+     * @param  string  $writerType
      */
     public function __construct($export, TemporaryFile $temporaryFile, string $writerType)
     {
@@ -54,7 +53,7 @@ class QueueExport implements ShouldQueue
     }
 
     /**
-     * @param Writer $writer
+     * @param  Writer  $writer
      *
      * @throws \PhpOffice\PhpSpreadsheet\Exception
      */
@@ -84,7 +83,7 @@ class QueueExport implements ShouldQueue
     }
 
     /**
-     * @param Throwable $e
+     * @param  Throwable  $e
      */
     public function failed(Throwable $e)
     {
