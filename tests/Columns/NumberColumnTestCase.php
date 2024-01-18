@@ -12,6 +12,7 @@ class NumberColumnTestCase extends BaseColumnTestCase
      * @param  mixed  $given
      *
      * @test
+     *
      * @dataProvider exportValues
      */
     public function can_write_column_values_explicitly($given, $expected)
@@ -39,6 +40,7 @@ class NumberColumnTestCase extends BaseColumnTestCase
      * @param  mixed  $given
      *
      * @test
+     *
      * @dataProvider decimalValues
      */
     public function can_export_number_with_decimals($given, $expected)
@@ -66,6 +68,7 @@ class NumberColumnTestCase extends BaseColumnTestCase
      * @param  mixed  $given
      *
      * @test
+     *
      * @dataProvider importValues
      */
     public function can_read_column_values_explicitly($given, string $givenDataType, string $numberFormat, int $expected)
@@ -94,6 +97,7 @@ class NumberColumnTestCase extends BaseColumnTestCase
      * @param  mixed  $given
      *
      * @test
+     *
      * @dataProvider importDecimalValues
      */
     public function can_read_column_values_with_decimals($given, string $givenDataType, string $numberFormat, float $expected)

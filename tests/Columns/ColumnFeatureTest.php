@@ -34,6 +34,7 @@ class ColumnFeatureTest extends TestCase
 {
     /**
      * @test
+     *
      * @dataProvider readColumnTypes
      */
     public function can_read_a_cell_based_on_column_type(Column $column, $coordinate, $expectedValue)
@@ -96,6 +97,7 @@ class ColumnFeatureTest extends TestCase
 
     /**
      * @test
+     *
      * @dataProvider writeColumnTypes
      */
     public function can_write_a_cell_based_on_column_type(Column $column, $givenValue, string $dataType, $expectedValue)

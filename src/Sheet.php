@@ -363,7 +363,7 @@ class Sheet
         $endRow          = EndRowFinder::find($import, $startRow, $this->worksheet->getHighestRow());
         $headingRow      = HeadingRowExtractor::extract($this->worksheet, $import);
         $headerIsGrouped = HeadingRowExtractor::extractGrouping($headingRow, $import);
-        $columns    = ColumnCollection::makeFrom($import, $headingRow);
+        $columns         = ColumnCollection::makeFrom($import, $headingRow);
         $endColumn       = $import instanceof WithColumnLimit ? $import->endColumn() : null;
 
         $rows = [];
