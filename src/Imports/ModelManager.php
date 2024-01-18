@@ -43,7 +43,7 @@ class ModelManager
     public function __construct(RowValidator $validator, CascadePersistManager $cascade)
     {
         $this->validator = $validator;
-        $this->cascade = $cascade;
+        $this->cascade   = $cascade;
     }
 
     /**
@@ -154,7 +154,7 @@ class ModelManager
 
                         if ($import instanceof PersistRelations) {
                             $this->cascade->persist($model);
-                        } else{
+                        } else {
                             $model->saveOrFail();
                         }
                     } catch (Throwable $e) {

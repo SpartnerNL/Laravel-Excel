@@ -17,7 +17,7 @@ class CascadePersistManager
     private $transaction;
 
     /**
-     * @param TransactionHandler $transaction
+     * @param  TransactionHandler  $transaction
      */
     public function __construct(TransactionHandler $transaction)
     {
@@ -25,8 +25,7 @@ class CascadePersistManager
     }
 
     /**
-     * @param Model $model
-     *
+     * @param  Model  $model
      * @return bool
      */
     public function persist(Model $model): bool
@@ -37,8 +36,7 @@ class CascadePersistManager
     }
 
     /**
-     * @param Model $model
-     *
+     * @param  Model  $model
      * @return bool
      */
     private function save(Model $model): bool
@@ -75,9 +73,8 @@ class CascadePersistManager
     }
 
     /**
-     * @param BelongsTo $relation
-     * @param array     $models
-     *
+     * @param  BelongsTo  $relation
+     * @param  array  $models
      * @return bool
      */
     private function persistBelongsTo(BelongsTo $relation, array $models): bool
@@ -85,7 +82,6 @@ class CascadePersistManager
         // With belongs to, we first need to save all relations,
         // so we can use their foreign key to attach to the relation.
         foreach ($models as $model) {
-
             // Cascade any relations that this child model may have.
             if (!$this->save($model)) {
                 return false;
@@ -98,9 +94,8 @@ class CascadePersistManager
     }
 
     /**
-     * @param BelongsToMany $relation
-     * @param array         $models
-     *
+     * @param  BelongsToMany  $relation
+     * @param  array  $models
      * @return bool
      */
     private function persistBelongsToMany(BelongsToMany $relation, array $models): bool

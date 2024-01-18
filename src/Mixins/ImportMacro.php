@@ -12,7 +12,8 @@ class ImportMacro
     public function __invoke()
     {
         return function (string $filename, string $disk = null, string $readerType = null) {
-            $import = new class(get_class($this->getModel())) implements ToModel, WithHeadingRow {
+            $import = new class(get_class($this->getModel())) implements ToModel, WithHeadingRow
+            {
                 use Importable;
 
                 /**
@@ -21,7 +22,7 @@ class ImportMacro
                 private $model;
 
                 /**
-                 * @param string $model
+                 * @param  string  $model
                  */
                 public function __construct(string $model)
                 {
@@ -29,8 +30,7 @@ class ImportMacro
                 }
 
                 /**
-                 * @param array $row
-                 *
+                 * @param  array  $row
                  * @return Model|Model[]|null
                  */
                 public function model(array $row)

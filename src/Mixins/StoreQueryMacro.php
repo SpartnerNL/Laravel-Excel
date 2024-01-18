@@ -13,7 +13,8 @@ class StoreQueryMacro
     public function __invoke()
     {
         return function (string $filePath, string $disk = null, string $writerType = null, $withHeadings = false) {
-            $export = new class($this, $withHeadings) implements FromQuery, WithHeadings {
+            $export = new class($this, $withHeadings) implements FromQuery, WithHeadings
+            {
                 use Exportable;
 
                 /**
@@ -27,8 +28,8 @@ class StoreQueryMacro
                 private $query;
 
                 /**
-                 * @param      $query
-                 * @param bool $withHeadings
+                 * @param  $query
+                 * @param  bool  $withHeadings
                  */
                 public function __construct($query, bool $withHeadings = false)
                 {
