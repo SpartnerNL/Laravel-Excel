@@ -9,8 +9,6 @@ use Maatwebsite\Excel\Tests\TestCase;
 
 class StoreQueryMacroTest extends TestCase
 {
-    use DatabaseTransactions;
-
     /**
      * Setup the test environment.
      */

@@ -10,8 +10,6 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class DownloadQueryMacroTest extends TestCase
 {
-    use DatabaseTransactions;
-
     /**
      * Setup the test environment.
      */
