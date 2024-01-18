@@ -6,7 +6,7 @@ use Maatwebsite\Excel\Columns\Text;
 use PhpOffice\PhpSpreadsheet\Cell\DataType;
 use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 
-class TextColumnTest extends BaseColumnTest
+class TextColumnTestCase extends BaseColumnTestCase
 {
     /**
      * @param  mixed  $given
@@ -25,7 +25,7 @@ class TextColumnTest extends BaseColumnTest
         $this->assertNumberFormat(NumberFormat::FORMAT_TEXT);
     }
 
-    public function exportValues(): array
+    public static function exportValues(): array
     {
         return [
             'Regular text' => ['Patrick', 'Patrick'],
@@ -52,7 +52,7 @@ class TextColumnTest extends BaseColumnTest
         $this->assertSame($expected, $value);
     }
 
-    public function importValues(): array
+    public static function importValues(): array
     {
         return [
             'Regular text' => ['Patrick', DataType::TYPE_STRING, 'Patrick'],

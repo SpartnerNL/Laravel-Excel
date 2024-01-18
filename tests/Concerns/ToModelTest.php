@@ -4,8 +4,10 @@ namespace Maatwebsite\Excel\Tests\Concerns;
 
 use Faker\Factory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\Importable;
+use Maatwebsite\Excel\Concerns\PersistRelations;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\Group;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
@@ -172,6 +174,107 @@ class ToModelTest extends TestCase
 
         $this->assertCount(4, DB::getQueryLog());
         $this->assertEquals(2, User::count());
+        $this->assertEquals(2, Group::count());
+        DB::connection()->disableQueryLog();
+    }
+
+    /**
+     * @test
+     */
+    public function can_import_models_with_belongs_to_relations()
+    {
+        User::query()->truncate();
+        Group::query()->truncate();
+
+        DB::connection()->enableQueryLog();
+
+        $import = new class implements ToModel, PersistRelations
+        {
+            use Importable;
+
+            /**
+             * @param  array  $row
+             * @return Model|Model[]|null
+             */
+            public function model(array $row)
+            {
+                $user = new User([
+                    'name'     => $row[0],
+                    'email'    => $row[1],
+                    'password' => 'secret',
+                ]);
+
+                $user->group()->associate(
+                    new Group([
+                        'name' => $row[0],
+                    ])
+                );
+
+                return $user;
+            }
+        };
+
+        $import->import('import-users.xlsx');
+
+        $this->assertCount(6, DB::getQueryLog());
+
+        $users = User::all();
+        $users->each(function (User $user) {
+            $this->assertInstanceOf(Group::class, $user->group);
+            $this->assertIsInt($user->group->id);
+        });
+
+        $this->assertCount(2, $users);
+        $this->assertEquals(2, Group::count());
+        DB::connection()->disableQueryLog();
+    }
+
+    /**
+     * @test
+     */
+    public function can_import_models_with_belongs_to_many_relations()
+    {
+        User::query()->truncate();
+        Group::query()->truncate();
+
+        DB::connection()->enableQueryLog();
+
+        $import = new class implements ToModel, PersistRelations
+        {
+            use Importable;
+
+            /**
+             * @param  array  $row
+             * @return Model|Model[]|null
+             */
+            public function model(array $row)
+            {
+                $user = new User([
+                    'name'     => $row[0],
+                    'email'    => $row[1],
+                    'password' => 'secret',
+                ]);
+
+                $user->setRelation('groups', new Collection([
+                    new Group([
+                        'name' => $row[0],
+                    ]),
+                ]));
+
+                return $user;
+            }
+        };
+
+        $import->import('import-users.xlsx');
+
+        $this->assertCount(6, DB::getQueryLog());
+
+        $users = User::all();
+        $users->each(function (User $user) {
+            $this->assertInstanceOf(Group::class, $user->groups->first());
+        });
+
+        $this->assertCount(2, $users);
         $this->assertEquals(2, Group::count());
         DB::connection()->disableQueryLog();
     }

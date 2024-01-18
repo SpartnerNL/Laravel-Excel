@@ -19,7 +19,7 @@ interface Exporter
     /**
      * @param  object  $export
      * @param  string  $filePath
-     * @param  string|null  $disk
+     * @param  string|null  $diskName
      * @param  string  $writerType
      * @param  mixed  $diskOptions
      * @return bool

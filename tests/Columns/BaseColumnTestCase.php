@@ -8,7 +8,7 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
-abstract class BaseColumnTest extends TestCase
+abstract class BaseColumnTestCase extends TestCase
 {
     /**
      * @var Worksheet

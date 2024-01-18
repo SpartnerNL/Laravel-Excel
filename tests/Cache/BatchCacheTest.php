@@ -2,11 +2,19 @@
 
 namespace Maatwebsite\Excel\Tests\Cache;
 
+use Composer\InstalledVersions;
+use Composer\Semver\VersionParser;
+use DateInterval;
 use Illuminate\Cache\ArrayStore;
+use Illuminate\Cache\Events\KeyWritten;
 use Illuminate\Cache\Repository;
+use Illuminate\Support\Facades\Event;
 use Maatwebsite\Excel\Cache\BatchCache;
+use Maatwebsite\Excel\Cache\BatchCacheDeprecated;
+use Maatwebsite\Excel\Cache\CacheManager;
 use Maatwebsite\Excel\Cache\MemoryCache;
 use Maatwebsite\Excel\Tests\TestCase;
+use Psr\SimpleCache\CacheInterface;
 
 class BatchCacheTest extends TestCase
 {
@@ -172,17 +180,95 @@ class BatchCacheTest extends TestCase
     }
 
     /**
+     * @test
+     *
+     * @dataProvider defaultTTLDataProvider
+     */
+    public function it_writes_to_cache_with_default_ttl($defaultTTL, $receivedAs)
+    {
+        config()->set('excel.cache.default_ttl', $defaultTTL);
+
+        $cache = $this->givenCache(['A1' => 'A1-value'], [], 1);
+        $this->cache->setEventDispatcher(Event::fake());
+        $cache->set('A2', 'A2-value');
+
+        $expectedTTL = value($receivedAs);
+
+        $dispatchedCollection = Event::dispatched(
+            KeyWritten::class,
+            function (KeyWritten $event) use ($expectedTTL) {
+                return $event->seconds === $expectedTTL;
+            });
+
+        $this->assertCount(2, $dispatchedCollection);
+    }
+
+    /**
+     * @test
+     */
+    public function it_writes_to_cache_with_a_dateinterval_ttl()
+    {
+        // DateInterval is 1 minute
+        config()->set('excel.cache.default_ttl', new DateInterval('PT1M'));
+
+        $cache = $this->givenCache(['A1' => 'A1-value'], [], 1);
+        $this->cache->setEventDispatcher(Event::fake());
+        $cache->set('A2', 'A2-value');
+
+        $dispatchedCollection = Event::dispatched(
+            KeyWritten::class,
+            function (KeyWritten $event) {
+                return $event->seconds === 60;
+            });
+
+        $this->assertCount(2, $dispatchedCollection);
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_override_default_ttl()
+    {
+        config()->set('excel.cache.default_ttl', 1);
+
+        $cache = $this->givenCache(['A1' => 'A1-value'], [], 1);
+        $this->cache->setEventDispatcher(Event::fake());
+        $cache->set('A2', 'A2-value', null);
+
+        $dispatchedCollection = Event::dispatched(
+            KeyWritten::class,
+            function (KeyWritten $event) {
+                return $event->seconds === null;
+            });
+
+        $this->assertCount(2, $dispatchedCollection);
+    }
+
+    public static function defaultTTLDataProvider(): array
+    {
+        return [
+            'null (forever)' => [null, null],
+            'int value'      => [$value = rand(1, 100), $value],
+            'callable'       => [$closure = function () {
+                return 199;
+            }, $closure],
+        ];
+    }
+
+    /**
      * Construct a BatchCache with a in memory store
      * and an array cache, pretending to be a persistence store.
      *
      * @param  array  $memory
      * @param  array  $persisted
      * @param  int|null  $memoryLimit
-     * @return BatchCache
+     * @return CacheInterface
      */
-    private function givenCache(array $memory = [], array $persisted = [], int $memoryLimit = null): BatchCache
+    private function givenCache(array $memory = [], array $persisted = [], int $memoryLimit = null): CacheInterface
     {
-        $this->memory = new MemoryCache($memoryLimit);
+        config()->set('excel.cache.batch.memory_limit', $memoryLimit ?: 60000);
+
+        $this->memory = $this->app->make(CacheManager::class)->createMemoryDriver();
         $this->memory->setMultiple($memory);
 
         $store = new ArrayStore();
@@ -190,9 +276,18 @@ class BatchCacheTest extends TestCase
 
         $this->cache = new Repository($store);
 
+        if (!InstalledVersions::satisfies(new VersionParser, 'psr/simple-cache', '^3.0')) {
+            return new BatchCacheDeprecated(
+                $this->cache,
+                $this->memory,
+                config('excel.cache.default_ttl')
+            );
+        }
+
         return new BatchCache(
             $this->cache,
-            $this->memory
+            $this->memory,
+            config('excel.cache.default_ttl')
         );
     }
 }

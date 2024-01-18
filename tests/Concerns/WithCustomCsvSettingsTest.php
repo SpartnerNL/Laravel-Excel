@@ -7,6 +7,7 @@ use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\ToArray;
 use Maatwebsite\Excel\Concerns\WithCustomCsvSettings;
 use Maatwebsite\Excel\Excel;
+use Maatwebsite\Excel\HeadingRowImport;
 use Maatwebsite\Excel\Tests\TestCase;
 use PHPUnit\Framework\Assert;
 
@@ -55,6 +56,7 @@ class WithCustomCsvSettingsTest extends TestCase
                     'include_separator_line' => true,
                     'excel_compatibility'    => false,
                     'output_encoding'        => '',
+                    'test_auto_detect'       => false,
                 ];
             }
         };
@@ -115,6 +117,30 @@ class WithCustomCsvSettingsTest extends TestCase
         $this->assertStringContains('sep=;', $contents);
         $this->assertStringContains('A1;€ŠšŽžŒœŸ', $contents);
         $this->assertStringContains('A2;åßàèòìù', $contents);
+    }
+
+    /**
+     * @test
+     */
+    public function can_read_csv_with_auto_detecting_delimiter_semicolon()
+    {
+        $this->assertEquals([
+            [
+                ['a1', 'b1'],
+            ],
+        ], (new HeadingRowImport())->toArray('csv-with-other-delimiter.csv'));
+    }
+
+    /**
+     * @test
+     */
+    public function can_read_csv_with_auto_detecting_delimiter_comma()
+    {
+        $this->assertEquals([
+            [
+                ['a1', 'b1'],
+            ],
+        ], (new HeadingRowImport())->toArray('csv-with-comma.csv'));
     }
 
     /**

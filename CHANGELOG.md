@@ -2,9 +2,90 @@
 
 All notable changes to this project will be documented in this file.
 
-## [Unreleased]
+Please view https://github.com/SpartnerNL/Laravel-Excel/releases for the most recent changelog
+
+## [3.1.47] - 2023-02-16
+
+- Support Laravel 10
+
+### Fixed
+
+- Fix Bug Multiple drawings change the behavior of the startCell (#3865).
+- Allow configuring read data only in chunks as well.
+
+## [3.1.46] - 2023-01-27
+
+- Support Laravel 10
+
+## [3.1.45] - 2023-01-02
+
+### Added
+- Add support for ignoring PHP auto_detect_line_endings INI directive
+
+### Fixed
+- Fix the PSR simple cache dependency mess to maintain backwards compatability and support 3.0 of the interface.
+
+## [3.1.44] - 2022-10-14
+
+### Fixed
+
+- Fix output of `WithFormatData` in combination with `SkipsEmptyRows` (#3760)
+
+### Changed
+- Cast empty headings to indexed integer (#3646)
+- Adds `isEmptyWhen` to customize is row empty logic. (#3645)
+
+### Fixed
+
+- Fix temporary local files not being cleaned up when setting force_resync_remote config to true (#3623)
+- Fix testing for multiple stored files by regex matching (#3631).
+- Allow `required_unless` rule (#3660)
+
+## [3.1.40] - 2022-05-02
+
+- Fix testing for multiple stored files by regex matching (#3631).
+
+### Changed
+
+- Adds `WithDefaultStyles` concern to allow configuring the workbook default styles.
+- Adds `WithBackgroundColor` concern to allow configuring the workbook default background color.
+- Expose the ability to set custom response headers when exporting collections via Exportable
+
+## [3.1.39] - 2022-04-23
+
+### Fixed
+
+- Fix PHP8.1 return type for Failure class (#3588)
+
+## [3.1.38] - 2022-03-24
+
+### Changed
+
+- Adds concern `WithGroupedHeadingRow` to allow imported sheets to group the values of columns with the same header in an array
+
+### Fixed
+
+- Fix for `prepareForValidation` callback not being called when using `SkipsEmptyRows`
+
+## [3.1.37] - 2022-02-28
+
+### Fixed
+
+- Add `@mixin` docblock to all macroable classes to allow for IDE autocompletion of delegate classes
+- Fix issue with `Excel::toArray` not allowing nullable reader types for uploaded files
+
+### Changed
+
+- Change default Csv Import to auto-detect the delimiter when not explicitly defined
+
+## [3.1.36] - 2022-02-03
+
+### Fixed
 
 - Fix return type of `FromQuery::query()`
+
+### Changed
+
 - Support Laravel 9
 - Added a config setting to specify DB connection
 - Added a config setting to specify CSV output encoding
@@ -193,7 +274,19 @@ All notable changes to this project will be documented in this file.
 - Raw() method now also available on Exportable.
 - Fix for breaking changes in PhpSpreadsheet with empty enclosures.
 
-[Unreleased]: https://github.com/Maatwebsite/Laravel-Excel/compare/3.1.35...HEAD
+[Unreleased]: https://github.com/Maatwebsite/Laravel-Excel/compare/3.1.47...HEAD
+[3.1.47]: https://github.com/Maatwebsite/Laravel-Excel/compare/3.1.46...3.1.47
+[3.1.46]: https://github.com/Maatwebsite/Laravel-Excel/compare/3.1.45...3.1.46
+[3.1.45]: https://github.com/Maatwebsite/Laravel-Excel/compare/3.1.44...3.1.45
+[3.1.44]: https://github.com/Maatwebsite/Laravel-Excel/compare/3.1.43...3.1.44
+[3.1.43]: https://github.com/Maatwebsite/Laravel-Excel/compare/3.1.42...3.1.43
+[3.1.42]: https://github.com/Maatwebsite/Laravel-Excel/compare/3.1.41...3.1.42
+[3.1.41]: https://github.com/Maatwebsite/Laravel-Excel/compare/3.1.40...3.1.41
+[3.1.40]: https://github.com/Maatwebsite/Laravel-Excel/compare/3.1.39...3.1.40
+[3.1.39]: https://github.com/Maatwebsite/Laravel-Excel/compare/3.1.38...3.1.39
+[3.1.38]: https://github.com/Maatwebsite/Laravel-Excel/compare/3.1.37...3.1.38
+[3.1.37]: https://github.com/Maatwebsite/Laravel-Excel/compare/3.1.36...3.1.37
+[3.1.36]: https://github.com/Maatwebsite/Laravel-Excel/compare/3.1.35...3.1.36
 [3.1.35]: https://github.com/Maatwebsite/Laravel-Excel/compare/3.1.34...3.1.35
 [3.1.34]: https://github.com/Maatwebsite/Laravel-Excel/compare/3.1.33...3.1.34
 [3.1.33]: https://github.com/Maatwebsite/Laravel-Excel/compare/3.1.32...3.1.33

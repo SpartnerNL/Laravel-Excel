@@ -2,6 +2,9 @@
 
 namespace Maatwebsite\Excel\Tests\Concerns;
 
+use Illuminate\Foundation\Bus\PendingDispatch;
+use Maatwebsite\Excel\Tests\Data\Stubs\EloquentLazyCollectionExport;
+use Maatwebsite\Excel\Tests\Data\Stubs\EloquentLazyCollectionQueuedExport;
 use Maatwebsite\Excel\Tests\Data\Stubs\QueuedExport;
 use Maatwebsite\Excel\Tests\Data\Stubs\SheetWith100Rows;
 use Maatwebsite\Excel\Tests\TestCase;
@@ -46,5 +49,64 @@ class FromCollectionTest extends TestCase
             $this->assertEquals($sheet->collection()->toArray(), $worksheet->toArray());
             $this->assertEquals($sheet->title(), $worksheet->getTitle());
         }
+    }
+
+    /**
+     * @test
+     */
+    public function can_export_from_lazy_collection()
+    {
+        if (!class_exists('\Illuminate\Support\LazyCollection')) {
+            $this->markTestSkipped('Skipping test because LazyCollection is not supported');
+
+            return;
+        }
+
+        $export = new EloquentLazyCollectionExport();
+
+        $export->store('from-lazy-collection-store.xlsx');
+
+        $contents = $this->readAsArray(__DIR__ . '/../Data/Disks/Local/from-lazy-collection-store.xlsx', 'Xlsx');
+
+        $this->assertEquals(
+            $export->collection()->map(
+                function (array $item) {
+                    return array_values($item);
+                }
+            )->toArray(),
+            $contents
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function can_export_from_lazy_collection_with_queue()
+    {
+        if (!class_exists('\Illuminate\Support\LazyCollection')) {
+            $this->markTestSkipped('Skipping test because LazyCollection is not supported');
+
+            return;
+        }
+
+        $export = new EloquentLazyCollectionQueuedExport();
+
+        $response = $export->queue('from-lazy-collection-store.xlsx');
+
+        $this->assertTrue($response instanceof PendingDispatch);
+
+        // Force dispatching via __destruct.
+        unset($response);
+
+        $contents = $this->readAsArray(__DIR__ . '/../Data/Disks/Local/from-lazy-collection-store.xlsx', 'Xlsx');
+
+        $this->assertEquals(
+            $export->collection()->map(
+                function (array $item) {
+                    return array_values($item);
+                }
+            )->toArray(),
+            $contents
+        );
     }
 }

@@ -6,7 +6,7 @@ use Maatwebsite\Excel\Columns\Number;
 use PhpOffice\PhpSpreadsheet\Cell\DataType;
 use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 
-class NumberColumnTest extends BaseColumnTest
+class NumberColumnTestCase extends BaseColumnTestCase
 {
     /**
      * @param  mixed  $given
@@ -25,7 +25,7 @@ class NumberColumnTest extends BaseColumnTest
         $this->assertNumberFormat(NumberFormat::FORMAT_NUMBER);
     }
 
-    public function exportValues(): array
+    public static function exportValues(): array
     {
         return [
             [null, 0],
@@ -52,7 +52,7 @@ class NumberColumnTest extends BaseColumnTest
         $this->assertNumberFormat(NumberFormat::FORMAT_NUMBER_00);
     }
 
-    public function decimalValues(): array
+    public static function decimalValues(): array
     {
         return [
             [null, 0.0],
@@ -79,7 +79,7 @@ class NumberColumnTest extends BaseColumnTest
         $this->assertSame($expected, $value);
     }
 
-    public function importValues(): array
+    public static function importValues(): array
     {
         return [
             [null, DataType::TYPE_NULL, NumberFormat::FORMAT_GENERAL, 0],
@@ -107,7 +107,7 @@ class NumberColumnTest extends BaseColumnTest
         $this->assertSame($expected, $value);
     }
 
-    public function importDecimalValues(): array
+    public static function importDecimalValues(): array
     {
         return [
             [null, DataType::TYPE_NULL, NumberFormat::FORMAT_GENERAL, 0.0],

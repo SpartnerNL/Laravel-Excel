@@ -2,20 +2,18 @@
 
 namespace Maatwebsite\Excel\Mixins;
 
-use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Builder;
 use Maatwebsite\Excel\Concerns\Exportable;
-use Maatwebsite\Excel\Concerns\FromCollection;
+use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Sheet;
 
-class StoreCollection
+class StoreQueryMacro
 {
-    /**
-     * @return callable
-     */
-    public function storeExcel()
+    public function __invoke()
     {
         return function (string $filePath, string $disk = null, string $writerType = null, $withHeadings = false) {
-            $export = new class($this, $withHeadings) implements FromCollection, WithHeadings
+            $export = new class($this, $withHeadings) implements FromQuery, WithHeadings
             {
                 use Exportable;
 
@@ -25,26 +23,26 @@ class StoreCollection
                 private $withHeadings;
 
                 /**
-                 * @var Collection
+                 * @var Builder
                  */
-                private $collection;
+                private $query;
 
                 /**
-                 * @param  Collection  $collection
+                 * @param  $query
                  * @param  bool  $withHeadings
                  */
-                public function __construct(Collection $collection, bool $withHeadings = false)
+                public function __construct($query, bool $withHeadings = false)
                 {
-                    $this->collection   = $collection->toBase();
+                    $this->query        = $query;
                     $this->withHeadings = $withHeadings;
                 }
 
                 /**
-                 * @return Collection
+                 * @return Builder
                  */
-                public function collection()
+                public function query()
                 {
-                    return $this->collection;
+                    return $this->query;
                 }
 
                 /**
@@ -56,9 +54,13 @@ class StoreCollection
                         return [];
                     }
 
-                    return is_array($first = $this->collection->first())
-                        ? $this->collection->collapse()->keys()->all()
-                        : array_keys($first->toArray());
+                    $firstRow = (clone $this->query)->first();
+
+                    if ($firstRow) {
+                        return array_keys(Sheet::mapArraybleRow($firstRow));
+                    }
+
+                    return [];
                 }
             };
 

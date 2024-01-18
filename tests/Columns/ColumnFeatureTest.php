@@ -46,7 +46,7 @@ class ColumnFeatureTest extends TestCase
         $this->assertEquals($expectedValue, $value);
     }
 
-    public function readColumnTypes(): array
+    public static function readColumnTypes(): array
     {
         return [
             [Boolean::make('Boolean'), 'A2', true],
@@ -136,7 +136,7 @@ class ColumnFeatureTest extends TestCase
         unlink($file);
     }
 
-    public function writeColumnTypes(): array
+    public static function writeColumnTypes(): array
     {
         $time = CarbonImmutable::parse('2020-01-02 07:00:00');
 

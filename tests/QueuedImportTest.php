@@ -13,6 +13,7 @@ use Maatwebsite\Excel\Files\RemoteTemporaryFile;
 use Maatwebsite\Excel\Files\TemporaryFile;
 use Maatwebsite\Excel\Jobs\AfterImportJob;
 use Maatwebsite\Excel\Jobs\ReadChunk;
+use Maatwebsite\Excel\SettingsProvider;
 use Maatwebsite\Excel\Tests\Data\Stubs\AfterQueueImportJob;
 use Maatwebsite\Excel\Tests\Data\Stubs\QueuedImport;
 use Maatwebsite\Excel\Tests\Data\Stubs\QueuedImportWithFailure;
@@ -59,6 +60,25 @@ class QueuedImportTest extends TestCase
         $chain = $import->queue('import-batches.xlsx')->chain([
             new AfterQueueImportJob(5000),
         ]);
+
+        $this->assertInstanceOf(PendingDispatch::class, $chain);
+    }
+
+    /**
+     * @test
+     */
+    public function can_queue_an_import_with_batch_cache_and_file_store()
+    {
+        config()->set('queue.default', 'sync');
+        config()->set('excel.cache.driver', 'batch');
+        config()->set('excel.cache.illuminate.store', 'file');
+
+        // Reset the cache settings
+        $this->app->make(SettingsProvider::class)->provide();
+
+        $import = new QueuedImport();
+
+        $chain = $import->queue('import-batches.xlsx');
 
         $this->assertInstanceOf(PendingDispatch::class, $chain);
     }

@@ -2,12 +2,14 @@
 
 namespace Maatwebsite\Excel;
 
+use Illuminate\Pipeline\Pipeline;
 use PhpOffice\PhpSpreadsheet\Calculation\Exception;
 use PhpOffice\PhpSpreadsheet\Cell\Cell as SpreadsheetCell;
 use PhpOffice\PhpSpreadsheet\RichText\RichText;
 use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
+/** @mixin SpreadsheetCell */
 class Cell
 {
     use DelegatedMacroable;
@@ -76,6 +78,6 @@ class Cell
             }
         }
 
-        return $value;
+        return resolve(Pipeline::class)->send($value)->through(config('excel.imports.cells.middleware', []))->thenReturn();
     }
 }

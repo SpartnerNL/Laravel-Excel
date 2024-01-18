@@ -5,7 +5,7 @@ namespace Maatwebsite\Excel\Tests\Columns;
 use Maatwebsite\Excel\Columns\Column;
 use PhpOffice\PhpSpreadsheet\Cell\DataType;
 
-class ColumnTest extends BaseColumnTest
+class ColumnTestCase extends BaseColumnTestCase
 {
     /**
      * @test

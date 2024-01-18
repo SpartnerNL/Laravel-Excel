@@ -70,7 +70,7 @@ class WriterFactory
     }
 
     /**
-     * @param $export
+     * @param  $export
      * @return bool
      */
     private static function includesCharts($export): bool
