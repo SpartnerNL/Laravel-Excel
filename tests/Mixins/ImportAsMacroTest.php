@@ -8,8 +8,6 @@ use Maatwebsite\Excel\Tests\TestCase;
 
 class ImportAsMacroTest extends TestCase
 {
-    use DatabaseTransactions;
-
     /**
      * Setup the test environment.
      */
