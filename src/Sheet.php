@@ -85,7 +85,7 @@ class Sheet
     private $worksheet;
 
     /**
-     * @param Worksheet $worksheet
+     * @param  Worksheet  $worksheet
      */
     public function __construct(Worksheet $worksheet)
     {
@@ -95,9 +95,8 @@ class Sheet
     }
 
     /**
-     * @param Spreadsheet $spreadsheet
-     * @param string|int  $index
-     *
+     * @param  Spreadsheet  $spreadsheet
+     * @param  string|int  $index
      * @return Sheet
      *
      * @throws \PhpOffice\PhpSpreadsheet\Exception
@@ -113,9 +112,8 @@ class Sheet
     }
 
     /**
-     * @param Spreadsheet $spreadsheet
-     * @param int         $index
-     *
+     * @param  Spreadsheet  $spreadsheet
+     * @param  int  $index
      * @return Sheet
      *
      * @throws \PhpOffice\PhpSpreadsheet\Exception
@@ -131,9 +129,8 @@ class Sheet
     }
 
     /**
-     * @param Spreadsheet $spreadsheet
-     * @param string      $name
-     *
+     * @param  Spreadsheet  $spreadsheet
+     * @param  string  $name
      * @return Sheet
      *
      * @throws SheetNotFoundException
@@ -148,7 +145,7 @@ class Sheet
     }
 
     /**
-     * @param object $sheetExport
+     * @param  object  $sheetExport
      *
      * @throws \PhpOffice\PhpSpreadsheet\Exception
      */
@@ -199,7 +196,7 @@ class Sheet
     }
 
     /**
-     * @param object $sheetExport
+     * @param  object  $sheetExport
      *
      * @throws \PhpOffice\PhpSpreadsheet\Exception
      * @throws \PhpOffice\PhpSpreadsheet\Reader\Exception
@@ -236,8 +233,8 @@ class Sheet
     }
 
     /**
-     * @param object $import
-     * @param int    $startRow
+     * @param  object  $import
+     * @param  int  $startRow
      */
     public function import($import, int $startRow = 1)
     {
@@ -325,12 +322,11 @@ class Sheet
     }
 
     /**
-     * @param object   $import
-     * @param int|null $startRow
-     * @param null     $nullValue
-     * @param bool     $calculateFormulas
-     * @param bool     $formatData
-     *
+     * @param  object  $import
+     * @param  int|null  $startRow
+     * @param  null  $nullValue
+     * @param  bool  $calculateFormulas
+     * @param  bool  $formatData
      * @return array
      */
     public function toArray($import, int $startRow = null, $nullValue = null, $calculateFormulas = false, $formatData = false)
@@ -377,12 +373,11 @@ class Sheet
     }
 
     /**
-     * @param object   $import
-     * @param int|null $startRow
-     * @param null     $nullValue
-     * @param bool     $calculateFormulas
-     * @param bool     $formatData
-     *
+     * @param  object  $import
+     * @param  int|null  $startRow
+     * @param  null  $nullValue
+     * @param  bool  $calculateFormulas
+     * @param  bool  $formatData
      * @return Collection
      */
     public function toCollection($import, int $startRow = null, $nullValue = null, $calculateFormulas = false, $formatData = false): Collection
@@ -395,7 +390,7 @@ class Sheet
     }
 
     /**
-     * @param object $sheetExport
+     * @param  object  $sheetExport
      *
      * @throws \PhpOffice\PhpSpreadsheet\Exception
      */
@@ -442,8 +437,8 @@ class Sheet
     }
 
     /**
-     * @param FromView $sheetExport
-     * @param int|null $sheetIndex
+     * @param  FromView  $sheetExport
+     * @param  int|null  $sheetIndex
      *
      * @throws \PhpOffice\PhpSpreadsheet\Reader\Exception
      */
@@ -465,8 +460,8 @@ class Sheet
     }
 
     /**
-     * @param FromQuery $sheetExport
-     * @param Worksheet $worksheet
+     * @param  FromQuery  $sheetExport
+     * @param  Worksheet  $worksheet
      */
     public function fromQuery(FromQuery $sheetExport, Worksheet $worksheet)
     {
@@ -482,8 +477,8 @@ class Sheet
     }
 
     /**
-     * @param FromQuery $sheetExport
-     * @param Worksheet $worksheet
+     * @param  FromQuery  $sheetExport
+     * @param  Worksheet  $worksheet
      */
     public function fromScout(FromQuery $sheetExport, Worksheet $worksheet)
     {
@@ -501,7 +496,7 @@ class Sheet
     }
 
     /**
-     * @param FromCollection $sheetExport
+     * @param  FromCollection  $sheetExport
      */
     public function fromCollection(FromCollection $sheetExport)
     {
@@ -509,7 +504,7 @@ class Sheet
     }
 
     /**
-     * @param FromArray $sheetExport
+     * @param  FromArray  $sheetExport
      */
     public function fromArray(FromArray $sheetExport)
     {
@@ -517,7 +512,7 @@ class Sheet
     }
 
     /**
-     * @param FromIterator $sheetExport
+     * @param  FromIterator  $sheetExport
      */
     public function fromIterator(FromIterator $sheetExport)
     {
@@ -531,7 +526,7 @@ class Sheet
     }
 
     /**
-     * @param FromGenerator $sheetExport
+     * @param  FromGenerator  $sheetExport
      */
     public function fromGenerator(FromGenerator $sheetExport)
     {
@@ -545,9 +540,9 @@ class Sheet
     }
 
     /**
-     * @param array       $rows
-     * @param string|null $startCell
-     * @param bool        $strictNullComparison
+     * @param  array  $rows
+     * @param  string|null  $startCell
+     * @param  bool  $strictNullComparison
      */
     public function append(array $rows, string $startCell = null, bool $strictNullComparison = false)
     {
@@ -575,8 +570,8 @@ class Sheet
     }
 
     /**
-     * @param string $column
-     * @param string $format
+     * @param  string  $column
+     * @param  string  $format
      *
      * @throws \PhpOffice\PhpSpreadsheet\Exception
      */
@@ -597,8 +592,7 @@ class Sheet
     }
 
     /**
-     * @param int $chunkSize
-     *
+     * @param  int  $chunkSize
      * @return Sheet
      */
     public function chunkSize(int $chunkSize)
@@ -617,7 +611,7 @@ class Sheet
     }
 
     /**
-     * @param Chart|Chart[] $charts
+     * @param  Chart|Chart[]  $charts
      */
     public function addCharts($charts)
     {
@@ -629,7 +623,7 @@ class Sheet
     }
 
     /**
-     * @param BaseDrawing|BaseDrawing[] $drawings
+     * @param  BaseDrawing|BaseDrawing[]  $drawings
      */
     public function addDrawings($drawings)
     {
@@ -641,8 +635,7 @@ class Sheet
     }
 
     /**
-     * @param string $concern
-     *
+     * @param  string  $concern
      * @return string
      */
     public function hasConcern(string $concern): string
@@ -651,8 +644,8 @@ class Sheet
     }
 
     /**
-     * @param iterable $rows
-     * @param object   $sheetExport
+     * @param  iterable  $rows
+     * @param  object  $sheetExport
      */
     public function appendRows($rows, $sheetExport)
     {
@@ -684,8 +677,7 @@ class Sheet
     }
 
     /**
-     * @param mixed $row
-     *
+     * @param  mixed  $row
      * @return array
      */
     public static function mapArraybleRow($row): array
@@ -710,7 +702,6 @@ class Sheet
 
     /**
      * @param  $sheetImport
-     *
      * @return int
      */
     public function getStartRow($sheetImport): int
@@ -748,9 +739,8 @@ class Sheet
     }
 
     /**
-     * @param string $lower
-     * @param string $upper
-     *
+     * @param  string  $lower
+     * @param  string  $upper
      * @return \Generator
      */
     protected function buildColumnRange(string $lower, string $upper)
@@ -775,8 +765,7 @@ class Sheet
     }
 
     /**
-     * @param object $sheetExport
-     *
+     * @param  object  $sheetExport
      * @return bool
      */
     private function hasStrictNullComparison($sheetExport): bool
@@ -789,8 +778,7 @@ class Sheet
     }
 
     /**
-     * @param object|WithCustomChunkSize $export
-     *
+     * @param  object|WithCustomChunkSize  $export
      * @return int
      */
     private function getChunkSize($export): int
@@ -803,8 +791,7 @@ class Sheet
     }
 
     /**
-     * @param object|WithValidation $import
-     *
+     * @param  object|WithValidation  $import
      * @return Closure|null
      */
     private function getPreparationCallback($import)
