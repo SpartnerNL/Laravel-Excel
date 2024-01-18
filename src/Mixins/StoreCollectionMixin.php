@@ -2,21 +2,19 @@
 
 namespace Maatwebsite\Excel\Mixins;
 
-use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
-use Maatwebsite\Excel\Sheet;
 
-class DownloadCollection
+class StoreCollectionMixin
 {
     /**
      * @return callable
      */
-    public function downloadExcel()
+    public function storeExcel()
     {
-        return function (string $fileName, string $writerType = null, $withHeadings = false, array $responseHeaders = []) {
+        return function (string $filePath, string $disk = null, string $writerType = null, $withHeadings = false) {
             $export = new class($this, $withHeadings) implements FromCollection, WithHeadings
             {
                 use Exportable;
@@ -33,12 +31,12 @@ class DownloadCollection
 
                 /**
                  * @param  Collection  $collection
-                 * @param  bool  $withHeading
+                 * @param  bool  $withHeadings
                  */
-                public function __construct(Collection $collection, bool $withHeading = false)
+                public function __construct(Collection $collection, bool $withHeadings = false)
                 {
                     $this->collection   = $collection->toBase();
-                    $this->withHeadings = $withHeading;
+                    $this->withHeadings = $withHeadings;
                 }
 
                 /**
@@ -58,17 +56,13 @@ class DownloadCollection
                         return [];
                     }
 
-                    $firstRow = $this->collection->first();
-
-                    if ($firstRow instanceof Arrayable || \is_object($firstRow)) {
-                        return array_keys(Sheet::mapArraybleRow($firstRow));
-                    }
-
-                    return $this->collection->collapse()->keys()->all();
+                    return is_array($first = $this->collection->first())
+                        ? $this->collection->collapse()->keys()->all()
+                        : array_keys($first->toArray());
                 }
             };
 
-            return $export->download($fileName, $writerType, $responseHeaders);
+            return $export->store($filePath, $disk, $writerType);
         };
     }
 }

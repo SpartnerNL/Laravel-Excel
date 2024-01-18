@@ -3,6 +3,7 @@
 namespace Maatwebsite\Excel\Tests\Data\Stubs\Database;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Laravel\Scout\Engines\DatabaseEngine;
 use Laravel\Scout\Engines\Engine;
@@ -30,14 +31,16 @@ class User extends Model
     /**
      * @var array
      */
-    protected $hidden = ['password', 'email_verified_at', 'options'];
+    protected $hidden = ['password', 'email_verified_at', 'options', 'group_id'];
 
-    /**
-     * @return BelongsToMany
-     */
     public function groups(): BelongsToMany
     {
         return $this->belongsToMany(Group::class);
+    }
+
+    public function group(): BelongsTo
+    {
+        return $this->belongsTo(Group::class);
     }
 
     /**
