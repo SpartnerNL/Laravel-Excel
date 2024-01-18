@@ -2,7 +2,6 @@
 
 namespace Maatwebsite\Excel\Tests\Mixins;
 
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Maatwebsite\Excel\Excel;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
 use Maatwebsite\Excel\Tests\TestCase;
