@@ -2,8 +2,8 @@
 
 namespace Maatwebsite\Excel\Helpers;
 
-use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\Exportable;
+use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
 
@@ -27,14 +27,15 @@ class GenericQueryExport implements FromQuery, WithHeadings, WithMapping
     private $_mappings;
 
     /**
-     * forQuery
-     * @param \Illuminate\Database\Query\Builder $query
-     * @param array $headings
-     * @param callable|null $mappings
+     * forQuery.
+     *
+     * @param  \Illuminate\Database\Query\Builder  $query
+     * @param  array  $headings
+     * @param  callable|null  $mappings
      */
     public function __construct($query, $headings = [], $mappings = null)
     {
-        $this->_query = $query;
+        $this->_query    = $query;
         $this->_headings = $headings;
         if ($mappings) {
             $this->_mappings = $mappings;
@@ -65,8 +66,8 @@ class GenericQueryExport implements FromQuery, WithHeadings, WithMapping
     }
 
     /**
-    * @return \Illuminate\Database\Query\Builder
-    */
+     * @return \Illuminate\Database\Query\Builder
+     */
     public function query()
     {
         return $this->_query;
