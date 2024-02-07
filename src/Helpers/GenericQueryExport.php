@@ -60,8 +60,10 @@ class GenericQueryExport implements FromQuery, WithHeadings, WithMapping
                 }
                 $mapping[] = $v;
             }
+
             return array_values($mapping);
         }
+
         return (array) $row;
     }
 
