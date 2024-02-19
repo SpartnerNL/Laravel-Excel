@@ -19,10 +19,7 @@ use PHPUnit\Framework\Assert;
 
 class WithCustomValueBinderTest extends TestCase
 {
-    /**
-     * @test
-     */
-    public function can_set_a_value_binder_on_export()
+    public function test_can_set_a_value_binder_on_export()
     {
         Carbon::setTestNow(new Carbon('2018-08-07 18:00:00'));
 
@@ -98,10 +95,7 @@ class WithCustomValueBinderTest extends TestCase
         $this->assertEquals(NumberFormat::FORMAT_PERCENTAGE_00, $sheet->getCell('B1')->getStyle()->getNumberFormat()->getFormatCode());
     }
 
-    /**
-     * @test
-     */
-    public function can_set_a_value_binder_on_import()
+    public function test_can_set_a_value_binder_on_import()
     {
         $import = new class extends DefaultValueBinder implements WithCustomValueBinder, ToArray
         {

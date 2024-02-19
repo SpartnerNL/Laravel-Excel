@@ -22,10 +22,7 @@ class WithCustomStartCellTest extends TestCase
         $this->SUT = $this->app->make(Excel::class);
     }
 
-    /**
-     * @test
-     */
-    public function can_store_collection_with_custom_start_cell()
+    public function test_can_store_collection_with_custom_start_cell()
     {
         $export = new class implements FromCollection, WithCustomStartCell
         {

@@ -35,10 +35,7 @@ class ExcelTest extends TestCase
         $this->SUT = $this->app->make(Excel::class);
     }
 
-    /**
-     * @test
-     */
-    public function can_download_an_export_object_with_facade()
+    public function test_can_download_an_export_object_with_facade()
     {
         $export = new EmptyExport();
 
@@ -48,10 +45,7 @@ class ExcelTest extends TestCase
         $this->assertEquals('attachment; filename=filename.xlsx', str_replace('"', '', $response->headers->get('Content-Disposition')));
     }
 
-    /**
-     * @test
-     */
-    public function can_download_an_export_object()
+    public function test_can_download_an_export_object()
     {
         $export = new EmptyExport();
 
@@ -61,10 +55,7 @@ class ExcelTest extends TestCase
         $this->assertEquals('attachment; filename=filename.xlsx', str_replace('"', '', $response->headers->get('Content-Disposition')));
     }
 
-    /**
-     * @test
-     */
-    public function can_store_an_export_object_on_default_disk()
+    public function test_can_store_an_export_object_on_default_disk()
     {
         $export = new EmptyExport;
         $name   = 'filename.xlsx';
@@ -80,10 +71,7 @@ class ExcelTest extends TestCase
         $this->assertFileExists($path);
     }
 
-    /**
-     * @test
-     */
-    public function can_store_an_export_object_on_another_disk()
+    public function test_can_store_an_export_object_on_another_disk()
     {
         $export = new EmptyExport;
         $name   = 'filename.xlsx';
@@ -99,10 +87,7 @@ class ExcelTest extends TestCase
         $this->assertFileExists($path);
     }
 
-    /**
-     * @test
-     */
-    public function can_store_csv_export_with_default_settings()
+    public function test_can_store_csv_export_with_default_settings()
     {
         $export = new EmptyExport;
         $name   = 'filename.csv';
@@ -118,10 +103,7 @@ class ExcelTest extends TestCase
         $this->assertFileExists($path);
     }
 
-    /**
-     * @test
-     */
-    public function can_get_raw_export_contents()
+    public function test_can_get_raw_export_contents()
     {
         $export = new EmptyExport;
 
@@ -130,10 +112,7 @@ class ExcelTest extends TestCase
         $this->assertNotEmpty($response);
     }
 
-    /**
-     * @test
-     */
-    public function can_store_tsv_export_with_default_settings()
+    public function test_can_store_tsv_export_with_default_settings()
     {
         $export = new EmptyExport;
         $name   = 'filename.tsv';
@@ -149,10 +128,7 @@ class ExcelTest extends TestCase
         $this->assertFileExists($path);
     }
 
-    /**
-     * @test
-     */
-    public function can_store_csv_export_with_custom_settings()
+    public function test_can_store_csv_export_with_custom_settings()
     {
         $export = new class implements WithEvents, FromCollection, WithCustomCsvSettings
         {
@@ -193,10 +169,7 @@ class ExcelTest extends TestCase
         $this->assertStringContains('"A2";"B2"', $contents);
     }
 
-    /**
-     * @test
-     */
-    public function cannot_use_from_collection_and_from_view_on_same_export()
+    public function test_cannot_use_from_collection_and_from_view_on_same_export()
     {
         $this->expectException(\Maatwebsite\Excel\Exceptions\ConcernConflictException::class);
         $this->expectExceptionMessage('Cannot use FromQuery, FromArray or FromCollection and FromView on the same sheet');
@@ -225,10 +198,7 @@ class ExcelTest extends TestCase
         $export->download('filename.csv');
     }
 
-    /**
-     * @test
-     */
-    public function can_import_a_simple_xlsx_file_to_array()
+    public function test_can_import_a_simple_xlsx_file_to_array()
     {
         $import = new class
         {
@@ -243,10 +213,7 @@ class ExcelTest extends TestCase
         ], $import->toArray('import.xlsx'));
     }
 
-    /**
-     * @test
-     */
-    public function can_import_a_simple_xlsx_file_to_collection()
+    public function test_can_import_a_simple_xlsx_file_to_collection()
     {
         $import = new class
         {
@@ -261,10 +228,7 @@ class ExcelTest extends TestCase
         ]), $import->toCollection('import.xlsx'));
     }
 
-    /**
-     * @test
-     */
-    public function can_import_a_simple_xlsx_file_to_collection_without_import_object()
+    public function test_can_import_a_simple_xlsx_file_to_collection_without_import_object()
     {
         $this->assertEquals(new Collection([
             new Collection([
@@ -274,10 +238,7 @@ class ExcelTest extends TestCase
         ]), ExcelFacade::toCollection(null, 'import.xlsx'));
     }
 
-    /**
-     * @test
-     */
-    public function can_import_a_simple_xlsx_file()
+    public function test_can_import_a_simple_xlsx_file()
     {
         $import = new class implements ToArray
         {
@@ -298,10 +259,7 @@ class ExcelTest extends TestCase
         $this->assertInstanceOf(Importer::class, $imported);
     }
 
-    /**
-     * @test
-     */
-    public function can_import_a_tsv_file()
+    public function test_can_import_a_tsv_file()
     {
         $import = new class implements ToArray, WithCustomCsvSettings
         {
@@ -339,10 +297,7 @@ class ExcelTest extends TestCase
         $this->assertInstanceOf(Importer::class, $imported);
     }
 
-    /**
-     * @test
-     */
-    public function can_chain_imports()
+    public function test_can_chain_imports()
     {
         $import1 = new class implements ToArray
         {
@@ -379,10 +334,7 @@ class ExcelTest extends TestCase
         $this->assertInstanceOf(Importer::class, $imported);
     }
 
-    /**
-     * @test
-     */
-    public function can_import_a_simple_xlsx_file_from_uploaded_file()
+    public function test_can_import_a_simple_xlsx_file_from_uploaded_file()
     {
         $import = new class implements ToArray
         {
@@ -401,10 +353,7 @@ class ExcelTest extends TestCase
         $this->SUT->import($import, $this->givenUploadedFile(__DIR__ . '/Data/Disks/Local/import.xlsx'));
     }
 
-    /**
-     * @test
-     */
-    public function can_import_a_simple_xlsx_file_from_real_path()
+    public function test_can_import_a_simple_xlsx_file_from_real_path()
     {
         $import = new class implements ToArray
         {
@@ -423,10 +372,7 @@ class ExcelTest extends TestCase
         $this->SUT->import($import, __DIR__ . '/Data/Disks/Local/import.xlsx');
     }
 
-    /**
-     * @test
-     */
-    public function import_will_throw_error_when_no_reader_type_could_be_detected_when_no_extension()
+    public function test_import_will_throw_error_when_no_reader_type_could_be_detected_when_no_extension()
     {
         $this->expectException(\Maatwebsite\Excel\Exceptions\NoTypeDetectedException::class);
 
@@ -447,10 +393,7 @@ class ExcelTest extends TestCase
         $this->SUT->import($import, UploadedFile::fake()->create('import'));
     }
 
-    /**
-     * @test
-     */
-    public function import_will_throw_error_when_no_reader_type_could_be_detected_with_unknown_extension()
+    public function test_import_will_throw_error_when_no_reader_type_could_be_detected_with_unknown_extension()
     {
         $this->expectException(\Maatwebsite\Excel\Exceptions\NoTypeDetectedException::class);
 
@@ -468,10 +411,7 @@ class ExcelTest extends TestCase
         $this->SUT->import($import, 'unknown-reader-type.zip');
     }
 
-    /**
-     * @test
-     */
-    public function can_import_without_extension_with_explicit_reader_type()
+    public function test_can_import_without_extension_with_explicit_reader_type()
     {
         $import = new class implements ToArray
         {

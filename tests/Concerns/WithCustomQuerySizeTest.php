@@ -28,10 +28,7 @@ class WithCustomQuerySizeTest extends TestCase
         config()->set('excel.exports.chunk_size', 2);
     }
 
-    /**
-     * @test
-     */
-    public function can_export_with_custom_count()
+    public function test_can_export_with_custom_count()
     {
         $export = new FromQueryWithCustomQuerySize();
 

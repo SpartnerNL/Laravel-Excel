@@ -13,10 +13,7 @@ use PhpOffice\PhpSpreadsheet\Document\Properties;
 
 class DelegatedMacroableTest extends TestCase
 {
-    /**
-     * @test
-     */
-    public function can_call_methods_from_delegate()
+    public function test_can_call_methods_from_delegate()
     {
         $export = new class implements WithEvents
         {
@@ -32,10 +29,7 @@ class DelegatedMacroableTest extends TestCase
         $export->download('some-file.xlsx');
     }
 
-    /**
-     * @test
-     */
-    public function can_use_writer_macros()
+    public function test_can_use_writer_macros()
     {
         $called = false;
         Writer::macro('test', function () use (&$called) {
@@ -58,10 +52,7 @@ class DelegatedMacroableTest extends TestCase
         $this->assertTrue($called);
     }
 
-    /**
-     * @test
-     */
-    public function can_use_sheet_macros()
+    public function test_can_use_sheet_macros()
     {
         $called = false;
         Sheet::macro('test', function () use (&$called) {

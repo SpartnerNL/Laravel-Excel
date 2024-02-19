@@ -2,6 +2,7 @@
 
 namespace Maatwebsite\Excel\Tests\Concerns;
 
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\ToArray;
 use Maatwebsite\Excel\Excel;
@@ -11,10 +12,7 @@ use PHPUnit\Framework\Assert;
 
 class ImportableTest extends TestCase
 {
-    /**
-     * @test
-     */
-    public function can_import_a_simple_xlsx_file()
+    public function test_can_import_a_simple_xlsx_file()
     {
         $import = new class implements ToArray
         {
@@ -37,10 +35,7 @@ class ImportableTest extends TestCase
         $this->assertInstanceOf(Importer::class, $imported);
     }
 
-    /**
-     * @test
-     */
-    public function can_import_a_simple_xlsx_file_from_uploaded_file()
+    public function test_can_import_a_simple_xlsx_file_from_uploaded_file()
     {
         $import = new class implements ToArray
         {
@@ -61,10 +56,7 @@ class ImportableTest extends TestCase
         $import->import($this->givenUploadedFile(__DIR__ . '/../Data/Disks/Local/import.xlsx'));
     }
 
-    /**
-     * @test
-     */
-    public function can_import_a_simple_csv_file_with_html_tags_inside()
+    public function test_can_import_a_simple_csv_file_with_html_tags_inside()
     {
         $import = new class implements ToArray
         {
@@ -89,10 +81,7 @@ class ImportableTest extends TestCase
         $import->import('csv-with-html-tags.csv', 'local', Excel::CSV);
     }
 
-    /**
-     * @test
-     */
-    public function can_import_a_simple_xlsx_file_with_ignore_empty_set_to_true()
+    public function test_can_import_a_simple_xlsx_file_with_ignore_empty_set_to_true()
     {
         config()->set('excel.imports.ignore_empty', true);
 
@@ -117,10 +106,7 @@ class ImportableTest extends TestCase
         $this->assertInstanceOf(Importer::class, $imported);
     }
 
-    /**
-     * @test
-     */
-    public function can_import_a_simple_xlsx_file_with_ignore_empty_set_to_false()
+    public function test_can_import_a_simple_xlsx_file_with_ignore_empty_set_to_false()
     {
         config()->set('excel.imports.ignore_empty', false);
 
@@ -145,5 +131,17 @@ class ImportableTest extends TestCase
         $imported = $import->import('import-with-some-empty-rows.xlsx');
 
         $this->assertInstanceOf(Importer::class, $imported);
+    }
+
+    public function test_cannot_import_a_non_existing_xlsx_file()
+    {
+        $this->expectException(FileNotFoundException::class);
+
+        $import = new class
+        {
+            use Importable;
+        };
+
+        $import->import('doesnotexistanywhere.xlsx');
     }
 }

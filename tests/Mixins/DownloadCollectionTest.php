@@ -10,10 +10,7 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class DownloadCollectionTest extends TestCase
 {
-    /**
-     * @test
-     */
-    public function can_download_a_collection_as_excel()
+    public function test_can_download_a_collection_as_excel()
     {
         $collection = new Collection([
             ['column_1' => 'test', 'column_2' => 'test'],
@@ -35,10 +32,7 @@ class DownloadCollectionTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
-    public function can_download_a_collection_with_headers_as_excel()
+    public function test_can_download_a_collection_with_headers_as_excel()
     {
         $collection = new Collection([
             ['column_1' => 'test', 'column_2' => 'test'],
@@ -52,10 +46,7 @@ class DownloadCollectionTest extends TestCase
         $this->assertEquals(['column_1', 'column_2'], collect($array)->first());
     }
 
-    /**
-     * @test
-     */
-    public function can_download_collection_with_headers_with_hidden_eloquent_attributes()
+    public function test_can_download_collection_with_headers_with_hidden_eloquent_attributes()
     {
         $collection = new Collection([
             new User(['name' => 'Patrick', 'password' => 'my_password']),
@@ -68,10 +59,7 @@ class DownloadCollectionTest extends TestCase
         $this->assertEquals(['name'], collect($array)->first());
     }
 
-    /**
-     * @test
-     */
-    public function can_download_collection_with_headers_when_making_attributes_visible()
+    public function test_can_download_collection_with_headers_when_making_attributes_visible()
     {
         $user = new User(['name' => 'Patrick', 'password' => 'my_password']);
         $user->makeVisible(['password']);
@@ -87,10 +75,7 @@ class DownloadCollectionTest extends TestCase
         $this->assertEquals(['name', 'password'], collect($array)->first());
     }
 
-    /**
-     * @test
-     */
-    public function can_set_custom_response_headers()
+    public function test_can_set_custom_response_headers()
     {
         $collection = new Collection([
             ['column_1' => 'test', 'column_2' => 'test'],

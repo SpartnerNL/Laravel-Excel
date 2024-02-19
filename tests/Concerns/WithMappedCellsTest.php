@@ -23,10 +23,7 @@ class WithMappedCellsTest extends TestCase
         $this->loadLaravelMigrations(['--database' => 'testing']);
     }
 
-    /**
-     * @test
-     */
-    public function can_import_with_references_to_cells()
+    public function test_can_import_with_references_to_cells()
     {
         $import = new class implements WithMappedCells, ToArray
         {
@@ -58,10 +55,7 @@ class WithMappedCellsTest extends TestCase
         $import->import('mapped-import.xlsx');
     }
 
-    /**
-     * @test
-     */
-    public function can_import_with_nested_references_to_cells()
+    public function test_can_import_with_nested_references_to_cells()
     {
         $import = new class implements WithMappedCells, ToArray
         {
@@ -105,10 +99,7 @@ class WithMappedCellsTest extends TestCase
         $import->import('mapped-import.xlsx');
     }
 
-    /**
-     * @test
-     */
-    public function can_import_with_references_to_cells_to_model()
+    public function test_can_import_with_references_to_cells_to_model()
     {
         $import = new class implements WithMappedCells, ToModel
         {

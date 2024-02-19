@@ -23,10 +23,7 @@ class WithStartRowTest extends TestCase
         $this->loadLaravelMigrations(['--database' => 'testing']);
     }
 
-    /**
-     * @test
-     */
-    public function can_import_each_row_to_model_with_different_start_row()
+    public function test_can_import_each_row_to_model_with_different_start_row()
     {
         $import = new class implements ToModel, WithStartRow
         {
@@ -67,10 +64,7 @@ class WithStartRowTest extends TestCase
         ]);
     }
 
-    /**
-     * @test
-     */
-    public function can_import_to_array_with_start_row()
+    public function test_can_import_to_array_with_start_row()
     {
         $import = new class implements ToArray, WithStartRow
         {

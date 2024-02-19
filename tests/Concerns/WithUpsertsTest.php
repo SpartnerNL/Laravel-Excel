@@ -29,10 +29,7 @@ class WithUpsertsTest extends TestCase
         $this->loadLaravelMigrations(['--database' => 'testing']);
     }
 
-    /**
-     * @test
-     */
-    public function can_upsert_models_in_batches()
+    public function test_can_upsert_models_in_batches()
     {
         User::create([
             'name'      => 'Funny Banana',
@@ -96,10 +93,7 @@ class WithUpsertsTest extends TestCase
         $this->assertEquals(2, User::count());
     }
 
-    /**
-     * @test
-     */
-    public function can_upsert_models_in_rows()
+    public function test_can_upsert_models_in_rows()
     {
         User::create([
             'name'      => 'Funny Potato',
@@ -155,10 +149,7 @@ class WithUpsertsTest extends TestCase
         $this->assertEquals(2, User::count());
     }
 
-    /**
-     * @test
-     */
-    public function can_upsert_models_in_batches_with_defined_upsert_columns()
+    public function test_can_upsert_models_in_batches_with_defined_upsert_columns()
     {
         User::create([
             'name'      => 'Funny Banana',
@@ -230,10 +221,7 @@ class WithUpsertsTest extends TestCase
         $this->assertEquals(2, User::count());
     }
 
-    /**
-     * @test
-     */
-    public function can_upsert_models_in_rows_with_defined_upsert_columns()
+    public function test_can_upsert_models_in_rows_with_defined_upsert_columns()
     {
         User::create([
             'name'      => 'Funny Potato',

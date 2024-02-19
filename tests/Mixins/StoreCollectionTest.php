@@ -9,10 +9,7 @@ use Maatwebsite\Excel\Tests\TestCase;
 
 class StoreCollectionTest extends TestCase
 {
-    /**
-     * @test
-     */
-    public function can_store_a_collection_as_excel()
+    public function test_can_store_a_collection_as_excel()
     {
         $collection = new Collection([
             ['test', 'test'],
@@ -25,10 +22,7 @@ class StoreCollectionTest extends TestCase
         $this->assertFileExists(__DIR__ . '/../Data/Disks/Local/collection-store.xlsx');
     }
 
-    /**
-     * @test
-     */
-    public function can_store_a_collection_as_excel_on_non_default_disk()
+    public function test_can_store_a_collection_as_excel_on_non_default_disk()
     {
         $collection = new Collection([
             ['column_1' => 'test', 'column_2' => 'test'],
@@ -54,10 +48,7 @@ class StoreCollectionTest extends TestCase
         ], collect($array)->values()->all());
     }
 
-    /**
-     * @test
-     */
-    public function can_store_a_collection_with_headings_as_excel()
+    public function test_can_store_a_collection_with_headings_as_excel()
     {
         $collection = new Collection([
             ['column_1' => 'test', 'column_2' => 'test'],
@@ -80,8 +71,7 @@ class StoreCollectionTest extends TestCase
         ], collect($array)->except(0)->values()->all());
     }
 
-    /** @test */
-    public function can_store_a_model_collection_with_headings_as_excel()
+    public function test_can_store_a_model_collection_with_headings_as_excel()
     {
         $this->withFactories(__DIR__ . '/../Data/Stubs/Database/Factories');
 

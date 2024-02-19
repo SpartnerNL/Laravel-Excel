@@ -2,6 +2,7 @@
 
 namespace Maatwebsite\Excel\Cache;
 
+use PhpOffice\PhpSpreadsheet\Cell\Cell;
 use Psr\SimpleCache\CacheInterface;
 
 class MemoryCache implements CacheInterface
@@ -130,6 +131,12 @@ class MemoryCache implements CacheInterface
     public function flush(): array
     {
         $memory = $this->cache;
+
+        foreach ($memory as $cell) {
+            if ($cell instanceof Cell) {
+                $cell->detach();
+            }
+        }
 
         $this->clear();
 

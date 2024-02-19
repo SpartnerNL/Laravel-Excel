@@ -9,10 +9,7 @@ use PHPUnit\Framework\Assert;
 
 class ToArrayTest extends TestCase
 {
-    /**
-     * @test
-     */
-    public function can_import_to_array()
+    public function test_can_import_to_array()
     {
         $import = new class implements ToArray
         {
@@ -39,10 +36,7 @@ class ToArrayTest extends TestCase
         $this->assertTrue($import->called);
     }
 
-    /**
-     * @test
-     */
-    public function can_import_multiple_sheets_to_array()
+    public function test_can_import_multiple_sheets_to_array()
     {
         $import = new class implements ToArray
         {

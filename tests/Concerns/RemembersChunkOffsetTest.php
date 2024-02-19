@@ -10,10 +10,7 @@ use Maatwebsite\Excel\Tests\TestCase;
 
 class RemembersChunkOffsetTest extends TestCase
 {
-    /**
-     * @test
-     */
-    public function can_set_and_get_chunk_offset()
+    public function test_can_set_and_get_chunk_offset()
     {
         $import = new class
         {
@@ -26,10 +23,7 @@ class RemembersChunkOffsetTest extends TestCase
         $this->assertEquals(50, $import->getChunkOffset());
     }
 
-    /**
-     * @test
-     */
-    public function can_access_chunk_offset_on_import_to_array_in_chunks()
+    public function test_can_access_chunk_offset_on_import_to_array_in_chunks()
     {
         $import = new class implements ToArray, WithChunkReading
         {

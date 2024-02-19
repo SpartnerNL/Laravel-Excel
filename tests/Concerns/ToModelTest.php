@@ -26,10 +26,7 @@ class ToModelTest extends TestCase
         $this->loadMigrationsFrom(dirname(__DIR__) . '/Data/Stubs/Database/Migrations');
     }
 
-    /**
-     * @test
-     */
-    public function can_import_each_row_to_model()
+    public function test_can_import_each_row_to_model()
     {
         DB::connection()->enableQueryLog();
 
@@ -67,10 +64,7 @@ class ToModelTest extends TestCase
         ]);
     }
 
-    /**
-     * @test
-     */
-    public function has_timestamps_when_imported_single_model()
+    public function test_has_timestamps_when_imported_single_model()
     {
         $import = new class implements ToModel
         {
@@ -98,10 +92,7 @@ class ToModelTest extends TestCase
         $this->assertNotNull($user->updated_at);
     }
 
-    /**
-     * @test
-     */
-    public function can_import_multiple_models_in_single_to_model()
+    public function test_can_import_multiple_models_in_single_to_model()
     {
         DB::connection()->enableQueryLog();
 
@@ -139,10 +130,7 @@ class ToModelTest extends TestCase
         DB::connection()->disableQueryLog();
     }
 
-    /**
-     * @test
-     */
-    public function can_import_multiple_different_types_of_models_in_single_to_model()
+    public function test_can_import_multiple_different_types_of_models_in_single_to_model()
     {
         DB::connection()->enableQueryLog();
 
@@ -178,10 +166,7 @@ class ToModelTest extends TestCase
         DB::connection()->disableQueryLog();
     }
 
-    /**
-     * @test
-     */
-    public function can_import_models_with_belongs_to_relations()
+    public function test_can_import_models_with_belongs_to_relations()
     {
         User::query()->truncate();
         Group::query()->truncate();
@@ -229,10 +214,7 @@ class ToModelTest extends TestCase
         DB::connection()->disableQueryLog();
     }
 
-    /**
-     * @test
-     */
-    public function can_import_models_with_belongs_to_many_relations()
+    public function test_can_import_models_with_belongs_to_many_relations()
     {
         User::query()->truncate();
         Group::query()->truncate();

@@ -29,10 +29,7 @@ class TemporaryFileTest extends TestCase
         @rmdir($path);
     }
 
-    /**
-     * @test
-     */
-    public function can_use_default_rights()
+    public function test_can_use_default_rights()
     {
         $path = FileHelper::absolutePath('rights-test', 'local');
         FileHelper::recursiveDelete($path);
@@ -49,10 +46,7 @@ class TemporaryFileTest extends TestCase
         $this->assertEquals($this->defaultFilePermissions, substr(sprintf('%o', fileperms($temporaryFile->getLocalPath())), -4));
     }
 
-    /**
-     * @test
-     */
-    public function can_use_dir_rights()
+    public function test_can_use_dir_rights()
     {
         $path = FileHelper::absolutePath('rights-test', 'local');
         FileHelper::recursiveDelete($path);
@@ -70,10 +64,7 @@ class TemporaryFileTest extends TestCase
         $this->assertEquals($this->defaultFilePermissions, substr(sprintf('%o', fileperms($temporaryFile->getLocalPath())), -4));
     }
 
-    /**
-     * @test
-     */
-    public function can_use_file_rights()
+    public function test_can_use_file_rights()
     {
         $path = FileHelper::absolutePath('rights-test', 'local');
         FileHelper::recursiveDelete($path);

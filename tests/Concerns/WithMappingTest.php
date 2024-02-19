@@ -10,10 +10,7 @@ use Maatwebsite\Excel\Tests\TestCase;
 
 class WithMappingTest extends TestCase
 {
-    /**
-     * @test
-     */
-    public function can_export_with_heading()
+    public function test_can_export_with_heading()
     {
         $export = new WithMappingExport();
 
@@ -39,10 +36,7 @@ class WithMappingTest extends TestCase
         $this->assertEquals($expected, $actual);
     }
 
-    /**
-     * @test
-     */
-    public function can_return_multiple_rows_in_map()
+    public function test_can_return_multiple_rows_in_map()
     {
         $export = new class implements FromArray, WithMapping
         {
@@ -82,10 +76,7 @@ class WithMappingTest extends TestCase
         $this->assertCount(6, $actual);
     }
 
-    /**
-     * @test
-     */
-    public function json_array_columns_shouldnt_be_detected_as_multiple_rows()
+    public function test_json_array_columns_shouldnt_be_detected_as_multiple_rows()
     {
         $export = new class implements FromArray
         {

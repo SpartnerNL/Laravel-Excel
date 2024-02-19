@@ -10,10 +10,7 @@ use PHPUnit\Framework\Assert;
 
 class OnEachRowTest extends TestCase
 {
-    /**
-     * @test
-     */
-    public function can_import_each_row_individually()
+    public function test_can_import_each_row_individually()
     {
         $import = new class implements OnEachRow
         {
@@ -45,10 +42,7 @@ class OnEachRowTest extends TestCase
         $this->assertEquals(2, $import->called);
     }
 
-    /**
-     * @test
-     */
-    public function it_respects_the_end_column()
+    public function test_it_respects_the_end_column()
     {
         $import = new class implements OnEachRow
         {

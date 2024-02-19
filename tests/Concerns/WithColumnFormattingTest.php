@@ -16,10 +16,7 @@ use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 
 class WithColumnFormattingTest extends TestCase
 {
-    /**
-     * @test
-     */
-    public function can_export_with_column_formatting()
+    public function test_can_export_with_column_formatting()
     {
         $export = new class() implements FromCollection, WithMapping, WithColumnFormatting
         {

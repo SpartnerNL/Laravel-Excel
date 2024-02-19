@@ -23,10 +23,7 @@ class FromViewTest extends TestCase
         $this->withFactories(__DIR__ . '/../Data/Stubs/Database/Factories');
     }
 
-    /**
-     * @test
-     */
-    public function can_export_from_view()
+    public function test_can_export_from_view()
     {
         /** @var Collection|User[] $users */
         $users = factory(User::class)->times(100)->make();
@@ -75,10 +72,7 @@ class FromViewTest extends TestCase
         $this->assertEquals($expected, $contents);
     }
 
-    /**
-     * @test
-     */
-    public function can_export_multiple_sheets_from_view()
+    public function test_can_export_multiple_sheets_from_view()
     {
         /** @var Collection|User[] $users */
         $users = factory(User::class)->times(300)->make();

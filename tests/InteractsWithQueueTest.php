@@ -18,34 +18,22 @@ class InteractsWithQueueTest extends TestCase
         parent::setUp();
     }
 
-    /**
-     * @test
-     */
-    public function read_chunk_job_can_interact_with_queue()
+    public function test_read_chunk_job_can_interact_with_queue()
     {
         $this->assertContains(InteractsWithQueue::class, class_uses(ReadChunk::class));
     }
 
-    /**
-     * @test
-     */
-    public function append_data_to_sheet_job_can_interact_with_queue()
+    public function test_append_data_to_sheet_job_can_interact_with_queue()
     {
         $this->assertContains(InteractsWithQueue::class, class_uses(AppendDataToSheet::class));
     }
 
-    /**
-     * @test
-     */
-    public function append_query_to_sheet_job_can_interact_with_queue()
+    public function test_append_query_to_sheet_job_can_interact_with_queue()
     {
         $this->assertContains(InteractsWithQueue::class, class_uses(AppendQueryToSheet::class));
     }
 
-    /**
-     * @test
-     */
-    public function append_view_to_sheet_job_can_interact_with_queue()
+    public function test_append_view_to_sheet_job_can_interact_with_queue()
     {
         $this->assertContains(InteractsWithQueue::class, class_uses(AppendViewToSheet::class));
     }

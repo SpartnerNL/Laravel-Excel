@@ -17,10 +17,7 @@ class ImportAsMacroTest extends TestCase
         $this->loadLaravelMigrations(['--database' => 'testing']);
     }
 
-    /**
-     * @test
-     */
-    public function can_import_directly_into_a_model_with_mapping()
+    public function test_can_import_directly_into_a_model_with_mapping()
     {
         User::query()->truncate();
 

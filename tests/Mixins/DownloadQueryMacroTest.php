@@ -22,10 +22,7 @@ class DownloadQueryMacroTest extends TestCase
         factory(User::class)->times(100)->create();
     }
 
-    /**
-     * @test
-     */
-    public function can_download_a_query_as_excel()
+    public function test_can_download_a_query_as_excel()
     {
         $response = User::downloadExcel('query-download.xlsx', Excel::XLSX);
 
@@ -39,10 +36,7 @@ class DownloadQueryMacroTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
-    public function can_download_a_collection_with_headers_as_excel()
+    public function test_can_download_a_collection_with_headers_as_excel()
     {
         $response = User::downloadExcel('collection-headers-download.xlsx', Excel::XLSX, true);
 

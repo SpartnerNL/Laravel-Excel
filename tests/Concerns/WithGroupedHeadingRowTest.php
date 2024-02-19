@@ -28,10 +28,7 @@ class WithGroupedHeadingRowTest extends TestCase
         $this->loadMigrationsFrom(dirname(__DIR__) . '/Data/Stubs/Database/Migrations');
     }
 
-    /**
-     * @test
-     */
-    public function can_import_to_array_with_grouped_headers()
+    public function test_can_import_to_array_with_grouped_headers()
     {
         $import = new class implements ToArray, WithGroupedHeadingRow
         {
@@ -58,10 +55,7 @@ class WithGroupedHeadingRowTest extends TestCase
         $import->import('import-users-with-grouped-headers.xlsx');
     }
 
-    /**
-     * @test
-     */
-    public function can_import_oneachrow_with_grouped_headers()
+    public function test_can_import_oneachrow_with_grouped_headers()
     {
         $import = new class implements OnEachRow, WithGroupedHeadingRow
         {
@@ -88,10 +82,7 @@ class WithGroupedHeadingRowTest extends TestCase
         $import->import('import-users-with-grouped-headers.xlsx');
     }
 
-    /**
-     * @test
-     */
-    public function can_import_to_collection_with_grouped_headers()
+    public function test_can_import_to_collection_with_grouped_headers()
     {
         $import = new class implements ToCollection, WithGroupedHeadingRow
         {
@@ -124,10 +115,7 @@ class WithGroupedHeadingRowTest extends TestCase
         $this->assertTrue($import->called);
     }
 
-    /**
-     * @test
-     */
-    public function can_import_each_row_to_model_with_grouped_headers()
+    public function test_can_import_each_row_to_model_with_grouped_headers()
     {
         $import = new class implements ToModel, WithGroupedHeadingRow
         {
