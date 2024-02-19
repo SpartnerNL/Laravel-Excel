@@ -45,6 +45,7 @@ class QueuedQueryExportTest extends TestCase
         config()->set('queue.default', 'sync');
         config()->set('excel.cache.driver', 'batch');
         config()->set('excel.cache.illuminate.store', 'file');
+        config()->set('excel.cache.batch.memory_limit', 80);
 
         // Reset the cache settings
         $this->app->make(SettingsProvider::class)->provide();
