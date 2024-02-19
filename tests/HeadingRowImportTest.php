@@ -4,18 +4,17 @@ namespace Maatwebsite\Excel\Tests;
 
 use Maatwebsite\Excel\HeadingRowImport;
 use Maatwebsite\Excel\Imports\HeadingRowFormatter;
+use PHPUnit\Framework\Attributes\Test;
 
 class HeadingRowImportTest extends TestCase
 {
     protected function tearDown(): void
     {
         HeadingRowFormatter::reset();
+        parent::tearDown();
     }
 
-    /**
-     * @test
-     */
-    public function can_import_only_heading_row()
+    public function test_can_import_only_heading_row()
     {
         $import = new HeadingRowImport();
 

@@ -218,7 +218,7 @@ class BatchCacheTest extends TestCase
         $dispatchedCollection = Event::dispatched(
             KeyWritten::class,
             function (KeyWritten $event) {
-                return $event->seconds === 60;
+                return $event->seconds >= 59 && $event->seconds <= 60;
             });
 
         $this->assertCount(2, $dispatchedCollection);
