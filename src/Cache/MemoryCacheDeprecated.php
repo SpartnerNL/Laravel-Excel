@@ -2,6 +2,7 @@
 
 namespace Maatwebsite\Excel\Cache;
 
+use PhpOffice\PhpSpreadsheet\Cell\Cell;
 use Psr\SimpleCache\CacheInterface;
 
 class MemoryCacheDeprecated implements CacheInterface
@@ -17,7 +18,7 @@ class MemoryCacheDeprecated implements CacheInterface
     protected $cache = [];
 
     /**
-     * @param  int|null  $memoryLimit
+     * @param int|null $memoryLimit
      */
     public function __construct(int $memoryLimit = null)
     {
@@ -130,6 +131,12 @@ class MemoryCacheDeprecated implements CacheInterface
     public function flush(): array
     {
         $memory = $this->cache;
+
+        foreach ($memory as $cell) {
+            if ($cell instanceof Cell) {
+                $cell->detach();
+            }
+        }
 
         $this->clear();
 
