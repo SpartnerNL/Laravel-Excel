@@ -3,7 +3,6 @@
 namespace Maatwebsite\Excel\Cache;
 
 use Illuminate\Support\Facades\Cache;
-use PhpOffice\PhpSpreadsheet\Cell\Cell;
 use Psr\SimpleCache\CacheInterface;
 
 class BatchCache implements CacheInterface
