@@ -375,6 +375,56 @@ class WithValidationTest extends TestCase
         $this->assertInstanceOf(ValidationException::class, $e ?? null);
     }
 
+    public function test_can_validate_with_custom_attributes_pointing_to_another_attribute()
+    {
+        $import = new class implements ToModel, WithValidation
+        {
+            use Importable;
+
+            /**
+             * @param  array  $row
+             * @return Model|null
+             */
+            public function model(array $row)
+            {
+                return new User([
+                    'name'     => $row[0],
+                    'email'    => $row[1],
+                    'password' => 'secret',
+                ]);
+            }
+
+            /**
+             * @return array
+             */
+            public function rules(): array
+            {
+                return [
+                    '1' => ['required'],
+                    '2' => ['required_with:*.1'],
+                ];
+            }
+
+            /**
+             * @return array
+             */
+            public function customValidationAttributes()
+            {
+                return ['1' => 'email', '2' => 'password'];
+            }
+        };
+
+        try {
+            $import->import('import-users.xlsx');
+        } catch (ValidationException $e) {
+            $this->validateFailure($e, 1, 'password', [
+                'The password field is required when email is present.',
+            ]);
+        }
+
+        $this->assertInstanceOf(ValidationException::class, $e ?? null);
+    }
+
     public function test_can_validate_with_custom_message()
     {
         $import = new class implements ToModel, WithValidation
