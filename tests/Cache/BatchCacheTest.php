@@ -28,9 +28,6 @@ class BatchCacheTest extends TestCase
      */
     private $memory;
 
-    /**
-     *
-     */
     public function test_will_get_multiple_from_memory_if_cells_hold_in_memory()
     {
         $inMemory = [
@@ -49,9 +46,6 @@ class BatchCacheTest extends TestCase
         $this->assertEquals('A3-value', $cache->get('A3'));
     }
 
-    /**
-     *
-     */
     public function test_will_get_multiple_from_cache_if_cells_are_persisted()
     {
         $inMemory  = [];
@@ -71,9 +65,6 @@ class BatchCacheTest extends TestCase
         $this->assertEquals('A3-value', $cache->get('A3'));
     }
 
-    /**
-     *
-     */
     public function test_will_get_multiple_from_cache_and_persisted()
     {
         $inMemory  = [
@@ -98,9 +89,6 @@ class BatchCacheTest extends TestCase
         $this->assertEquals('A6-value', $cache->get('A6'));
     }
 
-    /**
-     *
-     */
     public function test_it_persists_to_cache_when_memory_limit_reached_on_setting_a_value()
     {
         $memoryLimit = 3;
@@ -136,9 +124,6 @@ class BatchCacheTest extends TestCase
         ], $cache->getMultiple(['A1', 'A2', 'A3', 'A4']));
     }
 
-    /**
-     *
-     */
     public function test_it_persists_to_cache_when_memory_limit_reached_on_setting_multiple_values()
     {
         $memoryLimit = 3;
@@ -180,8 +165,6 @@ class BatchCacheTest extends TestCase
     }
 
     /**
-     *
-     *
      * @dataProvider defaultTTLDataProvider
      */
     public function test_it_writes_to_cache_with_default_ttl($defaultTTL, $receivedAs)
@@ -203,9 +186,6 @@ class BatchCacheTest extends TestCase
         $this->assertCount(2, $dispatchedCollection);
     }
 
-    /**
-     *
-     */
     public function test_it_writes_to_cache_with_a_dateinterval_ttl()
     {
         // DateInterval is 1 minute
@@ -224,9 +204,6 @@ class BatchCacheTest extends TestCase
         $this->assertCount(2, $dispatchedCollection);
     }
 
-    /**
-     *
-     */
     public function test_it_can_override_default_ttl()
     {
         config()->set('excel.cache.default_ttl', 1);

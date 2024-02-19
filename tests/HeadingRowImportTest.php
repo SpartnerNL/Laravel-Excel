@@ -4,7 +4,6 @@ namespace Maatwebsite\Excel\Tests;
 
 use Maatwebsite\Excel\HeadingRowImport;
 use Maatwebsite\Excel\Imports\HeadingRowFormatter;
-use PHPUnit\Framework\Attributes\Test;
 
 class HeadingRowImportTest extends TestCase
 {
@@ -27,9 +26,6 @@ class HeadingRowImportTest extends TestCase
         ], $headings);
     }
 
-    /**
-     *
-     */
     public function test_can_import_only_heading_row_with_custom_heading_row_formatter()
     {
         HeadingRowFormatter::extend('custom', function ($value) {
@@ -49,9 +45,6 @@ class HeadingRowImportTest extends TestCase
         ], $headings);
     }
 
-    /**
-     *
-     */
     public function test_can_import_only_heading_row_with_custom_heading_row_formatter_with_key()
     {
         HeadingRowFormatter::extend('custom', function ($value, $key) {
@@ -71,9 +64,6 @@ class HeadingRowImportTest extends TestCase
         ], $headings);
     }
 
-    /**
-     *
-     */
     public function test_can_import_only_heading_row_with_custom_row_number()
     {
         $import = new HeadingRowImport(2);
@@ -87,9 +77,6 @@ class HeadingRowImportTest extends TestCase
         ], $headings);
     }
 
-    /**
-     *
-     */
     public function test_can_import_only_heading_row_for_multiple_sheets()
     {
         $import = new HeadingRowImport();
@@ -106,9 +93,6 @@ class HeadingRowImportTest extends TestCase
         ], $headings);
     }
 
-    /**
-     *
-     */
     public function test_can_import_only_heading_row_for_multiple_sheets_with_key()
     {
         HeadingRowFormatter::extend('custom', function ($value, $key) {
@@ -130,9 +114,6 @@ class HeadingRowImportTest extends TestCase
         ], $headings);
     }
 
-    /**
-     *
-     */
     public function test_can_import_only_heading_row_for_multiple_sheets_with_custom_row_number()
     {
         $import = new HeadingRowImport(2);
@@ -149,9 +130,6 @@ class HeadingRowImportTest extends TestCase
         ], $headings);
     }
 
-    /**
-     *
-     */
     public function test_can_import_heading_row_with_custom_formatter_defined_in_config()
     {
         HeadingRowFormatter::extend('custom2', function ($value) {

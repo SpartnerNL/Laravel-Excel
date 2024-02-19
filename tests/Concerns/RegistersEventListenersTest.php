@@ -19,9 +19,6 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class RegistersEventListenersTest extends TestCase
 {
-    /**
-     *
-     */
     public function test_events_get_called_when_exporting()
     {
         $event = new ExportWithRegistersEventListeners();
@@ -56,9 +53,6 @@ class RegistersEventListenersTest extends TestCase
         $this->assertEquals(4, $eventsTriggered);
     }
 
-    /**
-     *
-     */
     public function test_events_get_called_when_importing()
     {
         $event = new ImportWithRegistersEventListeners();
@@ -87,9 +81,6 @@ class RegistersEventListenersTest extends TestCase
         $this->assertEquals(3, $eventsTriggered);
     }
 
-    /**
-     *
-     */
     public function test_can_have_invokable_class_as_listener()
     {
         $event = new ExportWithEvents();

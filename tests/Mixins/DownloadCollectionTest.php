@@ -10,9 +10,6 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class DownloadCollectionTest extends TestCase
 {
-    /**
-     *
-     */
     public function test_can_download_a_collection_as_excel()
     {
         $collection = new Collection([
@@ -35,9 +32,6 @@ class DownloadCollectionTest extends TestCase
         );
     }
 
-    /**
-     *
-     */
     public function test_can_download_a_collection_with_headers_as_excel()
     {
         $collection = new Collection([
@@ -52,9 +46,6 @@ class DownloadCollectionTest extends TestCase
         $this->assertEquals(['column_1', 'column_2'], collect($array)->first());
     }
 
-    /**
-     *
-     */
     public function test_can_download_collection_with_headers_with_hidden_eloquent_attributes()
     {
         $collection = new Collection([
@@ -68,9 +59,6 @@ class DownloadCollectionTest extends TestCase
         $this->assertEquals(['name'], collect($array)->first());
     }
 
-    /**
-     *
-     */
     public function test_can_download_collection_with_headers_when_making_attributes_visible()
     {
         $user = new User(['name' => 'Patrick', 'password' => 'my_password']);
@@ -87,9 +75,6 @@ class DownloadCollectionTest extends TestCase
         $this->assertEquals(['name', 'password'], collect($array)->first());
     }
 
-    /**
-     *
-     */
     public function test_can_set_custom_response_headers()
     {
         $collection = new Collection([

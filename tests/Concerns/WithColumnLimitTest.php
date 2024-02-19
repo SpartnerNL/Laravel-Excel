@@ -21,9 +21,6 @@ class WithColumnLimitTest extends TestCase
         $this->loadLaravelMigrations(['--database' => 'testing']);
     }
 
-    /**
-     *
-     */
     public function test_can_import_to_array_with_column_limit()
     {
         $import = new class implements ToArray, WithColumnLimit
@@ -54,9 +51,6 @@ class WithColumnLimitTest extends TestCase
         $import->import('import-users.xlsx');
     }
 
-    /**
-     *
-     */
     public function test_can_import_to_array_with_column_limit_and_skips_empty_rows()
     {
         $import = new class implements ToArray, WithColumnLimit, SkipsEmptyRows

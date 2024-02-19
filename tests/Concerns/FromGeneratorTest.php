@@ -9,9 +9,6 @@ use Maatwebsite\Excel\Tests\TestCase;
 
 class FromGeneratorTest extends TestCase
 {
-    /**
-     *
-     */
     public function test_can_export_from_generator()
     {
         $export = new class implements FromGenerator

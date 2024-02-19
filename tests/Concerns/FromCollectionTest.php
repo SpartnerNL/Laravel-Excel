@@ -11,9 +11,6 @@ use Maatwebsite\Excel\Tests\TestCase;
 
 class FromCollectionTest extends TestCase
 {
-    /**
-     *
-     */
     public function test_can_export_from_collection()
     {
         $export = new SheetWith100Rows('A');
@@ -27,9 +24,6 @@ class FromCollectionTest extends TestCase
         $this->assertEquals($export->collection()->toArray(), $contents);
     }
 
-    /**
-     *
-     */
     public function test_can_export_with_multiple_sheets_from_collection()
     {
         $export = new QueuedExport();
@@ -51,9 +45,6 @@ class FromCollectionTest extends TestCase
         }
     }
 
-    /**
-     *
-     */
     public function test_can_export_from_lazy_collection()
     {
         if (!class_exists('\Illuminate\Support\LazyCollection')) {
@@ -78,9 +69,6 @@ class FromCollectionTest extends TestCase
         );
     }
 
-    /**
-     *
-     */
     public function test_can_export_from_lazy_collection_with_queue()
     {
         if (!class_exists('\Illuminate\Support\LazyCollection')) {

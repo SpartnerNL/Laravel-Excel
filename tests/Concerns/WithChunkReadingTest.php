@@ -39,9 +39,6 @@ class WithChunkReadingTest extends TestCase
         $this->loadMigrationsFrom(dirname(__DIR__) . '/Data/Stubs/Database/Migrations');
     }
 
-    /**
-     *
-     */
     public function test_can_import_to_model_in_chunks_un()
     {
         DB::connection()->enableQueryLog();
@@ -101,9 +98,6 @@ class WithChunkReadingTest extends TestCase
         $this->assertEquals(1, $import->after, 'AfterImport was not called or more than once.');
     }
 
-    /**
-     *
-     */
     public function test_can_import_to_model_in_chunks_and_insert_in_batches()
     {
         DB::connection()->enableQueryLog();
@@ -146,9 +140,6 @@ class WithChunkReadingTest extends TestCase
         DB::connection()->disableQueryLog();
     }
 
-    /**
-     *
-     */
     public function test_can_import_to_model_in_chunks_and_insert_in_batches_with_heading_row()
     {
         DB::connection()->enableQueryLog();
@@ -191,9 +182,6 @@ class WithChunkReadingTest extends TestCase
         DB::connection()->disableQueryLog();
     }
 
-    /**
-     *
-     */
     public function test_can_import_csv_in_chunks_and_insert_in_batches()
     {
         DB::connection()->enableQueryLog();
@@ -236,9 +224,6 @@ class WithChunkReadingTest extends TestCase
         DB::connection()->disableQueryLog();
     }
 
-    /**
-     *
-     */
     public function test_can_import_to_model_in_chunks_and_insert_in_batches_with_multiple_sheets()
     {
         DB::connection()->enableQueryLog();
@@ -281,9 +266,6 @@ class WithChunkReadingTest extends TestCase
         DB::connection()->disableQueryLog();
     }
 
-    /**
-     *
-     */
     public function test_can_import_to_array_in_chunks()
     {
         $import = new class implements ToArray, WithChunkReading, WithFormatData
@@ -316,9 +298,6 @@ class WithChunkReadingTest extends TestCase
         $this->assertEquals(50, $import->called);
     }
 
-    /**
-     *
-     */
     public function test_can_import_to_model_in_chunks_and_insert_in_batches_with_multiple_sheets_objects_by_index()
     {
         DB::connection()->enableQueryLog();
@@ -394,9 +373,6 @@ class WithChunkReadingTest extends TestCase
         DB::connection()->disableQueryLog();
     }
 
-    /**
-     *
-     */
     public function test_can_import_to_model_in_chunks_and_insert_in_batches_with_multiple_sheets_objects_by_name()
     {
         DB::connection()->enableQueryLog();
@@ -472,9 +448,6 @@ class WithChunkReadingTest extends TestCase
         DB::connection()->disableQueryLog();
     }
 
-    /**
-     *
-     */
     public function test_can_catch_job_failed_in_chunks()
     {
         $import = new class implements ToModel, WithChunkReading, WithEvents
@@ -526,9 +499,6 @@ class WithChunkReadingTest extends TestCase
         $this->assertTrue($import->failed, 'ImportFailed event was not called.');
     }
 
-    /**
-     *
-     */
     public function test_can_import_to_array_and_format_in_chunks()
     {
         config()->set('excel.imports.read_only', false);
@@ -563,9 +533,6 @@ class WithChunkReadingTest extends TestCase
         $import->import('import-batches-with-date.xlsx');
     }
 
-    /**
-     *
-     */
     public function test_can_import_to_array_in_chunks_without_formatting()
     {
         config()->set('excel.imports.read_only', true);

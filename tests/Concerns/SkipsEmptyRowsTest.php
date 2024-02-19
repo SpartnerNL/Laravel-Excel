@@ -15,9 +15,6 @@ use PHPUnit\Framework\Assert;
 
 class SkipsEmptyRowsTest extends TestCase
 {
-    /**
-     *
-     */
     public function test_skips_empty_rows_when_importing_to_collection()
     {
         $import = new class implements ToCollection, SkipsEmptyRows
@@ -46,9 +43,6 @@ class SkipsEmptyRowsTest extends TestCase
         $this->assertTrue($import->called);
     }
 
-    /**
-     *
-     */
     public function test_skips_empty_rows_when_importing_on_each_row()
     {
         $import = new class implements OnEachRow, SkipsEmptyRows
@@ -73,9 +67,6 @@ class SkipsEmptyRowsTest extends TestCase
         $this->assertEquals(3, $import->rows);
     }
 
-    /**
-     *
-     */
     public function test_skips_empty_rows_when_importing_to_model()
     {
         $import = new class implements ToModel, SkipsEmptyRows
@@ -101,9 +92,6 @@ class SkipsEmptyRowsTest extends TestCase
         $this->assertEquals(3, $import->rows);
     }
 
-    /**
-     *
-     */
     public function test_custom_skips_rows_when_importing_to_collection()
     {
         $import = new class implements SkipsEmptyRows, ToCollection
@@ -135,9 +123,6 @@ class SkipsEmptyRowsTest extends TestCase
         $this->assertTrue($import->called);
     }
 
-    /**
-     *
-     */
     public function test_custom_skips_rows_when_importing_to_model()
     {
         $import = new class implements SkipsEmptyRows, ToModel
@@ -166,9 +151,6 @@ class SkipsEmptyRowsTest extends TestCase
         $this->assertTrue($import->called);
     }
 
-    /**
-     *
-     */
     public function test_custom_skips_rows_when_using_oneachrow()
     {
         $import = new class implements SkipsEmptyRows, OnEachRow

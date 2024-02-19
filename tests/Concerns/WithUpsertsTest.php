@@ -29,9 +29,6 @@ class WithUpsertsTest extends TestCase
         $this->loadLaravelMigrations(['--database' => 'testing']);
     }
 
-    /**
-     *
-     */
     public function test_can_upsert_models_in_batches()
     {
         User::create([
@@ -96,9 +93,6 @@ class WithUpsertsTest extends TestCase
         $this->assertEquals(2, User::count());
     }
 
-    /**
-     *
-     */
     public function test_can_upsert_models_in_rows()
     {
         User::create([
@@ -155,9 +149,6 @@ class WithUpsertsTest extends TestCase
         $this->assertEquals(2, User::count());
     }
 
-    /**
-     *
-     */
     public function test_can_upsert_models_in_batches_with_defined_upsert_columns()
     {
         User::create([
@@ -230,9 +221,6 @@ class WithUpsertsTest extends TestCase
         $this->assertEquals(2, User::count());
     }
 
-    /**
-     *
-     */
     public function test_can_upsert_models_in_rows_with_defined_upsert_columns()
     {
         User::create([

@@ -24,9 +24,6 @@ class QueuedQueryExportTest extends TestCase
         factory(User::class)->times(100)->create([]);
     }
 
-    /**
-     *
-     */
     public function test_can_queue_an_export()
     {
         $export = new FromUsersQueryExport();
@@ -43,9 +40,6 @@ class QueuedQueryExportTest extends TestCase
         $this->assertCount(6, $actual[0]);
     }
 
-    /**
-     *
-     */
     public function test_can_queue_an_export_with_batch_cache_and_file_store()
     {
         config()->set('queue.default', 'sync');
@@ -66,9 +60,6 @@ class QueuedQueryExportTest extends TestCase
         $this->assertCount(100, $actual);
     }
 
-    /**
-     *
-     */
     public function test_can_queue_an_export_with_mapping()
     {
         $export = new FromUsersQueryExportWithMapping();
@@ -86,9 +77,6 @@ class QueuedQueryExportTest extends TestCase
         $this->assertEquals(User::value('name'), $actual[0][0]);
     }
 
-    /**
-     *
-     */
     public function test_can_queue_scout_export()
     {
         if (!class_exists('\Laravel\Scout\Engines\DatabaseEngine')) {

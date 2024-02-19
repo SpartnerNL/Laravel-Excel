@@ -11,9 +11,6 @@ use PHPUnit\Framework\Assert;
 
 class ImportableTest extends TestCase
 {
-    /**
-     *
-     */
     public function test_can_import_a_simple_xlsx_file()
     {
         $import = new class implements ToArray
@@ -37,9 +34,6 @@ class ImportableTest extends TestCase
         $this->assertInstanceOf(Importer::class, $imported);
     }
 
-    /**
-     *
-     */
     public function test_can_import_a_simple_xlsx_file_from_uploaded_file()
     {
         $import = new class implements ToArray
@@ -61,9 +55,6 @@ class ImportableTest extends TestCase
         $import->import($this->givenUploadedFile(__DIR__ . '/../Data/Disks/Local/import.xlsx'));
     }
 
-    /**
-     *
-     */
     public function test_can_import_a_simple_csv_file_with_html_tags_inside()
     {
         $import = new class implements ToArray
@@ -89,9 +80,6 @@ class ImportableTest extends TestCase
         $import->import('csv-with-html-tags.csv', 'local', Excel::CSV);
     }
 
-    /**
-     *
-     */
     public function test_can_import_a_simple_xlsx_file_with_ignore_empty_set_to_true()
     {
         config()->set('excel.imports.ignore_empty', true);
@@ -117,9 +105,6 @@ class ImportableTest extends TestCase
         $this->assertInstanceOf(Importer::class, $imported);
     }
 
-    /**
-     *
-     */
     public function test_can_import_a_simple_xlsx_file_with_ignore_empty_set_to_false()
     {
         config()->set('excel.imports.ignore_empty', false);

@@ -10,9 +10,6 @@ use PHPUnit\Framework\Assert;
 
 class WithReadFilterTest extends TestCase
 {
-    /**
-     *
-     */
     public function test_can_register_custom_read_filter()
     {
         $export = new class implements WithReadFilter

@@ -10,9 +10,6 @@ use Maatwebsite\Excel\Tests\TestCase;
 
 class WithTitleTest extends TestCase
 {
-    /**
-     *
-     */
     public function test_can_export_with_title()
     {
         $export = new WithTitleExport();
@@ -27,9 +24,6 @@ class WithTitleTest extends TestCase
         $this->assertEquals('given-title', $spreadsheet->getActiveSheet()->getTitle());
     }
 
-    /**
-     *
-     */
     public function test_can_export_sheet_title_when_longer_than_max_length()
     {
         $export = new class implements WithTitle, WithMultipleSheets

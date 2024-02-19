@@ -32,9 +32,6 @@ class WithEventsTest extends TestCase
 {
     use WithFaker;
 
-    /**
-     *
-     */
     public function test_export_events_get_called()
     {
         $event = new ExportWithEvents();
@@ -69,9 +66,6 @@ class WithEventsTest extends TestCase
         $this->assertEquals(4, $eventsTriggered);
     }
 
-    /**
-     *
-     */
     public function test_import_events_get_called()
     {
         $import = new ImportWithEvents();
@@ -106,9 +100,6 @@ class WithEventsTest extends TestCase
         $this->assertEquals(4, $eventsTriggered);
     }
 
-    /**
-     *
-     */
     public function test_import_chunked_events_get_called()
     {
         $import = new ImportWithEventsChunksAndBatches();
@@ -171,9 +162,6 @@ class WithEventsTest extends TestCase
         $this->assertEquals(10, $afterChunk);
     }
 
-    /**
-     *
-     */
     public function test_can_have_invokable_class_as_listener()
     {
         $event = new ExportWithEvents();
@@ -186,9 +174,6 @@ class WithEventsTest extends TestCase
         $this->assertInstanceOf(BinaryFileResponse::class, $event->download('filename.xlsx'));
     }
 
-    /**
-     *
-     */
     public function test_can_have_global_event_listeners()
     {
         $event = new class
@@ -224,9 +209,6 @@ class WithEventsTest extends TestCase
         $this->assertTrue($afterSheet, 'After sheet event not triggered');
     }
 
-    /**
-     *
-     */
     public function test_can_have_custom_concern_handlers()
     {
         // Add a custom concern handler for the given concern.
@@ -265,9 +247,6 @@ class WithEventsTest extends TestCase
         $this->assertEquals([[null]], $actual);
     }
 
-    /**
-     *
-     */
     public function test_can_have_custom_sheet_concern_handlers()
     {
         // Add a custom concern handler for the given concern.
@@ -306,9 +285,6 @@ class WithEventsTest extends TestCase
         $this->assertEquals([[null]], $actual);
     }
 
-    /**
-     *
-     */
     public function test_export_chunked_events_get_called()
     {
         $this->loadLaravelMigrations(['--database' => 'testing']);

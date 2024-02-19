@@ -9,9 +9,6 @@ use Maatwebsite\Excel\Tests\TestCase;
 
 class WithColumnWidthsTest extends TestCase
 {
-    /**
-     *
-     */
     public function test_can_set_column_width()
     {
         $export = new class implements FromArray, WithColumnWidths

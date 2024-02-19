@@ -26,9 +26,6 @@ class WithMultipleSheetsTest extends TestCase
         $this->withFactories(__DIR__ . '/../Data/Stubs/Database/Factories');
     }
 
-    /**
-     *
-     */
     public function test_can_export_with_multiple_sheets_using_collections()
     {
         $export = new class implements WithMultipleSheets
@@ -55,9 +52,6 @@ class WithMultipleSheetsTest extends TestCase
         $this->assertCount(100, $this->readAsArray(__DIR__ . '/../Data/Disks/Local/from-view.xlsx', 'Xlsx', 2));
     }
 
-    /**
-     *
-     */
     public function test_can_export_multiple_sheets_from_view()
     {
         /** @var Collection|User[] $users */
@@ -100,9 +94,6 @@ class WithMultipleSheetsTest extends TestCase
         $this->assertCount(101, $this->readAsArray(__DIR__ . '/../Data/Disks/Local/from-view.xlsx', 'Xlsx', 2));
     }
 
-    /**
-     *
-     */
     public function test_unknown_sheet_index_will_throw_sheet_not_found_exception()
     {
         $this->expectException(\Maatwebsite\Excel\Exceptions\SheetNotFoundException::class);
@@ -124,9 +115,6 @@ class WithMultipleSheetsTest extends TestCase
         $import->import('import-multiple-sheets.xlsx');
     }
 
-    /**
-     *
-     */
     public function test_unknown_sheet_name_will_throw_sheet_not_found_exception()
     {
         $this->expectException(\Maatwebsite\Excel\Exceptions\SheetNotFoundException::class);
@@ -148,9 +136,6 @@ class WithMultipleSheetsTest extends TestCase
         $import->import('import-multiple-sheets.xlsx');
     }
 
-    /**
-     *
-     */
     public function test_unknown_sheet_name_can_be_ignored()
     {
         $import = new class implements WithMultipleSheets, SkipsUnknownSheets
@@ -181,9 +166,6 @@ class WithMultipleSheetsTest extends TestCase
         $this->assertEquals('Some Random Sheet Name', $import->unknown);
     }
 
-    /**
-     *
-     */
     public function test_unknown_sheet_indices_can_be_ignored_per_name()
     {
         $import = new class implements WithMultipleSheets
@@ -210,9 +192,6 @@ class WithMultipleSheetsTest extends TestCase
         $import->import('import-multiple-sheets.xlsx');
     }
 
-    /**
-     *
-     */
     public function test_unknown_sheet_indices_can_be_ignored()
     {
         $import = new class implements WithMultipleSheets, SkipsUnknownSheets
@@ -243,9 +222,6 @@ class WithMultipleSheetsTest extends TestCase
         $this->assertEquals(99999, $import->unknown);
     }
 
-    /**
-     *
-     */
     public function test_unknown_sheet_indices_can_be_ignored_per_sheet()
     {
         $import = new class implements WithMultipleSheets
@@ -272,9 +248,6 @@ class WithMultipleSheetsTest extends TestCase
         $import->import('import-multiple-sheets.xlsx');
     }
 
-    /**
-     *
-     */
     public function test_can_import_multiple_sheets()
     {
         $import = new class implements WithMultipleSheets
@@ -311,9 +284,6 @@ class WithMultipleSheetsTest extends TestCase
         $import->import('import-multiple-sheets.xlsx');
     }
 
-    /**
-     *
-     */
     public function test_can_import_multiple_sheets_by_sheet_name()
     {
         $import = new class implements WithMultipleSheets
@@ -350,9 +320,6 @@ class WithMultipleSheetsTest extends TestCase
         $import->import('import-multiple-sheets.xlsx');
     }
 
-    /**
-     *
-     */
     public function test_can_import_multiple_sheets_by_sheet_index_and_name()
     {
         $import = new class implements WithMultipleSheets
@@ -406,9 +373,6 @@ class WithMultipleSheetsTest extends TestCase
         }
     }
 
-    /**
-     *
-     */
     public function test_can_import_multiple_sheets_by_sheet_name_and_index()
     {
         $import = new class implements WithMultipleSheets

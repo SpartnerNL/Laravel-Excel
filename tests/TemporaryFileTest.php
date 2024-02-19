@@ -29,9 +29,6 @@ class TemporaryFileTest extends TestCase
         @rmdir($path);
     }
 
-    /**
-     *
-     */
     public function test_can_use_default_rights()
     {
         $path = FileHelper::absolutePath('rights-test', 'local');
@@ -49,9 +46,6 @@ class TemporaryFileTest extends TestCase
         $this->assertEquals($this->defaultFilePermissions, substr(sprintf('%o', fileperms($temporaryFile->getLocalPath())), -4));
     }
 
-    /**
-     *
-     */
     public function test_can_use_dir_rights()
     {
         $path = FileHelper::absolutePath('rights-test', 'local');
@@ -70,9 +64,6 @@ class TemporaryFileTest extends TestCase
         $this->assertEquals($this->defaultFilePermissions, substr(sprintf('%o', fileperms($temporaryFile->getLocalPath())), -4));
     }
 
-    /**
-     *
-     */
     public function test_can_use_file_rights()
     {
         $path = FileHelper::absolutePath('rights-test', 'local');

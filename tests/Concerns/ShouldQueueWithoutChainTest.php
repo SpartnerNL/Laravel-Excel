@@ -23,9 +23,6 @@ class ShouldQueueWithoutChainTest extends TestCase
         $this->loadMigrationsFrom(dirname(__DIR__) . '/Data/Stubs/Database/Migrations');
     }
 
-    /**
-     *
-     */
     public function test_can_import_to_model_in_chunks()
     {
         DB::connection()->enableQueryLog();
@@ -37,9 +34,6 @@ class ShouldQueueWithoutChainTest extends TestCase
         DB::connection()->disableQueryLog();
     }
 
-    /**
-     *
-     */
     public function test_can_import_to_model_without_job_chaining()
     {
         Queue::fake();
@@ -55,9 +49,6 @@ class ShouldQueueWithoutChainTest extends TestCase
         Queue::assertNotPushed(QueueImport::class);
     }
 
-    /**
-     *
-     */
     public function test_a_queue_name_can_be_specified_when_importing()
     {
         Queue::fake();
@@ -71,9 +62,6 @@ class ShouldQueueWithoutChainTest extends TestCase
         Queue::assertPushedOn('queue-name', AfterImportJob::class);
     }
 
-    /**
-     *
-     */
     public function test_the_cleanup_only_runs_when_all_jobs_are_done()
     {
         $fake = Queue::fake();

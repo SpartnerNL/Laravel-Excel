@@ -8,9 +8,6 @@ use Maatwebsite\Excel\Middleware\TrimCellValue;
 
 class CellTest extends TestCase
 {
-    /**
-     *
-     */
     public function test_can_get_cell_value()
     {
         config()->set('excel.imports.cells.middleware', []);
@@ -23,9 +20,6 @@ class CellTest extends TestCase
         $this->assertEquals('       ', Cell::make($worksheet->getActiveSheet(), 'A2')->getValue());
     }
 
-    /**
-     *
-     */
     public function test_can_trim_empty_cells()
     {
         config()->set('excel.imports.cells.middleware', [
@@ -39,9 +33,6 @@ class CellTest extends TestCase
         config()->set('excel.imports.cells.middleware', []);
     }
 
-    /**
-     *
-     */
     public function test_convert_empty_cells_to_null()
     {
         config()->set('excel.imports.cells.middleware', [

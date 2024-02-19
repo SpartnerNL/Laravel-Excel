@@ -13,9 +13,6 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class ExportableTest extends TestCase
 {
-    /**
-     *
-     */
     public function test_needs_to_have_a_file_name_when_downloading()
     {
         $this->expectException(\Maatwebsite\Excel\Exceptions\NoFilenameGivenException::class);
@@ -29,9 +26,6 @@ class ExportableTest extends TestCase
         $export->download();
     }
 
-    /**
-     *
-     */
     public function test_needs_to_have_a_file_name_when_storing()
     {
         $this->expectException(\Maatwebsite\Excel\Exceptions\NoFilePathGivenException::class);
@@ -45,9 +39,6 @@ class ExportableTest extends TestCase
         $export->store();
     }
 
-    /**
-     *
-     */
     public function test_needs_to_have_a_file_name_when_queuing()
     {
         $this->expectException(\Maatwebsite\Excel\Exceptions\NoFilePathGivenException::class);
@@ -61,9 +52,6 @@ class ExportableTest extends TestCase
         $export->queue();
     }
 
-    /**
-     *
-     */
     public function test_responsable_needs_to_have_file_name_configured_inside_the_export()
     {
         $this->expectException(\Maatwebsite\Excel\Exceptions\NoFilenameGivenException::class);
@@ -77,9 +65,6 @@ class ExportableTest extends TestCase
         $export->toResponse(new Request());
     }
 
-    /**
-     *
-     */
     public function test_is_responsable()
     {
         $export = new class implements Responsable
@@ -96,9 +81,6 @@ class ExportableTest extends TestCase
         $this->assertInstanceOf(BinaryFileResponse::class, $response);
     }
 
-    /**
-     *
-     */
     public function test_can_have_customized_header()
     {
         $export   = new class
@@ -115,9 +97,6 @@ class ExportableTest extends TestCase
         $this->assertEquals('text/csv', $response->headers->get('Content-Type'));
     }
 
-    /**
-     *
-     */
     public function test_can_set_custom_headers_in_export_class()
     {
         $export   = new class
@@ -135,9 +114,6 @@ class ExportableTest extends TestCase
         $this->assertEquals('text/csv', $response->headers->get('Content-Type'));
     }
 
-    /**
-     *
-     */
     public function test_can_get_raw_export_contents()
     {
         $export = new EmptyExport;
@@ -147,9 +123,6 @@ class ExportableTest extends TestCase
         $this->assertNotEmpty($response);
     }
 
-    /**
-     *
-     */
     public function test_can_have_customized_disk_options_when_storing()
     {
         $export = new EmptyExport;
@@ -161,9 +134,6 @@ class ExportableTest extends TestCase
         $export->store('name.csv', 's3', Excel::CSV, ['visibility' => 'private']);
     }
 
-    /**
-     *
-     */
     public function test_can_have_customized_disk_options_when_queueing()
     {
         $export = new EmptyExport;
@@ -175,9 +145,6 @@ class ExportableTest extends TestCase
         $export->queue('name.csv', 's3', Excel::CSV, ['visibility' => 'private']);
     }
 
-    /**
-     *
-     */
     public function test_can_set_disk_options_in_export_class_when_storing()
     {
         $export = new class
@@ -196,9 +163,6 @@ class ExportableTest extends TestCase
         $export->store('name.csv');
     }
 
-    /**
-     *
-     */
     public function test_can_set_disk_options_in_export_class_when_queuing()
     {
         $export = new class
@@ -217,9 +181,6 @@ class ExportableTest extends TestCase
         $export->queue('name.csv');
     }
 
-    /**
-     *
-     */
     public function test_can_override_export_class_disk_options_when_calling_store()
     {
         $export = new class
@@ -236,9 +197,6 @@ class ExportableTest extends TestCase
         $export->store('name.csv', 's3', Excel::CSV, ['visibility' => 'private']);
     }
 
-    /**
-     *
-     */
     public function test_can_override_export_class_disk_options_when_calling_queue()
     {
         $export = new class
@@ -255,9 +213,6 @@ class ExportableTest extends TestCase
         $export->queue('name.csv', 's3', Excel::CSV, ['visibility' => 'private']);
     }
 
-    /**
-     *
-     */
     public function test_can_have_empty_disk_options_when_storing()
     {
         $export = new EmptyExport;
@@ -269,9 +224,6 @@ class ExportableTest extends TestCase
         $export->store('name.csv');
     }
 
-    /**
-     *
-     */
     public function test_can_have_empty_disk_options_when_queueing()
     {
         $export = new EmptyExport;

@@ -16,9 +16,6 @@ use PHPUnit\Framework\Assert;
 
 class WithCalculatedFormulasTest extends TestCase
 {
-    /**
-     *
-     */
     public function test_by_default_does_not_calculate_formulas()
     {
         $import = new class implements ToArray
@@ -43,9 +40,6 @@ class WithCalculatedFormulasTest extends TestCase
         $this->assertTrue($import->called);
     }
 
-    /**
-     *
-     */
     public function test_can_import_to_array_with_calculated_formulas()
     {
         $import = new class implements ToArray, WithCalculatedFormulas
@@ -70,9 +64,6 @@ class WithCalculatedFormulasTest extends TestCase
         $this->assertTrue($import->called);
     }
 
-    /**
-     *
-     */
     public function test_can_import_to_model_with_calculated_formulas()
     {
         $import = new class implements ToModel, WithCalculatedFormulas
@@ -132,9 +123,6 @@ class WithCalculatedFormulasTest extends TestCase
         $this->assertTrue($import->called);
     }
 
-    /**
-     *
-     */
     public function test_can_import_to_array_with_calculated_formulas_and_multi_sheet_references()
     {
         $import = new class implements WithMultipleSheets, HasReferencesToOtherSheets
@@ -175,9 +163,6 @@ class WithCalculatedFormulasTest extends TestCase
         $import->import('import-formulas-multiple-sheets.xlsx');
     }
 
-    /**
-     *
-     */
     public function test_can_import_to_array_with_calculated_formulas_and_skips_empty()
     {
         $import = new class implements ToArray, WithCalculatedFormulas, SkipsEmptyRows
@@ -202,9 +187,6 @@ class WithCalculatedFormulasTest extends TestCase
         $this->assertTrue($import->called);
     }
 
-    /**
-     *
-     */
     public function test_can_import_to_model_with_calculated_formulas_and_skips_empty()
     {
         $import = new class implements ToModel, WithCalculatedFormulas, SkipsEmptyRows

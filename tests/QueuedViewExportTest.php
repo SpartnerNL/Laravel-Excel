@@ -21,9 +21,6 @@ class QueuedViewExportTest extends TestCase
         $this->withFactories(__DIR__ . '/Data/Stubs/Database/Factories');
     }
 
-    /**
-     *
-     */
     public function test_can_queue_an_export()
     {
         $users  = factory(User::class)->times(100)->create([]);
@@ -38,9 +35,6 @@ class QueuedViewExportTest extends TestCase
         $this->assertCount(101, $actual);
     }
 
-    /**
-     *
-     */
     public function test_can_export_multiple_sheets_from_view()
     {
         /** @var Collection|User[] $users */
