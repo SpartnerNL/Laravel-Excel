@@ -26,9 +26,9 @@ class SkipsOnErrorTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function can_skip_on_error()
+    public function test_can_skip_on_error()
     {
         $import = new class implements ToModel, SkipsOnError
         {
@@ -77,9 +77,9 @@ class SkipsOnErrorTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function can_skip_errors_and_collect_all_errors_at_the_end()
+    public function test_can_skip_errors_and_collect_all_errors_at_the_end()
     {
         $import = new class implements ToModel, SkipsOnError
         {

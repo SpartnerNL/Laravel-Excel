@@ -12,9 +12,9 @@ use PHPUnit\Framework\Assert;
 class ImportableTest extends TestCase
 {
     /**
-     * @test
+     *
      */
-    public function can_import_a_simple_xlsx_file()
+    public function test_can_import_a_simple_xlsx_file()
     {
         $import = new class implements ToArray
         {
@@ -38,9 +38,9 @@ class ImportableTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function can_import_a_simple_xlsx_file_from_uploaded_file()
+    public function test_can_import_a_simple_xlsx_file_from_uploaded_file()
     {
         $import = new class implements ToArray
         {
@@ -62,9 +62,9 @@ class ImportableTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function can_import_a_simple_csv_file_with_html_tags_inside()
+    public function test_can_import_a_simple_csv_file_with_html_tags_inside()
     {
         $import = new class implements ToArray
         {
@@ -90,9 +90,9 @@ class ImportableTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function can_import_a_simple_xlsx_file_with_ignore_empty_set_to_true()
+    public function test_can_import_a_simple_xlsx_file_with_ignore_empty_set_to_true()
     {
         config()->set('excel.imports.ignore_empty', true);
 
@@ -118,9 +118,9 @@ class ImportableTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function can_import_a_simple_xlsx_file_with_ignore_empty_set_to_false()
+    public function test_can_import_a_simple_xlsx_file_with_ignore_empty_set_to_false()
     {
         config()->set('excel.imports.ignore_empty', false);
 

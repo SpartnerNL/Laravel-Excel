@@ -29,9 +29,9 @@ class WithCustomQuerySizeTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function can_export_with_custom_count()
+    public function test_can_export_with_custom_count()
     {
         $export = new FromQueryWithCustomQuerySize();
 

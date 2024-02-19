@@ -17,9 +17,9 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 class ExcelFakeTest extends TestCase
 {
     /**
-     * @test
+     *
      */
-    public function can_fake_an_export()
+    public function test_can_fake_an_export()
     {
         ExcelFacade::fake();
 
@@ -28,9 +28,9 @@ class ExcelFakeTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function can_assert_against_a_fake_downloaded_export()
+    public function test_can_assert_against_a_fake_downloaded_export()
     {
         ExcelFacade::fake();
 
@@ -47,9 +47,9 @@ class ExcelFakeTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function can_assert_against_a_fake_stored_export()
+    public function test_can_assert_against_a_fake_stored_export()
     {
         ExcelFacade::fake();
 
@@ -66,9 +66,9 @@ class ExcelFakeTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function can_assert_regex_against_a_fake_stored_export_with_multiple_files()
+    public function test_can_assert_regex_against_a_fake_stored_export_with_multiple_files()
     {
         ExcelFacade::fake();
 
@@ -86,9 +86,9 @@ class ExcelFakeTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function a_callback_can_be_passed_as_the_second_argument_when_asserting_against_a_faked_stored_export()
+    public function test_a_callback_can_be_passed_as_the_second_argument_when_asserting_against_a_faked_stored_export()
     {
         ExcelFacade::fake();
 
@@ -105,9 +105,9 @@ class ExcelFakeTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function can_assert_against_a_fake_queued_export()
+    public function test_can_assert_against_a_fake_queued_export()
     {
         ExcelFacade::fake();
 
@@ -124,9 +124,9 @@ class ExcelFakeTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function can_assert_against_a_fake_implicitly_queued_export()
+    public function test_can_assert_against_a_fake_implicitly_queued_export()
     {
         ExcelFacade::fake();
 
@@ -144,9 +144,9 @@ class ExcelFakeTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function can_assert_against_a_fake_queued_export_with_chain()
+    public function test_can_assert_against_a_fake_queued_export_with_chain()
     {
         ExcelFacade::fake();
 
@@ -162,9 +162,9 @@ class ExcelFakeTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function can_assert_against_a_fake_raw_export()
+    public function test_can_assert_against_a_fake_raw_export()
     {
         ExcelFacade::fake();
 
@@ -179,9 +179,9 @@ class ExcelFakeTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function can_assert_against_a_fake_import()
+    public function test_can_assert_against_a_fake_import()
     {
         ExcelFacade::fake();
 
@@ -196,9 +196,9 @@ class ExcelFakeTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function can_assert_against_a_fake_import_with_uploaded_file()
+    public function test_can_assert_against_a_fake_import_with_uploaded_file()
     {
         ExcelFacade::fake();
 
@@ -213,9 +213,9 @@ class ExcelFakeTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function can_assert_against_a_fake_queued_import()
+    public function test_can_assert_against_a_fake_queued_import()
     {
         ExcelFacade::fake();
 
@@ -233,9 +233,9 @@ class ExcelFakeTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function can_assert_against_a_fake_implicitly_queued_import()
+    public function test_can_assert_against_a_fake_implicitly_queued_import()
     {
         ExcelFacade::fake();
 
@@ -253,9 +253,9 @@ class ExcelFakeTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function can_assert_against_a_fake_queued_import_with_chain()
+    public function test_can_assert_against_a_fake_queued_import_with_chain()
     {
         ExcelFacade::fake();
 
@@ -271,9 +271,9 @@ class ExcelFakeTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function a_callback_can_be_passed_as_the_second_argument_when_asserting_against_a_faked_queued_export()
+    public function test_a_callback_can_be_passed_as_the_second_argument_when_asserting_against_a_faked_queued_export()
     {
         ExcelFacade::fake();
 

@@ -21,9 +21,9 @@ use Throwable;
 class QueuedExportTest extends TestCase
 {
     /**
-     * @test
+     *
      */
-    public function can_queue_an_export()
+    public function test_can_queue_an_export()
     {
         $export = new QueuedExport();
 
@@ -33,9 +33,9 @@ class QueuedExportTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function can_queue_an_export_and_store_on_different_disk()
+    public function test_can_queue_an_export_and_store_on_different_disk()
     {
         $export = new QueuedExport();
 
@@ -45,9 +45,9 @@ class QueuedExportTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function can_queue_export_with_remote_temp_disk()
+    public function test_can_queue_export_with_remote_temp_disk()
     {
         config()->set('excel.temporary_files.remote_disk', 'test');
 
@@ -89,9 +89,9 @@ class QueuedExportTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function can_queue_export_with_remote_temp_disk_and_prefix()
+    public function test_can_queue_export_with_remote_temp_disk_and_prefix()
     {
         config()->set('excel.temporary_files.remote_disk', 'test');
         config()->set('excel.temporary_files.remote_prefix', 'tmp/');
@@ -104,9 +104,9 @@ class QueuedExportTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function can_implicitly_queue_an_export()
+    public function test_can_implicitly_queue_an_export()
     {
         $export = new ShouldQueueExport();
 
@@ -116,9 +116,9 @@ class QueuedExportTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function can_queue_export_with_mapping_on_eloquent_models()
+    public function test_can_queue_export_with_mapping_on_eloquent_models()
     {
         $export = new EloquentCollectionWithMappingExport();
 
@@ -134,9 +134,9 @@ class QueuedExportTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function can_catch_failures()
+    public function test_can_catch_failures()
     {
         $export = new QueuedExportWithFailedHook();
         try {
@@ -148,9 +148,9 @@ class QueuedExportTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function can_catch_failures_on_queue_export_job()
+    public function test_can_catch_failures_on_queue_export_job()
     {
         $export = new QueuedExportWithFailedEvents();
 
@@ -163,9 +163,9 @@ class QueuedExportTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function can_set_locale_on_queue_export_job()
+    public function test_can_set_locale_on_queue_export_job()
     {
         $currentLocale = app()->getLocale();
 
@@ -179,9 +179,9 @@ class QueuedExportTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function can_queue_export_not_flushing_the_cache()
+    public function test_can_queue_export_not_flushing_the_cache()
     {
         config()->set('excel.cache.driver', 'illuminate');
 

@@ -25,9 +25,9 @@ class WithLimitTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function can_import_a_limited_section_of_rows_to_model_with_different_start_row()
+    public function test_can_import_a_limited_section_of_rows_to_model_with_different_start_row()
     {
         $import = new class implements ToModel, WithStartRow, WithLimit
         {
@@ -77,9 +77,9 @@ class WithLimitTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function can_import_to_array_with_limit()
+    public function test_can_import_to_array_with_limit()
     {
         $import = new class implements ToArray, WithLimit
         {
@@ -111,9 +111,9 @@ class WithLimitTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function can_set_limit_bigger_than_row_size()
+    public function test_can_set_limit_bigger_than_row_size()
     {
         $import = new class implements ToArray, WithLimit
         {

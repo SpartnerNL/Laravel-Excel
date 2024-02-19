@@ -11,9 +11,9 @@ use PhpOffice\PhpSpreadsheet\Style\Fill;
 class WithBackgroundColorTest extends TestCase
 {
     /**
-     * @test
+     *
      */
-    public function can_configure_background_color_from_rgb_string()
+    public function test_can_configure_background_color_from_rgb_string()
     {
         $export = new class implements WithBackgroundColor
         {
@@ -35,9 +35,9 @@ class WithBackgroundColorTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function can_configure_background_color_as_array()
+    public function test_can_configure_background_color_as_array()
     {
         $export = new class implements WithBackgroundColor
         {
@@ -62,9 +62,9 @@ class WithBackgroundColorTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function can_configure_background_color_with_color_instance()
+    public function test_can_configure_background_color_with_color_instance()
     {
         $export = new class implements WithBackgroundColor
         {

@@ -12,9 +12,9 @@ use Maatwebsite\Excel\Tests\TestCase;
 class WithStrictNullComparisonTest extends TestCase
 {
     /**
-     * @test
+     *
      */
-    public function exported_zero_values_are_not_null_when_exporting_with_strict_null_comparison()
+    public function test_exported_zero_values_are_not_null_when_exporting_with_strict_null_comparison()
     {
         $export = new class implements FromCollection, WithHeadings, WithStrictNullComparison
         {
@@ -54,9 +54,9 @@ class WithStrictNullComparisonTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function exported_zero_values_are_null_when_not_exporting_with_strict_null_comparison()
+    public function test_exported_zero_values_are_null_when_not_exporting_with_strict_null_comparison()
     {
         $export = new class implements FromCollection, WithHeadings
         {
@@ -96,9 +96,9 @@ class WithStrictNullComparisonTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function exports_trailing_empty_cells()
+    public function test_exports_trailing_empty_cells()
     {
         $export = new class implements FromCollection, WithStrictNullComparison
         {
@@ -136,9 +136,9 @@ class WithStrictNullComparisonTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function exports_trailing_empty_cells_by_setting_config_strict_null_comparison()
+    public function test_exports_trailing_empty_cells_by_setting_config_strict_null_comparison()
     {
         config()->set('excel.exports.strict_null_comparison', false);
 

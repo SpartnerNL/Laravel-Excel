@@ -14,9 +14,9 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 class ExportableTest extends TestCase
 {
     /**
-     * @test
+     *
      */
-    public function needs_to_have_a_file_name_when_downloading()
+    public function test_needs_to_have_a_file_name_when_downloading()
     {
         $this->expectException(\Maatwebsite\Excel\Exceptions\NoFilenameGivenException::class);
         $this->expectExceptionMessage('A filename needs to be passed in order to download the export');
@@ -30,9 +30,9 @@ class ExportableTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function needs_to_have_a_file_name_when_storing()
+    public function test_needs_to_have_a_file_name_when_storing()
     {
         $this->expectException(\Maatwebsite\Excel\Exceptions\NoFilePathGivenException::class);
         $this->expectExceptionMessage('A filepath needs to be passed in order to store the export');
@@ -46,9 +46,9 @@ class ExportableTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function needs_to_have_a_file_name_when_queuing()
+    public function test_needs_to_have_a_file_name_when_queuing()
     {
         $this->expectException(\Maatwebsite\Excel\Exceptions\NoFilePathGivenException::class);
         $this->expectExceptionMessage('A filepath needs to be passed in order to store the export');
@@ -62,9 +62,9 @@ class ExportableTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function responsable_needs_to_have_file_name_configured_inside_the_export()
+    public function test_responsable_needs_to_have_file_name_configured_inside_the_export()
     {
         $this->expectException(\Maatwebsite\Excel\Exceptions\NoFilenameGivenException::class);
         $this->expectExceptionMessage('A filename needs to be passed in order to download the export');
@@ -78,9 +78,9 @@ class ExportableTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function is_responsable()
+    public function test_is_responsable()
     {
         $export = new class implements Responsable
         {
@@ -97,9 +97,9 @@ class ExportableTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function can_have_customized_header()
+    public function test_can_have_customized_header()
     {
         $export   = new class
         {
@@ -116,9 +116,9 @@ class ExportableTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function can_set_custom_headers_in_export_class()
+    public function test_can_set_custom_headers_in_export_class()
     {
         $export   = new class
         {
@@ -136,9 +136,9 @@ class ExportableTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function can_get_raw_export_contents()
+    public function test_can_get_raw_export_contents()
     {
         $export = new EmptyExport;
 
@@ -148,9 +148,9 @@ class ExportableTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function can_have_customized_disk_options_when_storing()
+    public function test_can_have_customized_disk_options_when_storing()
     {
         $export = new EmptyExport;
 
@@ -162,9 +162,9 @@ class ExportableTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function can_have_customized_disk_options_when_queueing()
+    public function test_can_have_customized_disk_options_when_queueing()
     {
         $export = new EmptyExport;
 
@@ -176,9 +176,9 @@ class ExportableTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function can_set_disk_options_in_export_class_when_storing()
+    public function test_can_set_disk_options_in_export_class_when_storing()
     {
         $export = new class
         {
@@ -197,9 +197,9 @@ class ExportableTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function can_set_disk_options_in_export_class_when_queuing()
+    public function test_can_set_disk_options_in_export_class_when_queuing()
     {
         $export = new class
         {
@@ -218,9 +218,9 @@ class ExportableTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function can_override_export_class_disk_options_when_calling_store()
+    public function test_can_override_export_class_disk_options_when_calling_store()
     {
         $export = new class
         {
@@ -237,9 +237,9 @@ class ExportableTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function can_override_export_class_disk_options_when_calling_queue()
+    public function test_can_override_export_class_disk_options_when_calling_queue()
     {
         $export = new class
         {
@@ -256,9 +256,9 @@ class ExportableTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function can_have_empty_disk_options_when_storing()
+    public function test_can_have_empty_disk_options_when_storing()
     {
         $export = new EmptyExport;
 
@@ -270,9 +270,9 @@ class ExportableTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function can_have_empty_disk_options_when_queueing()
+    public function test_can_have_empty_disk_options_when_queueing()
     {
         $export = new EmptyExport;
 

@@ -24,9 +24,9 @@ class ShouldQueueWithoutChainTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function can_import_to_model_in_chunks()
+    public function test_can_import_to_model_in_chunks()
     {
         DB::connection()->enableQueryLog();
 
@@ -38,9 +38,9 @@ class ShouldQueueWithoutChainTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function can_import_to_model_without_job_chaining()
+    public function test_can_import_to_model_without_job_chaining()
     {
         Queue::fake();
 
@@ -56,9 +56,9 @@ class ShouldQueueWithoutChainTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function a_queue_name_can_be_specified_when_importing()
+    public function test_a_queue_name_can_be_specified_when_importing()
     {
         Queue::fake();
 
@@ -72,9 +72,9 @@ class ShouldQueueWithoutChainTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function the_cleanup_only_runs_when_all_jobs_are_done()
+    public function test_the_cleanup_only_runs_when_all_jobs_are_done()
     {
         $fake = Queue::fake();
 

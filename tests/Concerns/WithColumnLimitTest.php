@@ -22,9 +22,9 @@ class WithColumnLimitTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function can_import_to_array_with_column_limit()
+    public function test_can_import_to_array_with_column_limit()
     {
         $import = new class implements ToArray, WithColumnLimit
         {
@@ -55,9 +55,9 @@ class WithColumnLimitTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function can_import_to_array_with_column_limit_and_skips_empty_rows()
+    public function test_can_import_to_array_with_column_limit_and_skips_empty_rows()
     {
         $import = new class implements ToArray, WithColumnLimit, SkipsEmptyRows
         {

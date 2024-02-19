@@ -12,9 +12,9 @@ use Maatwebsite\Excel\Tests\TestCase;
 class RemembersRowNumberTest extends TestCase
 {
     /**
-     * @test
+     *
      */
-    public function can_set_and_get_row_number()
+    public function test_can_set_and_get_row_number()
     {
         $import = new class
         {
@@ -28,9 +28,9 @@ class RemembersRowNumberTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function can_access_row_number_on_import_to_model()
+    public function test_can_access_row_number_on_import_to_model()
     {
         $import = new class implements ToModel
         {
@@ -51,9 +51,9 @@ class RemembersRowNumberTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function can_access_row_number_on_import_to_array_in_chunks()
+    public function test_can_access_row_number_on_import_to_array_in_chunks()
     {
         $import = new class implements ToModel, WithChunkReading
         {
@@ -79,9 +79,9 @@ class RemembersRowNumberTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function can_access_row_number_on_import_to_array_in_chunks_with_batch_inserts()
+    public function test_can_access_row_number_on_import_to_array_in_chunks_with_batch_inserts()
     {
         $import = new class implements ToModel, WithChunkReading, WithBatchInserts
         {

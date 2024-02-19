@@ -27,9 +27,9 @@ class WithMultipleSheetsTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function can_export_with_multiple_sheets_using_collections()
+    public function test_can_export_with_multiple_sheets_using_collections()
     {
         $export = new class implements WithMultipleSheets
         {
@@ -56,9 +56,9 @@ class WithMultipleSheetsTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function can_export_multiple_sheets_from_view()
+    public function test_can_export_multiple_sheets_from_view()
     {
         /** @var Collection|User[] $users */
         $users = factory(User::class)->times(300)->make();
@@ -101,9 +101,9 @@ class WithMultipleSheetsTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function unknown_sheet_index_will_throw_sheet_not_found_exception()
+    public function test_unknown_sheet_index_will_throw_sheet_not_found_exception()
     {
         $this->expectException(\Maatwebsite\Excel\Exceptions\SheetNotFoundException::class);
         $this->expectExceptionMessage('Your requested sheet index: 9999 is out of bounds. The actual number of sheets is 2.');
@@ -125,9 +125,9 @@ class WithMultipleSheetsTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function unknown_sheet_name_will_throw_sheet_not_found_exception()
+    public function test_unknown_sheet_name_will_throw_sheet_not_found_exception()
     {
         $this->expectException(\Maatwebsite\Excel\Exceptions\SheetNotFoundException::class);
         $this->expectExceptionMessage('Your requested sheet name [Some Random Sheet Name] is out of bounds.');
@@ -149,9 +149,9 @@ class WithMultipleSheetsTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function unknown_sheet_name_can_be_ignored()
+    public function test_unknown_sheet_name_can_be_ignored()
     {
         $import = new class implements WithMultipleSheets, SkipsUnknownSheets
         {
@@ -182,9 +182,9 @@ class WithMultipleSheetsTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function unknown_sheet_indices_can_be_ignored_per_name()
+    public function test_unknown_sheet_indices_can_be_ignored_per_name()
     {
         $import = new class implements WithMultipleSheets
         {
@@ -211,9 +211,9 @@ class WithMultipleSheetsTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function unknown_sheet_indices_can_be_ignored()
+    public function test_unknown_sheet_indices_can_be_ignored()
     {
         $import = new class implements WithMultipleSheets, SkipsUnknownSheets
         {
@@ -244,9 +244,9 @@ class WithMultipleSheetsTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function unknown_sheet_indices_can_be_ignored_per_sheet()
+    public function test_unknown_sheet_indices_can_be_ignored_per_sheet()
     {
         $import = new class implements WithMultipleSheets
         {
@@ -273,9 +273,9 @@ class WithMultipleSheetsTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function can_import_multiple_sheets()
+    public function test_can_import_multiple_sheets()
     {
         $import = new class implements WithMultipleSheets
         {
@@ -312,9 +312,9 @@ class WithMultipleSheetsTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function can_import_multiple_sheets_by_sheet_name()
+    public function test_can_import_multiple_sheets_by_sheet_name()
     {
         $import = new class implements WithMultipleSheets
         {
@@ -351,9 +351,9 @@ class WithMultipleSheetsTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function can_import_multiple_sheets_by_sheet_index_and_name()
+    public function test_can_import_multiple_sheets_by_sheet_index_and_name()
     {
         $import = new class implements WithMultipleSheets
         {
@@ -407,9 +407,9 @@ class WithMultipleSheetsTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function can_import_multiple_sheets_by_sheet_name_and_index()
+    public function test_can_import_multiple_sheets_by_sheet_name_and_index()
     {
         $import = new class implements WithMultipleSheets
         {

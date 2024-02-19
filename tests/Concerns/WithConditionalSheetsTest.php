@@ -21,9 +21,9 @@ class WithConditionalSheetsTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function can_select_which_sheets_will_be_imported()
+    public function test_can_select_which_sheets_will_be_imported()
     {
         $import = new class implements WithMultipleSheets
         {

@@ -26,9 +26,9 @@ class WithCustomCsvSettingsTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function can_store_csv_export_with_custom_settings()
+    public function test_can_store_csv_export_with_custom_settings()
     {
         $export = new class implements FromCollection, WithCustomCsvSettings
         {
@@ -71,9 +71,9 @@ class WithCustomCsvSettingsTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function can_store_csv_export_with_custom_encoding()
+    public function test_can_store_csv_export_with_custom_encoding()
     {
         $export = new class implements FromCollection, WithCustomCsvSettings
         {
@@ -120,9 +120,9 @@ class WithCustomCsvSettingsTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function can_read_csv_with_auto_detecting_delimiter_semicolon()
+    public function test_can_read_csv_with_auto_detecting_delimiter_semicolon()
     {
         $this->assertEquals([
             [
@@ -132,9 +132,9 @@ class WithCustomCsvSettingsTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function can_read_csv_with_auto_detecting_delimiter_comma()
+    public function test_can_read_csv_with_auto_detecting_delimiter_comma()
     {
         $this->assertEquals([
             [
@@ -144,9 +144,9 @@ class WithCustomCsvSettingsTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function can_read_csv_import_with_custom_settings()
+    public function test_can_read_csv_import_with_custom_settings()
     {
         $import = new class implements WithCustomCsvSettings, ToArray
         {
@@ -180,9 +180,9 @@ class WithCustomCsvSettingsTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function cannot_read_with_wrong_delimiter()
+    public function test_cannot_read_with_wrong_delimiter()
     {
         $import = new class implements WithCustomCsvSettings, ToArray
         {

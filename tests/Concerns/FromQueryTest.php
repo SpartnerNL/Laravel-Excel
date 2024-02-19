@@ -45,9 +45,9 @@ class FromQueryTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function can_export_from_query()
+    public function test_can_export_from_query()
     {
         $export = new FromUsersQueryExport;
 
@@ -65,9 +65,9 @@ class FromQueryTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function can_export_from_relation_query_queued()
+    public function test_can_export_from_relation_query_queued()
     {
         $export = new FromGroupUsersQueuedQueryExport();
 
@@ -83,9 +83,9 @@ class FromQueryTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function can_export_from_query_with_eager_loads()
+    public function test_can_export_from_query_with_eager_loads()
     {
         DB::connection()->enableQueryLog();
         $export = new FromUsersQueryExportWithEagerLoad();
@@ -110,9 +110,9 @@ class FromQueryTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function can_export_from_query_with_eager_loads_and_queued()
+    public function test_can_export_from_query_with_eager_loads_and_queued()
     {
         DB::connection()->enableQueryLog();
         $export = new FromUsersQueryExportWithEagerLoad();
@@ -136,9 +136,9 @@ class FromQueryTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function can_export_from_query_builder_without_using_eloquent()
+    public function test_can_export_from_query_builder_without_using_eloquent()
     {
         $export = new FromNonEloquentQueryExport();
 
@@ -156,9 +156,9 @@ class FromQueryTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function can_export_from_query_builder_without_using_eloquent_and_queued()
+    public function test_can_export_from_query_builder_without_using_eloquent_and_queued()
     {
         $export = new FromNonEloquentQueryExport();
 
@@ -174,9 +174,9 @@ class FromQueryTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function can_export_from_query_builder_with_nested_arrays()
+    public function test_can_export_from_query_builder_with_nested_arrays()
     {
         $export = new FromNestedArraysQueryExport();
 
@@ -190,9 +190,9 @@ class FromQueryTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function can_export_from_query_builder_with_nested_arrays_queued()
+    public function test_can_export_from_query_builder_with_nested_arrays_queued()
     {
         $export = new FromNestedArraysQueryExport();
 
@@ -204,9 +204,9 @@ class FromQueryTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function can_export_from_query_with_batch_caching()
+    public function test_can_export_from_query_with_batch_caching()
     {
         config()->set('excel.cache.driver', 'batch');
 
@@ -226,9 +226,9 @@ class FromQueryTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function can_export_from_query_with_prepare_rows()
+    public function test_can_export_from_query_with_prepare_rows()
     {
         $export = new FromUsersQueryExportWithPrepareRows;
 
@@ -250,9 +250,9 @@ class FromQueryTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function can_export_from_scout()
+    public function test_can_export_from_scout()
     {
         if (!class_exists('\Laravel\Scout\Engines\DatabaseEngine')) {
             $this->markTestSkipped('Laravel Scout is too old');

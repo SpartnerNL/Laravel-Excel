@@ -26,9 +26,9 @@ class WithHeadingRowTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function can_import_each_row_to_model_with_heading_row()
+    public function test_can_import_each_row_to_model_with_heading_row()
     {
         $import = new class implements ToModel, WithHeadingRow
         {
@@ -62,9 +62,9 @@ class WithHeadingRowTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function can_import_each_row_to_model_with_different_heading_row()
+    public function test_can_import_each_row_to_model_with_different_heading_row()
     {
         $import = new class implements ToModel, WithHeadingRow
         {
@@ -106,9 +106,9 @@ class WithHeadingRowTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function can_import_to_array_with_heading_row()
+    public function test_can_import_to_array_with_heading_row()
     {
         $import = new class implements ToArray, WithHeadingRow
         {
@@ -136,9 +136,9 @@ class WithHeadingRowTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function can_import_empty_rows_with_header()
+    public function test_can_import_empty_rows_with_header()
     {
         $import = new class() implements ToArray, WithHeadingRow
         {
@@ -157,9 +157,9 @@ class WithHeadingRowTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function can_import_empty_models_with_header()
+    public function test_can_import_empty_models_with_header()
     {
         $import = new class() implements ToModel, WithHeadingRow
         {
@@ -184,9 +184,9 @@ class WithHeadingRowTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function can_cast_empty_headers_to_indexed_int()
+    public function test_can_cast_empty_headers_to_indexed_int()
     {
         $import = new class() implements ToCollection, WithHeadingRow
         {

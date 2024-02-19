@@ -12,9 +12,9 @@ use Maatwebsite\Excel\Tests\TestCase;
 class WithHeadingsTest extends TestCase
 {
     /**
-     * @test
+     *
      */
-    public function can_export_from_collection_with_heading_row()
+    public function test_can_export_from_collection_with_heading_row()
     {
         $export = new class implements FromCollection, WithHeadings
         {
@@ -56,9 +56,9 @@ class WithHeadingsTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function can_export_from_collection_with_multiple_heading_rows()
+    public function test_can_export_from_collection_with_multiple_heading_rows()
     {
         $export = new class implements FromCollection, WithHeadings
         {
@@ -104,9 +104,9 @@ class WithHeadingsTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function can_export_from_collection_with_heading_row_with_custom_start_cell()
+    public function test_can_export_from_collection_with_heading_row_with_custom_start_cell()
     {
         $export = new class implements FromCollection, WithHeadings, WithCustomStartCell
         {

@@ -28,9 +28,9 @@ class HeadingRowImportTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function can_import_only_heading_row_with_custom_heading_row_formatter()
+    public function test_can_import_only_heading_row_with_custom_heading_row_formatter()
     {
         HeadingRowFormatter::extend('custom', function ($value) {
             return 'custom-' . $value;
@@ -50,9 +50,9 @@ class HeadingRowImportTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function can_import_only_heading_row_with_custom_heading_row_formatter_with_key()
+    public function test_can_import_only_heading_row_with_custom_heading_row_formatter_with_key()
     {
         HeadingRowFormatter::extend('custom', function ($value, $key) {
             return $key;
@@ -72,9 +72,9 @@ class HeadingRowImportTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function can_import_only_heading_row_with_custom_row_number()
+    public function test_can_import_only_heading_row_with_custom_row_number()
     {
         $import = new HeadingRowImport(2);
 
@@ -88,9 +88,9 @@ class HeadingRowImportTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function can_import_only_heading_row_for_multiple_sheets()
+    public function test_can_import_only_heading_row_for_multiple_sheets()
     {
         $import = new HeadingRowImport();
 
@@ -107,9 +107,9 @@ class HeadingRowImportTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function can_import_only_heading_row_for_multiple_sheets_with_key()
+    public function test_can_import_only_heading_row_for_multiple_sheets_with_key()
     {
         HeadingRowFormatter::extend('custom', function ($value, $key) {
             return $key;
@@ -131,9 +131,9 @@ class HeadingRowImportTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function can_import_only_heading_row_for_multiple_sheets_with_custom_row_number()
+    public function test_can_import_only_heading_row_for_multiple_sheets_with_custom_row_number()
     {
         $import = new HeadingRowImport(2);
 
@@ -150,9 +150,9 @@ class HeadingRowImportTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function can_import_heading_row_with_custom_formatter_defined_in_config()
+    public function test_can_import_heading_row_with_custom_formatter_defined_in_config()
     {
         HeadingRowFormatter::extend('custom2', function ($value) {
             return 'custom2-' . $value;

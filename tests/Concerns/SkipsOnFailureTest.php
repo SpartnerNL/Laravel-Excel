@@ -32,9 +32,9 @@ class SkipsOnFailureTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function can_skip_on_error()
+    public function test_can_skip_on_error()
     {
         $import = new class implements ToModel, WithValidation, SkipsOnFailure
         {
@@ -101,9 +101,9 @@ class SkipsOnFailureTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function skips_only_failed_rows_in_batch()
+    public function test_skips_only_failed_rows_in_batch()
     {
         $import = new class implements ToModel, WithValidation, WithBatchInserts, SkipsOnFailure
         {
@@ -173,9 +173,9 @@ class SkipsOnFailureTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function can_skip_failures_and_collect_all_failures_at_the_end()
+    public function test_can_skip_failures_and_collect_all_failures_at_the_end()
     {
         $import = new class implements ToModel, WithValidation, SkipsOnFailure
         {
@@ -228,9 +228,9 @@ class SkipsOnFailureTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function can_validate_using_oneachrow_and_skipsonfailure()
+    public function test_can_validate_using_oneachrow_and_skipsonfailure()
     {
         $import = new class implements OnEachRow, WithValidation, SkipsOnFailure
         {
@@ -279,9 +279,9 @@ class SkipsOnFailureTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function can_validate_using_tocollection_and_skipsonfailure()
+    public function test_can_validate_using_tocollection_and_skipsonfailure()
     {
         $import = new class implements ToCollection, WithValidation, SkipsOnFailure
         {

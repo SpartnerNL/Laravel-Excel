@@ -18,9 +18,9 @@ class ImportAsMacroTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function can_import_directly_into_a_model_with_mapping()
+    public function test_can_import_directly_into_a_model_with_mapping()
     {
         User::query()->truncate();
 

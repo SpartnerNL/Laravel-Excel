@@ -25,9 +25,9 @@ class QueuedQueryExportTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function can_queue_an_export()
+    public function test_can_queue_an_export()
     {
         $export = new FromUsersQueryExport();
 
@@ -44,9 +44,9 @@ class QueuedQueryExportTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function can_queue_an_export_with_batch_cache_and_file_store()
+    public function test_can_queue_an_export_with_batch_cache_and_file_store()
     {
         config()->set('queue.default', 'sync');
         config()->set('excel.cache.driver', 'batch');
@@ -67,9 +67,9 @@ class QueuedQueryExportTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function can_queue_an_export_with_mapping()
+    public function test_can_queue_an_export_with_mapping()
     {
         $export = new FromUsersQueryExportWithMapping();
 
@@ -87,9 +87,9 @@ class QueuedQueryExportTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function can_queue_scout_export()
+    public function test_can_queue_scout_export()
     {
         if (!class_exists('\Laravel\Scout\Engines\DatabaseEngine')) {
             $this->markTestSkipped('Laravel Scout is too old');

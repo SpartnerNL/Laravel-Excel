@@ -9,9 +9,9 @@ use Maatwebsite\Excel\Tests\TestCase;
 class WithPropertiesTest extends TestCase
 {
     /**
-     * @test
+     *
      */
-    public function can_set_custom_document_properties()
+    public function test_can_set_custom_document_properties()
     {
         $export = new class implements WithProperties
         {
@@ -50,9 +50,9 @@ class WithPropertiesTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function it_merges_with_default_properties()
+    public function test_it_merges_with_default_properties()
     {
         config()->set('excel.exports.properties.title', 'Default Title');
         config()->set('excel.exports.properties.description', 'Default Description');
@@ -79,9 +79,9 @@ class WithPropertiesTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function it_ignores_empty_properties()
+    public function test_it_ignores_empty_properties()
     {
         $export = new class implements WithProperties
         {

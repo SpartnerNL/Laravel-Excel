@@ -15,9 +15,9 @@ use PHPUnit\Framework\Assert;
 class WithFormatDataTest extends TestCase
 {
     /**
-     * @test
+     *
      */
-    public function by_default_import_to_array()
+    public function test_by_default_import_to_array()
     {
         $import = new class implements ToArray
         {
@@ -42,9 +42,9 @@ class WithFormatDataTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function can_import_to_array_with_format_data()
+    public function test_can_import_to_array_with_format_data()
     {
         config()->set('excel.imports.read_only', false);
         $import = new class implements ToArray, WithFormatData
@@ -70,9 +70,9 @@ class WithFormatDataTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function can_import_to_array_with_format_data_and_skips_empty_rows()
+    public function test_can_import_to_array_with_format_data_and_skips_empty_rows()
     {
         config()->set('excel.imports.read_only', false);
         $import = new class implements ToArray, WithFormatData, SkipsEmptyRows
@@ -98,9 +98,9 @@ class WithFormatDataTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function by_default_import_to_collection()
+    public function test_by_default_import_to_collection()
     {
         $import = new class implements ToCollection
         {
@@ -128,9 +128,9 @@ class WithFormatDataTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function can_import_to_collection_with_format_data()
+    public function test_can_import_to_collection_with_format_data()
     {
         config()->set('excel.imports.read_only', false);
         $import = new class implements ToCollection, WithFormatData
@@ -159,9 +159,9 @@ class WithFormatDataTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function by_default_import_to_model()
+    public function test_by_default_import_to_model()
     {
         $import = new class implements ToModel
         {
@@ -189,9 +189,9 @@ class WithFormatDataTest extends TestCase
     }
 
     /**
-     * @test
+     *
      */
-    public function can_import_to_model_with_format_data()
+    public function test_can_import_to_model_with_format_data()
     {
         config()->set('excel.imports.read_only', false);
         $import = new class implements ToModel, WithFormatData
