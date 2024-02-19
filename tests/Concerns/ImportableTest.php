@@ -2,6 +2,7 @@
 
 namespace Maatwebsite\Excel\Tests\Concerns;
 
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\ToArray;
 use Maatwebsite\Excel\Excel;
@@ -130,5 +131,17 @@ class ImportableTest extends TestCase
         $imported = $import->import('import-with-some-empty-rows.xlsx');
 
         $this->assertInstanceOf(Importer::class, $imported);
+    }
+
+    public function test_cannot_import_a_non_existing_xlsx_file()
+    {
+        $this->expectException(FileNotFoundException::class);
+
+        $import = new class
+        {
+            use Importable;
+        };
+
+        $import->import('doesnotexistanywhere.xlsx');
     }
 }
