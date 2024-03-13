@@ -10,9 +10,8 @@ class DefaultValueBinder extends PhpSpreadsheetDefaultValueBinder
     /**
      * @param  Cell  $cell  Cell to bind value to
      * @param  mixed  $value  Value to bind in cell
-     * @return bool
      */
-    public function bindValue(Cell $cell, $value)
+    public function bindValue(Cell $cell, mixed $value): bool
     {
         if (is_array($value)) {
             $value = \json_encode($value);
