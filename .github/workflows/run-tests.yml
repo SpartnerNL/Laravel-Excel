@@ -24,10 +24,13 @@ jobs:
     strategy:
       matrix:
         php: [7.4, 8.0, 8.1, 8.2, 8.3, 8.4]
-        laravel: [11, 10, 9, 8, 7, 6, 5.8]
+        laravel: [12, 11, 10, 9, 8, 7, 6, 5.8]
         dependency-version: [prefer-stable]
         os: [ubuntu-latest]
         include:
+          - laravel: 12
+            scout: 10.*
+            testbench: 10.*
           - laravel: 11
             scout: 10.*
             testbench: 9.*
@@ -50,6 +53,12 @@ jobs:
             scout: 7.1.*
             testbench: 3.8.*
         exclude:
+          - laravel: 12
+            php: 8.1
+          - laravel: 12
+            php: 8.0
+          - laravel: 12
+            php: 7.4
           - laravel: 11
             php: 8.1
           - laravel: 11
@@ -97,7 +106,7 @@ jobs:
           - laravel: 5.8
             php: 8.3
           - laravel: 5.8
-            php: 8.4 
+            php: 8.4
 
     name: PHP${{ matrix.php }} - L${{ matrix.laravel }}
 
