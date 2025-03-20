@@ -10,6 +10,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\Jobs\SyncJob;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ShouldQueueWithoutChain;
+use Maatwebsite\Excel\Concerns\SkipsUnknownSheets;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\WithLimit;
@@ -57,6 +58,13 @@ class ChunkReader
 
         $jobs = new Collection();
         foreach ($worksheets as $name => $sheetImport) {
+            if (array_key_exists($name, $totalRows) === false) {
+                if ($import instanceof SkipsUnknownSheets) {
+                    $import->onUnknownSheet($name);
+                    continue;
+                }
+            }
+
             $startRow = HeadingRowExtractor::determineStartRow($sheetImport);
 
             if ($sheetImport instanceof WithLimit) {
