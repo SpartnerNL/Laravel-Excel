@@ -15,6 +15,7 @@ use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\WithLimit;
 use Maatwebsite\Excel\Concerns\WithProgressBar;
+use Maatwebsite\Excel\Exceptions\SheetNotFoundException;
 use Maatwebsite\Excel\Files\TemporaryFile;
 use Maatwebsite\Excel\Imports\HeadingRowExtractor;
 use Maatwebsite\Excel\Jobs\AfterImportJob;
@@ -39,6 +40,7 @@ class ChunkReader
      * @param  Reader  $reader
      * @param  TemporaryFile  $temporaryFile
      * @return PendingDispatch|Collection|null
+     * @throws SheetNotFoundException
      */
     public function read(WithChunkReading $import, Reader $reader, TemporaryFile $temporaryFile)
     {
@@ -63,6 +65,8 @@ class ChunkReader
                     $import->onUnknownSheet($name);
                     continue;
                 }
+
+                throw SheetNotFoundException::byName($name);
             }
 
             $startRow = HeadingRowExtractor::determineStartRow($sheetImport);
