@@ -40,6 +40,7 @@ class ChunkReader
      * @param  Reader  $reader
      * @param  TemporaryFile  $temporaryFile
      * @return PendingDispatch|Collection|null
+     * 
      * @throws SheetNotFoundException
      */
     public function read(WithChunkReading $import, Reader $reader, TemporaryFile $temporaryFile)
