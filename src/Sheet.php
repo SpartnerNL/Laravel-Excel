@@ -699,10 +699,10 @@ class Sheet
 
         // Convert StdObjects to arrays
         if (is_object($row)) {
-            return json_decode(json_encode($row), true);
+            $row = json_decode(json_encode($row), true);
         }
 
-        return $row;
+        return $row ?? [];
     }
 
     /**
