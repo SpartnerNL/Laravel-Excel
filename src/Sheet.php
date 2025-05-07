@@ -809,4 +809,10 @@ class Sheet
             return $import->prepareForValidation($data, $index);
         };
     }
+
+    public function getTitle(): string
+    {
+            return $this->worksheet->getTitle();
+    }
+    
 }
