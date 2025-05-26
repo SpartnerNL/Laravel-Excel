@@ -2,6 +2,7 @@
 
 namespace Maatwebsite\Excel\Tests\Data\Stubs\Database;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -10,11 +11,13 @@ use Laravel\Scout\Engines\Engine;
 use Laravel\Scout\Engines\NullEngine;
 use Laravel\Scout\Searchable;
 use Maatwebsite\Excel\Tests\Concerns\FromQueryTest;
+use Maatwebsite\Excel\Tests\Data\Stubs\Database\Factories\UserFactory;
 use Maatwebsite\Excel\Tests\QueuedQueryExportTest;
 
 class User extends Model
 {
     use Searchable;
+    use HasFactory;
 
     /**
      * @var array
@@ -32,6 +35,11 @@ class User extends Model
      * @var array
      */
     protected $hidden = ['password', 'email_verified_at', 'options', 'group_id'];
+
+    protected static function newFactory(): UserFactory
+    {
+        return UserFactory::new();
+    }
 
     public function groups(): BelongsToMany
     {

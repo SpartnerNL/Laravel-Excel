@@ -16,9 +16,8 @@ class StoreQueryMacroTest extends TestCase
         parent::setUp();
 
         $this->loadLaravelMigrations(['--database' => 'testing']);
-        $this->withFactories(__DIR__ . '/../Data/Stubs/Database/Factories');
 
-        factory(User::class)->times(100)->create();
+        User::factory()->count(100)->create();
     }
 
     public function test_can_download_a_query_as_excel()

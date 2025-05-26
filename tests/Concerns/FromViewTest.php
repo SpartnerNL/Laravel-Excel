@@ -13,20 +13,17 @@ use Maatwebsite\Excel\Tests\TestCase;
 
 class FromViewTest extends TestCase
 {
-    /**
-     * Setup the test environment.
-     */
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->withFactories(__DIR__ . '/../Data/Stubs/Database/Factories');
+        $this->loadLaravelMigrations(['--database' => 'testing']);
     }
 
     public function test_can_export_from_view()
     {
         /** @var Collection|User[] $users */
-        $users = factory(User::class)->times(100)->make();
+        $users = User::factory()->count(100)->create();
 
         $export = new class($users) implements FromView
         {
@@ -75,7 +72,7 @@ class FromViewTest extends TestCase
     public function test_can_export_multiple_sheets_from_view()
     {
         /** @var Collection|User[] $users */
-        $users = factory(User::class)->times(300)->make();
+        $users = User::factory()->count(300)->create();
 
         $export = new class($users) implements WithMultipleSheets
         {

@@ -18,12 +18,11 @@ class QueuedViewExportTest extends TestCase
         parent::setUp();
 
         $this->loadLaravelMigrations(['--database' => 'testing']);
-        $this->withFactories(__DIR__ . '/Data/Stubs/Database/Factories');
     }
 
     public function test_can_queue_an_export()
     {
-        $users  = factory(User::class)->times(100)->create([]);
+        $users = User::factory()->count(100)->create();
         $export = new SheetForUsersFromView($users);
 
         $export->queue('queued-view-export.xlsx')->chain([
@@ -38,7 +37,7 @@ class QueuedViewExportTest extends TestCase
     public function test_can_export_multiple_sheets_from_view()
     {
         /** @var Collection|User[] $users */
-        $users = factory(User::class)->times(300)->make();
+        $users = User::factory()->count(300)->create();
 
         $export = new FromViewExportWithMultipleSheets($users);
 

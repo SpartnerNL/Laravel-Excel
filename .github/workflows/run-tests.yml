@@ -9,7 +9,7 @@ on:
 jobs:
   tests:
     if: "!contains(github.event.head_commit.message, 'skip ci')"
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
 
     services:
       mysql:
@@ -22,11 +22,12 @@ jobs:
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
     strategy:
+      fail-fast: false
       matrix:
-        php: [7.4, 8.0, 8.1, 8.2, 8.3, 8.4]
-        laravel: [12, 11, 10, 9, 8, 7, 6, 5.8]
-        dependency-version: [prefer-stable]
-        os: [ubuntu-latest]
+        php: [ 8.0, 8.1, 8.2, 8.3, 8.4 ]
+        laravel: [ 12, 11, 10, 9, 8 ]
+        dependency-version: [ prefer-stable ]
+        os: [ ubuntu-latest ]
         include:
           - laravel: 12
             scout: 10.*
@@ -43,15 +44,6 @@ jobs:
           - laravel: 8
             scout: 8.*
             testbench: 6.*
-          - laravel: 7
-            scout: 7.2.*
-            testbench: 5.*
-          - laravel: 6
-            scout: 7.1.*
-            testbench: 4.*
-          - laravel: 5.8
-            scout: 7.1.*
-            testbench: 3.8.*
         exclude:
           - laravel: 12
             php: 8.1
@@ -77,36 +69,6 @@ jobs:
             php: 8.4
           - laravel: 8
             php: 8.4
-          - laravel: 7
-            php: 8.0
-          - laravel: 7
-            php: 8.1
-          - laravel: 7
-            php: 8.2
-          - laravel: 7
-            php: 8.3
-          - laravel: 7
-            php: 8.4
-          - laravel: 6
-            php: 8.0
-          - laravel: 6
-            php: 8.1
-          - laravel: 6
-            php: 8.2
-          - laravel: 6
-            php: 8.3
-          - laravel: 6
-            php: 8.4
-          - laravel: 5.8
-            php: 8.0
-          - laravel: 5.8
-            php: 8.1
-          - laravel: 5.8
-            php: 8.2
-          - laravel: 5.8
-            php: 8.3
-          - laravel: 5.8
-            php: 8.4
 
     name: PHP${{ matrix.php }} - L${{ matrix.laravel }}
 
@@ -129,13 +91,8 @@ jobs:
 
       - name: Install dependencies
         run: |
-          composer require "laravel/framework:${{ matrix.laravel }}.*" "orchestra/testbench:${{ matrix.testbench }}" "laravel/scout:${{ matrix.scout }}"  --no-interaction --no-update
+          composer require "laravel/framework:${{ matrix.laravel }}.*" "orchestra/testbench:${{ matrix.testbench }}" "laravel/scout:${{ matrix.scout }}"  --no-interaction
           composer update --${{ matrix.dependency-version }} --no-interaction
-
-      - name: Install legacy factories
-        run: |
-          composer require "laravel/legacy-factories" --no-interaction
-        if: "matrix.laravel >= 8"
 
       - name: Execute tests
         run: vendor/bin/phpunit --testdox --configuration phpunit.xml.dist

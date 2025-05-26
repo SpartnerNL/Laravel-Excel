@@ -25,24 +25,10 @@ class FromQueryTest extends TestCase
         parent::setUp();
 
         $this->loadLaravelMigrations(['--database' => 'testing']);
-        $this->withFactories(__DIR__ . '/../Data/Stubs/Database/Factories');
         $this->loadMigrationsFrom(dirname(__DIR__) . '/Data/Stubs/Database/Migrations');
 
-        $group = factory(Group::class)->create([
-            'name' => 'Group 1',
-        ]);
-
-        factory(User::class)->times(100)->create()->each(function (User $user) use ($group) {
-            $user->groups()->save($group);
-        });
-
-        $group_two = factory(Group::class)->create([
-            'name' => 'Group 2',
-        ]);
-
-        factory(User::class)->times(5)->create()->each(function (User $user) use ($group_two) {
-            $user->groups()->save($group_two);
-        });
+        User::factory()->has(Group::factory(['name' => 'Group 1']))->count(100)->create();
+        User::factory()->has(Group::factory(['name' => 'Group 2']))->count(5)->create();
     }
 
     public function test_can_export_from_query()

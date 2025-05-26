@@ -30,7 +30,7 @@ class TestCase extends OrchestraTestCase
      * @param  string|null  $filename
      * @return File
      */
-    public function givenUploadedFile(string $filePath, string $filename = null): File
+    public function givenUploadedFile(string $filePath, ?string $filename = null): File
     {
         $filename = $filename ?? basename($filePath);
 
@@ -51,7 +51,7 @@ class TestCase extends OrchestraTestCase
      *
      * @throws \PhpOffice\PhpSpreadsheet\Exception
      */
-    protected function readAsArray(string $filePath, string $writerType, int $sheetIndex = null)
+    protected function readAsArray(string $filePath, string $writerType, ?int $sheetIndex = null)
     {
         $spreadsheet = $this->read($filePath, $writerType);
 
