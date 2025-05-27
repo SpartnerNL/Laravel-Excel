@@ -22,7 +22,7 @@ class QueuedViewExportTest extends TestCase
 
     public function test_can_queue_an_export()
     {
-        $users = User::factory()->count(100)->create();
+        $users  = User::factory()->count(100)->create();
         $export = new SheetForUsersFromView($users);
 
         $export->queue('queued-view-export.xlsx')->chain([

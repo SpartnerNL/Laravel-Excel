@@ -36,11 +36,6 @@ class User extends Model
      */
     protected $hidden = ['password', 'email_verified_at', 'options', 'group_id'];
 
-    protected static function newFactory(): UserFactory
-    {
-        return UserFactory::new();
-    }
-
     public function groups(): BelongsToMany
     {
         return $this->belongsToMany(Group::class);
@@ -66,5 +61,10 @@ class User extends Model
     public function searchableUsing(): Engine
     {
         return class_exists('\Laravel\Scout\Engines\DatabaseEngine') ? new DatabaseEngine() : new NullEngine();
+    }
+
+    protected static function newFactory(): UserFactory
+    {
+        return UserFactory::new();
     }
 }
