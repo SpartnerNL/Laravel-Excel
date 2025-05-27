@@ -400,7 +400,8 @@ class Reader
                 method_exists($this->reader, 'setLoadSheetsOnly')
                 && count(array_filter(array_keys($sheetImports), 'is_numeric')) === 0
             ) {
-                $this->reader->setLoadSheetsOnly(array_keys($sheetImports));
+                // @todo PHPOffice v2 upgrade
+//                $this->reader->setLoadSheetsOnly(array_keys($sheetImports));
             }
         }
 

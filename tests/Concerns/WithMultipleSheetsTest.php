@@ -108,7 +108,6 @@ class WithMultipleSheetsTest extends TestCase
 
     public function test_unknown_sheet_name_will_throw_sheet_not_found_exception()
     {
-        $this->markTestSkipped('Failing after php-spreadsheet v2 upgrade');
         $this->expectException(\Maatwebsite\Excel\Exceptions\SheetNotFoundException::class);
         $this->expectExceptionMessage('Your requested sheet name [Some Random Sheet Name] is out of bounds.');
 
@@ -130,7 +129,6 @@ class WithMultipleSheetsTest extends TestCase
 
     public function test_unknown_sheet_name_can_be_ignored()
     {
-        $this->markTestSkipped('Failing after php-spreadsheet v2 upgrade');
         $import = new class implements WithMultipleSheets, SkipsUnknownSheets
         {
             use Importable;
@@ -161,7 +159,6 @@ class WithMultipleSheetsTest extends TestCase
 
     public function test_unknown_sheet_indices_can_be_ignored_per_name()
     {
-        $this->markTestSkipped('Failing after php-spreadsheet v2 upgrade');
         $import = new class implements WithMultipleSheets
         {
             use Importable;
