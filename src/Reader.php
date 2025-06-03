@@ -393,16 +393,6 @@ class Reader
         $sheetImports = [];
         if ($import instanceof WithMultipleSheets) {
             $sheetImports = $import->sheets();
-
-            // When only sheet names are given and the reader has
-            // an option to load only the selected sheets.
-            if (
-                method_exists($this->reader, 'setLoadSheetsOnly')
-                && count(array_filter(array_keys($sheetImports), 'is_numeric')) === 0
-            ) {
-                // @todo PHPOffice v2 upgrade
-//                $this->reader->setLoadSheetsOnly(array_keys($sheetImports));
-            }
         }
 
         return $sheetImports;
