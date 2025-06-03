@@ -165,9 +165,6 @@ class BatchCacheTest extends TestCase
         ], $cache->getMultiple(['A1', 'A2', 'A3', 'A4', 'A5']));
     }
 
-    /**
-     * @dataProvider defaultTTLDataProvider
-     */
     #[DataProvider('defaultTTLDataProvider')]
     public function test_it_writes_to_cache_with_default_ttl($defaultTTL, $receivedAs)
     {
