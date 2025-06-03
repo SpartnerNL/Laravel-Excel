@@ -14,6 +14,7 @@ use Maatwebsite\Excel\Cache\BatchCacheDeprecated;
 use Maatwebsite\Excel\Cache\CacheManager;
 use Maatwebsite\Excel\Cache\MemoryCache;
 use Maatwebsite\Excel\Tests\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Psr\SimpleCache\CacheInterface;
 
 class BatchCacheTest extends TestCase
@@ -167,6 +168,7 @@ class BatchCacheTest extends TestCase
     /**
      * @dataProvider defaultTTLDataProvider
      */
+    #[DataProvider('defaultTTLDataProvider')]
     public function test_it_writes_to_cache_with_default_ttl($defaultTTL, $receivedAs)
     {
         config()->set('excel.cache.default_ttl', $defaultTTL);
@@ -241,7 +243,7 @@ class BatchCacheTest extends TestCase
      * @param  int|null  $memoryLimit
      * @return CacheInterface
      */
-    private function givenCache(array $memory = [], array $persisted = [], int $memoryLimit = null): CacheInterface
+    private function givenCache(array $memory = [], array $persisted = [], $memoryLimit = null): CacheInterface
     {
         config()->set('excel.cache.batch.memory_limit', $memoryLimit ?: 60000);
 
