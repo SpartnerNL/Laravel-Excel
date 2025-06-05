@@ -10,7 +10,6 @@ use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\PersistRelations;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\Group;
-use Maatwebsite\Excel\Tests\Data\Stubs\Database\GroupedUser;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
 use Maatwebsite\Excel\Tests\TestCase;
 
@@ -31,18 +30,19 @@ class ToModelTest extends TestCase
     {
         DB::connection()->enableQueryLog();
 
-        $import = new class implements ToModel {
+        $import = new class implements ToModel
+        {
             use Importable;
 
             /**
-             * @param array $row
+             * @param  array  $row
              * @return Model|Model[]|null
              */
             public function model(array $row)
             {
                 return new User([
-                    'name' => $row[0],
-                    'email' => $row[1],
+                    'name'     => $row[0],
+                    'email'    => $row[1],
                     'password' => 'secret',
                 ]);
             }
@@ -54,30 +54,31 @@ class ToModelTest extends TestCase
         DB::connection()->disableQueryLog();
 
         $this->assertDatabaseHas('users', [
-            'name' => 'Patrick Brouwers',
+            'name'  => 'Patrick Brouwers',
             'email' => 'patrick@maatwebsite.nl',
         ]);
 
         $this->assertDatabaseHas('users', [
-            'name' => 'Taylor Otwell',
+            'name'  => 'Taylor Otwell',
             'email' => 'taylor@laravel.com',
         ]);
     }
 
     public function test_has_timestamps_when_imported_single_model()
     {
-        $import = new class implements ToModel {
+        $import = new class implements ToModel
+        {
             use Importable;
 
             /**
-             * @param array $row
+             * @param  array  $row
              * @return Model|Model[]|null
              */
             public function model(array $row)
             {
                 return new User([
-                    'name' => $row[0],
-                    'email' => $row[1],
+                    'name'     => $row[0],
+                    'email'    => $row[1],
                     'password' => 'secret',
                 ]);
             }
@@ -95,26 +96,27 @@ class ToModelTest extends TestCase
     {
         DB::connection()->enableQueryLog();
 
-        $import = new class implements ToModel {
+        $import = new class implements ToModel
+        {
             use Importable;
 
             /**
-             * @param array $row
+             * @param  array  $row
              * @return Model|Model[]|null
              */
             public function model(array $row)
             {
                 $user1 = new User([
-                    'name' => $row[0],
-                    'email' => $row[1],
+                    'name'     => $row[0],
+                    'email'    => $row[1],
                     'password' => 'secret',
                 ]);
 
                 $faker = Factory::create();
 
                 $user2 = new User([
-                    'name' => $faker->name,
-                    'email' => $faker->email,
+                    'name'     => $faker->name,
+                    'email'    => $faker->email,
                     'password' => 'secret',
                 ]);
 
@@ -132,18 +134,19 @@ class ToModelTest extends TestCase
     {
         DB::connection()->enableQueryLog();
 
-        $import = new class implements ToModel {
+        $import = new class implements ToModel
+        {
             use Importable;
 
             /**
-             * @param array $row
+             * @param  array  $row
              * @return Model|Model[]|null
              */
             public function model(array $row)
             {
                 $user = new User([
-                    'name' => $row[0],
-                    'email' => $row[1],
+                    'name'     => $row[0],
+                    'email'    => $row[1],
                     'password' => 'secret',
                 ]);
 
@@ -170,18 +173,19 @@ class ToModelTest extends TestCase
 
         DB::connection()->enableQueryLog();
 
-        $import = new class implements ToModel, PersistRelations {
+        $import = new class implements ToModel, PersistRelations
+        {
             use Importable;
 
             /**
-             * @param array $row
+             * @param  array  $row
              * @return Model|Model[]|null
              */
             public function model(array $row)
             {
                 $user = new User([
-                    'name' => $row[0],
-                    'email' => $row[1],
+                    'name'     => $row[0],
+                    'email'    => $row[1],
                     'password' => 'secret',
                 ]);
 
@@ -217,18 +221,19 @@ class ToModelTest extends TestCase
 
         DB::connection()->enableQueryLog();
 
-        $import = new class implements ToModel, PersistRelations {
+        $import = new class implements ToModel, PersistRelations
+        {
             use Importable;
 
             /**
-             * @param array $row
+             * @param  array  $row
              * @return Model|Model[]|null
              */
             public function model(array $row)
             {
                 $user = new User([
-                    'name' => $row[0],
-                    'email' => $row[1],
+                    'name'     => $row[0],
+                    'email'    => $row[1],
                     'password' => 'secret',
                 ]);
 
@@ -263,18 +268,19 @@ class ToModelTest extends TestCase
 
         DB::connection()->enableQueryLog();
 
-        $import = new class implements ToModel, PersistRelations {
+        $import = new class implements ToModel, PersistRelations
+        {
             use Importable;
 
             /**
-             * @param array $row
+             * @param  array  $row
              * @return GroupedUser
              */
             public function model(array $row): GroupedUser
             {
                 $groupedUser = new GroupedUser([
-                    'name' => $row[0],
-                    'email' => $row[1],
+                    'name'     => $row[0],
+                    'email'    => $row[1],
                     'password' => 'secret',
                 ]);
 
