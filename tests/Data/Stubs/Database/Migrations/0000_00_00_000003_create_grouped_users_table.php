@@ -18,7 +18,7 @@ class CreateGroupedUsersTable extends Migration
             $table->string('password');
             $table->unsignedInteger('group_id')->index();
 
-            $table->datetimes();
+            $table->timestamps();
         });
     }
 
