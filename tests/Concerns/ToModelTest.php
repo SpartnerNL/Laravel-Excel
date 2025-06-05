@@ -11,6 +11,7 @@ use Maatwebsite\Excel\Concerns\PersistRelations;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\Group;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
+use Maatwebsite\Excel\Tests\Data\Stubs\Database\GroupedUser;
 use Maatwebsite\Excel\Tests\TestCase;
 
 class ToModelTest extends TestCase
