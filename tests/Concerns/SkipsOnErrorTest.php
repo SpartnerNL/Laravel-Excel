@@ -247,7 +247,7 @@ class SkipsOnErrorTest extends TestCase
         {
             use Importable;
 
-            public $errors = 0;
+            public $errors        = 0;
             public $processedRows = 0;
 
             /**
