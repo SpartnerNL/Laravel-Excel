@@ -34,6 +34,6 @@ class LimitFilter implements IReadFilter
      */
     public function readCell(string $columnAddress, int $row, string $worksheetName = ''): bool
     {
-        return $row >= $this->startRow && $row < $this->endRow;
+        return $row >= $this->startRow && $row <= $this->endRow;
     }
 }
