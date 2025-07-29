@@ -308,7 +308,15 @@ class Sheet
                             }
                         }
                     } else {
-                        $import->onRow($sheetRow);
+                        try {
+                            $import->onRow($sheetRow);
+                        } catch (Throwable $e) {
+                           if ($import instanceof SkipsOnError) {
+                               $import->onError($e);
+                           } else {
+                               throw $e;
+                           }
+                        }
                     }
                 }
 
