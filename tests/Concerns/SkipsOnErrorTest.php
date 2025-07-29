@@ -240,4 +240,114 @@ class SkipsOnErrorTest extends TestCase
             'email' => 'taylor@laravel.com',
         ]);
     }
+
+    public function test_can_skip_on_error_when_exception_thrown_in_onrow()
+    {
+        $import = new class implements OnEachRow, SkipsOnError
+        {
+            use Importable;
+
+            public $errors = 0;
+            public $processedRows = 0;
+
+            /**
+             * @param  Row  $row
+             */
+            public function onRow(Row $row)
+            {
+                $this->processedRows++;
+
+                $rowArray = $row->toArray();
+
+                // Throw an exception for the second row (Taylor Otwell)
+                if ($rowArray[1] === 'taylor@laravel.com') {
+                    throw new \Exception('Custom error in onRow for Taylor');
+                }
+
+                User::create([
+                    'name'     => $rowArray[0],
+                    'email'    => $rowArray[1],
+                    'password' => 'secret',
+                ]);
+            }
+
+            /**
+             * @param  Throwable  $e
+             */
+            public function onError(Throwable $e)
+            {
+                Assert::assertInstanceOf(\Exception::class, $e);
+                Assert::assertEquals('Custom error in onRow for Taylor', $e->getMessage());
+
+                $this->errors++;
+            }
+        };
+
+        $import->import('import-users.xlsx');
+
+        $this->assertEquals(1, $import->errors);
+        $this->assertEquals(2, $import->processedRows); // Both rows should be processed, but one throws exception
+
+        // Should have inserted the valid row
+        $this->assertDatabaseHas('users', [
+            'email' => 'patrick@maatwebsite.nl',
+        ]);
+
+        // Should have skipped inserting the row that threw exception
+        $this->assertDatabaseMissing('users', [
+            'email' => 'taylor@laravel.com',
+        ]);
+    }
+
+    public function test_can_skip_errors_and_collect_all_errors_when_exception_thrown_in_onrow()
+    {
+        $import = new class implements OnEachRow, SkipsOnError
+        {
+            use Importable, SkipsErrors;
+
+            public $processedRows = 0;
+
+            /**
+             * @param  Row  $row
+             */
+            public function onRow(Row $row)
+            {
+                $this->processedRows++;
+
+                $rowArray = $row->toArray();
+
+                // Throw an exception for the second row (Taylor Otwell)
+                if ($rowArray[1] === 'taylor@laravel.com') {
+                    throw new \RuntimeException('Runtime error in onRow for Taylor');
+                }
+
+                User::create([
+                    'name'     => $rowArray[0],
+                    'email'    => $rowArray[1],
+                    'password' => 'secret',
+                ]);
+            }
+        };
+
+        $import->import('import-users.xlsx');
+
+        $this->assertCount(1, $import->errors());
+        $this->assertEquals(2, $import->processedRows); // Both rows should be processed, but one throws exception
+
+        /** @var Throwable $e */
+        $e = $import->errors()->first();
+
+        $this->assertInstanceOf(\RuntimeException::class, $e);
+        $this->assertEquals('Runtime error in onRow for Taylor', $e->getMessage());
+
+        // Should have inserted the valid row
+        $this->assertDatabaseHas('users', [
+            'email' => 'patrick@maatwebsite.nl',
+        ]);
+
+        // Should have skipped inserting the row that threw exception
+        $this->assertDatabaseMissing('users', [
+            'email' => 'taylor@laravel.com',
+        ]);
+    }
 }
