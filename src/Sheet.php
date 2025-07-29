@@ -311,11 +311,11 @@ class Sheet
                         try {
                             $import->onRow($sheetRow);
                         } catch (Throwable $e) {
-                           if ($import instanceof SkipsOnError) {
-                               $import->onError($e);
-                           } else {
-                               throw $e;
-                           }
+                            if ($import instanceof SkipsOnError) {
+                                $import->onError($e);
+                            } else {
+                                throw $e;
+                            }
                         }
                     }
                 }
