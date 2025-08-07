@@ -6,6 +6,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Maatwebsite\Excel\Jobs\AppendDataToSheet;
 use Maatwebsite\Excel\Jobs\AppendQueryToSheet;
 use Maatwebsite\Excel\Jobs\AppendViewToSheet;
+use Maatwebsite\Excel\Jobs\QueueExport;
 use Maatwebsite\Excel\Jobs\ReadChunk;
 
 class InteractsWithQueueTest extends TestCase
@@ -36,5 +37,10 @@ class InteractsWithQueueTest extends TestCase
     public function test_append_view_to_sheet_job_can_interact_with_queue()
     {
         $this->assertContains(InteractsWithQueue::class, class_uses(AppendViewToSheet::class));
+    }
+
+    public function test_queue_export_job_can_interact_with_queue()
+    {
+        $this->assertContains(InteractsWithQueue::class, class_uses(QueueExport::class));
     }
 }
