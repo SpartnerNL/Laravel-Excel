@@ -13,7 +13,6 @@ use Maatwebsite\Excel\Tests\Data\Stubs\AfterQueueExportJob;
 use Maatwebsite\Excel\Tests\Data\Stubs\EloquentCollectionWithMappingExport;
 use Maatwebsite\Excel\Tests\Data\Stubs\FromArrayQueuedExport;
 use Maatwebsite\Excel\Tests\Data\Stubs\QueuedExport;
-use Maatwebsite\Excel\Tests\Data\Stubs\QueuedExportFromArray;
 use Maatwebsite\Excel\Tests\Data\Stubs\QueuedExportWithFailedEvents;
 use Maatwebsite\Excel\Tests\Data\Stubs\QueuedExportWithFailedHook;
 use Maatwebsite\Excel\Tests\Data\Stubs\QueuedExportWithLocalePreferences;

@@ -132,7 +132,6 @@ class QueuedWriter
             if ($rows instanceof Traversable) {
                 $rows = iterator_to_array($rows);
             }
-
             return new AppendDataToSheet(
                 $export,
                 $temporaryFile,
