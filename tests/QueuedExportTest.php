@@ -11,15 +11,28 @@ use Maatwebsite\Excel\Files\TemporaryFile;
 use Maatwebsite\Excel\Jobs\AppendDataToSheet;
 use Maatwebsite\Excel\Tests\Data\Stubs\AfterQueueExportJob;
 use Maatwebsite\Excel\Tests\Data\Stubs\EloquentCollectionWithMappingExport;
+use Maatwebsite\Excel\Tests\Data\Stubs\FromArrayQueuedExport;
 use Maatwebsite\Excel\Tests\Data\Stubs\QueuedExport;
+use Maatwebsite\Excel\Tests\Data\Stubs\QueuedExportFromArray;
 use Maatwebsite\Excel\Tests\Data\Stubs\QueuedExportWithFailedEvents;
 use Maatwebsite\Excel\Tests\Data\Stubs\QueuedExportWithFailedHook;
 use Maatwebsite\Excel\Tests\Data\Stubs\QueuedExportWithLocalePreferences;
+use Maatwebsite\Excel\Tests\Data\Stubs\ShouldQueuedArrayExport;
 use Maatwebsite\Excel\Tests\Data\Stubs\ShouldQueueExport;
 use Throwable;
 
 class QueuedExportTest extends TestCase
 {
+
+    public function test_can_queue_an_export_using_from_array()
+    {
+        $export = new FromArrayQueuedExport();
+
+        $export->queue('queued-export.xlsx')->chain([
+            new AfterQueueExportJob(__DIR__ . '/Data/Disks/Local/queued-export.xlsx'),
+        ]);
+    }
+
     public function test_can_queue_an_export()
     {
         $export = new QueuedExport();
@@ -94,6 +107,15 @@ class QueuedExportTest extends TestCase
     public function test_can_implicitly_queue_an_export()
     {
         $export = new ShouldQueueExport();
+
+        $export->store('queued-export.xlsx', 'test')->chain([
+            new AfterQueueExportJob(__DIR__ . '/Data/Disks/Test/queued-export.xlsx'),
+        ]);
+    }
+
+    public function test_can_implicitly_queue_an_export_using_from_array()
+    {
+        $export = new ShouldQueuedArrayExport();
 
         $export->store('queued-export.xlsx', 'test')->chain([
             new AfterQueueExportJob(__DIR__ . '/Data/Disks/Test/queued-export.xlsx'),
