@@ -111,11 +111,11 @@ class QueuedWriter
 
     /**
      * 
-     * @param FromArray $export 
-     * @param TemporaryFile $temporaryFile 
-     * @param string $writerType 
-     * @param int $sheetIndex 
-     * @return array 
+     * @param  FromArray  $export
+     * @param  TemporaryFile  $temporaryFile
+     * @param  string  $writerType
+     * @param  int  $sheetIndex
+     * @return array
      */
     private function exportArray(
         FromArray $export,

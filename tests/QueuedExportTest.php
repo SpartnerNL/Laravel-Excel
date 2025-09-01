@@ -22,7 +22,6 @@ use Throwable;
 
 class QueuedExportTest extends TestCase
 {
-
     public function test_can_queue_an_export_using_from_array()
     {
         $export = new FromArrayQueuedExport();
