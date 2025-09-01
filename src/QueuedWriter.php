@@ -110,7 +110,6 @@ class QueuedWriter
     }
 
     /**
-     * 
      * @param  FromArray  $export
      * @param  TemporaryFile  $temporaryFile
      * @param  string  $writerType
@@ -132,6 +131,7 @@ class QueuedWriter
             if ($rows instanceof Traversable) {
                 $rows = iterator_to_array($rows);
             }
+
             return new AppendDataToSheet(
                 $export,
                 $temporaryFile,

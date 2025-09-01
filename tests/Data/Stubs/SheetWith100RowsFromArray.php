@@ -43,6 +43,7 @@ class SheetWith100RowsFromArray implements FromArray, WithTitle, ShouldAutoSize,
 
             array_push($array, $row);
         }
+
         return $array;
     }
 
