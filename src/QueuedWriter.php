@@ -5,6 +5,7 @@ namespace Maatwebsite\Excel;
 use Illuminate\Foundation\Bus\PendingDispatch;
 use Illuminate\Support\Collection;
 use Illuminate\Support\LazyCollection;
+use Maatwebsite\Excel\Concerns\FromArray;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\FromView;
@@ -98,12 +99,48 @@ class QueuedWriter
                 $jobs = $jobs->merge($this->exportQuery($sheetExport, $temporaryFile, $writerType, $sheetIndex));
             } elseif ($sheetExport instanceof FromView) {
                 $jobs = $jobs->merge($this->exportView($sheetExport, $temporaryFile, $writerType, $sheetIndex));
+            } elseif ($sheetExport instanceof FromArray) {
+                $jobs = $jobs->merge($this->exportArray($sheetExport, $temporaryFile, $writerType, $sheetIndex));
             }
 
             $jobs->push(new CloseSheet($sheetExport, $temporaryFile, $writerType, $sheetIndex));
         }
 
         return $jobs;
+    }
+
+    /**
+     * 
+     * @param FromArray $export 
+     * @param TemporaryFile $temporaryFile 
+     * @param string $writerType 
+     * @param int $sheetIndex 
+     * @return array 
+     */
+    private function exportArray(
+        FromArray $export,
+        TemporaryFile $temporaryFile,
+        string $writerType,
+        int $sheetIndex
+    ): array {
+        $payload =  array_chunk(
+            $export->array(),
+            $this->getChunkSize($export)
+        );
+
+        return array_map(function ($rows) use ($export, $temporaryFile, $writerType, $sheetIndex) {
+            if ($rows instanceof Traversable) {
+                $rows = iterator_to_array($rows);
+            }
+
+            return new AppendDataToSheet(
+                $export,
+                $temporaryFile,
+                $writerType,
+                $sheetIndex,
+                $rows
+            );
+        }, $payload);
     }
 
     /**
