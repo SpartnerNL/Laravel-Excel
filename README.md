@@ -47,7 +47,7 @@ exports and imports.
       <img src="https://poser.pugx.org/maatwebsite/excel/downloads.png" alt="Total Downloads">
   </a>
 
-  <a href="https://packagist.org/packages/maatwebsite/excel">
+  <a href="https://github.com/SpartnerNL/Laravel-Excel/blob/3.1/LICENSE">
     <img src="https://poser.pugx.org/maatwebsite/excel/license.png" alt="License">
   </a>
 </p>
