@@ -79,7 +79,7 @@ class QueueExport implements ShouldQueue
             }
 
             // Write to temp file with empty sheets.
-            $writer->write($sheetExport, $this->temporaryFile, $this->writerType);
+            $writer->write($this->export, $this->temporaryFile, $this->writerType);
         });
     }
 

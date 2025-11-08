@@ -18,7 +18,7 @@ class Excel implements Exporter, Importer
 
     const CSV      = 'Csv';
 
-    const TSV      = 'Csv';
+    const TSV      = 'Tsv';
 
     const ODS      = 'Ods';
 
