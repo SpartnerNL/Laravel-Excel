@@ -102,9 +102,9 @@ class WriterFactory
      */
     private static function isTsvFile(string $filePath): bool
     {
-        $pathInfo = pathinfo($filePath);
+        $pathInfo  = pathinfo($filePath);
         $extension = strtolower($pathInfo['extension'] ?? '');
-        
+
         return $extension === 'tsv';
     }
 }
