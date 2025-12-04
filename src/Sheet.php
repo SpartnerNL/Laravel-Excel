@@ -766,8 +766,8 @@ class Sheet
      */
     protected function buildColumnRange(string $lower, string $upper)
     {
-        $upper++;
-        for ($i = $lower; $i !== $upper; $i++) {
+        $upper = str_increment($upper);
+        for ($i = $lower; $i !== $upper; $i = str_increment($i)) {
             yield $i;
         }
     }
