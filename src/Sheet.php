@@ -775,8 +775,8 @@ class Sheet
 	    return ++$cell; 
 	};
 
-        $upper = str_increment($upper);
-        for ($i = $lower; $i !== $upper; $i = str_increment($i)) {
+        $upper = $increment($upper);
+        for ($i = $lower; $i !== $upper; $i = $increment($i)) {
             yield $i;
         }
     }
