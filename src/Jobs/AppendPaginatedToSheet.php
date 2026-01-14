@@ -18,7 +18,7 @@ use Maatwebsite\Excel\Writer;
 
 class AppendPaginatedToSheet implements ShouldQueue
 {
-    use Batchable, Queueable, Dispatchable, ProxyFailures, InteractsWithQueue;
+    use Batchable, Dispatchable, InteractsWithQueue, ProxyFailures, Queueable;
 
     /**
      * @var TemporaryFile

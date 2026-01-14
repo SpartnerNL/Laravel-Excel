@@ -11,7 +11,7 @@ use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\Group;
 
-class ShouldBatchImport implements ShouldQueue, ShouldBatch, ToModel, WithChunkReading, WithBatchInserts
+class ShouldBatchImport implements ShouldBatch, ShouldQueue, ToModel, WithBatchInserts, WithChunkReading
 {
     use Importable;
 

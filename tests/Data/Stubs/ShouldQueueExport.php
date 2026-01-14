@@ -6,7 +6,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 
-class ShouldQueueExport implements WithMultipleSheets, ShouldQueue
+class ShouldQueueExport implements ShouldQueue, WithMultipleSheets
 {
     use Exportable;
 

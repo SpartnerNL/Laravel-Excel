@@ -2,11 +2,11 @@
 
 namespace Maatwebsite\Excel\Jobs;
 
+use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Bus\Batchable;
 use Maatwebsite\Excel\Concerns\FromView;
 use Maatwebsite\Excel\Files\TemporaryFile;
 use Maatwebsite\Excel\Jobs\Middleware\LocalizeJob;
@@ -14,7 +14,7 @@ use Maatwebsite\Excel\Writer;
 
 class AppendViewToSheet implements ShouldQueue
 {
-    use Batchable, Queueable, Dispatchable, InteractsWithQueue;
+    use Batchable, Dispatchable, InteractsWithQueue, Queueable;
 
     /**
      * @var TemporaryFile

@@ -2,10 +2,10 @@
 
 namespace Maatwebsite\Excel\Jobs;
 
+use Illuminate\Bus\Batchable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Bus\Batchable;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 use Maatwebsite\Excel\Exceptions\NoSheetsFoundException;
 use Maatwebsite\Excel\Files\TemporaryFile;
@@ -15,7 +15,7 @@ use Throwable;
 
 class QueueExport implements ShouldQueue
 {
-    use Batchable, ExtendedQueueable, Dispatchable, InteractsWithQueue;
+    use Batchable, Dispatchable, ExtendedQueueable, InteractsWithQueue;
 
     /**
      * @var object

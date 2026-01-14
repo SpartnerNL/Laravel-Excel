@@ -2,11 +2,11 @@
 
 namespace Maatwebsite\Excel\Jobs;
 
+use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Bus\Batchable;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithCustomValueBinder;
 use Maatwebsite\Excel\Concerns\WithEvents;
@@ -25,7 +25,7 @@ use Throwable;
 
 class ReadChunk implements ShouldQueue
 {
-    use Batchable, Queueable, HasEventBus, InteractsWithQueue;
+    use Batchable, HasEventBus, InteractsWithQueue, Queueable;
 
     /**
      * @var int

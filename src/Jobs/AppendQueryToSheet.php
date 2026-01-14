@@ -2,11 +2,11 @@
 
 namespace Maatwebsite\Excel\Jobs;
 
+use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Bus\Batchable;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Events\AfterChunk;
@@ -17,7 +17,7 @@ use Maatwebsite\Excel\Writer;
 
 class AppendQueryToSheet implements ShouldQueue
 {
-    use Batchable, Queueable, Dispatchable, ProxyFailures, InteractsWithQueue, HasEventBus;
+    use Batchable, Dispatchable, HasEventBus, InteractsWithQueue, ProxyFailures, Queueable;
 
     /**
      * @var TemporaryFile

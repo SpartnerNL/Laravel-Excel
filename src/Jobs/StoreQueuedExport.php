@@ -2,17 +2,17 @@
 
 namespace Maatwebsite\Excel\Jobs;
 
+use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Bus\Batchable;
 use Maatwebsite\Excel\Files\Filesystem;
 use Maatwebsite\Excel\Files\TemporaryFile;
 
 class StoreQueuedExport implements ShouldQueue
 {
-    use Batchable, Queueable, Dispatchable, InteractsWithQueue;
+    use Batchable, Dispatchable, InteractsWithQueue, Queueable;
 
     /**
      * @var string

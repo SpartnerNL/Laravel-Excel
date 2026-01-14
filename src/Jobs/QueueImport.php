@@ -7,7 +7,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 
 class QueueImport implements ShouldQueue
 {
-    use ExtendedQueueable, Dispatchable;
+    use Dispatchable, ExtendedQueueable;
 
     /**
      * @var int

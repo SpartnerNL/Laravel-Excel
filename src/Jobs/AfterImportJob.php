@@ -2,12 +2,12 @@
 
 namespace Maatwebsite\Excel\Jobs;
 
+use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Collection;
-use Illuminate\Bus\Batchable;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Events\ImportFailed;
 use Maatwebsite\Excel\HasEventBus;
@@ -16,7 +16,7 @@ use Throwable;
 
 class AfterImportJob implements ShouldQueue
 {
-    use Batchable, HasEventBus, InteractsWithQueue, Queueable, Dispatchable;
+    use Batchable, Dispatchable, HasEventBus, InteractsWithQueue, Queueable;
 
     /**
      * @var WithEvents

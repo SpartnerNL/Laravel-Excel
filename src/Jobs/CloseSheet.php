@@ -2,18 +2,18 @@
 
 namespace Maatwebsite\Excel\Jobs;
 
+use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Bus\Batchable;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Files\TemporaryFile;
 use Maatwebsite\Excel\Writer;
 
 class CloseSheet implements ShouldQueue
 {
-    use Batchable, Queueable, Dispatchable, ProxyFailures, InteractsWithQueue;
+    use Batchable, Dispatchable, InteractsWithQueue, ProxyFailures, Queueable;
 
     /**
      * @var object
