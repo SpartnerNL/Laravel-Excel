@@ -2,6 +2,7 @@
 
 namespace Maatwebsite\Excel\Tests;
 
+use Illuminate\Bus\PendingBatch;
 use Illuminate\Foundation\Bus\PendingDispatch;
 use Illuminate\Queue\Events\JobExceptionOccurred;
 use Illuminate\Queue\Events\JobProcessed;
@@ -19,6 +20,7 @@ use Maatwebsite\Excel\Tests\Data\Stubs\QueuedImport;
 use Maatwebsite\Excel\Tests\Data\Stubs\QueuedImportWithFailure;
 use Maatwebsite\Excel\Tests\Data\Stubs\QueuedImportWithMiddleware;
 use Maatwebsite\Excel\Tests\Data\Stubs\QueuedImportWithRetryUntil;
+use Maatwebsite\Excel\Tests\Data\Stubs\ShouldBatchImport;
 use Throwable;
 
 class QueuedImportTest extends TestCase
@@ -56,6 +58,17 @@ class QueuedImportTest extends TestCase
         ]);
 
         $this->assertInstanceOf(PendingDispatch::class, $chain);
+    }
+
+    public function test_can_batch_an_import()
+    {
+        $import = new ShouldBatchImport();
+
+        $batch = $import->queue('import-batches.xlsx')->name('batch-import-name');
+
+        $this->assertInstanceOf(PendingBatch::class, $batch);
+        $this->assertEquals('batch-import-name', $batch->name);
+        $this->assertCount(1, $batch->jobs);
     }
 
     public function test_can_queue_an_import_with_batch_cache_and_file_store()

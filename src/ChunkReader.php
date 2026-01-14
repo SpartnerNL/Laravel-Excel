@@ -2,6 +2,7 @@
 
 namespace Maatwebsite\Excel;
 
+use Illuminate\Bus\PendingBatch;
 use Illuminate\Bus\Queueable;
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -9,6 +10,8 @@ use Illuminate\Foundation\Bus\PendingDispatch;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\Jobs\SyncJob;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Bus;
+use Maatwebsite\Excel\Concerns\ShouldBatch;
 use Maatwebsite\Excel\Concerns\ShouldQueueWithoutChain;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithEvents;
@@ -37,7 +40,7 @@ class ChunkReader
      * @param  WithChunkReading  $import
      * @param  Reader  $reader
      * @param  TemporaryFile  $temporaryFile
-     * @return PendingDispatch|Collection|null
+     * @return PendingDispatch|PendingBatch|Collection|null
      */
     public function read(WithChunkReading $import, Reader $reader, TemporaryFile $temporaryFile)
     {
@@ -94,6 +97,14 @@ class ChunkReader
 
         $jobs->push($afterImportJob);
 
+        // Check if the import class is batchable
+        if ($import instanceof ShouldBatch) {
+            return Bus::batch([
+                $jobs->toArray(),
+            ]);
+        }
+
+        // Check if the import class is queueable
         if ($import instanceof ShouldQueue) {
             return new PendingDispatch(
                 (new QueueImport($import))->chain($jobs->toArray())
@@ -133,7 +144,8 @@ class ChunkReader
     {
         $uses = class_uses_recursive($command);
 
-        if (in_array(InteractsWithQueue::class, $uses) &&
+        if (
+            in_array(InteractsWithQueue::class, $uses) &&
             in_array(Queueable::class, $uses) && !$command->job
         ) {
             $command->setJob(new SyncJob($this->container, json_encode([]), 'sync', 'sync'));
