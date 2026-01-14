@@ -2,4 +2,6 @@
 
 namespace Maatwebsite\Excel\Concerns;
 
-interface ShouldBatch {}
+interface ShouldBatch
+{
+}
