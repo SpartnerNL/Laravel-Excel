@@ -27,7 +27,7 @@ interface Exporter
      * @throws \PhpOffice\PhpSpreadsheet\Exception
      * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
      */
-    public function store($export, string $filePath, ?string $disk = null, ?string $writerType = null, $diskOptions = []);
+    public function store($export, string $filePath, ?string $diskName = null, ?string $writerType = null, $diskOptions = []);
 
     /**
      * @param  object  $export

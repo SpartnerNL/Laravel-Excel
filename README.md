@@ -32,7 +32,7 @@ exports and imports.
 
 <p align="center">
   <a href="https://github.com/SpartnerNL/Laravel-Excel/actions">
-    <img src="https://github.com/Maatwebsite/Laravel-Excel/workflows/Run%20tests/badge.svg?branch=3.1" alt="Github Actions">
+    <img src="https://github.com/SpartnerNL/Laravel-Excel/actions/workflows/run-tests.yml/badge.svg" alt="Github Actions">
   </a>
 
   <a href="https://styleci.io/repos/14259390">
@@ -47,7 +47,7 @@ exports and imports.
       <img src="https://poser.pugx.org/maatwebsite/excel/downloads.png" alt="Total Downloads">
   </a>
 
-  <a href="https://packagist.org/packages/maatwebsite/excel">
+  <a href="https://github.com/SpartnerNL/Laravel-Excel/blob/3.1/LICENSE">
     <img src="https://poser.pugx.org/maatwebsite/excel/license.png" alt="License">
   </a>
 </p>
@@ -102,4 +102,5 @@ Versions will be supported for a limited amount of time.
 |---- |----|----|----|
 | 2.1 | <=5.6 | <=7.0 | Unsupported since 15-5-2018 |
 | 3.0 | ^5.5 |  ^7.0 | Unsupported since 31-12-2018 |
-| 3.1 | >=5.8 \| <=11.x |  ^7.2 \| ^8.0 | New features |
+| 3.1 | >=5.8 \| <=12.x |  ^7.2 \| ^8.0 | New features |
+| 4.0 | >=11 \| <=12.x |  ^8.0 | Unreleased |
