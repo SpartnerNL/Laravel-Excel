@@ -30,7 +30,7 @@ jobs:
         include:
           - laravel: 13
             scout: 10.*
-            testbench: 10.*
+            testbench: 11.*
           - laravel: 12
             scout: 10.*
             testbench: 10.*
