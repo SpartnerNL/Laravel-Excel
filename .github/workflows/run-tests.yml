@@ -24,10 +24,13 @@ jobs:
     strategy:
       matrix:
         php: [7.4, 8.0, 8.1, 8.2, 8.3, 8.4, 8.5]
-        laravel: [12, 11, 10, 9, 8, 7, 6, 5.8]
+        laravel: [13, 12, 11, 10, 9, 8, 7, 6, 5.8]
         dependency-version: [prefer-stable]
         os: [ubuntu-latest]
         include:
+          - laravel: 13
+            scout: 11.*
+            testbench: 11.*
           - laravel: 12
             scout: 10.*
             testbench: 10.*
@@ -53,6 +56,14 @@ jobs:
             scout: 7.1.*
             testbench: 3.8.*
         exclude:
+          - laravel: 13
+            php: 8.2
+          - laravel: 13
+            php: 8.1
+          - laravel: 13
+            php: 8.0
+          - laravel: 13
+            php: 7.4
           - laravel: 12
             php: 8.1
           - laravel: 12
@@ -148,7 +159,7 @@ jobs:
 
       - name: Install legacy factories
         run: |
-          composer require "laravel/legacy-factories" --no-interaction
+          composer require "laravel/legacy-factories" -W --no-interaction
         if: "matrix.laravel >= 8"
 
       - name: Execute tests
