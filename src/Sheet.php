@@ -767,7 +767,7 @@ class Sheet
     protected function buildColumnRange(string $lower, string $upper)
     {
         /**
-         * @callable(string): string $increment
+         * @var callable(string): string $increment
          */
         $increment = function_exists('str_increment') ? function ($cell) {
             return str_increment($cell);
