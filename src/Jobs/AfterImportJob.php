@@ -20,10 +20,13 @@ class AfterImportJob implements ShouldQueue
      * Upper bound on how many times this job may be attempted.
      *
      * This job uses $this->release($this->interval) to poll for dependent
-     * ReadChunk jobs. Without $tries, each release increments the attempts
-     * counter with no ceiling, so an import that stalls (OOM in a chunk,
-     * failed dependency) keeps polling indefinitely. 10 attempts at the
-     * default 60s interval caps the polling at ~10 minutes.
+     * ReadChunk jobs. Without a job-level $tries, the attempt ceiling is
+     * inherited from the worker command (queue:work --tries=1 by default
+     * on current Laravel, --tries=0 / unlimited on some hosted platforms).
+     * Neither fits a polling pattern: one release fails the job before
+     * dependencies complete, unlimited releases poll forever. 10 attempts
+     * at the default 60s interval caps the polling at ~10 minutes, which
+     * is long enough for most imports but finite.
      */
     public $tries = 10;
 
