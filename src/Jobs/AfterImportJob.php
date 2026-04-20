@@ -17,6 +17,17 @@ class AfterImportJob implements ShouldQueue
     use HasEventBus, InteractsWithQueue, Queueable;
 
     /**
+     * Upper bound on how many times this job may be attempted.
+     *
+     * This job uses $this->release($this->interval) to poll for dependent
+     * ReadChunk jobs. Without $tries, each release increments the attempts
+     * counter with no ceiling, so an import that stalls (OOM in a chunk,
+     * failed dependency) keeps polling indefinitely. 10 attempts at the
+     * default 60s interval caps the polling at ~10 minutes.
+     */
+    public $tries = 10;
+
+    /**
      * @var WithEvents
      */
     private $import;
