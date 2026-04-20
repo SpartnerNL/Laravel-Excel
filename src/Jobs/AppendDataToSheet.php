@@ -14,9 +14,6 @@ class AppendDataToSheet implements ShouldQueue
 {
     use Queueable, Dispatchable, ProxyFailures, InteractsWithQueue;
 
-    /** Upper bound on how many times this job may be attempted. */
-    public $tries = 5;
-
     /**
      * @var array
      */
