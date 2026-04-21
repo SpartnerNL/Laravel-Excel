@@ -12,10 +12,7 @@ class StoreQueuedExport implements ShouldQueue
     use Queueable;
 
     /** Upper bound on how many times this job may be attempted. */
-    public $tries = 5;
-
-    /** Delay in seconds between retries for transient failures (disk, remote filesystem). */
-    public $backoff = [30, 60, 300];
+    public $tries = 1;
 
     /**
      * @var string
