@@ -117,7 +117,7 @@ class ReadChunk implements ShouldQueue
         $this->timeout       = $import->timeout ?? null;
         $this->tries         = $import->tries ?? 1;
         $this->maxExceptions = $import->maxExceptions ?? null;
-        $this->backoff       = method_exists($import, 'backoff') ? $import->backoff() : ($import->backoff ?? [30, 60, 300]);
+        $this->backoff       = method_exists($import, 'backoff') ? $import->backoff() : ($import->backoff ?? null);
         $this->connection    = property_exists($import, 'connection') ? $import->connection : null;
         $this->queue         = property_exists($import, 'queue') ? $import->queue : null;
     }

@@ -9,18 +9,11 @@ use PhpOffice\PhpSpreadsheet\Reader\IReader;
 
 class ReadChunkDefaultsTest extends TestCase
 {
-    public function test_readchunk_falls_back_to_tries_one_when_import_has_no_retry_config()
+    public function test_readchunk_falls_back_to_tries_one_when_import_has_no_tries()
     {
         $readChunk = $this->makeReadChunk($this->importWithoutRetryConfig());
 
         $this->assertSame(1, $readChunk->tries);
-    }
-
-    public function test_readchunk_falls_back_to_exponential_backoff_when_import_has_no_retry_config()
-    {
-        $readChunk = $this->makeReadChunk($this->importWithoutRetryConfig());
-
-        $this->assertSame([30, 60, 300], $readChunk->backoff);
     }
 
     public function test_readchunk_preserves_user_tries_set_on_import()
