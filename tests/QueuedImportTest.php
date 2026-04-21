@@ -236,4 +236,5 @@ class QueuedImportTest extends TestCase
 
         $this->assertEquals(3, $maxExceptionsCount);
     }
+
 }
