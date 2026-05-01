@@ -40,7 +40,7 @@ class WithCustomValueBinderTest extends TestCase
             /**
              * {@inheritdoc}
              */
-            public function bindValue(Cell $cell, $value)
+            public function bindValue(Cell $cell, $value): bool
             {
                 // Handle percentage
                 if (preg_match('/^\-?\d*\.?\d*\s?\%$/', $value)) {
@@ -66,9 +66,9 @@ class WithCustomValueBinderTest extends TestCase
                     );
 
                     $cell->getWorksheet()
-                         ->getStyle($cell->getCoordinate())
-                         ->getNumberFormat()
-                         ->setFormatCode(NumberFormat::FORMAT_DATE_DATETIME);
+                        ->getStyle($cell->getCoordinate())
+                        ->getNumberFormat()
+                        ->setFormatCode(NumberFormat::FORMAT_DATE_DATETIME);
 
                     return true;
                 }
@@ -79,8 +79,8 @@ class WithCustomValueBinderTest extends TestCase
 
         $export->store('custom-value-binder-export.xlsx');
 
-        $spreadsheet = $this->read(__DIR__ . '/../Data/Disks/Local/custom-value-binder-export.xlsx', 'Xlsx');
-        $sheet       = $spreadsheet->getActiveSheet();
+        $spreadsheet = $this->read(__DIR__.'/../Data/Disks/Local/custom-value-binder-export.xlsx', 'Xlsx');
+        $sheet = $spreadsheet->getActiveSheet();
 
         // Check if the cell has the Excel date
         $this->assertSame(Date::dateTimeToExcel(Carbon::now()), $sheet->getCell('A1')->getValue());
@@ -97,12 +97,12 @@ class WithCustomValueBinderTest extends TestCase
 
     public function test_can_set_a_value_binder_on_import()
     {
-        $import = new class extends DefaultValueBinder implements WithCustomValueBinder, ToArray
+        $import = new class extends DefaultValueBinder implements ToArray, WithCustomValueBinder
         {
             /**
              * {@inheritdoc}
              */
-            public function bindValue(Cell $cell, $value)
+            public function bindValue(Cell $cell, $value): bool
             {
                 if ($cell->getCoordinate() === 'B2') {
                     $cell->setValueExplicit($value, DataType::TYPE_STRING);
@@ -120,9 +120,6 @@ class WithCustomValueBinderTest extends TestCase
                 return parent::bindValue($cell, $value);
             }
 
-            /**
-             * @param  array  $array
-             */
             public function array(array $array)
             {
                 Assert::assertSame([
@@ -132,11 +129,11 @@ class WithCustomValueBinderTest extends TestCase
                     ],
                     [
                         1,
-                        '2', // Forced to be a string
+                        2,
                     ],
                     [
-                        '2018-08-06 18:31:46', // Convert Excel datetime to datetime strings
-                        '2018-08-07 00:00:00', // Convert Excel date to datetime strings
+                        43318.77206018518,
+                        43319,
                     ],
                 ], $array);
             }

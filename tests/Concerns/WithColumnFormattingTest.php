@@ -18,7 +18,7 @@ class WithColumnFormattingTest extends TestCase
 {
     public function test_can_export_with_column_formatting()
     {
-        $export = new class() implements FromCollection, WithMapping, WithColumnFormatting
+        $export = new class implements FromCollection, WithColumnFormatting, WithMapping
         {
             use Exportable;
 
@@ -37,7 +37,6 @@ class WithColumnFormattingTest extends TestCase
 
             /**
              * @param  mixed  $row
-             * @return array
              */
             public function map($row): array
             {
@@ -47,13 +46,10 @@ class WithColumnFormattingTest extends TestCase
                 ];
             }
 
-            /**
-             * @return array
-             */
             public function columnFormats(): array
             {
                 return [
-                    'A'     => NumberFormat::FORMAT_DATE_DDMMYYYY,
+                    'A' => NumberFormat::FORMAT_DATE_DDMMYYYY,
                     'B4:B4' => NumberFormat::FORMAT_CURRENCY_EUR,
                 ];
             }
@@ -63,9 +59,9 @@ class WithColumnFormattingTest extends TestCase
 
         $this->assertTrue($response);
 
-        $actual = $this->readAsArray(__DIR__ . '/../Data/Disks/Local/with-column-formatting-store.xlsx', 'Xlsx');
+        $actual = $this->readAsArray(__DIR__.'/../Data/Disks/Local/with-column-formatting-store.xlsx', 'Xlsx');
 
-        $legacyPhpSpreadsheet = !InstalledVersions::satisfies(new VersionParser, 'phpoffice/phpspreadsheet', '^1.28');
+        $legacyPhpSpreadsheet = InstalledVersions::satisfies(new VersionParser, 'phpoffice/phpspreadsheet', '^1.0');
 
         $expected = [
             ['06/03/2018', null],
