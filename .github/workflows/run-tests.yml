@@ -9,7 +9,7 @@ on:
 jobs:
   tests:
     if: "!contains(github.event.head_commit.message, 'skip ci')"
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
 
     services:
       mysql:
@@ -26,7 +26,6 @@ jobs:
         php: [8.1, 8.2, 8.3, 8.4, 8.5]
         laravel: [13, 12, 11, 10, 9, 8, 7, 6, 5.8]
         dependency-version: [prefer-stable]
-        os: [ubuntu-latest]
         include:
           - laravel: 13
             scout: 11.*
