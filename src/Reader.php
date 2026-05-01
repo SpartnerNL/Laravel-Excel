@@ -70,7 +70,7 @@ class Reader
     {
         $this->setDefaultValueBinder();
 
-        $this->transaction = $transaction;
+        $this->transaction          = $transaction;
         $this->temporaryFileFactory = $temporaryFileFactory;
     }
 
@@ -112,7 +112,7 @@ class Reader
                         $sheet->import($sheetImport, $sheet->getStartRow($sheetImport));
 
                         // when using WithCalculatedFormulas we need to keep the sheet until all sheets are imported
-                        if (! ($sheetImport instanceof HasReferencesToOtherSheets)) {
+                        if (!($sheetImport instanceof HasReferencesToOtherSheets)) {
                             $sheet->disconnect();
                         } else {
                             $sheetsToDisconnect[] = $sheet;
@@ -150,16 +150,16 @@ class Reader
 
         $this->loadSpreadsheet($import);
 
-        $sheets = [];
+        $sheets             = [];
         $sheetsToDisconnect = [];
         foreach ($this->sheetImports as $index => $sheetImport) {
             $calculatesFormulas = $sheetImport instanceof WithCalculatedFormulas;
-            $formatData = $sheetImport instanceof WithFormatData;
+            $formatData         = $sheetImport instanceof WithFormatData;
             if ($sheet = $this->getSheet($import, $sheetImport, $index)) {
                 $sheets[$index] = $sheet->toArray($sheetImport, $sheet->getStartRow($sheetImport), null, $calculatesFormulas, $formatData);
 
                 // when using WithCalculatedFormulas we need to keep the sheet until all sheets are imported
-                if (! ($sheetImport instanceof HasReferencesToOtherSheets)) {
+                if (!($sheetImport instanceof HasReferencesToOtherSheets)) {
                     $sheet->disconnect();
                 } else {
                     $sheetsToDisconnect[] = $sheet;
@@ -190,16 +190,16 @@ class Reader
         $this->reader = $this->getReader($import, $filePath, $readerType, $disk);
         $this->loadSpreadsheet($import);
 
-        $sheets = new Collection;
+        $sheets             = new Collection;
         $sheetsToDisconnect = [];
         foreach ($this->sheetImports as $index => $sheetImport) {
             $calculatesFormulas = $sheetImport instanceof WithCalculatedFormulas;
-            $formatData = $sheetImport instanceof WithFormatData;
+            $formatData         = $sheetImport instanceof WithFormatData;
             if ($sheet = $this->getSheet($import, $sheetImport, $index)) {
                 $sheets->put($index, $sheet->toCollection($sheetImport, $sheet->getStartRow($sheetImport), null, $calculatesFormulas, $formatData));
 
                 // when using WithCalculatedFormulas we need to keep the sheet until all sheets are imported
-                if (! ($sheetImport instanceof HasReferencesToOtherSheets)) {
+                if (!($sheetImport instanceof HasReferencesToOtherSheets)) {
                     $sheet->disconnect();
                 } else {
                     $sheetsToDisconnect[] = $sheet;
@@ -247,7 +247,7 @@ class Reader
 
         // When no multiple sheets, use the main import object
         // for each loaded sheet in the spreadsheet
-        if (! $import instanceof WithMultipleSheets) {
+        if (!$import instanceof WithMultipleSheets) {
             $this->sheetImports = array_fill(0, $this->spreadsheet->getSheetCount(), $import);
         }
 
@@ -290,11 +290,11 @@ class Reader
     public function getWorksheets($import): array
     {
         // Csv doesn't have worksheets.
-        if (! method_exists($this->reader, 'listWorksheetNames')) {
+        if (!method_exists($this->reader, 'listWorksheetNames')) {
             return ['Worksheet' => $import];
         }
 
-        $worksheets = [];
+        $worksheets     = [];
         $worksheetNames = $this->reader->listWorksheetNames($this->currentFile->getLocalPath());
         if ($import instanceof WithMultipleSheets) {
             $sheetImports = $import->sheets();
@@ -391,7 +391,7 @@ class Reader
     private function getReader($import, $filePath, ?string $readerType = null, ?string $disk = null): IReader
     {
         $shouldQueue = $import instanceof ShouldQueue;
-        if ($shouldQueue && ! $import instanceof WithChunkReading) {
+        if ($shouldQueue && !$import instanceof WithChunkReading) {
             throw new InvalidArgumentException('ShouldQueue is only supported in combination with WithChunkReading.');
         }
 
@@ -403,8 +403,8 @@ class Reader
             Cell::setValueBinder($import);
         }
 
-        $fileExtension = pathinfo($filePath, PATHINFO_EXTENSION);
-        $temporaryFile = $shouldQueue ? $this->temporaryFileFactory->make($fileExtension) : $this->temporaryFileFactory->makeLocal(null, $fileExtension);
+        $fileExtension     = pathinfo($filePath, PATHINFO_EXTENSION);
+        $temporaryFile     = $shouldQueue ? $this->temporaryFileFactory->make($fileExtension) : $this->temporaryFileFactory->makeLocal(null, $fileExtension);
         $this->currentFile = $temporaryFile->copyFrom(
             $filePath,
             $disk

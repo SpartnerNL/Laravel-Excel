@@ -79,8 +79,8 @@ class WithCustomValueBinderTest extends TestCase
 
         $export->store('custom-value-binder-export.xlsx');
 
-        $spreadsheet = $this->read(__DIR__.'/../Data/Disks/Local/custom-value-binder-export.xlsx', 'Xlsx');
-        $sheet = $spreadsheet->getActiveSheet();
+        $spreadsheet = $this->read(__DIR__ . '/../Data/Disks/Local/custom-value-binder-export.xlsx', 'Xlsx');
+        $sheet       = $spreadsheet->getActiveSheet();
 
         // Check if the cell has the Excel date
         $this->assertSame(Date::dateTimeToExcel(Carbon::now()), $sheet->getCell('A1')->getValue());

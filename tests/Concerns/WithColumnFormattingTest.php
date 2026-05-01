@@ -49,7 +49,7 @@ class WithColumnFormattingTest extends TestCase
             public function columnFormats(): array
             {
                 return [
-                    'A' => NumberFormat::FORMAT_DATE_DDMMYYYY,
+                    'A'     => NumberFormat::FORMAT_DATE_DDMMYYYY,
                     'B4:B4' => NumberFormat::FORMAT_CURRENCY_EUR,
                 ];
             }
@@ -59,7 +59,7 @@ class WithColumnFormattingTest extends TestCase
 
         $this->assertTrue($response);
 
-        $actual = $this->readAsArray(__DIR__.'/../Data/Disks/Local/with-column-formatting-store.xlsx', 'Xlsx');
+        $actual = $this->readAsArray(__DIR__ . '/../Data/Disks/Local/with-column-formatting-store.xlsx', 'Xlsx');
 
         $legacyPhpSpreadsheet = InstalledVersions::satisfies(new VersionParser, 'phpoffice/phpspreadsheet', '^1.0');
 

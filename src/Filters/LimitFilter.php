@@ -19,7 +19,7 @@ class LimitFilter implements IReadFilter
     public function __construct(int $startRow, int $limit)
     {
         $this->startRow = $startRow;
-        $this->endRow = $startRow + $limit;
+        $this->endRow   = $startRow + $limit;
     }
 
     public function readCell(string $column, int $row, string $worksheetName = ''): bool

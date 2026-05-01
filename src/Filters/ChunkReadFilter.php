@@ -28,9 +28,9 @@ class ChunkReadFilter implements IReadFilter
 
     public function __construct(int $headingRow, int $startRow, int $chunkSize, string $worksheetName)
     {
-        $this->headingRow = $headingRow;
-        $this->startRow = $startRow;
-        $this->endRow = $startRow + $chunkSize;
+        $this->headingRow    = $headingRow;
+        $this->startRow      = $startRow;
+        $this->endRow        = $startRow + $chunkSize;
         $this->worksheetName = $worksheetName;
     }
 
