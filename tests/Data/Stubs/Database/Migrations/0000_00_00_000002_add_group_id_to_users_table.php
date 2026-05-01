@@ -21,7 +21,12 @@ class AddGroupIdToUsersTable extends Migration
      */
     public function down()
     {
+        if (! Schema::hasColumn('users', 'group_id')) {
+            return;
+        }
+
         Schema::table('users', function (Blueprint $table) {
+            $table->dropIndex(['group_id']);
             $table->dropColumn('group_id');
         });
     }
