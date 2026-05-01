@@ -21,7 +21,7 @@ class AddGroupIdToUsersTable extends Migration
      */
     public function down()
     {
-        if (! Schema::hasColumn('users', 'group_id')) {
+        if (!Schema::hasColumn('users', 'group_id')) {
             return;
         }
 
