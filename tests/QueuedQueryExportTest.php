@@ -79,7 +79,7 @@ class QueuedQueryExportTest extends TestCase
 
     public function test_can_queue_scout_export()
     {
-        if (!class_exists('\Laravel\Scout\Engines\DatabaseEngine')) {
+        if (!class_exists(\Laravel\Scout\Engines\DatabaseEngine::class)) {
             $this->markTestSkipped('Laravel Scout is too old');
 
             return;

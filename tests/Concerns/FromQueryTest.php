@@ -209,7 +209,7 @@ class FromQueryTest extends TestCase
 
     public function test_can_export_from_scout()
     {
-        if (!class_exists('\Laravel\Scout\Engines\DatabaseEngine')) {
+        if (!class_exists(\Laravel\Scout\Engines\DatabaseEngine::class)) {
             $this->markTestSkipped('Laravel Scout is too old');
 
             return;

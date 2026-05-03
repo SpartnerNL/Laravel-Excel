@@ -60,7 +60,7 @@ class User extends Model
      */
     public function searchableUsing(): Engine
     {
-        return class_exists('\Laravel\Scout\Engines\DatabaseEngine') ? new DatabaseEngine() : new NullEngine();
+        return class_exists(\Laravel\Scout\Engines\DatabaseEngine::class) ? new DatabaseEngine() : new NullEngine();
     }
 
     protected static function newFactory(): UserFactory
