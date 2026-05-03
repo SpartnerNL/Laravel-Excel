@@ -243,9 +243,7 @@ class ExcelFake implements Exporter, Importer
     {
         $fileName = $this->assertArrayHasKey($fileName, $this->downloads, sprintf('%s is not downloaded', $fileName));
 
-        $callback = $callback ?: function () {
-            return true;
-        };
+        $callback = $callback ?: (fn() => true);
 
         Assert::assertTrue(
             $callback($this->downloads[$fileName]),
@@ -274,9 +272,7 @@ class ExcelFake implements Exporter, Importer
             sprintf('%s is not stored on disk %s', $filePath, $disk)
         );
 
-        $callback = $callback ?: function () {
-            return true;
-        };
+        $callback = $callback ?: (fn() => true);
 
         Assert::assertTrue(
             $callback($storedOnDisk[$filePath]),
@@ -305,9 +301,7 @@ class ExcelFake implements Exporter, Importer
             sprintf('%s is not queued for export on disk %s', $filePath, $disk)
         );
 
-        $callback = $callback ?: function () {
-            return true;
-        };
+        $callback = $callback ?: (fn() => true);
 
         Assert::assertTrue(
             $callback($queuedForDisk[$filePath]),
@@ -328,9 +322,7 @@ class ExcelFake implements Exporter, Importer
     {
         Assert::assertArrayHasKey($classname, $this->raws, sprintf('%s is not exported in raw', $classname));
 
-        $callback = $callback ?: function () {
-            return true;
-        };
+        $callback = $callback ?: (fn() => true);
 
         Assert::assertTrue(
             $callback($this->raws[$classname]),
@@ -359,9 +351,7 @@ class ExcelFake implements Exporter, Importer
             sprintf('%s is not stored on disk %s', $filePath, $disk)
         );
 
-        $callback = $callback ?: function () {
-            return true;
-        };
+        $callback = $callback ?: (fn() => true);
 
         Assert::assertTrue(
             $callback($importedOnDisk[$filePath]),

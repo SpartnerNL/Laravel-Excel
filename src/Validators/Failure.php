@@ -72,9 +72,7 @@ class Failure implements Arrayable, JsonSerializable
      */
     public function toArray()
     {
-        return collect($this->errors)->map(function ($message) {
-            return __('There was an error on row :row. :message', ['row' => $this->row, 'message' => $message]);
-        })->all();
+        return collect($this->errors)->map(fn($message) => __('There was an error on row :row. :message', ['row' => $this->row, 'message' => $message]))->all();
     }
 
     /**

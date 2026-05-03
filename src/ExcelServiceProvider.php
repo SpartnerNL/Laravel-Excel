@@ -67,37 +67,25 @@ class ExcelServiceProvider extends ServiceProvider
             'excel'
         );
 
-        $this->app->bind(CacheManager::class, function ($app) {
-            return new CacheManager($app);
-        });
+        $this->app->bind(CacheManager::class, fn($app) => new CacheManager($app));
 
-        $this->app->singleton(TransactionManager::class, function ($app) {
-            return new TransactionManager($app);
-        });
+        $this->app->singleton(TransactionManager::class, fn($app) => new TransactionManager($app));
 
-        $this->app->bind(TransactionHandler::class, function ($app) {
-            return $app->make(TransactionManager::class)->driver();
-        });
+        $this->app->bind(TransactionHandler::class, fn($app) => $app->make(TransactionManager::class)->driver());
 
-        $this->app->bind(TemporaryFileFactory::class, function () {
-            return new TemporaryFileFactory(
-                config('excel.temporary_files.local_path', config('excel.exports.temp_path', storage_path('framework/laravel-excel'))),
-                config('excel.temporary_files.remote_disk')
-            );
-        });
+        $this->app->bind(TemporaryFileFactory::class, fn() => new TemporaryFileFactory(
+            config('excel.temporary_files.local_path', config('excel.exports.temp_path', storage_path('framework/laravel-excel'))),
+            config('excel.temporary_files.remote_disk')
+        ));
 
-        $this->app->bind(Filesystem::class, function ($app) {
-            return new Filesystem($app->make('filesystem'));
-        });
+        $this->app->bind(Filesystem::class, fn($app) => new Filesystem($app->make('filesystem')));
 
-        $this->app->bind('excel', function ($app) {
-            return new Excel(
-                $app->make(Writer::class),
-                $app->make(QueuedWriter::class),
-                $app->make(Reader::class),
-                $app->make(Filesystem::class)
-            );
-        });
+        $this->app->bind('excel', fn($app) => new Excel(
+            $app->make(Writer::class),
+            $app->make(QueuedWriter::class),
+            $app->make(Reader::class),
+            $app->make(Filesystem::class)
+        ));
 
         $this->app->alias('excel', Excel::class);
         $this->app->alias('excel', Exporter::class);

@@ -43,9 +43,7 @@ class ShouldQueueWithoutChainTest extends TestCase
 
         Queue::assertPushed(ReadChunk::class, 2);
         Queue::assertPushed(AfterImportJob::class, 1);
-        Queue::assertPushed(AfterImportJob::class, function ($import) {
-            return !is_null($import->delay);
-        });
+        Queue::assertPushed(AfterImportJob::class, fn($import) => !is_null($import->delay));
         Queue::assertNotPushed(QueueImport::class);
     }
 

@@ -33,9 +33,7 @@ class ExcelFakeTest extends TestCase
         $this->assertInstanceOf(BinaryFileResponse::class, $response);
 
         ExcelFacade::assertDownloaded('downloaded-filename.csv');
-        ExcelFacade::assertDownloaded('downloaded-filename.csv', function (FromCollection $export) {
-            return $export->collection()->contains('foo');
-        });
+        ExcelFacade::assertDownloaded('downloaded-filename.csv', fn(FromCollection $export) => $export->collection()->contains('foo'));
         ExcelFacade::matchByRegex();
         ExcelFacade::assertDownloaded('/\w{10}-\w{8}\.csv/');
     }
@@ -49,9 +47,7 @@ class ExcelFakeTest extends TestCase
         $this->assertTrue($response);
 
         ExcelFacade::assertStored('stored-filename.csv', 's3');
-        ExcelFacade::assertStored('stored-filename.csv', 's3', function (FromCollection $export) {
-            return $export->collection()->contains('foo');
-        });
+        ExcelFacade::assertStored('stored-filename.csv', 's3', fn(FromCollection $export) => $export->collection()->contains('foo'));
         ExcelFacade::matchByRegex();
         ExcelFacade::assertStored('/\w{6}-\w{8}\.csv/', 's3');
     }
@@ -82,9 +78,7 @@ class ExcelFakeTest extends TestCase
         $this->assertTrue($response);
 
         ExcelFacade::assertStored('stored-filename.csv');
-        ExcelFacade::assertStored('stored-filename.csv', function (FromCollection $export) {
-            return $export->collection()->contains('foo');
-        });
+        ExcelFacade::assertStored('stored-filename.csv', fn(FromCollection $export) => $export->collection()->contains('foo'));
         ExcelFacade::matchByRegex();
         ExcelFacade::assertStored('/\w{6}-\w{8}\.csv/');
     }
@@ -98,9 +92,7 @@ class ExcelFakeTest extends TestCase
         $this->assertInstanceOf(PendingDispatch::class, $response);
 
         ExcelFacade::assertQueued('queued-filename.csv', 's3');
-        ExcelFacade::assertQueued('queued-filename.csv', 's3', function (FromCollection $export) {
-            return $export->collection()->contains('foo');
-        });
+        ExcelFacade::assertQueued('queued-filename.csv', 's3', fn(FromCollection $export) => $export->collection()->contains('foo'));
         ExcelFacade::matchByRegex();
         ExcelFacade::assertQueued('/\w{6}-\w{8}\.csv/', 's3');
     }
@@ -115,9 +107,7 @@ class ExcelFakeTest extends TestCase
 
         ExcelFacade::assertStored('queued-filename.csv', 's3');
         ExcelFacade::assertQueued('queued-filename.csv', 's3');
-        ExcelFacade::assertQueued('queued-filename.csv', 's3', function (FromCollection $export) {
-            return $export->collection()->contains('foo');
-        });
+        ExcelFacade::assertQueued('queued-filename.csv', 's3', fn(FromCollection $export) => $export->collection()->contains('foo'));
         ExcelFacade::matchByRegex();
         ExcelFacade::assertQueued('/\w{6}-\w{8}\.csv/', 's3');
     }
@@ -146,9 +136,7 @@ class ExcelFakeTest extends TestCase
         $this->assertIsString($response);
 
         ExcelFacade::assertExportedInRaw(get_class($this->givenExport()));
-        ExcelFacade::assertExportedInRaw(get_class($this->givenExport()), function (FromCollection $export) {
-            return $export->collection()->contains('foo');
-        });
+        ExcelFacade::assertExportedInRaw(get_class($this->givenExport()), fn(FromCollection $export) => $export->collection()->contains('foo'));
     }
 
     public function test_can_assert_against_a_fake_import()
@@ -158,9 +146,7 @@ class ExcelFakeTest extends TestCase
         ExcelFacade::import($this->givenImport(), 'stored-filename.csv', 's3');
 
         ExcelFacade::assertImported('stored-filename.csv', 's3');
-        ExcelFacade::assertImported('stored-filename.csv', 's3', function (ToModel $import) {
-            return $import->model([]) instanceof User;
-        });
+        ExcelFacade::assertImported('stored-filename.csv', 's3', fn(ToModel $import) => $import->model([]) instanceof User);
         ExcelFacade::matchByRegex();
         ExcelFacade::assertImported('/\w{6}-\w{8}\.csv/', 's3');
     }
@@ -172,9 +158,7 @@ class ExcelFakeTest extends TestCase
         ExcelFacade::import($this->givenImport(), $this->givenUploadedFile(__DIR__ . '/Data/Disks/Local/import.xlsx'));
 
         ExcelFacade::assertImported('import.xlsx');
-        ExcelFacade::assertImported('import.xlsx', function (ToModel $import) {
-            return $import->model([]) instanceof User;
-        });
+        ExcelFacade::assertImported('import.xlsx', fn(ToModel $import) => $import->model([]) instanceof User);
         ExcelFacade::matchByRegex();
         ExcelFacade::assertImported('/\w{6}\.xlsx/');
     }
@@ -189,9 +173,7 @@ class ExcelFakeTest extends TestCase
 
         ExcelFacade::assertImported('queued-filename.csv', 's3');
         ExcelFacade::assertQueued('queued-filename.csv', 's3');
-        ExcelFacade::assertQueued('queued-filename.csv', 's3', function (ToModel $import) {
-            return $import->model([]) instanceof User;
-        });
+        ExcelFacade::assertQueued('queued-filename.csv', 's3', fn(ToModel $import) => $import->model([]) instanceof User);
         ExcelFacade::matchByRegex();
         ExcelFacade::assertQueued('/\w{6}-\w{8}\.csv/', 's3');
     }
@@ -206,9 +188,7 @@ class ExcelFakeTest extends TestCase
 
         ExcelFacade::assertImported('queued-filename.csv', 's3');
         ExcelFacade::assertQueued('queued-filename.csv', 's3');
-        ExcelFacade::assertQueued('queued-filename.csv', 's3', function (ToModel $import) {
-            return $import->model([]) instanceof User;
-        });
+        ExcelFacade::assertQueued('queued-filename.csv', 's3', fn(ToModel $import) => $import->model([]) instanceof User);
         ExcelFacade::matchByRegex();
         ExcelFacade::assertQueued('/\w{6}-\w{8}\.csv/', 's3');
     }
@@ -237,9 +217,7 @@ class ExcelFakeTest extends TestCase
         $this->assertInstanceOf(PendingDispatch::class, $response);
 
         ExcelFacade::assertQueued('queued-filename.csv');
-        ExcelFacade::assertQueued('queued-filename.csv', function (FromCollection $export) {
-            return $export->collection()->contains('foo');
-        });
+        ExcelFacade::assertQueued('queued-filename.csv', fn(FromCollection $export) => $export->collection()->contains('foo'));
         ExcelFacade::matchByRegex();
         ExcelFacade::assertQueued('/\w{6}-\w{8}\.csv/');
     }

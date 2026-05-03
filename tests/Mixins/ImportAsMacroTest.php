@@ -21,13 +21,11 @@ class ImportAsMacroTest extends TestCase
     {
         User::query()->truncate();
 
-        User::importAs('import-users.xlsx', function (array $row) {
-            return [
-                'name'     => $row[0],
-                'email'    => $row[1],
-                'password' => 'secret',
-            ];
-        });
+        User::importAs('import-users.xlsx', fn(array $row) => [
+            'name'     => $row[0],
+            'email'    => $row[1],
+            'password' => 'secret',
+        ]);
 
         $this->assertCount(2, User::all());
         $this->assertEquals([

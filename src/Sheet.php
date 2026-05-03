@@ -390,9 +390,7 @@ class Sheet
     {
         $rows = $this->toArray($import, $startRow, $nullValue, $calculateFormulas, $formatData);
 
-        return new Collection(array_map(function (array $row) {
-            return new Collection($row);
-        }, $rows));
+        return new Collection(array_map(fn(array $row) => new Collection($row), $rows));
     }
 
     /**
@@ -738,9 +736,7 @@ class Sheet
      */
     protected function validated(WithValidation $import, int $startRow, $rows)
     {
-        $toValidate = (new Collection($rows))->mapWithKeys(function ($row, $index) use ($startRow) {
-            return [($startRow + $index) => $row];
-        });
+        $toValidate = (new Collection($rows))->mapWithKeys(fn($row, $index) => [($startRow + $index) => $row]);
 
         try {
             app(RowValidator::class)->validate($toValidate->toArray(), $import);
@@ -763,11 +759,7 @@ class Sheet
         /**
          * @callable(string): string $increment
          */
-        $increment = function_exists('str_increment') ? function ($cell) {
-            return str_increment($cell);
-        } : function ($cell) {
-            return ++$cell;
-        };
+        $increment = function_exists('str_increment') ? fn($cell) => str_increment($cell) : (fn($cell) => ++$cell);
 
         $upper = $increment($upper);
         for ($i = $lower; $i !== $upper; $i = $increment($i)) {
@@ -824,8 +816,6 @@ class Sheet
             return null;
         }
 
-        return function (array $data, int $index) use ($import) {
-            return $import->prepareForValidation($data, $index);
-        };
+        return fn(array $data, int $index) => $import->prepareForValidation($data, $index);
     }
 }

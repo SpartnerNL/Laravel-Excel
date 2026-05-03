@@ -771,9 +771,7 @@ class WithValidationTest extends TestCase
              */
             public function withValidator($validator)
             {
-                $validator->sometimes('*.1', Rule::in(['patrick@maatwebsite.nl']), function () {
-                    return true;
-                });
+                $validator->sometimes('*.1', Rule::in(['patrick@maatwebsite.nl']), fn() => true);
             }
         };
 

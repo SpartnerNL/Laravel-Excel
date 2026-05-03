@@ -36,8 +36,6 @@ class LocalizeJob
             return null;
         });
 
-        return $this->withLocale($locale, function () use ($next, $job) {
-            return $next($job);
-        });
+        return $this->withLocale($locale, fn() => $next($job));
     }
 }
