@@ -87,7 +87,6 @@ class RowValidatorTest extends TestCase
     public function callPrivateMethod(string $name, array $args)
     {
         $method = new \ReflectionMethod(RowValidator::class, $name);
-        $method->setAccessible(true);
 
         return $method->invokeArgs($this->validator, $args);
     }
