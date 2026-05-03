@@ -14,9 +14,9 @@ return RectorConfig::configure()
         cacheClass: FileCacheStorage::class,
     )
     ->withPaths([
-        __DIR__.'/config',
-        __DIR__.'/src',
-        __DIR__.'/tests',
+        __DIR__ . '/config',
+        __DIR__ . '/src',
+        __DIR__ . '/tests',
     ])
     ->withPhpSets()
     ->withSkip([

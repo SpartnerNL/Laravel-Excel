@@ -20,7 +20,7 @@ class DownloadQueryMacro
                 /**
                  * @param  $query
                  * @param  bool  $withHeadings
-                 * @param Builder $query
+                 * @param  Builder  $query
                  */
                 public function __construct(private $query, private bool $withHeadings = false)
                 {

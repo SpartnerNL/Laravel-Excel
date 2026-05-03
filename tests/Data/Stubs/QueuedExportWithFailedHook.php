@@ -48,6 +48,6 @@ class QueuedExportWithFailedHook implements FromCollection, WithMapping
     {
         Assert::assertEquals('we expect this', $exception->getMessage());
 
-        app()->bind('queue-has-failed', fn() => true);
+        app()->bind('queue-has-failed', fn () => true);
     }
 }

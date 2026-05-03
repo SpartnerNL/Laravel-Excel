@@ -28,7 +28,7 @@ class HeadingRowImportTest extends TestCase
 
     public function test_can_import_only_heading_row_with_custom_heading_row_formatter()
     {
-        HeadingRowFormatter::extend('custom', fn($value) => 'custom-' . $value);
+        HeadingRowFormatter::extend('custom', fn ($value) => 'custom-' . $value);
 
         HeadingRowFormatter::default('custom');
 
@@ -45,7 +45,7 @@ class HeadingRowImportTest extends TestCase
 
     public function test_can_import_only_heading_row_with_custom_heading_row_formatter_with_key()
     {
-        HeadingRowFormatter::extend('custom', fn($value, $key) => $key);
+        HeadingRowFormatter::extend('custom', fn ($value, $key) => $key);
 
         HeadingRowFormatter::default('custom');
 
@@ -91,7 +91,7 @@ class HeadingRowImportTest extends TestCase
 
     public function test_can_import_only_heading_row_for_multiple_sheets_with_key()
     {
-        HeadingRowFormatter::extend('custom', fn($value, $key) => $key);
+        HeadingRowFormatter::extend('custom', fn ($value, $key) => $key);
 
         HeadingRowFormatter::default('custom');
         $import = new HeadingRowImport();
@@ -126,7 +126,7 @@ class HeadingRowImportTest extends TestCase
 
     public function test_can_import_heading_row_with_custom_formatter_defined_in_config()
     {
-        HeadingRowFormatter::extend('custom2', fn($value) => 'custom2-' . $value);
+        HeadingRowFormatter::extend('custom2', fn ($value) => 'custom2-' . $value);
 
         config()->set('excel.imports.heading_row.formatter', 'custom2');
 

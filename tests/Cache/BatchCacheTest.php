@@ -178,7 +178,7 @@ class BatchCacheTest extends TestCase
 
         $dispatchedCollection = Event::dispatched(
             KeyWritten::class,
-            fn(KeyWritten $event) => $event->seconds === $expectedTTL);
+            fn (KeyWritten $event) => $event->seconds === $expectedTTL);
 
         $this->assertCount(2, $dispatchedCollection);
     }
@@ -194,7 +194,7 @@ class BatchCacheTest extends TestCase
 
         $dispatchedCollection = Event::dispatched(
             KeyWritten::class,
-            fn(KeyWritten $event) => $event->seconds >= 59 && $event->seconds <= 60);
+            fn (KeyWritten $event) => $event->seconds >= 59 && $event->seconds <= 60);
 
         $this->assertCount(2, $dispatchedCollection);
     }
@@ -209,7 +209,7 @@ class BatchCacheTest extends TestCase
 
         $dispatchedCollection = Event::dispatched(
             KeyWritten::class,
-            fn(KeyWritten $event) => $event->seconds === null);
+            fn (KeyWritten $event) => $event->seconds === null);
 
         $this->assertCount(2, $dispatchedCollection);
     }
@@ -219,7 +219,7 @@ class BatchCacheTest extends TestCase
         return [
             'null (forever)' => [null, null],
             'int value'      => [$value = rand(1, 100), $value],
-            'callable'       => [$closure = (fn() => 199), $closure],
+            'callable'       => [$closure = (fn () => 199), $closure],
         ];
     }
 

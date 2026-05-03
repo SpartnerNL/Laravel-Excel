@@ -21,7 +21,7 @@ class ImportAsMacroTest extends TestCase
     {
         User::query()->truncate();
 
-        User::importAs('import-users.xlsx', fn(array $row) => [
+        User::importAs('import-users.xlsx', fn (array $row) => [
             'name'     => $row[0],
             'email'    => $row[1],
             'password' => 'secret',

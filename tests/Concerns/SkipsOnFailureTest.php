@@ -278,7 +278,7 @@ class SkipsOnFailureTest extends TestCase
              */
             public function collection(Collection $rows)
             {
-                $rows = $rows->each(fn($row) => User::create([
+                $rows = $rows->each(fn ($row) => User::create([
                     'name'     => $row[0],
                     'email'    => $row[1],
                     'password' => 'secret',

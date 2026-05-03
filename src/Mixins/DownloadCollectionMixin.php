@@ -28,7 +28,7 @@ class DownloadCollectionMixin
 
                 /**
                  * @param  Collection  $collection
-                 * @param bool $withHeadings
+                 * @param  bool  $withHeadings
                  */
                 public function __construct(Collection $collection, private bool $withHeadings = false)
                 {

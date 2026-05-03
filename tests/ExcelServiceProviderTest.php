@@ -16,7 +16,7 @@ class ExcelServiceProviderTest extends TestCase
 {
     public function test_custom_transaction_handler_is_bound()
     {
-        $this->app->make(TransactionManager::class)->extend('handler', fn() => new CustomTransactionHandler);
+        $this->app->make(TransactionManager::class)->extend('handler', fn () => new CustomTransactionHandler);
 
         $this->assertInstanceOf(CustomTransactionHandler::class, $this->app->make(TransactionManager::class)->driver('handler'));
     }

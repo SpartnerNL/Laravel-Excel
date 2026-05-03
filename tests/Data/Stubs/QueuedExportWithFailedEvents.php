@@ -33,7 +33,7 @@ class QueuedExportWithFailedEvents implements WithMultipleSheets, WithEvents
     {
         Assert::assertEquals('catch exception from QueueExport job', $exception->getMessage());
 
-        app()->bind('queue-has-failed-from-queue-export-job', fn() => true);
+        app()->bind('queue-has-failed-from-queue-export-job', fn () => true);
     }
 
     /**

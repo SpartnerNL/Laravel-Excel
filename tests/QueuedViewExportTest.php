@@ -47,7 +47,7 @@ class QueuedViewExportTest extends TestCase
 
         $contents = $this->readAsArray(__DIR__ . '/Data/Disks/Local/queued-multiple-view-export.xlsx', 'Xlsx', 0);
 
-        $expected = $users->forPage(1, 100)->map(fn(User $user) => [
+        $expected = $users->forPage(1, 100)->map(fn (User $user) => [
             $user->name,
             $user->email,
         ])->prepend(['Name', 'Email'])->toArray();
@@ -57,7 +57,7 @@ class QueuedViewExportTest extends TestCase
 
         $contents = $this->readAsArray(__DIR__ . '/Data/Disks/Local/queued-multiple-view-export.xlsx', 'Xlsx', 2);
 
-        $expected = $users->forPage(3, 100)->map(fn(User $user) => [
+        $expected = $users->forPage(3, 100)->map(fn (User $user) => [
             $user->name,
             $user->email,
         ])->prepend(['Name', 'Email'])->toArray();

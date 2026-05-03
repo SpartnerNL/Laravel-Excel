@@ -30,7 +30,7 @@ class CascadePersistManager
      */
     public function persist(Model $model): bool
     {
-        return ($this->transaction)(fn() => $this->save($model));
+        return ($this->transaction)(fn () => $this->save($model));
     }
 
     /**

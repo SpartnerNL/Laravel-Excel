@@ -129,7 +129,7 @@ class RowValidator
         }
 
         if (Str::contains($rules, 'required_without') && preg_match('/(.*?):(.*)/', $rules, $matches)) {
-            $column = array_map(fn($match) => Str::startsWith($match, '*.') ? $match : '*.' . $match, explode(',', $matches[2]));
+            $column = array_map(fn ($match) => Str::startsWith($match, '*.') ? $match : '*.' . $match, explode(',', $matches[2]));
 
             return $matches[1] . ':' . implode(',', $column);
         }
