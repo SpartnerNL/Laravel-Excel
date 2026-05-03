@@ -759,7 +759,7 @@ class Sheet
         /**
          * @callable(string): string $increment
          */
-        $increment = function_exists('str_increment') ? fn($cell) => str_increment($cell) : (fn($cell) => ++$cell);
+        $increment = function_exists('str_increment') ? str_increment(...) : (fn($cell) => ++$cell);
 
         $upper = $increment($upper);
         for ($i = $lower; $i !== $upper; $i = $increment($i)) {
