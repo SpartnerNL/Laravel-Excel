@@ -7,16 +7,10 @@ use Illuminate\Database\ConnectionInterface;
 class DbTransactionHandler implements TransactionHandler
 {
     /**
-     * @var ConnectionInterface
-     */
-    private $connection;
-
-    /**
      * @param  ConnectionInterface  $connection
      */
-    public function __construct(ConnectionInterface $connection)
+    public function __construct(private ConnectionInterface $connection)
     {
-        $this->connection = $connection;
     }
 
     /**

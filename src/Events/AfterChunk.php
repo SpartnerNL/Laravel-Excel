@@ -6,20 +6,8 @@ use Maatwebsite\Excel\Sheet;
 
 class AfterChunk extends Event
 {
-    /**
-     * @var Sheet
-     */
-    private $sheet;
-
-    /**
-     * @var int
-     */
-    private $startRow;
-
-    public function __construct(Sheet $sheet, $importable, int $startRow)
+    public function __construct(private Sheet $sheet, $importable, private int $startRow)
     {
-        $this->sheet     = $sheet;
-        $this->startRow  = $startRow;
         parent::__construct($importable);
     }
 

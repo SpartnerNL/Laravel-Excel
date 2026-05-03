@@ -16,11 +16,6 @@ class ImportAsMacro
                 use Importable;
 
                 /**
-                 * @var string
-                 */
-                private $model;
-
-                /**
                  * @var callable
                  */
                 private $mapping;
@@ -29,9 +24,8 @@ class ImportAsMacro
                  * @param  string  $model
                  * @param  callable  $mapping
                  */
-                public function __construct(string $model, callable $mapping)
+                public function __construct(private string $model, callable $mapping)
                 {
-                    $this->model   = $model;
                     $this->mapping = $mapping;
                 }
 

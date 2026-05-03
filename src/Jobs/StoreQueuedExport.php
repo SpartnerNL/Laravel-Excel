@@ -15,37 +15,13 @@ class StoreQueuedExport implements ShouldQueue
     use Batchable, Dispatchable, InteractsWithQueue, Queueable;
 
     /**
-     * @var string
-     */
-    private $filePath;
-
-    /**
-     * @var string|null
-     */
-    private $disk;
-
-    /**
-     * @var TemporaryFile
-     */
-    private $temporaryFile;
-
-    /**
-     * @var array|string
-     */
-    private $diskOptions;
-
-    /**
      * @param  TemporaryFile  $temporaryFile
      * @param  string  $filePath
      * @param  string|null  $disk
      * @param  array|string  $diskOptions
      */
-    public function __construct(TemporaryFile $temporaryFile, string $filePath, ?string $disk = null, $diskOptions = [])
+    public function __construct(private TemporaryFile $temporaryFile, private string $filePath, private ?string $disk = null, private $diskOptions = [])
     {
-        $this->disk          = $disk;
-        $this->filePath      = $filePath;
-        $this->temporaryFile = $temporaryFile;
-        $this->diskOptions   = $diskOptions;
     }
 
     /**

@@ -58,41 +58,6 @@ class ReadChunk implements ShouldQueue
     public $connection;
 
     /**
-     * @var WithChunkReading
-     */
-    private $import;
-
-    /**
-     * @var IReader
-     */
-    private $reader;
-
-    /**
-     * @var TemporaryFile
-     */
-    private $temporaryFile;
-
-    /**
-     * @var string
-     */
-    private $sheetName;
-
-    /**
-     * @var object
-     */
-    private $sheetImport;
-
-    /**
-     * @var int
-     */
-    private $startRow;
-
-    /**
-     * @var int
-     */
-    private $chunkSize;
-
-    /**
      * @var string
      */
     private $uniqueId;
@@ -106,21 +71,14 @@ class ReadChunk implements ShouldQueue
      * @param  int  $startRow
      * @param  int  $chunkSize
      */
-    public function __construct(WithChunkReading $import, IReader $reader, TemporaryFile $temporaryFile, string $sheetName, $sheetImport, int $startRow, int $chunkSize)
+    public function __construct(private WithChunkReading $import, private IReader $reader, private TemporaryFile $temporaryFile, private string $sheetName, private $sheetImport, private int $startRow, private int $chunkSize)
     {
-        $this->import        = $import;
-        $this->reader        = $reader;
-        $this->temporaryFile = $temporaryFile;
-        $this->sheetName     = $sheetName;
-        $this->sheetImport   = $sheetImport;
-        $this->startRow      = $startRow;
-        $this->chunkSize     = $chunkSize;
-        $this->timeout       = $import->timeout ?? null;
-        $this->tries         = $import->tries ?? null;
-        $this->maxExceptions = $import->maxExceptions ?? null;
-        $this->backoff       = method_exists($import, 'backoff') ? $import->backoff() : ($import->backoff ?? null);
-        $this->connection    = property_exists($import, 'connection') ? $import->connection : null;
-        $this->queue         = property_exists($import, 'queue') ? $import->queue : null;
+        $this->timeout       = $this->import->timeout ?? null;
+        $this->tries         = $this->import->tries ?? null;
+        $this->maxExceptions = $this->import->maxExceptions ?? null;
+        $this->backoff       = method_exists($this->import, 'backoff') ? $this->import->backoff() : ($this->import->backoff ?? null);
+        $this->connection    = property_exists($this->import, 'connection') ? $this->import->connection : null;
+        $this->queue         = property_exists($this->import, 'queue') ? $this->import->queue : null;
     }
 
     public function getUniqueId(): string

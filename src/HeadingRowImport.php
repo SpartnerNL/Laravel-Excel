@@ -13,16 +13,10 @@ class HeadingRowImport implements WithStartRow, WithLimit, WithMapping
     use Importable;
 
     /**
-     * @var int
-     */
-    private $headingRow;
-
-    /**
      * @param  int  $headingRow
      */
-    public function __construct(int $headingRow = 1)
+    public function __construct(private int $headingRow = 1)
     {
-        $this->headingRow = $headingRow;
     }
 
     /**

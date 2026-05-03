@@ -36,20 +36,14 @@ class AppendDataToSheet implements ShouldQueue
     public $sheetIndex;
 
     /**
-     * @var object
-     */
-    public $sheetExport;
-
-    /**
      * @param  object  $sheetExport
      * @param  TemporaryFile  $temporaryFile
      * @param  string  $writerType
      * @param  int  $sheetIndex
      * @param  array  $data
      */
-    public function __construct($sheetExport, TemporaryFile $temporaryFile, string $writerType, int $sheetIndex, array $data)
+    public function __construct(public $sheetExport, TemporaryFile $temporaryFile, string $writerType, int $sheetIndex, array $data)
     {
-        $this->sheetExport   = $sheetExport;
         $this->data          = $data;
         $this->temporaryFile = $temporaryFile;
         $this->writerType    = $writerType;

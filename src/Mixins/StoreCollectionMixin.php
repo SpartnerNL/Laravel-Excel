@@ -20,11 +20,6 @@ class StoreCollectionMixin
                 use Exportable;
 
                 /**
-                 * @var bool
-                 */
-                private $withHeadings;
-
-                /**
                  * @var Collection
                  */
                 private $collection;
@@ -33,10 +28,9 @@ class StoreCollectionMixin
                  * @param  Collection  $collection
                  * @param  bool  $withHeadings
                  */
-                public function __construct(Collection $collection, bool $withHeadings = false)
+                public function __construct(Collection $collection, private bool $withHeadings = false)
                 {
                     $this->collection   = $collection->toBase();
-                    $this->withHeadings = $withHeadings;
                 }
 
                 /**

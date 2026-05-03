@@ -9,21 +9,15 @@ class LimitFilter implements IReadFilter
     /**
      * @var int
      */
-    private $startRow;
-
-    /**
-     * @var int
-     */
     private $endRow;
 
     /**
      * @param  int  $startRow
      * @param  int  $limit
      */
-    public function __construct(int $startRow, int $limit)
+    public function __construct(private int $startRow, int $limit)
     {
-        $this->startRow = $startRow;
-        $this->endRow   = $startRow + $limit;
+        $this->endRow   = $this->startRow + $limit;
     }
 
     /**

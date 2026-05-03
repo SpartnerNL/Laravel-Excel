@@ -17,16 +17,10 @@ class ImportMacro
                 use Importable;
 
                 /**
-                 * @var string
-                 */
-                private $model;
-
-                /**
                  * @param  string  $model
                  */
-                public function __construct(string $model)
+                public function __construct(private string $model)
                 {
-                    $this->model = $model;
                 }
 
                 /**

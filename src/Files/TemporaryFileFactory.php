@@ -7,23 +7,11 @@ use Illuminate\Support\Str;
 class TemporaryFileFactory
 {
     /**
-     * @var string|null
-     */
-    private $temporaryPath;
-
-    /**
-     * @var string|null
-     */
-    private $temporaryDisk;
-
-    /**
      * @param  string|null  $temporaryPath
      * @param  string|null  $temporaryDisk
      */
-    public function __construct(?string $temporaryPath = null, ?string $temporaryDisk = null)
+    public function __construct(private ?string $temporaryPath = null, private ?string $temporaryDisk = null)
     {
-        $this->temporaryPath = $temporaryPath;
-        $this->temporaryDisk = $temporaryDisk;
     }
 
     /**

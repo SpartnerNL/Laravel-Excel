@@ -23,28 +23,16 @@ class ModelManager
      * @var array
      */
     private $rows = [];
-
-    /**
-     * @var RowValidator
-     */
-    private $validator;
     /**
      * @var bool
      */
     private $remembersRowNumber = false;
 
     /**
-     * @var CascadePersistManager
-     */
-    private $cascade;
-
-    /**
      * @param  RowValidator  $validator
      */
-    public function __construct(RowValidator $validator, CascadePersistManager $cascade)
+    public function __construct(private RowValidator $validator, private CascadePersistManager $cascade)
     {
-        $this->validator = $validator;
-        $this->cascade   = $cascade;
     }
 
     /**

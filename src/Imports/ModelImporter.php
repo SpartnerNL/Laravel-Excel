@@ -22,16 +22,10 @@ class ModelImporter
     use HasEventBus;
 
     /**
-     * @var ModelManager
-     */
-    private $manager;
-
-    /**
      * @param  ModelManager  $manager
      */
-    public function __construct(ModelManager $manager)
+    public function __construct(private ModelManager $manager)
     {
-        $this->manager = $manager;
     }
 
     /**

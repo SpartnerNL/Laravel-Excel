@@ -23,22 +23,16 @@ class Failure implements Arrayable, JsonSerializable
     protected $errors;
 
     /**
-     * @var array
-     */
-    private $values;
-
-    /**
      * @param  int  $row
      * @param  string  $attribute
      * @param  array  $errors
      * @param  array  $values
      */
-    public function __construct(int $row, string $attribute, array $errors, array $values = [])
+    public function __construct(int $row, string $attribute, array $errors, private array $values = [])
     {
         $this->row       = $row;
         $this->attribute = $attribute;
         $this->errors    = $errors;
-        $this->values    = $values;
     }
 
     /**

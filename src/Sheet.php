@@ -82,16 +82,10 @@ class Sheet
     protected $exportable;
 
     /**
-     * @var Worksheet
-     */
-    private $worksheet;
-
-    /**
      * @param  Worksheet  $worksheet
      */
-    public function __construct(Worksheet $worksheet)
+    public function __construct(private Worksheet $worksheet)
     {
-        $this->worksheet            = $worksheet;
         $this->chunkSize            = config('excel.exports.chunk_size', 100);
         $this->temporaryFileFactory = app(TemporaryFileFactory::class);
     }

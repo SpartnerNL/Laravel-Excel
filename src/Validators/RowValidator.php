@@ -12,16 +12,10 @@ use Maatwebsite\Excel\Exceptions\RowSkippedException;
 class RowValidator
 {
     /**
-     * @var Factory
-     */
-    private $validator;
-
-    /**
      * @param  Factory  $validator
      */
-    public function __construct(Factory $validator)
+    public function __construct(private Factory $validator)
     {
-        $this->validator = $validator;
     }
 
     /**

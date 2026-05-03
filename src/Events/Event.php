@@ -8,16 +8,10 @@ namespace Maatwebsite\Excel\Events;
 abstract class Event
 {
     /**
-     * @var object
-     */
-    protected $concernable;
-
-    /**
      * @param  object  $concernable
      */
-    public function __construct($concernable)
+    public function __construct(protected $concernable)
     {
-        $this->concernable = $concernable;
     }
 
     /**

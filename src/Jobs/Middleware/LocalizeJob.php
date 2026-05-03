@@ -11,18 +11,12 @@ class LocalizeJob
     use Localizable;
 
     /**
-     * @var object
-     */
-    private $localizable;
-
-    /**
      * LocalizeJob constructor.
      *
      * @param  object  $localizable
      */
-    public function __construct($localizable)
+    public function __construct(private $localizable)
     {
-        $this->localizable = $localizable;
     }
 
     /**
