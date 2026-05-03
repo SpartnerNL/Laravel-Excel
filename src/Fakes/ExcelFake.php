@@ -263,7 +263,7 @@ class ExcelFake implements Exporter, Importer
             $disk     = null;
         }
 
-        $disk         = $disk ?? 'default';
+        $disk ??= 'default';
         $storedOnDisk = $this->stored[$disk] ?? [];
 
         $filePath = $this->assertArrayHasKey(
@@ -292,7 +292,7 @@ class ExcelFake implements Exporter, Importer
             $disk     = null;
         }
 
-        $disk          = $disk ?? 'default';
+        $disk ??= 'default';
         $queuedForDisk = $this->queued[$disk] ?? [];
 
         $filePath = $this->assertArrayHasKey(
@@ -342,7 +342,7 @@ class ExcelFake implements Exporter, Importer
             $disk     = null;
         }
 
-        $disk           = $disk ?? 'default';
+        $disk ??= 'default';
         $importedOnDisk = $this->imported[$disk] ?? [];
 
         $filePath = $this->assertArrayHasKey(

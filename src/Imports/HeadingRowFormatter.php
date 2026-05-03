@@ -80,7 +80,7 @@ class HeadingRowFormatter
      */
     protected static function callFormatter($value, $key=null)
     {
-        static::$formatter = static::$formatter ?? config('excel.imports.heading_row.formatter', self::FORMATTER_SLUG);
+        static::$formatter ??= config('excel.imports.heading_row.formatter', self::FORMATTER_SLUG);
 
         // Call custom formatter
         if (isset(static::$customFormatters[static::$formatter])) {

@@ -26,7 +26,7 @@ class EndRowFinder
 
         // When no start row given,
         // use the first row as start row.
-        $startRow = $startRow ?? 1;
+        $startRow ??= 1;
 
         // Subtract 1 row from the start row, so a limit
         // of 1 row, will have the same start and end row.
