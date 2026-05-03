@@ -293,7 +293,7 @@ class Sheet
                         try {
                             app(RowValidator::class)->validate($toValidate, $import);
                             $import->onRow($sheetRow);
-                        } catch (RowSkippedException $e) {
+                        } catch (RowSkippedException) {
                         } catch (Throwable $e) {
                             if ($import instanceof SkipsOnError) {
                                 $import->onError($e);

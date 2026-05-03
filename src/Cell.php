@@ -56,7 +56,7 @@ class Cell
             } elseif ($calculateFormulas) {
                 try {
                     $value = $this->cell->getCalculatedValue();
-                } catch (Exception $e) {
+                } catch (Exception) {
                     $value = $this->cell->getOldCalculatedValue();
                 }
             } else {
