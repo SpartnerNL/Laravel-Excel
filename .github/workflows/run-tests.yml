@@ -145,3 +145,39 @@ jobs:
         run: vendor/bin/phpunit --testdox --configuration phpunit.xml.dist
         env:
           DB_PORT: ${{ job.services.mysql.ports[3306] }}
+
+  rector:
+    if: "!contains(github.event.head_commit.message, 'skip ci')"
+    runs-on: ubuntu-latest
+    name: Rector
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.composer/cache/files
+          key: dependency-cache-rector-composer-${{ hashFiles('composer.json') }}
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.2
+          coverage: none
+
+      - name: Install dependencies
+        run: composer install --no-interaction
+
+      - name: Rector Cache
+        uses: actions/cache@v4
+        with:
+          path: /tmp/rector
+          key: ${{ runner.os }}-rector-${{ github.run_id }}
+          restore-keys: ${{ runner.os }}-rector-
+
+      - run: mkdir -p /tmp/rector
+
+      - name: Rector Dry Run
+        run: php vendor/bin/rector process --dry-run --config=rector.php
