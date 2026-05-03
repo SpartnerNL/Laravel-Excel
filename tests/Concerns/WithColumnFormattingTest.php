@@ -41,7 +41,7 @@ class WithColumnFormattingTest extends TestCase
             {
                 return [
                     Date::dateTimeToExcel($row[0]),
-                    isset($row[1]) ? $row[1] : null,
+                    $row[1] ?? null,
                 ];
             }
 
