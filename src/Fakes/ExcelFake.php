@@ -120,7 +120,7 @@ class ExcelFake implements Exporter, Importer
      */
     public function raw($export, string $writerType)
     {
-        $this->raws[get_class($export)] = $export;
+        $this->raws[$export::class] = $export;
 
         return 'RAW-CONTENTS';
     }
@@ -311,7 +311,7 @@ class ExcelFake implements Exporter, Importer
 
     public function assertQueuedWithChain($chain): void
     {
-        Queue::assertPushedWithChain(get_class($this->job), $chain);
+        Queue::assertPushedWithChain($this->job::class, $chain);
     }
 
     /**

@@ -58,7 +58,7 @@ trait HasEventBus
      */
     public function listeners($event): array
     {
-        $name = \get_class($event);
+        $name = $event::class;
 
         $localListeners  = $this->events[$name] ?? [];
         $globalListeners = static::$globalEvents[$name] ?? [];
