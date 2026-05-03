@@ -16,7 +16,7 @@ class FileHelper
         }
 
         if (is_dir($fileName)) {
-            $scan = glob(rtrim($fileName, '/') . '/*');
+            $scan = glob(rtrim((string) $fileName, '/') . '/*');
             foreach ($scan as $path) {
                 self::recursiveDelete($path);
             }
