@@ -398,7 +398,7 @@ class Reader
             // an option to load only the selected sheets.
             if (
                 method_exists($this->reader, 'setLoadSheetsOnly')
-                && count(array_filter(array_keys($sheetImports), 'is_numeric')) === 0
+                && count(array_filter(array_keys($sheetImports), is_numeric(...))) === 0
             ) {
                 $this->reader->setLoadSheetsOnly(array_keys($sheetImports));
             }
