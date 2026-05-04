@@ -14,9 +14,6 @@ class FromArrayTest extends TestCase
         {
             use Exportable;
 
-            /**
-             * @return array
-             */
             public function array(): array
             {
                 return [

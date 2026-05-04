@@ -3,6 +3,7 @@
 namespace Maatwebsite\Excel\Tests\Concerns;
 
 use Illuminate\Foundation\Bus\PendingDispatch;
+use Illuminate\Support\LazyCollection;
 use Maatwebsite\Excel\Tests\Data\Stubs\EloquentLazyCollectionExport;
 use Maatwebsite\Excel\Tests\Data\Stubs\EloquentLazyCollectionQueuedExport;
 use Maatwebsite\Excel\Tests\Data\Stubs\QueuedExport;
@@ -26,7 +27,7 @@ class FromCollectionTest extends TestCase
 
     public function test_can_export_with_multiple_sheets_from_collection()
     {
-        $export = new QueuedExport();
+        $export = new QueuedExport;
 
         $response = $export->store('multiple-sheets-collection-store.xlsx');
 
@@ -47,13 +48,13 @@ class FromCollectionTest extends TestCase
 
     public function test_can_export_from_lazy_collection()
     {
-        if (!class_exists(\Illuminate\Support\LazyCollection::class)) {
+        if (!class_exists(LazyCollection::class)) {
             $this->markTestSkipped('Skipping test because LazyCollection is not supported');
 
             return;
         }
 
-        $export = new EloquentLazyCollectionExport();
+        $export = new EloquentLazyCollectionExport;
 
         $export->store('from-lazy-collection-store.xlsx');
 
@@ -69,13 +70,13 @@ class FromCollectionTest extends TestCase
 
     public function test_can_export_from_lazy_collection_with_queue()
     {
-        if (!class_exists(\Illuminate\Support\LazyCollection::class)) {
+        if (!class_exists(LazyCollection::class)) {
             $this->markTestSkipped('Skipping test because LazyCollection is not supported');
 
             return;
         }
 
-        $export = new EloquentLazyCollectionQueuedExport();
+        $export = new EloquentLazyCollectionQueuedExport;
 
         $response = $export->queue('from-lazy-collection-store.xlsx');
 

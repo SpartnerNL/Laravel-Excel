@@ -22,11 +22,6 @@ class BatchCache implements CacheInterface
      */
     protected $defaultTTL = null;
 
-    /**
-     * @param  CacheInterface  $cache
-     * @param  MemoryCache  $memory
-     * @param  null|int|\DateInterval|callable  $defaultTTL
-     */
     public function __construct(
         CacheInterface $cache,
         MemoryCache $memory,
@@ -121,7 +116,7 @@ class BatchCache implements CacheInterface
 
         // Add missing values from cache.
         foreach ($this->cache->getMultiple($keys, $default) as $key => $value) {
-            if (null !== $value) {
+            if ($value !== null) {
                 $memory[$key] = $value;
             }
         }

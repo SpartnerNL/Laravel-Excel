@@ -12,6 +12,7 @@ use Maatwebsite\Excel\Concerns\WithCustomValueBinder;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Events\AfterChunk;
 use Maatwebsite\Excel\Events\ImportFailed;
+use Maatwebsite\Excel\Exceptions\SheetNotFoundException;
 use Maatwebsite\Excel\Files\RemoteTemporaryFile;
 use Maatwebsite\Excel\Files\TemporaryFile;
 use Maatwebsite\Excel\Filters\ChunkReadFilter;
@@ -20,6 +21,7 @@ use Maatwebsite\Excel\Imports\HeadingRowExtractor;
 use Maatwebsite\Excel\Sheet;
 use Maatwebsite\Excel\Transactions\TransactionHandler;
 use PhpOffice\PhpSpreadsheet\Cell\Cell;
+use PhpOffice\PhpSpreadsheet\Reader\Exception;
 use PhpOffice\PhpSpreadsheet\Reader\IReader;
 use Throwable;
 
@@ -63,13 +65,7 @@ class ReadChunk implements ShouldQueue
     private $uniqueId;
 
     /**
-     * @param  WithChunkReading  $import
-     * @param  IReader  $reader
-     * @param  TemporaryFile  $temporaryFile
-     * @param  string  $sheetName
      * @param  object  $sheetImport
-     * @param  int  $startRow
-     * @param  int  $chunkSize
      */
     public function __construct(private WithChunkReading $import, private IReader $reader, private TemporaryFile $temporaryFile, private string $sheetName, private $sheetImport, private int $startRow, private int $chunkSize)
     {
@@ -117,10 +113,8 @@ class ReadChunk implements ShouldQueue
     }
 
     /**
-     * @param  TransactionHandler  $transaction
-     *
-     * @throws \Maatwebsite\Excel\Exceptions\SheetNotFoundException
-     * @throws \PhpOffice\PhpSpreadsheet\Reader\Exception
+     * @throws SheetNotFoundException
+     * @throws Exception
      */
     public function handle(TransactionHandler $transaction)
     {
@@ -185,9 +179,6 @@ class ReadChunk implements ShouldQueue
         });
     }
 
-    /**
-     * @param  Throwable  $e
-     */
     public function failed(Throwable $e)
     {
         $this->cleanUpTempFile(true);

@@ -9,9 +9,6 @@ class WithTitleExport implements WithTitle
 {
     use Exportable;
 
-    /**
-     * @return string
-     */
     public function title(): string
     {
         return 'given-title';

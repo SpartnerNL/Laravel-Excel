@@ -12,9 +12,6 @@ trait SkipsFailures
      */
     protected $failures = [];
 
-    /**
-     * @param  Failure  ...$failures
-     */
     public function onFailure(Failure ...$failures)
     {
         $this->failures = array_merge($this->failures, $failures);

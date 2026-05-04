@@ -48,10 +48,10 @@ class WithChunkReadingTest extends TestCase
             use Importable;
 
             public $before = 0;
-            public $after  = 0;
+
+            public $after = 0;
 
             /**
-             * @param  array  $row
              * @return Model|null
              */
             public function model(array $row)
@@ -63,17 +63,11 @@ class WithChunkReadingTest extends TestCase
                 ]);
             }
 
-            /**
-             * @return int
-             */
             public function chunkSize(): int
             {
                 return 1;
             }
 
-            /**
-             * @return array
-             */
             public function registerEvents(): array
             {
                 return [
@@ -81,7 +75,7 @@ class WithChunkReadingTest extends TestCase
                         Assert::assertInstanceOf(Reader::class, $event->reader);
                         $this->before++;
                     },
-                    AfterImport::class  => function (AfterImport $event) {
+                    AfterImport::class => function (AfterImport $event) {
                         Assert::assertInstanceOf(Reader::class, $event->reader);
                         $this->after++;
                     },
@@ -102,12 +96,11 @@ class WithChunkReadingTest extends TestCase
     {
         DB::connection()->enableQueryLog();
 
-        $import = new class implements ToModel, WithChunkReading, WithBatchInserts
+        $import = new class implements ToModel, WithBatchInserts, WithChunkReading
         {
             use Importable;
 
             /**
-             * @param  array  $row
              * @return Model|null
              */
             public function model(array $row)
@@ -117,17 +110,11 @@ class WithChunkReadingTest extends TestCase
                 ]);
             }
 
-            /**
-             * @return int
-             */
             public function chunkSize(): int
             {
                 return 1000;
             }
 
-            /**
-             * @return int
-             */
             public function batchSize(): int
             {
                 return 1000;
@@ -144,12 +131,11 @@ class WithChunkReadingTest extends TestCase
     {
         DB::connection()->enableQueryLog();
 
-        $import = new class implements ToModel, WithChunkReading, WithBatchInserts, WithHeadingRow
+        $import = new class implements ToModel, WithBatchInserts, WithChunkReading, WithHeadingRow
         {
             use Importable;
 
             /**
-             * @param  array  $row
              * @return Model|null
              */
             public function model(array $row)
@@ -159,17 +145,11 @@ class WithChunkReadingTest extends TestCase
                 ]);
             }
 
-            /**
-             * @return int
-             */
             public function chunkSize(): int
             {
                 return 1000;
             }
 
-            /**
-             * @return int
-             */
             public function batchSize(): int
             {
                 return 1000;
@@ -186,12 +166,11 @@ class WithChunkReadingTest extends TestCase
     {
         DB::connection()->enableQueryLog();
 
-        $import = new class implements ToModel, WithChunkReading, WithBatchInserts
+        $import = new class implements ToModel, WithBatchInserts, WithChunkReading
         {
             use Importable;
 
             /**
-             * @param  array  $row
              * @return Model|null
              */
             public function model(array $row)
@@ -201,17 +180,11 @@ class WithChunkReadingTest extends TestCase
                 ]);
             }
 
-            /**
-             * @return int
-             */
             public function chunkSize(): int
             {
                 return 1000;
             }
 
-            /**
-             * @return int
-             */
             public function batchSize(): int
             {
                 return 1000;
@@ -228,12 +201,11 @@ class WithChunkReadingTest extends TestCase
     {
         DB::connection()->enableQueryLog();
 
-        $import = new class implements ToModel, WithChunkReading, WithBatchInserts
+        $import = new class implements ToModel, WithBatchInserts, WithChunkReading
         {
             use Importable;
 
             /**
-             * @param  array  $row
              * @return Model|null
              */
             public function model(array $row)
@@ -243,17 +215,11 @@ class WithChunkReadingTest extends TestCase
                 ]);
             }
 
-            /**
-             * @return int
-             */
             public function chunkSize(): int
             {
                 return 1000;
             }
 
-            /**
-             * @return int
-             */
             public function batchSize(): int
             {
                 return 1000;
@@ -274,9 +240,6 @@ class WithChunkReadingTest extends TestCase
 
             public $called = 0;
 
-            /**
-             * @param  array  $array
-             */
             public function array(array $array)
             {
                 $this->called++;
@@ -284,9 +247,6 @@ class WithChunkReadingTest extends TestCase
                 Assert::assertCount(100, $array);
             }
 
-            /**
-             * @return int
-             */
             public function chunkSize(): int
             {
                 return 100;
@@ -302,28 +262,21 @@ class WithChunkReadingTest extends TestCase
     {
         DB::connection()->enableQueryLog();
 
-        $import = new class implements WithMultipleSheets, WithChunkReading
+        $import = new class implements WithChunkReading, WithMultipleSheets
         {
             use Importable;
 
-            /**
-             * @return int
-             */
             public function chunkSize(): int
             {
                 return 1000;
             }
 
-            /**
-             * @return array
-             */
             public function sheets(): array
             {
                 return [
                     new class implements ToModel, WithBatchInserts
                     {
                         /**
-                         * @param  array  $row
                          * @return Model|null
                          */
                         public function model(array $row)
@@ -333,9 +286,6 @@ class WithChunkReadingTest extends TestCase
                             ]);
                         }
 
-                        /**
-                         * @return int
-                         */
                         public function batchSize(): int
                         {
                             return 1000;
@@ -345,7 +295,6 @@ class WithChunkReadingTest extends TestCase
                     new class implements ToModel, WithBatchInserts
                     {
                         /**
-                         * @param  array  $row
                          * @return Model|null
                          */
                         public function model(array $row)
@@ -355,9 +304,6 @@ class WithChunkReadingTest extends TestCase
                             ]);
                         }
 
-                        /**
-                         * @return int
-                         */
                         public function batchSize(): int
                         {
                             return 2000;
@@ -377,28 +323,21 @@ class WithChunkReadingTest extends TestCase
     {
         DB::connection()->enableQueryLog();
 
-        $import = new class implements WithMultipleSheets, WithChunkReading
+        $import = new class implements WithChunkReading, WithMultipleSheets
         {
             use Importable;
 
-            /**
-             * @return int
-             */
             public function chunkSize(): int
             {
                 return 1000;
             }
 
-            /**
-             * @return array
-             */
             public function sheets(): array
             {
                 return [
                     'Worksheet' => new class implements ToModel, WithBatchInserts
                     {
                         /**
-                         * @param  array  $row
                          * @return Model|null
                          */
                         public function model(array $row)
@@ -408,9 +347,6 @@ class WithChunkReadingTest extends TestCase
                             ]);
                         }
 
-                        /**
-                         * @return int
-                         */
                         public function batchSize(): int
                         {
                             return 1000;
@@ -420,7 +356,6 @@ class WithChunkReadingTest extends TestCase
                     'Worksheet2' => new class implements ToModel, WithBatchInserts
                     {
                         /**
-                         * @param  array  $row
                          * @return Model|null
                          */
                         public function model(array $row)
@@ -430,9 +365,6 @@ class WithChunkReadingTest extends TestCase
                             ]);
                         }
 
-                        /**
-                         * @return int
-                         */
                         public function batchSize(): int
                         {
                             return 2000;
@@ -457,7 +389,6 @@ class WithChunkReadingTest extends TestCase
             public $failed = false;
 
             /**
-             * @param  array  $row
              * @return Model|null
              */
             public function model(array $row)
@@ -465,17 +396,11 @@ class WithChunkReadingTest extends TestCase
                 throw new Exception('Something went wrong in the chunk');
             }
 
-            /**
-             * @return int
-             */
             public function chunkSize(): int
             {
                 return 1;
             }
 
-            /**
-             * @return array
-             */
             public function registerEvents(): array
             {
                 return [
@@ -507,9 +432,6 @@ class WithChunkReadingTest extends TestCase
         {
             use Importable;
 
-            /**
-             * @param  array  $array
-             */
             public function array(array $array)
             {
                 Assert::assertCount(2, $array);
@@ -521,9 +443,6 @@ class WithChunkReadingTest extends TestCase
                 Assert::assertEquals('2023-02-20', $array[1][0]);
             }
 
-            /**
-             * @return int
-             */
             public function chunkSize(): int
             {
                 return 2;
@@ -541,9 +460,6 @@ class WithChunkReadingTest extends TestCase
         {
             use Importable;
 
-            /**
-             * @param  array  $array
-             */
             public function array(array $array)
             {
                 Assert::assertCount(2, $array);
@@ -555,9 +471,6 @@ class WithChunkReadingTest extends TestCase
                 Assert::assertEquals((int) Date::dateTimeToExcel(DateTime::createFromFormat('Y-m-d', '2023-02-20')->setTime(0, 0, 0, 0)), $array[1][0]);
             }
 
-            /**
-             * @return int
-             */
             public function chunkSize(): int
             {
                 return 2;

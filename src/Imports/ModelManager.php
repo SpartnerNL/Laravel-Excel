@@ -23,39 +23,27 @@ class ModelManager
      * @var array
      */
     private $rows = [];
+
     /**
      * @var bool
      */
     private $remembersRowNumber = false;
 
-    /**
-     * @param  RowValidator  $validator
-     */
     public function __construct(private RowValidator $validator, private CascadePersistManager $cascade)
     {
     }
 
-    /**
-     * @param  int  $row
-     * @param  array  $attributes
-     */
     public function add(int $row, array $attributes)
     {
         $this->rows[$row] = $attributes;
     }
 
-    /**
-     * @param  bool  $remembersRowNumber
-     */
     public function setRemembersRowNumber(bool $remembersRowNumber)
     {
         $this->remembersRowNumber = $remembersRowNumber;
     }
 
     /**
-     * @param  ToModel  $import
-     * @param  bool  $massInsert
-     *
      * @throws ValidationException
      */
     public function flush(ToModel $import, bool $massInsert = false)
@@ -74,8 +62,6 @@ class ModelManager
     }
 
     /**
-     * @param  ToModel  $import
-     * @param  array  $attributes
      * @param  int|null  $rowNumber
      * @return Model[]|Collection
      */
@@ -88,42 +74,36 @@ class ModelManager
         return Collection::wrap($import->model($attributes));
     }
 
-    /**
-     * @param  ToModel  $import
-     */
     private function massFlush(ToModel $import)
     {
         $this->rows()
-             ->flatMap(fn (array $attributes, $index) => $this->toModels($import, $attributes, $index))
-             ->mapToGroups(fn ($model) => [$model::class => $this->prepare($model)->getAttributes()])
-             ->each(function (Collection $models, string $model) use ($import) {
-                 try {
-                     /* @var Model $model */
+            ->flatMap(fn (array $attributes, $index) => $this->toModels($import, $attributes, $index))
+            ->mapToGroups(fn ($model) => [$model::class => $this->prepare($model)->getAttributes()])
+            ->each(function (Collection $models, string $model) use ($import) {
+                try {
+                    /* @var Model $model */
 
-                     if ($import instanceof WithUpserts) {
-                         $model::query()->upsert(
-                             $models->toArray(),
-                             $import->uniqueBy(),
-                             $import instanceof WithUpsertColumns ? $import->upsertColumns() : null
-                         );
+                    if ($import instanceof WithUpserts) {
+                        $model::query()->upsert(
+                            $models->toArray(),
+                            $import->uniqueBy(),
+                            $import instanceof WithUpsertColumns ? $import->upsertColumns() : null
+                        );
 
-                         return;
-                     } elseif ($import instanceof WithSkipDuplicates) {
-                         $model::query()->insertOrIgnore($models->toArray());
+                        return;
+                    } elseif ($import instanceof WithSkipDuplicates) {
+                        $model::query()->insertOrIgnore($models->toArray());
 
-                         return;
-                     }
+                        return;
+                    }
 
-                     $model::query()->insert($models->toArray());
-                 } catch (Throwable $e) {
-                     $this->handleException($import, $e);
-                 }
-             });
+                    $model::query()->insert($models->toArray());
+                } catch (Throwable $e) {
+                    $this->handleException($import, $e);
+                }
+            });
     }
 
-    /**
-     * @param  ToModel  $import
-     */
     private function singleFlush(ToModel $import)
     {
         $this
@@ -157,10 +137,6 @@ class ModelManager
             });
     }
 
-    /**
-     * @param  Model  $model
-     * @return Model
-     */
     private function prepare(Model $model): Model
     {
         if ($model->usesTimestamps()) {
@@ -169,14 +145,14 @@ class ModelManager
             $updatedAtColumn = $model->getUpdatedAtColumn();
 
             // If model has updated at column and not manually provided.
-            if ($updatedAtColumn && null === $model->{$updatedAtColumn}) {
+            if ($updatedAtColumn && $model->{$updatedAtColumn} === null) {
                 $model->setUpdatedAt($time);
             }
 
             $createdAtColumn = $model->getCreatedAtColumn();
 
             // If model has created at column and not manually provided.
-            if ($createdAtColumn && null === $model->{$createdAtColumn}) {
+            if ($createdAtColumn && $model->{$createdAtColumn} === null) {
                 $model->setCreatedAt($time);
             }
         }
@@ -185,8 +161,6 @@ class ModelManager
     }
 
     /**
-     * @param  WithValidation  $import
-     *
      * @throws ValidationException
      */
     private function validateRows(WithValidation $import)
@@ -200,9 +174,6 @@ class ModelManager
         }
     }
 
-    /**
-     * @return Collection
-     */
     private function rows(): Collection
     {
         return new Collection($this->rows);

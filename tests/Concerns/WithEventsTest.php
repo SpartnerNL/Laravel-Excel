@@ -34,7 +34,7 @@ class WithEventsTest extends TestCase
 
     public function test_export_events_get_called()
     {
-        $event = new ExportWithEvents();
+        $event = new ExportWithEvents;
 
         $eventsTriggered = 0;
 
@@ -68,7 +68,7 @@ class WithEventsTest extends TestCase
 
     public function test_import_events_get_called()
     {
-        $import = new ImportWithEvents();
+        $import = new ImportWithEvents;
 
         $eventsTriggered = 0;
 
@@ -102,7 +102,7 @@ class WithEventsTest extends TestCase
 
     public function test_import_chunked_events_get_called()
     {
-        $import = new ImportWithEventsChunksAndBatches();
+        $import = new ImportWithEventsChunksAndBatches;
 
         $beforeImport = 0;
         $afterImport  = 0;
@@ -164,7 +164,7 @@ class WithEventsTest extends TestCase
 
     public function test_can_have_invokable_class_as_listener()
     {
-        $event = new ExportWithEvents();
+        $event = new ExportWithEvents;
 
         $event->beforeExport = new BeforeExportListener(function ($event) {
             $this->assertInstanceOf(BeforeExport::class, $event);
@@ -305,7 +305,7 @@ class WithEventsTest extends TestCase
             'remember_token' => Str::random(10),
         ]);
 
-        $export = new ExportWithEventsChunks();
+        $export = new ExportWithEventsChunks;
         $export->queue('filename.xlsx');
 
         // Chunk size is 1, so we expect 2 chunks to be executed with a total of 2 users

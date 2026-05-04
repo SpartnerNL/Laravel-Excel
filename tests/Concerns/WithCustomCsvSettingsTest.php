@@ -40,9 +40,6 @@ class WithCustomCsvSettingsTest extends TestCase
                 ]);
             }
 
-            /**
-             * @return array
-             */
             public function getCsvSettings(): array
             {
                 return [
@@ -82,9 +79,6 @@ class WithCustomCsvSettingsTest extends TestCase
                 ]);
             }
 
-            /**
-             * @return array
-             */
             public function getCsvSettings(): array
             {
                 return [
@@ -119,7 +113,7 @@ class WithCustomCsvSettingsTest extends TestCase
             [
                 ['a1', 'b1'],
             ],
-        ], (new HeadingRowImport())->toArray('csv-with-other-delimiter.csv'));
+        ], (new HeadingRowImport)->toArray('csv-with-other-delimiter.csv'));
     }
 
     public function test_can_read_csv_with_auto_detecting_delimiter_comma()
@@ -128,16 +122,13 @@ class WithCustomCsvSettingsTest extends TestCase
             [
                 ['a1', 'b1'],
             ],
-        ], (new HeadingRowImport())->toArray('csv-with-comma.csv'));
+        ], (new HeadingRowImport)->toArray('csv-with-comma.csv'));
     }
 
     public function test_can_read_csv_import_with_custom_settings()
     {
-        $import = new class implements WithCustomCsvSettings, ToArray
+        $import = new class implements ToArray, WithCustomCsvSettings
         {
-            /**
-             * @return array
-             */
             public function getCsvSettings(): array
             {
                 return [
@@ -149,9 +140,6 @@ class WithCustomCsvSettingsTest extends TestCase
                 ];
             }
 
-            /**
-             * @param  array  $array
-             */
             public function array(array $array)
             {
                 Assert::assertEquals([
@@ -166,11 +154,8 @@ class WithCustomCsvSettingsTest extends TestCase
 
     public function test_cannot_read_with_wrong_delimiter()
     {
-        $import = new class implements WithCustomCsvSettings, ToArray
+        $import = new class implements ToArray, WithCustomCsvSettings
         {
-            /**
-             * @return array
-             */
             public function getCsvSettings(): array
             {
                 return [
@@ -178,9 +163,6 @@ class WithCustomCsvSettingsTest extends TestCase
                 ];
             }
 
-            /**
-             * @param  array  $array
-             */
             public function array(array $array)
             {
                 Assert::assertEquals([

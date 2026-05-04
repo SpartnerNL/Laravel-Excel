@@ -9,9 +9,6 @@ class LocalTemporaryFile extends TemporaryFile
      */
     private $filePath;
 
-    /**
-     * @param  string  $filePath
-     */
     public function __construct(string $filePath)
     {
         touch($filePath);
@@ -22,25 +19,16 @@ class LocalTemporaryFile extends TemporaryFile
         $this->filePath = realpath($filePath);
     }
 
-    /**
-     * @return string
-     */
     public function getLocalPath(): string
     {
         return $this->filePath;
     }
 
-    /**
-     * @return bool
-     */
     public function exists(): bool
     {
         return file_exists($this->filePath);
     }
 
-    /**
-     * @return bool
-     */
     public function delete(): bool
     {
         if (@unlink($this->filePath) || !$this->exists()) {
@@ -58,9 +46,6 @@ class LocalTemporaryFile extends TemporaryFile
         return fopen($this->getLocalPath(), 'rb+');
     }
 
-    /**
-     * @return string
-     */
     public function contents(): string
     {
         return file_get_contents($this->filePath);

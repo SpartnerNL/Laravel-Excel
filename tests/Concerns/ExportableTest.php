@@ -6,6 +6,8 @@ use Illuminate\Contracts\Support\Responsable;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Excel;
+use Maatwebsite\Excel\Exceptions\NoFilenameGivenException;
+use Maatwebsite\Excel\Exceptions\NoFilePathGivenException;
 use Maatwebsite\Excel\Exporter;
 use Maatwebsite\Excel\Tests\Data\Stubs\EmptyExport;
 use Maatwebsite\Excel\Tests\TestCase;
@@ -15,7 +17,7 @@ class ExportableTest extends TestCase
 {
     public function test_needs_to_have_a_file_name_when_downloading()
     {
-        $this->expectException(\Maatwebsite\Excel\Exceptions\NoFilenameGivenException::class);
+        $this->expectException(NoFilenameGivenException::class);
         $this->expectExceptionMessage('A filename needs to be passed in order to download the export');
 
         $export = new class
@@ -28,7 +30,7 @@ class ExportableTest extends TestCase
 
     public function test_needs_to_have_a_file_name_when_storing()
     {
-        $this->expectException(\Maatwebsite\Excel\Exceptions\NoFilePathGivenException::class);
+        $this->expectException(NoFilePathGivenException::class);
         $this->expectExceptionMessage('A filepath needs to be passed in order to store the export');
 
         $export = new class
@@ -41,7 +43,7 @@ class ExportableTest extends TestCase
 
     public function test_needs_to_have_a_file_name_when_queuing()
     {
-        $this->expectException(\Maatwebsite\Excel\Exceptions\NoFilePathGivenException::class);
+        $this->expectException(NoFilePathGivenException::class);
         $this->expectExceptionMessage('A filepath needs to be passed in order to store the export');
 
         $export = new class
@@ -54,7 +56,7 @@ class ExportableTest extends TestCase
 
     public function test_responsable_needs_to_have_file_name_configured_inside_the_export()
     {
-        $this->expectException(\Maatwebsite\Excel\Exceptions\NoFilenameGivenException::class);
+        $this->expectException(NoFilenameGivenException::class);
         $this->expectExceptionMessage('A filename needs to be passed in order to download the export');
 
         $export = new class implements Responsable
@@ -62,7 +64,7 @@ class ExportableTest extends TestCase
             use Exportable;
         };
 
-        $export->toResponse(new Request());
+        $export->toResponse(new Request);
     }
 
     public function test_is_responsable()
@@ -76,14 +78,14 @@ class ExportableTest extends TestCase
 
         $this->assertInstanceOf(Responsable::class, $export);
 
-        $response = $export->toResponse(new Request());
+        $response = $export->toResponse(new Request);
 
         $this->assertInstanceOf(BinaryFileResponse::class, $response);
     }
 
     public function test_can_have_customized_header()
     {
-        $export   = new class
+        $export = new class
         {
             use Exportable;
         };
@@ -99,13 +101,15 @@ class ExportableTest extends TestCase
 
     public function test_can_set_custom_headers_in_export_class()
     {
-        $export   = new class
+        $export = new class
         {
             use Exportable;
 
-            protected $fileName   = 'name.csv';
+            protected $fileName = 'name.csv';
+
             protected $writerType = Excel::CSV;
-            protected $headers    = [
+
+            protected $headers = [
                 'Content-Type' => 'text/csv',
             ];
         };
@@ -151,8 +155,10 @@ class ExportableTest extends TestCase
         {
             use Exportable;
 
-            public $disk        = 's3';
-            public $writerType  = Excel::CSV;
+            public $disk = 's3';
+
+            public $writerType = Excel::CSV;
+
             public $diskOptions = ['visibility' => 'private'];
         };
 
@@ -169,8 +175,10 @@ class ExportableTest extends TestCase
         {
             use Exportable;
 
-            public $disk        = 's3';
-            public $writerType  = Excel::CSV;
+            public $disk = 's3';
+
+            public $writerType = Excel::CSV;
+
             public $diskOptions = ['visibility' => 'private'];
         };
 

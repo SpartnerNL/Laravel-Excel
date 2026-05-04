@@ -34,16 +34,12 @@ class QueuedExportWithFailedHook implements FromCollection, WithMapping
 
     /**
      * @param  User  $user
-     * @return array
      */
     public function map($user): array
     {
         throw new Exception('we expect this');
     }
 
-    /**
-     * @param  Exception  $exception
-     */
     public function failed(Exception $exception)
     {
         Assert::assertEquals('we expect this', $exception->getMessage());

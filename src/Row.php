@@ -23,7 +23,7 @@ class Row implements ArrayAccess
     protected $headerIsGrouped = [];
 
     /**
-     * @var \Closure
+     * @var Closure
      */
     protected $preparationCallback;
 
@@ -47,11 +47,6 @@ class Row implements ArrayAccess
      */
     protected $rowCacheEndColumn;
 
-    /**
-     * @param  SpreadsheetRow  $row
-     * @param  array  $headingRow
-     * @param  array  $headerIsGrouped
-     */
     public function __construct(SpreadsheetRow $row, array $headingRow = [], array $headerIsGrouped = [])
     {
         $this->row             = $row;
@@ -59,9 +54,6 @@ class Row implements ArrayAccess
         $this->headerIsGrouped = $headerIsGrouped;
     }
 
-    /**
-     * @return SpreadsheetRow
-     */
     public function getDelegate(): SpreadsheetRow
     {
         return $this->row;
@@ -71,8 +63,6 @@ class Row implements ArrayAccess
      * @param  null  $nullValue
      * @param  bool  $calculateFormulas
      * @param  bool  $formatData
-     * @param  string|null  $endColumn
-     * @return Collection
      */
     public function toCollection($nullValue = null, $calculateFormulas = false, $formatData = true, ?string $endColumn = null): Collection
     {
@@ -83,7 +73,6 @@ class Row implements ArrayAccess
      * @param  null  $nullValue
      * @param  bool  $calculateFormulas
      * @param  bool  $formatData
-     * @param  string|null  $endColumn
      * @return array
      */
     public function toArray($nullValue = null, $calculateFormulas = false, $formatData = true, ?string $endColumn = null)
@@ -124,17 +113,12 @@ class Row implements ArrayAccess
 
     /**
      * @param  bool  $calculateFormulas
-     * @param  string|null  $endColumn
-     * @return bool
      */
     public function isEmpty($calculateFormulas = false, ?string $endColumn = null): bool
     {
         return count(array_filter($this->toArray(null, $calculateFormulas, false, $endColumn))) === 0;
     }
 
-    /**
-     * @return int
-     */
     public function getIndex(): int
     {
         return $this->row->getRowIndex();
@@ -165,8 +149,6 @@ class Row implements ArrayAccess
     }
 
     /**
-     * @param  \Closure  $preparationCallback
-     *
      * @internal
      */
     public function setPreparationCallback(?Closure $preparationCallback = null)

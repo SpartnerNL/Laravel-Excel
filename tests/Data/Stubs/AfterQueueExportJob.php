@@ -10,9 +10,6 @@ class AfterQueueExportJob implements ShouldQueue
 {
     use Queueable;
 
-    /**
-     * @param  string  $filePath
-     */
     public function __construct(private string $filePath)
     {
     }

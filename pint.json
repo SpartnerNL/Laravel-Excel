@@ -1,0 +1,38 @@
+{
+    "preset": "laravel",
+    "rules": {
+        "binary_operator_spaces": {
+            "operators": {
+                "=>": "align_single_space_minimal",
+                "=": "align_single_space_minimal"
+            }
+        },
+        "concat_space": {
+            "spacing": "one"
+        },
+        "ordered_class_elements": {
+            "order": [
+                "use_trait",
+                "case",
+                "constant_public",
+                "constant_protected",
+                "constant_private",
+                "property_public",
+                "property_protected",
+                "property_private",
+                "construct",
+                "destruct",
+                "magic",
+                "phpunit",
+                "method_public",
+                "method_protected",
+                "method_private"
+            ]
+        },
+        "not_operator_with_successor_space": false,
+        "single_line_empty_body": false
+    },
+    "exclude": [
+        ".github"
+    ]
+}

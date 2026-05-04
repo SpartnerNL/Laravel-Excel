@@ -27,11 +27,6 @@ class Disk
      */
     protected $diskOptions;
 
-    /**
-     * @param  IlluminateFilesystem  $disk
-     * @param  string|null  $name
-     * @param  array  $diskOptions
-     */
     public function __construct(IlluminateFilesystem $disk, ?string $name = null, array $diskOptions = [])
     {
         $this->disk        = $disk;
@@ -50,20 +45,13 @@ class Disk
     }
 
     /**
-     * @param  string  $destination
      * @param  string|resource  $contents
-     * @return bool
      */
     public function put(string $destination, $contents): bool
     {
         return $this->disk->put($destination, $contents, $this->diskOptions);
     }
 
-    /**
-     * @param  TemporaryFile  $source
-     * @param  string  $destination
-     * @return bool
-     */
     public function copy(TemporaryFile $source, string $destination): bool
     {
         $readStream = $source->readStream();
@@ -90,9 +78,6 @@ class Disk
         return $success;
     }
 
-    /**
-     * @param  string  $filename
-     */
     public function touch(string $filename)
     {
         $this->disk->put($filename, '', $this->diskOptions);

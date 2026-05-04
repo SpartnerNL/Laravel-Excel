@@ -11,17 +11,11 @@ use Maatwebsite\Excel\Exceptions\RowSkippedException;
 
 class RowValidator
 {
-    /**
-     * @param  Factory  $validator
-     */
     public function __construct(private Factory $validator)
     {
     }
 
     /**
-     * @param  array  $rows
-     * @param  WithValidation  $import
-     *
      * @throws ValidationException
      * @throws RowSkippedException
      */
@@ -66,10 +60,6 @@ class RowValidator
         }
     }
 
-    /**
-     * @param  WithValidation  $import
-     * @return array
-     */
     private function messages(WithValidation $import): array
     {
         return method_exists($import, 'customValidationMessages')
@@ -77,10 +67,6 @@ class RowValidator
             : [];
     }
 
-    /**
-     * @param  WithValidation  $import
-     * @return array
-     */
     private function attributes(WithValidation $import): array
     {
         return method_exists($import, 'customValidationAttributes')
@@ -88,19 +74,11 @@ class RowValidator
             : [];
     }
 
-    /**
-     * @param  WithValidation  $import
-     * @return array
-     */
     private function rules(WithValidation $import): array
     {
         return $this->formatKey($import->rules());
     }
 
-    /**
-     * @param  array  $elements
-     * @return array
-     */
     private function formatKey(array $elements): array
     {
         return collect($elements)->mapWithKeys(function ($rule, $attribute) {

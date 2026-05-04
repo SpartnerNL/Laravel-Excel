@@ -3,6 +3,7 @@
 namespace Maatwebsite\Excel;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Foundation\Application;
 use Illuminate\Support\Collection;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Lumen\Application as LumenApplication;
@@ -46,7 +47,7 @@ class ExcelServiceProvider extends ServiceProvider
             }
         }
 
-        if ($this->app instanceof \Illuminate\Foundation\Application) {
+        if ($this->app instanceof Application) {
             // Laravel
             $this->app->booted(function ($app) {
                 $app->make(SettingsProvider::class)->provide();
@@ -95,9 +96,9 @@ class ExcelServiceProvider extends ServiceProvider
         Collection::mixin(new DownloadCollectionMixin);
         Collection::mixin(new StoreCollectionMixin);
         Builder::macro('downloadExcel', (new DownloadQueryMacro)());
-        Builder::macro('storeExcel', (new StoreQueryMacro())());
-        Builder::macro('import', (new ImportMacro())());
-        Builder::macro('importAs', (new ImportAsMacro())());
+        Builder::macro('storeExcel', (new StoreQueryMacro)());
+        Builder::macro('import', (new ImportMacro)());
+        Builder::macro('importAs', (new ImportAsMacro)());
 
         $this->commands([
             ExportMakeCommand::class,
@@ -105,9 +106,6 @@ class ExcelServiceProvider extends ServiceProvider
         ]);
     }
 
-    /**
-     * @return string
-     */
     protected function getConfigFile(): string
     {
         return __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'excel.php';

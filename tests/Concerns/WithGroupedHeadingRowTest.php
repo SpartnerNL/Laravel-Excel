@@ -34,9 +34,6 @@ class WithGroupedHeadingRowTest extends TestCase
         {
             use Importable;
 
-            /**
-             * @param  array  $array
-             */
             public function array(array $array)
             {
                 Assert::assertEquals([
@@ -62,7 +59,6 @@ class WithGroupedHeadingRowTest extends TestCase
             use Importable;
 
             /**
-             * @param  \Maatwebsite\Excel\Row  $row
              * @return void
              */
             public function onRow(Row $row)
@@ -90,9 +86,6 @@ class WithGroupedHeadingRowTest extends TestCase
 
             public $called = false;
 
-            /**
-             * @param  Collection  $collection
-             */
             public function collection(Collection $collection)
             {
                 $this->called = true;
@@ -121,10 +114,6 @@ class WithGroupedHeadingRowTest extends TestCase
         {
             use Importable;
 
-            /**
-             * @param  array  $row
-             * @return Model
-             */
             public function model(array $row): Model
             {
                 return new User([

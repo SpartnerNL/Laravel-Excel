@@ -36,9 +36,6 @@ class FromUsersQueryWithJoinExport implements FromQuery, WithCustomChunkSize
             ->select('users.*', 'group_user.group_id as gid');
     }
 
-    /**
-     * @return int
-     */
     public function chunkSize(): int
     {
         return 10;

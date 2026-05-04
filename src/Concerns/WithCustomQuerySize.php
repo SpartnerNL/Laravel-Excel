@@ -10,8 +10,6 @@ interface WithCustomQuerySize
      * Depending on the implementation of the query() method (eg. When using a groupBy clause), this calculation might not be correct.
      *
      * When this is the case, you should use this method to provide a custom calculation of the query size.
-     *
-     * @return int
      */
     public function querySize(): int;
 }

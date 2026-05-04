@@ -37,7 +37,7 @@ class Excel extends Facade
      */
     public static function fake()
     {
-        static::swap(new ExcelFake());
+        static::swap(new ExcelFake);
     }
 
     /**

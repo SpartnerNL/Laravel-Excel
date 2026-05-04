@@ -27,7 +27,6 @@ class AfterImportJob implements ShouldQueue
 
     /**
      * @param  object  $import
-     * @param  Reader  $reader
      */
     public function __construct(private $import, private Reader $reader)
     {
@@ -68,9 +67,6 @@ class AfterImportJob implements ShouldQueue
         $this->reader->afterImport($this->import);
     }
 
-    /**
-     * @param  Throwable  $e
-     */
     public function failed(Throwable $e)
     {
         if ($this->import instanceof WithEvents) {

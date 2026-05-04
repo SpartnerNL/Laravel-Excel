@@ -20,11 +20,6 @@ trait RegistersCustomConcerns
         AfterSheet::class    => Sheet::class,
     ];
 
-    /**
-     * @param  string  $concern
-     * @param  callable  $handler
-     * @param  string  $event
-     */
     public static function extend(string $concern, callable $handler, string $event = BeforeWriting::class)
     {
         /** @var HasEventBus $delegate */

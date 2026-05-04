@@ -27,10 +27,6 @@ abstract class Event
      */
     abstract public function getDelegate();
 
-    /**
-     * @param  string  $concern
-     * @return bool
-     */
     public function appliesToConcern(string $concern): bool
     {
         return $this->getConcernable() instanceof $concern;

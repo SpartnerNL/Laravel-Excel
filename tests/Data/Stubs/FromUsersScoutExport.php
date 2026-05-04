@@ -23,9 +23,6 @@ class FromUsersScoutExport implements FromQuery, WithCustomChunkSize
         return new ScoutBuilder(new User, '');
     }
 
-    /**
-     * @return int
-     */
     public function chunkSize(): int
     {
         return 10;

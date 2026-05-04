@@ -23,7 +23,6 @@ class LocalizeJob
      * Handles the job.
      *
      * @param  mixed  $job
-     * @param  Closure  $next
      * @return mixed
      */
     public function handle($job, Closure $next)

@@ -22,9 +22,6 @@ class FromNonEloquentQueryExport implements FromQuery, WithCustomChunkSize
         return DB::table('users')->select('name')->orderBy('id');
     }
 
-    /**
-     * @return int
-     */
     public function chunkSize(): int
     {
         return 10;

@@ -51,7 +51,7 @@ class QueuedImportTest extends TestCase
 
     public function test_can_queue_an_import()
     {
-        $import = new QueuedImport();
+        $import = new QueuedImport;
 
         $chain = $import->queue('import-batches.xlsx')->chain([
             new AfterQueueImportJob(5000),
@@ -62,7 +62,7 @@ class QueuedImportTest extends TestCase
 
     public function test_can_batch_an_import()
     {
-        $import = new ShouldBatchImport();
+        $import = new ShouldBatchImport;
 
         $batch = $import->queue('import-batches.xlsx')->name('batch-import-name');
 
@@ -81,7 +81,7 @@ class QueuedImportTest extends TestCase
         // Reset the cache settings
         $this->app->make(SettingsProvider::class)->provide();
 
-        $import = new QueuedImport();
+        $import = new QueuedImport;
 
         $chain = $import->queue('import-batches.xlsx');
 
@@ -113,7 +113,7 @@ class QueuedImportTest extends TestCase
             }
         });
 
-        $import = new QueuedImport();
+        $import = new QueuedImport;
 
         $chain = $import->queue('import-batches.xlsx')->chain([
             new AfterQueueImportJob(5000),
@@ -134,7 +134,7 @@ class QueuedImportTest extends TestCase
                 $this->assertStringContains('.xlsx', $tempFile->getLocalPath());
             }
         });
-        (new QueuedImport())->queue('import-batches.xlsx');
+        (new QueuedImport)->queue('import-batches.xlsx');
     }
 
     public function test_can_queue_import_with_remote_temp_disk_and_prefix()
@@ -142,7 +142,7 @@ class QueuedImportTest extends TestCase
         config()->set('excel.temporary_files.remote_disk', 'test');
         config()->set('excel.temporary_files.remote_prefix', 'tmp/');
 
-        $import = new QueuedImport();
+        $import = new QueuedImport;
 
         $chain = $import->queue('import-batches.xlsx')->chain([
             new AfterQueueImportJob(5000),
@@ -163,7 +163,7 @@ class QueuedImportTest extends TestCase
         });
 
         try {
-            (new QueuedImportWithFailure())->queue('import-batches.xlsx');
+            (new QueuedImportWithFailure)->queue('import-batches.xlsx');
         } catch (Throwable $e) {
             $this->assertEquals('Something went wrong in the chunk', $e->getMessage());
         }
@@ -183,7 +183,7 @@ class QueuedImportTest extends TestCase
         });
 
         try {
-            (new QueuedImportWithFailure())->queue('import-batches.xlsx');
+            (new QueuedImportWithFailure)->queue('import-batches.xlsx');
         } catch (Throwable $e) {
             $this->assertEquals('Something went wrong in the chunk', $e->getMessage());
         }
@@ -208,13 +208,13 @@ class QueuedImportTest extends TestCase
             }
         });
 
-        (new QueuedImport())->queue('import-batches.xlsx');
+        (new QueuedImport)->queue('import-batches.xlsx');
     }
 
     public function test_can_define_middleware_method_on_queued_import()
     {
         try {
-            (new QueuedImportWithMiddleware())->queue('import-batches.xlsx');
+            (new QueuedImportWithMiddleware)->queue('import-batches.xlsx');
         } catch (Throwable $e) {
             $this->assertEquals('Job reached middleware method', $e->getMessage());
         }
@@ -223,7 +223,7 @@ class QueuedImportTest extends TestCase
     public function test_can_define_retry_until_method_on_queued_import()
     {
         try {
-            (new QueuedImportWithRetryUntil())->queue('import-batches.xlsx');
+            (new QueuedImportWithRetryUntil)->queue('import-batches.xlsx');
         } catch (Throwable $e) {
             $this->assertEquals('Job reached retryUntil method', $e->getMessage());
         }
@@ -240,7 +240,7 @@ class QueuedImportTest extends TestCase
         });
 
         try {
-            $import                = new QueuedImportWithFailure();
+            $import                = new QueuedImportWithFailure;
             $import->maxExceptions = 3;
             $import->queue('import-batches.xlsx');
         } catch (Throwable $e) {

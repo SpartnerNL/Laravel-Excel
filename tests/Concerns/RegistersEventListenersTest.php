@@ -21,7 +21,7 @@ class RegistersEventListenersTest extends TestCase
 {
     public function test_events_get_called_when_exporting()
     {
-        $event = new ExportWithRegistersEventListeners();
+        $event = new ExportWithRegistersEventListeners;
 
         $eventsTriggered = 0;
 
@@ -55,7 +55,7 @@ class RegistersEventListenersTest extends TestCase
 
     public function test_events_get_called_when_importing()
     {
-        $event = new ImportWithRegistersEventListeners();
+        $event = new ImportWithRegistersEventListeners;
 
         $eventsTriggered = 0;
 
@@ -83,7 +83,7 @@ class RegistersEventListenersTest extends TestCase
 
     public function test_can_have_invokable_class_as_listener()
     {
-        $event = new ExportWithEvents();
+        $event = new ExportWithEvents;
 
         $event->beforeExport = new BeforeExportListener(function ($event) {
             $this->assertInstanceOf(BeforeExport::class, $event);

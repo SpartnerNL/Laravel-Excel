@@ -12,9 +12,6 @@ trait SkipsErrors
      */
     protected $errors = [];
 
-    /**
-     * @param  Throwable  $e
-     */
     public function onError(Throwable $e)
     {
         $this->errors[] = $e;

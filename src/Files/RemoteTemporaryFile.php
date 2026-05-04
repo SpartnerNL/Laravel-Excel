@@ -11,11 +11,6 @@ class RemoteTemporaryFile extends TemporaryFile
      */
     private $diskInstance;
 
-    /**
-     * @param  string  $disk
-     * @param  string  $filename
-     * @param  LocalTemporaryFile  $localTemporaryFile
-     */
     public function __construct(private string $disk, private string $filename, private LocalTemporaryFile $localTemporaryFile)
     {
         $this->disk()->touch($this->filename);
@@ -26,41 +21,26 @@ class RemoteTemporaryFile extends TemporaryFile
         return ['disk', 'filename', 'localTemporaryFile'];
     }
 
-    /**
-     * @return string
-     */
     public function getLocalPath(): string
     {
         return $this->localTemporaryFile->getLocalPath();
     }
 
-    /**
-     * @return bool
-     */
     public function existsLocally(): bool
     {
         return $this->localTemporaryFile->exists();
     }
 
-    /**
-     * @return bool
-     */
     public function exists(): bool
     {
         return $this->disk()->exists($this->filename);
     }
 
-    /**
-     * @return bool
-     */
     public function deleteLocalCopy(): bool
     {
         return $this->localTemporaryFile->delete();
     }
 
-    /**
-     * @return bool
-     */
     public function delete(): bool
     {
         // we don't need to delete local copy as it's deleted at end of each chunk
@@ -71,9 +51,6 @@ class RemoteTemporaryFile extends TemporaryFile
         return $this->disk()->delete($this->filename);
     }
 
-    /**
-     * @return TemporaryFile
-     */
     #[\Override]
     public function sync(bool $copy = true): TemporaryFile
     {
@@ -109,9 +86,6 @@ class RemoteTemporaryFile extends TemporaryFile
         return $this->disk()->readStream($this->filename);
     }
 
-    /**
-     * @return string
-     */
     public function contents(): string
     {
         return $this->disk()->get($this->filename);
@@ -125,9 +99,6 @@ class RemoteTemporaryFile extends TemporaryFile
         $this->disk()->put($this->filename, $contents);
     }
 
-    /**
-     * @return Disk
-     */
     public function disk(): Disk
     {
         return $this->diskInstance ?: $this->diskInstance = app(Filesystem::class)->disk($this->disk);

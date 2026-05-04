@@ -6,6 +6,7 @@ use Closure;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Collection;
 use Illuminate\Support\LazyCollection;
+use Laravel\Scout\Builder;
 use Maatwebsite\Excel\Concerns\FromArray;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\FromGenerator;
@@ -53,6 +54,7 @@ use Maatwebsite\Excel\Imports\ModelImporter;
 use Maatwebsite\Excel\Validators\RowValidator;
 use PhpOffice\PhpSpreadsheet\Cell\Cell as SpreadsheetCell;
 use PhpOffice\PhpSpreadsheet\Chart\Chart;
+use PhpOffice\PhpSpreadsheet\Exception;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Reader\Html;
 use PhpOffice\PhpSpreadsheet\Shared\StringHelper;
@@ -81,9 +83,6 @@ class Sheet
      */
     protected $exportable;
 
-    /**
-     * @param  Worksheet  $worksheet
-     */
     public function __construct(private Worksheet $worksheet)
     {
         $this->chunkSize            = config('excel.exports.chunk_size', 100);
@@ -91,11 +90,10 @@ class Sheet
     }
 
     /**
-     * @param  Spreadsheet  $spreadsheet
      * @param  string|int  $index
      * @return Sheet
      *
-     * @throws \PhpOffice\PhpSpreadsheet\Exception
+     * @throws Exception
      * @throws SheetNotFoundException
      */
     public static function make(Spreadsheet $spreadsheet, $index)
@@ -108,11 +106,7 @@ class Sheet
     }
 
     /**
-     * @param  Spreadsheet  $spreadsheet
-     * @param  int  $index
-     * @return Sheet
-     *
-     * @throws \PhpOffice\PhpSpreadsheet\Exception
+     * @throws Exception
      * @throws SheetNotFoundException
      */
     public static function byIndex(Spreadsheet $spreadsheet, int $index): Sheet
@@ -125,10 +119,6 @@ class Sheet
     }
 
     /**
-     * @param  Spreadsheet  $spreadsheet
-     * @param  string  $name
-     * @return Sheet
-     *
      * @throws SheetNotFoundException
      */
     public static function byName(Spreadsheet $spreadsheet, string $name): Sheet
@@ -143,7 +133,7 @@ class Sheet
     /**
      * @param  object  $sheetExport
      *
-     * @throws \PhpOffice\PhpSpreadsheet\Exception
+     * @throws Exception
      */
     public function open($sheetExport)
     {
@@ -190,7 +180,7 @@ class Sheet
     /**
      * @param  object  $sheetExport
      *
-     * @throws \PhpOffice\PhpSpreadsheet\Exception
+     * @throws Exception
      * @throws \PhpOffice\PhpSpreadsheet\Reader\Exception
      */
     public function export($sheetExport)
@@ -226,7 +216,6 @@ class Sheet
 
     /**
      * @param  object  $import
-     * @param  int  $startRow
      */
     public function import($import, int $startRow = 1)
     {
@@ -329,7 +318,6 @@ class Sheet
 
     /**
      * @param  object  $import
-     * @param  int|null  $startRow
      * @param  null  $nullValue
      * @param  bool  $calculateFormulas
      * @param  bool  $formatData
@@ -380,11 +368,9 @@ class Sheet
 
     /**
      * @param  object  $import
-     * @param  int|null  $startRow
      * @param  null  $nullValue
      * @param  bool  $calculateFormulas
      * @param  bool  $formatData
-     * @return Collection
      */
     public function toCollection($import, ?int $startRow = null, $nullValue = null, $calculateFormulas = false, $formatData = false): Collection
     {
@@ -396,7 +382,7 @@ class Sheet
     /**
      * @param  object  $sheetExport
      *
-     * @throws \PhpOffice\PhpSpreadsheet\Exception
+     * @throws Exception
      */
     public function close($sheetExport)
     {
@@ -445,7 +431,6 @@ class Sheet
     }
 
     /**
-     * @param  FromView  $sheetExport
      * @param  int|null  $sheetIndex
      *
      * @throws \PhpOffice\PhpSpreadsheet\Reader\Exception
@@ -467,32 +452,24 @@ class Sheet
         $temporaryFile->delete();
     }
 
-    /**
-     * @param  FromQuery  $sheetExport
-     * @param  Worksheet  $worksheet
-     */
     public function fromQuery(FromQuery $sheetExport, Worksheet $worksheet)
     {
         $query = $sheetExport->query();
-        if ($query instanceof \Laravel\Scout\Builder) {
+        if ($query instanceof Builder) {
             $this->fromScout($sheetExport, $worksheet);
 
             return;
         }
 
-        //Operate on a clone to avoid altering the original
-        //and use the clone operator directly to support old versions of Laravel
-        //that don't have a clone method in eloquent
+        // Operate on a clone to avoid altering the original
+        // and use the clone operator directly to support old versions of Laravel
+        // that don't have a clone method in eloquent
         $clonedQuery = clone $query;
         $clonedQuery->chunk($this->getChunkSize($sheetExport), function ($chunk) use ($sheetExport) {
             $this->appendRows($chunk, $sheetExport);
         });
     }
 
-    /**
-     * @param  FromQuery  $sheetExport
-     * @param  Worksheet  $worksheet
-     */
     public function fromScout(FromQuery $sheetExport, Worksheet $worksheet)
     {
         $scout     = $sheetExport->query();
@@ -508,25 +485,16 @@ class Sheet
         }
     }
 
-    /**
-     * @param  FromCollection  $sheetExport
-     */
     public function fromCollection(FromCollection $sheetExport)
     {
         $this->appendRows($sheetExport->collection()->all(), $sheetExport);
     }
 
-    /**
-     * @param  FromArray  $sheetExport
-     */
     public function fromArray(FromArray $sheetExport)
     {
         $this->appendRows($sheetExport->array(), $sheetExport);
     }
 
-    /**
-     * @param  FromIterator  $sheetExport
-     */
     public function fromIterator(FromIterator $sheetExport)
     {
         $iterator = class_exists(LazyCollection::class) ? new LazyCollection(function () use ($sheetExport) {
@@ -538,9 +506,6 @@ class Sheet
         $this->appendRows($iterator, $sheetExport);
     }
 
-    /**
-     * @param  FromGenerator  $sheetExport
-     */
     public function fromGenerator(FromGenerator $sheetExport)
     {
         $generator = class_exists(LazyCollection::class) ? new LazyCollection(function () use ($sheetExport) {
@@ -552,11 +517,6 @@ class Sheet
         $this->appendRows($generator, $sheetExport);
     }
 
-    /**
-     * @param  array  $rows
-     * @param  string|null  $startCell
-     * @param  bool  $strictNullComparison
-     */
     public function append(array $rows, ?string $startCell = null, bool $strictNullComparison = false)
     {
         if (!$startCell) {
@@ -583,10 +543,7 @@ class Sheet
     }
 
     /**
-     * @param  string  $column
-     * @param  string  $format
-     *
-     * @throws \PhpOffice\PhpSpreadsheet\Exception
+     * @throws Exception
      */
     public function formatColumn(string $column, string $format)
     {
@@ -605,7 +562,6 @@ class Sheet
     }
 
     /**
-     * @param  int  $chunkSize
      * @return Sheet
      */
     public function chunkSize(int $chunkSize)
@@ -647,10 +603,6 @@ class Sheet
         }
     }
 
-    /**
-     * @param  string  $concern
-     * @return string
-     */
     public function hasConcern(string $concern): string
     {
         return $this->exportable instanceof $concern;
@@ -691,7 +643,6 @@ class Sheet
 
     /**
      * @param  mixed  $row
-     * @return array
      */
     public static function mapArraybleRow($row): array
     {
@@ -713,10 +664,6 @@ class Sheet
         return $row;
     }
 
-    /**
-     * @param  $sheetImport
-     * @return int
-     */
     public function getStartRow($sheetImport): int
     {
         return HeadingRowExtractor::determineStartRow($sheetImport);
@@ -750,8 +697,6 @@ class Sheet
     }
 
     /**
-     * @param  string  $lower
-     * @param  string  $upper
      * @return \Generator
      */
     protected function buildColumnRange(string $lower, string $upper)
@@ -767,9 +712,6 @@ class Sheet
         }
     }
 
-    /**
-     * @return bool
-     */
     private function hasRows(): bool
     {
         $startCell = 'A1';
@@ -782,7 +724,6 @@ class Sheet
 
     /**
      * @param  object  $sheetExport
-     * @return bool
      */
     private function hasStrictNullComparison($sheetExport): bool
     {
@@ -795,7 +736,6 @@ class Sheet
 
     /**
      * @param  object|WithCustomChunkSize  $export
-     * @return int
      */
     private function getChunkSize($export): int
     {

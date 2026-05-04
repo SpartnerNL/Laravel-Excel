@@ -27,9 +27,6 @@ class FromIteratorTest extends TestCase
                 ];
             }
 
-            /**
-             * @return Iterator
-             */
             public function iterator(): Iterator
             {
                 return new ArrayIterator($this->array());

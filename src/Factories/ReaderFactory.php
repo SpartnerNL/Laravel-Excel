@@ -21,9 +21,6 @@ class ReaderFactory
 
     /**
      * @param  object  $import
-     * @param  TemporaryFile  $file
-     * @param  string  $readerType
-     * @return IReader
      *
      * @throws Exception
      */
@@ -71,9 +68,6 @@ class ReaderFactory
     }
 
     /**
-     * @param  TemporaryFile  $temporaryFile
-     * @return string
-     *
      * @throws NoTypeDetectedException
      */
     private static function identify(TemporaryFile $temporaryFile): string

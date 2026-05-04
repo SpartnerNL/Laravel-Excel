@@ -27,8 +27,6 @@ class CacheManager extends Manager
 
     /**
      * Get the default driver name.
-     *
-     * @return string
      */
     public function getDefaultDriver(): string
     {
@@ -71,9 +69,6 @@ class CacheManager extends Manager
         );
     }
 
-    /**
-     * @return CacheInterface
-     */
     public function createIlluminateDriver(): CacheInterface
     {
         return Cache::driver(

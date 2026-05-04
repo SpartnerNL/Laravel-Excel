@@ -12,7 +12,7 @@ use Maatwebsite\Excel\Events\AfterChunk;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
 use PHPUnit\Framework\Assert;
 
-class ExportWithEventsChunks implements WithEvents, FromQuery, ShouldQueue, WithCustomChunkSize
+class ExportWithEventsChunks implements FromQuery, ShouldQueue, WithCustomChunkSize, WithEvents
 {
     use Exportable;
 

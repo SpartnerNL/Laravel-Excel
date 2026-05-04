@@ -14,7 +14,6 @@ class QueuedImportWithRetryUntil implements ShouldQueue, ToModel, WithChunkReadi
     use Importable;
 
     /**
-     * @param  array  $row
      * @return Model|null
      */
     public function model(array $row)
@@ -24,9 +23,6 @@ class QueuedImportWithRetryUntil implements ShouldQueue, ToModel, WithChunkReadi
         ]);
     }
 
-    /**
-     * @return int
-     */
     public function chunkSize(): int
     {
         return 100;

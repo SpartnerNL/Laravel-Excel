@@ -24,9 +24,6 @@ class WithCalculatedFormulasTest extends TestCase
 
             public $called = false;
 
-            /**
-             * @param  array  $array
-             */
             public function array(array $array)
             {
                 $this->called = true;
@@ -48,9 +45,6 @@ class WithCalculatedFormulasTest extends TestCase
 
             public $called = false;
 
-            /**
-             * @param  array  $array
-             */
             public function array(array $array)
             {
                 $this->called = true;
@@ -73,7 +67,6 @@ class WithCalculatedFormulasTest extends TestCase
             public $called = false;
 
             /**
-             * @param  array  $row
              * @return Model|null
              */
             public function model(array $row)
@@ -100,7 +93,6 @@ class WithCalculatedFormulasTest extends TestCase
             public $called = false;
 
             /**
-             * @param  array  $row
              * @return Model|null
              */
             public function model(array $row)
@@ -125,7 +117,7 @@ class WithCalculatedFormulasTest extends TestCase
 
     public function test_can_import_to_array_with_calculated_formulas_and_multi_sheet_references()
     {
-        $import = new class implements WithMultipleSheets, HasReferencesToOtherSheets
+        $import = new class implements HasReferencesToOtherSheets, WithMultipleSheets
         {
             use Importable;
 
@@ -134,7 +126,7 @@ class WithCalculatedFormulasTest extends TestCase
             public function sheets(): array
             {
                 return [
-                    new class implements ToArray, HasReferencesToOtherSheets
+                    new class implements HasReferencesToOtherSheets, ToArray
                     {
                         public $test = 'test2';
 
@@ -145,7 +137,7 @@ class WithCalculatedFormulasTest extends TestCase
                             ], $array);
                         }
                     },
-                    new class implements ToArray, WithCalculatedFormulas, HasReferencesToOtherSheets
+                    new class implements HasReferencesToOtherSheets, ToArray, WithCalculatedFormulas
                     {
                         public $test = 'test2';
 
@@ -165,15 +157,12 @@ class WithCalculatedFormulasTest extends TestCase
 
     public function test_can_import_to_array_with_calculated_formulas_and_skips_empty()
     {
-        $import = new class implements ToArray, WithCalculatedFormulas, SkipsEmptyRows
+        $import = new class implements SkipsEmptyRows, ToArray, WithCalculatedFormulas
         {
             use Importable;
 
             public $called = false;
 
-            /**
-             * @param  array  $array
-             */
             public function array(array $array)
             {
                 $this->called = true;
@@ -189,14 +178,13 @@ class WithCalculatedFormulasTest extends TestCase
 
     public function test_can_import_to_model_with_calculated_formulas_and_skips_empty()
     {
-        $import = new class implements ToModel, WithCalculatedFormulas, SkipsEmptyRows
+        $import = new class implements SkipsEmptyRows, ToModel, WithCalculatedFormulas
         {
             use Importable;
 
             public $called = false;
 
             /**
-             * @param  array  $row
              * @return Model|null
              */
             public function model(array $row)

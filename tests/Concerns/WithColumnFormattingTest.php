@@ -16,7 +16,7 @@ class WithColumnFormattingTest extends TestCase
 {
     public function test_can_export_with_column_formatting()
     {
-        $export = new class() implements FromCollection, WithMapping, WithColumnFormatting
+        $export = new class implements FromCollection, WithColumnFormatting, WithMapping
         {
             use Exportable;
 
@@ -35,7 +35,6 @@ class WithColumnFormattingTest extends TestCase
 
             /**
              * @param  mixed  $row
-             * @return array
              */
             public function map($row): array
             {
@@ -45,9 +44,6 @@ class WithColumnFormattingTest extends TestCase
                 ];
             }
 
-            /**
-             * @return array
-             */
             public function columnFormats(): array
             {
                 return [

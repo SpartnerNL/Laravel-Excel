@@ -13,16 +13,17 @@ use Maatwebsite\Excel\Reader;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
 use PHPUnit\Framework\Assert;
 
-class QueueImportWithoutJobChaining implements ToModel, WithChunkReading, WithEvents, ShouldQueueWithoutChain
+class QueueImportWithoutJobChaining implements ShouldQueueWithoutChain, ToModel, WithChunkReading, WithEvents
 {
     use Importable;
 
     public $queue;
+
     public $before = false;
-    public $after  = false;
+
+    public $after = false;
 
     /**
-     * @param  array  $row
      * @return Model|null
      */
     public function model(array $row)
@@ -34,17 +35,11 @@ class QueueImportWithoutJobChaining implements ToModel, WithChunkReading, WithEv
         ]);
     }
 
-    /**
-     * @return int
-     */
     public function chunkSize(): int
     {
         return 1;
     }
 
-    /**
-     * @return array
-     */
     public function registerEvents(): array
     {
         return [
@@ -52,7 +47,7 @@ class QueueImportWithoutJobChaining implements ToModel, WithChunkReading, WithEv
                 Assert::assertInstanceOf(Reader::class, $event->reader);
                 $this->before = true;
             },
-            AfterImport::class  => function (AfterImport $event) {
+            AfterImport::class => function (AfterImport $event) {
                 Assert::assertInstanceOf(Reader::class, $event->reader);
                 $this->after = true;
             },

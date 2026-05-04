@@ -15,7 +15,7 @@ class HeadingRowImportTest extends TestCase
 
     public function test_can_import_only_heading_row()
     {
-        $import = new HeadingRowImport();
+        $import = new HeadingRowImport;
 
         $headings = $import->toArray('import-users-with-headings.xlsx');
 
@@ -32,7 +32,7 @@ class HeadingRowImportTest extends TestCase
 
         HeadingRowFormatter::default('custom');
 
-        $import = new HeadingRowImport();
+        $import = new HeadingRowImport;
 
         $headings = $import->toArray('import-users-with-headings.xlsx');
 
@@ -49,7 +49,7 @@ class HeadingRowImportTest extends TestCase
 
         HeadingRowFormatter::default('custom');
 
-        $import = new HeadingRowImport();
+        $import = new HeadingRowImport;
 
         $headings = $import->toArray('import-users-with-headings.xlsx');
 
@@ -75,7 +75,7 @@ class HeadingRowImportTest extends TestCase
 
     public function test_can_import_only_heading_row_for_multiple_sheets()
     {
-        $import = new HeadingRowImport();
+        $import = new HeadingRowImport;
 
         $headings = $import->toArray('import-multiple-sheets.xlsx');
 
@@ -94,7 +94,7 @@ class HeadingRowImportTest extends TestCase
         HeadingRowFormatter::extend('custom', fn ($value, $key) => $key);
 
         HeadingRowFormatter::default('custom');
-        $import = new HeadingRowImport();
+        $import = new HeadingRowImport;
 
         $headings = $import->toArray('import-multiple-sheets.xlsx');
 
@@ -130,7 +130,7 @@ class HeadingRowImportTest extends TestCase
 
         config()->set('excel.imports.heading_row.formatter', 'custom2');
 
-        $import = new HeadingRowImport();
+        $import = new HeadingRowImport;
 
         $headings = $import->toArray('import-users-with-headings.xlsx');
 

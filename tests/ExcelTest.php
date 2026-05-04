@@ -14,6 +14,8 @@ use Maatwebsite\Excel\Concerns\ToArray;
 use Maatwebsite\Excel\Concerns\WithCustomCsvSettings;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Excel;
+use Maatwebsite\Excel\Exceptions\ConcernConflictException;
+use Maatwebsite\Excel\Exceptions\NoTypeDetectedException;
 use Maatwebsite\Excel\Facades\Excel as ExcelFacade;
 use Maatwebsite\Excel\Importer;
 use Maatwebsite\Excel\Tests\Data\Stubs\EmptyExport;
@@ -37,7 +39,7 @@ class ExcelTest extends TestCase
 
     public function test_can_download_an_export_object_with_facade()
     {
-        $export = new EmptyExport();
+        $export = new EmptyExport;
 
         $response = ExcelFacade::download($export, 'filename.xlsx');
 
@@ -47,7 +49,7 @@ class ExcelTest extends TestCase
 
     public function test_can_download_an_export_object()
     {
-        $export = new EmptyExport();
+        $export = new EmptyExport;
 
         $response = $this->SUT->download($export, 'filename.xlsx');
 
@@ -130,7 +132,7 @@ class ExcelTest extends TestCase
 
     public function test_can_store_csv_export_with_custom_settings()
     {
-        $export = new class implements WithEvents, FromCollection, WithCustomCsvSettings
+        $export = new class implements FromCollection, WithCustomCsvSettings, WithEvents
         {
             use RegistersEventListeners;
 
@@ -145,9 +147,6 @@ class ExcelTest extends TestCase
                 ]);
             }
 
-            /**
-             * @return array
-             */
             public function getCsvSettings(): array
             {
                 return [
@@ -171,7 +170,7 @@ class ExcelTest extends TestCase
 
     public function test_cannot_use_from_collection_and_from_view_on_same_export()
     {
-        $this->expectException(\Maatwebsite\Excel\Exceptions\ConcernConflictException::class);
+        $this->expectException(ConcernConflictException::class);
         $this->expectExceptionMessage('Cannot use FromQuery, FromArray or FromCollection and FromView on the same sheet');
 
         $export = new class implements FromCollection, FromView
@@ -186,9 +185,6 @@ class ExcelTest extends TestCase
                 return collect();
             }
 
-            /**
-             * @return View
-             */
             public function view(): View
             {
                 return view('users');
@@ -242,9 +238,6 @@ class ExcelTest extends TestCase
     {
         $import = new class implements ToArray
         {
-            /**
-             * @param  array  $array
-             */
             public function array(array $array)
             {
                 Assert::assertEquals([
@@ -263,9 +256,6 @@ class ExcelTest extends TestCase
     {
         $import = new class implements ToArray, WithCustomCsvSettings
         {
-            /**
-             * @param  array  $array
-             */
             public function array(array $array)
             {
                 Assert::assertEquals([
@@ -281,9 +271,6 @@ class ExcelTest extends TestCase
                 ], $array[0]);
             }
 
-            /**
-             * @return array
-             */
             public function getCsvSettings(): array
             {
                 return [
@@ -301,9 +288,6 @@ class ExcelTest extends TestCase
     {
         $import1 = new class implements ToArray
         {
-            /**
-             * @param  array  $array
-             */
             public function array(array $array)
             {
                 Assert::assertEquals([
@@ -315,9 +299,6 @@ class ExcelTest extends TestCase
 
         $import2 = new class implements ToArray
         {
-            /**
-             * @param  array  $array
-             */
             public function array(array $array)
             {
                 Assert::assertEquals([
@@ -338,9 +319,6 @@ class ExcelTest extends TestCase
     {
         $import = new class implements ToArray
         {
-            /**
-             * @param  array  $array
-             */
             public function array(array $array)
             {
                 Assert::assertEquals([
@@ -357,9 +335,6 @@ class ExcelTest extends TestCase
     {
         $import = new class implements ToArray
         {
-            /**
-             * @param  array  $array
-             */
             public function array(array $array)
             {
                 Assert::assertEquals([
@@ -374,13 +349,10 @@ class ExcelTest extends TestCase
 
     public function test_import_will_throw_error_when_no_reader_type_could_be_detected_when_no_extension()
     {
-        $this->expectException(\Maatwebsite\Excel\Exceptions\NoTypeDetectedException::class);
+        $this->expectException(NoTypeDetectedException::class);
 
         $import = new class implements ToArray
         {
-            /**
-             * @param  array  $array
-             */
             public function array(array $array)
             {
                 Assert::assertEquals([
@@ -395,13 +367,10 @@ class ExcelTest extends TestCase
 
     public function test_import_will_throw_error_when_no_reader_type_could_be_detected_with_unknown_extension()
     {
-        $this->expectException(\Maatwebsite\Excel\Exceptions\NoTypeDetectedException::class);
+        $this->expectException(NoTypeDetectedException::class);
 
         $import = new class implements ToArray
         {
-            /**
-             * @param  array  $array
-             */
             public function array(array $array)
             {
                 //
@@ -415,9 +384,6 @@ class ExcelTest extends TestCase
     {
         $import = new class implements ToArray
         {
-            /**
-             * @param  array  $array
-             */
             public function array(array $array)
             {
                 Assert::assertEquals([

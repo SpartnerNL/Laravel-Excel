@@ -24,7 +24,7 @@ class QueuedExportTest extends TestCase
 {
     public function test_can_queue_an_export()
     {
-        $export = new QueuedExport();
+        $export = new QueuedExport;
 
         $export->queue('queued-export.xlsx')->chain([
             new AfterQueueExportJob(__DIR__ . '/Data/Disks/Local/queued-export.xlsx'),
@@ -33,7 +33,7 @@ class QueuedExportTest extends TestCase
 
     public function test_can_batch_an_export()
     {
-        $export = new ShouldBatchExport();
+        $export = new ShouldBatchExport;
 
         $batch = $export->queue('batch-export.xlsx', 'test')->name('batch-export-name');
 
@@ -44,7 +44,7 @@ class QueuedExportTest extends TestCase
 
     public function test_can_queue_an_export_and_store_on_different_disk()
     {
-        $export = new QueuedExport();
+        $export = new QueuedExport;
 
         $export->queue('queued-export.xlsx', 'test')->chain([
             new AfterQueueExportJob(__DIR__ . '/Data/Disks/Test/queued-export.xlsx'),
@@ -80,7 +80,7 @@ class QueuedExportTest extends TestCase
             }
         });
 
-        $export = new QueuedExport();
+        $export = new QueuedExport;
 
         $export->queue('queued-export.xlsx')->chain([
             new AfterQueueExportJob(__DIR__ . '/Data/Disks/Local/queued-export.xlsx'),
@@ -97,7 +97,7 @@ class QueuedExportTest extends TestCase
         config()->set('excel.temporary_files.remote_disk', 'test');
         config()->set('excel.temporary_files.remote_prefix', 'tmp/');
 
-        $export = new QueuedExport();
+        $export = new QueuedExport;
 
         $export->queue('queued-export.xlsx')->chain([
             new AfterQueueExportJob(__DIR__ . '/Data/Disks/Local/queued-export.xlsx'),
@@ -106,7 +106,7 @@ class QueuedExportTest extends TestCase
 
     public function test_can_implicitly_queue_an_export()
     {
-        $export = new ShouldQueueExport();
+        $export = new ShouldQueueExport;
 
         $export->store('queued-export.xlsx', 'test')->chain([
             new AfterQueueExportJob(__DIR__ . '/Data/Disks/Test/queued-export.xlsx'),
@@ -115,7 +115,7 @@ class QueuedExportTest extends TestCase
 
     public function test_can_queue_export_with_mapping_on_eloquent_models()
     {
-        $export = new EloquentCollectionWithMappingExport();
+        $export = new EloquentCollectionWithMappingExport;
 
         $export->queue('queued-export.xlsx')->chain([
             new AfterQueueExportJob(__DIR__ . '/Data/Disks/Local/queued-export.xlsx'),
@@ -130,7 +130,7 @@ class QueuedExportTest extends TestCase
 
     public function test_can_catch_failures()
     {
-        $export = new QueuedExportWithFailedHook();
+        $export = new QueuedExportWithFailedHook;
         try {
             $export->queue('queued-export.xlsx');
         } catch (Throwable) {
@@ -141,7 +141,7 @@ class QueuedExportTest extends TestCase
 
     public function test_can_catch_failures_on_queue_export_job()
     {
-        $export = new QueuedExportWithFailedEvents();
+        $export = new QueuedExportWithFailedEvents;
 
         try {
             $export->queue('queued-export.xlsx');
@@ -170,7 +170,7 @@ class QueuedExportTest extends TestCase
 
         Cache::put('test', 'test');
 
-        $export = new QueuedExport();
+        $export = new QueuedExport;
 
         $export->queue('queued-export.xlsx')->chain([
             new AfterQueueExportJob(__DIR__ . '/Data/Disks/Local/queued-export.xlsx'),

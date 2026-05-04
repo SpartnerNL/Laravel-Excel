@@ -2,6 +2,7 @@
 
 namespace Maatwebsite\Excel\Tests\Concerns;
 
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
@@ -41,7 +42,6 @@ class WithValidationTest extends TestCase
             use Importable;
 
             /**
-             * @param  array  $row
              * @return Model|null
              */
             public function model(array $row)
@@ -53,9 +53,6 @@ class WithValidationTest extends TestCase
                 ]);
             }
 
-            /**
-             * @return array
-             */
             public function rules(): array
             {
                 return [
@@ -87,7 +84,6 @@ class WithValidationTest extends TestCase
             use Importable;
 
             /**
-             * @param  array  $row
              * @return Model|null
              */
             public function model(array $row)
@@ -99,9 +95,6 @@ class WithValidationTest extends TestCase
                 ]);
             }
 
-            /**
-             * @return array
-             */
             public function rules(): array
             {
                 return [
@@ -137,7 +130,6 @@ class WithValidationTest extends TestCase
             use Importable;
 
             /**
-             * @param  array  $row
              * @return Model|null
              */
             public function model(array $row)
@@ -149,9 +141,6 @@ class WithValidationTest extends TestCase
                 ]);
             }
 
-            /**
-             * @return array
-             */
             public function rules(): array
             {
                 return [
@@ -204,7 +193,6 @@ class WithValidationTest extends TestCase
             use Importable;
 
             /**
-             * @param  array  $row
              * @return Model|null
              */
             public function model(array $row)
@@ -216,9 +204,6 @@ class WithValidationTest extends TestCase
                 ]);
             }
 
-            /**
-             * @return array
-             */
             public function rules(): array
             {
                 return [
@@ -245,7 +230,6 @@ class WithValidationTest extends TestCase
             use Importable;
 
             /**
-             * @param  array  $row
              * @return Model|null
              */
             public function model(array $row)
@@ -257,9 +241,6 @@ class WithValidationTest extends TestCase
                 ]);
             }
 
-            /**
-             * @return array
-             */
             public function rules(): array
             {
                 return [
@@ -286,7 +267,6 @@ class WithValidationTest extends TestCase
             use Importable;
 
             /**
-             * @param  array  $row
              * @return Model|null
              */
             public function model(array $row)
@@ -298,9 +278,6 @@ class WithValidationTest extends TestCase
                 ]);
             }
 
-            /**
-             * @return array
-             */
             public function rules(): array
             {
                 return [
@@ -333,7 +310,6 @@ class WithValidationTest extends TestCase
             use Importable;
 
             /**
-             * @param  array  $row
              * @return Model|null
              */
             public function model(array $row)
@@ -345,9 +321,6 @@ class WithValidationTest extends TestCase
                 ]);
             }
 
-            /**
-             * @return array
-             */
             public function rules(): array
             {
                 return [
@@ -382,7 +355,6 @@ class WithValidationTest extends TestCase
             use Importable;
 
             /**
-             * @param  array  $row
              * @return Model|null
              */
             public function model(array $row)
@@ -394,9 +366,6 @@ class WithValidationTest extends TestCase
                 ]);
             }
 
-            /**
-             * @return array
-             */
             public function rules(): array
             {
                 return [
@@ -432,7 +401,6 @@ class WithValidationTest extends TestCase
             use Importable;
 
             /**
-             * @param  array  $row
              * @return Model|null
              */
             public function model(array $row)
@@ -444,9 +412,6 @@ class WithValidationTest extends TestCase
                 ]);
             }
 
-            /**
-             * @return array
-             */
             public function rules(): array
             {
                 return [
@@ -483,7 +448,6 @@ class WithValidationTest extends TestCase
             use Importable;
 
             /**
-             * @param  array  $row
              * @return Model|null
              */
             public function model(array $row)
@@ -495,9 +459,6 @@ class WithValidationTest extends TestCase
                 ]);
             }
 
-            /**
-             * @return array
-             */
             public function rules(): array
             {
                 return [
@@ -526,8 +487,6 @@ class WithValidationTest extends TestCase
             /**
              * Prepare the data for validation.
              *
-             * @param  array  $row
-             * @param  int  $index
              * @return array
              */
             public function prepareForValidation(array $row, int $index)
@@ -541,7 +500,6 @@ class WithValidationTest extends TestCase
             }
 
             /**
-             * @param  array  $row
              * @return Model|null
              */
             public function model(array $row)
@@ -554,9 +512,6 @@ class WithValidationTest extends TestCase
                 ]);
             }
 
-            /**
-             * @return array
-             */
             public function rules(): array
             {
                 return [
@@ -578,12 +533,11 @@ class WithValidationTest extends TestCase
 
     public function test_can_validate_rows_in_batches()
     {
-        $import = new class implements ToModel, WithHeadingRow, WithBatchInserts, WithValidation
+        $import = new class implements ToModel, WithBatchInserts, WithHeadingRow, WithValidation
         {
             use Importable;
 
             /**
-             * @param  array  $row
              * @return Model|null
              */
             public function model(array $row)
@@ -595,17 +549,11 @@ class WithValidationTest extends TestCase
                 ]);
             }
 
-            /**
-             * @return int
-             */
             public function batchSize(): int
             {
                 return 2;
             }
 
-            /**
-             * @return array
-             */
             public function rules(): array
             {
                 return [
@@ -632,7 +580,6 @@ class WithValidationTest extends TestCase
             use Importable;
 
             /**
-             * @param  Row  $row
              * @return Model|null
              */
             public function onRow(Row $row)
@@ -646,9 +593,6 @@ class WithValidationTest extends TestCase
                 ]);
             }
 
-            /**
-             * @return array
-             */
             public function rules(): array
             {
                 return [
@@ -679,9 +623,6 @@ class WithValidationTest extends TestCase
                 //
             }
 
-            /**
-             * @return array
-             */
             public function rules(): array
             {
                 return [
@@ -712,9 +653,6 @@ class WithValidationTest extends TestCase
                 //
             }
 
-            /**
-             * @return array
-             */
             public function rules(): array
             {
                 return [
@@ -741,7 +679,6 @@ class WithValidationTest extends TestCase
             use Importable;
 
             /**
-             * @param  array  $row
              * @return Model|null
              */
             public function model(array $row)
@@ -753,9 +690,6 @@ class WithValidationTest extends TestCase
                 ]);
             }
 
-            /**
-             * @return array
-             */
             public function rules(): array
             {
                 return [
@@ -766,7 +700,7 @@ class WithValidationTest extends TestCase
             /**
              * Configure the validator.
              *
-             * @param  \Illuminate\Contracts\Validation\Validator  $validator
+             * @param  Validator  $validator
              * @return void
              */
             public function withValidator($validator)
@@ -797,9 +731,6 @@ class WithValidationTest extends TestCase
         {
             use Importable;
 
-            /**
-             * @return array
-             */
             public function rules(): array
             {
                 return [
@@ -810,8 +741,6 @@ class WithValidationTest extends TestCase
             /**
              * Prepare the data for validation.
              *
-             * @param  array  $row
-             * @param  int  $index
              * @return array
              */
             public function prepareForValidation(array $row, int $index)
@@ -824,7 +753,6 @@ class WithValidationTest extends TestCase
             }
 
             /**
-             * @param  array  $array
              * @return array
              */
             public function array(array $array)
@@ -855,9 +783,6 @@ class WithValidationTest extends TestCase
         {
             use Importable;
 
-            /**
-             * @return array
-             */
             public function rules(): array
             {
                 return [
@@ -868,8 +793,6 @@ class WithValidationTest extends TestCase
             /**
              * Prepare the data for validation.
              *
-             * @param  array  $row
-             * @param  int  $index
              * @return array
              */
             public function prepareForValidation(array $row, int $index)
@@ -882,7 +805,6 @@ class WithValidationTest extends TestCase
             }
 
             /**
-             * @param  \Illuminate\Support\Collection  $collection
              * @return mixed
              */
             public function collection(Collection $collection)
@@ -913,9 +835,6 @@ class WithValidationTest extends TestCase
         {
             use Importable;
 
-            /**
-             * @return array
-             */
             public function rules(): array
             {
                 return [
@@ -926,8 +845,6 @@ class WithValidationTest extends TestCase
             /**
              * Prepare the data for validation.
              *
-             * @param  array  $row
-             * @param  int  $index
              * @return array
              */
             public function prepareForValidation(array $row, int $index)
@@ -940,8 +857,7 @@ class WithValidationTest extends TestCase
             }
 
             /**
-             * @param  array  $row
-             * @return \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Eloquent\Model[]|null
+             * @return Model|Model[]|null
              */
             public function model(array $row)
             {
@@ -975,9 +891,6 @@ class WithValidationTest extends TestCase
         {
             use Importable;
 
-            /**
-             * @return array
-             */
             public function rules(): array
             {
                 return [
@@ -988,8 +901,6 @@ class WithValidationTest extends TestCase
             /**
              * Prepare the data for validation.
              *
-             * @param  array  $row
-             * @param  int  $index
              * @return array
              */
             public function prepareForValidation(array $row, int $index)
@@ -1002,7 +913,6 @@ class WithValidationTest extends TestCase
             }
 
             /**
-             * @param  \Maatwebsite\Excel\Row  $row
              * @return void
              */
             public function onRow(Row $row)
@@ -1033,13 +943,10 @@ class WithValidationTest extends TestCase
 
     public function test_can_prepare_using_skipsemptyrows()
     {
-        $import = new class implements OnEachRow, WithValidation, SkipsEmptyRows
+        $import = new class implements OnEachRow, SkipsEmptyRows, WithValidation
         {
             use Importable;
 
-            /**
-             * @return array
-             */
             public function rules(): array
             {
                 return [
@@ -1050,8 +957,6 @@ class WithValidationTest extends TestCase
             /**
              * Prepare the data for validation.
              *
-             * @param  array  $row
-             * @param  int  $index
              * @return array
              */
             public function prepareForValidation(array $row, int $index)
@@ -1064,7 +969,6 @@ class WithValidationTest extends TestCase
             }
 
             /**
-             * @param  \Maatwebsite\Excel\Row  $row
              * @return void
              */
             public function onRow(Row $row)
@@ -1093,12 +997,6 @@ class WithValidationTest extends TestCase
         $this->assertInstanceOf(ValidationException::class, $e ?? null);
     }
 
-    /**
-     * @param  ValidationException  $e
-     * @param  int  $row
-     * @param  string  $attribute
-     * @param  array  $messages
-     */
     private function validateFailure(ValidationException $e, int $row, string $attribute, array $messages)
     {
         $failures = $e->failures();

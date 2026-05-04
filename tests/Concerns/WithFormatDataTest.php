@@ -22,9 +22,6 @@ class WithFormatDataTest extends TestCase
 
             public $called = false;
 
-            /**
-             * @param  array  $array
-             */
             public function array(array $array)
             {
                 $this->called = true;
@@ -47,9 +44,6 @@ class WithFormatDataTest extends TestCase
 
             public $called = false;
 
-            /**
-             * @param  array  $array
-             */
             public function array(array $array)
             {
                 $this->called = true;
@@ -66,15 +60,12 @@ class WithFormatDataTest extends TestCase
     public function test_can_import_to_array_with_format_data_and_skips_empty_rows()
     {
         config()->set('excel.imports.read_only', false);
-        $import = new class implements ToArray, WithFormatData, SkipsEmptyRows
+        $import = new class implements SkipsEmptyRows, ToArray, WithFormatData
         {
             use Importable;
 
             public $called = false;
 
-            /**
-             * @param  array  $array
-             */
             public function array(array $array)
             {
                 $this->called = true;
@@ -100,7 +91,7 @@ class WithFormatDataTest extends TestCase
              * @param  array  $row
              * @return Model|null
              */
-            public function collection(collection $collection)
+            public function collection(Collection $collection)
             {
                 $this->called = true;
 
@@ -128,7 +119,7 @@ class WithFormatDataTest extends TestCase
              * @param  array  $row
              * @return Model|null
              */
-            public function collection(collection $collection)
+            public function collection(Collection $collection)
             {
                 $this->called = true;
 
@@ -152,7 +143,6 @@ class WithFormatDataTest extends TestCase
             public $called = false;
 
             /**
-             * @param  array  $row
              * @return Model|null
              */
             public function model(array $row)
@@ -180,7 +170,6 @@ class WithFormatDataTest extends TestCase
             public $called = false;
 
             /**
-             * @param  array  $row
              * @return Model|null
              */
             public function model(array $row)

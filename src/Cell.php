@@ -14,16 +14,11 @@ class Cell
 {
     use DelegatedMacroable;
 
-    /**
-     * @param  SpreadsheetCell  $cell
-     */
     public function __construct(private SpreadsheetCell $cell)
     {
     }
 
     /**
-     * @param  Worksheet  $worksheet
-     * @param  string  $coordinate
      * @return Cell
      *
      * @throws \PhpOffice\PhpSpreadsheet\Exception
@@ -33,9 +28,6 @@ class Cell
         return new static($worksheet->getCell($coordinate));
     }
 
-    /**
-     * @return SpreadsheetCell
-     */
     public function getDelegate(): SpreadsheetCell
     {
         return $this->cell;

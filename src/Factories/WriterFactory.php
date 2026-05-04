@@ -11,6 +11,7 @@ use Maatwebsite\Excel\Concerns\WithPreCalculateFormulas;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Csv;
+use PhpOffice\PhpSpreadsheet\Writer\Exception;
 use PhpOffice\PhpSpreadsheet\Writer\Html;
 use PhpOffice\PhpSpreadsheet\Writer\IWriter;
 
@@ -19,13 +20,9 @@ class WriterFactory
     use MapsCsvSettings;
 
     /**
-     * @param  string  $writerType
-     * @param  Spreadsheet  $spreadsheet
      * @param  object  $export
-     * @param  string|null  $filePath
-     * @return IWriter
      *
-     * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
+     * @throws Exception
      */
     public static function make(string $writerType, Spreadsheet $spreadsheet, $export, ?string $filePath = null): IWriter
     {
@@ -75,10 +72,6 @@ class WriterFactory
         return $writer;
     }
 
-    /**
-     * @param  $export
-     * @return bool
-     */
     private static function includesCharts($export): bool
     {
         if ($export instanceof WithCharts) {
@@ -96,10 +89,6 @@ class WriterFactory
         return false;
     }
 
-    /**
-     * @param  string  $filePath
-     * @return bool
-     */
     private static function isTsvFile(string $filePath): bool
     {
         $pathInfo  = pathinfo($filePath);

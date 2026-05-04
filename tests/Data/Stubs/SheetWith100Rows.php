@@ -13,13 +13,10 @@ use Maatwebsite\Excel\Events\BeforeWriting;
 use Maatwebsite\Excel\Tests\TestCase;
 use Maatwebsite\Excel\Writer;
 
-class SheetWith100Rows implements FromCollection, WithTitle, ShouldAutoSize, WithEvents
+class SheetWith100Rows implements FromCollection, ShouldAutoSize, WithEvents, WithTitle
 {
     use Exportable, RegistersEventListeners;
 
-    /**
-     * @param  string  $title
-     */
     public function __construct(private string $title)
     {
     }
@@ -31,7 +28,7 @@ class SheetWith100Rows implements FromCollection, WithTitle, ShouldAutoSize, Wit
     {
         $collection = new Collection;
         for ($i = 0; $i < 100; $i++) {
-            $row = new Collection();
+            $row = new Collection;
             for ($j = 0; $j < 5; $j++) {
                 $row[] = $this->title() . '-' . $i . '-' . $j;
             }
@@ -42,17 +39,11 @@ class SheetWith100Rows implements FromCollection, WithTitle, ShouldAutoSize, Wit
         return $collection;
     }
 
-    /**
-     * @return string
-     */
     public function title(): string
     {
         return $this->title;
     }
 
-    /**
-     * @param  BeforeWriting  $event
-     */
     public static function beforeWriting(BeforeWriting $event)
     {
         TestCase::assertInstanceOf(Writer::class, $event->writer);

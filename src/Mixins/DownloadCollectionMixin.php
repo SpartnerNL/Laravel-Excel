@@ -26,13 +26,9 @@ class DownloadCollectionMixin
                  */
                 private $collection;
 
-                /**
-                 * @param  Collection  $collection
-                 * @param  bool  $withHeadings
-                 */
                 public function __construct(Collection $collection, private bool $withHeadings = false)
                 {
-                    $this->collection   = $collection->toBase();
+                    $this->collection = $collection->toBase();
                 }
 
                 /**
@@ -43,9 +39,6 @@ class DownloadCollectionMixin
                     return $this->collection;
                 }
 
-                /**
-                 * @return array
-                 */
                 public function headings(): array
                 {
                     if (!$this->withHeadings) {

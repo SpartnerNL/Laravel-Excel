@@ -8,7 +8,7 @@ use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Events\AfterBatch;
 use Maatwebsite\Excel\Events\AfterChunk;
 
-class ImportWithEventsChunksAndBatches extends ImportWithEvents implements WithBatchInserts, ToModel, WithChunkReading
+class ImportWithEventsChunksAndBatches extends ImportWithEvents implements ToModel, WithBatchInserts, WithChunkReading
 {
     /**
      * @var callable
@@ -20,9 +20,6 @@ class ImportWithEventsChunksAndBatches extends ImportWithEvents implements WithB
      */
     public $afterChunk;
 
-    /**
-     * @return array
-     */
     #[\Override]
     public function registerEvents(): array
     {
