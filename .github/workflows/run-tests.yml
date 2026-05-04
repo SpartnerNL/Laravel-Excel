@@ -24,8 +24,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php: [ 8.2, 8.3, 8.4, 8.5 ]
-        laravel: [ 13,12, 11 ]
+        php: [ 8.3, 8.4, 8.5 ]
+        laravel: [ 12, 13 ]
         dependency-version: [ prefer-stable ]
         os: [ ubuntu-latest ]
         include:
@@ -35,82 +35,9 @@ jobs:
           - laravel: 12
             scout: 10.*
             testbench: 10.*
-          - laravel: 11
-            scout: 10.*
-            testbench: 9.*
         exclude:
           - laravel: 13
-            php: 8.2
-          - laravel: 13
-            php: 8.1
-          - laravel: 13
-            php: 8.0
-          - laravel: 13
-            php: 7.4
-          - laravel: 12
-            php: 8.1
-          - laravel: 11
-            php: 8.5
-          - laravel: 11
-            php: 8.5
-          - laravel: 11
-            php: 8.0
-          - laravel: 11
-            php: 7.4
-          - laravel: 10
-            php: 8.0
-          - laravel: 10
-            php: 7.4
-          - laravel: 10
-            php: 8.4
-          - laravel: 10
-            php: 8.5
-          - laravel: 9
-            php: 7.4
-          - laravel: 9
-            php: 8.4
-          - laravel: 9
-            php: 8.5
-          - laravel: 8
-            php: 8.4
-          - laravel: 8
-            php: 8.5
-          - laravel: 7
-            php: 8.0
-          - laravel: 7
-            php: 8.1
-          - laravel: 7
-            php: 8.2
-          - laravel: 7
             php: 8.3
-          - laravel: 7
-            php: 8.4
-          - laravel: 7
-            php: 8.5
-          - laravel: 6
-            php: 8.0
-          - laravel: 6
-            php: 8.1
-          - laravel: 6
-            php: 8.2
-          - laravel: 6
-            php: 8.3
-          - laravel: 6
-            php: 8.4
-          - laravel: 6
-            php: 8.5
-          - laravel: 5.8
-            php: 8.0
-          - laravel: 5.8
-            php: 8.1
-          - laravel: 5.8
-            php: 8.2
-          - laravel: 5.8
-            php: 8.3
-          - laravel: 5.8
-            php: 8.4
-          - laravel: 5.8
-            php: 8.5
 
     name: PHP${{ matrix.php }} - L${{ matrix.laravel }}
 
@@ -136,10 +63,7 @@ jobs:
           composer require "laravel/framework:${{ matrix.laravel }}.*" "orchestra/testbench:${{ matrix.testbench }}" "laravel/scout:${{ matrix.scout }}"  --no-interaction --no-update
           composer update --${{ matrix.dependency-version }} --no-interaction
 
-      - name: Install legacy factories
-        run: |
-          composer require "laravel/legacy-factories" -W --no-interaction
-        if: "matrix.laravel >= 8"
+
 
       - name: Execute tests
         run: vendor/bin/phpunit --testdox --configuration phpunit.xml.dist
