@@ -60,6 +60,7 @@ class ExcelServiceProvider extends ServiceProvider
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function register()
     {
         $this->mergeConfigFrom(

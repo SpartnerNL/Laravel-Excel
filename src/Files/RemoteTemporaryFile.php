@@ -74,6 +74,7 @@ class RemoteTemporaryFile extends TemporaryFile
     /**
      * @return TemporaryFile
      */
+    #[\Override]
     public function sync(bool $copy = true): TemporaryFile
     {
         if (!$this->localTemporaryFile->exists()) {

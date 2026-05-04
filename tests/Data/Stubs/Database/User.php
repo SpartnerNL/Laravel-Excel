@@ -27,13 +27,6 @@ class User extends Model
     /**
      * @var array
      */
-    protected $casts = [
-        'options' => 'array',
-    ];
-
-    /**
-     * @var array
-     */
     protected $hidden = ['password', 'email_verified_at', 'options', 'group_id'];
 
     public function groups(): BelongsToMany
@@ -66,5 +59,15 @@ class User extends Model
     protected static function newFactory(): UserFactory
     {
         return UserFactory::new();
+    }
+    /**
+     * @return array
+     */
+    #[\Override]
+    protected function casts(): array
+    {
+        return [
+            'options' => 'array',
+        ];
     }
 }

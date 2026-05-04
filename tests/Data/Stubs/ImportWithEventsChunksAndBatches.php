@@ -23,6 +23,7 @@ class ImportWithEventsChunksAndBatches extends ImportWithEvents implements WithB
     /**
      * @return array
      */
+    #[\Override]
     public function registerEvents(): array
     {
         return parent::registerEvents() + [

@@ -24,6 +24,7 @@ class ValidationException extends IlluminateValidationException
     /**
      * @return string[]
      */
+    #[\Override]
     public function errors(): array
     {
         return collect($this->failures)->map->toArray()->all();
