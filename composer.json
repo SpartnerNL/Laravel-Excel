@@ -21,14 +21,14 @@
   ],
   "require": {
     "ext-json": "*",
-    "php": "^8.2",
+    "php": "^8.3",
     "phpoffice/phpspreadsheet": "^5.3",
-    "illuminate/support": "^11.0||^12.0||^13.0",
+    "illuminate/support": "^12.0||^13.0",
     "psr/simple-cache": "^1.0||^2.0||^3.0",
     "composer/semver": "^3.3"
   },
   "require-dev": {
-    "orchestra/testbench": "^9.0||^10.0||^11.0",
+    "orchestra/testbench": "^10.0||^11.0",
     "predis/predis": "^1.1",
     "laravel/scout": "^10.0||^11.0",
     "rector/rector": "^2.4.2"
