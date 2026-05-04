@@ -60,6 +60,7 @@ class User extends Model
     {
         return UserFactory::new();
     }
+
     /**
      * @return array
      */
