@@ -7,6 +7,7 @@ use Rector\Config\RectorConfig;
 use Rector\Php70\Rector\FuncCall\RandomFunctionRector;
 use Rector\Php81\Rector\Property\ReadOnlyPropertyRector;
 use Rector\TypeDeclaration\Rector\ClassMethod\ReturnNeverTypeRector;
+use RectorLaravel\Set\LaravelLevelSetList;
 
 return RectorConfig::configure()
     ->withCache(
@@ -19,6 +20,9 @@ return RectorConfig::configure()
         __DIR__ . '/tests',
     ])
     ->withPhpSets()
+    ->withSets([
+        LaravelLevelSetList::UP_TO_LARAVEL_120,
+    ])
     ->withSkip([
         ReadOnlyPropertyRector::class,
         ReturnNeverTypeRector::class,
