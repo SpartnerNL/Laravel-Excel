@@ -15,6 +15,7 @@ use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Files\TemporaryFile;
 use Maatwebsite\Excel\Jobs\Middleware\LocalizeJob;
 use Maatwebsite\Excel\Writer;
+use PhpOffice\PhpSpreadsheet\Exception;
 
 class AppendPaginatedToSheet implements ShouldQueue
 {
@@ -50,14 +51,6 @@ class AppendPaginatedToSheet implements ShouldQueue
      */
     public $perPage;
 
-    /**
-     * @param  FromQuery  $sheetExport
-     * @param  TemporaryFile  $temporaryFile
-     * @param  string  $writerType
-     * @param  int  $sheetIndex
-     * @param  int  $page
-     * @param  int  $perPage
-     */
     public function __construct(
         FromQuery $sheetExport,
         TemporaryFile $temporaryFile,
@@ -85,9 +78,7 @@ class AppendPaginatedToSheet implements ShouldQueue
     }
 
     /**
-     * @param  Writer  $writer
-     *
-     * @throws \PhpOffice\PhpSpreadsheet\Exception
+     * @throws Exception
      * @throws \PhpOffice\PhpSpreadsheet\Reader\Exception
      */
     public function handle(Writer $writer)
@@ -113,7 +104,7 @@ class AppendPaginatedToSheet implements ShouldQueue
      */
     protected function chunk($query)
     {
-        if ($query instanceof \Laravel\Scout\Builder) {
+        if ($query instanceof ScoutBuilder) {
             return $query->paginate($this->perPage, 'page', $this->page)->items();
         }
 

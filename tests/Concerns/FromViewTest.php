@@ -34,17 +34,11 @@ class FromViewTest extends TestCase
              */
             protected $users;
 
-            /**
-             * @param  Collection  $users
-             */
             public function __construct(Collection $users)
             {
                 $this->users = $users;
             }
 
-            /**
-             * @return View
-             */
             public function view(): View
             {
                 return view('users', [
@@ -81,9 +75,6 @@ class FromViewTest extends TestCase
              */
             protected $users;
 
-            /**
-             * @param  Collection  $users
-             */
             public function __construct(Collection $users)
             {
                 $this->users = $users;
@@ -113,7 +104,7 @@ class FromViewTest extends TestCase
             $user->email,
         ])->prepend(['Name', 'Email'])->toArray();
 
-        $this->assertEquals(101, sizeof($contents));
+        $this->assertEquals(101, count($contents));
         $this->assertEquals($expected, $contents);
 
         $contents = $this->readAsArray(__DIR__ . '/../Data/Disks/Local/from-multiple-view.xlsx', 'Xlsx', 2);
@@ -123,7 +114,7 @@ class FromViewTest extends TestCase
             $user->email,
         ])->prepend(['Name', 'Email'])->toArray();
 
-        $this->assertEquals(101, sizeof($contents));
+        $this->assertEquals(101, count($contents));
         $this->assertEquals($expected, $contents);
     }
 }

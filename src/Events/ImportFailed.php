@@ -11,17 +11,11 @@ class ImportFailed
      */
     public $e;
 
-    /**
-     * @param  Throwable  $e
-     */
     public function __construct(Throwable $e)
     {
         $this->e = $e;
     }
 
-    /**
-     * @return Throwable
-     */
     public function getException(): Throwable
     {
         return $this->e;

@@ -18,9 +18,6 @@ class ImportableTest extends TestCase
         {
             use Importable;
 
-            /**
-             * @param  array  $array
-             */
             public function array(array $array)
             {
                 Assert::assertEquals([
@@ -41,9 +38,6 @@ class ImportableTest extends TestCase
         {
             use Importable;
 
-            /**
-             * @param  array  $array
-             */
             public function array(array $array)
             {
                 Assert::assertEquals([
@@ -62,9 +56,6 @@ class ImportableTest extends TestCase
         {
             use Importable;
 
-            /**
-             * @param  array  $array
-             */
             public function array(array $array)
             {
                 Assert::assertEquals([
@@ -89,9 +80,6 @@ class ImportableTest extends TestCase
         {
             use Importable;
 
-            /**
-             * @param  array  $array
-             */
             public function array(array $array)
             {
                 Assert::assertEquals([
@@ -114,9 +102,6 @@ class ImportableTest extends TestCase
         {
             use Importable;
 
-            /**
-             * @param  array  $array
-             */
             public function array(array $array)
             {
                 Assert::assertEquals([

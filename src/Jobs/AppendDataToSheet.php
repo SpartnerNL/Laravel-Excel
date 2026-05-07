@@ -10,6 +10,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Maatwebsite\Excel\Files\TemporaryFile;
 use Maatwebsite\Excel\Jobs\Middleware\LocalizeJob;
 use Maatwebsite\Excel\Writer;
+use PhpOffice\PhpSpreadsheet\Exception;
 
 class AppendDataToSheet implements ShouldQueue
 {
@@ -37,10 +38,6 @@ class AppendDataToSheet implements ShouldQueue
 
     /**
      * @param  object  $sheetExport
-     * @param  TemporaryFile  $temporaryFile
-     * @param  string  $writerType
-     * @param  int  $sheetIndex
-     * @param  array  $data
      */
     public function __construct(public $sheetExport, TemporaryFile $temporaryFile, string $writerType, int $sheetIndex, array $data)
     {
@@ -61,9 +58,7 @@ class AppendDataToSheet implements ShouldQueue
     }
 
     /**
-     * @param  Writer  $writer
-     *
-     * @throws \PhpOffice\PhpSpreadsheet\Exception
+     * @throws Exception
      * @throws \PhpOffice\PhpSpreadsheet\Reader\Exception
      */
     public function handle(Writer $writer)

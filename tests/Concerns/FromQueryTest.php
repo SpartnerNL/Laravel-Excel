@@ -3,6 +3,7 @@
 namespace Maatwebsite\Excel\Tests\Concerns;
 
 use Illuminate\Support\Facades\DB;
+use Laravel\Scout\Engines\DatabaseEngine;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\Group;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
 use Maatwebsite\Excel\Tests\Data\Stubs\FromGroupUsersQueuedQueryExport;
@@ -48,7 +49,7 @@ class FromQueryTest extends TestCase
 
     public function test_can_export_from_query_with_join()
     {
-        $export = new FromUsersQueryWithJoinExport();
+        $export = new FromUsersQueryWithJoinExport;
 
         $response = $export->store('from-query-store.xlsx');
 
@@ -63,7 +64,7 @@ class FromQueryTest extends TestCase
 
     public function test_can_export_from_relation_query_queued()
     {
-        $export = new FromGroupUsersQueuedQueryExport();
+        $export = new FromGroupUsersQueuedQueryExport;
 
         $export->queue('from-query-store.xlsx');
 
@@ -77,7 +78,7 @@ class FromQueryTest extends TestCase
     public function test_can_export_from_query_with_eager_loads()
     {
         DB::connection()->enableQueryLog();
-        $export = new FromUsersQueryExportWithEagerLoad();
+        $export = new FromUsersQueryExportWithEagerLoad;
 
         $response = $export->store('from-query-with-eager-loads.xlsx');
 
@@ -99,7 +100,7 @@ class FromQueryTest extends TestCase
     public function test_can_export_from_query_with_eager_loads_and_queued()
     {
         DB::connection()->enableQueryLog();
-        $export = new FromUsersQueryExportWithEagerLoad();
+        $export = new FromUsersQueryExportWithEagerLoad;
 
         $export->queue('from-query-with-eager-loads.xlsx');
 
@@ -119,7 +120,7 @@ class FromQueryTest extends TestCase
 
     public function test_can_export_from_query_builder_without_using_eloquent()
     {
-        $export = new FromNonEloquentQueryExport();
+        $export = new FromNonEloquentQueryExport;
 
         $response = $export->store('from-query-without-eloquent.xlsx');
 
@@ -134,7 +135,7 @@ class FromQueryTest extends TestCase
 
     public function test_can_export_from_query_builder_without_using_eloquent_and_queued()
     {
-        $export = new FromNonEloquentQueryExport();
+        $export = new FromNonEloquentQueryExport;
 
         $export->queue('from-query-without-eloquent.xlsx');
 
@@ -147,7 +148,7 @@ class FromQueryTest extends TestCase
 
     public function test_can_export_from_query_builder_with_nested_arrays()
     {
-        $export = new FromNestedArraysQueryExport();
+        $export = new FromNestedArraysQueryExport;
 
         $response = $export->store('from-query-with-nested-arrays.xlsx');
 
@@ -160,7 +161,7 @@ class FromQueryTest extends TestCase
 
     public function test_can_export_from_query_builder_with_nested_arrays_queued()
     {
-        $export = new FromNestedArraysQueryExport();
+        $export = new FromNestedArraysQueryExport;
 
         $export->queue('from-query-with-nested-arrays.xlsx');
 
@@ -209,7 +210,7 @@ class FromQueryTest extends TestCase
 
     public function test_can_export_from_scout()
     {
-        if (!class_exists(\Laravel\Scout\Engines\DatabaseEngine::class)) {
+        if (!class_exists(DatabaseEngine::class)) {
             $this->markTestSkipped('Laravel Scout is too old');
 
             return;
@@ -238,6 +239,7 @@ class FromQueryTest extends TestCase
                 if ($key === 0) {
                     $group_row[1] = $user->email;
                     $expected[]   = $group_row;
+
                     continue;
                 }
 

@@ -16,8 +16,8 @@ use Maatwebsite\Excel\Tests\QueuedQueryExportTest;
 
 class User extends Model
 {
-    use Searchable;
     use HasFactory;
+    use Searchable;
 
     /**
      * @var array
@@ -53,7 +53,7 @@ class User extends Model
      */
     public function searchableUsing(): Engine
     {
-        return class_exists(\Laravel\Scout\Engines\DatabaseEngine::class) ? new DatabaseEngine() : new NullEngine();
+        return class_exists(DatabaseEngine::class) ? new DatabaseEngine : new NullEngine;
     }
 
     protected static function newFactory(): UserFactory
@@ -61,9 +61,6 @@ class User extends Model
         return UserFactory::new();
     }
 
-    /**
-     * @return array
-     */
     #[\Override]
     protected function casts(): array
     {

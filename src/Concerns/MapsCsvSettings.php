@@ -61,9 +61,6 @@ trait MapsCsvSettings
      */
     protected static $testAutoDetect = true;
 
-    /**
-     * @param  array  $config
-     */
     public static function applyCsvSettings(array $config)
     {
         static::$delimiter            = Arr::get($config, 'delimiter', static::$delimiter);

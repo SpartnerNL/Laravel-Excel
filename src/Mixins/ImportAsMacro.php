@@ -20,17 +20,12 @@ class ImportAsMacro
                  */
                 private $mapping;
 
-                /**
-                 * @param  string  $model
-                 * @param  callable  $mapping
-                 */
                 public function __construct(private string $model, callable $mapping)
                 {
                     $this->mapping = $mapping;
                 }
 
                 /**
-                 * @param  array  $row
                  * @return Model|Model[]|null
                  */
                 public function model(array $row)

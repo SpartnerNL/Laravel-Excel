@@ -32,9 +32,9 @@ class WithUpsertsTest extends TestCase
     public function test_can_upsert_models_in_batches()
     {
         User::create([
-            'name'      => 'Funny Banana',
-            'email'     => 'patrick@maatwebsite.nl',
-            'password'  => 'password',
+            'name'     => 'Funny Banana',
+            'email'    => 'patrick@maatwebsite.nl',
+            'password' => 'password',
         ]);
 
         DB::connection()->enableQueryLog();
@@ -44,7 +44,6 @@ class WithUpsertsTest extends TestCase
             use Importable;
 
             /**
-             * @param  array  $row
              * @return Model|null
              */
             public function model(array $row)
@@ -64,9 +63,6 @@ class WithUpsertsTest extends TestCase
                 return 'email';
             }
 
-            /**
-             * @return int
-             */
             public function batchSize(): int
             {
                 return 2;
@@ -79,15 +75,15 @@ class WithUpsertsTest extends TestCase
         DB::connection()->disableQueryLog();
 
         $this->assertDatabaseHas('users', [
-            'name'      => 'Patrick Brouwers',
-            'email'     => 'patrick@maatwebsite.nl',
-            'password'  => 'secret',
+            'name'     => 'Patrick Brouwers',
+            'email'    => 'patrick@maatwebsite.nl',
+            'password' => 'secret',
         ]);
 
         $this->assertDatabaseHas('users', [
-            'name'      => 'Taylor Otwell',
-            'email'     => 'taylor@laravel.com',
-            'password'  => 'secret',
+            'name'     => 'Taylor Otwell',
+            'email'    => 'taylor@laravel.com',
+            'password' => 'secret',
         ]);
 
         $this->assertEquals(2, User::count());
@@ -96,9 +92,9 @@ class WithUpsertsTest extends TestCase
     public function test_can_upsert_models_in_rows()
     {
         User::create([
-            'name'      => 'Funny Potato',
-            'email'     => 'patrick@maatwebsite.nl',
-            'password'  => 'password',
+            'name'     => 'Funny Potato',
+            'email'    => 'patrick@maatwebsite.nl',
+            'password' => 'password',
         ]);
 
         DB::connection()->enableQueryLog();
@@ -108,7 +104,6 @@ class WithUpsertsTest extends TestCase
             use Importable;
 
             /**
-             * @param  array  $row
              * @return Model|Model[]|null
              */
             public function model(array $row)
@@ -135,15 +130,15 @@ class WithUpsertsTest extends TestCase
         DB::connection()->disableQueryLog();
 
         $this->assertDatabaseHas('users', [
-            'name'      => 'Patrick Brouwers',
-            'email'     => 'patrick@maatwebsite.nl',
-            'password'  => 'secret',
+            'name'     => 'Patrick Brouwers',
+            'email'    => 'patrick@maatwebsite.nl',
+            'password' => 'secret',
         ]);
 
         $this->assertDatabaseHas('users', [
-            'name'      => 'Taylor Otwell',
-            'email'     => 'taylor@laravel.com',
-            'password'  => 'secret',
+            'name'     => 'Taylor Otwell',
+            'email'    => 'taylor@laravel.com',
+            'password' => 'secret',
         ]);
 
         $this->assertEquals(2, User::count());
@@ -152,19 +147,18 @@ class WithUpsertsTest extends TestCase
     public function test_can_upsert_models_in_batches_with_defined_upsert_columns()
     {
         User::create([
-            'name'      => 'Funny Banana',
-            'email'     => 'patrick@maatwebsite.nl',
-            'password'  => 'password',
+            'name'     => 'Funny Banana',
+            'email'    => 'patrick@maatwebsite.nl',
+            'password' => 'password',
         ]);
 
         DB::connection()->enableQueryLog();
 
-        $import = new class implements ToModel, WithBatchInserts, WithUpserts, WithUpsertColumns
+        $import = new class implements ToModel, WithBatchInserts, WithUpsertColumns, WithUpserts
         {
             use Importable;
 
             /**
-             * @param  array  $row
              * @return Model|null
              */
             public function model(array $row)
@@ -192,9 +186,6 @@ class WithUpsertsTest extends TestCase
                 return ['name'];
             }
 
-            /**
-             * @return int
-             */
             public function batchSize(): int
             {
                 return 2;
@@ -207,15 +198,15 @@ class WithUpsertsTest extends TestCase
         DB::connection()->disableQueryLog();
 
         $this->assertDatabaseHas('users', [
-            'name'      => 'Patrick Brouwers',
-            'email'     => 'patrick@maatwebsite.nl',
-            'password'  => 'password',
+            'name'     => 'Patrick Brouwers',
+            'email'    => 'patrick@maatwebsite.nl',
+            'password' => 'password',
         ]);
 
         $this->assertDatabaseHas('users', [
-            'name'      => 'Taylor Otwell',
-            'email'     => 'taylor@laravel.com',
-            'password'  => 'secret',
+            'name'     => 'Taylor Otwell',
+            'email'    => 'taylor@laravel.com',
+            'password' => 'secret',
         ]);
 
         $this->assertEquals(2, User::count());
@@ -224,19 +215,18 @@ class WithUpsertsTest extends TestCase
     public function test_can_upsert_models_in_rows_with_defined_upsert_columns()
     {
         User::create([
-            'name'      => 'Funny Potato',
-            'email'     => 'patrick@maatwebsite.nl',
-            'password'  => 'password',
+            'name'     => 'Funny Potato',
+            'email'    => 'patrick@maatwebsite.nl',
+            'password' => 'password',
         ]);
 
         DB::connection()->enableQueryLog();
 
-        $import = new class implements ToModel, WithUpserts, WithUpsertColumns
+        $import = new class implements ToModel, WithUpsertColumns, WithUpserts
         {
             use Importable;
 
             /**
-             * @param  array  $row
              * @return Model|Model[]|null
              */
             public function model(array $row)
@@ -271,15 +261,15 @@ class WithUpsertsTest extends TestCase
         DB::connection()->disableQueryLog();
 
         $this->assertDatabaseHas('users', [
-            'name'      => 'Patrick Brouwers',
-            'email'     => 'patrick@maatwebsite.nl',
-            'password'  => 'password',
+            'name'     => 'Patrick Brouwers',
+            'email'    => 'patrick@maatwebsite.nl',
+            'password' => 'password',
         ]);
 
         $this->assertDatabaseHas('users', [
-            'name'      => 'Taylor Otwell',
-            'email'     => 'taylor@laravel.com',
-            'password'  => 'secret',
+            'name'     => 'Taylor Otwell',
+            'email'    => 'taylor@laravel.com',
+            'password' => 'secret',
         ]);
 
         $this->assertEquals(2, User::count());

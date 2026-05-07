@@ -13,7 +13,7 @@ use Maatwebsite\Excel\Concerns\WithCustomQuerySize;
 use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\Group;
 
-class FromQueryWithCustomQuerySize implements FromQuery, WithCustomQuerySize, WithMapping, ShouldQueue
+class FromQueryWithCustomQuerySize implements FromQuery, ShouldQueue, WithCustomQuerySize, WithMapping
 {
     use Exportable;
 
@@ -31,9 +31,6 @@ class FromQueryWithCustomQuerySize implements FromQuery, WithCustomQuerySize, Wi
         return $query;
     }
 
-    /**
-     * @return int
-     */
     public function querySize(): int
     {
         return Group::has('users')->count();
@@ -41,7 +38,6 @@ class FromQueryWithCustomQuerySize implements FromQuery, WithCustomQuerySize, Wi
 
     /**
      * @param  Group  $row
-     * @return array
      */
     public function map($row): array
     {

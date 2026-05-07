@@ -8,6 +8,7 @@ use Maatwebsite\Excel\Tests\Helpers\FileHelper;
 class TemporaryFileTest extends TestCase
 {
     private $defaultDirectoryPermissions;
+
     private $defaultFilePermissions;
 
     /**

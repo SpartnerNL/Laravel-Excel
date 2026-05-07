@@ -7,6 +7,7 @@ use Illuminate\Foundation\Bus\PendingDispatch;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\LazyCollection;
+use Laravel\Scout\Builder;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\FromView;
@@ -42,10 +43,6 @@ class QueuedWriter
      */
     protected $temporaryFileFactory;
 
-    /**
-     * @param  Writer  $writer
-     * @param  TemporaryFileFactory  $temporaryFileFactory
-     */
     public function __construct(Writer $writer, TemporaryFileFactory $temporaryFileFactory)
     {
         $this->writer               = $writer;
@@ -55,9 +52,6 @@ class QueuedWriter
 
     /**
      * @param  object  $export
-     * @param  string  $filePath
-     * @param  string  $disk
-     * @param  string|null  $writerType
      * @param  array|string  $diskOptions
      * @return PendingDispatch|PendingBatch
      */
@@ -92,9 +86,6 @@ class QueuedWriter
 
     /**
      * @param  object  $export
-     * @param  TemporaryFile  $temporaryFile
-     * @param  string  $writerType
-     * @return Collection
      */
     private function buildExportJobs($export, TemporaryFile $temporaryFile, string $writerType): Collection
     {
@@ -120,10 +111,6 @@ class QueuedWriter
     }
 
     /**
-     * @param  FromCollection  $export
-     * @param  TemporaryFile  $temporaryFile
-     * @param  string  $writerType
-     * @param  int  $sheetIndex
      * @return Collection|LazyCollection
      */
     private function exportCollection(
@@ -150,13 +137,6 @@ class QueuedWriter
             });
     }
 
-    /**
-     * @param  FromQuery  $export
-     * @param  TemporaryFile  $temporaryFile
-     * @param  string  $writerType
-     * @param  int  $sheetIndex
-     * @return Collection
-     */
     private function exportQuery(
         FromQuery $export,
         TemporaryFile $temporaryFile,
@@ -165,14 +145,14 @@ class QueuedWriter
     ): Collection {
         $query = $export->query();
 
-        if ($query instanceof \Laravel\Scout\Builder) {
+        if ($query instanceof Builder) {
             return $this->exportScout($export, $temporaryFile, $writerType, $sheetIndex);
         }
 
         $count = $export instanceof WithCustomQuerySize ? $export->querySize() : $query->count();
         $spins = ceil($count / $this->getChunkSize($export));
 
-        $jobs = new Collection();
+        $jobs = new Collection;
 
         for ($page = 1; $page <= $spins; $page++) {
             $jobs->push(new AppendQueryToSheet(
@@ -188,20 +168,13 @@ class QueuedWriter
         return $jobs;
     }
 
-    /**
-     * @param  FromQuery  $export
-     * @param  TemporaryFile  $temporaryFile
-     * @param  string  $writerType
-     * @param  int  $sheetIndex
-     * @return Collection
-     */
     private function exportScout(
         FromQuery $export,
         TemporaryFile $temporaryFile,
         string $writerType,
         int $sheetIndex
     ): Collection {
-        $jobs = new Collection();
+        $jobs = new Collection;
 
         $chunk = $export->query()->paginate($this->getChunkSize($export));
         // Append first page
@@ -228,20 +201,13 @@ class QueuedWriter
         return $jobs;
     }
 
-    /**
-     * @param  FromView  $export
-     * @param  TemporaryFile  $temporaryFile
-     * @param  string  $writerType
-     * @param  int  $sheetIndex
-     * @return Collection
-     */
     private function exportView(
         FromView $export,
         TemporaryFile $temporaryFile,
         string $writerType,
         int $sheetIndex
     ): Collection {
-        $jobs = new Collection();
+        $jobs = new Collection;
         $jobs->push(new AppendViewToSheet(
             $export,
             $temporaryFile,
@@ -254,7 +220,6 @@ class QueuedWriter
 
     /**
      * @param  object|WithCustomChunkSize  $export
-     * @return int
      */
     private function getChunkSize($export): int
     {

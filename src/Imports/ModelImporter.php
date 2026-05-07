@@ -15,26 +15,22 @@ use Maatwebsite\Excel\Concerns\WithValidation;
 use Maatwebsite\Excel\Events\AfterBatch;
 use Maatwebsite\Excel\HasEventBus;
 use Maatwebsite\Excel\Row;
+use Maatwebsite\Excel\Validators\ValidationException;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
 class ModelImporter
 {
     use HasEventBus;
 
-    /**
-     * @param  ModelManager  $manager
-     */
     public function __construct(private ModelManager $manager)
     {
     }
 
     /**
-     * @param  Worksheet  $worksheet
-     * @param  ToModel  $import
      * @param  int|null  $startRow
      * @param  string|null  $endColumn
      *
-     * @throws \Maatwebsite\Excel\Validators\ValidationException
+     * @throws ValidationException
      */
     public function import(Worksheet $worksheet, ToModel $import, int $startRow = 1)
     {

@@ -47,9 +47,6 @@ class WithConditionalSheetsTest extends TestCase
                 ];
             }
 
-            /**
-             * @return array
-             */
             public function conditionalSheets(): array
             {
                 return $this->sheets;

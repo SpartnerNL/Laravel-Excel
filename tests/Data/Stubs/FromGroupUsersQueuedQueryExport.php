@@ -12,7 +12,7 @@ use Maatwebsite\Excel\Concerns\WithCustomChunkSize;
 use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\Group;
 
-class FromGroupUsersQueuedQueryExport implements FromQuery, WithCustomChunkSize, ShouldQueue, WithMapping
+class FromGroupUsersQueuedQueryExport implements FromQuery, ShouldQueue, WithCustomChunkSize, WithMapping
 {
     use Exportable;
 
@@ -26,7 +26,6 @@ class FromGroupUsersQueuedQueryExport implements FromQuery, WithCustomChunkSize,
 
     /**
      * @param  mixed  $row
-     * @return array
      */
     public function map($row): array
     {
@@ -36,9 +35,6 @@ class FromGroupUsersQueuedQueryExport implements FromQuery, WithCustomChunkSize,
         ];
     }
 
-    /**
-     * @return int
-     */
     public function chunkSize(): int
     {
         return 10;

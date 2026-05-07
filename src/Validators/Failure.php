@@ -22,12 +22,6 @@ class Failure implements Arrayable, JsonSerializable
      */
     protected $errors;
 
-    /**
-     * @param  int  $row
-     * @param  string  $attribute
-     * @param  array  $errors
-     * @param  array  $values
-     */
     public function __construct(int $row, string $attribute, array $errors, private array $values = [])
     {
         $this->row       = $row;
@@ -35,33 +29,21 @@ class Failure implements Arrayable, JsonSerializable
         $this->errors    = $errors;
     }
 
-    /**
-     * @return int
-     */
     public function row(): int
     {
         return $this->row;
     }
 
-    /**
-     * @return string
-     */
     public function attribute(): string
     {
         return $this->attribute;
     }
 
-    /**
-     * @return array
-     */
     public function errors(): array
     {
         return $this->errors;
     }
 
-    /**
-     * @return array
-     */
     public function values(): array
     {
         return $this->values;

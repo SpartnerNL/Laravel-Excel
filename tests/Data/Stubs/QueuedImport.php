@@ -10,12 +10,11 @@ use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\Group;
 
-class QueuedImport implements ShouldQueue, ToModel, WithChunkReading, WithBatchInserts
+class QueuedImport implements ShouldQueue, ToModel, WithBatchInserts, WithChunkReading
 {
     use Importable;
 
     /**
-     * @param  array  $row
      * @return Model|null
      */
     public function model(array $row)
@@ -25,17 +24,11 @@ class QueuedImport implements ShouldQueue, ToModel, WithChunkReading, WithBatchI
         ]);
     }
 
-    /**
-     * @return int
-     */
     public function batchSize(): int
     {
         return 100;
     }
 
-    /**
-     * @return int
-     */
     public function chunkSize(): int
     {
         return 100;

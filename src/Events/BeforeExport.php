@@ -12,18 +12,14 @@ class BeforeExport extends Event
     public $writer;
 
     /**
-     * @param  Writer  $writer
      * @param  object  $exportable
      */
     public function __construct(Writer $writer, $exportable)
     {
-        $this->writer     = $writer;
+        $this->writer = $writer;
         parent::__construct($exportable);
     }
 
-    /**
-     * @return Writer
-     */
     public function getWriter(): Writer
     {
         return $this->writer;

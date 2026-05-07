@@ -18,9 +18,6 @@ class OnEachRowTest extends TestCase
 
             public $called = 0;
 
-            /**
-             * @param  Row  $row
-             */
             public function onRow(Row $row)
             {
                 foreach ($row->getCellIterator() as $cell) {
@@ -48,9 +45,6 @@ class OnEachRowTest extends TestCase
         {
             use Importable;
 
-            /**
-             * @param  Row  $row
-             */
             public function onRow(Row $row)
             {
                 // Accessing a row as an array calls toArray() without an end

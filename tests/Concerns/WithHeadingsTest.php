@@ -28,9 +28,6 @@ class WithHeadingsTest extends TestCase
                 ]);
             }
 
-            /**
-             * @return array
-             */
             public function headings(): array
             {
                 return ['A', 'B', 'C'];
@@ -69,9 +66,6 @@ class WithHeadingsTest extends TestCase
                 ]);
             }
 
-            /**
-             * @return array
-             */
             public function headings(): array
             {
                 return [
@@ -99,7 +93,7 @@ class WithHeadingsTest extends TestCase
 
     public function test_can_export_from_collection_with_heading_row_with_custom_start_cell()
     {
-        $export = new class implements FromCollection, WithHeadings, WithCustomStartCell
+        $export = new class implements FromCollection, WithCustomStartCell, WithHeadings
         {
             use Exportable;
 
@@ -114,17 +108,11 @@ class WithHeadingsTest extends TestCase
                 ]);
             }
 
-            /**
-             * @return array
-             */
             public function headings(): array
             {
                 return ['A', 'B', 'C'];
             }
 
-            /**
-             * @return string
-             */
             public function startCell(): string
             {
                 return 'B2';

@@ -17,9 +17,6 @@ class MemoryCacheDeprecated implements CacheInterface
      */
     protected $cache = [];
 
-    /**
-     * @param  int|null  $memoryLimit
-     */
     public function __construct(?int $memoryLimit = null)
     {
         $this->memoryLimit = $memoryLimit;
@@ -112,22 +109,16 @@ class MemoryCacheDeprecated implements CacheInterface
         return true;
     }
 
-    /**
-     * @return bool
-     */
     public function reachedMemoryLimit(): bool
     {
         // When no limit is given, we'll never reach any limit.
-        if (null === $this->memoryLimit) {
+        if ($this->memoryLimit === null) {
             return false;
         }
 
         return count($this->cache) >= $this->memoryLimit;
     }
 
-    /**
-     * @return array
-     */
     public function flush(): array
     {
         $memory = $this->cache;

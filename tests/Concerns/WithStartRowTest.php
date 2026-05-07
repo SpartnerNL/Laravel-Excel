@@ -29,10 +29,6 @@ class WithStartRowTest extends TestCase
         {
             use Importable;
 
-            /**
-             * @param  array  $row
-             * @return Model
-             */
             public function model(array $row): Model
             {
                 return new User([
@@ -42,9 +38,6 @@ class WithStartRowTest extends TestCase
                 ]);
             }
 
-            /**
-             * @return int
-             */
             public function startRow(): int
             {
                 return 5;
@@ -70,9 +63,6 @@ class WithStartRowTest extends TestCase
         {
             use Importable;
 
-            /**
-             * @param  array  $array
-             */
             public function array(array $array)
             {
                 Assert::assertEquals([
@@ -87,9 +77,6 @@ class WithStartRowTest extends TestCase
                 ], $array);
             }
 
-            /**
-             * @return int
-             */
             public function startRow(): int
             {
                 return 5;

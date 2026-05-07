@@ -35,7 +35,6 @@ class ToModelTest extends TestCase
             use Importable;
 
             /**
-             * @param  array  $row
              * @return Model|Model[]|null
              */
             public function model(array $row)
@@ -71,7 +70,6 @@ class ToModelTest extends TestCase
             use Importable;
 
             /**
-             * @param  array  $row
              * @return Model|Model[]|null
              */
             public function model(array $row)
@@ -101,7 +99,6 @@ class ToModelTest extends TestCase
             use Importable;
 
             /**
-             * @param  array  $row
              * @return Model|Model[]|null
              */
             public function model(array $row)
@@ -139,7 +136,6 @@ class ToModelTest extends TestCase
             use Importable;
 
             /**
-             * @param  array  $row
              * @return Model|Model[]|null
              */
             public function model(array $row)
@@ -173,12 +169,11 @@ class ToModelTest extends TestCase
 
         DB::connection()->enableQueryLog();
 
-        $import = new class implements ToModel, PersistRelations
+        $import = new class implements PersistRelations, ToModel
         {
             use Importable;
 
             /**
-             * @param  array  $row
              * @return Model|Model[]|null
              */
             public function model(array $row)
@@ -221,12 +216,11 @@ class ToModelTest extends TestCase
 
         DB::connection()->enableQueryLog();
 
-        $import = new class implements ToModel, PersistRelations
+        $import = new class implements PersistRelations, ToModel
         {
             use Importable;
 
             /**
-             * @param  array  $row
              * @return Model|Model[]|null
              */
             public function model(array $row)

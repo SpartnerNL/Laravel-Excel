@@ -27,7 +27,7 @@ class ShouldQueueWithoutChainTest extends TestCase
     {
         DB::connection()->enableQueryLog();
 
-        $import = new QueueImportWithoutJobChaining();
+        $import = new QueueImportWithoutJobChaining;
         $import->import('import-users.xlsx');
 
         $this->assertCount(2, DB::getQueryLog());
@@ -38,7 +38,7 @@ class ShouldQueueWithoutChainTest extends TestCase
     {
         Queue::fake();
 
-        $import = new QueueImportWithoutJobChaining();
+        $import = new QueueImportWithoutJobChaining;
         $import->import('import-users.xlsx');
 
         Queue::assertPushed(ReadChunk::class, 2);
@@ -51,7 +51,7 @@ class ShouldQueueWithoutChainTest extends TestCase
     {
         Queue::fake();
 
-        $import        = new QueueImportWithoutJobChaining();
+        $import        = new QueueImportWithoutJobChaining;
         $import->queue = 'queue-name';
 
         $import->import('import-users.xlsx');
@@ -68,7 +68,7 @@ class ShouldQueueWithoutChainTest extends TestCase
             $fake->serializeAndRestore(); // More realism
         }
 
-        $import = new QueueImportWithoutJobChaining();
+        $import = new QueueImportWithoutJobChaining;
 
         $import->import('import-users.xlsx');
 

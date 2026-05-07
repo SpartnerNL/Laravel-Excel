@@ -27,7 +27,6 @@ class EloquentCollectionWithMappingExport implements FromCollection, WithMapping
 
     /**
      * @param  User  $user
-     * @return array
      */
     public function map($user): array
     {

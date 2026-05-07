@@ -20,8 +20,6 @@ class QueuedExportWithLocalePreferences implements FromCollection, HasLocalePref
 
     /**
      * QueuedExportWithLocalePreferences constructor.
-     *
-     * @param  string  $locale
      */
     public function __construct(string $locale)
     {

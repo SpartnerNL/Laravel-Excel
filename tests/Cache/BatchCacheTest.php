@@ -68,7 +68,7 @@ class BatchCacheTest extends TestCase
 
     public function test_will_get_multiple_from_cache_and_persisted()
     {
-        $inMemory  = [
+        $inMemory = [
             'A1' => 'A1-value',
             'A2' => 'A2-value',
             'A3' => 'A3-value',
@@ -226,11 +226,6 @@ class BatchCacheTest extends TestCase
     /**
      * Construct a BatchCache with a in memory store
      * and an array cache, pretending to be a persistence store.
-     *
-     * @param  array  $memory
-     * @param  array  $persisted
-     * @param  int|null  $memoryLimit
-     * @return CacheInterface
      */
     private function givenCache(array $memory = [], array $persisted = [], ?int $memoryLimit = null): CacheInterface
     {
@@ -239,7 +234,7 @@ class BatchCacheTest extends TestCase
         $this->memory = $this->app->make(CacheManager::class)->createMemoryDriver();
         $this->memory->setMultiple($memory);
 
-        $store = new ArrayStore();
+        $store = new ArrayStore;
         $store->putMany($persisted, 10000);
 
         $this->cache = new Repository($store);

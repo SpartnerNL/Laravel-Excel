@@ -33,14 +33,13 @@ class SkipsOnFailureTest extends TestCase
 
     public function test_can_skip_on_error()
     {
-        $import = new class implements ToModel, WithValidation, SkipsOnFailure
+        $import = new class implements SkipsOnFailure, ToModel, WithValidation
         {
             use Importable;
 
             public $failures = 0;
 
             /**
-             * @param  array  $row
              * @return Model|null
              */
             public function model(array $row)
@@ -52,9 +51,6 @@ class SkipsOnFailureTest extends TestCase
                 ]);
             }
 
-            /**
-             * @return array
-             */
             public function rules(): array
             {
                 return [
@@ -99,14 +95,13 @@ class SkipsOnFailureTest extends TestCase
 
     public function test_skips_only_failed_rows_in_batch()
     {
-        $import = new class implements ToModel, WithValidation, WithBatchInserts, SkipsOnFailure
+        $import = new class implements SkipsOnFailure, ToModel, WithBatchInserts, WithValidation
         {
             use Importable;
 
             public $failures = 0;
 
             /**
-             * @param  array  $row
              * @return Model|null
              */
             public function model(array $row)
@@ -118,9 +113,6 @@ class SkipsOnFailureTest extends TestCase
                 ]);
             }
 
-            /**
-             * @return array
-             */
             public function rules(): array
             {
                 return [
@@ -142,9 +134,6 @@ class SkipsOnFailureTest extends TestCase
                 $this->failures += \count($failures);
             }
 
-            /**
-             * @return int
-             */
             public function batchSize(): int
             {
                 return 100;
@@ -168,12 +157,11 @@ class SkipsOnFailureTest extends TestCase
 
     public function test_can_skip_failures_and_collect_all_failures_at_the_end()
     {
-        $import = new class implements ToModel, WithValidation, SkipsOnFailure
+        $import = new class implements SkipsOnFailure, ToModel, WithValidation
         {
             use Importable, SkipsFailures;
 
             /**
-             * @param  array  $row
              * @return Model|null
              */
             public function model(array $row)
@@ -185,9 +173,6 @@ class SkipsOnFailureTest extends TestCase
                 ]);
             }
 
-            /**
-             * @return array
-             */
             public function rules(): array
             {
                 return [
@@ -220,12 +205,11 @@ class SkipsOnFailureTest extends TestCase
 
     public function test_can_validate_using_oneachrow_and_skipsonfailure()
     {
-        $import = new class implements OnEachRow, WithValidation, SkipsOnFailure
+        $import = new class implements OnEachRow, SkipsOnFailure, WithValidation
         {
             use Importable, SkipsFailures;
 
             /**
-             * @param  Row  $row
              * @return Model|null
              */
             public function onRow(Row $row)
@@ -239,9 +223,6 @@ class SkipsOnFailureTest extends TestCase
                 ]);
             }
 
-            /**
-             * @return array
-             */
             public function rules(): array
             {
                 return [
@@ -268,7 +249,7 @@ class SkipsOnFailureTest extends TestCase
 
     public function test_can_validate_using_tocollection_and_skipsonfailure()
     {
-        $import = new class implements ToCollection, WithValidation, SkipsOnFailure
+        $import = new class implements SkipsOnFailure, ToCollection, WithValidation
         {
             use Importable, SkipsFailures;
 
@@ -285,9 +266,6 @@ class SkipsOnFailureTest extends TestCase
                 ]));
             }
 
-            /**
-             * @return array
-             */
             public function rules(): array
             {
                 return [

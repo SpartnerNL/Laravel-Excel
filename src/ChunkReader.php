@@ -37,9 +37,6 @@ class ChunkReader
     }
 
     /**
-     * @param  WithChunkReading  $import
-     * @param  Reader  $reader
-     * @param  TemporaryFile  $temporaryFile
      * @return PendingDispatch|PendingBatch|Collection|null
      */
     public function read(WithChunkReading $import, Reader $reader, TemporaryFile $temporaryFile)
@@ -58,7 +55,7 @@ class ChunkReader
             $import->getConsoleOutput()->progressStart(array_sum($totalRows));
         }
 
-        $jobs = new Collection();
+        $jobs = new Collection;
         foreach ($worksheets as $name => $sheetImport) {
             $startRow = HeadingRowExtractor::determineStartRow($sheetImport);
 

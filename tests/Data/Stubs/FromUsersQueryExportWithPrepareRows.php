@@ -23,9 +23,6 @@ class FromUsersQueryExportWithPrepareRows implements FromQuery, WithCustomChunkS
         return User::query();
     }
 
-    /**
-     * @return int
-     */
     public function chunkSize(): int
     {
         return 10;

@@ -22,9 +22,6 @@ class FromUsersQueryExport implements FromQuery, WithCustomChunkSize
         return User::query();
     }
 
-    /**
-     * @return int
-     */
     public function chunkSize(): int
     {
         return 10;

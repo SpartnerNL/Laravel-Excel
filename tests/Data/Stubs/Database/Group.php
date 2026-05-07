@@ -10,13 +10,11 @@ use Maatwebsite\Excel\Tests\Data\Stubs\Database\Factories\GroupFactory;
 class Group extends Model
 {
     use HasFactory;
+
     public $timestamps = false;
 
     protected $guarded = [];
 
-    /**
-     * @return BelongsToMany
-     */
     public function users(): BelongsToMany
     {
         return $this->belongsToMany(User::class);

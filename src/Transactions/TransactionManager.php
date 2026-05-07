@@ -20,7 +20,7 @@ class TransactionManager extends Manager
      */
     public function createNullDriver()
     {
-        return new NullTransactionHandler();
+        return new NullTransactionHandler;
     }
 
     /**

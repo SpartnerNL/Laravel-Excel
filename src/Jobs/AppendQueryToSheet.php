@@ -14,6 +14,7 @@ use Maatwebsite\Excel\Files\TemporaryFile;
 use Maatwebsite\Excel\HasEventBus;
 use Maatwebsite\Excel\Jobs\Middleware\LocalizeJob;
 use Maatwebsite\Excel\Writer;
+use PhpOffice\PhpSpreadsheet\Exception;
 
 class AppendQueryToSheet implements ShouldQueue
 {
@@ -49,14 +50,6 @@ class AppendQueryToSheet implements ShouldQueue
      */
     public $chunkSize;
 
-    /**
-     * @param  FromQuery  $sheetExport
-     * @param  TemporaryFile  $temporaryFile
-     * @param  string  $writerType
-     * @param  int  $sheetIndex
-     * @param  int  $page
-     * @param  int  $chunkSize
-     */
     public function __construct(
         FromQuery $sheetExport,
         TemporaryFile $temporaryFile,
@@ -84,9 +77,7 @@ class AppendQueryToSheet implements ShouldQueue
     }
 
     /**
-     * @param  Writer  $writer
-     *
-     * @throws \PhpOffice\PhpSpreadsheet\Exception
+     * @throws Exception
      * @throws \PhpOffice\PhpSpreadsheet\Reader\Exception
      */
     public function handle(Writer $writer)

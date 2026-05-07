@@ -33,7 +33,6 @@ class WithBatchInsertsTest extends TestCase
             use Importable;
 
             /**
-             * @param  array  $row
              * @return Model|null
              */
             public function model(array $row)
@@ -45,9 +44,6 @@ class WithBatchInsertsTest extends TestCase
                 ]);
             }
 
-            /**
-             * @return int
-             */
             public function batchSize(): int
             {
                 return 2;
@@ -79,7 +75,6 @@ class WithBatchInsertsTest extends TestCase
             use Importable;
 
             /**
-             * @param  array  $row
              * @return Model|null
              */
             public function model(array $row)
@@ -89,9 +84,6 @@ class WithBatchInsertsTest extends TestCase
                 ]);
             }
 
-            /**
-             * @return int
-             */
             public function batchSize(): int
             {
                 return 1000;
@@ -113,7 +105,6 @@ class WithBatchInsertsTest extends TestCase
             use Importable;
 
             /**
-             * @param  array  $row
              * @return Model|Model[]|null
              */
             public function model(array $row)
@@ -131,9 +122,6 @@ class WithBatchInsertsTest extends TestCase
                 return [$user, $group];
             }
 
-            /**
-             * @return int
-             */
             public function batchSize(): int
             {
                 return 2;
@@ -158,7 +146,6 @@ class WithBatchInsertsTest extends TestCase
             use Importable;
 
             /**
-             * @param  array  $row
              * @return Model|Model[]|null
              */
             public function model(array $row)
@@ -170,9 +157,6 @@ class WithBatchInsertsTest extends TestCase
                 ]);
             }
 
-            /**
-             * @return int
-             */
             public function batchSize(): int
             {
                 return 2;

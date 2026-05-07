@@ -9,9 +9,6 @@ class BeforeExportListener
      */
     private $assertions;
 
-    /**
-     * @param  callable  $assertions
-     */
     public function __construct(callable $assertions)
     {
         $this->assertions = $assertions;

@@ -26,7 +26,6 @@ class FromNestedArraysQueryExport implements FromQuery, WithMapping
 
     /**
      * @param  Group  $row
-     * @return array
      */
     public function map($row): array
     {

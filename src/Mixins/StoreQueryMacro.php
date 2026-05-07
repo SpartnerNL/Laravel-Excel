@@ -18,8 +18,6 @@ class StoreQueryMacro
                 use Exportable;
 
                 /**
-                 * @param  $query
-                 * @param  bool  $withHeadings
                  * @param  Builder  $query
                  */
                 public function __construct(private $query, private bool $withHeadings = false)
@@ -34,9 +32,6 @@ class StoreQueryMacro
                     return $this->query;
                 }
 
-                /**
-                 * @return array
-                 */
                 public function headings(): array
                 {
                     if (!$this->withHeadings) {

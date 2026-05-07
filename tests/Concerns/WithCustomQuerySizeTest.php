@@ -29,7 +29,7 @@ class WithCustomQuerySizeTest extends TestCase
 
     public function test_can_export_with_custom_count()
     {
-        $export = new FromQueryWithCustomQuerySize();
+        $export = new FromQueryWithCustomQuerySize;
 
         $export->queue('export-from-query-with-count.xlsx', null, 'Xlsx')->chain([
             new AfterQueueExportJob(dirname(__DIR__) . '/Data/Disks/Local/export-from-query-with-count.xlsx'),

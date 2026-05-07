@@ -3,17 +3,17 @@
 namespace Maatwebsite\Excel\Concerns;
 
 use Illuminate\Foundation\Bus\PendingDispatch;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Maatwebsite\Excel\Exceptions\NoFilenameGivenException;
 use Maatwebsite\Excel\Exceptions\NoFilePathGivenException;
 use Maatwebsite\Excel\Exporter;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 trait Exportable
 {
     /**
-     * @param  string  $fileName
-     * @param  string|null  $writerType
-     * @param  array  $headers
-     * @return \Illuminate\Http\Response|\Symfony\Component\HttpFoundation\BinaryFileResponse
+     * @return Response|BinaryFileResponse
      *
      * @throws NoFilenameGivenException
      */
@@ -23,17 +23,14 @@ trait Exportable
         $fileName ??= $this->fileName ?? null;
         $writerType ??= $this->writerType ?? null;
 
-        if (null === $fileName) {
-            throw new NoFilenameGivenException();
+        if ($fileName === null) {
+            throw new NoFilenameGivenException;
         }
 
         return $this->getExporter()->download($this, $fileName, $writerType, $headers);
     }
 
     /**
-     * @param  string  $filePath
-     * @param  string|null  $disk
-     * @param  string|null  $writerType
      * @param  mixed  $diskOptions
      * @return bool|PendingDispatch
      *
@@ -43,7 +40,7 @@ trait Exportable
     {
         $filePath ??= $this->filePath ?? null;
 
-        if (null === $filePath) {
+        if ($filePath === null) {
             throw NoFilePathGivenException::export();
         }
 
@@ -57,9 +54,6 @@ trait Exportable
     }
 
     /**
-     * @param  string|null  $filePath
-     * @param  string|null  $disk
-     * @param  string|null  $writerType
      * @param  mixed  $diskOptions
      * @return PendingDispatch
      *
@@ -69,7 +63,7 @@ trait Exportable
     {
         $filePath ??= $this->filePath ?? null;
 
-        if (null === $filePath) {
+        if ($filePath === null) {
             throw NoFilePathGivenException::export();
         }
 
@@ -96,8 +90,8 @@ trait Exportable
     /**
      * Create an HTTP response that represents the object.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param  Request  $request
+     * @return Response
      *
      * @throws NoFilenameGivenException
      */
@@ -106,9 +100,6 @@ trait Exportable
         return $this->download();
     }
 
-    /**
-     * @return Exporter
-     */
     private function getExporter(): Exporter
     {
         return app(Exporter::class);

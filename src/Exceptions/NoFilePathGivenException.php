@@ -10,7 +10,6 @@ class NoFilePathGivenException extends InvalidArgumentException implements Larav
     /**
      * @param  string  $message
      * @param  int  $code
-     * @param  Throwable|null  $previous
      */
     public function __construct(
         $message = 'A filepath needs to be passed.',

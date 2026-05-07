@@ -32,14 +32,13 @@ class SkipsOnErrorTest extends TestCase
 
     public function test_can_skip_on_error()
     {
-        $import = new class implements ToModel, SkipsOnError
+        $import = new class implements SkipsOnError, ToModel
         {
             use Importable;
 
             public $errors = 0;
 
             /**
-             * @param  array  $row
              * @return Model|null
              */
             public function model(array $row)
@@ -51,9 +50,6 @@ class SkipsOnErrorTest extends TestCase
                 ]);
             }
 
-            /**
-             * @param  Throwable  $e
-             */
             public function onError(Throwable $e)
             {
                 Assert::assertInstanceOf(QueryException::class, $e);
@@ -80,12 +76,11 @@ class SkipsOnErrorTest extends TestCase
 
     public function test_can_skip_errors_and_collect_all_errors_at_the_end()
     {
-        $import = new class implements ToModel, SkipsOnError
+        $import = new class implements SkipsOnError, ToModel
         {
             use Importable, SkipsErrors;
 
             /**
-             * @param  array  $row
              * @return Model|null
              */
             public function model(array $row)
@@ -121,16 +116,14 @@ class SkipsOnErrorTest extends TestCase
 
     public function test_can_skip_on_error_when_using_oneachrow_with_validation()
     {
-        $import = new class implements OnEachRow, WithValidation, SkipsOnError
+        $import = new class implements OnEachRow, SkipsOnError, WithValidation
         {
             use Importable;
 
-            public $errors        = 0;
+            public $errors = 0;
+
             public $processedRows = 0;
 
-            /**
-             * @param  Row  $row
-             */
             public function onRow(Row $row)
             {
                 $this->processedRows++;
@@ -145,9 +138,6 @@ class SkipsOnErrorTest extends TestCase
                 ]);
             }
 
-            /**
-             * @return array
-             */
             public function rules(): array
             {
                 return [
@@ -155,9 +145,6 @@ class SkipsOnErrorTest extends TestCase
                 ];
             }
 
-            /**
-             * @param  Throwable  $e
-             */
             public function onError(Throwable $e)
             {
                 Assert::assertInstanceOf(ValidationException::class, $e);
@@ -185,15 +172,12 @@ class SkipsOnErrorTest extends TestCase
 
     public function test_can_skip_errors_and_collect_all_errors_when_using_oneachrow_with_validation()
     {
-        $import = new class implements OnEachRow, WithValidation, SkipsOnError
+        $import = new class implements OnEachRow, SkipsOnError, WithValidation
         {
             use Importable, SkipsErrors;
 
             public $processedRows = 0;
 
-            /**
-             * @param  Row  $row
-             */
             public function onRow(Row $row)
             {
                 $this->processedRows++;
@@ -208,9 +192,6 @@ class SkipsOnErrorTest extends TestCase
                 ]);
             }
 
-            /**
-             * @return array
-             */
             public function rules(): array
             {
                 return [
@@ -247,12 +228,10 @@ class SkipsOnErrorTest extends TestCase
         {
             use Importable;
 
-            public $errors        = 0;
+            public $errors = 0;
+
             public $processedRows = 0;
 
-            /**
-             * @param  Row  $row
-             */
             public function onRow(Row $row)
             {
                 $this->processedRows++;
@@ -271,9 +250,6 @@ class SkipsOnErrorTest extends TestCase
                 ]);
             }
 
-            /**
-             * @param  Throwable  $e
-             */
             public function onError(Throwable $e)
             {
                 Assert::assertInstanceOf(\Exception::class, $e);
@@ -307,9 +283,6 @@ class SkipsOnErrorTest extends TestCase
 
             public $processedRows = 0;
 
-            /**
-             * @param  Row  $row
-             */
             public function onRow(Row $row)
             {
                 $this->processedRows++;

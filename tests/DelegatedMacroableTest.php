@@ -17,7 +17,7 @@ class DelegatedMacroableTest extends TestCase
     {
         $export = new class implements WithEvents
         {
-            use RegistersEventListeners, Exportable;
+            use Exportable, RegistersEventListeners;
 
             public static function beforeExport(BeforeExport $event)
             {
@@ -38,7 +38,7 @@ class DelegatedMacroableTest extends TestCase
 
         $export = new class implements WithEvents
         {
-            use RegistersEventListeners, Exportable;
+            use Exportable, RegistersEventListeners;
 
             public static function beforeExport(BeforeExport $event)
             {
@@ -61,7 +61,7 @@ class DelegatedMacroableTest extends TestCase
 
         $export = new class implements WithEvents
         {
-            use RegistersEventListeners, Exportable;
+            use Exportable, RegistersEventListeners;
 
             public static function beforeSheet(BeforeSheet $event)
             {

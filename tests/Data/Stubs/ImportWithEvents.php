@@ -33,9 +33,6 @@ class ImportWithEvents implements WithEvents
      */
     public $afterSheet;
 
-    /**
-     * @return array
-     */
     public function registerEvents(): array
     {
         return [

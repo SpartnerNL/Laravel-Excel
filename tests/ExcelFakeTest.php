@@ -8,6 +8,7 @@ use Illuminate\Foundation\Bus\PendingDispatch;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Excel;
 use Maatwebsite\Excel\Facades\Excel as ExcelFacade;
 use Maatwebsite\Excel\Fakes\ExcelFake;
 use Maatwebsite\Excel\Tests\Data\Stubs\ChainedJobStub;
@@ -119,11 +120,11 @@ class ExcelFakeTest extends TestCase
         ExcelFacade::queue(
             $this->givenQueuedExport(), 'queued-filename.csv', 's3'
         )->chain([
-            new ChainedJobStub(),
+            new ChainedJobStub,
         ]);
 
         ExcelFacade::assertQueuedWithChain([
-            new ChainedJobStub(),
+            new ChainedJobStub,
         ]);
     }
 
@@ -131,7 +132,7 @@ class ExcelFakeTest extends TestCase
     {
         ExcelFacade::fake();
 
-        $response = ExcelFacade::raw($this->givenExport(), \Maatwebsite\Excel\Excel::XLSX);
+        $response = ExcelFacade::raw($this->givenExport(), Excel::XLSX);
 
         $this->assertIsString($response);
 
@@ -200,11 +201,11 @@ class ExcelFakeTest extends TestCase
         ExcelFacade::queueImport(
             $this->givenQueuedImport(), 'queued-filename.csv', 's3'
         )->chain([
-            new ChainedJobStub(),
+            new ChainedJobStub,
         ]);
 
         ExcelFacade::assertQueuedWithChain([
-            new ChainedJobStub(),
+            new ChainedJobStub,
         ]);
     }
 
@@ -264,7 +265,6 @@ class ExcelFakeTest extends TestCase
         return new class implements ToModel
         {
             /**
-             * @param  array  $row
              * @return Model|null
              */
             public function model(array $row)
@@ -279,10 +279,9 @@ class ExcelFakeTest extends TestCase
      */
     private function givenQueuedImport()
     {
-        return new class implements ToModel, ShouldQueue
+        return new class implements ShouldQueue, ToModel
         {
             /**
-             * @param  array  $row
              * @return Model|null
              */
             public function model(array $row)

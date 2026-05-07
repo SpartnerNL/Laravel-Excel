@@ -16,7 +16,7 @@ class RowValidatorTest extends TestCase
     /**
      * Set up the test.
      */
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -34,7 +34,7 @@ class RowValidatorTest extends TestCase
 
     public function test_format_rule_with_object_input()
     {
-        $rule = new \stdClass();
+        $rule = new \stdClass;
 
         $result = $this->callPrivateMethod('formatRule', [$rule]);
 
@@ -80,8 +80,6 @@ class RowValidatorTest extends TestCase
     /**
      * Call a private function.
      *
-     * @param  string  $name
-     * @param  array  $args
      * @return mixed
      */
     public function callPrivateMethod(string $name, array $args)

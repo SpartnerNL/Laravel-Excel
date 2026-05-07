@@ -37,9 +37,6 @@ class WithCustomStartCellTest extends TestCase
                 ]);
             }
 
-            /**
-             * @return string
-             */
             public function startCell(): string
             {
                 return 'B2';

@@ -52,7 +52,7 @@ class QueuedViewExportTest extends TestCase
             $user->email,
         ])->prepend(['Name', 'Email'])->toArray();
 
-        $this->assertEquals(101, sizeof($contents));
+        $this->assertEquals(101, count($contents));
         $this->assertEquals($expected, $contents);
 
         $contents = $this->readAsArray(__DIR__ . '/Data/Disks/Local/queued-multiple-view-export.xlsx', 'Xlsx', 2);
@@ -62,7 +62,7 @@ class QueuedViewExportTest extends TestCase
             $user->email,
         ])->prepend(['Name', 'Email'])->toArray();
 
-        $this->assertEquals(101, sizeof($contents));
+        $this->assertEquals(101, count($contents));
         $this->assertEquals($expected, $contents);
     }
 }

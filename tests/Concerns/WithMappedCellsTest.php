@@ -25,13 +25,10 @@ class WithMappedCellsTest extends TestCase
 
     public function test_can_import_with_references_to_cells()
     {
-        $import = new class implements WithMappedCells, ToArray
+        $import = new class implements ToArray, WithMappedCells
         {
             use Importable;
 
-            /**
-             * @return array
-             */
             public function mapping(): array
             {
                 return [
@@ -40,9 +37,6 @@ class WithMappedCellsTest extends TestCase
                 ];
             }
 
-            /**
-             * @param  array  $array
-             */
             public function array(array $array)
             {
                 Assert::assertEquals([
@@ -57,13 +51,10 @@ class WithMappedCellsTest extends TestCase
 
     public function test_can_import_with_nested_references_to_cells()
     {
-        $import = new class implements WithMappedCells, ToArray
+        $import = new class implements ToArray, WithMappedCells
         {
             use Importable;
 
-            /**
-             * @return array
-             */
             public function mapping(): array
             {
                 return [
@@ -78,9 +69,6 @@ class WithMappedCellsTest extends TestCase
                 ];
             }
 
-            /**
-             * @param  array  $array
-             */
             public function array(array $array)
             {
                 Assert::assertEquals([
@@ -101,13 +89,10 @@ class WithMappedCellsTest extends TestCase
 
     public function test_can_import_with_references_to_cells_to_model()
     {
-        $import = new class implements WithMappedCells, ToModel
+        $import = new class implements ToModel, WithMappedCells
         {
             use Importable;
 
-            /**
-             * @return array
-             */
             public function mapping(): array
             {
                 return [
@@ -117,7 +102,6 @@ class WithMappedCellsTest extends TestCase
             }
 
             /**
-             * @param  array  $array
              * @return User
              */
             public function model(array $array)

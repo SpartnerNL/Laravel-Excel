@@ -15,6 +15,7 @@ use Maatwebsite\Excel\Exporter;
 use Maatwebsite\Excel\Importer;
 use Maatwebsite\Excel\Reader;
 use PHPUnit\Framework\Assert;
+use SebastianBergmann\RecursionContext\InvalidArgumentException;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -115,7 +116,6 @@ class ExcelFake implements Exporter, Importer
 
     /**
      * @param  object  $export
-     * @param  string  $writerType
      * @return string
      */
     public function raw($export, string $writerType)
@@ -128,8 +128,6 @@ class ExcelFake implements Exporter, Importer
     /**
      * @param  object  $import
      * @param  string|UploadedFile  $file
-     * @param  string|null  $disk
-     * @param  string|null  $readerType
      * @return Reader|PendingDispatch|PendingBatch
      */
     public function import($import, $file, ?string $disk = null, ?string $readerType = null)
@@ -148,9 +146,6 @@ class ExcelFake implements Exporter, Importer
     /**
      * @param  object  $import
      * @param  string|UploadedFile  $file
-     * @param  string|null  $disk
-     * @param  string|null  $readerType
-     * @return array
      */
     public function toArray($import, $file, ?string $disk = null, ?string $readerType = null): array
     {
@@ -164,9 +159,6 @@ class ExcelFake implements Exporter, Importer
     /**
      * @param  object  $import
      * @param  string|UploadedFile  $file
-     * @param  string|null  $disk
-     * @param  string|null  $readerType
-     * @return Collection
      */
     public function toCollection($import, $file, ?string $disk = null, ?string $readerType = null): Collection
     {
@@ -174,14 +166,11 @@ class ExcelFake implements Exporter, Importer
 
         $this->imported[$disk ?? 'default'][$filePath] = $import;
 
-        return new Collection();
+        return new Collection;
     }
 
     /**
-     * @param  ShouldQueue  $import
      * @param  string|UploadedFile  $file
-     * @param  string|null  $disk
-     * @param  string  $readerType
      * @return PendingDispatch|PendingBatch
      */
     public function queueImport(ShouldQueue $import, $file, ?string $disk = null, ?string $readerType = null)
@@ -236,7 +225,6 @@ class ExcelFake implements Exporter, Importer
     }
 
     /**
-     * @param  string  $fileName
      * @param  callable|null  $callback
      */
     public function assertDownloaded(string $fileName, $callback = null)
@@ -252,7 +240,6 @@ class ExcelFake implements Exporter, Importer
     }
 
     /**
-     * @param  string  $filePath
      * @param  string|callable|null  $disk
      * @param  callable|null  $callback
      */
@@ -281,7 +268,6 @@ class ExcelFake implements Exporter, Importer
     }
 
     /**
-     * @param  string  $filePath
      * @param  string|callable|null  $disk
      * @param  callable|null  $callback
      */
@@ -315,7 +301,6 @@ class ExcelFake implements Exporter, Importer
     }
 
     /**
-     * @param  string  $classname
      * @param  callable|null  $callback
      */
     public function assertExportedInRaw(string $classname, $callback = null)
@@ -331,7 +316,6 @@ class ExcelFake implements Exporter, Importer
     }
 
     /**
-     * @param  string  $filePath
      * @param  string|callable|null  $disk
      * @param  callable|null  $callback
      */
@@ -364,13 +348,10 @@ class ExcelFake implements Exporter, Importer
      *
      * @see matchByRegex for more information about file path matching
      *
-     * @param  string  $key
      * @param  array  $array
-     * @param  string  $message
-     * @return string
      *
      * @throws ExpectationFailedException
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws InvalidArgumentException
      * @throws Exception
      */
     protected function assertArrayHasKey(string $key, array $disk, string $message = ''): string

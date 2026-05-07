@@ -17,15 +17,12 @@ class SkipsEmptyRowsTest extends TestCase
 {
     public function test_skips_empty_rows_when_importing_to_collection()
     {
-        $import = new class implements ToCollection, SkipsEmptyRows
+        $import = new class implements SkipsEmptyRows, ToCollection
         {
             use Importable;
 
             public $called = false;
 
-            /**
-             * @param  Collection  $collection
-             */
             public function collection(Collection $collection)
             {
                 $this->called = true;
@@ -51,9 +48,6 @@ class SkipsEmptyRowsTest extends TestCase
 
             public $rows = 0;
 
-            /**
-             * @param  Row  $row
-             */
             public function onRow(Row $row)
             {
                 Assert::assertFalse($row->isEmpty());
@@ -69,14 +63,13 @@ class SkipsEmptyRowsTest extends TestCase
 
     public function test_skips_empty_rows_when_importing_to_model()
     {
-        $import = new class implements ToModel, SkipsEmptyRows
+        $import = new class implements SkipsEmptyRows, ToModel
         {
             use Importable;
 
             public $rows = 0;
 
             /**
-             * @param  array  $row
              * @return Model|Model[]|null
              */
             public function model(array $row)
@@ -100,9 +93,6 @@ class SkipsEmptyRowsTest extends TestCase
 
             public $called = false;
 
-            /**
-             * @param  Collection  $collection
-             */
             public function collection(Collection $collection)
             {
                 $this->called = true;
@@ -131,9 +121,6 @@ class SkipsEmptyRowsTest extends TestCase
 
             public $called = false;
 
-            /**
-             * @param  array  $row
-             */
             public function model(array $row)
             {
                 Assert::assertEquals('Not empty', $row[0]);
@@ -153,7 +140,7 @@ class SkipsEmptyRowsTest extends TestCase
 
     public function test_custom_skips_rows_when_using_oneachrow()
     {
-        $import = new class implements SkipsEmptyRows, OnEachRow
+        $import = new class implements OnEachRow, SkipsEmptyRows
         {
             use Importable;
 

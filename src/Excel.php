@@ -10,34 +10,35 @@ use Illuminate\Support\Traits\Macroable;
 use Maatwebsite\Excel\Files\Filesystem;
 use Maatwebsite\Excel\Files\TemporaryFile;
 use Maatwebsite\Excel\Helpers\FileTypeDetector;
+use PhpOffice\PhpSpreadsheet\Exception;
 
 class Excel implements Exporter, Importer
 {
     use Macroable, RegistersCustomConcerns;
 
-    const XLSX     = 'Xlsx';
+    const XLSX = 'Xlsx';
 
-    const CSV      = 'Csv';
+    const CSV = 'Csv';
 
-    const TSV      = 'Csv';
+    const TSV = 'Csv';
 
-    const ODS      = 'Ods';
+    const ODS = 'Ods';
 
-    const XLS      = 'Xls';
+    const XLS = 'Xls';
 
-    const SLK      = 'Slk';
+    const SLK = 'Slk';
 
-    const XML      = 'Xml';
+    const XML = 'Xml';
 
     const GNUMERIC = 'Gnumeric';
 
-    const HTML     = 'Html';
+    const HTML = 'Html';
 
-    const MPDF     = 'Mpdf';
+    const MPDF = 'Mpdf';
 
-    const DOMPDF   = 'Dompdf';
+    const DOMPDF = 'Dompdf';
 
-    const TCPDF    = 'Tcpdf';
+    const TCPDF = 'Tcpdf';
 
     /**
      * @var Writer
@@ -54,12 +55,6 @@ class Excel implements Exporter, Importer
      */
     protected $filesystem;
 
-    /**
-     * @param  Writer  $writer
-     * @param  QueuedWriter  $queuedWriter
-     * @param  Reader  $reader
-     * @param  Filesystem  $filesystem
-     */
     public function __construct(
         Writer $writer,
         QueuedWriter $queuedWriter,
@@ -187,10 +182,8 @@ class Excel implements Exporter, Importer
     /**
      * @param  object  $export
      * @param  string|null  $fileName
-     * @param  string  $writerType
-     * @return TemporaryFile
      *
-     * @throws \PhpOffice\PhpSpreadsheet\Exception
+     * @throws Exception
      */
     protected function export($export, string $fileName, ?string $writerType = null): TemporaryFile
     {

@@ -257,7 +257,7 @@ class PhpSpreadsheetV5CompatibilityTest extends TestCase
 
     public function test_unknown_sheet_name_is_skipped_with_skips_unknown_sheets()
     {
-        $import = new class implements WithMultipleSheets, SkipsUnknownSheets
+        $import = new class implements SkipsUnknownSheets, WithMultipleSheets
         {
             use Importable;
 
@@ -300,7 +300,7 @@ class PhpSpreadsheetV5CompatibilityTest extends TestCase
 
     public function test_mixed_valid_and_invalid_sheet_names_with_skips()
     {
-        $import = new class implements WithMultipleSheets, SkipsUnknownSheets
+        $import = new class implements SkipsUnknownSheets, WithMultipleSheets
         {
             use Importable;
 
@@ -309,13 +309,17 @@ class PhpSpreadsheetV5CompatibilityTest extends TestCase
             public function sheets(): array
             {
                 return [
-                    'Sheet1'       => new class {
+                    'Sheet1' => new class
+                    {
                     },
-                    'NonExistent1' => new class {
+                    'NonExistent1' => new class
+                    {
                     },
-                    'Sheet2'       => new class {
+                    'Sheet2' => new class
+                    {
                     },
-                    'NonExistent2' => new class {
+                    'NonExistent2' => new class
+                    {
                     },
                 ];
             }

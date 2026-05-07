@@ -36,31 +36,20 @@ class HeadingRowFormatter
         self::FORMATTER_SLUG,
     ];
 
-    /**
-     * @param  array  $headings
-     * @return array
-     */
     public static function format(array $headings): array
     {
         return (new Collection($headings))->map(fn ($value, $key) => static::callFormatter($value, $key))->toArray();
     }
 
-    /**
-     * @param  string  $name
-     */
     public static function default(?string $name = null)
     {
-        if (null !== $name && !isset(static::$customFormatters[$name]) && !in_array($name, static::$defaultFormatters, true)) {
+        if ($name !== null && !isset(static::$customFormatters[$name]) && !in_array($name, static::$defaultFormatters, true)) {
             throw new InvalidArgumentException(sprintf('Formatter "%s" does not exist', $name));
         }
 
         static::$formatter = $name;
     }
 
-    /**
-     * @param  string  $name
-     * @param  callable  $formatter
-     */
     public static function extend(string $name, callable $formatter)
     {
         static::$customFormatters[$name] = $formatter;
@@ -78,7 +67,7 @@ class HeadingRowFormatter
      * @param  mixed  $value
      * @return mixed
      */
-    protected static function callFormatter($value, $key=null)
+    protected static function callFormatter($value, $key = null)
     {
         static::$formatter ??= config('excel.imports.heading_row.formatter', self::FORMATTER_SLUG);
 

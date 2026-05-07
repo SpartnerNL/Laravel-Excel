@@ -12,7 +12,7 @@ class WithMappingTest extends TestCase
 {
     public function test_can_export_with_heading()
     {
-        $export = new WithMappingExport();
+        $export = new WithMappingExport;
 
         $response = $export->store('with-mapping-store.xlsx');
 
@@ -42,9 +42,6 @@ class WithMappingTest extends TestCase
         {
             use Exportable;
 
-            /**
-             * @return array
-             */
             public function array(): array
             {
                 return [
@@ -56,7 +53,6 @@ class WithMappingTest extends TestCase
 
             /**
              * @param  mixed  $row
-             * @return array
              */
             public function map($row): array
             {
@@ -82,9 +78,6 @@ class WithMappingTest extends TestCase
         {
             use Exportable;
 
-            /**
-             * @return array
-             */
             public function array(): array
             {
                 return [

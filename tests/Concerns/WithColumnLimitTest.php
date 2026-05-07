@@ -27,9 +27,6 @@ class WithColumnLimitTest extends TestCase
         {
             use Importable;
 
-            /**
-             * @param  array  $array
-             */
             public function array(array $array)
             {
                 Assert::assertEquals([
@@ -53,13 +50,10 @@ class WithColumnLimitTest extends TestCase
 
     public function test_can_import_to_array_with_column_limit_and_skips_empty_rows()
     {
-        $import = new class implements ToArray, WithColumnLimit, SkipsEmptyRows
+        $import = new class implements SkipsEmptyRows, ToArray, WithColumnLimit
         {
             use Importable;
 
-            /**
-             * @param  array  $array
-             */
             public function array(array $array)
             {
                 Assert::assertEquals([

@@ -11,10 +11,6 @@ class ValidationException extends IlluminateValidationException
      */
     protected $failures;
 
-    /**
-     * @param  IlluminateValidationException  $previous
-     * @param  array  $failures
-     */
     public function __construct(IlluminateValidationException $previous, array $failures)
     {
         parent::__construct($previous->validator, $previous->response, $previous->errorBag);
@@ -30,9 +26,6 @@ class ValidationException extends IlluminateValidationException
         return collect($this->failures)->map->toArray()->all();
     }
 
-    /**
-     * @return array
-     */
     public function failures(): array
     {
         return $this->failures;

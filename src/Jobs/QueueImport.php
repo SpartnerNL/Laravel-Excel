@@ -19,9 +19,6 @@ class QueueImport implements ShouldQueue
      */
     public $timeout;
 
-    /**
-     * @param  ShouldQueue  $import
-     */
     public function __construct(?ShouldQueue $import = null)
     {
         if ($import) {

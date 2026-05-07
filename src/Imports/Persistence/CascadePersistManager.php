@@ -16,27 +16,16 @@ class CascadePersistManager
      */
     private $transaction;
 
-    /**
-     * @param  TransactionHandler  $transaction
-     */
     public function __construct(TransactionHandler $transaction)
     {
         $this->transaction = $transaction;
     }
 
-    /**
-     * @param  Model  $model
-     * @return bool
-     */
     public function persist(Model $model): bool
     {
         return ($this->transaction)(fn () => $this->save($model));
     }
 
-    /**
-     * @param  Model  $model
-     * @return bool
-     */
     private function save(Model $model): bool
     {
         if (!$model->save()) {
@@ -70,11 +59,6 @@ class CascadePersistManager
         return true;
     }
 
-    /**
-     * @param  BelongsTo  $relation
-     * @param  array  $models
-     * @return bool
-     */
     private function persistBelongsTo(BelongsTo $relation, array $models): bool
     {
         // With belongs to, we first need to save all relations,
@@ -91,11 +75,6 @@ class CascadePersistManager
         return true;
     }
 
-    /**
-     * @param  BelongsToMany  $relation
-     * @param  array  $models
-     * @return bool
-     */
     private function persistBelongsToMany(BelongsToMany $relation, array $models): bool
     {
         foreach ($models as $model) {

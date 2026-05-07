@@ -10,6 +10,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Files\TemporaryFile;
 use Maatwebsite\Excel\Writer;
+use PhpOffice\PhpSpreadsheet\Exception;
 
 class CloseSheet implements ShouldQueue
 {
@@ -17,18 +18,13 @@ class CloseSheet implements ShouldQueue
 
     /**
      * @param  object  $sheetExport
-     * @param  TemporaryFile  $temporaryFile
-     * @param  string  $writerType
-     * @param  int  $sheetIndex
      */
     public function __construct(private $sheetExport, private TemporaryFile $temporaryFile, private string $writerType, private int $sheetIndex)
     {
     }
 
     /**
-     * @param  Writer  $writer
-     *
-     * @throws \PhpOffice\PhpSpreadsheet\Exception
+     * @throws Exception
      * @throws \PhpOffice\PhpSpreadsheet\Reader\Exception
      */
     public function handle(Writer $writer)

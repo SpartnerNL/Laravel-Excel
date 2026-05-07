@@ -63,9 +63,9 @@ class WithCustomValueBinderTest extends TestCase
                     );
 
                     $cell->getWorksheet()
-                         ->getStyle($cell->getCoordinate())
-                         ->getNumberFormat()
-                         ->setFormatCode(NumberFormat::FORMAT_DATE_DATETIME);
+                        ->getStyle($cell->getCoordinate())
+                        ->getNumberFormat()
+                        ->setFormatCode(NumberFormat::FORMAT_DATE_DATETIME);
 
                     return true;
                 }

@@ -12,7 +12,7 @@ class WithTitleTest extends TestCase
 {
     public function test_can_export_with_title()
     {
-        $export = new WithTitleExport();
+        $export = new WithTitleExport;
 
         $response = $export->store('with-title-store.xlsx');
 
@@ -26,13 +26,10 @@ class WithTitleTest extends TestCase
 
     public function test_can_export_sheet_title_when_longer_than_max_length()
     {
-        $export = new class implements WithTitle, WithMultipleSheets
+        $export = new class implements WithMultipleSheets, WithTitle
         {
             use Exportable;
 
-            /**
-             * @return string
-             */
             public function title(): string
             {
                 return '12/3456789123/45678912345/678912345/6789';

@@ -22,8 +22,6 @@ trait Importable
 
     /**
      * @param  string|UploadedFile|null  $filePath
-     * @param  string|null  $disk
-     * @param  string|null  $readerType
      * @return Importer|PendingDispatch
      *
      * @throws NoFilePathGivenException
@@ -42,9 +40,6 @@ trait Importable
 
     /**
      * @param  string|UploadedFile|null  $filePath
-     * @param  string|null  $disk
-     * @param  string|null  $readerType
-     * @return array
      *
      * @throws NoFilePathGivenException
      */
@@ -62,9 +57,6 @@ trait Importable
 
     /**
      * @param  string|UploadedFile|null  $filePath
-     * @param  string|null  $disk
-     * @param  string|null  $readerType
-     * @return Collection
      *
      * @throws NoFilePathGivenException
      */
@@ -82,8 +74,6 @@ trait Importable
 
     /**
      * @param  string|UploadedFile|null  $filePath
-     * @param  string|null  $disk
-     * @param  string|null  $readerType
      * @return PendingDispatch
      *
      * @throws NoFilePathGivenException
@@ -99,7 +89,6 @@ trait Importable
     }
 
     /**
-     * @param  OutputStyle  $output
      * @return $this
      */
     public function withOutput(OutputStyle $output)
@@ -109,13 +98,10 @@ trait Importable
         return $this;
     }
 
-    /**
-     * @return OutputStyle
-     */
     public function getConsoleOutput(): OutputStyle
     {
         if (!$this->output instanceof OutputStyle) {
-            $this->output = new OutputStyle(new StringInput(''), new NullOutput());
+            $this->output = new OutputStyle(new StringInput(''), new NullOutput);
         }
 
         return $this->output;
@@ -131,16 +117,13 @@ trait Importable
     {
         $filePath ??= $this->filePath ?? null;
 
-        if (null === $filePath) {
+        if ($filePath === null) {
             throw NoFilePathGivenException::import();
         }
 
         return $filePath;
     }
 
-    /**
-     * @return Importer
-     */
     private function getImporter(): Importer
     {
         return app(Importer::class);

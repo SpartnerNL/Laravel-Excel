@@ -18,9 +18,6 @@ class ToCollectionTest extends TestCase
 
             public $called = false;
 
-            /**
-             * @param  Collection  $collection
-             */
             public function collection(Collection $collection)
             {
                 $this->called = true;
@@ -45,9 +42,6 @@ class ToCollectionTest extends TestCase
 
             public $called = 0;
 
-            /**
-             * @param  Collection  $collection
-             */
             public function collection(Collection $collection)
             {
                 $this->called++;

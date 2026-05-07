@@ -7,14 +7,8 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 abstract class TemporaryFile
 {
-    /**
-     * @return string
-     */
     abstract public function getLocalPath(): string;
 
-    /**
-     * @return bool
-     */
     abstract public function exists(): bool;
 
     /**
@@ -22,9 +16,6 @@ abstract class TemporaryFile
      */
     abstract public function put($contents);
 
-    /**
-     * @return bool
-     */
     abstract public function delete(): bool;
 
     /**
@@ -32,14 +23,8 @@ abstract class TemporaryFile
      */
     abstract public function readStream();
 
-    /**
-     * @return string
-     */
     abstract public function contents(): string;
 
-    /**
-     * @return TemporaryFile
-     */
     public function sync(): TemporaryFile
     {
         return $this;
@@ -47,8 +32,6 @@ abstract class TemporaryFile
 
     /**
      * @param  string|UploadedFile  $filePath
-     * @param  string|null  $disk
-     * @return TemporaryFile
      */
     public function copyFrom($filePath, ?string $disk = null): TemporaryFile
     {

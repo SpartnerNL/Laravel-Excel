@@ -27,14 +27,10 @@ class WithLimitTest extends TestCase
 
     public function test_can_import_a_limited_section_of_rows_to_model_with_different_start_row()
     {
-        $import = new class implements ToModel, WithStartRow, WithLimit
+        $import = new class implements ToModel, WithLimit, WithStartRow
         {
             use Importable;
 
-            /**
-             * @param  array  $row
-             * @return Model
-             */
             public function model(array $row): Model
             {
                 return new User([
@@ -44,17 +40,11 @@ class WithLimitTest extends TestCase
                 ]);
             }
 
-            /**
-             * @return int
-             */
             public function startRow(): int
             {
                 return 5;
             }
 
-            /**
-             * @return int
-             */
             public function limit(): int
             {
                 return 1;
@@ -80,9 +70,6 @@ class WithLimitTest extends TestCase
         {
             use Importable;
 
-            /**
-             * @param  array  $array
-             */
             public function array(array $array)
             {
                 Assert::assertEquals([
@@ -93,9 +80,6 @@ class WithLimitTest extends TestCase
                 ], $array);
             }
 
-            /**
-             * @return int
-             */
             public function limit(): int
             {
                 return 1;
@@ -107,13 +91,10 @@ class WithLimitTest extends TestCase
 
     public function test_can_import_single_with_heading_row()
     {
-        $import = new class implements ToArray, WithLimit, WithHeadingRow
+        $import = new class implements ToArray, WithHeadingRow, WithLimit
         {
             use Importable;
 
-            /**
-             * @param  array  $array
-             */
             public function array(array $array)
             {
                 Assert::assertEquals([
@@ -124,9 +105,6 @@ class WithLimitTest extends TestCase
                 ], $array);
             }
 
-            /**
-             * @return int
-             */
             public function limit(): int
             {
                 return 1;
@@ -138,13 +116,10 @@ class WithLimitTest extends TestCase
 
     public function test_can_import_multiple_with_heading_row()
     {
-        $import = new class implements ToArray, WithLimit, WithHeadingRow
+        $import = new class implements ToArray, WithHeadingRow, WithLimit
         {
             use Importable;
 
-            /**
-             * @param  array  $array
-             */
             public function array(array $array)
             {
                 Assert::assertEquals([
@@ -159,9 +134,6 @@ class WithLimitTest extends TestCase
                 ], $array);
             }
 
-            /**
-             * @return int
-             */
             public function limit(): int
             {
                 return 2;
@@ -177,17 +149,11 @@ class WithLimitTest extends TestCase
         {
             use Importable;
 
-            /**
-             * @param  array  $array
-             */
             public function array(array $array)
             {
                 Assert::assertCount(2, $array);
             }
 
-            /**
-             * @return int
-             */
             public function limit(): int
             {
                 return 10;

@@ -11,9 +11,6 @@ class AfterQueueImportJob implements ShouldQueue
 {
     use Queueable;
 
-    /**
-     * @param  int  $totalRows
-     */
     public function __construct(private int $totalRows)
     {
     }

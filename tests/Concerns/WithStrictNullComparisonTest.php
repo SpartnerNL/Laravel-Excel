@@ -27,9 +27,6 @@ class WithStrictNullComparisonTest extends TestCase
                 ]);
             }
 
-            /**
-             * @return array
-             */
             public function headings(): array
             {
                 return ['string', '0', 0, 0.0, 'string'];
@@ -66,9 +63,6 @@ class WithStrictNullComparisonTest extends TestCase
                 ]);
             }
 
-            /**
-             * @return array
-             */
             public function headings(): array
             {
                 return ['string', 0, 0.0, 'string'];

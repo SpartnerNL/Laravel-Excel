@@ -16,15 +16,11 @@ class ImportMacro
             {
                 use Importable;
 
-                /**
-                 * @param  string  $model
-                 */
                 public function __construct(private string $model)
                 {
                 }
 
                 /**
-                 * @param  array  $row
                  * @return Model|Model[]|null
                  */
                 public function model(array $row)

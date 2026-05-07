@@ -10,7 +10,7 @@ use Maatwebsite\Excel\Events\BeforeExport;
 use PHPUnit\Framework\Assert;
 use Throwable;
 
-class QueuedExportWithFailedEvents implements WithMultipleSheets, WithEvents
+class QueuedExportWithFailedEvents implements WithEvents, WithMultipleSheets
 {
     use Exportable;
 
@@ -26,9 +26,6 @@ class QueuedExportWithFailedEvents implements WithMultipleSheets, WithEvents
         ];
     }
 
-    /**
-     * @param  Throwable  $exception
-     */
     public function failed(Throwable $exception)
     {
         Assert::assertEquals('catch exception from QueueExport job', $exception->getMessage());
@@ -36,9 +33,6 @@ class QueuedExportWithFailedEvents implements WithMultipleSheets, WithEvents
         app()->bind('queue-has-failed-from-queue-export-job', fn () => true);
     }
 
-    /**
-     * @return array
-     */
     public function registerEvents(): array
     {
         return [

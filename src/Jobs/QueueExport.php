@@ -11,6 +11,7 @@ use Maatwebsite\Excel\Exceptions\NoSheetsFoundException;
 use Maatwebsite\Excel\Files\TemporaryFile;
 use Maatwebsite\Excel\Jobs\Middleware\LocalizeJob;
 use Maatwebsite\Excel\Writer;
+use PhpOffice\PhpSpreadsheet\Exception;
 use Throwable;
 
 class QueueExport implements ShouldQueue
@@ -19,8 +20,6 @@ class QueueExport implements ShouldQueue
 
     /**
      * @param  object  $export
-     * @param  TemporaryFile  $temporaryFile
-     * @param  string  $writerType
      */
     public function __construct(public $export, private TemporaryFile $temporaryFile, private string $writerType)
     {
@@ -37,9 +36,7 @@ class QueueExport implements ShouldQueue
     }
 
     /**
-     * @param  Writer  $writer
-     *
-     * @throws \PhpOffice\PhpSpreadsheet\Exception
+     * @throws Exception
      */
     public function handle(Writer $writer)
     {
@@ -71,9 +68,6 @@ class QueueExport implements ShouldQueue
         });
     }
 
-    /**
-     * @param  Throwable  $e
-     */
     public function failed(Throwable $e)
     {
         if (method_exists($this->export, 'failed')) {

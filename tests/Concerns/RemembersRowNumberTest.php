@@ -71,7 +71,7 @@ class RemembersRowNumberTest extends TestCase
 
     public function test_can_access_row_number_on_import_to_array_in_chunks_with_batch_inserts()
     {
-        $import = new class implements ToModel, WithChunkReading, WithBatchInserts
+        $import = new class implements ToModel, WithBatchInserts, WithChunkReading
         {
             use Importable;
             use RemembersRowNumber;
