@@ -30,7 +30,9 @@
   "require-dev": {
     "orchestra/testbench": "^10.0||^11.0",
     "predis/predis": "^1.1",
-    "laravel/scout": "^10.0||^11.0"
+    "laravel/scout": "^10.0||^11.0",
+    "rector/rector": "^2.4.2",
+    "driftingly/rector-laravel": "^2.3"
   },
   "autoload": {
     "psr-4": {

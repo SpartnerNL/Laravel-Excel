@@ -18,23 +18,12 @@ class StoreQueryMacro
                 use Exportable;
 
                 /**
-                 * @var bool
-                 */
-                private $withHeadings;
-
-                /**
-                 * @var Builder
-                 */
-                private $query;
-
-                /**
                  * @param  $query
                  * @param  bool  $withHeadings
+                 * @param  Builder  $query
                  */
-                public function __construct($query, bool $withHeadings = false)
+                public function __construct(private $query, private bool $withHeadings = false)
                 {
-                    $this->query        = $query;
-                    $this->withHeadings = $withHeadings;
                 }
 
                 /**

@@ -22,23 +22,17 @@ class DownloadCollectionMixin
                 use Exportable;
 
                 /**
-                 * @var bool
-                 */
-                private $withHeadings;
-
-                /**
                  * @var Collection
                  */
                 private $collection;
 
                 /**
                  * @param  Collection  $collection
-                 * @param  bool  $withHeading
+                 * @param  bool  $withHeadings
                  */
-                public function __construct(Collection $collection, bool $withHeading = false)
+                public function __construct(Collection $collection, private bool $withHeadings = false)
                 {
                     $this->collection   = $collection->toBase();
-                    $this->withHeadings = $withHeading;
                 }
 
                 /**

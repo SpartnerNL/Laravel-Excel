@@ -42,9 +42,7 @@ class HeadingRowFormatter
      */
     public static function format(array $headings): array
     {
-        return (new Collection($headings))->map(function ($value, $key) {
-            return static::callFormatter($value, $key);
-        })->toArray();
+        return (new Collection($headings))->map(fn ($value, $key) => static::callFormatter($value, $key))->toArray();
     }
 
     /**
@@ -82,7 +80,7 @@ class HeadingRowFormatter
      */
     protected static function callFormatter($value, $key=null)
     {
-        static::$formatter = static::$formatter ?? config('excel.imports.heading_row.formatter', self::FORMATTER_SLUG);
+        static::$formatter ??= config('excel.imports.heading_row.formatter', self::FORMATTER_SLUG);
 
         // Call custom formatter
         if (isset(static::$customFormatters[static::$formatter])) {

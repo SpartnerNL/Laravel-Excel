@@ -7,16 +7,10 @@ use Illuminate\Contracts\Filesystem\Factory;
 class Filesystem
 {
     /**
-     * @var Factory
-     */
-    private $filesystem;
-
-    /**
      * @param  Factory  $filesystem
      */
-    public function __construct(Factory $filesystem)
+    public function __construct(private Factory $filesystem)
     {
-        $this->filesystem = $filesystem;
     }
 
     /**

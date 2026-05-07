@@ -129,7 +129,7 @@ trait Importable
      */
     private function getFilePath($filePath = null)
     {
-        $filePath = $filePath ?? $this->filePath ?? null;
+        $filePath ??= $this->filePath ?? null;
 
         if (null === $filePath) {
             throw NoFilePathGivenException::import();

@@ -7,37 +7,18 @@ use Illuminate\Support\Arr;
 class RemoteTemporaryFile extends TemporaryFile
 {
     /**
-     * @var string
-     */
-    private $disk;
-
-    /**
      * @var Disk|null
      */
     private $diskInstance;
-
-    /**
-     * @var string
-     */
-    private $filename;
-
-    /**
-     * @var LocalTemporaryFile
-     */
-    private $localTemporaryFile;
 
     /**
      * @param  string  $disk
      * @param  string  $filename
      * @param  LocalTemporaryFile  $localTemporaryFile
      */
-    public function __construct(string $disk, string $filename, LocalTemporaryFile $localTemporaryFile)
+    public function __construct(private string $disk, private string $filename, private LocalTemporaryFile $localTemporaryFile)
     {
-        $this->disk               = $disk;
-        $this->filename           = $filename;
-        $this->localTemporaryFile = $localTemporaryFile;
-
-        $this->disk()->touch($filename);
+        $this->disk()->touch($this->filename);
     }
 
     public function __sleep()
@@ -93,6 +74,7 @@ class RemoteTemporaryFile extends TemporaryFile
     /**
      * @return TemporaryFile
      */
+    #[\Override]
     public function sync(bool $copy = true): TemporaryFile
     {
         if (!$this->localTemporaryFile->exists()) {

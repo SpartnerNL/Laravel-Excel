@@ -43,9 +43,7 @@ class RowValidatorTest extends TestCase
 
     public function test_format_rule_with_callable_input()
     {
-        $rule = function () {
-            return 'callable';
-        };
+        $rule = (fn () => 'callable');
 
         $result = $this->callPrivateMethod('formatRule', [$rule]);
 
@@ -89,7 +87,6 @@ class RowValidatorTest extends TestCase
     public function callPrivateMethod(string $name, array $args)
     {
         $method = new \ReflectionMethod(RowValidator::class, $name);
-        $method->setAccessible(true);
 
         return $method->invokeArgs($this->validator, $args);
     }

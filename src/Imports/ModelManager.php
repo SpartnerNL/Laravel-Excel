@@ -23,28 +23,16 @@ class ModelManager
      * @var array
      */
     private $rows = [];
-
-    /**
-     * @var RowValidator
-     */
-    private $validator;
     /**
      * @var bool
      */
     private $remembersRowNumber = false;
 
     /**
-     * @var CascadePersistManager
-     */
-    private $cascade;
-
-    /**
      * @param  RowValidator  $validator
      */
-    public function __construct(RowValidator $validator, CascadePersistManager $cascade)
+    public function __construct(private RowValidator $validator, private CascadePersistManager $cascade)
     {
-        $this->validator = $validator;
-        $this->cascade   = $cascade;
     }
 
     /**
@@ -106,12 +94,8 @@ class ModelManager
     private function massFlush(ToModel $import)
     {
         $this->rows()
-             ->flatMap(function (array $attributes, $index) use ($import) {
-                 return $this->toModels($import, $attributes, $index);
-             })
-             ->mapToGroups(function ($model) {
-                 return [\get_class($model) => $this->prepare($model)->getAttributes()];
-             })
+             ->flatMap(fn (array $attributes, $index) => $this->toModels($import, $attributes, $index))
+             ->mapToGroups(fn ($model) => [$model::class => $this->prepare($model)->getAttributes()])
              ->each(function (Collection $models, string $model) use ($import) {
                  try {
                      /* @var Model $model */

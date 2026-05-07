@@ -12,16 +12,10 @@ use Maatwebsite\Excel\Exceptions\RowSkippedException;
 class RowValidator
 {
     /**
-     * @var Factory
-     */
-    private $validator;
-
-    /**
      * @param  Factory  $validator
      */
-    public function __construct(Factory $validator)
+    public function __construct(private Factory $validator)
     {
-        $this->validator = $validator;
     }
 
     /**
@@ -135,9 +129,7 @@ class RowValidator
         }
 
         if (Str::contains($rules, 'required_without') && preg_match('/(.*?):(.*)/', $rules, $matches)) {
-            $column = array_map(function ($match) {
-                return Str::startsWith($match, '*.') ? $match : '*.' . $match;
-            }, explode(',', $matches[2]));
+            $column = array_map(fn ($match) => Str::startsWith($match, '*.') ? $match : '*.' . $match, explode(',', $matches[2]));
 
             return $matches[1] . ':' . implode(',', $column);
         }

@@ -18,30 +18,12 @@ class QueueExport implements ShouldQueue
     use Batchable, Dispatchable, ExtendedQueueable, InteractsWithQueue;
 
     /**
-     * @var object
-     */
-    public $export;
-
-    /**
-     * @var string
-     */
-    private $writerType;
-
-    /**
-     * @var TemporaryFile
-     */
-    private $temporaryFile;
-
-    /**
      * @param  object  $export
      * @param  TemporaryFile  $temporaryFile
      * @param  string  $writerType
      */
-    public function __construct($export, TemporaryFile $temporaryFile, string $writerType)
+    public function __construct(public $export, private TemporaryFile $temporaryFile, private string $writerType)
     {
-        $this->export        = $export;
-        $this->writerType    = $writerType;
-        $this->temporaryFile = $temporaryFile;
     }
 
     /**

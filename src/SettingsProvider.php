@@ -7,14 +7,8 @@ use PhpOffice\PhpSpreadsheet\Settings;
 
 class SettingsProvider
 {
-    /**
-     * @var CacheManager
-     */
-    private $cache;
-
-    public function __construct(CacheManager $cache)
+    public function __construct(private CacheManager $cache)
     {
-        $this->cache = $cache;
     }
 
     /**

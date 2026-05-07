@@ -41,9 +41,7 @@ class FromQueryTest extends TestCase
 
         $contents = $this->readAsArray(__DIR__ . '/../Data/Disks/Local/from-query-store.xlsx', 'Xlsx');
 
-        $allUsers = $export->query()->get()->map(function (User $user) {
-            return array_values($user->toArray());
-        })->toArray();
+        $allUsers = $export->query()->get()->map(fn (User $user) => array_values($user->toArray()))->toArray();
 
         $this->assertEquals($allUsers, $contents);
     }
@@ -58,9 +56,7 @@ class FromQueryTest extends TestCase
 
         $contents = $this->readAsArray(__DIR__ . '/../Data/Disks/Local/from-query-store.xlsx', 'Xlsx');
 
-        $allUsers = $export->query->get()->map(function (User $user) {
-            return array_values($user->toArray());
-        })->toArray();
+        $allUsers = $export->query->get()->map(fn (User $user) => array_values($user->toArray()))->toArray();
 
         $this->assertEquals($allUsers, $contents);
     }
@@ -73,9 +69,7 @@ class FromQueryTest extends TestCase
 
         $contents = $this->readAsArray(__DIR__ . '/../Data/Disks/Local/from-query-store.xlsx', 'Xlsx');
 
-        $allUsers = $export->query()->get()->map(function ($row) use ($export) {
-            return $export->map($row);
-        })->toArray();
+        $allUsers = $export->query()->get()->map(fn ($row) => $export->map($row))->toArray();
 
         $this->assertEquals($allUsers, $contents);
     }
@@ -97,9 +91,7 @@ class FromQueryTest extends TestCase
 
         $contents = $this->readAsArray(__DIR__ . '/../Data/Disks/Local/from-query-with-eager-loads.xlsx', 'Xlsx');
 
-        $allUsers = $export->query()->get()->map(function (User $user) use ($export) {
-            return $export->map($user);
-        })->toArray();
+        $allUsers = $export->query()->get()->map(fn (User $user) => $export->map($user))->toArray();
 
         $this->assertEquals($allUsers, $contents);
     }
@@ -120,9 +112,7 @@ class FromQueryTest extends TestCase
 
         $contents = $this->readAsArray(__DIR__ . '/../Data/Disks/Local/from-query-with-eager-loads.xlsx', 'Xlsx');
 
-        $allUsers = $export->query()->get()->map(function (User $user) use ($export) {
-            return $export->map($user);
-        })->toArray();
+        $allUsers = $export->query()->get()->map(fn (User $user) => $export->map($user))->toArray();
 
         $this->assertEquals($allUsers, $contents);
     }
@@ -137,9 +127,7 @@ class FromQueryTest extends TestCase
 
         $contents = $this->readAsArray(__DIR__ . '/../Data/Disks/Local/from-query-without-eloquent.xlsx', 'Xlsx');
 
-        $allUsers = $export->query()->get()->map(function ($row) {
-            return array_values((array) $row);
-        })->all();
+        $allUsers = $export->query()->get()->map(fn ($row) => array_values((array) $row))->all();
 
         $this->assertEquals($allUsers, $contents);
     }
@@ -152,9 +140,7 @@ class FromQueryTest extends TestCase
 
         $contents = $this->readAsArray(__DIR__ . '/../Data/Disks/Local/from-query-without-eloquent.xlsx', 'Xlsx');
 
-        $allUsers = $export->query()->get()->map(function ($row) {
-            return array_values((array) $row);
-        })->all();
+        $allUsers = $export->query()->get()->map(fn ($row) => array_values((array) $row))->all();
 
         $this->assertEquals($allUsers, $contents);
     }
@@ -195,9 +181,7 @@ class FromQueryTest extends TestCase
 
         $contents = $this->readAsArray(__DIR__ . '/../Data/Disks/Local/from-query-store.xlsx', 'Xlsx');
 
-        $allUsers = $export->query()->get()->map(function (User $user) {
-            return array_values($user->toArray());
-        })->toArray();
+        $allUsers = $export->query()->get()->map(fn (User $user) => array_values($user->toArray()))->toArray();
 
         $this->assertEquals($allUsers, $contents);
     }
@@ -225,7 +209,7 @@ class FromQueryTest extends TestCase
 
     public function test_can_export_from_scout()
     {
-        if (!class_exists('\Laravel\Scout\Engines\DatabaseEngine')) {
+        if (!class_exists(\Laravel\Scout\Engines\DatabaseEngine::class)) {
             $this->markTestSkipped('Laravel Scout is too old');
 
             return;
@@ -239,9 +223,7 @@ class FromQueryTest extends TestCase
 
         $contents = $this->readAsArray(__DIR__ . '/../Data/Disks/Local/from-scout-store.xlsx', 'Xlsx');
 
-        $allUsers = $export->query()->get()->map(function (User $user) {
-            return array_values($user->toArray());
-        })->toArray();
+        $allUsers = $export->query()->get()->map(fn (User $user) => array_values($user->toArray()))->toArray();
 
         $this->assertEquals($allUsers, $contents);
     }

@@ -47,7 +47,7 @@ class FromCollectionTest extends TestCase
 
     public function test_can_export_from_lazy_collection()
     {
-        if (!class_exists('\Illuminate\Support\LazyCollection')) {
+        if (!class_exists(\Illuminate\Support\LazyCollection::class)) {
             $this->markTestSkipped('Skipping test because LazyCollection is not supported');
 
             return;
@@ -61,9 +61,7 @@ class FromCollectionTest extends TestCase
 
         $this->assertEquals(
             $export->collection()->map(
-                function (array $item) {
-                    return array_values($item);
-                }
+                fn (array $item) => array_values($item)
             )->toArray(),
             $contents
         );
@@ -71,7 +69,7 @@ class FromCollectionTest extends TestCase
 
     public function test_can_export_from_lazy_collection_with_queue()
     {
-        if (!class_exists('\Illuminate\Support\LazyCollection')) {
+        if (!class_exists(\Illuminate\Support\LazyCollection::class)) {
             $this->markTestSkipped('Skipping test because LazyCollection is not supported');
 
             return;
@@ -90,9 +88,7 @@ class FromCollectionTest extends TestCase
 
         $this->assertEquals(
             $export->collection()->map(
-                function (array $item) {
-                    return array_values($item);
-                }
+                fn (array $item) => array_values($item)
             )->toArray(),
             $contents
         );

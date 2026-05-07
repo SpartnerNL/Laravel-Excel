@@ -55,11 +55,6 @@ class Excel implements Exporter, Importer
     protected $filesystem;
 
     /**
-     * @var Reader
-     */
-    private $reader;
-
-    /**
      * @param  Writer  $writer
      * @param  QueuedWriter  $queuedWriter
      * @param  Reader  $reader
@@ -68,11 +63,10 @@ class Excel implements Exporter, Importer
     public function __construct(
         Writer $writer,
         QueuedWriter $queuedWriter,
-        Reader $reader,
+        private Reader $reader,
         Filesystem $filesystem
     ) {
         $this->writer       = $writer;
-        $this->reader       = $reader;
         $this->filesystem   = $filesystem;
         $this->queuedWriter = $queuedWriter;
     }

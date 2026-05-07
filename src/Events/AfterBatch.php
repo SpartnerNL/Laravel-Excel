@@ -12,26 +12,14 @@ class AfterBatch extends Event
     public $manager;
 
     /**
-     * @var int
-     */
-    private $batchSize;
-
-    /**
-     * @var int
-     */
-    private $startRow;
-
-    /**
      * @param  ModelManager  $manager
      * @param  object  $importable
      * @param  int  $batchSize
      * @param  int  $startRow
      */
-    public function __construct(ModelManager $manager, $importable, int $batchSize, int $startRow)
+    public function __construct(ModelManager $manager, $importable, private int $batchSize, private int $startRow)
     {
         $this->manager   = $manager;
-        $this->batchSize = $batchSize;
-        $this->startRow  = $startRow;
         parent::__construct($importable);
     }
 

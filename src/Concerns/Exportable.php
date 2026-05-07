@@ -19,9 +19,9 @@ trait Exportable
      */
     public function download(?string $fileName = null, ?string $writerType = null, ?array $headers = null)
     {
-        $headers    = $headers ?? $this->headers ?? [];
-        $fileName   = $fileName ?? $this->fileName ?? null;
-        $writerType = $writerType ?? $this->writerType ?? null;
+        $headers ??= $this->headers ?? [];
+        $fileName ??= $this->fileName ?? null;
+        $writerType ??= $this->writerType ?? null;
 
         if (null === $fileName) {
             throw new NoFilenameGivenException();
@@ -41,7 +41,7 @@ trait Exportable
      */
     public function store(?string $filePath = null, ?string $disk = null, ?string $writerType = null, $diskOptions = [])
     {
-        $filePath = $filePath ?? $this->filePath ?? null;
+        $filePath ??= $this->filePath ?? null;
 
         if (null === $filePath) {
             throw NoFilePathGivenException::export();
@@ -67,7 +67,7 @@ trait Exportable
      */
     public function queue(?string $filePath = null, ?string $disk = null, ?string $writerType = null, $diskOptions = [])
     {
-        $filePath = $filePath ?? $this->filePath ?? null;
+        $filePath ??= $this->filePath ?? null;
 
         if (null === $filePath) {
             throw NoFilePathGivenException::export();
@@ -88,7 +88,7 @@ trait Exportable
      */
     public function raw($writerType = null)
     {
-        $writerType = $writerType ?? $this->writerType ?? null;
+        $writerType ??= $this->writerType ?? null;
 
         return $this->getExporter()->raw($this, $writerType);
     }

@@ -16,37 +16,13 @@ class CloseSheet implements ShouldQueue
     use Batchable, Dispatchable, InteractsWithQueue, ProxyFailures, Queueable;
 
     /**
-     * @var object
-     */
-    private $sheetExport;
-
-    /**
-     * @var string
-     */
-    private $temporaryFile;
-
-    /**
-     * @var string
-     */
-    private $writerType;
-
-    /**
-     * @var int
-     */
-    private $sheetIndex;
-
-    /**
      * @param  object  $sheetExport
      * @param  TemporaryFile  $temporaryFile
      * @param  string  $writerType
      * @param  int  $sheetIndex
      */
-    public function __construct($sheetExport, TemporaryFile $temporaryFile, string $writerType, int $sheetIndex)
+    public function __construct(private $sheetExport, private TemporaryFile $temporaryFile, private string $writerType, private int $sheetIndex)
     {
-        $this->sheetExport   = $sheetExport;
-        $this->temporaryFile = $temporaryFile;
-        $this->writerType    = $writerType;
-        $this->sheetIndex    = $sheetIndex;
     }
 
     /**

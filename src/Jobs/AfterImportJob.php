@@ -19,16 +19,6 @@ class AfterImportJob implements ShouldQueue
     use Batchable, Dispatchable, HasEventBus, InteractsWithQueue, Queueable;
 
     /**
-     * @var WithEvents
-     */
-    private $import;
-
-    /**
-     * @var Reader
-     */
-    private $reader;
-
-    /**
      * @var iterable
      */
     private $dependencyIds = [];
@@ -39,10 +29,8 @@ class AfterImportJob implements ShouldQueue
      * @param  object  $import
      * @param  Reader  $reader
      */
-    public function __construct($import, Reader $reader)
+    public function __construct(private $import, private Reader $reader)
     {
-        $this->import = $import;
-        $this->reader = $reader;
     }
 
     public function setInterval(int $interval)
@@ -52,9 +40,7 @@ class AfterImportJob implements ShouldQueue
 
     public function setDependencies(Collection $jobs)
     {
-        $this->dependencyIds = $jobs->map(function (ReadChunk $job) {
-            return $job->getUniqueId();
-        })->all();
+        $this->dependencyIds = $jobs->map(fn (ReadChunk $job) => $job->getUniqueId())->all();
     }
 
     public function handle()

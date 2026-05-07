@@ -11,16 +11,10 @@ class AfterQueueExportJob implements ShouldQueue
     use Queueable;
 
     /**
-     * @var string
-     */
-    private $filePath;
-
-    /**
      * @param  string  $filePath
      */
-    public function __construct(string $filePath)
+    public function __construct(private string $filePath)
     {
-        $this->filePath = $filePath;
     }
 
     public function handle()

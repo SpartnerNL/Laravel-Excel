@@ -18,16 +18,10 @@ class SheetWith100Rows implements FromCollection, WithTitle, ShouldAutoSize, Wit
     use Exportable, RegistersEventListeners;
 
     /**
-     * @var string
-     */
-    private $title;
-
-    /**
      * @param  string  $title
      */
-    public function __construct(string $title)
+    public function __construct(private string $title)
     {
-        $this->title = $title;
     }
 
     /**

@@ -12,16 +12,10 @@ class AfterQueueImportJob implements ShouldQueue
     use Queueable;
 
     /**
-     * @var int
-     */
-    private $totalRows;
-
-    /**
      * @param  int  $totalRows
      */
-    public function __construct(int $totalRows)
+    public function __construct(private int $totalRows)
     {
-        $this->totalRows = $totalRows;
     }
 
     public function handle()

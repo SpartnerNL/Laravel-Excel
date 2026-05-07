@@ -54,6 +54,7 @@ class ExportMakeCommand extends GeneratorCommand
      * @param  string  $rootNamespace
      * @return string
      */
+    #[\Override]
     protected function getDefaultNamespace($rootNamespace)
     {
         return $rootNamespace . '\Exports';
@@ -66,6 +67,7 @@ class ExportMakeCommand extends GeneratorCommand
      * @param  string  $name
      * @return string
      */
+    #[\Override]
     protected function buildClass($name)
     {
         $replace = [];
@@ -83,6 +85,7 @@ class ExportMakeCommand extends GeneratorCommand
      *
      * @return array
      */
+    #[\Override]
     protected function getOptions()
     {
         return [

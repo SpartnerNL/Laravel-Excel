@@ -40,7 +40,7 @@ class WithCustomValueBinderTest extends TestCase
             public function bindValue(Cell $cell, mixed $value): bool
             {
                 // Handle percentage
-                if (preg_match('/^\-?\d*\.?\d*\s?\%$/', $value)) {
+                if (preg_match('/^\-?\d*\.?\d*\s?\%$/', (string) $value)) {
                     $cell->setValueExplicit(
                         (float) str_replace('%', '', $value) / 100,
                         DataType::TYPE_NUMERIC

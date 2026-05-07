@@ -133,7 +133,7 @@ class QueuedExportTest extends TestCase
         $export = new QueuedExportWithFailedHook();
         try {
             $export->queue('queued-export.xlsx');
-        } catch (Throwable $e) {
+        } catch (Throwable) {
         }
 
         $this->assertTrue(app('queue-has-failed'));
@@ -145,7 +145,7 @@ class QueuedExportTest extends TestCase
 
         try {
             $export->queue('queued-export.xlsx');
-        } catch (Throwable $e) {
+        } catch (Throwable) {
         }
 
         $this->assertTrue(app('queue-has-failed-from-queue-export-job'));

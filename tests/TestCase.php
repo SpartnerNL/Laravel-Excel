@@ -32,7 +32,7 @@ class TestCase extends OrchestraTestCase
      */
     public function givenUploadedFile(string $filePath, ?string $filename = null): File
     {
-        $filename = $filename ?? basename($filePath);
+        $filename ??= basename($filePath);
 
         // Create temporary file.
         $newFilePath = tempnam(sys_get_temp_dir(), 'import-');

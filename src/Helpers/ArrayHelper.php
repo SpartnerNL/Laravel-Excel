@@ -26,6 +26,6 @@ class ArrayHelper
      */
     public static function hasMultipleRows(array $array): bool
     {
-        return count($array) === count(array_filter($array, 'is_array'));
+        return count($array) === count(array_filter($array, is_array(...)));
     }
 }
