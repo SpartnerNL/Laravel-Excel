@@ -38,7 +38,7 @@ class ExcelServiceProvider extends ServiceProvider
                 __DIR__ . '/Console/stubs/import.model.stub'       => base_path('stubs/import.model.stub'),
             ], 'stubs');
 
-            if ($this->app instanceof LumenApplication) {
+            if (class_exists(LumenApplication::class) && $this->app instanceof LumenApplication) {
                 $this->app->configure('excel');
             } else {
                 $this->publishes([

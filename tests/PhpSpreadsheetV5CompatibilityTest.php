@@ -309,13 +309,17 @@ class PhpSpreadsheetV5CompatibilityTest extends TestCase
             public function sheets(): array
             {
                 return [
-                    'Sheet1' => new class {
+                    'Sheet1' => new class
+                    {
                     },
-                    'NonExistent1' => new class {
+                    'NonExistent1' => new class
+                    {
                     },
-                    'Sheet2' => new class {
+                    'Sheet2' => new class
+                    {
                     },
-                    'NonExistent2' => new class {
+                    'NonExistent2' => new class
+                    {
                     },
                 ];
             }

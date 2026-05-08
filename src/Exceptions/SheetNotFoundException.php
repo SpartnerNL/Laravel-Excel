@@ -2,15 +2,15 @@
 
 namespace Maatwebsite\Excel\Exceptions;
 
-class SheetNotFoundException extends \Exception implements LaravelExcelException
+final class SheetNotFoundException extends \Exception implements LaravelExcelException
 {
     public static function byName(string $name): SheetNotFoundException
     {
-        return new static("Your requested sheet name [{$name}] is out of bounds.");
+        return new self("Your requested sheet name [{$name}] is out of bounds.");
     }
 
     public static function byIndex(int $index, int $sheetCount): SheetNotFoundException
     {
-        return new static("Your requested sheet index: {$index} is out of bounds. The actual number of sheets is {$sheetCount}.");
+        return new self("Your requested sheet index: {$index} is out of bounds. The actual number of sheets is {$sheetCount}.");
     }
 }
