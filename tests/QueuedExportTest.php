@@ -16,6 +16,7 @@ use Maatwebsite\Excel\Tests\Data\Stubs\QueuedExport;
 use Maatwebsite\Excel\Tests\Data\Stubs\QueuedExportWithFailedEvents;
 use Maatwebsite\Excel\Tests\Data\Stubs\QueuedExportWithFailedHook;
 use Maatwebsite\Excel\Tests\Data\Stubs\QueuedExportWithLocalePreferences;
+use Maatwebsite\Excel\Tests\Data\Stubs\QueuedMultiSheetExport;
 use Maatwebsite\Excel\Tests\Data\Stubs\ShouldBatchExport;
 use Maatwebsite\Excel\Tests\Data\Stubs\ShouldQueueExport;
 use Throwable;
@@ -162,6 +163,21 @@ class QueuedExportTest extends TestCase
         $this->assertTrue(app('queue-has-correct-locale'));
 
         $this->assertEquals($currentLocale, app()->getLocale());
+    }
+
+    public function test_queued_multi_sheet_export_with_headings()
+    {
+        $export = new QueuedMultiSheetExport;
+
+        $export->store('queued-multi-sheet-export.xlsx', 'test');
+
+        $spreadsheet = $this->read(__DIR__ . '/Data/Disks/Test/queued-multi-sheet-export.xlsx', 'Xlsx');
+
+        $this->assertCount(2, $spreadsheet->getAllSheets());
+        $this->assertEquals('First sheet', $spreadsheet->getSheet(0)->getTitle());
+        $this->assertEquals('Second sheet', $spreadsheet->getSheet(1)->getTitle());
+        $this->assertEquals(['id', 'name'], $spreadsheet->getSheet(0)->toArray()[0]);
+        $this->assertEquals(['id', 'name'], $spreadsheet->getSheet(1)->toArray()[0]);
     }
 
     public function test_can_queue_export_not_flushing_the_cache()
