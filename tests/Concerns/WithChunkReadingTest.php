@@ -39,7 +39,7 @@ class WithChunkReadingTest extends TestCase
         $this->loadMigrationsFrom(dirname(__DIR__) . '/Data/Stubs/Database/Migrations');
     }
 
-    public function test_can_import_to_model_in_chunks_un()
+    public function test_can_import_to_model_in_chunks_un(): void
     {
         DB::connection()->enableQueryLog();
 
@@ -71,11 +71,11 @@ class WithChunkReadingTest extends TestCase
             public function registerEvents(): array
             {
                 return [
-                    BeforeImport::class => function (BeforeImport $event) {
+                    BeforeImport::class => function (BeforeImport $event): void {
                         Assert::assertInstanceOf(Reader::class, $event->reader);
                         $this->before++;
                     },
-                    AfterImport::class => function (AfterImport $event) {
+                    AfterImport::class => function (AfterImport $event): void {
                         Assert::assertInstanceOf(Reader::class, $event->reader);
                         $this->after++;
                     },
@@ -92,7 +92,7 @@ class WithChunkReadingTest extends TestCase
         $this->assertEquals(1, $import->after, 'AfterImport was not called or more than once.');
     }
 
-    public function test_can_import_to_model_in_chunks_and_insert_in_batches()
+    public function test_can_import_to_model_in_chunks_and_insert_in_batches(): void
     {
         DB::connection()->enableQueryLog();
 
@@ -127,7 +127,7 @@ class WithChunkReadingTest extends TestCase
         DB::connection()->disableQueryLog();
     }
 
-    public function test_can_import_to_model_in_chunks_and_insert_in_batches_with_heading_row()
+    public function test_can_import_to_model_in_chunks_and_insert_in_batches_with_heading_row(): void
     {
         DB::connection()->enableQueryLog();
 
@@ -162,7 +162,7 @@ class WithChunkReadingTest extends TestCase
         DB::connection()->disableQueryLog();
     }
 
-    public function test_can_import_csv_in_chunks_and_insert_in_batches()
+    public function test_can_import_csv_in_chunks_and_insert_in_batches(): void
     {
         DB::connection()->enableQueryLog();
 
@@ -197,7 +197,7 @@ class WithChunkReadingTest extends TestCase
         DB::connection()->disableQueryLog();
     }
 
-    public function test_can_import_to_model_in_chunks_and_insert_in_batches_with_multiple_sheets()
+    public function test_can_import_to_model_in_chunks_and_insert_in_batches_with_multiple_sheets(): void
     {
         DB::connection()->enableQueryLog();
 
@@ -232,7 +232,7 @@ class WithChunkReadingTest extends TestCase
         DB::connection()->disableQueryLog();
     }
 
-    public function test_can_import_to_array_in_chunks()
+    public function test_can_import_to_array_in_chunks(): void
     {
         $import = new class implements ToArray, WithChunkReading, WithFormatData
         {
@@ -240,7 +240,7 @@ class WithChunkReadingTest extends TestCase
 
             public $called = 0;
 
-            public function array(array $array)
+            public function array(array $array): void
             {
                 $this->called++;
 
@@ -258,7 +258,7 @@ class WithChunkReadingTest extends TestCase
         $this->assertEquals(50, $import->called);
     }
 
-    public function test_can_import_to_model_in_chunks_and_insert_in_batches_with_multiple_sheets_objects_by_index()
+    public function test_can_import_to_model_in_chunks_and_insert_in_batches_with_multiple_sheets_objects_by_index(): void
     {
         DB::connection()->enableQueryLog();
 
@@ -319,7 +319,7 @@ class WithChunkReadingTest extends TestCase
         DB::connection()->disableQueryLog();
     }
 
-    public function test_can_import_to_model_in_chunks_and_insert_in_batches_with_multiple_sheets_objects_by_name()
+    public function test_can_import_to_model_in_chunks_and_insert_in_batches_with_multiple_sheets_objects_by_name(): void
     {
         DB::connection()->enableQueryLog();
 
@@ -380,7 +380,7 @@ class WithChunkReadingTest extends TestCase
         DB::connection()->disableQueryLog();
     }
 
-    public function test_can_catch_job_failed_in_chunks()
+    public function test_can_catch_job_failed_in_chunks(): void
     {
         $import = new class implements ToModel, WithChunkReading, WithEvents
         {
@@ -404,7 +404,7 @@ class WithChunkReadingTest extends TestCase
             public function registerEvents(): array
             {
                 return [
-                    ImportFailed::class => function (ImportFailed $event) {
+                    ImportFailed::class => function (ImportFailed $event): void {
                         Assert::assertInstanceOf(Throwable::class, $event->getException());
                         Assert::assertEquals('Something went wrong in the chunk', $event->e->getMessage());
 
@@ -424,7 +424,7 @@ class WithChunkReadingTest extends TestCase
         $this->assertTrue($import->failed, 'ImportFailed event was not called.');
     }
 
-    public function test_can_import_to_array_and_format_in_chunks()
+    public function test_can_import_to_array_and_format_in_chunks(): void
     {
         config()->set('excel.imports.read_only', false);
 
@@ -432,7 +432,7 @@ class WithChunkReadingTest extends TestCase
         {
             use Importable;
 
-            public function array(array $array)
+            public function array(array $array): void
             {
                 Assert::assertCount(2, $array);
                 Assert::assertCount(1, $array[0]);
@@ -452,7 +452,7 @@ class WithChunkReadingTest extends TestCase
         $import->import('import-batches-with-date.xlsx');
     }
 
-    public function test_can_import_to_array_in_chunks_without_formatting()
+    public function test_can_import_to_array_in_chunks_without_formatting(): void
     {
         config()->set('excel.imports.read_only', true);
 
@@ -460,7 +460,7 @@ class WithChunkReadingTest extends TestCase
         {
             use Importable;
 
-            public function array(array $array)
+            public function array(array $array): void
             {
                 Assert::assertCount(2, $array);
                 Assert::assertCount(1, $array[0]);

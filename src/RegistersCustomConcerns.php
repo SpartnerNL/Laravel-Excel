@@ -20,12 +20,12 @@ trait RegistersCustomConcerns
         AfterSheet::class    => Sheet::class,
     ];
 
-    public static function extend(string $concern, callable $handler, string $event = BeforeWriting::class)
+    public static function extend(string $concern, callable $handler, string $event = BeforeWriting::class): void
     {
         /** @var HasEventBus $delegate */
         $delegate = static::$eventMap[$event] ?? BeforeWriting::class;
 
-        $delegate::listen($event, function (Event $event) use ($concern, $handler) {
+        $delegate::listen($event, function (Event $event) use ($concern, $handler): void {
             if ($event->appliesToConcern($concern)) {
                 $handler($event->getConcernable(), $event->getDelegate());
             }

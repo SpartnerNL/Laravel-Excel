@@ -10,7 +10,7 @@ use Maatwebsite\Excel\Tests\TestCase;
 
 class WithConditionalSheetsTest extends TestCase
 {
-    public function test_can_select_which_sheets_will_be_imported()
+    public function test_can_select_which_sheets_will_be_imported(): void
     {
         $import = new class implements WithMultipleSheets
         {
@@ -23,14 +23,14 @@ class WithConditionalSheetsTest extends TestCase
                 $this->init();
             }
 
-            public function init()
+            public function init(): void
             {
                 $this->sheets = [
                     'Sheet1' => new class implements ToArray
                     {
                         public $called = false;
 
-                        public function array(array $array)
+                        public function array(array $array): void
                         {
                             $this->called = true;
                         }
@@ -39,7 +39,7 @@ class WithConditionalSheetsTest extends TestCase
                     {
                         public $called = false;
 
-                        public function array(array $array)
+                        public function array(array $array): void
                         {
                             $this->called = true;
                         }

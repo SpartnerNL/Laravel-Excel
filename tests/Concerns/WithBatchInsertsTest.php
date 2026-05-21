@@ -24,7 +24,7 @@ class WithBatchInsertsTest extends TestCase
         $this->loadMigrationsFrom(dirname(__DIR__) . '/Data/Stubs/Database/Migrations');
     }
 
-    public function test_can_import_to_model_in_batches()
+    public function test_can_import_to_model_in_batches(): void
     {
         DB::connection()->enableQueryLog();
 
@@ -66,7 +66,7 @@ class WithBatchInsertsTest extends TestCase
         ]);
     }
 
-    public function test_can_import_to_model_in_batches_bigger_file()
+    public function test_can_import_to_model_in_batches_bigger_file(): void
     {
         DB::connection()->enableQueryLog();
 
@@ -96,7 +96,7 @@ class WithBatchInsertsTest extends TestCase
         DB::connection()->disableQueryLog();
     }
 
-    public function test_can_import_multiple_different_types_of_models_in_single_to_model()
+    public function test_can_import_multiple_different_types_of_models_in_single_to_model(): void
     {
         DB::connection()->enableQueryLog();
 
@@ -139,7 +139,7 @@ class WithBatchInsertsTest extends TestCase
         DB::connection()->disableQueryLog();
     }
 
-    public function test_has_timestamps_when_imported_in_batches()
+    public function test_has_timestamps_when_imported_in_batches(): void
     {
         $import = new class implements ToModel, WithBatchInserts
         {

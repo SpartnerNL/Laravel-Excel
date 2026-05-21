@@ -14,7 +14,7 @@ class HeadingRowExtractor
     /**
      * @const int
      */
-    const DEFAULT_HEADING_ROW = 1;
+    public const DEFAULT_HEADING_ROW = 1;
 
     /**
      * @param  WithHeadingRow|mixed  $importable
@@ -71,7 +71,7 @@ class HeadingRowExtractor
             return $headerIsGrouped;
         }
 
-        array_walk($headerIsGrouped, function (&$value, $key) use ($headingRow) {
+        array_walk($headerIsGrouped, function (&$value, $key) use ($headingRow): void {
             if (array_count_values($headingRow)[$headingRow[$key]] > 1) {
                 $value = true;
             }

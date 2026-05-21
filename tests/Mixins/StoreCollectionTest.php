@@ -9,7 +9,7 @@ use Maatwebsite\Excel\Tests\TestCase;
 
 class StoreCollectionTest extends TestCase
 {
-    public function test_can_store_a_collection_as_excel()
+    public function test_can_store_a_collection_as_excel(): void
     {
         $collection = new Collection([
             ['test', 'test'],
@@ -22,7 +22,7 @@ class StoreCollectionTest extends TestCase
         $this->assertFileExists(__DIR__ . '/../Data/Disks/Local/collection-store.xlsx');
     }
 
-    public function test_can_store_a_collection_as_excel_on_non_default_disk()
+    public function test_can_store_a_collection_as_excel_on_non_default_disk(): void
     {
         $collection = new Collection([
             ['column_1' => 'test', 'column_2' => 'test'],
@@ -48,7 +48,7 @@ class StoreCollectionTest extends TestCase
         ], collect($array)->values()->all());
     }
 
-    public function test_can_store_a_collection_with_headings_as_excel()
+    public function test_can_store_a_collection_with_headings_as_excel(): void
     {
         $collection = new Collection([
             ['column_1' => 'test', 'column_2' => 'test'],
@@ -71,7 +71,7 @@ class StoreCollectionTest extends TestCase
         ], collect($array)->except(0)->values()->all());
     }
 
-    public function test_can_store_a_model_collection_with_headings_as_excel()
+    public function test_can_store_a_model_collection_with_headings_as_excel(): void
     {
         $collection = User::factory()->count(2)->make();
 

@@ -38,14 +38,14 @@ class QueueExport implements ShouldQueue
     /**
      * @throws Exception
      */
-    public function handle(Writer $writer)
+    public function handle(Writer $writer): void
     {
         // Determine if the batch has been cancelled...
         if ($this->batch()?->cancelled()) {
             return;
         }
 
-        (new LocalizeJob($this->export))->handle($this, function () use ($writer) {
+        (new LocalizeJob($this->export))->handle($this, function () use ($writer): void {
             $writer->open($this->export);
 
             $sheetExports = [$this->export];
@@ -68,7 +68,7 @@ class QueueExport implements ShouldQueue
         });
     }
 
-    public function failed(Throwable $e)
+    public function failed(Throwable $e): void
     {
         if (method_exists($this->export, 'failed')) {
             $this->export->failed($e);

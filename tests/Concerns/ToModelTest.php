@@ -26,7 +26,7 @@ class ToModelTest extends TestCase
         $this->loadMigrationsFrom(dirname(__DIR__) . '/Data/Stubs/Database/Migrations');
     }
 
-    public function test_can_import_each_row_to_model()
+    public function test_can_import_each_row_to_model(): void
     {
         DB::connection()->enableQueryLog();
 
@@ -63,7 +63,7 @@ class ToModelTest extends TestCase
         ]);
     }
 
-    public function test_has_timestamps_when_imported_single_model()
+    public function test_has_timestamps_when_imported_single_model(): void
     {
         $import = new class implements ToModel
         {
@@ -90,7 +90,7 @@ class ToModelTest extends TestCase
         $this->assertNotNull($user->updated_at);
     }
 
-    public function test_can_import_multiple_models_in_single_to_model()
+    public function test_can_import_multiple_models_in_single_to_model(): void
     {
         DB::connection()->enableQueryLog();
 
@@ -127,7 +127,7 @@ class ToModelTest extends TestCase
         DB::connection()->disableQueryLog();
     }
 
-    public function test_can_import_multiple_different_types_of_models_in_single_to_model()
+    public function test_can_import_multiple_different_types_of_models_in_single_to_model(): void
     {
         DB::connection()->enableQueryLog();
 
@@ -162,7 +162,7 @@ class ToModelTest extends TestCase
         DB::connection()->disableQueryLog();
     }
 
-    public function test_can_import_models_with_belongs_to_relations()
+    public function test_can_import_models_with_belongs_to_relations(): void
     {
         User::query()->truncate();
         Group::query()->truncate();
@@ -199,7 +199,7 @@ class ToModelTest extends TestCase
         $this->assertCount(6, DB::getQueryLog());
 
         $users = User::all();
-        $users->each(function (User $user) {
+        $users->each(function (User $user): void {
             $this->assertInstanceOf(Group::class, $user->group);
             $this->assertIsInt($user->group->id);
         });
@@ -209,7 +209,7 @@ class ToModelTest extends TestCase
         DB::connection()->disableQueryLog();
     }
 
-    public function test_can_import_models_with_belongs_to_many_relations()
+    public function test_can_import_models_with_belongs_to_many_relations(): void
     {
         User::query()->truncate();
         Group::query()->truncate();
@@ -246,7 +246,7 @@ class ToModelTest extends TestCase
         $this->assertCount(6, DB::getQueryLog());
 
         $users = User::all();
-        $users->each(function (User $user) {
+        $users->each(function (User $user): void {
             $this->assertInstanceOf(Group::class, $user->groups->first());
         });
 

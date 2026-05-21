@@ -35,7 +35,7 @@ class WithValidationTest extends TestCase
         $this->loadMigrationsFrom(dirname(__DIR__) . '/Data/Stubs/Database/Migrations');
     }
 
-    public function test_can_validate_rows()
+    public function test_can_validate_rows(): void
     {
         $import = new class implements ToModel, WithValidation
         {
@@ -77,7 +77,7 @@ class WithValidationTest extends TestCase
         $this->assertInstanceOf(ValidationException::class, $e ?? null);
     }
 
-    public function test_can_validate_rows_with_closure_validation_rules()
+    public function test_can_validate_rows_with_closure_validation_rules(): void
     {
         $import = new class implements ToModel, WithValidation
         {
@@ -98,7 +98,7 @@ class WithValidationTest extends TestCase
             public function rules(): array
             {
                 return [
-                    '1' => function ($attribute, $value, $onFail) {
+                    '1' => function ($attribute, $value, $onFail): void {
                         if ($value !== 'patrick@maatwebsite.nl') {
                             $onFail(sprintf('Value in column 1 is not an allowed e-mail.'));
                         }
@@ -123,7 +123,7 @@ class WithValidationTest extends TestCase
         $this->assertInstanceOf(ValidationException::class, $e ?? null);
     }
 
-    public function test_can_validate_rows_with_custom_validation_rule_objects()
+    public function test_can_validate_rows_with_custom_validation_rule_objects(): void
     {
         $import = new class implements ToModel, WithValidation
         {
@@ -186,7 +186,7 @@ class WithValidationTest extends TestCase
         $this->assertInstanceOf(ValidationException::class, $e ?? null);
     }
 
-    public function test_can_validate_rows_with_conditionality()
+    public function test_can_validate_rows_with_conditionality(): void
     {
         $import = new class implements ToModel, WithValidation
         {
@@ -223,7 +223,7 @@ class WithValidationTest extends TestCase
         $this->assertInstanceOf(ValidationException::class, $e ?? null);
     }
 
-    public function test_can_validate_rows_with_unless_conditionality()
+    public function test_can_validate_rows_with_unless_conditionality(): void
     {
         $import = new class implements ToModel, WithValidation
         {
@@ -260,7 +260,7 @@ class WithValidationTest extends TestCase
         $this->assertInstanceOf(ValidationException::class, $e ?? null);
     }
 
-    public function test_can_validate_rows_with_combined_rules_with_colons()
+    public function test_can_validate_rows_with_combined_rules_with_colons(): void
     {
         $import = new class implements ToModel, WithValidation
         {
@@ -303,7 +303,7 @@ class WithValidationTest extends TestCase
         $this->assertInstanceOf(ValidationException::class, $e ?? null);
     }
 
-    public function test_can_validate_with_custom_attributes()
+    public function test_can_validate_with_custom_attributes(): void
     {
         $import = new class implements ToModel, WithValidation
         {
@@ -348,7 +348,7 @@ class WithValidationTest extends TestCase
         $this->assertInstanceOf(ValidationException::class, $e ?? null);
     }
 
-    public function test_can_validate_with_custom_attributes_pointing_to_another_attribute()
+    public function test_can_validate_with_custom_attributes_pointing_to_another_attribute(): void
     {
         $import = new class implements ToModel, WithValidation
         {
@@ -394,7 +394,7 @@ class WithValidationTest extends TestCase
         $this->assertInstanceOf(ValidationException::class, $e ?? null);
     }
 
-    public function test_can_validate_with_custom_message()
+    public function test_can_validate_with_custom_message(): void
     {
         $import = new class implements ToModel, WithValidation
         {
@@ -441,7 +441,7 @@ class WithValidationTest extends TestCase
         $this->assertInstanceOf(ValidationException::class, $e ?? null);
     }
 
-    public function test_can_validate_rows_with_headings()
+    public function test_can_validate_rows_with_headings(): void
     {
         $import = new class implements ToModel, WithHeadingRow, WithValidation
         {
@@ -478,7 +478,7 @@ class WithValidationTest extends TestCase
         $this->assertInstanceOf(ValidationException::class, $e ?? null);
     }
 
-    public function test_can_validate_rows_with_grouped_headings()
+    public function test_can_validate_rows_with_grouped_headings(): void
     {
         $import = new class implements ToModel, WithGroupedHeadingRow, WithValidation
         {
@@ -531,7 +531,7 @@ class WithValidationTest extends TestCase
         $this->assertInstanceOf(ValidationException::class, $e ?? null);
     }
 
-    public function test_can_validate_rows_in_batches()
+    public function test_can_validate_rows_in_batches(): void
     {
         $import = new class implements ToModel, WithBatchInserts, WithHeadingRow, WithValidation
         {
@@ -573,7 +573,7 @@ class WithValidationTest extends TestCase
         $this->assertInstanceOf(ValidationException::class, $e ?? null);
     }
 
-    public function test_can_validate_using_oneachrow()
+    public function test_can_validate_using_oneachrow(): void
     {
         $import = new class implements OnEachRow, WithHeadingRow, WithValidation
         {
@@ -612,13 +612,13 @@ class WithValidationTest extends TestCase
         $this->assertInstanceOf(ValidationException::class, $e ?? null);
     }
 
-    public function test_can_validate_using_collection()
+    public function test_can_validate_using_collection(): void
     {
         $import = new class implements ToCollection, WithHeadingRow, WithValidation
         {
             use Importable;
 
-            public function collection(Collection $rows)
+            public function collection(Collection $rows): void
             {
                 //
             }
@@ -642,13 +642,13 @@ class WithValidationTest extends TestCase
         $this->assertInstanceOf(ValidationException::class, $e ?? null);
     }
 
-    public function test_can_validate_using_array()
+    public function test_can_validate_using_array(): void
     {
         $import = new class implements ToArray, WithHeadingRow, WithValidation
         {
             use Importable;
 
-            public function array(array $rows)
+            public function array(array $rows): void
             {
                 //
             }
@@ -672,7 +672,7 @@ class WithValidationTest extends TestCase
         $this->assertInstanceOf(ValidationException::class, $e ?? null);
     }
 
-    public function test_can_configure_validator()
+    public function test_can_configure_validator(): void
     {
         $import = new class implements ToModel, WithValidation
         {
@@ -701,9 +701,8 @@ class WithValidationTest extends TestCase
              * Configure the validator.
              *
              * @param  Validator  $validator
-             * @return void
              */
-            public function withValidator($validator)
+            public function withValidator($validator): void
             {
                 $validator->sometimes('*.1', Rule::in(['patrick@maatwebsite.nl']), fn () => true);
             }
@@ -725,7 +724,7 @@ class WithValidationTest extends TestCase
         $this->assertInstanceOf(ValidationException::class, $e ?? null);
     }
 
-    public function test_can_prepare_using_toarray()
+    public function test_can_prepare_using_toarray(): void
     {
         $import = new class implements ToArray, WithValidation
         {
@@ -777,7 +776,7 @@ class WithValidationTest extends TestCase
         $this->assertInstanceOf(ValidationException::class, $e ?? null);
     }
 
-    public function test_can_prepare_using_tocollection()
+    public function test_can_prepare_using_tocollection(): void
     {
         $import = new class implements ToCollection, WithValidation
         {
@@ -829,7 +828,7 @@ class WithValidationTest extends TestCase
         $this->assertInstanceOf(ValidationException::class, $e ?? null);
     }
 
-    public function test_can_prepare_using_tomodel()
+    public function test_can_prepare_using_tomodel(): void
     {
         $import = new class implements ToModel, WithValidation
         {
@@ -885,7 +884,7 @@ class WithValidationTest extends TestCase
         $this->assertInstanceOf(ValidationException::class, $e ?? null);
     }
 
-    public function test_can_prepare_using_oneachrow()
+    public function test_can_prepare_using_oneachrow(): void
     {
         $import = new class implements OnEachRow, WithValidation
         {
@@ -912,10 +911,7 @@ class WithValidationTest extends TestCase
                 return $row;
             }
 
-            /**
-             * @return void
-             */
-            public function onRow(Row $row)
+            public function onRow(Row $row): void
             {
                 User::query()->create([
                     'name'     => $row[0],
@@ -941,7 +937,7 @@ class WithValidationTest extends TestCase
         $this->assertInstanceOf(ValidationException::class, $e ?? null);
     }
 
-    public function test_can_prepare_using_skipsemptyrows()
+    public function test_can_prepare_using_skipsemptyrows(): void
     {
         $import = new class implements OnEachRow, SkipsEmptyRows, WithValidation
         {
@@ -968,10 +964,7 @@ class WithValidationTest extends TestCase
                 return $row;
             }
 
-            /**
-             * @return void
-             */
-            public function onRow(Row $row)
+            public function onRow(Row $row): void
             {
                 User::query()->create([
                     'name'     => $row[0],
@@ -997,7 +990,7 @@ class WithValidationTest extends TestCase
         $this->assertInstanceOf(ValidationException::class, $e ?? null);
     }
 
-    private function validateFailure(ValidationException $e, int $row, string $attribute, array $messages)
+    private function validateFailure(ValidationException $e, int $row, string $attribute, array $messages): void
     {
         $failures = $e->failures();
         $failure  = head($failures);

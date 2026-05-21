@@ -25,7 +25,7 @@ class WithLimitTest extends TestCase
         $this->loadLaravelMigrations(['--database' => 'testing']);
     }
 
-    public function test_can_import_a_limited_section_of_rows_to_model_with_different_start_row()
+    public function test_can_import_a_limited_section_of_rows_to_model_with_different_start_row(): void
     {
         $import = new class implements ToModel, WithLimit, WithStartRow
         {
@@ -64,13 +64,13 @@ class WithLimitTest extends TestCase
         ]);
     }
 
-    public function test_can_import_to_array_with_limit()
+    public function test_can_import_to_array_with_limit(): void
     {
         $import = new class implements ToArray, WithLimit
         {
             use Importable;
 
-            public function array(array $array)
+            public function array(array $array): void
             {
                 Assert::assertEquals([
                     [
@@ -89,13 +89,13 @@ class WithLimitTest extends TestCase
         $import->import('import-users.xlsx');
     }
 
-    public function test_can_import_single_with_heading_row()
+    public function test_can_import_single_with_heading_row(): void
     {
         $import = new class implements ToArray, WithHeadingRow, WithLimit
         {
             use Importable;
 
-            public function array(array $array)
+            public function array(array $array): void
             {
                 Assert::assertEquals([
                     [
@@ -114,13 +114,13 @@ class WithLimitTest extends TestCase
         $import->import('import-users-with-headings.xlsx');
     }
 
-    public function test_can_import_multiple_with_heading_row()
+    public function test_can_import_multiple_with_heading_row(): void
     {
         $import = new class implements ToArray, WithHeadingRow, WithLimit
         {
             use Importable;
 
-            public function array(array $array)
+            public function array(array $array): void
             {
                 Assert::assertEquals([
                     [
@@ -143,13 +143,13 @@ class WithLimitTest extends TestCase
         $import->import('import-users-with-headings.xlsx');
     }
 
-    public function test_can_set_limit_bigger_than_row_size()
+    public function test_can_set_limit_bigger_than_row_size(): void
     {
         $import = new class implements ToArray, WithLimit
         {
             use Importable;
 
-            public function array(array $array)
+            public function array(array $array): void
             {
                 Assert::assertCount(2, $array);
             }

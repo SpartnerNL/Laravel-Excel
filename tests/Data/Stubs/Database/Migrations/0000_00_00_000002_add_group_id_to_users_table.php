@@ -9,9 +9,9 @@ class AddGroupIdToUsersTable extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
+        Schema::table('users', function (Blueprint $table): void {
             $table->unsignedInteger('group_id')->index()->nullable();
         });
     }
@@ -19,9 +19,9 @@ class AddGroupIdToUsersTable extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down()
+    public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
+        Schema::table('users', function (Blueprint $table): void {
             $table->dropColumn('group_id');
         });
     }

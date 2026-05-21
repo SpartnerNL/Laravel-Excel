@@ -25,7 +25,7 @@ class WithHeadingRowTest extends TestCase
         $this->loadLaravelMigrations(['--database' => 'testing']);
     }
 
-    public function test_can_import_each_row_to_model_with_heading_row()
+    public function test_can_import_each_row_to_model_with_heading_row(): void
     {
         $import = new class implements ToModel, WithHeadingRow
         {
@@ -54,7 +54,7 @@ class WithHeadingRowTest extends TestCase
         ]);
     }
 
-    public function test_can_import_each_row_to_model_with_different_heading_row()
+    public function test_can_import_each_row_to_model_with_different_heading_row(): void
     {
         $import = new class implements ToModel, WithHeadingRow
         {
@@ -88,13 +88,13 @@ class WithHeadingRowTest extends TestCase
         ]);
     }
 
-    public function test_can_import_to_array_with_heading_row()
+    public function test_can_import_to_array_with_heading_row(): void
     {
         $import = new class implements ToArray, WithHeadingRow
         {
             use Importable;
 
-            public function array(array $array)
+            public function array(array $array): void
             {
                 Assert::assertEquals([
                     [
@@ -112,13 +112,13 @@ class WithHeadingRowTest extends TestCase
         $import->import('import-users-with-headings.xlsx');
     }
 
-    public function test_can_import_empty_rows_with_header()
+    public function test_can_import_empty_rows_with_header(): void
     {
         $import = new class implements ToArray, WithHeadingRow
         {
             use Importable;
 
-            public function array(array $array)
+            public function array(array $array): void
             {
                 Assert::assertEmpty($array);
             }
@@ -127,7 +127,7 @@ class WithHeadingRowTest extends TestCase
         $import->import('import-empty-users-with-headings.xlsx');
     }
 
-    public function test_can_import_empty_models_with_header()
+    public function test_can_import_empty_models_with_header(): void
     {
         $import = new class implements ToModel, WithHeadingRow
         {
@@ -147,7 +147,7 @@ class WithHeadingRowTest extends TestCase
         $this->assertEmpty(User::all());
     }
 
-    public function test_can_cast_empty_headers_to_indexed_int()
+    public function test_can_cast_empty_headers_to_indexed_int(): void
     {
         $import = new class implements ToCollection, WithHeadingRow
         {
@@ -155,7 +155,7 @@ class WithHeadingRowTest extends TestCase
 
             public $called = false;
 
-            public function collection(Collection $collection)
+            public function collection(Collection $collection): void
             {
                 $this->called = true;
 

@@ -27,7 +27,7 @@ class FromUsersQueryExportWithMapping implements FromQuery, WithEvents, WithMapp
     public function registerEvents(): array
     {
         return [
-            BeforeSheet::class => function (BeforeSheet $event) {
+            BeforeSheet::class => function (BeforeSheet $event): void {
                 $event->sheet->chunkSize(10);
             },
         ];

@@ -14,7 +14,7 @@ use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 
 class WithColumnFormattingTest extends TestCase
 {
-    public function test_can_export_with_column_formatting()
+    public function test_can_export_with_column_formatting(): void
     {
         $export = new class implements FromCollection, WithColumnFormatting, WithMapping
         {

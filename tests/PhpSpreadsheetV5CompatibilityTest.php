@@ -21,7 +21,7 @@ class PhpSpreadsheetV5CompatibilityTest extends TestCase
     // IReadFilter typed signature tests (v5 changed param types)
     // ---------------------------------------------------------------
 
-    public function test_read_filter_receives_typed_parameters()
+    public function test_read_filter_receives_typed_parameters(): void
     {
         $receivedTypes = [];
 
@@ -72,7 +72,7 @@ class PhpSpreadsheetV5CompatibilityTest extends TestCase
         $this->assertSame('string', $receivedTypes['worksheetName']);
     }
 
-    public function test_read_filter_receives_correct_column_and_row_values()
+    public function test_read_filter_receives_correct_column_and_row_values(): void
     {
         $capturedCells = [];
 
@@ -119,7 +119,7 @@ class PhpSpreadsheetV5CompatibilityTest extends TestCase
         $this->assertGreaterThanOrEqual(1, $firstCell['row']);
     }
 
-    public function test_read_filter_can_filter_specific_rows()
+    public function test_read_filter_can_filter_specific_rows(): void
     {
         $import = new class implements WithReadFilter
         {
@@ -143,7 +143,7 @@ class PhpSpreadsheetV5CompatibilityTest extends TestCase
         $this->assertCount(1, $result[0]);
     }
 
-    public function test_read_filter_can_filter_specific_columns()
+    public function test_read_filter_can_filter_specific_columns(): void
     {
         $import = new class implements WithReadFilter
         {
@@ -173,7 +173,7 @@ class PhpSpreadsheetV5CompatibilityTest extends TestCase
     // WithCustomValueBinder typed signature tests (v5 added types)
     // ---------------------------------------------------------------
 
-    public function test_custom_value_binder_is_not_applied_on_import()
+    public function test_custom_value_binder_is_not_applied_on_import(): void
     {
         // PHPSpreadsheet v5 does not invoke WithCustomValueBinder during reads.
         // This is a breaking change from v1 where value binders were called on import.
@@ -205,7 +205,7 @@ class PhpSpreadsheetV5CompatibilityTest extends TestCase
         $this->assertNotEmpty($result[0], 'Data should still be imported without the value binder');
     }
 
-    public function test_import_returns_raw_values_without_value_binder_transformation()
+    public function test_import_returns_raw_values_without_value_binder_transformation(): void
     {
         // Since value binders are not called on import in v5,
         // numeric values like dates come through as raw Excel serial numbers.
@@ -226,7 +226,7 @@ class PhpSpreadsheetV5CompatibilityTest extends TestCase
         }
     }
 
-    public function test_default_value_binder_encodes_arrays_with_typed_signature()
+    public function test_default_value_binder_encodes_arrays_with_typed_signature(): void
     {
         $export = new class implements FromCollection
         {
@@ -255,7 +255,7 @@ class PhpSpreadsheetV5CompatibilityTest extends TestCase
     // setCreateBlankSheetIfNoneRead tests (v5 behavior change)
     // ---------------------------------------------------------------
 
-    public function test_unknown_sheet_name_is_skipped_with_skips_unknown_sheets()
+    public function test_unknown_sheet_name_is_skipped_with_skips_unknown_sheets(): void
     {
         $import = new class implements SkipsUnknownSheets, WithMultipleSheets
         {
@@ -270,7 +270,7 @@ class PhpSpreadsheetV5CompatibilityTest extends TestCase
                     {
                         public $data = [];
 
-                        public function array(array $array)
+                        public function array(array $array): void
                         {
                             $this->data = $array;
                         }
@@ -279,7 +279,7 @@ class PhpSpreadsheetV5CompatibilityTest extends TestCase
                     {
                         public $data = [];
 
-                        public function array(array $array)
+                        public function array(array $array): void
                         {
                             $this->data = $array;
                         }
@@ -287,7 +287,7 @@ class PhpSpreadsheetV5CompatibilityTest extends TestCase
                 ];
             }
 
-            public function onUnknownSheet($sheetName)
+            public function onUnknownSheet($sheetName): void
             {
                 $this->skippedSheets[] = $sheetName;
             }
@@ -298,7 +298,7 @@ class PhpSpreadsheetV5CompatibilityTest extends TestCase
         $this->assertContains('NonExistentSheet', $import->skippedSheets);
     }
 
-    public function test_mixed_valid_and_invalid_sheet_names_with_skips()
+    public function test_mixed_valid_and_invalid_sheet_names_with_skips(): void
     {
         $import = new class implements SkipsUnknownSheets, WithMultipleSheets
         {
@@ -324,7 +324,7 @@ class PhpSpreadsheetV5CompatibilityTest extends TestCase
                 ];
             }
 
-            public function onUnknownSheet($sheetName)
+            public function onUnknownSheet($sheetName): void
             {
                 $this->skippedSheets[] = $sheetName;
             }
@@ -342,7 +342,7 @@ class PhpSpreadsheetV5CompatibilityTest extends TestCase
         $this->assertNotEmpty($result['Sheet2']);
     }
 
-    public function test_unknown_sheet_name_throws_exception_without_skips()
+    public function test_unknown_sheet_name_throws_exception_without_skips(): void
     {
         $this->expectException(SheetNotFoundException::class);
 
@@ -355,7 +355,7 @@ class PhpSpreadsheetV5CompatibilityTest extends TestCase
                 return [
                     'NonExistentSheet' => new class implements ToArray
                     {
-                        public function array(array $array)
+                        public function array(array $array): void
                         {
                         }
                     },

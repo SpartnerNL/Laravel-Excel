@@ -87,7 +87,7 @@ class ChunkReader
             $afterImportJob->setDependencies($jobs);
             $jobs->push($afterImportJob->delay($delayCleanup));
 
-            return $jobs->each(function ($job) use ($queue) {
+            return $jobs->each(function ($job) use ($queue): void {
                 dispatch($job->onQueue($queue));
             });
         }
@@ -108,7 +108,7 @@ class ChunkReader
             );
         }
 
-        $jobs->each(function ($job) {
+        $jobs->each(function ($job): void {
             try {
                 $this->dispatchNow($job);
             } catch (Throwable $e) {

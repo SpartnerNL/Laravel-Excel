@@ -24,14 +24,14 @@ class ImportWithEventsChunksAndBatches extends ImportWithEvents implements ToMod
     public function registerEvents(): array
     {
         return parent::registerEvents() + [
-            AfterBatch::class => $this->afterBatch ?? function () {
+            AfterBatch::class => $this->afterBatch ?? function (): void {
             },
-            AfterChunk::class => $this->afterChunk ?? function () {
+            AfterChunk::class => $this->afterChunk ?? function (): void {
             },
         ];
     }
 
-    public function model(array $row)
+    public function model(array $row): void
     {
     }
 

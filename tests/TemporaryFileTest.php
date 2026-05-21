@@ -30,7 +30,7 @@ class TemporaryFileTest extends TestCase
         @rmdir($path);
     }
 
-    public function test_can_use_default_rights()
+    public function test_can_use_default_rights(): void
     {
         $path = FileHelper::absolutePath('rights-test', 'local');
         FileHelper::recursiveDelete($path);
@@ -47,13 +47,13 @@ class TemporaryFileTest extends TestCase
         $this->assertEquals($this->defaultFilePermissions, substr(sprintf('%o', fileperms($temporaryFile->getLocalPath())), -4));
     }
 
-    public function test_can_use_dir_rights()
+    public function test_can_use_dir_rights(): void
     {
         $path = FileHelper::absolutePath('rights-test', 'local');
         FileHelper::recursiveDelete($path);
 
         config()->set('excel.temporary_files.local_path', $path);
-        config()->set('excel.temporary_files.local_permissions.dir', 0700);
+        config()->set('excel.temporary_files.local_permissions.dir', 0o700);
 
         $temporaryFileFactory = app(TemporaryFileFactory::class);
 
@@ -65,13 +65,13 @@ class TemporaryFileTest extends TestCase
         $this->assertEquals($this->defaultFilePermissions, substr(sprintf('%o', fileperms($temporaryFile->getLocalPath())), -4));
     }
 
-    public function test_can_use_file_rights()
+    public function test_can_use_file_rights(): void
     {
         $path = FileHelper::absolutePath('rights-test', 'local');
         FileHelper::recursiveDelete($path);
 
         config()->set('excel.temporary_files.local_path', $path);
-        config()->set('excel.temporary_files.local_permissions.file', 0600);
+        config()->set('excel.temporary_files.local_permissions.file', 0o600);
 
         $temporaryFileFactory = app(TemporaryFileFactory::class);
 

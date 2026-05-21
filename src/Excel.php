@@ -16,29 +16,29 @@ class Excel implements Exporter, Importer
 {
     use Macroable, RegistersCustomConcerns;
 
-    const XLSX = 'Xlsx';
+    public const XLSX = 'Xlsx';
 
-    const CSV = 'Csv';
+    public const CSV = 'Csv';
 
-    const TSV = 'Csv';
+    public const TSV = 'Csv';
 
-    const ODS = 'Ods';
+    public const ODS = 'Ods';
 
-    const XLS = 'Xls';
+    public const XLS = 'Xls';
 
-    const SLK = 'Slk';
+    public const SLK = 'Slk';
 
-    const XML = 'Xml';
+    public const XML = 'Xml';
 
-    const GNUMERIC = 'Gnumeric';
+    public const GNUMERIC = 'Gnumeric';
 
-    const HTML = 'Html';
+    public const HTML = 'Html';
 
-    const MPDF = 'Mpdf';
+    public const MPDF = 'Mpdf';
 
-    const DOMPDF = 'Dompdf';
+    public const DOMPDF = 'Dompdf';
 
-    const TCPDF = 'Tcpdf';
+    public const TCPDF = 'Tcpdf';
 
     /**
      * @var Writer

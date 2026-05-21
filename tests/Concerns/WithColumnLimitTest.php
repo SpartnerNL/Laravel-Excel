@@ -21,13 +21,13 @@ class WithColumnLimitTest extends TestCase
         $this->loadLaravelMigrations(['--database' => 'testing']);
     }
 
-    public function test_can_import_to_array_with_column_limit()
+    public function test_can_import_to_array_with_column_limit(): void
     {
         $import = new class implements ToArray, WithColumnLimit
         {
             use Importable;
 
-            public function array(array $array)
+            public function array(array $array): void
             {
                 Assert::assertEquals([
                     [
@@ -48,13 +48,13 @@ class WithColumnLimitTest extends TestCase
         $import->import('import-users.xlsx');
     }
 
-    public function test_can_import_to_array_with_column_limit_and_skips_empty_rows()
+    public function test_can_import_to_array_with_column_limit_and_skips_empty_rows(): void
     {
         $import = new class implements SkipsEmptyRows, ToArray, WithColumnLimit
         {
             use Importable;
 
-            public function array(array $array)
+            public function array(array $array): void
             {
                 Assert::assertEquals([
                     [

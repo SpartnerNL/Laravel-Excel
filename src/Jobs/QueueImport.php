@@ -27,7 +27,7 @@ class QueueImport implements ShouldQueue
         }
     }
 
-    public function handle()
+    public function handle(): void
     {
         //
     }

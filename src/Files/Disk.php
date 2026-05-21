@@ -78,7 +78,7 @@ class Disk
         return $success;
     }
 
-    public function touch(string $filename)
+    public function touch(string $filename): void
     {
         $this->disk->put($filename, '', $this->diskOptions);
     }

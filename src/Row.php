@@ -137,13 +137,13 @@ class Row implements ArrayAccess
     }
 
     #[\ReturnTypeWillChange]
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         //
     }
 
     #[\ReturnTypeWillChange]
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         //
     }
@@ -151,7 +151,7 @@ class Row implements ArrayAccess
     /**
      * @internal
      */
-    public function setPreparationCallback(?Closure $preparationCallback = null)
+    public function setPreparationCallback(?Closure $preparationCallback = null): void
     {
         $this->preparationCallback = $preparationCallback;
     }

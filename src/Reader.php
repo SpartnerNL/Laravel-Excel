@@ -79,7 +79,7 @@ class Reader
         return ['spreadsheet', 'sheetImports', 'currentFile', 'temporaryFileFactory', 'reader'];
     }
 
-    public function __wakeup()
+    public function __wakeup(): void
     {
         $this->transaction = app(TransactionHandler::class);
     }
@@ -104,7 +104,7 @@ class Reader
         try {
             $this->loadSpreadsheet($import);
 
-            ($this->transaction)(function () use ($import) {
+            ($this->transaction)(function () use ($import): void {
                 $sheetsToDisconnect = [];
 
                 foreach ($this->sheetImports as $index => $sheetImport) {
@@ -239,7 +239,7 @@ class Reader
     /**
      * @param  object  $import
      */
-    public function loadSpreadsheet($import)
+    public function loadSpreadsheet($import): void
     {
         $this->sheetImports = $this->buildSheetImports($import);
 
@@ -254,7 +254,7 @@ class Reader
         $this->beforeImport($import);
     }
 
-    public function readSpreadsheet()
+    public function readSpreadsheet(): void
     {
         $this->spreadsheet = $this->reader->load(
             $this->currentFile->getLocalPath()
@@ -264,7 +264,7 @@ class Reader
     /**
      * @param  object  $import
      */
-    public function beforeImport($import)
+    public function beforeImport($import): void
     {
         $this->raise(new BeforeImport($this, $import));
     }
@@ -272,7 +272,7 @@ class Reader
     /**
      * @param  object  $import
      */
-    public function afterImport($import)
+    public function afterImport($import): void
     {
         $this->raise(new AfterImport($this, $import));
 
@@ -431,7 +431,7 @@ class Reader
     /**
      * Garbage collect.
      */
-    private function garbageCollect()
+    private function garbageCollect(): void
     {
         $this->clearListeners();
         $this->setDefaultValueBinder();

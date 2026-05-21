@@ -10,7 +10,7 @@ use PHPUnit\Framework\Assert;
 
 class OnEachRowTest extends TestCase
 {
-    public function test_can_import_each_row_individually()
+    public function test_can_import_each_row_individually(): void
     {
         $import = new class implements OnEachRow
         {
@@ -18,7 +18,7 @@ class OnEachRowTest extends TestCase
 
             public $called = 0;
 
-            public function onRow(Row $row)
+            public function onRow(Row $row): void
             {
                 foreach ($row->getCellIterator() as $cell) {
                     Assert::assertEquals('test', $cell->getValue());
@@ -39,13 +39,13 @@ class OnEachRowTest extends TestCase
         $this->assertEquals(2, $import->called);
     }
 
-    public function test_it_respects_the_end_column()
+    public function test_it_respects_the_end_column(): void
     {
         $import = new class implements OnEachRow
         {
             use Importable;
 
-            public function onRow(Row $row)
+            public function onRow(Row $row): void
             {
                 // Accessing a row as an array calls toArray() without an end
                 // column. This saves the row in the cache, so we have to

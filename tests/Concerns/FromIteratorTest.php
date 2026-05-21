@@ -10,7 +10,7 @@ use Maatwebsite\Excel\Tests\TestCase;
 
 class FromIteratorTest extends TestCase
 {
-    public function test_can_export_from_iterator()
+    public function test_can_export_from_iterator(): void
     {
         $export = new class implements FromIterator
         {

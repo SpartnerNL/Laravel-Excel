@@ -31,7 +31,7 @@ class SkipsOnFailureTest extends TestCase
         $this->loadLaravelMigrations(['--database' => 'testing']);
     }
 
-    public function test_can_skip_on_error()
+    public function test_can_skip_on_error(): void
     {
         $import = new class implements SkipsOnFailure, ToModel, WithValidation
         {
@@ -61,7 +61,7 @@ class SkipsOnFailureTest extends TestCase
             /**
              * @param  Failure[]  $failures
              */
-            public function onFailure(Failure ...$failures)
+            public function onFailure(Failure ...$failures): void
             {
                 $failure = $failures[0];
 
@@ -93,7 +93,7 @@ class SkipsOnFailureTest extends TestCase
         ]);
     }
 
-    public function test_skips_only_failed_rows_in_batch()
+    public function test_skips_only_failed_rows_in_batch(): void
     {
         $import = new class implements SkipsOnFailure, ToModel, WithBatchInserts, WithValidation
         {
@@ -123,7 +123,7 @@ class SkipsOnFailureTest extends TestCase
             /**
              * @param  Failure[]  $failures
              */
-            public function onFailure(Failure ...$failures)
+            public function onFailure(Failure ...$failures): void
             {
                 $failure = $failures[0];
 
@@ -155,7 +155,7 @@ class SkipsOnFailureTest extends TestCase
         ]);
     }
 
-    public function test_can_skip_failures_and_collect_all_failures_at_the_end()
+    public function test_can_skip_failures_and_collect_all_failures_at_the_end(): void
     {
         $import = new class implements SkipsOnFailure, ToModel, WithValidation
         {
@@ -203,7 +203,7 @@ class SkipsOnFailureTest extends TestCase
         ]);
     }
 
-    public function test_can_validate_using_oneachrow_and_skipsonfailure()
+    public function test_can_validate_using_oneachrow_and_skipsonfailure(): void
     {
         $import = new class implements OnEachRow, SkipsOnFailure, WithValidation
         {
@@ -247,7 +247,7 @@ class SkipsOnFailureTest extends TestCase
         ]);
     }
 
-    public function test_can_validate_using_tocollection_and_skipsonfailure()
+    public function test_can_validate_using_tocollection_and_skipsonfailure(): void
     {
         $import = new class implements SkipsOnFailure, ToCollection, WithValidation
         {

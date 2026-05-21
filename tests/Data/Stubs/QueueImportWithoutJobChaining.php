@@ -43,11 +43,11 @@ class QueueImportWithoutJobChaining implements ShouldQueueWithoutChain, ToModel,
     public function registerEvents(): array
     {
         return [
-            BeforeImport::class => function (BeforeImport $event) {
+            BeforeImport::class => function (BeforeImport $event): void {
                 Assert::assertInstanceOf(Reader::class, $event->reader);
                 $this->before = true;
             },
-            AfterImport::class => function (AfterImport $event) {
+            AfterImport::class => function (AfterImport $event): void {
                 Assert::assertInstanceOf(Reader::class, $event->reader);
                 $this->after = true;
             },

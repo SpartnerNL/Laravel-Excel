@@ -10,7 +10,7 @@ use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
 class WithStylesTest extends TestCase
 {
-    public function test_can_configure_styles()
+    public function test_can_configure_styles(): void
     {
         $export = new class implements FromArray, WithStyles
         {

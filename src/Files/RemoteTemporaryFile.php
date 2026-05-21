@@ -70,7 +70,7 @@ class RemoteTemporaryFile extends TemporaryFile
     /**
      * Store on remote disk.
      */
-    public function updateRemote()
+    public function updateRemote(): void
     {
         $this->disk()->copy(
             $this->localTemporaryFile,
@@ -94,7 +94,7 @@ class RemoteTemporaryFile extends TemporaryFile
     /**
      * @param  string|resource  $contents
      */
-    public function put($contents)
+    public function put($contents): void
     {
         $this->disk()->put($this->filename, $contents);
     }

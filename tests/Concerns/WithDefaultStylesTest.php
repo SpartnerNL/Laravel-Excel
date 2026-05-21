@@ -11,7 +11,7 @@ use PhpOffice\PhpSpreadsheet\Style\Style;
 
 class WithDefaultStylesTest extends TestCase
 {
-    public function test_can_configure_default_styles()
+    public function test_can_configure_default_styles(): void
     {
         $export = new class implements FromArray, WithDefaultStyles
         {

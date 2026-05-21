@@ -19,31 +19,31 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class RegistersEventListenersTest extends TestCase
 {
-    public function test_events_get_called_when_exporting()
+    public function test_events_get_called_when_exporting(): void
     {
         $event = new ExportWithRegistersEventListeners;
 
         $eventsTriggered = 0;
 
-        $event::$beforeExport = function ($event) use (&$eventsTriggered) {
+        $event::$beforeExport = function ($event) use (&$eventsTriggered): void {
             $this->assertInstanceOf(BeforeExport::class, $event);
             $this->assertInstanceOf(Writer::class, $event->writer);
             $eventsTriggered++;
         };
 
-        $event::$beforeWriting = function ($event) use (&$eventsTriggered) {
+        $event::$beforeWriting = function ($event) use (&$eventsTriggered): void {
             $this->assertInstanceOf(BeforeWriting::class, $event);
             $this->assertInstanceOf(Writer::class, $event->writer);
             $eventsTriggered++;
         };
 
-        $event::$beforeSheet = function ($event) use (&$eventsTriggered) {
+        $event::$beforeSheet = function ($event) use (&$eventsTriggered): void {
             $this->assertInstanceOf(BeforeSheet::class, $event);
             $this->assertInstanceOf(Sheet::class, $event->sheet);
             $eventsTriggered++;
         };
 
-        $event::$afterSheet = function ($event) use (&$eventsTriggered) {
+        $event::$afterSheet = function ($event) use (&$eventsTriggered): void {
             $this->assertInstanceOf(AfterSheet::class, $event);
             $this->assertInstanceOf(Sheet::class, $event->sheet);
             $eventsTriggered++;
@@ -53,25 +53,25 @@ class RegistersEventListenersTest extends TestCase
         $this->assertEquals(4, $eventsTriggered);
     }
 
-    public function test_events_get_called_when_importing()
+    public function test_events_get_called_when_importing(): void
     {
         $event = new ImportWithRegistersEventListeners;
 
         $eventsTriggered = 0;
 
-        $event::$beforeImport = function ($event) use (&$eventsTriggered) {
+        $event::$beforeImport = function ($event) use (&$eventsTriggered): void {
             $this->assertInstanceOf(BeforeImport::class, $event);
             $this->assertInstanceOf(Reader::class, $event->reader);
             $eventsTriggered++;
         };
 
-        $event::$beforeSheet = function ($event) use (&$eventsTriggered) {
+        $event::$beforeSheet = function ($event) use (&$eventsTriggered): void {
             $this->assertInstanceOf(BeforeSheet::class, $event);
             $this->assertInstanceOf(Sheet::class, $event->sheet);
             $eventsTriggered++;
         };
 
-        $event::$afterSheet = function ($event) use (&$eventsTriggered) {
+        $event::$afterSheet = function ($event) use (&$eventsTriggered): void {
             $this->assertInstanceOf(AfterSheet::class, $event);
             $this->assertInstanceOf(Sheet::class, $event->sheet);
             $eventsTriggered++;
@@ -81,11 +81,11 @@ class RegistersEventListenersTest extends TestCase
         $this->assertEquals(3, $eventsTriggered);
     }
 
-    public function test_can_have_invokable_class_as_listener()
+    public function test_can_have_invokable_class_as_listener(): void
     {
         $event = new ExportWithEvents;
 
-        $event->beforeExport = new BeforeExportListener(function ($event) {
+        $event->beforeExport = new BeforeExportListener(function ($event): void {
             $this->assertInstanceOf(BeforeExport::class, $event);
             $this->assertInstanceOf(Writer::class, $event->writer);
         });

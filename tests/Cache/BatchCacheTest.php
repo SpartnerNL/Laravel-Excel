@@ -29,7 +29,7 @@ class BatchCacheTest extends TestCase
      */
     private $memory;
 
-    public function test_will_get_multiple_from_memory_if_cells_hold_in_memory()
+    public function test_will_get_multiple_from_memory_if_cells_hold_in_memory(): void
     {
         $inMemory = [
             'A1' => 'A1-value',
@@ -47,7 +47,7 @@ class BatchCacheTest extends TestCase
         $this->assertEquals('A3-value', $cache->get('A3'));
     }
 
-    public function test_will_get_multiple_from_cache_if_cells_are_persisted()
+    public function test_will_get_multiple_from_cache_if_cells_are_persisted(): void
     {
         $inMemory  = [];
         $persisted = [
@@ -66,7 +66,7 @@ class BatchCacheTest extends TestCase
         $this->assertEquals('A3-value', $cache->get('A3'));
     }
 
-    public function test_will_get_multiple_from_cache_and_persisted()
+    public function test_will_get_multiple_from_cache_and_persisted(): void
     {
         $inMemory = [
             'A1' => 'A1-value',
@@ -90,7 +90,7 @@ class BatchCacheTest extends TestCase
         $this->assertEquals('A6-value', $cache->get('A6'));
     }
 
-    public function test_it_persists_to_cache_when_memory_limit_reached_on_setting_a_value()
+    public function test_it_persists_to_cache_when_memory_limit_reached_on_setting_a_value(): void
     {
         $memoryLimit = 3;
         $persisted   = [];
@@ -125,7 +125,7 @@ class BatchCacheTest extends TestCase
         ], $cache->getMultiple(['A1', 'A2', 'A3', 'A4']));
     }
 
-    public function test_it_persists_to_cache_when_memory_limit_reached_on_setting_multiple_values()
+    public function test_it_persists_to_cache_when_memory_limit_reached_on_setting_multiple_values(): void
     {
         $memoryLimit = 3;
         $persisted   = [];
@@ -166,7 +166,7 @@ class BatchCacheTest extends TestCase
     }
 
     #[DataProvider('defaultTTLDataProvider')]
-    public function test_it_writes_to_cache_with_default_ttl($defaultTTL, $receivedAs)
+    public function test_it_writes_to_cache_with_default_ttl($defaultTTL, $receivedAs): void
     {
         config()->set('excel.cache.default_ttl', $defaultTTL);
 
@@ -178,12 +178,13 @@ class BatchCacheTest extends TestCase
 
         $dispatchedCollection = Event::dispatched(
             KeyWritten::class,
-            fn (KeyWritten $event) => $event->seconds === $expectedTTL);
+            fn (KeyWritten $event) => $event->seconds === $expectedTTL
+        );
 
         $this->assertCount(2, $dispatchedCollection);
     }
 
-    public function test_it_writes_to_cache_with_a_dateinterval_ttl()
+    public function test_it_writes_to_cache_with_a_dateinterval_ttl(): void
     {
         // DateInterval is 1 minute
         config()->set('excel.cache.default_ttl', new DateInterval('PT1M'));
@@ -194,12 +195,13 @@ class BatchCacheTest extends TestCase
 
         $dispatchedCollection = Event::dispatched(
             KeyWritten::class,
-            fn (KeyWritten $event) => $event->seconds >= 59 && $event->seconds <= 60);
+            fn (KeyWritten $event) => $event->seconds >= 59 && $event->seconds <= 60
+        );
 
         $this->assertCount(2, $dispatchedCollection);
     }
 
-    public function test_it_can_override_default_ttl()
+    public function test_it_can_override_default_ttl(): void
     {
         config()->set('excel.cache.default_ttl', 1);
 
@@ -209,7 +211,8 @@ class BatchCacheTest extends TestCase
 
         $dispatchedCollection = Event::dispatched(
             KeyWritten::class,
-            fn (KeyWritten $event) => $event->seconds === null);
+            fn (KeyWritten $event) => $event->seconds === null
+        );
 
         $this->assertCount(2, $dispatchedCollection);
     }
@@ -218,7 +221,7 @@ class BatchCacheTest extends TestCase
     {
         return [
             'null (forever)' => [null, null],
-            'int value'      => [$value = rand(1, 100), $value],
+            'int value'      => [$value = random_int(1, 100), $value],
             'callable'       => [$closure = (fn () => 199), $closure],
         ];
     }

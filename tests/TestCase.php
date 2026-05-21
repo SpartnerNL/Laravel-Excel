@@ -71,7 +71,7 @@ class TestCase extends OrchestraTestCase
     /**
      * @param  Application  $app
      */
-    protected function getEnvironmentSetUp($app)
+    protected function getEnvironmentSetUp($app): void
     {
         $app['config']->set('filesystems.disks.local.root', __DIR__ . '/Data/Disks/Local');
         $app['config']->set('filesystems.disks.test', [
@@ -105,7 +105,7 @@ class TestCase extends OrchestraTestCase
         return $dict[$property] ?? $dict["\0*\0$property"] ?? $dict["\0$class\0$property"];
     }
 
-    protected function assertStringContains(string $needle, string $haystack, string $message = '')
+    protected function assertStringContains(string $needle, string $haystack, string $message = ''): void
     {
         if (method_exists($this, 'assertStringContainsString')) {
             $this->assertStringContainsString($needle, $haystack, $message);
@@ -114,7 +114,7 @@ class TestCase extends OrchestraTestCase
         }
     }
 
-    protected function assertFileMissing(string $path)
+    protected function assertFileMissing(string $path): void
     {
         if (method_exists($this, 'assertFileDoesNotExist')) {
             $this->assertFileDoesNotExist($path);
@@ -123,7 +123,7 @@ class TestCase extends OrchestraTestCase
         }
     }
 
-    protected function assertRegex(string $pattern, string $string)
+    protected function assertRegex(string $pattern, string $string): void
     {
         if (method_exists($this, 'assertMatchesRegularExpression')) {
             $this->assertMatchesRegularExpression($pattern, $string);

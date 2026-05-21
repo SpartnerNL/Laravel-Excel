@@ -16,7 +16,7 @@ use PHPUnit\Framework\Assert;
 
 class WithCalculatedFormulasTest extends TestCase
 {
-    public function test_by_default_does_not_calculate_formulas()
+    public function test_by_default_does_not_calculate_formulas(): void
     {
         $import = new class implements ToArray
         {
@@ -24,7 +24,7 @@ class WithCalculatedFormulasTest extends TestCase
 
             public $called = false;
 
-            public function array(array $array)
+            public function array(array $array): void
             {
                 $this->called = true;
 
@@ -37,7 +37,7 @@ class WithCalculatedFormulasTest extends TestCase
         $this->assertTrue($import->called);
     }
 
-    public function test_can_import_to_array_with_calculated_formulas()
+    public function test_can_import_to_array_with_calculated_formulas(): void
     {
         $import = new class implements ToArray, WithCalculatedFormulas
         {
@@ -45,7 +45,7 @@ class WithCalculatedFormulasTest extends TestCase
 
             public $called = false;
 
-            public function array(array $array)
+            public function array(array $array): void
             {
                 $this->called = true;
 
@@ -58,7 +58,7 @@ class WithCalculatedFormulasTest extends TestCase
         $this->assertTrue($import->called);
     }
 
-    public function test_can_import_to_model_with_calculated_formulas()
+    public function test_can_import_to_model_with_calculated_formulas(): void
     {
         $import = new class implements ToModel, WithCalculatedFormulas
         {
@@ -84,7 +84,7 @@ class WithCalculatedFormulasTest extends TestCase
         $this->assertTrue($import->called);
     }
 
-    public function can_import_with_formulas_and_reference()
+    public function can_import_with_formulas_and_reference(): void
     {
         $import = new class implements ToModel, WithCalculatedFormulas, WithStartRow
         {
@@ -115,7 +115,7 @@ class WithCalculatedFormulasTest extends TestCase
         $this->assertTrue($import->called);
     }
 
-    public function test_can_import_to_array_with_calculated_formulas_and_multi_sheet_references()
+    public function test_can_import_to_array_with_calculated_formulas_and_multi_sheet_references(): void
     {
         $import = new class implements HasReferencesToOtherSheets, WithMultipleSheets
         {
@@ -130,7 +130,7 @@ class WithCalculatedFormulasTest extends TestCase
                     {
                         public $test = 'test2';
 
-                        public function array(array $array)
+                        public function array(array $array): void
                         {
                             Assert::assertEquals([
                                 ['1', '1'],
@@ -141,7 +141,7 @@ class WithCalculatedFormulasTest extends TestCase
                     {
                         public $test = 'test2';
 
-                        public function array(array $array)
+                        public function array(array $array): void
                         {
                             Assert::assertEquals([
                                 ['2'],
@@ -155,7 +155,7 @@ class WithCalculatedFormulasTest extends TestCase
         $import->import('import-formulas-multiple-sheets.xlsx');
     }
 
-    public function test_can_import_to_array_with_calculated_formulas_and_skips_empty()
+    public function test_can_import_to_array_with_calculated_formulas_and_skips_empty(): void
     {
         $import = new class implements SkipsEmptyRows, ToArray, WithCalculatedFormulas
         {
@@ -163,7 +163,7 @@ class WithCalculatedFormulasTest extends TestCase
 
             public $called = false;
 
-            public function array(array $array)
+            public function array(array $array): void
             {
                 $this->called = true;
 
@@ -176,7 +176,7 @@ class WithCalculatedFormulasTest extends TestCase
         $this->assertTrue($import->called);
     }
 
-    public function test_can_import_to_model_with_calculated_formulas_and_skips_empty()
+    public function test_can_import_to_model_with_calculated_formulas_and_skips_empty(): void
     {
         $import = new class implements SkipsEmptyRows, ToModel, WithCalculatedFormulas
         {

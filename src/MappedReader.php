@@ -17,10 +17,10 @@ class MappedReader
     /**
      * @throws Exception
      */
-    public function map(WithMappedCells $import, Worksheet $worksheet)
+    public function map(WithMappedCells $import, Worksheet $worksheet): void
     {
         $mapped = $import->mapping();
-        array_walk_recursive($mapped, function (&$coordinate) use ($import, $worksheet) {
+        array_walk_recursive($mapped, function (&$coordinate) use ($import, $worksheet): void {
             $cell = Cell::make($worksheet, $coordinate);
 
             $coordinate = $cell->getValue(

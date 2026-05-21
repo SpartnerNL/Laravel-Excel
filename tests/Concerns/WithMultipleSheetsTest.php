@@ -17,7 +17,7 @@ use PHPUnit\Framework\Assert;
 
 class WithMultipleSheetsTest extends TestCase
 {
-    public function test_can_export_with_multiple_sheets_using_collections()
+    public function test_can_export_with_multiple_sheets_using_collections(): void
     {
         $export = new class implements WithMultipleSheets
         {
@@ -43,7 +43,7 @@ class WithMultipleSheetsTest extends TestCase
         $this->assertCount(100, $this->readAsArray(__DIR__ . '/../Data/Disks/Local/from-view.xlsx', 'Xlsx', 2));
     }
 
-    public function test_can_export_multiple_sheets_from_view()
+    public function test_can_export_multiple_sheets_from_view(): void
     {
         $this->loadLaravelMigrations(['--database' => 'testing']);
         /** @var Collection|User[] $users */
@@ -83,7 +83,7 @@ class WithMultipleSheetsTest extends TestCase
         $this->assertCount(101, $this->readAsArray(__DIR__ . '/../Data/Disks/Local/from-view.xlsx', 'Xlsx', 2));
     }
 
-    public function test_unknown_sheet_index_will_throw_sheet_not_found_exception()
+    public function test_unknown_sheet_index_will_throw_sheet_not_found_exception(): void
     {
         $this->expectException(SheetNotFoundException::class);
         $this->expectExceptionMessage('Your requested sheet index: 9999 is out of bounds. The actual number of sheets is 2.');
@@ -105,7 +105,7 @@ class WithMultipleSheetsTest extends TestCase
         $import->import('import-multiple-sheets.xlsx');
     }
 
-    public function test_unknown_sheet_name_will_throw_sheet_not_found_exception()
+    public function test_unknown_sheet_name_will_throw_sheet_not_found_exception(): void
     {
         $this->expectException(SheetNotFoundException::class);
         $this->expectExceptionMessage('Your requested sheet name [Some Random Sheet Name] is out of bounds.');
@@ -127,7 +127,7 @@ class WithMultipleSheetsTest extends TestCase
         $import->import('import-multiple-sheets.xlsx');
     }
 
-    public function test_unknown_sheet_name_can_be_ignored()
+    public function test_unknown_sheet_name_can_be_ignored(): void
     {
         $import = new class implements SkipsUnknownSheets, WithMultipleSheets
         {
@@ -147,7 +147,7 @@ class WithMultipleSheetsTest extends TestCase
             /**
              * @param  string|int  $sheetName
              */
-            public function onUnknownSheet($sheetName)
+            public function onUnknownSheet($sheetName): void
             {
                 $this->unknown = $sheetName;
             }
@@ -158,7 +158,7 @@ class WithMultipleSheetsTest extends TestCase
         $this->assertEquals('Some Random Sheet Name', $import->unknown);
     }
 
-    public function test_unknown_sheet_indices_can_be_ignored_per_name()
+    public function test_unknown_sheet_indices_can_be_ignored_per_name(): void
     {
         $import = new class implements WithMultipleSheets
         {
@@ -172,7 +172,7 @@ class WithMultipleSheetsTest extends TestCase
                         /**
                          * @param  string|int  $sheetName
                          */
-                        public function onUnknownSheet($sheetName)
+                        public function onUnknownSheet($sheetName): void
                         {
                             Assert::assertEquals('Some Random Sheet Name', $sheetName);
                         }
@@ -184,7 +184,7 @@ class WithMultipleSheetsTest extends TestCase
         $import->import('import-multiple-sheets.xlsx');
     }
 
-    public function test_unknown_sheet_indices_can_be_ignored()
+    public function test_unknown_sheet_indices_can_be_ignored(): void
     {
         $import = new class implements SkipsUnknownSheets, WithMultipleSheets
         {
@@ -204,7 +204,7 @@ class WithMultipleSheetsTest extends TestCase
             /**
              * @param  string|int  $sheetName
              */
-            public function onUnknownSheet($sheetName)
+            public function onUnknownSheet($sheetName): void
             {
                 $this->unknown = $sheetName;
             }
@@ -215,7 +215,7 @@ class WithMultipleSheetsTest extends TestCase
         $this->assertEquals(99999, $import->unknown);
     }
 
-    public function test_unknown_sheet_indices_can_be_ignored_per_sheet()
+    public function test_unknown_sheet_indices_can_be_ignored_per_sheet(): void
     {
         $import = new class implements WithMultipleSheets
         {
@@ -229,7 +229,7 @@ class WithMultipleSheetsTest extends TestCase
                         /**
                          * @param  string|int  $sheetName
                          */
-                        public function onUnknownSheet($sheetName)
+                        public function onUnknownSheet($sheetName): void
                         {
                             Assert::assertEquals(99999, $sheetName);
                         }
@@ -241,7 +241,7 @@ class WithMultipleSheetsTest extends TestCase
         $import->import('import-multiple-sheets.xlsx');
     }
 
-    public function test_can_import_multiple_sheets()
+    public function test_can_import_multiple_sheets(): void
     {
         $import = new class implements WithMultipleSheets
         {
@@ -252,7 +252,7 @@ class WithMultipleSheetsTest extends TestCase
                 return [
                     new class implements ToArray
                     {
-                        public function array(array $array)
+                        public function array(array $array): void
                         {
                             Assert::assertEquals([
                                 ['1.A1', '1.B1'],
@@ -262,7 +262,7 @@ class WithMultipleSheetsTest extends TestCase
                     },
                     new class implements ToArray
                     {
-                        public function array(array $array)
+                        public function array(array $array): void
                         {
                             Assert::assertEquals([
                                 ['2.A1', '2.B1'],
@@ -277,7 +277,7 @@ class WithMultipleSheetsTest extends TestCase
         $import->import('import-multiple-sheets.xlsx');
     }
 
-    public function test_can_import_multiple_sheets_by_sheet_name()
+    public function test_can_import_multiple_sheets_by_sheet_name(): void
     {
         $import = new class implements WithMultipleSheets
         {
@@ -288,7 +288,7 @@ class WithMultipleSheetsTest extends TestCase
                 return [
                     'Sheet2' => new class implements ToArray
                     {
-                        public function array(array $array)
+                        public function array(array $array): void
                         {
                             Assert::assertEquals([
                                 ['2.A1', '2.B1'],
@@ -298,7 +298,7 @@ class WithMultipleSheetsTest extends TestCase
                     },
                     'Sheet1' => new class implements ToArray
                     {
-                        public function array(array $array)
+                        public function array(array $array): void
                         {
                             Assert::assertEquals([
                                 ['1.A1', '1.B1'],
@@ -313,7 +313,7 @@ class WithMultipleSheetsTest extends TestCase
         $import->import('import-multiple-sheets.xlsx');
     }
 
-    public function test_can_import_multiple_sheets_by_sheet_index_and_name()
+    public function test_can_import_multiple_sheets_by_sheet_index_and_name(): void
     {
         $import = new class implements WithMultipleSheets
         {
@@ -328,7 +328,7 @@ class WithMultipleSheetsTest extends TestCase
                     {
                         public $called = false;
 
-                        public function array(array $array)
+                        public function array(array $array): void
                         {
                             $this->called = true;
                             Assert::assertEquals([
@@ -341,7 +341,7 @@ class WithMultipleSheetsTest extends TestCase
                     {
                         public $called = false;
 
-                        public function array(array $array)
+                        public function array(array $array): void
                         {
                             $this->called = true;
                             Assert::assertEquals([
@@ -366,7 +366,7 @@ class WithMultipleSheetsTest extends TestCase
         }
     }
 
-    public function test_can_import_multiple_sheets_by_sheet_name_and_index()
+    public function test_can_import_multiple_sheets_by_sheet_name_and_index(): void
     {
         $import = new class implements WithMultipleSheets
         {
@@ -381,7 +381,7 @@ class WithMultipleSheetsTest extends TestCase
                     {
                         public $called = false;
 
-                        public function array(array $array)
+                        public function array(array $array): void
                         {
                             $this->called = true;
                             Assert::assertEquals([
@@ -394,7 +394,7 @@ class WithMultipleSheetsTest extends TestCase
                     {
                         public $called = false;
 
-                        public function array(array $array)
+                        public function array(array $array): void
                         {
                             $this->called = true;
                             Assert::assertEquals([

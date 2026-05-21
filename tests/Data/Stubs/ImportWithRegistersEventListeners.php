@@ -25,17 +25,17 @@ class ImportWithRegistersEventListeners implements WithEvents
      */
     public static $afterSheet;
 
-    public static function beforeImport()
+    public static function beforeImport(): void
     {
         (static::$beforeImport)(...func_get_args());
     }
 
-    public static function beforeSheet()
+    public static function beforeSheet(): void
     {
         (static::$beforeSheet)(...func_get_args());
     }
 
-    public static function afterSheet()
+    public static function afterSheet(): void
     {
         (static::$afterSheet)(...func_get_args());
     }

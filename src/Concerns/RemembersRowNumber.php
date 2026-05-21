@@ -9,7 +9,7 @@ trait RemembersRowNumber
      */
     protected $rowNumber;
 
-    public function rememberRowNumber(int $rowNumber)
+    public function rememberRowNumber(int $rowNumber): void
     {
         $this->rowNumber = $rowNumber;
     }

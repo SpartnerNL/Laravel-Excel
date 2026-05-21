@@ -12,7 +12,7 @@ trait SkipsFailures
      */
     protected $failures = [];
 
-    public function onFailure(Failure ...$failures)
+    public function onFailure(Failure ...$failures): void
     {
         $this->failures = array_merge($this->failures, $failures);
     }
