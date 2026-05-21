@@ -18,20 +18,14 @@ class HeadingRowFormatter
      */
     public const FORMATTER_SLUG = 'slug';
 
-    /**
-     * @var string
-     */
-    protected static $formatter;
+    protected static ?string $formatter;
 
     /**
      * @var callable[]
      */
-    protected static $customFormatters = [];
+    protected static array $customFormatters = [];
 
-    /**
-     * @var array
-     */
-    protected static $defaultFormatters = [
+    protected static array $defaultFormatters = [
         self::FORMATTER_NONE,
         self::FORMATTER_SLUG,
     ];
@@ -63,11 +57,7 @@ class HeadingRowFormatter
         static::default();
     }
 
-    /**
-     * @param  mixed  $value
-     * @return mixed
-     */
-    protected static function callFormatter($value, $key = null)
+    protected static function callFormatter(mixed $value, $key = null): mixed
     {
         static::$formatter ??= config('excel.imports.heading_row.formatter', self::FORMATTER_SLUG);
 

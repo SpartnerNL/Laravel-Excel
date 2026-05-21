@@ -7,14 +7,17 @@ use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithMapping;
 
+/**
+ * @implements WithMapping<array<int, string>>
+ */
 class WithMappingExport implements FromCollection, WithMapping
 {
     use Exportable;
 
     /**
-     * @return Collection
+     * @return Collection<int, array{string, string, string}>
      */
-    public function collection()
+    public function collection(): Collection
     {
         return collect([
             ['A1', 'B1', 'C1'],
@@ -22,10 +25,7 @@ class WithMappingExport implements FromCollection, WithMapping
         ]);
     }
 
-    /**
-     * @param  mixed  $row
-     */
-    public function map($row): array
+    public function map(mixed $row): array
     {
         return [
             'mapped-' . $row[0],

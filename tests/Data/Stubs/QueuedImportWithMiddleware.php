@@ -13,10 +13,7 @@ class QueuedImportWithMiddleware implements ShouldQueue, ToModel, WithChunkReadi
 {
     use Importable;
 
-    /**
-     * @return Model|null
-     */
-    public function model(array $row)
+    public function model(array $row): ?Model
     {
         return new Group([
             'name' => $row[0],

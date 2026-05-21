@@ -2,6 +2,7 @@
 
 namespace Maatwebsite\Excel\Tests;
 
+use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\Importable;
@@ -232,7 +233,7 @@ class PhpSpreadsheetV5CompatibilityTest extends TestCase
         {
             use Exportable;
 
-            public function collection()
+            public function collection(): Collection
             {
                 return collect([
                     [['nested' => 'value'], 'plain'],

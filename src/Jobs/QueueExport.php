@@ -18,19 +18,17 @@ class QueueExport implements ShouldQueue
 {
     use Batchable, Dispatchable, ExtendedQueueable, InteractsWithQueue;
 
-    /**
-     * @param  object  $export
-     */
-    public function __construct(public $export, private TemporaryFile $temporaryFile, private string $writerType)
-    {
+    public function __construct(
+        public object $export,
+        private TemporaryFile $temporaryFile,
+        private string $writerType,
+    ) {
     }
 
     /**
      * Get the middleware the job should be dispatched through.
-     *
-     * @return array
      */
-    public function middleware()
+    public function middleware(): array
     {
         return (method_exists($this->export, 'middleware')) ? $this->export->middleware() : [];
     }

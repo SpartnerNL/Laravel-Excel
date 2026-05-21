@@ -14,10 +14,7 @@ class FromNestedArraysQueryExport implements FromQuery, WithMapping
 {
     use Exportable;
 
-    /**
-     * @return Builder|EloquentBuilder|Relation
-     */
-    public function query()
+    public function query(): Builder|EloquentBuilder|Relation
     {
         $query = Group::with('users');
 
@@ -27,7 +24,7 @@ class FromNestedArraysQueryExport implements FromQuery, WithMapping
     /**
      * @param  Group  $row
      */
-    public function map($row): array
+    public function map(mixed $row): array
     {
         $rows    = [];
         $sub_row = [$row->name, ''];

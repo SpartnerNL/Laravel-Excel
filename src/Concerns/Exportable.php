@@ -2,6 +2,7 @@
 
 namespace Maatwebsite\Excel\Concerns;
 
+use Illuminate\Bus\PendingBatch;
 use Illuminate\Foundation\Bus\PendingDispatch;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -12,18 +13,26 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 trait Exportable
 {
+    protected ?string $fileName = null;
+
+    protected ?string $writerType = null;
+
+    protected ?array $headers = [];
+
     protected ?string $filePath = null;
 
+    protected ?string $disk = null;
+
+    protected mixed $diskOptions = [];
+
     /**
-     * @return Response|BinaryFileResponse
-     *
      * @throws NoFilenameGivenException
      */
-    public function download(?string $fileName = null, ?string $writerType = null, ?array $headers = null)
+    public function download(?string $fileName = null, ?string $writerType = null, ?array $headers = null): Response|BinaryFileResponse
     {
-        $headers ??= $this->headers ?? [];
-        $fileName ??= $this->fileName ?? null;
-        $writerType ??= $this->writerType ?? null;
+        $headers ??= $this->headers;
+        $fileName ??= $this->fileName;
+        $writerType ??= $this->writerType;
 
         if ($fileName === null) {
             throw new NoFilenameGivenException;
@@ -33,14 +42,11 @@ trait Exportable
     }
 
     /**
-     * @param  mixed  $diskOptions
-     * @return bool|PendingDispatch
-     *
      * @throws NoFilePathGivenException
      */
-    public function store(?string $filePath = null, ?string $disk = null, ?string $writerType = null, $diskOptions = [])
+    public function store(?string $filePath = null, ?string $disk = null, ?string $writerType = null, mixed $diskOptions = []): bool|PendingDispatch
     {
-        $filePath ??= $this->filePath ?? null;
+        $filePath ??= $this->filePath;
 
         if ($filePath === null) {
             throw NoFilePathGivenException::export();
@@ -49,21 +55,18 @@ trait Exportable
         return $this->getExporter()->store(
             $this,
             $filePath,
-            $disk ?? $this->disk ?? null,
-            $writerType ?? $this->writerType ?? null,
-            $diskOptions ?: $this->diskOptions ?? []
+            $disk ?? $this->disk,
+            $writerType ?? $this->writerType,
+            $diskOptions ?: $this->diskOptions
         );
     }
 
     /**
-     * @param  mixed  $diskOptions
-     * @return PendingDispatch
-     *
      * @throws NoFilePathGivenException
      */
-    public function queue(?string $filePath = null, ?string $disk = null, ?string $writerType = null, $diskOptions = [])
+    public function queue(?string $filePath = null, ?string $disk = null, ?string $writerType = null, mixed $diskOptions = []): PendingDispatch|PendingBatch
     {
-        $filePath ??= $this->filePath ?? null;
+        $filePath ??= $this->filePath;
 
         if ($filePath === null) {
             throw NoFilePathGivenException::export();
@@ -72,19 +75,15 @@ trait Exportable
         return $this->getExporter()->queue(
             $this,
             $filePath,
-            $disk ?? $this->disk ?? null,
-            $writerType ?? $this->writerType ?? null,
-            $diskOptions ?: $this->diskOptions ?? []
+            $disk ?? $this->disk,
+            $writerType ?? $this->writerType,
+            $diskOptions ?: $this->diskOptions
         );
     }
 
-    /**
-     * @param  string|null  $writerType
-     * @return string
-     */
-    public function raw($writerType = null)
+    public function raw(?string $writerType = null): string
     {
-        $writerType ??= $this->writerType ?? null;
+        $writerType ??= $this->writerType;
 
         return $this->getExporter()->raw($this, $writerType);
     }

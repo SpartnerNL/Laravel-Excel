@@ -17,10 +17,7 @@ class WithStrictNullComparisonTest extends TestCase
         {
             use Exportable;
 
-            /**
-             * @return Collection
-             */
-            public function collection()
+            public function collection(): Collection
             {
                 return collect([
                     ['string', '0', 0, 0.0, 'string'],
@@ -53,10 +50,7 @@ class WithStrictNullComparisonTest extends TestCase
         {
             use Exportable;
 
-            /**
-             * @return Collection
-             */
-            public function collection()
+            public function collection(): Collection
             {
                 return collect([
                     ['string', 0, 0.0, 'string'],
@@ -89,10 +83,7 @@ class WithStrictNullComparisonTest extends TestCase
         {
             use Exportable;
 
-            /**
-             * @return Collection
-             */
-            public function collection()
+            public function collection(): Collection
             {
                 return collect([
                     ['a1', '', '', 'd1', ''],
@@ -128,10 +119,7 @@ class WithStrictNullComparisonTest extends TestCase
         {
             use Exportable;
 
-            /**
-             * @return Collection
-             */
-            public function collection()
+            public function collection(): Collection
             {
                 return collect([
                     ['a1', '', '', 'd1', ''],

@@ -26,20 +26,12 @@ use Throwable;
 
 class ChunkReader
 {
-    /**
-     * @var Container
-     */
-    protected $container;
-
-    public function __construct(Container $container)
-    {
-        $this->container = $container;
+    public function __construct(
+        protected Container $container,
+    ) {
     }
 
-    /**
-     * @return PendingDispatch|PendingBatch|Collection|null
-     */
-    public function read(WithChunkReading $import, Reader $reader, TemporaryFile $temporaryFile)
+    public function read(WithChunkReading $import, Reader $reader, TemporaryFile $temporaryFile): PendingDispatch|PendingBatch|Collection|null
     {
         if ($import instanceof WithEvents) {
             $reader->beforeImport($import);
@@ -130,12 +122,8 @@ class ChunkReader
 
     /**
      * Dispatch a command to its appropriate handler in the current process without using the synchronous queue.
-     *
-     * @param  object  $command
-     * @param  mixed  $handler
-     * @return mixed
      */
-    protected function dispatchNow($command, $handler = null)
+    protected function dispatchNow(object $command, mixed $handler = null): mixed
     {
         $uses = class_uses_recursive($command);
 

@@ -10,7 +10,7 @@ trait SkipsErrors
     /**
      * @var Throwable[]
      */
-    protected $errors = [];
+    protected array $errors = [];
 
     public function onError(Throwable $e): void
     {

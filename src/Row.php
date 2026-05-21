@@ -12,46 +12,19 @@ class Row implements ArrayAccess
 {
     use DelegatedMacroable;
 
-    /**
-     * @var array
-     */
-    protected $headingRow = [];
+    protected ?Closure $preparationCallback = null;
 
-    /**
-     * @var array
-     */
-    protected $headerIsGrouped = [];
+    protected ?array $rowCache = null;
 
-    /**
-     * @var Closure
-     */
-    protected $preparationCallback;
+    protected ?bool $rowCacheFormatData = null;
 
-    /**
-     * @var SpreadsheetRow
-     */
-    protected $row;
+    protected ?string $rowCacheEndColumn = null;
 
-    /**
-     * @var array|null
-     */
-    protected $rowCache;
-
-    /**
-     * @var bool|null
-     */
-    protected $rowCacheFormatData;
-
-    /**
-     * @var string|null
-     */
-    protected $rowCacheEndColumn;
-
-    public function __construct(SpreadsheetRow $row, array $headingRow = [], array $headerIsGrouped = [])
-    {
-        $this->row             = $row;
-        $this->headingRow      = $headingRow;
-        $this->headerIsGrouped = $headerIsGrouped;
+    public function __construct(
+        protected SpreadsheetRow $row,
+        protected array $headingRow = [],
+        protected array $headerIsGrouped = [],
+    ) {
     }
 
     public function getDelegate(): SpreadsheetRow
@@ -59,23 +32,12 @@ class Row implements ArrayAccess
         return $this->row;
     }
 
-    /**
-     * @param  null  $nullValue
-     * @param  bool  $calculateFormulas
-     * @param  bool  $formatData
-     */
-    public function toCollection($nullValue = null, $calculateFormulas = false, $formatData = true, ?string $endColumn = null): Collection
+    public function toCollection(mixed $nullValue = null, bool $calculateFormulas = false, bool $formatData = true, ?string $endColumn = null): Collection
     {
         return new Collection($this->toArray($nullValue, $calculateFormulas, $formatData, $endColumn));
     }
 
-    /**
-     * @param  null  $nullValue
-     * @param  bool  $calculateFormulas
-     * @param  bool  $formatData
-     * @return array
-     */
-    public function toArray($nullValue = null, $calculateFormulas = false, $formatData = true, ?string $endColumn = null)
+    public function toArray(mixed $nullValue = null, bool $calculateFormulas = false, bool $formatData = true, ?string $endColumn = null): array
     {
         if (is_array($this->rowCache) && ($this->rowCacheFormatData === $formatData) && ($this->rowCacheEndColumn === $endColumn)) {
             return $this->rowCache;
@@ -111,10 +73,7 @@ class Row implements ArrayAccess
         return $cells;
     }
 
-    /**
-     * @param  bool  $calculateFormulas
-     */
-    public function isEmpty($calculateFormulas = false, ?string $endColumn = null): bool
+    public function isEmpty(bool $calculateFormulas = false, ?string $endColumn = null): bool
     {
         return count(array_filter($this->toArray(null, $calculateFormulas, false, $endColumn))) === 0;
     }

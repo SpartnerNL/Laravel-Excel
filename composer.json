@@ -35,7 +35,9 @@
     "laravel/pint": "^1.0",
     "rector/rector": "^2.4.2",
     "driftingly/rector-laravel": "^2.3",
-    "phpstan/phpstan": "^2.1"
+    "phpstan/phpstan": "^2.1",
+    "larastan/larastan": "^3.0",
+    "phpstan/extension-installer": "^1.4"
   },
   "autoload": {
     "psr-4": {
@@ -58,5 +60,10 @@
     }
   },
   "minimum-stability": "dev",
-  "prefer-stable": true
+  "prefer-stable": true,
+  "config": {
+    "allow-plugins": {
+      "phpstan/extension-installer": true
+    }
+  }
 }

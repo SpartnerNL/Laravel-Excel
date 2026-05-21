@@ -13,21 +13,26 @@ use Maatwebsite\Excel\Events\BeforeWriting;
 use Maatwebsite\Excel\Tests\TestCase;
 use Maatwebsite\Excel\Writer;
 
+/**
+ * @implements FromCollection<int, Collection<int, string>>
+ */
 class SheetWith100Rows implements FromCollection, ShouldAutoSize, WithEvents, WithTitle
 {
     use Exportable, RegistersEventListeners;
 
-    public function __construct(private string $title)
-    {
+    public function __construct(
+        private string $title,
+    ) {
     }
 
     /**
-     * @return Collection
+     * @return Collection<int, Collection<int, string>>
      */
-    public function collection()
+    public function collection(): Collection
     {
         $collection = new Collection;
         for ($i = 0; $i < 100; $i++) {
+            /** @var Collection<int, string> */
             $row = new Collection;
             for ($j = 0; $j < 5; $j++) {
                 $row[] = $this->title() . '-' . $i . '-' . $j;

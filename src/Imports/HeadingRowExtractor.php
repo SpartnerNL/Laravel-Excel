@@ -16,20 +16,14 @@ class HeadingRowExtractor
      */
     public const DEFAULT_HEADING_ROW = 1;
 
-    /**
-     * @param  WithHeadingRow|mixed  $importable
-     */
-    public static function headingRow($importable): int
+    public static function headingRow(mixed $importable): int
     {
         return method_exists($importable, 'headingRow')
             ? $importable->headingRow()
             : self::DEFAULT_HEADING_ROW;
     }
 
-    /**
-     * @param  WithHeadingRow|mixed  $importable
-     */
-    public static function determineStartRow($importable): int
+    public static function determineStartRow(mixed $importable): int
     {
         if ($importable instanceof WithStartRow) {
             return $importable->startRow();
@@ -41,10 +35,7 @@ class HeadingRowExtractor
             : self::DEFAULT_HEADING_ROW;
     }
 
-    /**
-     * @param  WithHeadingRow|mixed  $importable
-     */
-    public static function extract(Worksheet $worksheet, $importable): array
+    public static function extract(Worksheet $worksheet, mixed $importable): array
     {
         if (!$importable instanceof WithHeadingRow) {
             return [];
@@ -58,12 +49,7 @@ class HeadingRowExtractor
         return HeadingRowFormatter::format((new Row($headingRow))->toArray(null, false, false, $endColumn));
     }
 
-    /**
-     * @param  array  $headingRow
-     * @param  WithGroupedHeadingRow|mixed  $importable
-     * @return array
-     */
-    public static function extractGrouping($headingRow, $importable)
+    public static function extractGrouping(array $headingRow, mixed $importable): array
     {
         $headerIsGrouped = array_fill(0, count($headingRow), false);
 

@@ -4,15 +4,9 @@ namespace Maatwebsite\Excel;
 
 trait HasEventBus
 {
-    /**
-     * @var array
-     */
-    protected static $globalEvents = [];
+    protected static array $globalEvents = [];
 
-    /**
-     * @var array
-     */
-    protected $events = [];
+    protected array $events = [];
 
     /**
      * Register local event listeners.
@@ -37,10 +31,7 @@ trait HasEventBus
         static::$globalEvents[$event][] = $listener;
     }
 
-    /**
-     * @param  object  $event
-     */
-    public function raise($event): void
+    public function raise(object $event): void
     {
         foreach ($this->listeners($event) as $listener) {
             $listener($event);
@@ -48,10 +39,9 @@ trait HasEventBus
     }
 
     /**
-     * @param  object  $event
      * @return callable[]
      */
-    public function listeners($event): array
+    public function listeners(object $event): array
     {
         $name = $event::class;
 

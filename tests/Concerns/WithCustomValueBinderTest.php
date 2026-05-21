@@ -24,10 +24,7 @@ class WithCustomValueBinderTest extends TestCase
         {
             use Exportable;
 
-            /**
-             * @return Collection
-             */
-            public function collection()
+            public function collection(): Collection
             {
                 return collect([
                     [Carbon::now(), '10%'],

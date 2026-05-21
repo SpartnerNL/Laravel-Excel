@@ -17,43 +17,18 @@ class AppendViewToSheet implements ShouldQueue
 {
     use Batchable, Dispatchable, InteractsWithQueue, Queueable;
 
-    /**
-     * @var TemporaryFile
-     */
-    public $temporaryFile;
-
-    /**
-     * @var string
-     */
-    public $writerType;
-
-    /**
-     * @var int
-     */
-    public $sheetIndex;
-
-    /**
-     * @var FromView
-     */
-    public $sheetExport;
-
-    /**
-     * @param  array  $data
-     */
-    public function __construct(FromView $sheetExport, TemporaryFile $temporaryFile, string $writerType, int $sheetIndex)
-    {
-        $this->sheetExport   = $sheetExport;
-        $this->temporaryFile = $temporaryFile;
-        $this->writerType    = $writerType;
-        $this->sheetIndex    = $sheetIndex;
+    public function __construct(
+        public FromView $sheetExport,
+        public TemporaryFile $temporaryFile,
+        public string $writerType,
+        public int $sheetIndex,
+    ) {
     }
 
     /**
      * Get the middleware the job should be dispatched through.
-     *
-     * @return array
      */
-    public function middleware()
+    public function middleware(): array
     {
         return (method_exists($this->sheetExport, 'middleware')) ? $this->sheetExport->middleware() : [];
     }

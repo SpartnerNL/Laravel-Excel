@@ -154,7 +154,7 @@ class QueuedImportTest extends TestCase
     public function test_can_automatically_delete_temp_file_on_failure_when_using_remote_disk(): void
     {
         config()->set('excel.temporary_files.remote_disk', 'test');
-        $tempFile = '';
+        $tempFile = null;
 
         Queue::exceptionOccurred(function (JobExceptionOccurred $event) use (&$tempFile): void {
             if ($event->job->resolveName() === ReadChunk::class) {
@@ -168,13 +168,13 @@ class QueuedImportTest extends TestCase
             $this->assertEquals('Something went wrong in the chunk', $e->getMessage());
         }
 
-        $this->assertFalse($tempFile->existsLocally());
-        $this->assertTrue($tempFile->exists());
+        $this->assertFalse($tempFile?->existsLocally());
+        $this->assertTrue($tempFile?->exists());
     }
 
     public function test_cannot_automatically_delete_temp_file_on_failure_when_using_local_disk(): void
     {
-        $tempFile = '';
+        $tempFile = null;
 
         Queue::exceptionOccurred(function (JobExceptionOccurred $event) use (&$tempFile): void {
             if ($event->job->resolveName() === ReadChunk::class) {
@@ -188,7 +188,7 @@ class QueuedImportTest extends TestCase
             $this->assertEquals('Something went wrong in the chunk', $e->getMessage());
         }
 
-        $this->assertTrue($tempFile->exists());
+        $this->assertTrue($tempFile?->exists());
     }
 
     public function test_can_force_remote_download_and_deletion_for_each_chunk_on_queue(): void

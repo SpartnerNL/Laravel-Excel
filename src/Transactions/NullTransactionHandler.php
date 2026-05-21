@@ -4,10 +4,7 @@ namespace Maatwebsite\Excel\Transactions;
 
 class NullTransactionHandler implements TransactionHandler
 {
-    /**
-     * @return mixed
-     */
-    public function __invoke(callable $callback)
+    public function __invoke(callable $callback): mixed
     {
         return $callback();
     }

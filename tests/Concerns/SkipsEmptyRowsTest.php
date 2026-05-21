@@ -72,7 +72,7 @@ class SkipsEmptyRowsTest extends TestCase
             /**
              * @return Model|Model[]|null
              */
-            public function model(array $row)
+            public function model(array $row): Model|array|null
             {
                 $this->rows++;
 
@@ -121,9 +121,11 @@ class SkipsEmptyRowsTest extends TestCase
 
             public $called = false;
 
-            public function model(array $row): void
+            public function model(array $row): null
             {
                 Assert::assertEquals('Not empty', $row[0]);
+
+                return null;
             }
 
             public function isEmptyWhen(array $row): bool

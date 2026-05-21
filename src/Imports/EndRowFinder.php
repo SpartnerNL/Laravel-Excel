@@ -6,11 +6,7 @@ use Maatwebsite\Excel\Concerns\WithLimit;
 
 class EndRowFinder
 {
-    /**
-     * @param  object|WithLimit  $import
-     * @return int|null
-     */
-    public static function find($import, ?int $startRow = null, ?int $highestRow = null)
+    public static function find(?object $import, ?int $startRow = null, ?int $highestRow = null): ?int
     {
         if (!$import instanceof WithLimit) {
             return null;

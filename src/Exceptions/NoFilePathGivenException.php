@@ -7,30 +7,20 @@ use Throwable;
 
 class NoFilePathGivenException extends InvalidArgumentException implements LaravelExcelException
 {
-    /**
-     * @param  string  $message
-     * @param  int  $code
-     */
     final public function __construct(
-        $message = 'A filepath needs to be passed.',
-        $code = 0,
+        string $message = 'A filepath needs to be passed.',
+        int $code = 0,
         ?Throwable $previous = null
     ) {
         parent::__construct($message, $code, $previous);
     }
 
-    /**
-     * @return NoFilePathGivenException
-     */
-    public static function import()
+    public static function import(): NoFilePathGivenException
     {
         return new static('A filepath or UploadedFile needs to be passed to start the import.');
     }
 
-    /**
-     * @return NoFilePathGivenException
-     */
-    public static function export()
+    public static function export(): NoFilePathGivenException
     {
         return new static('A filepath needs to be passed in order to store the export.');
     }

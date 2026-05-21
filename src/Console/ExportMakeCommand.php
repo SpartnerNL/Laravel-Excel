@@ -32,10 +32,8 @@ class ExportMakeCommand extends GeneratorCommand
 
     /**
      * Get the stub file for the generator.
-     *
-     * @return string
      */
-    protected function getStub()
+    protected function getStub(): string
     {
         if ($this->option('model') && $this->option('query')) {
             return $this->resolveStubPath('/stubs/export.query-model.stub');

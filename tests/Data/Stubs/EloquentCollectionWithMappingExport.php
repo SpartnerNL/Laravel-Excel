@@ -2,20 +2,20 @@
 
 namespace Maatwebsite\Excel\Tests\Data\Stubs;
 
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
 
+/**
+ * @implements WithMapping<User>
+ */
 class EloquentCollectionWithMappingExport implements FromCollection, WithMapping
 {
     use Exportable;
 
-    /**
-     * @return Collection
-     */
-    public function collection()
+    public function collection(): Collection
     {
         return collect([
             new User([
@@ -25,9 +25,6 @@ class EloquentCollectionWithMappingExport implements FromCollection, WithMapping
         ]);
     }
 
-    /**
-     * @param  User  $user
-     */
     public function map($user): array
     {
         return [

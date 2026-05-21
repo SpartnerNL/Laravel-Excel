@@ -6,8 +6,11 @@ use Maatwebsite\Excel\Sheet;
 
 class AfterChunk extends Event
 {
-    public function __construct(private Sheet $sheet, $importable, private int $startRow)
-    {
+    public function __construct(
+        private Sheet $sheet,
+        $importable,
+        private int $startRow,
+    ) {
         parent::__construct($importable);
     }
 
@@ -16,7 +19,7 @@ class AfterChunk extends Event
         return $this->sheet;
     }
 
-    public function getDelegate()
+    public function getDelegate(): mixed
     {
         return $this->sheet;
     }

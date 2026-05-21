@@ -14,22 +14,22 @@ class ExportWithEvents implements WithEvents
     use Exportable;
 
     /**
-     * @var callable
+     * @var ?callable
      */
     public $beforeExport;
 
     /**
-     * @var callable
+     * @var ?callable
      */
     public $beforeWriting;
 
     /**
-     * @var callable
+     * @var ?callable
      */
     public $beforeSheet;
 
     /**
-     * @var callable
+     * @var ?callable
      */
     public $afterSheet;
 

@@ -41,10 +41,7 @@ class WithValidationTest extends TestCase
         {
             use Importable;
 
-            /**
-             * @return Model|null
-             */
-            public function model(array $row)
+            public function model(array $row): ?Model
             {
                 return new User([
                     'name'     => $row[0],
@@ -63,6 +60,7 @@ class WithValidationTest extends TestCase
 
         try {
             $import->import('import-users.xlsx');
+            static::fail();
         } catch (ValidationException $e) {
             $this->validateFailure($e, 2, '1', [
                 'The selected 1(field)? is invalid.',
@@ -73,8 +71,6 @@ class WithValidationTest extends TestCase
                 $e->errors()[0][0]
             );
         }
-
-        $this->assertInstanceOf(ValidationException::class, $e ?? null);
     }
 
     public function test_can_validate_rows_with_closure_validation_rules(): void
@@ -83,10 +79,7 @@ class WithValidationTest extends TestCase
         {
             use Importable;
 
-            /**
-             * @return Model|null
-             */
-            public function model(array $row)
+            public function model(array $row): ?Model
             {
                 return new User([
                     'name'     => $row[0],
@@ -109,6 +102,7 @@ class WithValidationTest extends TestCase
 
         try {
             $import->import('import-users.xlsx');
+            static::fail();
         } catch (ValidationException $e) {
             $this->validateFailure($e, 2, '1', [
                 'Value in column 1 is not an allowed e-mail.',
@@ -119,8 +113,6 @@ class WithValidationTest extends TestCase
                 $e->errors()[0][0]
             );
         }
-
-        $this->assertInstanceOf(ValidationException::class, $e ?? null);
     }
 
     public function test_can_validate_rows_with_custom_validation_rule_objects(): void
@@ -129,10 +121,7 @@ class WithValidationTest extends TestCase
         {
             use Importable;
 
-            /**
-             * @return Model|null
-             */
-            public function model(array $row)
+            public function model(array $row): ?Model
             {
                 return new User([
                     'name'     => $row[0],
@@ -148,20 +137,16 @@ class WithValidationTest extends TestCase
                     {
                         /**
                          * @param  string  $attribute
-                         * @param  mixed  $value
-                         * @return bool
                          */
-                        public function passes($attribute, $value)
+                        public function passes($attribute, mixed $value): bool
                         {
                             return $value === 'patrick@maatwebsite.nl';
                         }
 
                         /**
                          * Get the validation error message.
-                         *
-                         * @return string|array
                          */
-                        public function message()
+                        public function message(): string|array
                         {
                             return 'Value is not an allowed e-mail.';
                         }
@@ -172,6 +157,7 @@ class WithValidationTest extends TestCase
 
         try {
             $import->import('import-users.xlsx');
+            static::fail();
         } catch (ValidationException $e) {
             $this->validateFailure($e, 2, '1', [
                 'Value is not an allowed e-mail.',
@@ -182,8 +168,6 @@ class WithValidationTest extends TestCase
                 $e->errors()[0][0]
             );
         }
-
-        $this->assertInstanceOf(ValidationException::class, $e ?? null);
     }
 
     public function test_can_validate_rows_with_conditionality(): void
@@ -192,10 +176,7 @@ class WithValidationTest extends TestCase
         {
             use Importable;
 
-            /**
-             * @return Model|null
-             */
-            public function model(array $row)
+            public function model(array $row): ?Model
             {
                 return new User([
                     'name'     => $row[0],
@@ -214,13 +195,12 @@ class WithValidationTest extends TestCase
 
         try {
             $import->import('import-users.xlsx');
+            static::fail();
         } catch (ValidationException $e) {
             $this->validateFailure($e, 1, 'conditional_required_column', [
                 'The conditional_required_column field is required when 1.1 is patrick@maatwebsite.nl.',
             ]);
         }
-
-        $this->assertInstanceOf(ValidationException::class, $e ?? null);
     }
 
     public function test_can_validate_rows_with_unless_conditionality(): void
@@ -229,10 +209,7 @@ class WithValidationTest extends TestCase
         {
             use Importable;
 
-            /**
-             * @return Model|null
-             */
-            public function model(array $row)
+            public function model(array $row): ?Model
             {
                 return new User([
                     'name'     => $row[0],
@@ -251,13 +228,12 @@ class WithValidationTest extends TestCase
 
         try {
             $import->import('import-users.xlsx');
+            static::fail();
         } catch (ValidationException $e) {
             $this->validateFailure($e, 2, 'conditional_required_unless_column', [
                 'The conditional_required_unless_column field is required unless 2.1 is in patrick@maatwebsite.nl.',
             ]);
         }
-
-        $this->assertInstanceOf(ValidationException::class, $e ?? null);
     }
 
     public function test_can_validate_rows_with_combined_rules_with_colons(): void
@@ -266,10 +242,7 @@ class WithValidationTest extends TestCase
         {
             use Importable;
 
-            /**
-             * @return Model|null
-             */
-            public function model(array $row)
+            public function model(array $row): ?Model
             {
                 return new User([
                     'name'     => $row[0],
@@ -294,13 +267,12 @@ class WithValidationTest extends TestCase
 
         try {
             $import->import('import-users.xlsx');
+            static::fail();
         } catch (ValidationException $e) {
             $this->validateFailure($e, 1, '1', [
                 'The 1 has already been taken.',
             ]);
         }
-
-        $this->assertInstanceOf(ValidationException::class, $e ?? null);
     }
 
     public function test_can_validate_with_custom_attributes(): void
@@ -309,10 +281,7 @@ class WithValidationTest extends TestCase
         {
             use Importable;
 
-            /**
-             * @return Model|null
-             */
-            public function model(array $row)
+            public function model(array $row): ?Model
             {
                 return new User([
                     'name'     => $row[0],
@@ -328,10 +297,7 @@ class WithValidationTest extends TestCase
                 ];
             }
 
-            /**
-             * @return array
-             */
-            public function customValidationAttributes()
+            public function customValidationAttributes(): array
             {
                 return ['1' => 'email'];
             }
@@ -339,13 +305,12 @@ class WithValidationTest extends TestCase
 
         try {
             $import->import('import-users.xlsx');
+            static::fail();
         } catch (ValidationException $e) {
             $this->validateFailure($e, 2, 'email', [
                 'The selected email is invalid.',
             ]);
         }
-
-        $this->assertInstanceOf(ValidationException::class, $e ?? null);
     }
 
     public function test_can_validate_with_custom_attributes_pointing_to_another_attribute(): void
@@ -354,10 +319,7 @@ class WithValidationTest extends TestCase
         {
             use Importable;
 
-            /**
-             * @return Model|null
-             */
-            public function model(array $row)
+            public function model(array $row): ?Model
             {
                 return new User([
                     'name'     => $row[0],
@@ -374,10 +336,7 @@ class WithValidationTest extends TestCase
                 ];
             }
 
-            /**
-             * @return array
-             */
-            public function customValidationAttributes()
+            public function customValidationAttributes(): array
             {
                 return ['1' => 'email', '2' => 'password'];
             }
@@ -385,13 +344,12 @@ class WithValidationTest extends TestCase
 
         try {
             $import->import('import-users.xlsx');
+            static::fail();
         } catch (ValidationException $e) {
             $this->validateFailure($e, 1, 'password', [
                 'The password field is required when email is present.',
             ]);
         }
-
-        $this->assertInstanceOf(ValidationException::class, $e ?? null);
     }
 
     public function test_can_validate_with_custom_message(): void
@@ -400,10 +358,7 @@ class WithValidationTest extends TestCase
         {
             use Importable;
 
-            /**
-             * @return Model|null
-             */
-            public function model(array $row)
+            public function model(array $row): ?Model
             {
                 return new User([
                     'name'     => $row[0],
@@ -419,10 +374,7 @@ class WithValidationTest extends TestCase
                 ];
             }
 
-            /**
-             * @return array
-             */
-            public function customValidationMessages()
+            public function customValidationMessages(): array
             {
                 return [
                     '1.in' => 'Custom message for :attribute.',
@@ -432,13 +384,12 @@ class WithValidationTest extends TestCase
 
         try {
             $import->import('import-users.xlsx');
+            static::fail();
         } catch (ValidationException $e) {
             $this->validateFailure($e, 2, '1', [
                 'Custom message for 1.',
             ]);
         }
-
-        $this->assertInstanceOf(ValidationException::class, $e ?? null);
     }
 
     public function test_can_validate_rows_with_headings(): void
@@ -447,10 +398,7 @@ class WithValidationTest extends TestCase
         {
             use Importable;
 
-            /**
-             * @return Model|null
-             */
-            public function model(array $row)
+            public function model(array $row): ?Model
             {
                 return new User([
                     'name'     => $row['name'],
@@ -469,13 +417,12 @@ class WithValidationTest extends TestCase
 
         try {
             $import->import('import-users-with-headings.xlsx');
+            static::fail();
         } catch (ValidationException $e) {
             $this->validateFailure($e, 3, 'email', [
                 'The selected email is invalid.',
             ]);
         }
-
-        $this->assertInstanceOf(ValidationException::class, $e ?? null);
     }
 
     public function test_can_validate_rows_with_grouped_headings(): void
@@ -486,10 +433,8 @@ class WithValidationTest extends TestCase
 
             /**
              * Prepare the data for validation.
-             *
-             * @return array
              */
-            public function prepareForValidation(array $row, int $index)
+            public function prepareForValidation(array $row, int $index): array
             {
                 if ($index === 2) {
                     Assert::assertIsArray($row['options']);
@@ -499,10 +444,7 @@ class WithValidationTest extends TestCase
                 return $row;
             }
 
-            /**
-             * @return Model|null
-             */
-            public function model(array $row)
+            public function model(array $row): ?Model
             {
                 return new User([
                     'name'     => $row['name'],
@@ -522,13 +464,12 @@ class WithValidationTest extends TestCase
 
         try {
             $import->import('import-users-with-grouped-headers.xlsx');
+            static::fail();
         } catch (ValidationException $e) {
             $this->validateFailure($e, 2, 'options', [
                 'The options( field)? must be an array.',
             ]);
         }
-
-        $this->assertInstanceOf(ValidationException::class, $e ?? null);
     }
 
     public function test_can_validate_rows_in_batches(): void
@@ -537,10 +478,7 @@ class WithValidationTest extends TestCase
         {
             use Importable;
 
-            /**
-             * @return Model|null
-             */
-            public function model(array $row)
+            public function model(array $row): ?Model
             {
                 return new User([
                     'name'     => $row['name'],
@@ -564,13 +502,12 @@ class WithValidationTest extends TestCase
 
         try {
             $import->import('import-users-with-headings.xlsx');
+            static::fail();
         } catch (ValidationException $e) {
             $this->validateFailure($e, 3, 'email', [
                 'The selected email is invalid.',
             ]);
         }
-
-        $this->assertInstanceOf(ValidationException::class, $e ?? null);
     }
 
     public function test_can_validate_using_oneachrow(): void
@@ -579,10 +516,7 @@ class WithValidationTest extends TestCase
         {
             use Importable;
 
-            /**
-             * @return Model|null
-             */
-            public function onRow(Row $row)
+            public function onRow(Row $row): ?Model
             {
                 $values = $row->toArray();
 
@@ -603,13 +537,12 @@ class WithValidationTest extends TestCase
 
         try {
             $import->import('import-users-with-headings.xlsx');
+            static::fail();
         } catch (ValidationException $e) {
             $this->validateFailure($e, 3, 'email', [
                 'The selected email is invalid.',
             ]);
         }
-
-        $this->assertInstanceOf(ValidationException::class, $e ?? null);
     }
 
     public function test_can_validate_using_collection(): void
@@ -633,13 +566,12 @@ class WithValidationTest extends TestCase
 
         try {
             $import->import('import-users-with-headings.xlsx');
+            static::fail();
         } catch (ValidationException $e) {
             $this->validateFailure($e, 3, 'email', [
                 'The selected email is invalid.',
             ]);
         }
-
-        $this->assertInstanceOf(ValidationException::class, $e ?? null);
     }
 
     public function test_can_validate_using_array(): void
@@ -663,13 +595,12 @@ class WithValidationTest extends TestCase
 
         try {
             $import->import('import-users-with-headings.xlsx');
+            static::fail();
         } catch (ValidationException $e) {
             $this->validateFailure($e, 3, 'email', [
                 'The selected email is invalid.',
             ]);
         }
-
-        $this->assertInstanceOf(ValidationException::class, $e ?? null);
     }
 
     public function test_can_configure_validator(): void
@@ -678,10 +609,7 @@ class WithValidationTest extends TestCase
         {
             use Importable;
 
-            /**
-             * @return Model|null
-             */
-            public function model(array $row)
+            public function model(array $row): ?Model
             {
                 return new User([
                     'name'     => $row[0],
@@ -710,6 +638,7 @@ class WithValidationTest extends TestCase
 
         try {
             $import->import('import-users.xlsx');
+            static::fail();
         } catch (ValidationException $e) {
             $this->validateFailure($e, 2, '1', [
                 'The selected 1 is invalid.',
@@ -720,8 +649,6 @@ class WithValidationTest extends TestCase
                 $e->errors()[0][0]
             );
         }
-
-        $this->assertInstanceOf(ValidationException::class, $e ?? null);
     }
 
     public function test_can_prepare_using_toarray(): void
@@ -739,10 +666,8 @@ class WithValidationTest extends TestCase
 
             /**
              * Prepare the data for validation.
-             *
-             * @return array
              */
-            public function prepareForValidation(array $row, int $index)
+            public function prepareForValidation(array $row, int $index): array
             {
                 if ($index === 2) {
                     $row[1] = 'not an email';
@@ -751,10 +676,7 @@ class WithValidationTest extends TestCase
                 return $row;
             }
 
-            /**
-             * @return array
-             */
-            public function array(array $array)
+            public function array(array $array): array
             {
                 return [];
             }
@@ -762,6 +684,7 @@ class WithValidationTest extends TestCase
 
         try {
             $import->import('import-users.xlsx');
+            static::fail();
         } catch (ValidationException $e) {
             $this->validateFailure($e, 2, '1', [
                 'The 1( field)? must be a valid email address.',
@@ -772,8 +695,6 @@ class WithValidationTest extends TestCase
                 $e->errors()[0][0]
             );
         }
-
-        $this->assertInstanceOf(ValidationException::class, $e ?? null);
     }
 
     public function test_can_prepare_using_tocollection(): void
@@ -791,10 +712,8 @@ class WithValidationTest extends TestCase
 
             /**
              * Prepare the data for validation.
-             *
-             * @return array
              */
-            public function prepareForValidation(array $row, int $index)
+            public function prepareForValidation(array $row, int $index): array
             {
                 if ($index === 2) {
                     $row[1] = 'not an email';
@@ -803,10 +722,7 @@ class WithValidationTest extends TestCase
                 return $row;
             }
 
-            /**
-             * @return mixed
-             */
-            public function collection(Collection $collection)
+            public function collection(Collection $collection): mixed
             {
                 return collect();
             }
@@ -814,6 +730,7 @@ class WithValidationTest extends TestCase
 
         try {
             $import->import('import-users.xlsx');
+            static::fail();
         } catch (ValidationException $e) {
             $this->validateFailure($e, 2, '1', [
                 'The 1( field)? must be a valid email address.',
@@ -824,8 +741,6 @@ class WithValidationTest extends TestCase
                 $e->errors()[0][0]
             );
         }
-
-        $this->assertInstanceOf(ValidationException::class, $e ?? null);
     }
 
     public function test_can_prepare_using_tomodel(): void
@@ -843,10 +758,8 @@ class WithValidationTest extends TestCase
 
             /**
              * Prepare the data for validation.
-             *
-             * @return array
              */
-            public function prepareForValidation(array $row, int $index)
+            public function prepareForValidation(array $row, int $index): array
             {
                 if ($index === 2) {
                     $row[1] = 'not an email';
@@ -858,7 +771,7 @@ class WithValidationTest extends TestCase
             /**
              * @return Model|Model[]|null
              */
-            public function model(array $row)
+            public function model(array $row): Model|array|null
             {
                 return new User([
                     'name'     => $row[0],
@@ -870,6 +783,7 @@ class WithValidationTest extends TestCase
 
         try {
             $import->import('import-users.xlsx');
+            static::fail();
         } catch (ValidationException $e) {
             $this->validateFailure($e, 2, '1', [
                 'The 1( field)? must be a valid email address.',
@@ -880,8 +794,6 @@ class WithValidationTest extends TestCase
                 $e->errors()[0][0]
             );
         }
-
-        $this->assertInstanceOf(ValidationException::class, $e ?? null);
     }
 
     public function test_can_prepare_using_oneachrow(): void
@@ -899,10 +811,8 @@ class WithValidationTest extends TestCase
 
             /**
              * Prepare the data for validation.
-             *
-             * @return array
              */
-            public function prepareForValidation(array $row, int $index)
+            public function prepareForValidation(array $row, int $index): array
             {
                 if ($index === 2) {
                     $row[1] = 'not an email';
@@ -923,6 +833,7 @@ class WithValidationTest extends TestCase
 
         try {
             $import->import('import-users.xlsx');
+            static::fail();
         } catch (ValidationException $e) {
             $this->validateFailure($e, 2, '1', [
                 'The 1( field)? must be a valid email address.',
@@ -933,8 +844,6 @@ class WithValidationTest extends TestCase
                 $e->errors()[0][0]
             );
         }
-
-        $this->assertInstanceOf(ValidationException::class, $e ?? null);
     }
 
     public function test_can_prepare_using_skipsemptyrows(): void
@@ -952,10 +861,8 @@ class WithValidationTest extends TestCase
 
             /**
              * Prepare the data for validation.
-             *
-             * @return array
              */
-            public function prepareForValidation(array $row, int $index)
+            public function prepareForValidation(array $row, int $index): array
             {
                 if ($index === 2) {
                     $row[1] = 'not an email';
@@ -976,6 +883,7 @@ class WithValidationTest extends TestCase
 
         try {
             $import->import('import-users.xlsx');
+            static::fail();
         } catch (ValidationException $e) {
             $this->validateFailure($e, 2, '1', [
                 'The 1( field)? must be a valid email address.',
@@ -986,8 +894,6 @@ class WithValidationTest extends TestCase
                 $e->errors()[0][0]
             );
         }
-
-        $this->assertInstanceOf(ValidationException::class, $e ?? null);
     }
 
     private function validateFailure(ValidationException $e, int $row, string $attribute, array $messages): void

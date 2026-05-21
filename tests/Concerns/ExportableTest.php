@@ -73,7 +73,10 @@ class ExportableTest extends TestCase
         {
             use Exportable;
 
-            protected $fileName = 'export.xlsx';
+            public function __construct()
+            {
+                $this->fileName = 'export.xlsx';
+            }
         };
 
         $this->assertInstanceOf(Responsable::class, $export);
@@ -105,13 +108,12 @@ class ExportableTest extends TestCase
         {
             use Exportable;
 
-            protected $fileName = 'name.csv';
-
-            protected $writerType = Excel::CSV;
-
-            protected $headers = [
-                'Content-Type' => 'text/csv',
-            ];
+            public function __construct()
+            {
+                $this->fileName   = 'name.csv';
+                $this->writerType = Excel::CSV;
+                $this->headers    = ['Content-Type' => 'text/csv'];
+            }
         };
         $response = $export->toResponse(request());
 
@@ -155,11 +157,12 @@ class ExportableTest extends TestCase
         {
             use Exportable;
 
-            public $disk = 's3';
-
-            public $writerType = Excel::CSV;
-
-            public $diskOptions = ['visibility' => 'private'];
+            public function __construct()
+            {
+                $this->disk        = 's3';
+                $this->writerType  = Excel::CSV;
+                $this->diskOptions = ['visibility' => 'private'];
+            }
         };
 
         $this->mock(Exporter::class)
@@ -175,11 +178,12 @@ class ExportableTest extends TestCase
         {
             use Exportable;
 
-            public $disk = 's3';
-
-            public $writerType = Excel::CSV;
-
-            public $diskOptions = ['visibility' => 'private'];
+            public function __construct()
+            {
+                $this->disk        = 's3';
+                $this->writerType  = Excel::CSV;
+                $this->diskOptions = ['visibility' => 'private'];
+            }
         };
 
         $this->mock(Exporter::class)
@@ -195,7 +199,10 @@ class ExportableTest extends TestCase
         {
             use Exportable;
 
-            public $diskOptions = ['visibility' => 'public'];
+            public function __construct()
+            {
+                $this->diskOptions = ['visibility' => 'public'];
+            }
         };
 
         $this->mock(Exporter::class)
@@ -211,7 +218,10 @@ class ExportableTest extends TestCase
         {
             use Exportable;
 
-            public $diskOptions = ['visibility' => 'public'];
+            public function __construct()
+            {
+                $this->diskOptions = ['visibility' => 'public'];
+            }
         };
 
         $this->mock(Exporter::class)

@@ -15,10 +15,7 @@ class FromUsersQueryExportWithPrepareRows implements FromQuery, WithCustomChunkS
 {
     use Exportable;
 
-    /**
-     * @return Builder|EloquentBuilder|Relation
-     */
-    public function query()
+    public function query(): Builder|EloquentBuilder|Relation
     {
         return User::query();
     }
@@ -30,9 +27,8 @@ class FromUsersQueryExportWithPrepareRows implements FromQuery, WithCustomChunkS
 
     /**
      * @param  iterable  $rows
-     * @return iterable
      */
-    public function prepareRows($rows)
+    public function prepareRows($rows): iterable
     {
         return (new Collection($rows))->map(function ($user) {
             $user->name .= '_prepared_name';

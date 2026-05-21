@@ -16,10 +16,7 @@ class FromUsersQueryExportWithMapping implements FromQuery, WithEvents, WithMapp
 {
     use Exportable;
 
-    /**
-     * @return Builder|EloquentBuilder|Relation
-     */
-    public function query()
+    public function query(): Builder|EloquentBuilder|Relation
     {
         return User::query();
     }
@@ -36,7 +33,7 @@ class FromUsersQueryExportWithMapping implements FromQuery, WithEvents, WithMapp
     /**
      * @param  User  $row
      */
-    public function map($row): array
+    public function map(mixed $row): array
     {
         return [
             'name' => $row->name,

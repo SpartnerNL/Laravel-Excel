@@ -15,9 +15,6 @@ class FromGeneratorTest extends TestCase
         {
             use Exportable;
 
-            /**
-             * @return Generator;
-             */
             public function generator(): Generator
             {
                 for ($i = 1; $i <= 2; $i++) {

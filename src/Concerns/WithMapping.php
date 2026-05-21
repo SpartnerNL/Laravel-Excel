@@ -9,6 +9,7 @@ interface WithMapping
 {
     /**
      * @param  RowType  $row
+     * @return array<mixed>
      */
-    public function map($row): array;
+    public function map(mixed $row): array;
 }

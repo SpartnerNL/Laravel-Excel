@@ -13,10 +13,7 @@ use PHPUnit\Framework\Assert;
 
 class WithCustomCsvSettingsTest extends TestCase
 {
-    /**
-     * @var Excel
-     */
-    protected $SUT;
+    protected Excel $SUT;
 
     protected function setUp(): void
     {
@@ -29,10 +26,7 @@ class WithCustomCsvSettingsTest extends TestCase
     {
         $export = new class implements FromCollection, WithCustomCsvSettings
         {
-            /**
-             * @return Collection
-             */
-            public function collection()
+            public function collection(): Collection
             {
                 return collect([
                     ['A1', 'B1'],
@@ -68,10 +62,7 @@ class WithCustomCsvSettingsTest extends TestCase
     {
         $export = new class implements FromCollection, WithCustomCsvSettings
         {
-            /**
-             * @return Collection
-             */
-            public function collection()
+            public function collection(): Collection
             {
                 return collect([
                     ['A1', '€ŠšŽžŒœŸ'],

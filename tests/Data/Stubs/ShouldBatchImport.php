@@ -15,10 +15,7 @@ class ShouldBatchImport implements ShouldBatch, ShouldQueue, ToModel, WithBatchI
 {
     use Importable;
 
-    /**
-     * @return Model|null
-     */
-    public function model(array $row)
+    public function model(array $row): ?Model
     {
         return new Group([
             'name' => $row[0],

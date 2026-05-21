@@ -6,60 +6,27 @@ use Illuminate\Support\Arr;
 
 trait MapsCsvSettings
 {
-    /**
-     * @var string
-     */
-    protected static $delimiter = ',';
+    protected static ?string $delimiter = ',';
 
-    /**
-     * @var string
-     */
-    protected static $enclosure = '"';
+    protected static string $enclosure = '"';
 
-    /**
-     * @var string
-     */
-    protected static $lineEnding = PHP_EOL;
+    protected static string $lineEnding = PHP_EOL;
 
-    /**
-     * @var bool
-     */
-    protected static $useBom = false;
+    protected static bool $useBom = false;
 
-    /**
-     * @var bool
-     */
-    protected static $includeSeparatorLine = false;
+    protected static bool $includeSeparatorLine = false;
 
-    /**
-     * @var bool
-     */
-    protected static $excelCompatibility = false;
+    protected static bool $excelCompatibility = false;
 
-    /**
-     * @var string
-     */
-    protected static $escapeCharacter = '\\';
+    protected static string $escapeCharacter = '\\';
 
-    /**
-     * @var bool
-     */
-    protected static $contiguous = false;
+    protected static bool $contiguous = false;
 
-    /**
-     * @var string
-     */
-    protected static $inputEncoding = 'UTF-8';
+    protected static string $inputEncoding = 'UTF-8';
 
-    /**
-     * @var string
-     */
-    protected static $outputEncoding = '';
+    protected static string $outputEncoding = '';
 
-    /**
-     * @var bool
-     */
-    protected static $testAutoDetect = true;
+    protected static bool $testAutoDetect = true;
 
     public static function applyCsvSettings(array $config): void
     {

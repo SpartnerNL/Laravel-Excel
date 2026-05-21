@@ -14,16 +14,15 @@ class Cell
 {
     use DelegatedMacroable;
 
-    final public function __construct(private SpreadsheetCell $cell)
-    {
+    final public function __construct(
+        private SpreadsheetCell $cell,
+    ) {
     }
 
     /**
-     * @return Cell
-     *
      * @throws \PhpOffice\PhpSpreadsheet\Exception
      */
-    public static function make(Worksheet $worksheet, string $coordinate)
+    public static function make(Worksheet $worksheet, string $coordinate): Cell
     {
         return new static($worksheet->getCell($coordinate));
     }
@@ -33,13 +32,7 @@ class Cell
         return $this->cell;
     }
 
-    /**
-     * @param  null  $nullValue
-     * @param  bool  $calculateFormulas
-     * @param  bool  $formatData
-     * @return mixed
-     */
-    public function getValue($nullValue = null, $calculateFormulas = false, $formatData = true)
+    public function getValue(mixed $nullValue = null, bool $calculateFormulas = false, bool $formatData = true): mixed
     {
         $value = $nullValue;
         if ($this->cell->getValue() !== null) {

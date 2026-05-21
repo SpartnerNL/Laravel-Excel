@@ -4,16 +4,12 @@ namespace Maatwebsite\Excel\Concerns;
 
 trait WithConditionalSheets
 {
-    /**
-     * @var array
-     */
-    protected $conditionallySelectedSheets = [];
+    protected array $conditionallySelectedSheets = [];
 
     /**
-     * @param  string|array  $sheets
      * @return $this
      */
-    public function onlySheets($sheets)
+    public function onlySheets(string|array $sheets)
     {
         $this->conditionallySelectedSheets = is_array($sheets) ? $sheets : func_get_args();
 

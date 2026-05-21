@@ -4,8 +4,5 @@ namespace Maatwebsite\Excel\Concerns;
 
 interface SkipsUnknownSheets
 {
-    /**
-     * @param  string|int  $sheetName
-     */
-    public function onUnknownSheet($sheetName);
+    public function onUnknownSheet(string|int $sheetName);
 }

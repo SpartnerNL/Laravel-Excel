@@ -2,6 +2,7 @@
 
 namespace Maatwebsite\Excel\Tests\Concerns;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\SkipsEmptyRows;
@@ -87,11 +88,7 @@ class WithFormatDataTest extends TestCase
 
             public $called = false;
 
-            /**
-             * @param  array  $row
-             * @return Model|null
-             */
-            public function collection(Collection $collection)
+            public function collection(Collection $collection): ?Model
             {
                 $this->called = true;
 
@@ -115,11 +112,7 @@ class WithFormatDataTest extends TestCase
 
             public $called = false;
 
-            /**
-             * @param  array  $row
-             * @return Model|null
-             */
-            public function collection(Collection $collection)
+            public function collection(Collection $collection): ?Model
             {
                 $this->called = true;
 
@@ -142,10 +135,7 @@ class WithFormatDataTest extends TestCase
 
             public $called = false;
 
-            /**
-             * @return Model|null
-             */
-            public function model(array $row)
+            public function model(array $row): ?Model
             {
                 $this->called = true;
 
@@ -169,10 +159,7 @@ class WithFormatDataTest extends TestCase
 
             public $called = false;
 
-            /**
-             * @return Model|null
-             */
-            public function model(array $row)
+            public function model(array $row): ?Model
             {
                 $this->called = true;
 

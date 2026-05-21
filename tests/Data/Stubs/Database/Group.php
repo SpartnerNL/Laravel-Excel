@@ -7,6 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\Factories\GroupFactory;
 
+/**
+ * @property int $id
+ * @property string $name
+ * @property int $number_of_users
+ */
 class Group extends Model
 {
     use HasFactory;
@@ -15,6 +20,9 @@ class Group extends Model
 
     protected $guarded = [];
 
+    /**
+     * @return BelongsToMany<User, $this>
+     */
     public function users(): BelongsToMany
     {
         return $this->belongsToMany(User::class);

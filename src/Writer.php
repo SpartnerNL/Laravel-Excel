@@ -27,34 +27,20 @@ class Writer
 {
     use DelegatedMacroable, HasEventBus;
 
-    /**
-     * @var ?Spreadsheet
-     */
-    protected $spreadsheet = null;
+    protected ?Spreadsheet $spreadsheet = null;
 
-    /**
-     * @var object
-     */
-    protected $exportable;
+    protected object $exportable;
 
-    /**
-     * @var TemporaryFileFactory
-     */
-    protected $temporaryFileFactory;
-
-    public function __construct(TemporaryFileFactory $temporaryFileFactory)
-    {
-        $this->temporaryFileFactory = $temporaryFileFactory;
-
+    public function __construct(
+        protected TemporaryFileFactory $temporaryFileFactory,
+    ) {
         $this->setDefaultValueBinder();
     }
 
     /**
-     * @param  object  $export
-     *
      * @throws Exception
      */
-    public function export($export, string $writerType): TemporaryFile
+    public function export(object $export, string $writerType): TemporaryFile
     {
         $this->open($export);
 
@@ -71,10 +57,9 @@ class Writer
     }
 
     /**
-     * @param  object  $export
      * @return $this
      */
-    public function open($export)
+    public function open(object $export)
     {
         $this->exportable = $export;
 
@@ -124,11 +109,9 @@ class Writer
     }
 
     /**
-     * @return Writer
-     *
      * @throws \PhpOffice\PhpSpreadsheet\Reader\Exception
      */
-    public function reopen(TemporaryFile $tempFile, string $writerType)
+    public function reopen(TemporaryFile $tempFile, string $writerType): Writer
     {
         $reader            = IOFactory::createReader($writerType);
         $this->spreadsheet = $reader->load($tempFile->sync()->getLocalPath());
@@ -145,12 +128,10 @@ class Writer
     }
 
     /**
-     * @param  object  $export
-     *
      * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
      * @throws Exception
      */
-    public function write($export, TemporaryFile $temporaryFile, string $writerType): TemporaryFile
+    public function write(object $export, TemporaryFile $temporaryFile, string $writerType): TemporaryFile
     {
         $this->exportable = $export;
 
@@ -188,19 +169,14 @@ class Writer
     }
 
     /**
-     * @return Sheet
-     *
      * @throws Exception
      */
-    public function addNewSheet(?int $sheetIndex = null)
+    public function addNewSheet(?int $sheetIndex = null): Sheet
     {
         return new Sheet($this->spreadsheet->createSheet($sheetIndex));
     }
 
-    /**
-     * @return Spreadsheet
-     */
-    public function getDelegate()
+    public function getDelegate(): Spreadsheet
     {
         return $this->spreadsheet;
     }
@@ -218,27 +194,19 @@ class Writer
     }
 
     /**
-     * @return Sheet
-     *
      * @throws Exception
      */
-    public function getSheetByIndex(int $sheetIndex)
+    public function getSheetByIndex(int $sheetIndex): Sheet
     {
         return new Sheet($this->getDelegate()->getSheet($sheetIndex));
     }
 
-    /**
-     * @param  string  $concern
-     */
-    public function hasConcern($concern): bool
+    public function hasConcern(string $concern): bool
     {
         return $this->exportable instanceof $concern;
     }
 
-    /**
-     * @param  object  $export
-     */
-    protected function handleDocumentProperties($export): void
+    protected function handleDocumentProperties(object $export): void
     {
         $properties = config('excel.exports.properties', []);
 

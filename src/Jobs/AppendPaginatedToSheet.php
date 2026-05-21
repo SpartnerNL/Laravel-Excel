@@ -21,58 +21,20 @@ class AppendPaginatedToSheet implements ShouldQueue
 {
     use Batchable, Dispatchable, InteractsWithQueue, ProxyFailures, Queueable;
 
-    /**
-     * @var TemporaryFile
-     */
-    public $temporaryFile;
-
-    /**
-     * @var string
-     */
-    public $writerType;
-
-    /**
-     * @var int
-     */
-    public $sheetIndex;
-
-    /**
-     * @var FromQuery
-     */
-    public $sheetExport;
-
-    /**
-     * @var int
-     */
-    public $page;
-
-    /**
-     * @var int
-     */
-    public $perPage;
-
     public function __construct(
-        FromQuery $sheetExport,
-        TemporaryFile $temporaryFile,
-        string $writerType,
-        int $sheetIndex,
-        int $page,
-        int $perPage
+        public FromQuery $sheetExport,
+        public TemporaryFile $temporaryFile,
+        public string $writerType,
+        public int $sheetIndex,
+        public int $page,
+        public int $perPage,
     ) {
-        $this->sheetExport   = $sheetExport;
-        $this->temporaryFile = $temporaryFile;
-        $this->writerType    = $writerType;
-        $this->sheetIndex    = $sheetIndex;
-        $this->page          = $page;
-        $this->perPage       = $perPage;
     }
 
     /**
      * Get the middleware the job should be dispatched through.
-     *
-     * @return array
      */
-    public function middleware()
+    public function middleware(): array
     {
         return (method_exists($this->sheetExport, 'middleware')) ? $this->sheetExport->middleware() : [];
     }
@@ -99,10 +61,7 @@ class AppendPaginatedToSheet implements ShouldQueue
         });
     }
 
-    /**
-     * @param  Builder|Relation|EloquentBuilder|ScoutBuilder  $query
-     */
-    protected function chunk($query)
+    protected function chunk(Builder|Relation|EloquentBuilder|ScoutBuilder $query)
     {
         if ($query instanceof ScoutBuilder) {
             return $query->paginate($this->perPage, 'page', $this->page)->items();

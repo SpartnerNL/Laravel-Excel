@@ -14,22 +14,22 @@ class ImportWithEvents implements WithEvents
     use Importable;
 
     /**
-     * @var callable
+     * @var ?callable
      */
     public $beforeImport;
 
     /**
-     * @var callable
+     * @var ?callable
      */
     public $afterImport;
 
     /**
-     * @var callable
+     * @var ?callable
      */
     public $beforeSheet;
 
     /**
-     * @var callable
+     * @var ?callable
      */
     public $afterSheet;
 

@@ -32,10 +32,8 @@ class ImportMakeCommand extends GeneratorCommand
 
     /**
      * Get the stub file for the generator.
-     *
-     * @return string
      */
-    protected function getStub()
+    protected function getStub(): string
     {
         return $this->option('model')
             ? $this->resolveStubPath('/stubs/import.model.stub')

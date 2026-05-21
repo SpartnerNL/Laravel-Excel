@@ -7,26 +7,17 @@ use Illuminate\Support\Manager;
 
 class TransactionManager extends Manager
 {
-    /**
-     * @return string
-     */
-    public function getDefaultDriver()
+    public function getDefaultDriver(): string
     {
         return config('excel.transactions.handler');
     }
 
-    /**
-     * @return NullTransactionHandler
-     */
-    public function createNullDriver()
+    public function createNullDriver(): NullTransactionHandler
     {
         return new NullTransactionHandler;
     }
 
-    /**
-     * @return DbTransactionHandler
-     */
-    public function createDbDriver()
+    public function createDbDriver(): DbTransactionHandler
     {
         return new DbTransactionHandler(
             DB::connection(config('excel.transactions.db.connection'))

@@ -38,10 +38,7 @@ class SkipsOnErrorTest extends TestCase
 
             public $errors = 0;
 
-            /**
-             * @return Model|null
-             */
-            public function model(array $row)
+            public function model(array $row): ?Model
             {
                 return new User([
                     'name'     => $row[0],
@@ -80,10 +77,7 @@ class SkipsOnErrorTest extends TestCase
         {
             use Importable, SkipsErrors;
 
-            /**
-             * @return Model|null
-             */
-            public function model(array $row)
+            public function model(array $row): ?Model
             {
                 return new User([
                     'name'     => $row[0],

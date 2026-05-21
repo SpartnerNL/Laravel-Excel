@@ -28,34 +28,16 @@ use Traversable;
 
 class QueuedWriter
 {
-    /**
-     * @var Writer
-     */
-    protected $writer;
+    protected int $chunkSize;
 
-    /**
-     * @var int
-     */
-    protected $chunkSize;
-
-    /**
-     * @var TemporaryFileFactory
-     */
-    protected $temporaryFileFactory;
-
-    public function __construct(Writer $writer, TemporaryFileFactory $temporaryFileFactory)
-    {
-        $this->writer               = $writer;
-        $this->chunkSize            = config('excel.exports.chunk_size', 1000);
-        $this->temporaryFileFactory = $temporaryFileFactory;
+    public function __construct(
+        protected Writer $writer,
+        protected TemporaryFileFactory $temporaryFileFactory,
+    ) {
+        $this->chunkSize = config('excel.exports.chunk_size', 1000);
     }
 
-    /**
-     * @param  object  $export
-     * @param  array|string  $diskOptions
-     * @return PendingDispatch|PendingBatch
-     */
-    public function store($export, string $filePath, ?string $disk = null, ?string $writerType = null, $diskOptions = [])
+    public function store(object $export, string $filePath, ?string $disk = null, ?string $writerType = null, array|string $diskOptions = []): PendingDispatch|PendingBatch
     {
         $extension     = pathinfo($filePath, PATHINFO_EXTENSION);
         $temporaryFile = $this->temporaryFileFactory->make($extension);
@@ -84,10 +66,7 @@ class QueuedWriter
         );
     }
 
-    /**
-     * @param  object  $export
-     */
-    private function buildExportJobs($export, TemporaryFile $temporaryFile, string $writerType): Collection
+    private function buildExportJobs(object $export, TemporaryFile $temporaryFile, string $writerType): Collection
     {
         $sheetExports = [$export];
         if ($export instanceof WithMultipleSheets) {
@@ -110,15 +89,12 @@ class QueuedWriter
         return $jobs;
     }
 
-    /**
-     * @return Collection|LazyCollection
-     */
     private function exportCollection(
         FromCollection $export,
         TemporaryFile $temporaryFile,
         string $writerType,
         int $sheetIndex
-    ) {
+    ): Collection|LazyCollection {
         return $export
             ->collection()
             ->chunk($this->getChunkSize($export))
@@ -218,10 +194,7 @@ class QueuedWriter
         return $jobs;
     }
 
-    /**
-     * @param  object|WithCustomChunkSize  $export
-     */
-    private function getChunkSize($export): int
+    private function getChunkSize(object $export): int
     {
         if ($export instanceof WithCustomChunkSize) {
             return $export->chunkSize();

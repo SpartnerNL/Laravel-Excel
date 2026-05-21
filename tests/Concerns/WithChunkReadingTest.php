@@ -51,10 +51,7 @@ class WithChunkReadingTest extends TestCase
 
             public $after = 0;
 
-            /**
-             * @return Model|null
-             */
-            public function model(array $row)
+            public function model(array $row): ?Model
             {
                 return new User([
                     'name'     => $row[0],
@@ -100,10 +97,7 @@ class WithChunkReadingTest extends TestCase
         {
             use Importable;
 
-            /**
-             * @return Model|null
-             */
-            public function model(array $row)
+            public function model(array $row): ?Model
             {
                 return new Group([
                     'name' => $row[0],
@@ -135,10 +129,7 @@ class WithChunkReadingTest extends TestCase
         {
             use Importable;
 
-            /**
-             * @return Model|null
-             */
-            public function model(array $row)
+            public function model(array $row): ?Model
             {
                 return new Group([
                     'name' => $row['name'],
@@ -170,10 +161,7 @@ class WithChunkReadingTest extends TestCase
         {
             use Importable;
 
-            /**
-             * @return Model|null
-             */
-            public function model(array $row)
+            public function model(array $row): ?Model
             {
                 return new Group([
                     'name' => $row[0],
@@ -205,10 +193,7 @@ class WithChunkReadingTest extends TestCase
         {
             use Importable;
 
-            /**
-             * @return Model|null
-             */
-            public function model(array $row)
+            public function model(array $row): ?Model
             {
                 return new Group([
                     'name' => $row[0],
@@ -276,10 +261,7 @@ class WithChunkReadingTest extends TestCase
                 return [
                     new class implements ToModel, WithBatchInserts
                     {
-                        /**
-                         * @return Model|null
-                         */
-                        public function model(array $row)
+                        public function model(array $row): ?Model
                         {
                             return new Group([
                                 'name' => $row[0],
@@ -294,10 +276,7 @@ class WithChunkReadingTest extends TestCase
 
                     new class implements ToModel, WithBatchInserts
                     {
-                        /**
-                         * @return Model|null
-                         */
-                        public function model(array $row)
+                        public function model(array $row): ?Model
                         {
                             return new Group([
                                 'name' => $row[0],
@@ -337,10 +316,7 @@ class WithChunkReadingTest extends TestCase
                 return [
                     'Worksheet' => new class implements ToModel, WithBatchInserts
                     {
-                        /**
-                         * @return Model|null
-                         */
-                        public function model(array $row)
+                        public function model(array $row): ?Model
                         {
                             return new Group([
                                 'name' => $row[0],
@@ -355,10 +331,7 @@ class WithChunkReadingTest extends TestCase
 
                     'Worksheet2' => new class implements ToModel, WithBatchInserts
                     {
-                        /**
-                         * @return Model|null
-                         */
-                        public function model(array $row)
+                        public function model(array $row): ?Model
                         {
                             return new Group([
                                 'name' => $row[0],
@@ -388,10 +361,7 @@ class WithChunkReadingTest extends TestCase
 
             public $failed = false;
 
-            /**
-             * @return Model|null
-             */
-            public function model(array $row)
+            public function model(array $row): ?Model
             {
                 throw new Exception('Something went wrong in the chunk');
             }

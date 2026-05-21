@@ -6,7 +6,7 @@ use Maatwebsite\Excel\Transactions\TransactionHandler;
 
 class CustomTransactionHandler implements TransactionHandler
 {
-    public function __invoke(callable $callback)
+    public function __invoke(callable $callback): mixed
     {
         return $callback();
     }

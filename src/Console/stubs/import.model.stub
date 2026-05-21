@@ -4,15 +4,11 @@ namespace DummyNamespace;
 
 use DummyFullModelClass;
 use Maatwebsite\Excel\Concerns\ToModel;
+use Illuminate\Database\Eloquent\Model;
 
 class DummyClass implements ToModel
 {
-    /**
-    * @param array $row
-    *
-    * @return \Illuminate\Database\Eloquent\Model|null
-    */
-    public function model(array $row)
+    public function model(array $row): Model|null
     {
         return new DummyModelClass([
             //

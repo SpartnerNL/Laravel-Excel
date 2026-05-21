@@ -33,9 +33,11 @@ class RemembersRowNumberTest extends TestCase
 
             public $rowNumbers = [];
 
-            public function model(array $row): void
+            public function model(array $row): null
             {
                 $this->rowNumbers[] = $this->getRowNumber();
+
+                return null;
             }
         };
 
@@ -58,9 +60,11 @@ class RemembersRowNumberTest extends TestCase
                 return 50;
             }
 
-            public function model(array $row): void
+            public function model(array $row): null
             {
                 $this->rowNumbers[] = $this->getRowNumber();
+
+                return null;
             }
         };
 
@@ -83,9 +87,11 @@ class RemembersRowNumberTest extends TestCase
                 return 50;
             }
 
-            public function model(array $row): void
+            public function model(array $row): null
             {
                 $this->rowNumbers[] = $this->rowNumber;
+
+                return null;
             }
 
             public function batchSize(): int

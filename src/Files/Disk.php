@@ -12,34 +12,14 @@ use Illuminate\Contracts\Filesystem\Filesystem as IlluminateFilesystem;
  */
 class Disk
 {
-    /**
-     * @var IlluminateFilesystem
-     */
-    protected $disk;
-
-    /**
-     * @var string|null
-     */
-    protected $name;
-
-    /**
-     * @var array
-     */
-    protected $diskOptions;
-
-    public function __construct(IlluminateFilesystem $disk, ?string $name = null, array $diskOptions = [])
-    {
-        $this->disk        = $disk;
-        $this->name        = $name;
-        $this->diskOptions = $diskOptions;
+    public function __construct(
+        protected IlluminateFilesystem $disk,
+        protected ?string $name = null,
+        protected array $diskOptions = [],
+    ) {
     }
 
-    /**
-     * @param  string  $name
-     * @param  array  $arguments
-     * @return mixed
-     */
-    public function __call($name, $arguments)
+    public function __call(string $name, array $arguments): mixed
     {
         return $this->disk->{$name}(...$arguments);
     }

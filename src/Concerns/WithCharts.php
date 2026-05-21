@@ -9,5 +9,5 @@ interface WithCharts
     /**
      * @return Chart|Chart[]
      */
-    public function charts();
+    public function charts(): Chart|array;
 }

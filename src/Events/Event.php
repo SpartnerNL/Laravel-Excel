@@ -10,22 +10,17 @@ abstract class Event
     /**
      * @param  object  $concernable
      */
-    public function __construct(protected $concernable)
-    {
+    public function __construct(
+        protected $concernable,
+    ) {
     }
 
-    /**
-     * @return object
-     */
-    public function getConcernable()
+    public function getConcernable(): object
     {
         return $this->concernable;
     }
 
-    /**
-     * @return mixed
-     */
-    abstract public function getDelegate();
+    abstract public function getDelegate(): mixed;
 
     public function appliesToConcern(string $concern): bool
     {

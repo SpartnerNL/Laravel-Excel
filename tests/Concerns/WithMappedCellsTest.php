@@ -101,10 +101,7 @@ class WithMappedCellsTest extends TestCase
                 ];
             }
 
-            /**
-             * @return User
-             */
-            public function model(array $array)
+            public function model(array $array): User
             {
                 Assert::assertEquals([
                     'name'  => 'Patrick Brouwers',

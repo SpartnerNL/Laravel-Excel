@@ -6,13 +6,13 @@ use Illuminate\Support\Arr;
 
 class RemoteTemporaryFile extends TemporaryFile
 {
-    /**
-     * @var Disk|null
-     */
-    private $diskInstance;
+    private ?Disk $diskInstance = null;
 
-    public function __construct(private string $disk, private string $filename, private LocalTemporaryFile $localTemporaryFile)
-    {
+    public function __construct(
+        private string $disk,
+        private string $filename,
+        private LocalTemporaryFile $localTemporaryFile,
+    ) {
         $this->disk()->touch($this->filename);
     }
 
@@ -101,6 +101,6 @@ class RemoteTemporaryFile extends TemporaryFile
 
     public function disk(): Disk
     {
-        return $this->diskInstance ?: $this->diskInstance = app(Filesystem::class)->disk($this->disk);
+        return $this->diskInstance ??= app(Filesystem::class)->disk($this->disk);
     }
 }

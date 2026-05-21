@@ -7,13 +7,9 @@ use Throwable;
 
 class NoFilenameGivenException extends InvalidArgumentException implements LaravelExcelException
 {
-    /**
-     * @param  string  $message
-     * @param  int  $code
-     */
     public function __construct(
-        $message = 'A filename needs to be passed in order to download the export',
-        $code = 0,
+        string $message = 'A filename needs to be passed in order to download the export',
+        int $code = 0,
         ?Throwable $previous = null
     ) {
         parent::__construct($message, $code, $previous);
