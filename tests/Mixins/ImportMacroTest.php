@@ -17,10 +17,10 @@ class ImportMacroTest extends TestCase
         $this->loadLaravelMigrations(['--database' => 'testing']);
     }
 
-    public function test_can_import_directly_into_a_model()
+    public function test_can_import_directly_into_a_model(): void
     {
         User::query()->truncate();
-        User::creating(function ($user) {
+        User::creating(function ($user): void {
             $user->password = 'secret';
         });
 

@@ -14,7 +14,7 @@ class BeforeExportListener
         $this->assertions = $assertions;
     }
 
-    public function __invoke()
+    public function __invoke(): void
     {
         ($this->assertions)(...func_get_args());
     }

@@ -80,14 +80,14 @@ class AppendQueryToSheet implements ShouldQueue
      * @throws Exception
      * @throws \PhpOffice\PhpSpreadsheet\Reader\Exception
      */
-    public function handle(Writer $writer)
+    public function handle(Writer $writer): void
     {
         // Determine if the batch has been cancelled...
         if ($this->batch()?->cancelled()) {
             return;
         }
 
-        (new LocalizeJob($this->sheetExport))->handle($this, function () use ($writer) {
+        (new LocalizeJob($this->sheetExport))->handle($this, function () use ($writer): void {
             if ($this->sheetExport instanceof WithEvents) {
                 $this->registerListeners($this->sheetExport->registerEvents());
             }

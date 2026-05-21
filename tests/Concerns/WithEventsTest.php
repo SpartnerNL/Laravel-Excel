@@ -32,31 +32,31 @@ class WithEventsTest extends TestCase
 {
     use WithFaker;
 
-    public function test_export_events_get_called()
+    public function test_export_events_get_called(): void
     {
         $event = new ExportWithEvents;
 
         $eventsTriggered = 0;
 
-        $event->beforeExport = function ($event) use (&$eventsTriggered) {
+        $event->beforeExport = function ($event) use (&$eventsTriggered): void {
             $this->assertInstanceOf(BeforeExport::class, $event);
             $this->assertInstanceOf(Writer::class, $event->getWriter());
             $eventsTriggered++;
         };
 
-        $event->beforeWriting = function ($event) use (&$eventsTriggered) {
+        $event->beforeWriting = function ($event) use (&$eventsTriggered): void {
             $this->assertInstanceOf(BeforeWriting::class, $event);
             $this->assertInstanceOf(Writer::class, $event->getWriter());
             $eventsTriggered++;
         };
 
-        $event->beforeSheet = function ($event) use (&$eventsTriggered) {
+        $event->beforeSheet = function ($event) use (&$eventsTriggered): void {
             $this->assertInstanceOf(BeforeSheet::class, $event);
             $this->assertInstanceOf(Sheet::class, $event->getSheet());
             $eventsTriggered++;
         };
 
-        $event->afterSheet = function ($event) use (&$eventsTriggered) {
+        $event->afterSheet = function ($event) use (&$eventsTriggered): void {
             $this->assertInstanceOf(AfterSheet::class, $event);
             $this->assertInstanceOf(Sheet::class, $event->getSheet());
             $eventsTriggered++;
@@ -66,31 +66,31 @@ class WithEventsTest extends TestCase
         $this->assertEquals(4, $eventsTriggered);
     }
 
-    public function test_import_events_get_called()
+    public function test_import_events_get_called(): void
     {
         $import = new ImportWithEvents;
 
         $eventsTriggered = 0;
 
-        $import->beforeImport = function ($event) use (&$eventsTriggered) {
+        $import->beforeImport = function ($event) use (&$eventsTriggered): void {
             $this->assertInstanceOf(BeforeImport::class, $event);
             $this->assertInstanceOf(Reader::class, $event->getReader());
             $eventsTriggered++;
         };
 
-        $import->afterImport = function ($event) use (&$eventsTriggered) {
+        $import->afterImport = function ($event) use (&$eventsTriggered): void {
             $this->assertInstanceOf(AfterImport::class, $event);
             $this->assertInstanceOf(Reader::class, $event->getReader());
             $eventsTriggered++;
         };
 
-        $import->beforeSheet = function ($event) use (&$eventsTriggered) {
+        $import->beforeSheet = function ($event) use (&$eventsTriggered): void {
             $this->assertInstanceOf(BeforeSheet::class, $event);
             $this->assertInstanceOf(Sheet::class, $event->getSheet());
             $eventsTriggered++;
         };
 
-        $import->afterSheet = function ($event) use (&$eventsTriggered) {
+        $import->afterSheet = function ($event) use (&$eventsTriggered): void {
             $this->assertInstanceOf(AfterSheet::class, $event);
             $this->assertInstanceOf(Sheet::class, $event->getSheet());
             $eventsTriggered++;
@@ -100,7 +100,7 @@ class WithEventsTest extends TestCase
         $this->assertEquals(4, $eventsTriggered);
     }
 
-    public function test_import_chunked_events_get_called()
+    public function test_import_chunked_events_get_called(): void
     {
         $import = new ImportWithEventsChunksAndBatches;
 
@@ -111,30 +111,30 @@ class WithEventsTest extends TestCase
         $afterBatch   = 0;
         $afterChunk   = 0;
 
-        $import->beforeImport = function (BeforeImport $event) use (&$beforeImport) {
+        $import->beforeImport = function (BeforeImport $event) use (&$beforeImport): void {
             $this->assertInstanceOf(Reader::class, $event->getReader());
             // Ensure event is fired only once
             $this->assertEquals(0, $beforeImport, 'Before import called twice');
             $beforeImport++;
         };
 
-        $import->afterImport = function (AfterImport $event) use (&$afterImport) {
+        $import->afterImport = function (AfterImport $event) use (&$afterImport): void {
             $this->assertInstanceOf(Reader::class, $event->getReader());
             $this->assertEquals(0, $afterImport, 'After import called twice');
             $afterImport++;
         };
 
-        $import->beforeSheet = function (BeforeSheet $event) use (&$beforeSheet) {
+        $import->beforeSheet = function (BeforeSheet $event) use (&$beforeSheet): void {
             $this->assertInstanceOf(Sheet::class, $event->getSheet());
             $beforeSheet++;
         };
 
-        $import->afterSheet = function (AfterSheet $event) use (&$afterSheet) {
+        $import->afterSheet = function (AfterSheet $event) use (&$afterSheet): void {
             $this->assertInstanceOf(Sheet::class, $event->getSheet());
             $afterSheet++;
         };
 
-        $import->afterBatch = function (AfterBatch $event) use ($import, &$afterBatch) {
+        $import->afterBatch = function (AfterBatch $event) use ($import, &$afterBatch): void {
             $this->assertEquals(
                 $import->batchSize(),
                 $event->getBatchSize(),
@@ -143,15 +143,17 @@ class WithEventsTest extends TestCase
             $this->assertEquals(
                 $afterBatch * $import->batchSize() + 1,
                 $event->getStartRow(),
-                'Wrong batch start row');
+                'Wrong batch start row'
+            );
             $afterBatch++;
         };
 
-        $import->afterChunk = function (AfterChunk $event) use ($import, &$afterChunk) {
+        $import->afterChunk = function (AfterChunk $event) use ($import, &$afterChunk): void {
             $this->assertEquals(
                 $event->getStartRow(),
                 $afterChunk * $import->chunkSize() + 1,
-                'Wrong chunk start row');
+                'Wrong chunk start row'
+            );
             $afterChunk++;
         };
 
@@ -162,11 +164,11 @@ class WithEventsTest extends TestCase
         $this->assertEquals(10, $afterChunk);
     }
 
-    public function test_can_have_invokable_class_as_listener()
+    public function test_can_have_invokable_class_as_listener(): void
     {
         $event = new ExportWithEvents;
 
-        $event->beforeExport = new BeforeExportListener(function ($event) {
+        $event->beforeExport = new BeforeExportListener(function ($event): void {
             $this->assertInstanceOf(BeforeExport::class, $event);
             $this->assertInstanceOf(Writer::class, $event->getWriter());
         });
@@ -174,7 +176,7 @@ class WithEventsTest extends TestCase
         $this->assertInstanceOf(BinaryFileResponse::class, $event->download('filename.xlsx'));
     }
 
-    public function test_can_have_global_event_listeners()
+    public function test_can_have_global_event_listeners(): void
     {
         $event = new class
         {
@@ -182,22 +184,22 @@ class WithEventsTest extends TestCase
         };
 
         $beforeExport = false;
-        Writer::listen(BeforeExport::class, function () use (&$beforeExport) {
+        Writer::listen(BeforeExport::class, function () use (&$beforeExport): void {
             $beforeExport = true;
         });
 
         $beforeWriting = false;
-        Writer::listen(BeforeWriting::class, function () use (&$beforeWriting) {
+        Writer::listen(BeforeWriting::class, function () use (&$beforeWriting): void {
             $beforeWriting = true;
         });
 
         $beforeSheet = false;
-        Sheet::listen(BeforeSheet::class, function () use (&$beforeSheet) {
+        Sheet::listen(BeforeSheet::class, function () use (&$beforeSheet): void {
             $beforeSheet = true;
         });
 
         $afterSheet = false;
-        Sheet::listen(AfterSheet::class, function () use (&$afterSheet) {
+        Sheet::listen(AfterSheet::class, function () use (&$afterSheet): void {
             $afterSheet = true;
         });
 
@@ -209,10 +211,10 @@ class WithEventsTest extends TestCase
         $this->assertTrue($afterSheet, 'After sheet event not triggered');
     }
 
-    public function test_can_have_custom_concern_handlers()
+    public function test_can_have_custom_concern_handlers(): void
     {
         // Add a custom concern handler for the given concern.
-        Excel::extend(CustomConcern::class, function (CustomConcern $exportable, Writer $writer) {
+        Excel::extend(CustomConcern::class, function (CustomConcern $exportable, Writer $writer): void {
             $writer->getSheetByIndex(0)->append(
                 $exportable->custom()
             );
@@ -247,10 +249,10 @@ class WithEventsTest extends TestCase
         $this->assertEquals([[null]], $actual);
     }
 
-    public function test_can_have_custom_sheet_concern_handlers()
+    public function test_can_have_custom_sheet_concern_handlers(): void
     {
         // Add a custom concern handler for the given concern.
-        Excel::extend(CustomSheetConcern::class, function (CustomSheetConcern $exportable, Sheet $sheet) {
+        Excel::extend(CustomSheetConcern::class, function (CustomSheetConcern $exportable, Sheet $sheet): void {
             $sheet->append(
                 $exportable->custom()
             );
@@ -285,7 +287,7 @@ class WithEventsTest extends TestCase
         $this->assertEquals([[null]], $actual);
     }
 
-    public function test_export_chunked_events_get_called()
+    public function test_export_chunked_events_get_called(): void
     {
         $this->loadLaravelMigrations(['--database' => 'testing']);
 

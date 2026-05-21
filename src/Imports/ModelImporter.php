@@ -32,7 +32,7 @@ class ModelImporter
      *
      * @throws ValidationException
      */
-    public function import(Worksheet $worksheet, ToModel $import, int $startRow = 1)
+    public function import(Worksheet $worksheet, ToModel $import, int $startRow = 1): void
     {
         if ($startRow > $worksheet->getHighestRow()) {
             return;
@@ -99,7 +99,7 @@ class ModelImporter
         }
     }
 
-    private function flush(ToModel $import, int $batchSize, int $startRow)
+    private function flush(ToModel $import, int $batchSize, int $startRow): void
     {
         $this->manager->flush($import, $batchSize > 1);
         $this->raise(new AfterBatch($this->manager, $import, $batchSize, $startRow));

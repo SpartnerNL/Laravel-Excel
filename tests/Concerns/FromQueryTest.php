@@ -32,7 +32,7 @@ class FromQueryTest extends TestCase
         User::factory()->has(Group::factory(['name' => 'Group 2']))->count(5)->create();
     }
 
-    public function test_can_export_from_query()
+    public function test_can_export_from_query(): void
     {
         $export = new FromUsersQueryExport;
 
@@ -47,7 +47,7 @@ class FromQueryTest extends TestCase
         $this->assertEquals($allUsers, $contents);
     }
 
-    public function test_can_export_from_query_with_join()
+    public function test_can_export_from_query_with_join(): void
     {
         $export = new FromUsersQueryWithJoinExport;
 
@@ -62,7 +62,7 @@ class FromQueryTest extends TestCase
         $this->assertEquals($allUsers, $contents);
     }
 
-    public function test_can_export_from_relation_query_queued()
+    public function test_can_export_from_relation_query_queued(): void
     {
         $export = new FromGroupUsersQueuedQueryExport;
 
@@ -75,7 +75,7 @@ class FromQueryTest extends TestCase
         $this->assertEquals($allUsers, $contents);
     }
 
-    public function test_can_export_from_query_with_eager_loads()
+    public function test_can_export_from_query_with_eager_loads(): void
     {
         DB::connection()->enableQueryLog();
         $export = new FromUsersQueryExportWithEagerLoad;
@@ -97,7 +97,7 @@ class FromQueryTest extends TestCase
         $this->assertEquals($allUsers, $contents);
     }
 
-    public function test_can_export_from_query_with_eager_loads_and_queued()
+    public function test_can_export_from_query_with_eager_loads_and_queued(): void
     {
         DB::connection()->enableQueryLog();
         $export = new FromUsersQueryExportWithEagerLoad;
@@ -118,7 +118,7 @@ class FromQueryTest extends TestCase
         $this->assertEquals($allUsers, $contents);
     }
 
-    public function test_can_export_from_query_builder_without_using_eloquent()
+    public function test_can_export_from_query_builder_without_using_eloquent(): void
     {
         $export = new FromNonEloquentQueryExport;
 
@@ -133,7 +133,7 @@ class FromQueryTest extends TestCase
         $this->assertEquals($allUsers, $contents);
     }
 
-    public function test_can_export_from_query_builder_without_using_eloquent_and_queued()
+    public function test_can_export_from_query_builder_without_using_eloquent_and_queued(): void
     {
         $export = new FromNonEloquentQueryExport;
 
@@ -146,7 +146,7 @@ class FromQueryTest extends TestCase
         $this->assertEquals($allUsers, $contents);
     }
 
-    public function test_can_export_from_query_builder_with_nested_arrays()
+    public function test_can_export_from_query_builder_with_nested_arrays(): void
     {
         $export = new FromNestedArraysQueryExport;
 
@@ -159,7 +159,7 @@ class FromQueryTest extends TestCase
         $this->assertEquals($this->format_nested_arrays_expected_data($export->query()->get()), $contents);
     }
 
-    public function test_can_export_from_query_builder_with_nested_arrays_queued()
+    public function test_can_export_from_query_builder_with_nested_arrays_queued(): void
     {
         $export = new FromNestedArraysQueryExport;
 
@@ -170,7 +170,7 @@ class FromQueryTest extends TestCase
         $this->assertEquals($this->format_nested_arrays_expected_data($export->query()->get()), $contents);
     }
 
-    public function test_can_export_from_query_with_batch_caching()
+    public function test_can_export_from_query_with_batch_caching(): void
     {
         config()->set('excel.cache.driver', 'batch');
 
@@ -187,7 +187,7 @@ class FromQueryTest extends TestCase
         $this->assertEquals($allUsers, $contents);
     }
 
-    public function test_can_export_from_query_with_prepare_rows()
+    public function test_can_export_from_query_with_prepare_rows(): void
     {
         $export = new FromUsersQueryExportWithPrepareRows;
 
@@ -208,7 +208,7 @@ class FromQueryTest extends TestCase
         $this->assertEquals($allUsers, $contents);
     }
 
-    public function test_can_export_from_scout()
+    public function test_can_export_from_scout(): void
     {
         if (!class_exists(DatabaseEngine::class)) {
             $this->markTestSkipped('Laravel Scout is too old');

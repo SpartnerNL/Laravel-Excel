@@ -23,7 +23,7 @@ class WithMappedCellsTest extends TestCase
         $this->loadLaravelMigrations(['--database' => 'testing']);
     }
 
-    public function test_can_import_with_references_to_cells()
+    public function test_can_import_with_references_to_cells(): void
     {
         $import = new class implements ToArray, WithMappedCells
         {
@@ -37,7 +37,7 @@ class WithMappedCellsTest extends TestCase
                 ];
             }
 
-            public function array(array $array)
+            public function array(array $array): void
             {
                 Assert::assertEquals([
                     'name'  => 'Patrick Brouwers',
@@ -49,7 +49,7 @@ class WithMappedCellsTest extends TestCase
         $import->import('mapped-import.xlsx');
     }
 
-    public function test_can_import_with_nested_references_to_cells()
+    public function test_can_import_with_nested_references_to_cells(): void
     {
         $import = new class implements ToArray, WithMappedCells
         {
@@ -69,7 +69,7 @@ class WithMappedCellsTest extends TestCase
                 ];
             }
 
-            public function array(array $array)
+            public function array(array $array): void
             {
                 Assert::assertEquals([
                     [
@@ -87,7 +87,7 @@ class WithMappedCellsTest extends TestCase
         $import->import('mapped-import.xlsx');
     }
 
-    public function test_can_import_with_references_to_cells_to_model()
+    public function test_can_import_with_references_to_cells_to_model(): void
     {
         $import = new class implements ToModel, WithMappedCells
         {

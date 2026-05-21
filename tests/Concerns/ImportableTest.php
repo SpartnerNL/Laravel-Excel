@@ -12,13 +12,13 @@ use PHPUnit\Framework\Assert;
 
 class ImportableTest extends TestCase
 {
-    public function test_can_import_a_simple_xlsx_file()
+    public function test_can_import_a_simple_xlsx_file(): void
     {
         $import = new class implements ToArray
         {
             use Importable;
 
-            public function array(array $array)
+            public function array(array $array): void
             {
                 Assert::assertEquals([
                     ['test', 'test'],
@@ -32,13 +32,13 @@ class ImportableTest extends TestCase
         $this->assertInstanceOf(Importer::class, $imported);
     }
 
-    public function test_can_import_a_simple_xlsx_file_from_uploaded_file()
+    public function test_can_import_a_simple_xlsx_file_from_uploaded_file(): void
     {
         $import = new class implements ToArray
         {
             use Importable;
 
-            public function array(array $array)
+            public function array(array $array): void
             {
                 Assert::assertEquals([
                     ['test', 'test'],
@@ -50,13 +50,13 @@ class ImportableTest extends TestCase
         $import->import($this->givenUploadedFile(__DIR__ . '/../Data/Disks/Local/import.xlsx'));
     }
 
-    public function test_can_import_a_simple_csv_file_with_html_tags_inside()
+    public function test_can_import_a_simple_csv_file_with_html_tags_inside(): void
     {
         $import = new class implements ToArray
         {
             use Importable;
 
-            public function array(array $array)
+            public function array(array $array): void
             {
                 Assert::assertEquals([
                     ['key1', 'A', 'row1'],
@@ -72,7 +72,7 @@ class ImportableTest extends TestCase
         $import->import('csv-with-html-tags.csv', 'local', Excel::CSV);
     }
 
-    public function test_can_import_a_simple_xlsx_file_with_ignore_empty_set_to_true()
+    public function test_can_import_a_simple_xlsx_file_with_ignore_empty_set_to_true(): void
     {
         config()->set('excel.imports.ignore_empty', true);
 
@@ -80,7 +80,7 @@ class ImportableTest extends TestCase
         {
             use Importable;
 
-            public function array(array $array)
+            public function array(array $array): void
             {
                 Assert::assertEquals([
                     ['test', 'test'],
@@ -94,7 +94,7 @@ class ImportableTest extends TestCase
         $this->assertInstanceOf(Importer::class, $imported);
     }
 
-    public function test_can_import_a_simple_xlsx_file_with_ignore_empty_set_to_false()
+    public function test_can_import_a_simple_xlsx_file_with_ignore_empty_set_to_false(): void
     {
         config()->set('excel.imports.ignore_empty', false);
 
@@ -102,7 +102,7 @@ class ImportableTest extends TestCase
         {
             use Importable;
 
-            public function array(array $array)
+            public function array(array $array): void
             {
                 Assert::assertEquals([
                     ['test', 'test'],
@@ -118,7 +118,7 @@ class ImportableTest extends TestCase
         $this->assertInstanceOf(Importer::class, $imported);
     }
 
-    public function test_cannot_import_a_non_existing_xlsx_file()
+    public function test_cannot_import_a_non_existing_xlsx_file(): void
     {
         $this->expectException(FileNotFoundException::class);
 

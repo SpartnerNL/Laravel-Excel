@@ -36,13 +36,13 @@ class ExportWithEvents implements WithEvents
     public function registerEvents(): array
     {
         return [
-            BeforeExport::class => $this->beforeExport ?? function () {
+            BeforeExport::class => $this->beforeExport ?? function (): void {
             },
-            BeforeWriting::class => $this->beforeWriting ?? function () {
+            BeforeWriting::class => $this->beforeWriting ?? function (): void {
             },
-            BeforeSheet::class => $this->beforeSheet ?? function () {
+            BeforeSheet::class => $this->beforeSheet ?? function (): void {
             },
-            AfterSheet::class => $this->afterSheet ?? function () {
+            AfterSheet::class => $this->afterSheet ?? function (): void {
             },
         ];
     }

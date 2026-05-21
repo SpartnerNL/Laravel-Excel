@@ -17,7 +17,7 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class ExcelFakeTest extends TestCase
 {
-    public function test_can_fake_an_export()
+    public function test_can_fake_an_export(): void
     {
         ExcelFacade::fake();
 
@@ -25,7 +25,7 @@ class ExcelFakeTest extends TestCase
         $this->assertInstanceOf(ExcelFake::class, $this->app->make('excel'));
     }
 
-    public function test_can_assert_against_a_fake_downloaded_export()
+    public function test_can_assert_against_a_fake_downloaded_export(): void
     {
         ExcelFacade::fake();
 
@@ -39,7 +39,7 @@ class ExcelFakeTest extends TestCase
         ExcelFacade::assertDownloaded('/\w{10}-\w{8}\.csv/');
     }
 
-    public function test_can_assert_against_a_fake_stored_export()
+    public function test_can_assert_against_a_fake_stored_export(): void
     {
         ExcelFacade::fake();
 
@@ -53,7 +53,7 @@ class ExcelFakeTest extends TestCase
         ExcelFacade::assertStored('/\w{6}-\w{8}\.csv/', 's3');
     }
 
-    public function test_can_assert_regex_against_a_fake_stored_export_with_multiple_files()
+    public function test_can_assert_regex_against_a_fake_stored_export_with_multiple_files(): void
     {
         ExcelFacade::fake();
 
@@ -70,7 +70,7 @@ class ExcelFakeTest extends TestCase
         ExcelFacade::assertStored('/\w{6}-\w{8}-two\.csv/', 's3');
     }
 
-    public function test_a_callback_can_be_passed_as_the_second_argument_when_asserting_against_a_faked_stored_export()
+    public function test_a_callback_can_be_passed_as_the_second_argument_when_asserting_against_a_faked_stored_export(): void
     {
         ExcelFacade::fake();
 
@@ -84,7 +84,7 @@ class ExcelFakeTest extends TestCase
         ExcelFacade::assertStored('/\w{6}-\w{8}\.csv/');
     }
 
-    public function test_can_assert_against_a_fake_queued_export()
+    public function test_can_assert_against_a_fake_queued_export(): void
     {
         ExcelFacade::fake();
 
@@ -98,7 +98,7 @@ class ExcelFakeTest extends TestCase
         ExcelFacade::assertQueued('/\w{6}-\w{8}\.csv/', 's3');
     }
 
-    public function test_can_assert_against_a_fake_implicitly_queued_export()
+    public function test_can_assert_against_a_fake_implicitly_queued_export(): void
     {
         ExcelFacade::fake();
 
@@ -113,12 +113,14 @@ class ExcelFakeTest extends TestCase
         ExcelFacade::assertQueued('/\w{6}-\w{8}\.csv/', 's3');
     }
 
-    public function test_can_assert_against_a_fake_queued_export_with_chain()
+    public function test_can_assert_against_a_fake_queued_export_with_chain(): void
     {
         ExcelFacade::fake();
 
         ExcelFacade::queue(
-            $this->givenQueuedExport(), 'queued-filename.csv', 's3'
+            $this->givenQueuedExport(),
+            'queued-filename.csv',
+            's3'
         )->chain([
             new ChainedJobStub,
         ]);
@@ -128,7 +130,7 @@ class ExcelFakeTest extends TestCase
         ]);
     }
 
-    public function test_can_assert_against_a_fake_raw_export()
+    public function test_can_assert_against_a_fake_raw_export(): void
     {
         ExcelFacade::fake();
 
@@ -140,7 +142,7 @@ class ExcelFakeTest extends TestCase
         ExcelFacade::assertExportedInRaw($this->givenExport()::class, fn (FromCollection $export) => $export->collection()->contains('foo'));
     }
 
-    public function test_can_assert_against_a_fake_import()
+    public function test_can_assert_against_a_fake_import(): void
     {
         ExcelFacade::fake();
 
@@ -152,7 +154,7 @@ class ExcelFakeTest extends TestCase
         ExcelFacade::assertImported('/\w{6}-\w{8}\.csv/', 's3');
     }
 
-    public function test_can_assert_against_a_fake_import_with_uploaded_file()
+    public function test_can_assert_against_a_fake_import_with_uploaded_file(): void
     {
         ExcelFacade::fake();
 
@@ -164,7 +166,7 @@ class ExcelFakeTest extends TestCase
         ExcelFacade::assertImported('/\w{6}\.xlsx/');
     }
 
-    public function test_can_assert_against_a_fake_queued_import()
+    public function test_can_assert_against_a_fake_queued_import(): void
     {
         ExcelFacade::fake();
 
@@ -179,7 +181,7 @@ class ExcelFakeTest extends TestCase
         ExcelFacade::assertQueued('/\w{6}-\w{8}\.csv/', 's3');
     }
 
-    public function test_can_assert_against_a_fake_implicitly_queued_import()
+    public function test_can_assert_against_a_fake_implicitly_queued_import(): void
     {
         ExcelFacade::fake();
 
@@ -194,12 +196,14 @@ class ExcelFakeTest extends TestCase
         ExcelFacade::assertQueued('/\w{6}-\w{8}\.csv/', 's3');
     }
 
-    public function test_can_assert_against_a_fake_queued_import_with_chain()
+    public function test_can_assert_against_a_fake_queued_import_with_chain(): void
     {
         ExcelFacade::fake();
 
         ExcelFacade::queueImport(
-            $this->givenQueuedImport(), 'queued-filename.csv', 's3'
+            $this->givenQueuedImport(),
+            'queued-filename.csv',
+            's3'
         )->chain([
             new ChainedJobStub,
         ]);
@@ -209,7 +213,7 @@ class ExcelFakeTest extends TestCase
         ]);
     }
 
-    public function test_a_callback_can_be_passed_as_the_second_argument_when_asserting_against_a_faked_queued_export()
+    public function test_a_callback_can_be_passed_as_the_second_argument_when_asserting_against_a_faked_queued_export(): void
     {
         ExcelFacade::fake();
 

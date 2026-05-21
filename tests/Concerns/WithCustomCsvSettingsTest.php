@@ -25,7 +25,7 @@ class WithCustomCsvSettingsTest extends TestCase
         $this->SUT = $this->app->make(Excel::class);
     }
 
-    public function test_can_store_csv_export_with_custom_settings()
+    public function test_can_store_csv_export_with_custom_settings(): void
     {
         $export = new class implements FromCollection, WithCustomCsvSettings
         {
@@ -64,7 +64,7 @@ class WithCustomCsvSettingsTest extends TestCase
         $this->assertStringContains('A2;B2', $contents);
     }
 
-    public function test_can_store_csv_export_with_custom_encoding()
+    public function test_can_store_csv_export_with_custom_encoding(): void
     {
         $export = new class implements FromCollection, WithCustomCsvSettings
         {
@@ -107,7 +107,7 @@ class WithCustomCsvSettingsTest extends TestCase
         $this->assertStringContains('A2;åßàèòìù', $contents);
     }
 
-    public function test_can_read_csv_with_auto_detecting_delimiter_semicolon()
+    public function test_can_read_csv_with_auto_detecting_delimiter_semicolon(): void
     {
         $this->assertEquals([
             [
@@ -116,7 +116,7 @@ class WithCustomCsvSettingsTest extends TestCase
         ], (new HeadingRowImport)->toArray('csv-with-other-delimiter.csv'));
     }
 
-    public function test_can_read_csv_with_auto_detecting_delimiter_comma()
+    public function test_can_read_csv_with_auto_detecting_delimiter_comma(): void
     {
         $this->assertEquals([
             [
@@ -125,7 +125,7 @@ class WithCustomCsvSettingsTest extends TestCase
         ], (new HeadingRowImport)->toArray('csv-with-comma.csv'));
     }
 
-    public function test_can_read_csv_import_with_custom_settings()
+    public function test_can_read_csv_import_with_custom_settings(): void
     {
         $import = new class implements ToArray, WithCustomCsvSettings
         {
@@ -140,7 +140,7 @@ class WithCustomCsvSettingsTest extends TestCase
                 ];
             }
 
-            public function array(array $array)
+            public function array(array $array): void
             {
                 Assert::assertEquals([
                     ['A1', 'B1'],
@@ -152,7 +152,7 @@ class WithCustomCsvSettingsTest extends TestCase
         $this->SUT->import($import, 'csv-with-other-delimiter.csv');
     }
 
-    public function test_cannot_read_with_wrong_delimiter()
+    public function test_cannot_read_with_wrong_delimiter(): void
     {
         $import = new class implements ToArray, WithCustomCsvSettings
         {
@@ -163,7 +163,7 @@ class WithCustomCsvSettingsTest extends TestCase
                 ];
             }
 
-            public function array(array $array)
+            public function array(array $array): void
             {
                 Assert::assertEquals([
                     ['A1;B1'],

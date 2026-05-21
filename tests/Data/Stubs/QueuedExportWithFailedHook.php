@@ -40,7 +40,7 @@ class QueuedExportWithFailedHook implements FromCollection, WithMapping
         throw new Exception('we expect this');
     }
 
-    public function failed(Exception $exception)
+    public function failed(Exception $exception): void
     {
         Assert::assertEquals('we expect this', $exception->getMessage());
 

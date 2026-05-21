@@ -23,7 +23,7 @@ class RowValidatorTest extends TestCase
         $this->validator = new RowValidator(app(Factory::class));
     }
 
-    public function test_format_rule_with_array_input()
+    public function test_format_rule_with_array_input(): void
     {
         $rules = ['rule1', 'rule2'];
 
@@ -32,7 +32,7 @@ class RowValidatorTest extends TestCase
         $this->assertEquals($rules, $result);
     }
 
-    public function test_format_rule_with_object_input()
+    public function test_format_rule_with_object_input(): void
     {
         $rule = new \stdClass;
 
@@ -41,7 +41,7 @@ class RowValidatorTest extends TestCase
         $this->assertEquals($rule, $result);
     }
 
-    public function test_format_rule_with_callable_input()
+    public function test_format_rule_with_callable_input(): void
     {
         $rule = (fn () => 'callable');
 
@@ -50,7 +50,7 @@ class RowValidatorTest extends TestCase
         $this->assertEquals($rule, $result);
     }
 
-    public function test_format_rule_with_required_without_all()
+    public function test_format_rule_with_required_without_all(): void
     {
         $rule = 'required_without_all:first_name,last_name';
 
@@ -59,7 +59,7 @@ class RowValidatorTest extends TestCase
         $this->assertEquals('required_without_all:*.first_name,*.last_name', $result);
     }
 
-    public function test_format_rule_with_required_without()
+    public function test_format_rule_with_required_without(): void
     {
         $rule = 'required_without:first_name';
 
@@ -68,7 +68,7 @@ class RowValidatorTest extends TestCase
         $this->assertEquals('required_without:*.first_name', $result);
     }
 
-    public function test_format_rule_with_string_input_not_matching_pattern()
+    public function test_format_rule_with_string_input_not_matching_pattern(): void
     {
         $rule = 'rule';
 

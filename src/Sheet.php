@@ -135,7 +135,7 @@ class Sheet
      *
      * @throws Exception
      */
-    public function open($sheetExport)
+    public function open($sheetExport): void
     {
         $this->exportable = $sheetExport;
 
@@ -183,7 +183,7 @@ class Sheet
      * @throws Exception
      * @throws \PhpOffice\PhpSpreadsheet\Reader\Exception
      */
-    public function export($sheetExport)
+    public function export($sheetExport): void
     {
         $this->open($sheetExport);
 
@@ -217,7 +217,7 @@ class Sheet
     /**
      * @param  object  $import
      */
-    public function import($import, int $startRow = 1)
+    public function import($import, int $startRow = 1): void
     {
         if ($import instanceof WithEvents) {
             $this->registerListeners($import->registerEvents());
@@ -384,7 +384,7 @@ class Sheet
      *
      * @throws Exception
      */
-    public function close($sheetExport)
+    public function close($sheetExport): void
     {
         if ($sheetExport instanceof WithCharts) {
             $this->addCharts($sheetExport->charts());
@@ -435,7 +435,7 @@ class Sheet
      *
      * @throws \PhpOffice\PhpSpreadsheet\Reader\Exception
      */
-    public function fromView(FromView $sheetExport, $sheetIndex = null)
+    public function fromView(FromView $sheetExport, $sheetIndex = null): void
     {
         $temporaryFile = $this->temporaryFileFactory->makeLocal(null, 'html');
         $temporaryFile->put($sheetExport->view()->render());
@@ -452,7 +452,7 @@ class Sheet
         $temporaryFile->delete();
     }
 
-    public function fromQuery(FromQuery $sheetExport, Worksheet $worksheet)
+    public function fromQuery(FromQuery $sheetExport, Worksheet $worksheet): void
     {
         $query = $sheetExport->query();
         if ($query instanceof Builder) {
@@ -465,12 +465,12 @@ class Sheet
         // and use the clone operator directly to support old versions of Laravel
         // that don't have a clone method in eloquent
         $clonedQuery = clone $query;
-        $clonedQuery->chunk($this->getChunkSize($sheetExport), function ($chunk) use ($sheetExport) {
+        $clonedQuery->chunk($this->getChunkSize($sheetExport), function ($chunk) use ($sheetExport): void {
             $this->appendRows($chunk, $sheetExport);
         });
     }
 
-    public function fromScout(FromQuery $sheetExport, Worksheet $worksheet)
+    public function fromScout(FromQuery $sheetExport, Worksheet $worksheet): void
     {
         $scout     = $sheetExport->query();
         $chunkSize = $this->getChunkSize($sheetExport);
@@ -485,17 +485,17 @@ class Sheet
         }
     }
 
-    public function fromCollection(FromCollection $sheetExport)
+    public function fromCollection(FromCollection $sheetExport): void
     {
         $this->appendRows($sheetExport->collection()->all(), $sheetExport);
     }
 
-    public function fromArray(FromArray $sheetExport)
+    public function fromArray(FromArray $sheetExport): void
     {
         $this->appendRows($sheetExport->array(), $sheetExport);
     }
 
-    public function fromIterator(FromIterator $sheetExport)
+    public function fromIterator(FromIterator $sheetExport): void
     {
         $iterator = class_exists(LazyCollection::class) ? new LazyCollection(function () use ($sheetExport) {
             foreach ($sheetExport->iterator() as $row) {
@@ -506,7 +506,7 @@ class Sheet
         $this->appendRows($iterator, $sheetExport);
     }
 
-    public function fromGenerator(FromGenerator $sheetExport)
+    public function fromGenerator(FromGenerator $sheetExport): void
     {
         $generator = class_exists(LazyCollection::class) ? new LazyCollection(function () use ($sheetExport) {
             foreach ($sheetExport->generator() as $row) {
@@ -517,7 +517,7 @@ class Sheet
         $this->appendRows($generator, $sheetExport);
     }
 
-    public function append(array $rows, ?string $startCell = null, bool $strictNullComparison = false)
+    public function append(array $rows, ?string $startCell = null, bool $strictNullComparison = false): void
     {
         if (!$startCell) {
             $startCell = 'A1';
@@ -530,7 +530,7 @@ class Sheet
         $this->worksheet->fromArray($rows, null, $startCell, $strictNullComparison);
     }
 
-    public function autoSize()
+    public function autoSize(): void
     {
         foreach ($this->buildColumnRange('A', $this->worksheet->getHighestDataColumn()) as $col) {
             $dimension = $this->worksheet->getColumnDimension($col);
@@ -545,7 +545,7 @@ class Sheet
     /**
      * @throws Exception
      */
-    public function formatColumn(string $column, string $format)
+    public function formatColumn(string $column, string $format): void
     {
         // If the column is a range, we wouldn't need to calculate the range.
         if (stripos($column, ':') !== false) {
@@ -582,7 +582,7 @@ class Sheet
     /**
      * @param  Chart|Chart[]  $charts
      */
-    public function addCharts($charts)
+    public function addCharts($charts): void
     {
         $charts = \is_array($charts) ? $charts : [$charts];
 
@@ -594,7 +594,7 @@ class Sheet
     /**
      * @param  BaseDrawing|BaseDrawing[]  $drawings
      */
-    public function addDrawings($drawings)
+    public function addDrawings($drawings): void
     {
         $drawings = \is_array($drawings) ? $drawings : [$drawings];
 
@@ -612,7 +612,7 @@ class Sheet
      * @param  iterable  $rows
      * @param  object  $sheetExport
      */
-    public function appendRows($rows, $sheetExport)
+    public function appendRows($rows, $sheetExport): void
     {
         if (method_exists($sheetExport, 'prepareRows')) {
             $rows = $sheetExport->prepareRows($rows);
@@ -632,7 +632,7 @@ class Sheet
             return ArrayHelper::ensureMultipleRows(
                 static::mapArraybleRow($row)
             );
-        })->chunk(1000)->each(function ($rows) use ($sheetExport) {
+        })->chunk(1000)->each(function ($rows) use ($sheetExport): void {
             $this->append(
                 $rows->toArray(),
                 $sheetExport instanceof WithCustomStartCell ? $sheetExport->startCell() : null,
@@ -672,7 +672,7 @@ class Sheet
     /**
      * Disconnect the sheet.
      */
-    public function disconnect()
+    public function disconnect(): void
     {
         $this->worksheet->disconnectCells();
         unset($this->worksheet);

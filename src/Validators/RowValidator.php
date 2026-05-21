@@ -19,7 +19,7 @@ class RowValidator
      * @throws ValidationException
      * @throws RowSkippedException
      */
-    public function validate(array $rows, WithValidation $import)
+    public function validate(array $rows, WithValidation $import): void
     {
         $rules      = $this->rules($import);
         $messages   = $this->messages($import);

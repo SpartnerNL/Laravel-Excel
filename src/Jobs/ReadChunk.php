@@ -116,7 +116,7 @@ class ReadChunk implements ShouldQueue
      * @throws SheetNotFoundException
      * @throws Exception
      */
-    public function handle(TransactionHandler $transaction)
+    public function handle(TransactionHandler $transaction): void
     {
         // Determine if the batch has been cancelled...
         if ($this->batch()?->cancelled()) {
@@ -165,7 +165,7 @@ class ReadChunk implements ShouldQueue
             return;
         }
 
-        $transaction(function () use ($sheet) {
+        $transaction(function () use ($sheet): void {
             $sheet->import(
                 $this->sheetImport,
                 $this->startRow
@@ -179,7 +179,7 @@ class ReadChunk implements ShouldQueue
         });
     }
 
-    public function failed(Throwable $e)
+    public function failed(Throwable $e): void
     {
         $this->cleanUpTempFile(true);
 

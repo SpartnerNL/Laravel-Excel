@@ -10,7 +10,7 @@ use PHPUnit\Framework\Assert;
 
 class ToCollectionTest extends TestCase
 {
-    public function test_can_import_to_collection()
+    public function test_can_import_to_collection(): void
     {
         $import = new class implements ToCollection
         {
@@ -18,7 +18,7 @@ class ToCollectionTest extends TestCase
 
             public $called = false;
 
-            public function collection(Collection $collection)
+            public function collection(Collection $collection): void
             {
                 $this->called = true;
 
@@ -34,7 +34,7 @@ class ToCollectionTest extends TestCase
         $this->assertTrue($import->called);
     }
 
-    public function test_can_import_multiple_sheets_to_collection()
+    public function test_can_import_multiple_sheets_to_collection(): void
     {
         $import = new class implements ToCollection
         {
@@ -42,7 +42,7 @@ class ToCollectionTest extends TestCase
 
             public $called = 0;
 
-            public function collection(Collection $collection)
+            public function collection(Collection $collection): void
             {
                 $this->called++;
 

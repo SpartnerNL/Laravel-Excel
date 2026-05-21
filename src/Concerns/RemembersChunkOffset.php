@@ -9,7 +9,7 @@ trait RemembersChunkOffset
      */
     protected $chunkOffset;
 
-    public function setChunkOffset(int $chunkOffset)
+    public function setChunkOffset(int $chunkOffset): void
     {
         $this->chunkOffset = $chunkOffset;
     }

@@ -21,7 +21,7 @@ class ExportWithEventsChunks implements FromQuery, ShouldQueue, WithCustomChunkS
     public function registerEvents(): array
     {
         return [
-            AfterChunk::class => function (AfterChunk $event) {
+            AfterChunk::class => function (AfterChunk $event): void {
                 ExportWithEventsChunks::$calledEvent++;
                 Assert::assertInstanceOf(ExportWithEventsChunks::class, $event->getConcernable());
             },

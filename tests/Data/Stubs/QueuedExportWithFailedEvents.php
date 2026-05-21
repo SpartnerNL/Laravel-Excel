@@ -26,7 +26,7 @@ class QueuedExportWithFailedEvents implements WithEvents, WithMultipleSheets
         ];
     }
 
-    public function failed(Throwable $exception)
+    public function failed(Throwable $exception): void
     {
         Assert::assertEquals('catch exception from QueueExport job', $exception->getMessage());
 
@@ -36,7 +36,7 @@ class QueuedExportWithFailedEvents implements WithEvents, WithMultipleSheets
     public function registerEvents(): array
     {
         return [
-            BeforeExport::class => function () {
+            BeforeExport::class => function (): void {
                 throw new Exception('catch exception from QueueExport job');
             },
         ];

@@ -15,7 +15,7 @@ use PHPUnit\Framework\Assert;
 
 class SkipsEmptyRowsTest extends TestCase
 {
-    public function test_skips_empty_rows_when_importing_to_collection()
+    public function test_skips_empty_rows_when_importing_to_collection(): void
     {
         $import = new class implements SkipsEmptyRows, ToCollection
         {
@@ -23,7 +23,7 @@ class SkipsEmptyRowsTest extends TestCase
 
             public $called = false;
 
-            public function collection(Collection $collection)
+            public function collection(Collection $collection): void
             {
                 $this->called = true;
 
@@ -40,7 +40,7 @@ class SkipsEmptyRowsTest extends TestCase
         $this->assertTrue($import->called);
     }
 
-    public function test_skips_empty_rows_when_importing_on_each_row()
+    public function test_skips_empty_rows_when_importing_on_each_row(): void
     {
         $import = new class implements OnEachRow, SkipsEmptyRows
         {
@@ -48,7 +48,7 @@ class SkipsEmptyRowsTest extends TestCase
 
             public $rows = 0;
 
-            public function onRow(Row $row)
+            public function onRow(Row $row): void
             {
                 Assert::assertFalse($row->isEmpty());
 
@@ -61,7 +61,7 @@ class SkipsEmptyRowsTest extends TestCase
         $this->assertEquals(3, $import->rows);
     }
 
-    public function test_skips_empty_rows_when_importing_to_model()
+    public function test_skips_empty_rows_when_importing_to_model(): void
     {
         $import = new class implements SkipsEmptyRows, ToModel
         {
@@ -85,7 +85,7 @@ class SkipsEmptyRowsTest extends TestCase
         $this->assertEquals(3, $import->rows);
     }
 
-    public function test_custom_skips_rows_when_importing_to_collection()
+    public function test_custom_skips_rows_when_importing_to_collection(): void
     {
         $import = new class implements SkipsEmptyRows, ToCollection
         {
@@ -93,7 +93,7 @@ class SkipsEmptyRowsTest extends TestCase
 
             public $called = false;
 
-            public function collection(Collection $collection)
+            public function collection(Collection $collection): void
             {
                 $this->called = true;
 
@@ -113,7 +113,7 @@ class SkipsEmptyRowsTest extends TestCase
         $this->assertTrue($import->called);
     }
 
-    public function test_custom_skips_rows_when_importing_to_model()
+    public function test_custom_skips_rows_when_importing_to_model(): void
     {
         $import = new class implements SkipsEmptyRows, ToModel
         {
@@ -121,7 +121,7 @@ class SkipsEmptyRowsTest extends TestCase
 
             public $called = false;
 
-            public function model(array $row)
+            public function model(array $row): void
             {
                 Assert::assertEquals('Not empty', $row[0]);
             }
@@ -138,7 +138,7 @@ class SkipsEmptyRowsTest extends TestCase
         $this->assertTrue($import->called);
     }
 
-    public function test_custom_skips_rows_when_using_oneachrow()
+    public function test_custom_skips_rows_when_using_oneachrow(): void
     {
         $import = new class implements OnEachRow, SkipsEmptyRows
         {
@@ -149,7 +149,7 @@ class SkipsEmptyRowsTest extends TestCase
             /**
              * @param  array  $row
              */
-            public function onRow(Row $row)
+            public function onRow(Row $row): void
             {
                 Assert::assertEquals('Not empty', $row[0]);
             }

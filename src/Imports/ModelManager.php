@@ -33,12 +33,12 @@ class ModelManager
     {
     }
 
-    public function add(int $row, array $attributes)
+    public function add(int $row, array $attributes): void
     {
         $this->rows[$row] = $attributes;
     }
 
-    public function setRemembersRowNumber(bool $remembersRowNumber)
+    public function setRemembersRowNumber(bool $remembersRowNumber): void
     {
         $this->remembersRowNumber = $remembersRowNumber;
     }
@@ -46,7 +46,7 @@ class ModelManager
     /**
      * @throws ValidationException
      */
-    public function flush(ToModel $import, bool $massInsert = false)
+    public function flush(ToModel $import, bool $massInsert = false): void
     {
         if ($import instanceof WithValidation) {
             $this->validateRows($import);
@@ -74,12 +74,12 @@ class ModelManager
         return Collection::wrap($import->model($attributes));
     }
 
-    private function massFlush(ToModel $import)
+    private function massFlush(ToModel $import): void
     {
         $this->rows()
             ->flatMap(fn (array $attributes, $index) => $this->toModels($import, $attributes, $index))
             ->mapToGroups(fn ($model) => [$model::class => $this->prepare($model)->getAttributes()])
-            ->each(function (Collection $models, string $model) use ($import) {
+            ->each(function (Collection $models, string $model) use ($import): void {
                 try {
                     /* @var Model $model */
 
@@ -104,12 +104,12 @@ class ModelManager
             });
     }
 
-    private function singleFlush(ToModel $import)
+    private function singleFlush(ToModel $import): void
     {
         $this
             ->rows()
-            ->each(function (array $attributes, $index) use ($import) {
-                $this->toModels($import, $attributes, $index)->each(function (Model $model) use ($import) {
+            ->each(function (array $attributes, $index) use ($import): void {
+                $this->toModels($import, $attributes, $index)->each(function (Model $model) use ($import): void {
                     try {
                         if ($import instanceof WithUpserts) {
                             $model->upsert(
@@ -163,7 +163,7 @@ class ModelManager
     /**
      * @throws ValidationException
      */
-    private function validateRows(WithValidation $import)
+    private function validateRows(WithValidation $import): void
     {
         try {
             $this->validator->validate($this->rows, $import);

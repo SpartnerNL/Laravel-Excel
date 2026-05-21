@@ -36,13 +36,13 @@ class ImportWithEvents implements WithEvents
     public function registerEvents(): array
     {
         return [
-            BeforeImport::class => $this->beforeImport ?? function () {
+            BeforeImport::class => $this->beforeImport ?? function (): void {
             },
-            AfterImport::class => $this->afterImport ?? function () {
+            AfterImport::class => $this->afterImport ?? function (): void {
             },
-            BeforeSheet::class => $this->beforeSheet ?? function () {
+            BeforeSheet::class => $this->beforeSheet ?? function (): void {
             },
-            AfterSheet::class => $this->afterSheet ?? function () {
+            AfterSheet::class => $this->afterSheet ?? function (): void {
             },
         ];
     }

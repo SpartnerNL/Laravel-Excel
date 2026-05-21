@@ -44,7 +44,7 @@ class SheetWith100Rows implements FromCollection, ShouldAutoSize, WithEvents, Wi
         return $this->title;
     }
 
-    public static function beforeWriting(BeforeWriting $event)
+    public static function beforeWriting(BeforeWriting $event): void
     {
         TestCase::assertInstanceOf(Writer::class, $event->writer);
     }

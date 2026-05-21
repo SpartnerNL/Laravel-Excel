@@ -16,7 +16,7 @@ use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 
 class WithCustomValueBinderTest extends TestCase
 {
-    public function test_can_set_a_value_binder_on_export()
+    public function test_can_set_a_value_binder_on_export(): void
     {
         Carbon::setTestNow(new Carbon('2018-08-07 18:00:00'));
 

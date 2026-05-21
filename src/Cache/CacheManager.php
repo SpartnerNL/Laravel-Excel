@@ -76,7 +76,7 @@ class CacheManager extends Manager
         );
     }
 
-    public function flush()
+    public function flush(): void
     {
         $this->driver()->clear();
     }

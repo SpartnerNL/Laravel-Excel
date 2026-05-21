@@ -32,17 +32,17 @@ class AfterImportJob implements ShouldQueue
     {
     }
 
-    public function setInterval(int $interval)
+    public function setInterval(int $interval): void
     {
         $this->interval = $interval;
     }
 
-    public function setDependencies(Collection $jobs)
+    public function setDependencies(Collection $jobs): void
     {
         $this->dependencyIds = $jobs->map(fn (ReadChunk $job) => $job->getUniqueId())->all();
     }
 
-    public function handle()
+    public function handle(): void
     {
         // Determine if the batch has been cancelled...
         if ($this->batch()?->cancelled()) {
@@ -67,7 +67,7 @@ class AfterImportJob implements ShouldQueue
         $this->reader->afterImport($this->import);
     }
 
-    public function failed(Throwable $e)
+    public function failed(Throwable $e): void
     {
         if ($this->import instanceof WithEvents) {
             $this->registerListeners($this->import->registerEvents());

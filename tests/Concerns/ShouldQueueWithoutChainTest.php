@@ -23,7 +23,7 @@ class ShouldQueueWithoutChainTest extends TestCase
         $this->loadMigrationsFrom(dirname(__DIR__) . '/Data/Stubs/Database/Migrations');
     }
 
-    public function test_can_import_to_model_in_chunks()
+    public function test_can_import_to_model_in_chunks(): void
     {
         DB::connection()->enableQueryLog();
 
@@ -34,7 +34,7 @@ class ShouldQueueWithoutChainTest extends TestCase
         DB::connection()->disableQueryLog();
     }
 
-    public function test_can_import_to_model_without_job_chaining()
+    public function test_can_import_to_model_without_job_chaining(): void
     {
         Queue::fake();
 
@@ -47,7 +47,7 @@ class ShouldQueueWithoutChainTest extends TestCase
         Queue::assertNotPushed(QueueImport::class);
     }
 
-    public function test_a_queue_name_can_be_specified_when_importing()
+    public function test_a_queue_name_can_be_specified_when_importing(): void
     {
         Queue::fake();
 
@@ -60,7 +60,7 @@ class ShouldQueueWithoutChainTest extends TestCase
         Queue::assertPushedOn('queue-name', AfterImportJob::class);
     }
 
-    public function test_the_cleanup_only_runs_when_all_jobs_are_done()
+    public function test_the_cleanup_only_runs_when_all_jobs_are_done(): void
     {
         $fake = Queue::fake();
 
@@ -74,7 +74,7 @@ class ShouldQueueWithoutChainTest extends TestCase
 
         $jobs   = Queue::pushedJobs();
         $chunks = collect($jobs[ReadChunk::class])->pluck('job');
-        $chunks->each(function (ReadChunk $chunk) {
+        $chunks->each(function (ReadChunk $chunk): void {
             self::assertFalse(ReadChunk::isComplete($chunk->getUniqueId()));
         });
         self::assertCount(2, $chunks);
@@ -91,14 +91,14 @@ class ShouldQueueWithoutChainTest extends TestCase
         self::assertTrue(ReadChunk::isComplete($chunks->first()->getUniqueId()));
         self::assertFalse(ReadChunk::isComplete($chunks->last()->getUniqueId()));
 
-        Event::listen(JobProcessed::class, function (JobProcessed $event) {
+        Event::listen(JobProcessed::class, function (JobProcessed $event): void {
             self::assertTrue($event->job->isReleased());
         });
         $fake->push($afterImport);
         Event::forget(JobProcessed::class);
         $fake->push($chunks->last());
 
-        Event::listen(JobProcessed::class, function (JobProcessed $event) {
+        Event::listen(JobProcessed::class, function (JobProcessed $event): void {
             self::assertFalse($event->job->isReleased());
         });
         $fake->push($afterImport);

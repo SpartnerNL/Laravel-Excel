@@ -17,14 +17,14 @@ trait HasEventBus
     /**
      * Register local event listeners.
      */
-    public function registerListeners(array $listeners)
+    public function registerListeners(array $listeners): void
     {
         foreach ($listeners as $event => $listener) {
             $this->events[$event][] = $listener;
         }
     }
 
-    public function clearListeners()
+    public function clearListeners(): void
     {
         $this->events = [];
     }
@@ -32,7 +32,7 @@ trait HasEventBus
     /**
      * Register a global event listener.
      */
-    public static function listen(string $event, callable $listener)
+    public static function listen(string $event, callable $listener): void
     {
         static::$globalEvents[$event][] = $listener;
     }
@@ -40,7 +40,7 @@ trait HasEventBus
     /**
      * @param  object  $event
      */
-    public function raise($event)
+    public function raise($event): void
     {
         foreach ($this->listeners($event) as $listener) {
             $listener($event);

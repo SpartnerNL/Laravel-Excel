@@ -23,7 +23,7 @@ class WithSkipDuplicatesTest extends TestCase
         $this->loadLaravelMigrations(['--database' => 'testing']);
     }
 
-    public function test_can_skip_duplicate_models_in_batches()
+    public function test_can_skip_duplicate_models_in_batches(): void
     {
         User::create([
             'name'     => 'Funny Banana',
@@ -83,7 +83,7 @@ class WithSkipDuplicatesTest extends TestCase
         $this->assertEquals(2, User::count());
     }
 
-    public function test_can_skip_duplicate_models_in_rows()
+    public function test_can_skip_duplicate_models_in_rows(): void
     {
         User::create([
             'name'     => 'Funny Potato',

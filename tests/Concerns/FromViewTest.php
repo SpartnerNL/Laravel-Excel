@@ -20,7 +20,7 @@ class FromViewTest extends TestCase
         $this->loadLaravelMigrations(['--database' => 'testing']);
     }
 
-    public function test_can_export_from_view()
+    public function test_can_export_from_view(): void
     {
         /** @var Collection|User[] $users */
         $users = User::factory()->count(100)->create();
@@ -61,7 +61,7 @@ class FromViewTest extends TestCase
         $this->assertEquals($expected, $contents);
     }
 
-    public function test_can_export_multiple_sheets_from_view()
+    public function test_can_export_multiple_sheets_from_view(): void
     {
         /** @var Collection|User[] $users */
         $users = User::factory()->count(300)->create();

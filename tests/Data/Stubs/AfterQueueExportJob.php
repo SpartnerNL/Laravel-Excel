@@ -14,7 +14,7 @@ class AfterQueueExportJob implements ShouldQueue
     {
     }
 
-    public function handle()
+    public function handle(): void
     {
         TestCase::assertFileExists($this->filePath);
     }

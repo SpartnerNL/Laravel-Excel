@@ -54,7 +54,7 @@ class LocalTemporaryFile extends TemporaryFile
     /**
      * @param @param string|resource $contents
      */
-    public function put($contents)
+    public function put($contents): void
     {
         file_put_contents($this->filePath, $contents);
     }

@@ -20,7 +20,7 @@ class StoreQueryMacroTest extends TestCase
         User::factory()->count(100)->create();
     }
 
-    public function test_can_download_a_query_as_excel()
+    public function test_can_download_a_query_as_excel(): void
     {
         $response = User::storeExcel('query-store.xlsx', null, Excel::XLSX);
 
@@ -31,7 +31,7 @@ class StoreQueryMacroTest extends TestCase
         $this->assertCount(100, $array);
     }
 
-    public function test_can_download_a_query_as_excel_on_different_disk()
+    public function test_can_download_a_query_as_excel_on_different_disk(): void
     {
         $response = User::storeExcel('query-store.xlsx', 'test', Excel::XLSX);
 
@@ -42,7 +42,7 @@ class StoreQueryMacroTest extends TestCase
         $this->assertCount(100, $array);
     }
 
-    public function test_can_store_a_query_with_headers_as_excel()
+    public function test_can_store_a_query_with_headers_as_excel(): void
     {
         $response = User::storeExcel('query-headers-store.xlsx', null, Excel::XLSX, true);
 

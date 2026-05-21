@@ -13,13 +13,13 @@ use PhpOffice\PhpSpreadsheet\Document\Properties;
 
 class DelegatedMacroableTest extends TestCase
 {
-    public function test_can_call_methods_from_delegate()
+    public function test_can_call_methods_from_delegate(): void
     {
         $export = new class implements WithEvents
         {
             use Exportable, RegistersEventListeners;
 
-            public static function beforeExport(BeforeExport $event)
+            public static function beforeExport(BeforeExport $event): void
             {
                 // ->getProperties() will be called via __call on the ->getDelegate()
                 TestCase::assertInstanceOf(Properties::class, $event->writer->getProperties());
@@ -29,10 +29,10 @@ class DelegatedMacroableTest extends TestCase
         $export->download('some-file.xlsx');
     }
 
-    public function test_can_use_writer_macros()
+    public function test_can_use_writer_macros(): void
     {
         $called = false;
-        Writer::macro('test', function () use (&$called) {
+        Writer::macro('test', function () use (&$called): void {
             $called = true;
         });
 
@@ -40,7 +40,7 @@ class DelegatedMacroableTest extends TestCase
         {
             use Exportable, RegistersEventListeners;
 
-            public static function beforeExport(BeforeExport $event)
+            public static function beforeExport(BeforeExport $event): void
             {
                 // call macro method
                 $event->writer->test();
@@ -52,10 +52,10 @@ class DelegatedMacroableTest extends TestCase
         $this->assertTrue($called);
     }
 
-    public function test_can_use_sheet_macros()
+    public function test_can_use_sheet_macros(): void
     {
         $called = false;
-        Sheet::macro('test', function () use (&$called) {
+        Sheet::macro('test', function () use (&$called): void {
             $called = true;
         });
 
@@ -63,7 +63,7 @@ class DelegatedMacroableTest extends TestCase
         {
             use Exportable, RegistersEventListeners;
 
-            public static function beforeSheet(BeforeSheet $event)
+            public static function beforeSheet(BeforeSheet $event): void
             {
                 // call macro method
                 $event->sheet->test();

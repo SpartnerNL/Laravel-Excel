@@ -11,7 +11,7 @@ use Maatwebsite\Excel\Tests\TestCase;
 
 class WithHeadingsTest extends TestCase
 {
-    public function test_can_export_from_collection_with_heading_row()
+    public function test_can_export_from_collection_with_heading_row(): void
     {
         $export = new class implements FromCollection, WithHeadings
         {
@@ -49,7 +49,7 @@ class WithHeadingsTest extends TestCase
         $this->assertEquals($expected, $actual);
     }
 
-    public function test_can_export_from_collection_with_multiple_heading_rows()
+    public function test_can_export_from_collection_with_multiple_heading_rows(): void
     {
         $export = new class implements FromCollection, WithHeadings
         {
@@ -91,7 +91,7 @@ class WithHeadingsTest extends TestCase
         $this->assertEquals($expected, $actual);
     }
 
-    public function test_can_export_from_collection_with_heading_row_with_custom_start_cell()
+    public function test_can_export_from_collection_with_heading_row_with_custom_start_cell(): void
     {
         $export = new class implements FromCollection, WithCustomStartCell, WithHeadings
         {

@@ -26,7 +26,7 @@ class ExcelServiceProvider extends ServiceProvider
     /**
      * {@inheritdoc}
      */
-    public function boot()
+    public function boot(): void
     {
         if ($this->app->runningInConsole()) {
             $this->publishes([
@@ -49,7 +49,7 @@ class ExcelServiceProvider extends ServiceProvider
 
         if ($this->app instanceof Application) {
             // Laravel
-            $this->app->booted(function ($app) {
+            $this->app->booted(function ($app): void {
                 $app->make(SettingsProvider::class)->provide();
             });
         } else {
@@ -62,7 +62,7 @@ class ExcelServiceProvider extends ServiceProvider
      * {@inheritdoc}
      */
     #[\Override]
-    public function register()
+    public function register(): void
     {
         $this->mergeConfigFrom(
             $this->getConfigFile(),

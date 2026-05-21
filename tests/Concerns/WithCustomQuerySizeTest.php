@@ -20,14 +20,14 @@ class WithCustomQuerySizeTest extends TestCase
         $this->loadLaravelMigrations(['--database' => 'testing']);
         $this->loadMigrationsFrom(dirname(__DIR__) . '/Data/Stubs/Database/Migrations');
 
-        Group::factory()->count(5)->create()->each(function (Group $group) {
-            $group->users()->attach(User::factory()->count(rand(1, 3))->create());
+        Group::factory()->count(5)->create()->each(function (Group $group): void {
+            $group->users()->attach(User::factory()->count(random_int(1, 3))->create());
         });
 
         config()->set('excel.exports.chunk_size', 2);
     }
 
-    public function test_can_export_with_custom_count()
+    public function test_can_export_with_custom_count(): void
     {
         $export = new FromQueryWithCustomQuerySize;
 

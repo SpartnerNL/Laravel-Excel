@@ -30,22 +30,22 @@ class ExportWithRegistersEventListeners implements WithEvents
      */
     public static $afterSheet;
 
-    public static function beforeExport()
+    public static function beforeExport(): void
     {
         (static::$beforeExport)(...func_get_args());
     }
 
-    public static function beforeWriting()
+    public static function beforeWriting(): void
     {
         (static::$beforeWriting)(...func_get_args());
     }
 
-    public static function beforeSheet()
+    public static function beforeSheet(): void
     {
         (static::$beforeSheet)(...func_get_args());
     }
 
-    public static function afterSheet()
+    public static function afterSheet(): void
     {
         (static::$afterSheet)(...func_get_args());
     }

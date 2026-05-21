@@ -32,10 +32,8 @@ class Excel extends Facade
 {
     /**
      * Replace the bound instance with a fake.
-     *
-     * @return void
      */
-    public static function fake()
+    public static function fake(): void
     {
         static::swap(new ExcelFake);
     }

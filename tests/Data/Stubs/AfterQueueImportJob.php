@@ -15,7 +15,7 @@ class AfterQueueImportJob implements ShouldQueue
     {
     }
 
-    public function handle()
+    public function handle(): void
     {
         Assert::assertEquals($this->totalRows, DB::table('groups')->count('id'));
     }

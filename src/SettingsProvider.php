@@ -14,12 +14,12 @@ class SettingsProvider
     /**
      * Provide PhpSpreadsheet settings.
      */
-    public function provide()
+    public function provide(): void
     {
         $this->configureCellCaching();
     }
 
-    protected function configureCellCaching()
+    protected function configureCellCaching(): void
     {
         Settings::setCache(
             $this->cache->driver()

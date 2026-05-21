@@ -238,7 +238,7 @@ class Writer
     /**
      * @param  object  $export
      */
-    protected function handleDocumentProperties($export)
+    protected function handleDocumentProperties($export): void
     {
         $properties = config('excel.exports.properties', []);
 

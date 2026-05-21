@@ -11,12 +11,12 @@ class HeadingRowFormatter
     /**
      * @const string
      */
-    const FORMATTER_NONE = 'none';
+    public const FORMATTER_NONE = 'none';
 
     /**
      * @const string
      */
-    const FORMATTER_SLUG = 'slug';
+    public const FORMATTER_SLUG = 'slug';
 
     /**
      * @var string
@@ -41,7 +41,7 @@ class HeadingRowFormatter
         return (new Collection($headings))->map(fn ($value, $key) => static::callFormatter($value, $key))->toArray();
     }
 
-    public static function default(?string $name = null)
+    public static function default(?string $name = null): void
     {
         if ($name !== null && !isset(static::$customFormatters[$name]) && !in_array($name, static::$defaultFormatters, true)) {
             throw new InvalidArgumentException(sprintf('Formatter "%s" does not exist', $name));
@@ -50,7 +50,7 @@ class HeadingRowFormatter
         static::$formatter = $name;
     }
 
-    public static function extend(string $name, callable $formatter)
+    public static function extend(string $name, callable $formatter): void
     {
         static::$customFormatters[$name] = $formatter;
     }
@@ -58,7 +58,7 @@ class HeadingRowFormatter
     /**
      * Reset the formatter.
      */
-    public static function reset()
+    public static function reset(): void
     {
         static::default();
     }

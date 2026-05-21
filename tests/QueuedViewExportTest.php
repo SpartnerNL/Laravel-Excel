@@ -20,7 +20,7 @@ class QueuedViewExportTest extends TestCase
         $this->loadLaravelMigrations(['--database' => 'testing']);
     }
 
-    public function test_can_queue_an_export()
+    public function test_can_queue_an_export(): void
     {
         $users  = User::factory()->count(100)->create();
         $export = new SheetForUsersFromView($users);
@@ -34,7 +34,7 @@ class QueuedViewExportTest extends TestCase
         $this->assertCount(101, $actual);
     }
 
-    public function test_can_export_multiple_sheets_from_view()
+    public function test_can_export_multiple_sheets_from_view(): void
     {
         /** @var Collection|User[] $users */
         $users = User::factory()->count(300)->create();

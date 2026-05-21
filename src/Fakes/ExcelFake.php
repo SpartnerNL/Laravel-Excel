@@ -98,7 +98,7 @@ class ExcelFake implements Exporter, Importer
         {
             use Queueable;
 
-            public function handle()
+            public function handle(): void
             {
                 //
             }
@@ -186,7 +186,7 @@ class ExcelFake implements Exporter, Importer
         {
             use Queueable;
 
-            public function handle()
+            public function handle(): void
             {
                 //
             }
@@ -205,10 +205,8 @@ class ExcelFake implements Exporter, Importer
     /**
      * When asserting downloaded, stored, queued or imported, use regular expression
      * to look for a matching file path.
-     *
-     * @return void
      */
-    public function matchByRegex()
+    public function matchByRegex(): void
     {
         $this->matchByRegex = true;
     }
@@ -216,10 +214,8 @@ class ExcelFake implements Exporter, Importer
     /**
      * When asserting downloaded, stored, queued or imported, use regular string
      * comparison for matching file path.
-     *
-     * @return void
      */
-    public function doNotMatchByRegex()
+    public function doNotMatchByRegex(): void
     {
         $this->matchByRegex = false;
     }
@@ -227,7 +223,7 @@ class ExcelFake implements Exporter, Importer
     /**
      * @param  callable|null  $callback
      */
-    public function assertDownloaded(string $fileName, $callback = null)
+    public function assertDownloaded(string $fileName, $callback = null): void
     {
         $fileName = $this->assertArrayHasKey($fileName, $this->downloads, sprintf('%s is not downloaded', $fileName));
 
@@ -243,7 +239,7 @@ class ExcelFake implements Exporter, Importer
      * @param  string|callable|null  $disk
      * @param  callable|null  $callback
      */
-    public function assertStored(string $filePath, $disk = null, $callback = null)
+    public function assertStored(string $filePath, $disk = null, $callback = null): void
     {
         if (is_callable($disk)) {
             $callback = $disk;
@@ -271,7 +267,7 @@ class ExcelFake implements Exporter, Importer
      * @param  string|callable|null  $disk
      * @param  callable|null  $callback
      */
-    public function assertQueued(string $filePath, $disk = null, $callback = null)
+    public function assertQueued(string $filePath, $disk = null, $callback = null): void
     {
         if (is_callable($disk)) {
             $callback = $disk;
@@ -303,7 +299,7 @@ class ExcelFake implements Exporter, Importer
     /**
      * @param  callable|null  $callback
      */
-    public function assertExportedInRaw(string $classname, $callback = null)
+    public function assertExportedInRaw(string $classname, $callback = null): void
     {
         Assert::assertArrayHasKey($classname, $this->raws, sprintf('%s is not exported in raw', $classname));
 
@@ -319,7 +315,7 @@ class ExcelFake implements Exporter, Importer
      * @param  string|callable|null  $disk
      * @param  callable|null  $callback
      */
-    public function assertImported(string $filePath, $disk = null, $callback = null)
+    public function assertImported(string $filePath, $disk = null, $callback = null): void
     {
         if (is_callable($disk)) {
             $callback = $disk;

@@ -12,7 +12,7 @@ trait SkipsErrors
      */
     protected $errors = [];
 
-    public function onError(Throwable $e)
+    public function onError(Throwable $e): void
     {
         $this->errors[] = $e;
     }

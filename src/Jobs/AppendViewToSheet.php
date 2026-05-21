@@ -62,14 +62,14 @@ class AppendViewToSheet implements ShouldQueue
      * @throws Exception
      * @throws \PhpOffice\PhpSpreadsheet\Reader\Exception
      */
-    public function handle(Writer $writer)
+    public function handle(Writer $writer): void
     {
         // Determine if the batch has been cancelled...
         if ($this->batch()?->cancelled()) {
             return;
         }
 
-        (new LocalizeJob($this->sheetExport))->handle($this, function () use ($writer) {
+        (new LocalizeJob($this->sheetExport))->handle($this, function () use ($writer): void {
             $writer = $writer->reopen($this->temporaryFile, $this->writerType);
 
             $sheet = $writer->getSheetByIndex($this->sheetIndex);
