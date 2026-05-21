@@ -20,6 +20,12 @@ trait Importable
      */
     protected $output;
 
+    protected ?string $disk = null;
+
+    protected ?string $readerType = null;
+
+    protected string|UploadedFile|null $filePath = null;
+
     /**
      * @param  string|UploadedFile|null  $filePath
      * @return Importer|PendingDispatch

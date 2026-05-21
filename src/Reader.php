@@ -37,12 +37,12 @@ class Reader
     use DelegatedMacroable, HasEventBus;
 
     /**
-     * @var Spreadsheet
+     * @var ?Spreadsheet
      */
     protected $spreadsheet;
 
     /**
-     * @var object[]
+     * @var ?object[]
      */
     protected $sheetImports = [];
 
@@ -437,7 +437,8 @@ class Reader
         $this->setDefaultValueBinder();
 
         // Force garbage collecting
-        unset($this->sheetImports, $this->spreadsheet);
+        $this->sheetImports = [];
+        $this->spreadsheet  = null;
 
         $this->currentFile->delete();
     }

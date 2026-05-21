@@ -12,6 +12,8 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 trait Exportable
 {
+    protected ?string $filePath = null;
+
     /**
      * @return Response|BinaryFileResponse
      *

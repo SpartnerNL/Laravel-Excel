@@ -28,9 +28,9 @@ class Writer
     use DelegatedMacroable, HasEventBus;
 
     /**
-     * @var Spreadsheet
+     * @var ?Spreadsheet
      */
-    protected $spreadsheet;
+    protected $spreadsheet = null;
 
     /**
      * @var object
@@ -182,7 +182,7 @@ class Writer
 
         $this->clearListeners();
         $this->spreadsheet->disconnectWorksheets();
-        unset($this->spreadsheet);
+        $this->spreadsheet = null;
 
         return $temporaryFile;
     }
