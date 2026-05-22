@@ -56,8 +56,8 @@ class QueueExport implements ShouldQueue
             }
 
             // Pre-create the worksheets
-            foreach ($sheetExports as $sheetIndex => $sheetExport) {
-                $sheet = $writer->addNewSheet($sheetIndex);
+            foreach ($sheetExports as $sheetExport) {
+                $sheet = $writer->addNewSheet();
                 $sheet->open($sheetExport);
             }
 
