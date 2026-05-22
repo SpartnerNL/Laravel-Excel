@@ -4,6 +4,12 @@ namespace Maatwebsite\Excel\Cache;
 
 use PhpOffice\PhpSpreadsheet\Cell\Cell;
 
+/**
+ * Used when psr/simple-cache is ^1.0 or ^2.0.
+ *
+ * CacheInterface method signatures must stay untyped so they remain compatible
+ * with all supported psr/simple-cache major versions. Do not add native types here.
+ */
 class MemoryCacheDeprecated implements MemoryInterface
 {
     protected array $cache = [];
@@ -16,7 +22,7 @@ class MemoryCacheDeprecated implements MemoryInterface
     /**
      * {@inheritdoc}
      */
-    public function clear(): bool
+    public function clear()
     {
         $this->cache = [];
 
@@ -26,7 +32,7 @@ class MemoryCacheDeprecated implements MemoryInterface
     /**
      * {@inheritdoc}
      */
-    public function delete(string $key): bool
+    public function delete($key)
     {
         unset($this->cache[$key]);
 
@@ -36,7 +42,7 @@ class MemoryCacheDeprecated implements MemoryInterface
     /**
      * {@inheritdoc}
      */
-    public function deleteMultiple(iterable $keys): bool
+    public function deleteMultiple($keys)
     {
         foreach ($keys as $key) {
             $this->delete($key);
@@ -48,7 +54,7 @@ class MemoryCacheDeprecated implements MemoryInterface
     /**
      * {@inheritdoc}
      */
-    public function get(string $key, mixed $default = null): mixed
+    public function get($key, $default = null)
     {
         if ($this->has($key)) {
             return $this->cache[$key];
@@ -60,7 +66,7 @@ class MemoryCacheDeprecated implements MemoryInterface
     /**
      * {@inheritdoc}
      */
-    public function getMultiple(iterable $keys, mixed $default = null): iterable
+    public function getMultiple($keys, $default = null)
     {
         $results = [];
         foreach ($keys as $key) {
@@ -73,7 +79,7 @@ class MemoryCacheDeprecated implements MemoryInterface
     /**
      * {@inheritdoc}
      */
-    public function has(string $key): bool
+    public function has($key)
     {
         return isset($this->cache[$key]);
     }
@@ -81,7 +87,7 @@ class MemoryCacheDeprecated implements MemoryInterface
     /**
      * {@inheritdoc}
      */
-    public function set(string $key, mixed $value, null|int|\DateInterval $ttl = null): bool
+    public function set($key, $value, $ttl = null)
     {
         $this->cache[$key] = $value;
 
@@ -91,7 +97,7 @@ class MemoryCacheDeprecated implements MemoryInterface
     /**
      * {@inheritdoc}
      */
-    public function setMultiple(iterable $values, null|int|\DateInterval $ttl = null): bool
+    public function setMultiple($values, $ttl = null)
     {
         foreach ($values as $key => $value) {
             $this->set($key, $value);

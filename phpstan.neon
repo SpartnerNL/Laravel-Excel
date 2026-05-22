@@ -9,3 +9,8 @@ parameters:
     configDirectories:
         - ./tests
         - ./config
+    # MemoryCacheDeprecated / BatchCacheDeprecated use untyped CacheInterface methods for psr/simple-cache ^1|^2.
+    # PHPStan (with ^3 installed) would require native types there and break runtime compatibility — do not add them.
+    excludePaths:
+        - src/Cache/MemoryCacheDeprecated.php
+        - src/Cache/BatchCacheDeprecated.php
