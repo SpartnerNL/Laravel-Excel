@@ -14,11 +14,12 @@ class StoreQueuedExport implements ShouldQueue
 {
     use Batchable, Dispatchable, InteractsWithQueue, Queueable;
 
-    /**
-     * @param  array|string  $diskOptions
-     */
-    public function __construct(private TemporaryFile $temporaryFile, private string $filePath, private ?string $disk = null, private $diskOptions = [])
-    {
+    public function __construct(
+        private TemporaryFile $temporaryFile,
+        private string $filePath,
+        private ?string $disk = null,
+        private array|string $diskOptions = [],
+    ) {
     }
 
     public function handle(Filesystem $filesystem): void

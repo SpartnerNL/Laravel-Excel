@@ -13,14 +13,14 @@ use Maatwebsite\Excel\Concerns\WithCustomQuerySize;
 use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\Group;
 
+/**
+ * @implements WithMapping<Group>
+ */
 class FromQueryWithCustomQuerySize implements FromQuery, ShouldQueue, WithCustomQuerySize, WithMapping
 {
     use Exportable;
 
-    /**
-     * @return Builder|EloquentBuilder|Relation
-     */
-    public function query()
+    public function query(): Builder|EloquentBuilder|Relation
     {
         $query = Group::with('users')
             ->join('group_user', 'groups.id', '=', 'group_user.group_id')
@@ -36,10 +36,7 @@ class FromQueryWithCustomQuerySize implements FromQuery, ShouldQueue, WithCustom
         return Group::has('users')->count();
     }
 
-    /**
-     * @param  Group  $row
-     */
-    public function map($row): array
+    public function map(mixed $row): array
     {
         return [
             $row->id,

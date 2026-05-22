@@ -17,10 +17,7 @@ class WithHeadingsTest extends TestCase
         {
             use Exportable;
 
-            /**
-             * @return Collection
-             */
-            public function collection()
+            public function collection(): Collection
             {
                 return collect([
                     ['A1', 'B1', 'C1'],
@@ -55,10 +52,7 @@ class WithHeadingsTest extends TestCase
         {
             use Exportable;
 
-            /**
-             * @return Collection
-             */
-            public function collection()
+            public function collection(): Collection
             {
                 return collect([
                     ['A1', 'B1', 'C1'],
@@ -97,10 +91,7 @@ class WithHeadingsTest extends TestCase
         {
             use Exportable;
 
-            /**
-             * @return Collection
-             */
-            public function collection()
+            public function collection(): Collection
             {
                 return collect([
                     ['A1', 'B1', 'C1'],

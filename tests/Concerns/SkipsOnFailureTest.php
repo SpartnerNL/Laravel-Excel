@@ -39,10 +39,7 @@ class SkipsOnFailureTest extends TestCase
 
             public $failures = 0;
 
-            /**
-             * @return Model|null
-             */
-            public function model(array $row)
+            public function model(array $row): ?Model
             {
                 return new User([
                     'name'     => $row[0],
@@ -101,10 +98,7 @@ class SkipsOnFailureTest extends TestCase
 
             public $failures = 0;
 
-            /**
-             * @return Model|null
-             */
-            public function model(array $row)
+            public function model(array $row): ?Model
             {
                 return new User([
                     'name'     => $row[0],
@@ -161,10 +155,7 @@ class SkipsOnFailureTest extends TestCase
         {
             use Importable, SkipsFailures;
 
-            /**
-             * @return Model|null
-             */
-            public function model(array $row)
+            public function model(array $row): ?Model
             {
                 return new User([
                     'name'     => $row[0],
@@ -209,10 +200,7 @@ class SkipsOnFailureTest extends TestCase
         {
             use Importable, SkipsFailures;
 
-            /**
-             * @return Model|null
-             */
-            public function onRow(Row $row)
+            public function onRow(Row $row): ?Model
             {
                 $row = $row->toArray();
 
@@ -253,13 +241,9 @@ class SkipsOnFailureTest extends TestCase
         {
             use Importable, SkipsFailures;
 
-            /**
-             * @param  Row  $row
-             * @return Model|null
-             */
             public function collection(Collection $rows)
             {
-                $rows = $rows->each(fn ($row) => User::create([
+                return $rows->each(fn ($row) => User::create([
                     'name'     => $row[0],
                     'email'    => $row[1],
                     'password' => 'secret',

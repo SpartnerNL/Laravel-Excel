@@ -23,9 +23,6 @@ use Maatwebsite\Excel\Transactions\TransactionManager;
 
 class ExcelServiceProvider extends ServiceProvider
 {
-    /**
-     * {@inheritdoc}
-     */
     public function boot(): void
     {
         if ($this->app->runningInConsole()) {

@@ -14,19 +14,19 @@ use Maatwebsite\Excel\Tests\Concerns\FromQueryTest;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\Factories\UserFactory;
 use Maatwebsite\Excel\Tests\QueuedQueryExportTest;
 
+/**
+ * @property string $email
+ * @property string $name
+ * @property string $firstname
+ * @property string $lastname
+ */
 class User extends Model
 {
     use HasFactory;
     use Searchable;
 
-    /**
-     * @var array
-     */
     protected $guarded = [];
 
-    /**
-     * @var array
-     */
     protected $hidden = ['password', 'email_verified_at', 'options', 'group_id'];
 
     public function groups(): BelongsToMany

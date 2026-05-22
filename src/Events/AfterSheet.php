@@ -6,17 +6,10 @@ use Maatwebsite\Excel\Sheet;
 
 class AfterSheet extends Event
 {
-    /**
-     * @var Sheet
-     */
-    public $sheet;
-
-    /**
-     * @param  object  $exportable
-     */
-    public function __construct(Sheet $sheet, $exportable)
-    {
-        $this->sheet = $sheet;
+    public function __construct(
+        public Sheet $sheet,
+        object $exportable,
+    ) {
         parent::__construct($exportable);
     }
 
@@ -25,10 +18,7 @@ class AfterSheet extends Event
         return $this->sheet;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getDelegate()
+    public function getDelegate(): mixed
     {
         return $this->sheet;
     }

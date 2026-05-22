@@ -10,10 +10,7 @@ use Maatwebsite\Excel\Tests\TestCase;
 
 class WithCustomStartCellTest extends TestCase
 {
-    /**
-     * @var Excel
-     */
-    protected $SUT;
+    protected Excel $SUT;
 
     protected function setUp(): void
     {
@@ -26,10 +23,7 @@ class WithCustomStartCellTest extends TestCase
     {
         $export = new class implements FromCollection, WithCustomStartCell
         {
-            /**
-             * @return Collection
-             */
-            public function collection()
+            public function collection(): Collection
             {
                 return collect([
                     ['A1', 'B1'],

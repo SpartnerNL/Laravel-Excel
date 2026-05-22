@@ -20,58 +20,20 @@ class AppendQueryToSheet implements ShouldQueue
 {
     use Batchable, Dispatchable, HasEventBus, InteractsWithQueue, ProxyFailures, Queueable;
 
-    /**
-     * @var TemporaryFile
-     */
-    public $temporaryFile;
-
-    /**
-     * @var string
-     */
-    public $writerType;
-
-    /**
-     * @var int
-     */
-    public $sheetIndex;
-
-    /**
-     * @var FromQuery
-     */
-    public $sheetExport;
-
-    /**
-     * @var int
-     */
-    public $page;
-
-    /**
-     * @var int
-     */
-    public $chunkSize;
-
     public function __construct(
-        FromQuery $sheetExport,
-        TemporaryFile $temporaryFile,
-        string $writerType,
-        int $sheetIndex,
-        int $page,
-        int $chunkSize
+        public FromQuery $sheetExport,
+        public TemporaryFile $temporaryFile,
+        public string $writerType,
+        public int $sheetIndex,
+        public int $page,
+        public int $chunkSize,
     ) {
-        $this->sheetExport   = $sheetExport;
-        $this->temporaryFile = $temporaryFile;
-        $this->writerType    = $writerType;
-        $this->sheetIndex    = $sheetIndex;
-        $this->page          = $page;
-        $this->chunkSize     = $chunkSize;
     }
 
     /**
      * Get the middleware the job should be dispatched through.
-     *
-     * @return array
      */
-    public function middleware()
+    public function middleware(): array
     {
         return (method_exists($this->sheetExport, 'middleware')) ? $this->sheetExport->middleware() : [];
     }

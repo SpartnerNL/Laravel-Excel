@@ -11,30 +11,21 @@ use Maatwebsite\Excel\Sheet;
 
 class DownloadCollectionMixin
 {
-    /**
-     * @return callable
-     */
-    public function downloadExcel()
+    public function downloadExcel(): callable
     {
         return function (string $fileName, ?string $writerType = null, $withHeadings = false, array $responseHeaders = []) {
             $export = new class($this, $withHeadings) implements FromCollection, WithHeadings
             {
                 use Exportable;
 
-                /**
-                 * @var Collection
-                 */
-                private $collection;
+                private Collection $collection;
 
                 public function __construct(Collection $collection, private bool $withHeadings = false)
                 {
                     $this->collection = $collection->toBase();
                 }
 
-                /**
-                 * @return Collection
-                 */
-                public function collection()
+                public function collection(): Collection
                 {
                     return $this->collection;
                 }

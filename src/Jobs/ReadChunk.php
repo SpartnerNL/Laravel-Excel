@@ -29,46 +29,35 @@ class ReadChunk implements ShouldQueue
 {
     use Batchable, HasEventBus, InteractsWithQueue, Queueable;
 
-    /**
-     * @var int
-     */
-    public $timeout;
+    public ?int $timeout;
+
+    public ?int $tries;
+
+    public ?int $maxExceptions;
+
+    public ?int $backoff;
 
     /**
-     * @var int
-     */
-    public $tries;
-
-    /**
-     * @var int
-     */
-    public $maxExceptions;
-
-    /**
-     * @var int
-     */
-    public $backoff;
-
-    /**
-     * @var string
+     * @var ?string
      */
     public $queue;
 
     /**
-     * @var string
+     * @var ?string
      */
     public $connection;
 
-    /**
-     * @var string
-     */
-    private $uniqueId;
+    private string $uniqueId;
 
-    /**
-     * @param  object  $sheetImport
-     */
-    public function __construct(private WithChunkReading $import, private IReader $reader, private TemporaryFile $temporaryFile, private string $sheetName, private $sheetImport, private int $startRow, private int $chunkSize)
-    {
+    public function __construct(
+        private WithChunkReading $import,
+        private IReader $reader,
+        private TemporaryFile $temporaryFile,
+        private string $sheetName,
+        private object $sheetImport,
+        private int $startRow,
+        private int $chunkSize,
+    ) {
         $this->timeout       = $this->import->timeout ?? null;
         $this->tries         = $this->import->tries ?? null;
         $this->maxExceptions = $this->import->maxExceptions ?? null;
@@ -94,20 +83,16 @@ class ReadChunk implements ShouldQueue
 
     /**
      * Get the middleware the job should be dispatched through.
-     *
-     * @return array
      */
-    public function middleware()
+    public function middleware(): array
     {
         return (method_exists($this->import, 'middleware')) ? $this->import->middleware() : [];
     }
 
     /**
      * Determine the time at which the job should timeout.
-     *
-     * @return \DateTime
      */
-    public function retryUntil()
+    public function retryUntil(): ?\DateTime
     {
         return (method_exists($this->import, 'retryUntil')) ? $this->import->retryUntil() : null;
     }

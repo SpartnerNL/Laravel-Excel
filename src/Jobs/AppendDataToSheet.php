@@ -16,43 +16,19 @@ class AppendDataToSheet implements ShouldQueue
 {
     use Batchable, Dispatchable, InteractsWithQueue, ProxyFailures, Queueable;
 
-    /**
-     * @var array
-     */
-    public $data = [];
-
-    /**
-     * @var string
-     */
-    public $temporaryFile;
-
-    /**
-     * @var string
-     */
-    public $writerType;
-
-    /**
-     * @var int
-     */
-    public $sheetIndex;
-
-    /**
-     * @param  object  $sheetExport
-     */
-    public function __construct(public $sheetExport, TemporaryFile $temporaryFile, string $writerType, int $sheetIndex, array $data)
-    {
-        $this->data          = $data;
-        $this->temporaryFile = $temporaryFile;
-        $this->writerType    = $writerType;
-        $this->sheetIndex    = $sheetIndex;
+    public function __construct(
+        public object $sheetExport,
+        public TemporaryFile $temporaryFile,
+        public string $writerType,
+        public int $sheetIndex,
+        public array $data,
+    ) {
     }
 
     /**
      * Get the middleware the job should be dispatched through.
-     *
-     * @return array
      */
-    public function middleware()
+    public function middleware(): array
     {
         return (method_exists($this->sheetExport, 'middleware')) ? $this->sheetExport->middleware() : [];
     }

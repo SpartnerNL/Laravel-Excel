@@ -3,23 +3,14 @@
 namespace Maatwebsite\Excel\Cache;
 
 use PhpOffice\PhpSpreadsheet\Cell\Cell;
-use Psr\SimpleCache\CacheInterface;
 
-class MemoryCacheDeprecated implements CacheInterface
+class MemoryCacheDeprecated implements MemoryInterface
 {
-    /**
-     * @var int|null
-     */
-    protected $memoryLimit;
+    protected array $cache = [];
 
-    /**
-     * @var array
-     */
-    protected $cache = [];
-
-    public function __construct(?int $memoryLimit = null)
-    {
-        $this->memoryLimit = $memoryLimit;
+    public function __construct(
+        protected ?int $memoryLimit = null,
+    ) {
     }
 
     /**

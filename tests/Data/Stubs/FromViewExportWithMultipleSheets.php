@@ -10,14 +10,9 @@ class FromViewExportWithMultipleSheets implements WithMultipleSheets
 {
     use Exportable;
 
-    /**
-     * @var Collection
-     */
-    protected $users;
-
-    public function __construct(Collection $users)
-    {
-        $this->users = $users;
+    public function __construct(
+        protected Collection $users,
+    ) {
     }
 
     /**

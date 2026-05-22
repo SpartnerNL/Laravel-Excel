@@ -22,14 +22,12 @@ class ModelImporter
 {
     use HasEventBus;
 
-    public function __construct(private ModelManager $manager)
-    {
+    public function __construct(
+        private ModelManager $manager,
+    ) {
     }
 
     /**
-     * @param  int|null  $startRow
-     * @param  string|null  $endColumn
-     *
      * @throws ValidationException
      */
     public function import(Worksheet $worksheet, ToModel $import, int $startRow = 1): void

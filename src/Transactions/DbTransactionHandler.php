@@ -6,16 +6,15 @@ use Illuminate\Database\ConnectionInterface;
 
 class DbTransactionHandler implements TransactionHandler
 {
-    public function __construct(private ConnectionInterface $connection)
-    {
+    public function __construct(
+        private ConnectionInterface $connection,
+    ) {
     }
 
     /**
-     * @return mixed
-     *
      * @throws \Throwable
      */
-    public function __invoke(callable $callback)
+    public function __invoke(callable $callback): mixed
     {
         return $this->connection->transaction($callback);
     }

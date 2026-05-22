@@ -12,18 +12,20 @@ class ImportMacro
     public function __invoke()
     {
         return function (string $filename, ?string $disk = null, ?string $readerType = null) {
+            /** @phpstan-ignore method.notFound */
             $import = new class($this->getModel()::class) implements ToModel, WithHeadingRow
             {
                 use Importable;
 
-                public function __construct(private string $model)
-                {
+                public function __construct(
+                    private string $model,
+                ) {
                 }
 
                 /**
                  * @return Model|Model[]|null
                  */
-                public function model(array $row)
+                public function model(array $row): Model|array|null
                 {
                     return (new $this->model)->fill($row);
                 }

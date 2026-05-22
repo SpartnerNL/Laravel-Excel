@@ -19,18 +19,14 @@ use Throwable;
 
 class ModelManager
 {
-    /**
-     * @var array
-     */
-    private $rows = [];
+    private array $rows = [];
 
-    /**
-     * @var bool
-     */
-    private $remembersRowNumber = false;
+    private bool $remembersRowNumber = false;
 
-    public function __construct(private RowValidator $validator, private CascadePersistManager $cascade)
-    {
+    public function __construct(
+        private RowValidator $validator,
+        private CascadePersistManager $cascade,
+    ) {
     }
 
     public function add(int $row, array $attributes): void
@@ -62,10 +58,9 @@ class ModelManager
     }
 
     /**
-     * @param  int|null  $rowNumber
      * @return Model[]|Collection
      */
-    public function toModels(ToModel $import, array $attributes, $rowNumber = null): Collection
+    public function toModels(ToModel $import, array $attributes, ?int $rowNumber = null): Collection
     {
         if ($this->remembersRowNumber) {
             $import->rememberRowNumber($rowNumber);

@@ -37,10 +37,7 @@ class WithSkipDuplicatesTest extends TestCase
         {
             use Importable;
 
-            /**
-             * @return Model|null
-             */
-            public function model(array $row)
+            public function model(array $row): ?Model
             {
                 return new User([
                     'name'     => $row[0],
@@ -49,10 +46,7 @@ class WithSkipDuplicatesTest extends TestCase
                 ]);
             }
 
-            /**
-             * @return string|array
-             */
-            public function uniqueBy()
+            public function uniqueBy(): string|array
             {
                 return 'email';
             }
@@ -100,7 +94,7 @@ class WithSkipDuplicatesTest extends TestCase
             /**
              * @return Model|Model[]|null
              */
-            public function model(array $row)
+            public function model(array $row): Model|array|null
             {
                 return new User([
                     'name'     => $row[0],
@@ -109,10 +103,7 @@ class WithSkipDuplicatesTest extends TestCase
                 ]);
             }
 
-            /**
-             * @return string|array
-             */
-            public function uniqueBy()
+            public function uniqueBy(): string|array
             {
                 return 'email';
             }

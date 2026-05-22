@@ -9,5 +9,5 @@ interface WithDrawings
     /**
      * @return BaseDrawing|BaseDrawing[]
      */
-    public function drawings();
+    public function drawings(): BaseDrawing|array;
 }

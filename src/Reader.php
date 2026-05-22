@@ -36,42 +36,26 @@ class Reader
 {
     use DelegatedMacroable, HasEventBus;
 
-    /**
-     * @var ?Spreadsheet
-     */
-    protected $spreadsheet;
+    protected ?Spreadsheet $spreadsheet = null;
 
     /**
      * @var ?object[]
      */
-    protected $sheetImports = [];
+    protected ?array $sheetImports = [];
 
-    /**
-     * @var TemporaryFile
-     */
-    protected $currentFile;
+    protected TemporaryFile $currentFile;
 
-    /**
-     * @var TemporaryFileFactory
-     */
-    protected $temporaryFileFactory;
+    protected TransactionHandler $transaction;
 
-    /**
-     * @var TransactionHandler
-     */
-    protected $transaction;
+    protected IReader $reader;
 
-    /**
-     * @var IReader
-     */
-    protected $reader;
-
-    public function __construct(TemporaryFileFactory $temporaryFileFactory, TransactionHandler $transaction)
-    {
+    public function __construct(
+        protected TemporaryFileFactory $temporaryFileFactory,
+        TransactionHandler $transaction,
+    ) {
         $this->setDefaultValueBinder();
 
-        $this->transaction          = $transaction;
-        $this->temporaryFileFactory = $temporaryFileFactory;
+        $this->transaction = $transaction;
     }
 
     public function __sleep()
@@ -85,15 +69,13 @@ class Reader
     }
 
     /**
-     * @param  object  $import
-     * @param  string|UploadedFile  $filePath
      * @return PendingDispatch|$this
      *
      * @throws NoTypeDetectedException
      * @throws FileNotFoundException
      * @throws Exception
      */
-    public function read($import, $filePath, ?string $readerType = null, ?string $disk = null)
+    public function read(object $import, string|UploadedFile $filePath, ?string $readerType = null, ?string $disk = null)
     {
         $this->reader = $this->getReader($import, $filePath, $readerType, $disk);
 
@@ -136,15 +118,12 @@ class Reader
     }
 
     /**
-     * @param  object  $import
-     * @param  string|UploadedFile  $filePath
-     *
      * @throws FileNotFoundException
      * @throws \PhpOffice\PhpSpreadsheet\Exception
      * @throws NoTypeDetectedException
      * @throws SheetNotFoundException
      */
-    public function toArray($import, $filePath, ?string $readerType = null, ?string $disk = null): array
+    public function toArray(object $import, string|UploadedFile $filePath, ?string $readerType = null, ?string $disk = null): array
     {
         $this->reader = $this->getReader($import, $filePath, $readerType, $disk);
 
@@ -177,15 +156,12 @@ class Reader
     }
 
     /**
-     * @param  object  $import
-     * @param  string|UploadedFile  $filePath
-     *
      * @throws FileNotFoundException
      * @throws \PhpOffice\PhpSpreadsheet\Exception
      * @throws NoTypeDetectedException
      * @throws SheetNotFoundException
      */
-    public function toCollection($import, $filePath, ?string $readerType = null, ?string $disk = null): Collection
+    public function toCollection(?object $import, string|UploadedFile $filePath, ?string $readerType = null, ?string $disk = null): Collection
     {
         $this->reader = $this->getReader($import, $filePath, $readerType, $disk);
         $this->loadSpreadsheet($import);
@@ -216,10 +192,7 @@ class Reader
         return $sheets;
     }
 
-    /**
-     * @return Spreadsheet
-     */
-    public function getDelegate()
+    public function getDelegate(): Spreadsheet
     {
         return $this->spreadsheet;
     }
@@ -236,10 +209,7 @@ class Reader
         return $this;
     }
 
-    /**
-     * @param  object  $import
-     */
-    public function loadSpreadsheet($import): void
+    public function loadSpreadsheet(?object $import): void
     {
         $this->sheetImports = $this->buildSheetImports($import);
 
@@ -261,18 +231,12 @@ class Reader
         );
     }
 
-    /**
-     * @param  object  $import
-     */
-    public function beforeImport($import): void
+    public function beforeImport(?object $import): void
     {
         $this->raise(new BeforeImport($this, $import));
     }
 
-    /**
-     * @param  object  $import
-     */
-    public function afterImport($import): void
+    public function afterImport(?object $import): void
     {
         $this->raise(new AfterImport($this, $import));
 
@@ -284,10 +248,7 @@ class Reader
         return $this->reader;
     }
 
-    /**
-     * @param  object  $import
-     */
-    public function getWorksheets($import): array
+    public function getWorksheets(object $import): array
     {
         // Csv doesn't have worksheets.
         if (!method_exists($this->reader, 'listWorksheetNames')) {
@@ -338,12 +299,10 @@ class Reader
     }
 
     /**
-     * @return Sheet|null
-     *
      * @throws \PhpOffice\PhpSpreadsheet\Exception
      * @throws SheetNotFoundException
      */
-    protected function getSheet($import, $sheetImport, $index)
+    protected function getSheet($import, $sheetImport, $index): ?Sheet
     {
         try {
             return Sheet::make($this->spreadsheet, $index);
@@ -364,10 +323,7 @@ class Reader
         }
     }
 
-    /**
-     * @param  object  $import
-     */
-    private function buildSheetImports($import): array
+    private function buildSheetImports(?object $import): array
     {
         $sheetImports = [];
         if ($import instanceof WithMultipleSheets) {
@@ -391,15 +347,12 @@ class Reader
     }
 
     /**
-     * @param  object  $import
-     * @param  string|UploadedFile  $filePath
-     *
      * @throws FileNotFoundException
      * @throws NoTypeDetectedException
      * @throws Exception
      * @throws InvalidArgumentException
      */
-    private function getReader($import, $filePath, ?string $readerType = null, ?string $disk = null): IReader
+    private function getReader(?object $import, string|UploadedFile $filePath, ?string $readerType = null, ?string $disk = null): IReader
     {
         $shouldQueue = $import instanceof ShouldQueue;
         if ($shouldQueue && !$import instanceof WithChunkReading) {

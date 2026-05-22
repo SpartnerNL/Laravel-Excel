@@ -2,6 +2,7 @@
 
 namespace Maatwebsite\Excel;
 
+use Illuminate\Bus\PendingBatch;
 use Illuminate\Foundation\Bus\PendingDispatch;
 use PhpOffice\PhpSpreadsheet\Exception;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
@@ -9,35 +10,18 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 interface Exporter
 {
     /**
-     * @param  object  $export
-     * @param  string|null  $fileName
-     * @return BinaryFileResponse
-     *
      * @throws Exception
      * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
      */
-    public function download($export, string $fileName, ?string $writerType = null, array $headers = []);
+    public function download(object $export, string $fileName, ?string $writerType = null, array $headers = []): BinaryFileResponse;
 
     /**
-     * @param  object  $export
-     * @param  mixed  $diskOptions
-     * @return bool
-     *
      * @throws Exception
      * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
      */
-    public function store($export, string $filePath, ?string $diskName = null, ?string $writerType = null, $diskOptions = []);
+    public function store(object $export, string $filePath, ?string $diskName = null, ?string $writerType = null, mixed $diskOptions = []): bool|PendingDispatch|PendingBatch;
 
-    /**
-     * @param  object  $export
-     * @param  mixed  $diskOptions
-     * @return PendingDispatch
-     */
-    public function queue($export, string $filePath, ?string $disk = null, ?string $writerType = null, $diskOptions = []);
+    public function queue(object $export, string $filePath, ?string $disk = null, ?string $writerType = null, mixed $diskOptions = []): PendingDispatch|PendingBatch;
 
-    /**
-     * @param  object  $export
-     * @return string
-     */
-    public function raw($export, string $writerType);
+    public function raw(object $export, string $writerType): string;
 }

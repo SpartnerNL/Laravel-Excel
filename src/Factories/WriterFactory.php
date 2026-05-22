@@ -20,11 +20,9 @@ class WriterFactory
     use MapsCsvSettings;
 
     /**
-     * @param  object  $export
-     *
      * @throws Exception
      */
-    public static function make(string $writerType, Spreadsheet $spreadsheet, $export, ?string $filePath = null): IWriter
+    public static function make(string $writerType, Spreadsheet $spreadsheet, object $export, ?string $filePath = null): IWriter
     {
         $writer = IOFactory::createWriter($spreadsheet, $writerType);
 
@@ -32,7 +30,7 @@ class WriterFactory
             config('excel.cache.driver', CacheManager::DRIVER_MEMORY) !== CacheManager::DRIVER_MEMORY
         );
 
-        if (static::includesCharts($export)) {
+        if (self::includesCharts($export)) {
             $writer->setIncludeCharts(true);
         }
 
@@ -44,7 +42,7 @@ class WriterFactory
             static::applyCsvSettings(config('excel.exports.csv', []));
 
             // Auto-detect TSV files and apply tab delimiter
-            if ($filePath && static::isTsvFile($filePath) && !($export instanceof WithCustomCsvSettings)) {
+            if ($filePath && self::isTsvFile($filePath) && !($export instanceof WithCustomCsvSettings)) {
                 static::applyCsvSettings(['delimiter' => "\t"]);
             }
 

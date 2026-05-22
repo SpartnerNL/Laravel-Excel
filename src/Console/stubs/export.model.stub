@@ -4,13 +4,11 @@ namespace DummyNamespace;
 
 use DummyFullModelClass;
 use Maatwebsite\Excel\Concerns\FromCollection;
+use Illuminate\Support\Collection;
 
 class DummyClass implements FromCollection
 {
-    /**
-    * @return \Illuminate\Support\Collection
-    */
-    public function collection()
+    public function collection(): Collection
     {
         return DummyModelClass::all();
     }

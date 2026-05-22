@@ -66,10 +66,7 @@ class WithCalculatedFormulasTest extends TestCase
 
             public $called = false;
 
-            /**
-             * @return Model|null
-             */
-            public function model(array $row)
+            public function model(array $row): ?Model
             {
                 $this->called = true;
 
@@ -92,10 +89,7 @@ class WithCalculatedFormulasTest extends TestCase
 
             public $called = false;
 
-            /**
-             * @return Model|null
-             */
-            public function model(array $row)
+            public function model(array $row): ?Model
             {
                 $this->called = true;
 
@@ -184,10 +178,7 @@ class WithCalculatedFormulasTest extends TestCase
 
             public $called = false;
 
-            /**
-             * @return Model|null
-             */
-            public function model(array $row)
+            public function model(array $row): ?Model
             {
                 $this->called = true;
 

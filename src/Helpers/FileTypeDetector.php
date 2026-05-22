@@ -8,11 +8,9 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 class FileTypeDetector
 {
     /**
-     * @return string|null
-     *
      * @throws NoTypeDetectedException
      */
-    public static function detect($filePath, ?string $type = null)
+    public static function detect($filePath, ?string $type = null): ?string
     {
         if ($type !== null) {
             return $type;

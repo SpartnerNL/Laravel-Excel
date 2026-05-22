@@ -6,17 +6,12 @@ use Maatwebsite\Excel\Imports\ModelManager;
 
 class AfterBatch extends Event
 {
-    /**
-     * @var ModelManager
-     */
-    public $manager;
-
-    /**
-     * @param  object  $importable
-     */
-    public function __construct(ModelManager $manager, $importable, private int $batchSize, private int $startRow)
-    {
-        $this->manager = $manager;
+    public function __construct(
+        public ModelManager $manager,
+        object $importable,
+        private int $batchSize,
+        private int $startRow,
+    ) {
         parent::__construct($importable);
     }
 
@@ -25,10 +20,7 @@ class AfterBatch extends Event
         return $this->manager;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getDelegate()
+    public function getDelegate(): mixed
     {
         return $this->manager;
     }

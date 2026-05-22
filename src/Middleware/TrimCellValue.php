@@ -4,11 +4,7 @@ namespace Maatwebsite\Excel\Middleware;
 
 class TrimCellValue extends CellMiddleware
 {
-    /**
-     * @param  mixed  $value
-     * @return mixed
-     */
-    public function __invoke($value, callable $next)
+    public function __invoke(mixed $value, callable $next): mixed
     {
         if (!is_string($value)) {
             return $next($value);

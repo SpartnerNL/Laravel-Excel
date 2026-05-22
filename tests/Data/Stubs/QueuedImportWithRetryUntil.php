@@ -13,10 +13,7 @@ class QueuedImportWithRetryUntil implements ShouldQueue, ToModel, WithChunkReadi
 {
     use Importable;
 
-    /**
-     * @return Model|null
-     */
-    public function model(array $row)
+    public function model(array $row): ?Model
     {
         return new Group([
             'name' => $row[0],
@@ -30,13 +27,9 @@ class QueuedImportWithRetryUntil implements ShouldQueue, ToModel, WithChunkReadi
 
     /**
      * Determine the time at which the job should timeout.
-     *
-     * @return \DateTime
      */
-    public function retryUntil()
+    public function retryUntil(): \DateTime
     {
         throw new \Exception('Job reached retryUntil method');
-
-        return now()->addSeconds(5);
     }
 }

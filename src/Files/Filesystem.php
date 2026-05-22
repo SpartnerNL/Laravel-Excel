@@ -6,8 +6,9 @@ use Illuminate\Contracts\Filesystem\Factory;
 
 class Filesystem
 {
-    public function __construct(private Factory $filesystem)
-    {
+    public function __construct(
+        private Factory $filesystem,
+    ) {
     }
 
     public function disk(?string $disk = null, array $diskOptions = []): Disk

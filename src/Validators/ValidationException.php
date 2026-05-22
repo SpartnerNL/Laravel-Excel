@@ -6,15 +6,12 @@ use Illuminate\Validation\ValidationException as IlluminateValidationException;
 
 class ValidationException extends IlluminateValidationException
 {
-    /**
-     * @var Failure[]
-     */
-    protected $failures;
-
-    public function __construct(IlluminateValidationException $previous, array $failures)
-    {
+    public function __construct(
+        IlluminateValidationException $previous,
+        /** @var Failure[] */
+        protected array $failures,
+    ) {
         parent::__construct($previous->validator, $previous->response, $previous->errorBag);
-        $this->failures = $failures;
     }
 
     /**

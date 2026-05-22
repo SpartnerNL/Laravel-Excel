@@ -3,7 +3,7 @@
 namespace Maatwebsite\Excel\Tests\Data\Stubs;
 
 use Exception;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithMapping;
@@ -14,15 +14,9 @@ class QueuedExportWithFailedHook implements FromCollection, WithMapping
 {
     use Exportable;
 
-    /**
-     * @var bool
-     */
-    public $failed = false;
+    public bool $failed = false;
 
-    /**
-     * @return Collection
-     */
-    public function collection()
+    public function collection(): Collection
     {
         return collect([
             new User([

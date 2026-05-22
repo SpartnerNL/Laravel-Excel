@@ -37,7 +37,7 @@ class ToModelTest extends TestCase
             /**
              * @return Model|Model[]|null
              */
-            public function model(array $row)
+            public function model(array $row): Model|array|null
             {
                 return new User([
                     'name'     => $row[0],
@@ -72,7 +72,7 @@ class ToModelTest extends TestCase
             /**
              * @return Model|Model[]|null
              */
-            public function model(array $row)
+            public function model(array $row): Model|array|null
             {
                 return new User([
                     'name'     => $row[0],
@@ -101,7 +101,7 @@ class ToModelTest extends TestCase
             /**
              * @return Model|Model[]|null
              */
-            public function model(array $row)
+            public function model(array $row): Model|array|null
             {
                 $user1 = new User([
                     'name'     => $row[0],
@@ -138,7 +138,7 @@ class ToModelTest extends TestCase
             /**
              * @return Model|Model[]|null
              */
-            public function model(array $row)
+            public function model(array $row): Model|array|null
             {
                 $user = new User([
                     'name'     => $row[0],
@@ -176,7 +176,7 @@ class ToModelTest extends TestCase
             /**
              * @return Model|Model[]|null
              */
-            public function model(array $row)
+            public function model(array $row): Model|array|null
             {
                 $user = new User([
                     'name'     => $row[0],
@@ -223,7 +223,7 @@ class ToModelTest extends TestCase
             /**
              * @return Model|Model[]|null
              */
-            public function model(array $row)
+            public function model(array $row): Model|array|null
             {
                 $user = new User([
                     'name'     => $row[0],

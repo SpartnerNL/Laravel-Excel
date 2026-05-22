@@ -9,5 +9,5 @@ interface ToModel
     /**
      * @return Model|Model[]|null
      */
-    public function model(array $row);
+    public function model(array $row): Model|array|null;
 }

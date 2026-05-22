@@ -68,35 +68,24 @@ class Sheet
 {
     use DelegatedMacroable, HasEventBus;
 
-    /**
-     * @var int
-     */
-    protected $chunkSize;
+    protected int $chunkSize;
 
-    /**
-     * @var TemporaryFileFactory
-     */
-    protected $temporaryFileFactory;
+    protected TemporaryFileFactory $temporaryFileFactory;
 
-    /**
-     * @var object
-     */
-    protected $exportable;
+    protected ?object $exportable = null;
 
-    final public function __construct(private Worksheet $worksheet)
-    {
+    final public function __construct(
+        private Worksheet $worksheet,
+    ) {
         $this->chunkSize            = config('excel.exports.chunk_size', 100);
         $this->temporaryFileFactory = app(TemporaryFileFactory::class);
     }
 
     /**
-     * @param  string|int  $index
-     * @return Sheet
-     *
      * @throws Exception
      * @throws SheetNotFoundException
      */
-    public static function make(Spreadsheet $spreadsheet, $index)
+    public static function make(Spreadsheet $spreadsheet, string|int $index): Sheet
     {
         if (is_numeric($index)) {
             return self::byIndex($spreadsheet, $index);
@@ -131,11 +120,9 @@ class Sheet
     }
 
     /**
-     * @param  object  $sheetExport
-     *
      * @throws Exception
      */
-    public function open($sheetExport): void
+    public function open(object $sheetExport): void
     {
         $this->exportable = $sheetExport;
 
@@ -178,12 +165,10 @@ class Sheet
     }
 
     /**
-     * @param  object  $sheetExport
-     *
      * @throws Exception
      * @throws \PhpOffice\PhpSpreadsheet\Reader\Exception
      */
-    public function export($sheetExport): void
+    public function export(object $sheetExport): void
     {
         $this->open($sheetExport);
 
@@ -214,10 +199,7 @@ class Sheet
         $this->close($sheetExport);
     }
 
-    /**
-     * @param  object  $import
-     */
-    public function import($import, int $startRow = 1): void
+    public function import(object $import, int $startRow = 1): void
     {
         if ($import instanceof WithEvents) {
             $this->registerListeners($import->registerEvents());
@@ -266,7 +248,7 @@ class Sheet
             $endColumn           = $import instanceof WithColumnLimit ? $import->endColumn() : null;
             $preparationCallback = $this->getPreparationCallback($import);
 
-            foreach ($this->worksheet->getRowIterator()->resetStart($startRow ?? 1) as $row) {
+            foreach ($this->worksheet->getRowIterator()->resetStart($startRow) as $row) {
                 $sheetRow = new Row($row, $headingRow, $headerIsGrouped);
 
                 if ($import instanceof WithValidation) {
@@ -316,14 +298,7 @@ class Sheet
         }
     }
 
-    /**
-     * @param  object  $import
-     * @param  null  $nullValue
-     * @param  bool  $calculateFormulas
-     * @param  bool  $formatData
-     * @return array
-     */
-    public function toArray($import, ?int $startRow = null, $nullValue = null, $calculateFormulas = false, $formatData = false)
+    public function toArray(?object $import, ?int $startRow = null, mixed $nullValue = null, bool $calculateFormulas = false, bool $formatData = false): array
     {
         if ($startRow > $this->worksheet->getHighestRow()) {
             return [];
@@ -366,13 +341,7 @@ class Sheet
         return $rows;
     }
 
-    /**
-     * @param  object  $import
-     * @param  null  $nullValue
-     * @param  bool  $calculateFormulas
-     * @param  bool  $formatData
-     */
-    public function toCollection($import, ?int $startRow = null, $nullValue = null, $calculateFormulas = false, $formatData = false): Collection
+    public function toCollection(?object $import, ?int $startRow = null, mixed $nullValue = null, bool $calculateFormulas = false, bool $formatData = false): Collection
     {
         $rows = $this->toArray($import, $startRow, $nullValue, $calculateFormulas, $formatData);
 
@@ -380,11 +349,9 @@ class Sheet
     }
 
     /**
-     * @param  object  $sheetExport
-     *
      * @throws Exception
      */
-    public function close($sheetExport): void
+    public function close(object $sheetExport): void
     {
         if ($sheetExport instanceof WithCharts) {
             $this->addCharts($sheetExport->charts());
@@ -431,11 +398,9 @@ class Sheet
     }
 
     /**
-     * @param  int|null  $sheetIndex
-     *
      * @throws \PhpOffice\PhpSpreadsheet\Reader\Exception
      */
-    public function fromView(FromView $sheetExport, $sheetIndex = null): void
+    public function fromView(FromView $sheetExport, ?int $sheetIndex = null): void
     {
         $temporaryFile = $this->temporaryFileFactory->makeLocal(null, 'html');
         $temporaryFile->put($sheetExport->view()->render());
@@ -561,20 +526,14 @@ class Sheet
         }
     }
 
-    /**
-     * @return Sheet
-     */
-    public function chunkSize(int $chunkSize)
+    public function chunkSize(int $chunkSize): Sheet
     {
         $this->chunkSize = $chunkSize;
 
         return $this;
     }
 
-    /**
-     * @return Worksheet
-     */
-    public function getDelegate()
+    public function getDelegate(): Worksheet
     {
         return $this->worksheet;
     }
@@ -582,7 +541,7 @@ class Sheet
     /**
      * @param  Chart|Chart[]  $charts
      */
-    public function addCharts($charts): void
+    public function addCharts(Chart|array $charts): void
     {
         $charts = \is_array($charts) ? $charts : [$charts];
 
@@ -594,7 +553,7 @@ class Sheet
     /**
      * @param  BaseDrawing|BaseDrawing[]  $drawings
      */
-    public function addDrawings($drawings): void
+    public function addDrawings(BaseDrawing|array $drawings): void
     {
         $drawings = \is_array($drawings) ? $drawings : [$drawings];
 
@@ -608,11 +567,7 @@ class Sheet
         return $this->exportable instanceof $concern;
     }
 
-    /**
-     * @param  iterable  $rows
-     * @param  object  $sheetExport
-     */
-    public function appendRows($rows, $sheetExport): void
+    public function appendRows(iterable $rows, object $sheetExport): void
     {
         if (method_exists($sheetExport, 'prepareRows')) {
             $rows = $sheetExport->prepareRows($rows);
@@ -641,10 +596,7 @@ class Sheet
         });
     }
 
-    /**
-     * @param  mixed  $row
-     */
-    public static function mapArraybleRow($row): array
+    public static function mapArraybleRow(mixed $row): array
     {
         // When dealing with eloquent models, we'll skip the relations
         // as we won't be able to display them anyway.
@@ -678,10 +630,7 @@ class Sheet
         unset($this->worksheet);
     }
 
-    /**
-     * @return Collection|array
-     */
-    protected function validated(WithValidation $import, int $startRow, $rows)
+    protected function validated(WithValidation $import, int $startRow, $rows): Collection|array
     {
         $toValidate = (new Collection($rows))->mapWithKeys(fn ($row, $index) => [($startRow + $index) => $row]);
 
@@ -696,10 +645,7 @@ class Sheet
         return $rows;
     }
 
-    /**
-     * @return \Generator
-     */
-    protected function buildColumnRange(string $lower, string $upper)
+    protected function buildColumnRange(string $lower, string $upper): \Generator
     {
         /**
          * @callable(string): string $increment
@@ -722,10 +668,7 @@ class Sheet
         return $this->worksheet->cellExists($startCell);
     }
 
-    /**
-     * @param  object  $sheetExport
-     */
-    private function hasStrictNullComparison($sheetExport): bool
+    private function hasStrictNullComparison(object $sheetExport): bool
     {
         if ($sheetExport instanceof WithStrictNullComparison) {
             return true;
@@ -734,10 +677,7 @@ class Sheet
         return config('excel.exports.strict_null_comparison', false);
     }
 
-    /**
-     * @param  object|WithCustomChunkSize  $export
-     */
-    private function getChunkSize($export): int
+    private function getChunkSize(object $export): int
     {
         if ($export instanceof WithCustomChunkSize) {
             return $export->chunkSize();
@@ -746,11 +686,7 @@ class Sheet
         return $this->chunkSize;
     }
 
-    /**
-     * @param  object|WithValidation  $import
-     * @return Closure|null
-     */
-    private function getPreparationCallback($import)
+    private function getPreparationCallback(object $import): ?Closure
     {
         if (!$import instanceof WithValidation || !method_exists($import, 'prepareForValidation')) {
             return null;

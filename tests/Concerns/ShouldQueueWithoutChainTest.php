@@ -2,6 +2,7 @@
 
 use Illuminate\Queue\Events\JobProcessed;
 use Illuminate\Queue\SyncQueue;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Queue;
 use Maatwebsite\Excel\Jobs\AfterImportJob;
@@ -81,7 +82,7 @@ class ShouldQueueWithoutChainTest extends TestCase
         $afterImport = $jobs[AfterImportJob::class][0]['job'];
 
         if (!method_exists($fake, 'except')) {
-            /** @var SyncQueue $queue */
+            /** @var SyncQueue $fake */
             $fake = app(SyncQueue::class);
             $fake->setContainer(app());
         } else {

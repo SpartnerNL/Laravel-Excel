@@ -20,14 +20,12 @@ class ReaderFactory
     use MapsCsvSettings;
 
     /**
-     * @param  object  $import
-     *
      * @throws Exception
      */
-    public static function make($import, TemporaryFile $file, ?string $readerType = null): IReader
+    public static function make(?object $import, TemporaryFile $file, ?string $readerType = null): IReader
     {
         $reader = IOFactory::createReader(
-            $readerType ?: static::identify($file)
+            $readerType ?: self::identify($file)
         );
 
         if (method_exists($reader, 'setReadDataOnly')) {

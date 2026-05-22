@@ -25,10 +25,7 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class ExcelTest extends TestCase
 {
-    /**
-     * @var Excel
-     */
-    protected $SUT;
+    protected Excel $SUT;
 
     protected function setUp(): void
     {
@@ -136,10 +133,7 @@ class ExcelTest extends TestCase
         {
             use RegistersEventListeners;
 
-            /**
-             * @return Collection
-             */
-            public function collection()
+            public function collection(): Collection
             {
                 return collect([
                     ['A1', 'B1'],
@@ -177,10 +171,7 @@ class ExcelTest extends TestCase
         {
             use Exportable;
 
-            /**
-             * @return Collection
-             */
-            public function collection()
+            public function collection(): Collection
             {
                 return collect();
             }

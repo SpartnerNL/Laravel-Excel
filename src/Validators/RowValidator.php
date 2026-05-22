@@ -11,8 +11,9 @@ use Maatwebsite\Excel\Exceptions\RowSkippedException;
 
 class RowValidator
 {
-    public function __construct(private Factory $validator)
-    {
+    public function __construct(
+        private Factory $validator,
+    ) {
     }
 
     /**
@@ -88,11 +89,7 @@ class RowValidator
         })->all();
     }
 
-    /**
-     * @param  string|object|callable|array  $rules
-     * @return string|array
-     */
-    private function formatRule($rules)
+    private function formatRule(string|object|callable|array $rules): string|object|callable|array
     {
         if (is_array($rules)) {
             foreach ($rules as $rule) {

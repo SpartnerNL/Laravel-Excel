@@ -11,6 +11,7 @@ use Maatwebsite\Excel\Files\Filesystem;
 use Maatwebsite\Excel\Files\TemporaryFile;
 use Maatwebsite\Excel\Helpers\FileTypeDetector;
 use PhpOffice\PhpSpreadsheet\Exception;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class Excel implements Exporter, Importer
 {
@@ -40,36 +41,18 @@ class Excel implements Exporter, Importer
 
     public const TCPDF = 'Tcpdf';
 
-    /**
-     * @var Writer
-     */
-    protected $writer;
-
-    /**
-     * @var QueuedWriter
-     */
-    protected $queuedWriter;
-
-    /**
-     * @var Filesystem
-     */
-    protected $filesystem;
-
     public function __construct(
-        Writer $writer,
-        QueuedWriter $queuedWriter,
+        protected Writer $writer,
+        protected QueuedWriter $queuedWriter,
         private Reader $reader,
-        Filesystem $filesystem
+        protected Filesystem $filesystem,
     ) {
-        $this->writer       = $writer;
-        $this->filesystem   = $filesystem;
-        $this->queuedWriter = $queuedWriter;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function download($export, string $fileName, ?string $writerType = null, array $headers = [])
+    public function download($export, string $fileName, ?string $writerType = null, array $headers = []): BinaryFileResponse
     {
         // Clear output buffer to prevent stuff being prepended to the Excel output.
         if (ob_get_length() > 0) {
@@ -89,7 +72,7 @@ class Excel implements Exporter, Importer
      *
      * @param  string|null  $disk  Fallback for usage with named properties
      */
-    public function store($export, string $filePath, ?string $diskName = null, ?string $writerType = null, $diskOptions = [], ?string $disk = null)
+    public function store($export, string $filePath, ?string $diskName = null, ?string $writerType = null, $diskOptions = [], ?string $disk = null): bool|PendingDispatch|PendingBatch
     {
         if ($export instanceof ShouldQueue) {
             return $this->queue($export, $filePath, $diskName ?: $disk, $writerType, $diskOptions);
@@ -107,10 +90,7 @@ class Excel implements Exporter, Importer
         return $exported;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function queue($export, string $filePath, ?string $disk = null, ?string $writerType = null, $diskOptions = [])
+    public function queue($export, string $filePath, ?string $disk = null, ?string $writerType = null, $diskOptions = []): PendingDispatch|PendingBatch
     {
         $writerType = FileTypeDetector::detectStrict($filePath, $writerType);
 
@@ -123,10 +103,7 @@ class Excel implements Exporter, Importer
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function raw($export, string $writerType)
+    public function raw($export, string $writerType): string
     {
         $temporaryFile = $this->writer->export($export, $writerType);
 
@@ -136,10 +113,7 @@ class Excel implements Exporter, Importer
         return $contents;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function import($import, $filePath, ?string $disk = null, ?string $readerType = null)
+    public function import($import, $filePath, ?string $disk = null, ?string $readerType = null): static|Reader|PendingDispatch|PendingBatch
     {
         $readerType = FileTypeDetector::detect($filePath, $readerType);
         $response   = $this->reader->read($import, $filePath, $readerType, $disk);
@@ -151,9 +125,6 @@ class Excel implements Exporter, Importer
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function toArray($import, $filePath, ?string $disk = null, ?string $readerType = null): array
     {
         $readerType = FileTypeDetector::detect($filePath, $readerType);
@@ -161,31 +132,22 @@ class Excel implements Exporter, Importer
         return $this->reader->toArray($import, $filePath, $readerType, $disk);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function toCollection($import, $filePath, ?string $disk = null, ?string $readerType = null): Collection
+    public function toCollection(?object $import, $filePath, ?string $disk = null, ?string $readerType = null): Collection
     {
         $readerType = FileTypeDetector::detect($filePath, $readerType);
 
         return $this->reader->toCollection($import, $filePath, $readerType, $disk);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function queueImport(ShouldQueue $import, $filePath, ?string $disk = null, ?string $readerType = null)
+    public function queueImport(ShouldQueue $import, $filePath, ?string $disk = null, ?string $readerType = null): PendingDispatch|PendingBatch
     {
         return $this->import($import, $filePath, $disk, $readerType);
     }
 
     /**
-     * @param  object  $export
-     * @param  string|null  $fileName
-     *
      * @throws Exception
      */
-    protected function export($export, string $fileName, ?string $writerType = null): TemporaryFile
+    protected function export(object $export, string $fileName, ?string $writerType = null): TemporaryFile
     {
         $writerType = FileTypeDetector::detectStrict($fileName, $writerType);
 

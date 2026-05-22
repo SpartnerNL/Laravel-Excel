@@ -15,11 +15,9 @@ use PHPUnit\Framework\Constraint\StringContains;
 class TestCase extends OrchestraTestCase
 {
     /**
-     * @return Spreadsheet
-     *
      * @throws \PhpOffice\PhpSpreadsheet\Reader\Exception
      */
-    public function read(string $filePath, string $writerType)
+    public function read(string $filePath, string $writerType): Spreadsheet
     {
         $reader = IOFactory::createReader($writerType);
 
@@ -40,11 +38,9 @@ class TestCase extends OrchestraTestCase
     }
 
     /**
-     * @return array
-     *
      * @throws Exception
      */
-    protected function readAsArray(string $filePath, string $writerType, ?int $sheetIndex = null)
+    protected function readAsArray(string $filePath, string $writerType, ?int $sheetIndex = null): array
     {
         $spreadsheet = $this->read($filePath, $writerType);
 
@@ -59,9 +55,8 @@ class TestCase extends OrchestraTestCase
 
     /**
      * @param  Application  $app
-     * @return array
      */
-    protected function getPackageProviders($app)
+    protected function getPackageProviders($app): array
     {
         return [
             ExcelServiceProvider::class,
@@ -94,10 +89,7 @@ class TestCase extends OrchestraTestCase
         ]);
     }
 
-    /**
-     * @return mixed
-     */
-    protected function inspectJobProperty(Job $job, string $property)
+    protected function inspectJobProperty(Job $job, string $property): mixed
     {
         $dict  = (array) unserialize($job->payload()['data']['command']);
         $class = $job->resolveName();
@@ -118,8 +110,10 @@ class TestCase extends OrchestraTestCase
     {
         if (method_exists($this, 'assertFileDoesNotExist')) {
             $this->assertFileDoesNotExist($path);
-        } else {
+        } elseif (method_exists($this, 'assertFileNotExists')) {
             $this->assertFileNotExists($path);
+        } else {
+            throw new Exception('Missing file assert type');
         }
     }
 
@@ -127,8 +121,10 @@ class TestCase extends OrchestraTestCase
     {
         if (method_exists($this, 'assertMatchesRegularExpression')) {
             $this->assertMatchesRegularExpression($pattern, $string);
-        } else {
+        } elseif (method_exists($this, 'assertRegExp')) {
             $this->assertRegExp($pattern, $string);
+        } else {
+            throw new Exception('Missing regex assert type');
         }
     }
 }

@@ -14,22 +14,14 @@ class QueuedExportWithLocalePreferences implements FromCollection, HasLocalePref
     use Exportable;
 
     /**
-     * @var string
-     */
-    protected $locale;
-
-    /**
      * QueuedExportWithLocalePreferences constructor.
      */
-    public function __construct(string $locale)
-    {
-        $this->locale = $locale;
+    public function __construct(
+        protected string $locale,
+    ) {
     }
 
-    /**
-     * @return Collection
-     */
-    public function collection()
+    public function collection(): Collection
     {
         return collect([
             new User([
@@ -39,19 +31,15 @@ class QueuedExportWithLocalePreferences implements FromCollection, HasLocalePref
         ]);
     }
 
-    /**
-     * @return string|null
-     */
-    public function preferredLocale()
+    public function preferredLocale(): ?string
     {
         return $this->locale;
     }
 
     /**
      * @param  iterable  $rows
-     * @return iterable
      */
-    public function prepareRows($rows)
+    public function prepareRows($rows): iterable
     {
         Assert::assertEquals('ru', app()->getLocale());
 

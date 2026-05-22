@@ -6,22 +6,12 @@ use Maatwebsite\Excel\Writer;
 
 class BeforeWriting extends Event
 {
-    /**
-     * @var Writer
-     */
-    public $writer;
+    private object $exportable;
 
-    /**
-     * @var object
-     */
-    private $exportable;
-
-    /**
-     * @param  object  $exportable
-     */
-    public function __construct(Writer $writer, $exportable)
-    {
-        $this->writer = $writer;
+    public function __construct(
+        public Writer $writer,
+        object $exportable
+    ) {
         parent::__construct($exportable);
     }
 
@@ -30,10 +20,7 @@ class BeforeWriting extends Event
         return $this->writer;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getDelegate()
+    public function getDelegate(): mixed
     {
         return $this->writer;
     }

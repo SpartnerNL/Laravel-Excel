@@ -2,6 +2,7 @@
 
 namespace Maatwebsite\Excel\Fakes;
 
+use Exception;
 use Illuminate\Bus\PendingBatch;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -13,8 +14,8 @@ use Illuminate\Support\Traits\Macroable;
 use Maatwebsite\Excel\Concerns\ShouldBatch;
 use Maatwebsite\Excel\Exporter;
 use Maatwebsite\Excel\Importer;
-use Maatwebsite\Excel\Reader;
 use PHPUnit\Framework\Assert;
+use PHPUnit\Framework\ExpectationFailedException;
 use SebastianBergmann\RecursionContext\InvalidArgumentException;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -23,45 +24,24 @@ class ExcelFake implements Exporter, Importer
 {
     use Macroable;
 
-    /**
-     * @var array
-     */
-    protected $downloads = [];
+    protected array $downloads = [];
 
-    /**
-     * @var array
-     */
-    protected $stored = [];
+    protected array $stored = [];
 
-    /**
-     * @var array
-     */
-    protected $queued = [];
+    protected array $queued = [];
 
-    /**
-     * @var array
-     */
-    protected $raws = [];
+    protected array $raws = [];
 
-    /**
-     * @var array
-     */
-    protected $imported = [];
+    protected array $imported = [];
 
-    /**
-     * @var bool
-     */
-    protected $matchByRegex = false;
+    protected bool $matchByRegex = false;
 
-    /**
-     * @var object|null
-     */
-    protected $job;
+    protected ?object $job = null;
 
     /**
      * {@inheritdoc}
      */
-    public function download($export, string $fileName, ?string $writerType = null, array $headers = [])
+    public function download($export, string $fileName, ?string $writerType = null, array $headers = []): BinaryFileResponse
     {
         $this->downloads[$fileName] = $export;
 
@@ -69,11 +49,9 @@ class ExcelFake implements Exporter, Importer
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @param  string|null  $diskName  Fallback for usage with named properties
      */
-    public function store($export, string $filePath, ?string $disk = null, ?string $writerType = null, $diskOptions = [], ?string $diskName = null)
+    public function store($export, string $filePath, ?string $disk = null, ?string $writerType = null, $diskOptions = [], ?string $diskName = null): bool|PendingDispatch
     {
         if ($export instanceof ShouldQueue) {
             return $this->queue($export, $filePath, $disk ?: $diskName, $writerType);
@@ -84,10 +62,7 @@ class ExcelFake implements Exporter, Importer
         return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function queue($export, string $filePath, ?string $disk = null, ?string $writerType = null, $diskOptions = [])
+    public function queue($export, string $filePath, ?string $disk = null, ?string $writerType = null, $diskOptions = []): PendingDispatch
     {
         Queue::fake();
 
@@ -114,23 +89,14 @@ class ExcelFake implements Exporter, Importer
         return new PendingDispatch($this->job);
     }
 
-    /**
-     * @param  object  $export
-     * @return string
-     */
-    public function raw($export, string $writerType)
+    public function raw(object $export, string $writerType): string
     {
         $this->raws[$export::class] = $export;
 
         return 'RAW-CONTENTS';
     }
 
-    /**
-     * @param  object  $import
-     * @param  string|UploadedFile  $file
-     * @return Reader|PendingDispatch|PendingBatch
-     */
-    public function import($import, $file, ?string $disk = null, ?string $readerType = null)
+    public function import(object $import, string|UploadedFile $file, ?string $disk = null, ?string $readerType = null): static|PendingDispatch|PendingBatch
     {
         if ($import instanceof ShouldQueue) {
             return $this->queueImport($import, $file, $disk, $readerType);
@@ -143,11 +109,7 @@ class ExcelFake implements Exporter, Importer
         return $this;
     }
 
-    /**
-     * @param  object  $import
-     * @param  string|UploadedFile  $file
-     */
-    public function toArray($import, $file, ?string $disk = null, ?string $readerType = null): array
+    public function toArray(object $import, string|UploadedFile $file, ?string $disk = null, ?string $readerType = null): array
     {
         $filePath = ($file instanceof UploadedFile) ? $file->getFilename() : $file;
 
@@ -156,11 +118,7 @@ class ExcelFake implements Exporter, Importer
         return [];
     }
 
-    /**
-     * @param  object  $import
-     * @param  string|UploadedFile  $file
-     */
-    public function toCollection($import, $file, ?string $disk = null, ?string $readerType = null): Collection
+    public function toCollection(object $import, string|UploadedFile $file, ?string $disk = null, ?string $readerType = null): Collection
     {
         $filePath = ($file instanceof UploadedFile) ? $file->getFilename() : $file;
 
@@ -169,11 +127,7 @@ class ExcelFake implements Exporter, Importer
         return new Collection;
     }
 
-    /**
-     * @param  string|UploadedFile  $file
-     * @return PendingDispatch|PendingBatch
-     */
-    public function queueImport(ShouldQueue $import, $file, ?string $disk = null, ?string $readerType = null)
+    public function queueImport(ShouldQueue $import, string|UploadedFile $file, ?string $disk = null, ?string $readerType = null): PendingDispatch|PendingBatch
     {
         Queue::fake();
 
@@ -220,10 +174,7 @@ class ExcelFake implements Exporter, Importer
         $this->matchByRegex = false;
     }
 
-    /**
-     * @param  callable|null  $callback
-     */
-    public function assertDownloaded(string $fileName, $callback = null): void
+    public function assertDownloaded(string $fileName, ?callable $callback = null): void
     {
         $fileName = $this->assertArrayHasKey($fileName, $this->downloads, sprintf('%s is not downloaded', $fileName));
 
@@ -235,11 +186,7 @@ class ExcelFake implements Exporter, Importer
         );
     }
 
-    /**
-     * @param  string|callable|null  $disk
-     * @param  callable|null  $callback
-     */
-    public function assertStored(string $filePath, $disk = null, $callback = null): void
+    public function assertStored(string $filePath, string|callable|null $disk = null, ?callable $callback = null): void
     {
         if (is_callable($disk)) {
             $callback = $disk;
@@ -263,11 +210,7 @@ class ExcelFake implements Exporter, Importer
         );
     }
 
-    /**
-     * @param  string|callable|null  $disk
-     * @param  callable|null  $callback
-     */
-    public function assertQueued(string $filePath, $disk = null, $callback = null): void
+    public function assertQueued(string $filePath, string|callable|null $disk = null, ?callable $callback = null): void
     {
         if (is_callable($disk)) {
             $callback = $disk;
@@ -296,10 +239,7 @@ class ExcelFake implements Exporter, Importer
         Queue::assertPushedWithChain($this->job::class, $chain);
     }
 
-    /**
-     * @param  callable|null  $callback
-     */
-    public function assertExportedInRaw(string $classname, $callback = null): void
+    public function assertExportedInRaw(string $classname, ?callable $callback = null): void
     {
         Assert::assertArrayHasKey($classname, $this->raws, sprintf('%s is not exported in raw', $classname));
 
@@ -311,11 +251,7 @@ class ExcelFake implements Exporter, Importer
         );
     }
 
-    /**
-     * @param  string|callable|null  $disk
-     * @param  callable|null  $callback
-     */
-    public function assertImported(string $filePath, $disk = null, $callback = null): void
+    public function assertImported(string $filePath, string|callable|null $disk = null, ?callable $callback = null): void
     {
         if (is_callable($disk)) {
             $callback = $disk;
@@ -343,8 +279,6 @@ class ExcelFake implements Exporter, Importer
      * Asserts that an array has a specified key and returns the key if successful.
      *
      * @see matchByRegex for more information about file path matching
-     *
-     * @param  array  $array
      *
      * @throws ExpectationFailedException
      * @throws InvalidArgumentException

@@ -11,12 +11,12 @@ use Maatwebsite\Excel\Events\AfterChunk;
 class ImportWithEventsChunksAndBatches extends ImportWithEvents implements ToModel, WithBatchInserts, WithChunkReading
 {
     /**
-     * @var callable
+     * @var ?callable
      */
     public $afterBatch;
 
     /**
-     * @var callable
+     * @var ?callable
      */
     public $afterChunk;
 
@@ -31,8 +31,9 @@ class ImportWithEventsChunksAndBatches extends ImportWithEvents implements ToMod
         ];
     }
 
-    public function model(array $row): void
+    public function model(array $row): null
     {
+        return null;
     }
 
     public function batchSize(): int

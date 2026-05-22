@@ -227,68 +227,44 @@ class ExcelFakeTest extends TestCase
         ExcelFacade::assertQueued('/\w{6}-\w{8}\.csv/');
     }
 
-    /**
-     * @return FromCollection
-     */
-    private function givenExport()
+    private function givenExport(): FromCollection
     {
         return new class implements FromCollection
         {
-            /**
-             * @return Collection
-             */
-            public function collection()
+            public function collection(): Collection
             {
                 return collect(['foo', 'bar']);
             }
         };
     }
 
-    /**
-     * @return FromCollection
-     */
-    private function givenQueuedExport()
+    private function givenQueuedExport(): FromCollection
     {
         return new class implements FromCollection, ShouldQueue
         {
-            /**
-             * @return Collection
-             */
-            public function collection()
+            public function collection(): Collection
             {
                 return collect(['foo', 'bar']);
             }
         };
     }
 
-    /**
-     * @return object
-     */
-    private function givenImport()
+    private function givenImport(): object
     {
         return new class implements ToModel
         {
-            /**
-             * @return Model|null
-             */
-            public function model(array $row)
+            public function model(array $row): ?Model
             {
                 return new User([]);
             }
         };
     }
 
-    /**
-     * @return object
-     */
-    private function givenQueuedImport()
+    private function givenQueuedImport(): object
     {
         return new class implements ShouldQueue, ToModel
         {
-            /**
-             * @return Model|null
-             */
-            public function model(array $row)
+            public function model(array $row): ?Model
             {
                 return new User([]);
             }

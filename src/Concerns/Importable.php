@@ -2,6 +2,7 @@
 
 namespace Maatwebsite\Excel\Concerns;
 
+use Illuminate\Bus\PendingBatch;
 use Illuminate\Console\OutputStyle;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\PendingDispatch;
@@ -15,10 +16,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 trait Importable
 {
-    /**
-     * @var OutputStyle|null
-     */
-    protected $output;
+    protected ?OutputStyle $output;
 
     protected ?string $disk = null;
 
@@ -27,29 +25,24 @@ trait Importable
     protected string|UploadedFile|null $filePath = null;
 
     /**
-     * @param  string|UploadedFile|null  $filePath
-     * @return Importer|PendingDispatch
-     *
      * @throws NoFilePathGivenException
      */
-    public function import($filePath = null, ?string $disk = null, ?string $readerType = null)
+    public function import(string|UploadedFile|null $filePath = null, ?string $disk = null, ?string $readerType = null): Importer|PendingDispatch|PendingBatch
     {
         $filePath = $this->getFilePath($filePath);
 
         return $this->getImporter()->import(
             $this,
             $filePath,
-            $disk ?? $this->disk ?? null,
-            $readerType ?? $this->readerType ?? null
+            $disk ?? $this->disk,
+            $readerType ?? $this->readerType
         );
     }
 
     /**
-     * @param  string|UploadedFile|null  $filePath
-     *
      * @throws NoFilePathGivenException
      */
-    public function toArray($filePath = null, ?string $disk = null, ?string $readerType = null): array
+    public function toArray(string|UploadedFile|null $filePath = null, ?string $disk = null, ?string $readerType = null): array
     {
         $filePath = $this->getFilePath($filePath);
 
@@ -62,11 +55,9 @@ trait Importable
     }
 
     /**
-     * @param  string|UploadedFile|null  $filePath
-     *
      * @throws NoFilePathGivenException
      */
-    public function toCollection($filePath = null, ?string $disk = null, ?string $readerType = null): Collection
+    public function toCollection(string|UploadedFile|null $filePath = null, ?string $disk = null, ?string $readerType = null): Collection
     {
         $filePath = $this->getFilePath($filePath);
 
@@ -79,13 +70,10 @@ trait Importable
     }
 
     /**
-     * @param  string|UploadedFile|null  $filePath
-     * @return PendingDispatch
-     *
      * @throws NoFilePathGivenException
      * @throws InvalidArgumentException
      */
-    public function queue($filePath = null, ?string $disk = null, ?string $readerType = null)
+    public function queue(string|UploadedFile|null $filePath = null, ?string $disk = null, ?string $readerType = null): static|PendingDispatch|PendingBatch
     {
         if (!$this instanceof ShouldQueue) {
             throw new InvalidArgumentException('Importable should implement ShouldQueue to be queued.');
@@ -114,12 +102,9 @@ trait Importable
     }
 
     /**
-     * @param  UploadedFile|string|null  $filePath
-     * @return UploadedFile|string
-     *
      * @throws NoFilePathGivenException
      */
-    private function getFilePath($filePath = null)
+    private function getFilePath(UploadedFile|string|null $filePath = null): UploadedFile|string
     {
         $filePath ??= $this->filePath ?? null;
 

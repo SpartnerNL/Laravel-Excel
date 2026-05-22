@@ -10,10 +10,7 @@ use Maatwebsite\Excel\Events\Event;
 
 trait RegistersCustomConcerns
 {
-    /**
-     * @var array
-     */
-    private static $eventMap = [
+    private static array $eventMap = [
         BeforeWriting::class => Writer::class,
         BeforeExport::class  => Writer::class,
         BeforeSheet::class   => Sheet::class,

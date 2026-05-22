@@ -8,12 +8,16 @@ use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Concerns\WithStartRow;
 use Maatwebsite\Excel\Imports\HeadingRowFormatter;
 
+/**
+ * @implements WithMapping<array>
+ */
 class HeadingRowImport implements WithLimit, WithMapping, WithStartRow
 {
     use Importable;
 
-    public function __construct(private int $headingRow = 1)
-    {
+    public function __construct(
+        private int $headingRow = 1,
+    ) {
     }
 
     public function startRow(): int
@@ -26,10 +30,7 @@ class HeadingRowImport implements WithLimit, WithMapping, WithStartRow
         return 1;
     }
 
-    /**
-     * @param  mixed  $row
-     */
-    public function map($row): array
+    public function map(mixed $row): array
     {
         return HeadingRowFormatter::format($row);
     }

@@ -22,10 +22,8 @@ trait WithModelStub
 
     /**
      * Get the fully-qualified model class name.
-     *
-     * @param  string  $model
      */
-    protected function parseModel($model): string
+    protected function parseModel(string $model): string
     {
         if (preg_match('([^A-Za-z0-9_/\\\\])', $model)) {
             throw new InvalidArgumentException('Model name contains invalid characters.');
@@ -50,11 +48,8 @@ trait WithModelStub
 
     /**
      * Resolve the fully-qualified path to the stub.
-     *
-     * @param  string  $stub
-     * @return string
      */
-    protected function resolveStubPath($stub)
+    protected function resolveStubPath(string $stub): string
     {
         return file_exists($customPath = $this->laravel->basePath(trim($stub, '/')))
             ? $customPath

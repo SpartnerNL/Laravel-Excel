@@ -6,17 +6,10 @@ use Maatwebsite\Excel\Reader;
 
 class AfterImport extends Event
 {
-    /**
-     * @var Reader
-     */
-    public $reader;
-
-    /**
-     * @param  object  $importable
-     */
-    public function __construct(Reader $reader, $importable)
-    {
-        $this->reader = $reader;
+    public function __construct(
+        public Reader $reader,
+        ?object $importable,
+    ) {
         parent::__construct($importable);
     }
 
@@ -25,10 +18,7 @@ class AfterImport extends Event
         return $this->reader;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getDelegate()
+    public function getDelegate(): mixed
     {
         return $this->reader;
     }

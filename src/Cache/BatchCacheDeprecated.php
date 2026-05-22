@@ -8,30 +8,15 @@ use Psr\SimpleCache\CacheInterface;
 class BatchCacheDeprecated implements CacheInterface
 {
     /**
-     * @var CacheInterface
-     */
-    protected $cache;
-
-    /**
-     * @var MemoryCacheDeprecated
-     */
-    protected $memory;
-
-    /**
      * @var null|int|\DateTimeInterface|callable
      */
     protected $defaultTTL = null;
 
-    /**
-     * @param  int|\DateTimeInterface|callable|null  $defaultTTL
-     */
     public function __construct(
-        CacheInterface $cache,
-        MemoryCacheDeprecated $memory,
-        $defaultTTL = null
+        protected CacheInterface $cache,
+        protected MemoryInterface $memory,
+        int|\DateTimeInterface|callable|null $defaultTTL = null
     ) {
-        $this->cache      = $cache;
-        $this->memory     = $memory;
         $this->defaultTTL = $defaultTTL;
     }
 

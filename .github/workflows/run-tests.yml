@@ -63,7 +63,8 @@ jobs:
           composer require "laravel/framework:${{ matrix.laravel }}.*" "orchestra/testbench:${{ matrix.testbench }}" "laravel/scout:${{ matrix.scout }}"  --no-interaction --no-update
           composer update --${{ matrix.dependency-version }} --no-interaction
 
-
+      - name: Execute PHPStan
+        run: vendor/bin/phpstan
 
       - name: Execute tests
         run: vendor/bin/phpunit --testdox --configuration phpunit.xml.dist

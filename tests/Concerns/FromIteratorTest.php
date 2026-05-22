@@ -16,10 +16,7 @@ class FromIteratorTest extends TestCase
         {
             use Exportable;
 
-            /**
-             * @return array
-             */
-            public function array()
+            public function array(): array
             {
                 return [
                     ['test', 'test'],

@@ -11,10 +11,7 @@ use Maatwebsite\Excel\Transactions\TransactionHandler;
 /** @todo  */
 class CascadePersistManager
 {
-    /**
-     * @var TransactionHandler
-     */
-    private $transaction;
+    private TransactionHandler $transaction;
 
     public function __construct(TransactionHandler $transaction)
     {

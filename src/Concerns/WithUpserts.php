@@ -4,8 +4,5 @@ namespace Maatwebsite\Excel\Concerns;
 
 interface WithUpserts
 {
-    /**
-     * @return string|array
-     */
-    public function uniqueBy();
+    public function uniqueBy(): string|array;
 }

@@ -9,15 +9,9 @@ class QueueImport implements ShouldQueue
 {
     use Dispatchable, ExtendedQueueable;
 
-    /**
-     * @var int
-     */
-    public $tries;
+    public ?int $tries;
 
-    /**
-     * @var int
-     */
-    public $timeout;
+    public ?int $timeout;
 
     public function __construct(?ShouldQueue $import = null)
     {

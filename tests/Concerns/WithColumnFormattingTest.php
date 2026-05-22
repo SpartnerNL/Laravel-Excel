@@ -20,10 +20,7 @@ class WithColumnFormattingTest extends TestCase
         {
             use Exportable;
 
-            /**
-             * @return Collection
-             */
-            public function collection()
+            public function collection(): Collection
             {
                 return collect([
                     [Carbon::createFromDate(2018, 3, 6)],
@@ -33,10 +30,7 @@ class WithColumnFormattingTest extends TestCase
                 ]);
             }
 
-            /**
-             * @param  mixed  $row
-             */
-            public function map($row): array
+            public function map(mixed $row): array
             {
                 return [
                     Date::dateTimeToExcel($row[0]),

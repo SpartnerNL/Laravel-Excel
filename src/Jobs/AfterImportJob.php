@@ -18,18 +18,17 @@ class AfterImportJob implements ShouldQueue
 {
     use Batchable, Dispatchable, HasEventBus, InteractsWithQueue, Queueable;
 
-    /**
-     * @var iterable
-     */
-    private $dependencyIds = [];
+    private iterable $dependencyIds = [];
 
     private $interval = 60;
 
     /**
      * @param  object  $import
      */
-    public function __construct(private $import, private Reader $reader)
-    {
+    public function __construct(
+        private $import,
+        private Reader $reader,
+    ) {
     }
 
     public function setInterval(int $interval): void

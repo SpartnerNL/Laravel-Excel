@@ -37,8 +37,6 @@ interface FromQuery
      * have a deterministic lexicographic total order, so `orderBy('id')`
      * still works as a tie-breaker — there's no special handling needed,
      * just always set one.
-     *
-     * @return Builder|EloquentBuilder|Relation|ScoutBuilder
      */
-    public function query();
+    public function query(): Builder|EloquentBuilder|Relation|ScoutBuilder;
 }

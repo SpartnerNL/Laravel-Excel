@@ -2,12 +2,17 @@
 
 namespace Maatwebsite\Excel\Concerns;
 
-use Illuminate\Support\Collection;
+use Illuminate\Support\Enumerable;
 
+/**
+ * @template TKey of array-key
+ *
+ * @template-covariant TValue
+ */
 interface FromCollection
 {
     /**
-     * @return Collection
+     * @return Enumerable<TKey, TValue>
      */
-    public function collection();
+    public function collection(): Enumerable;
 }

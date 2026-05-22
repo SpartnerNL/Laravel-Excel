@@ -7,26 +7,12 @@ use JsonSerializable;
 
 class Failure implements Arrayable, JsonSerializable
 {
-    /**
-     * @var int
-     */
-    protected $row;
-
-    /**
-     * @var string
-     */
-    protected $attribute;
-
-    /**
-     * @var array
-     */
-    protected $errors;
-
-    public function __construct(int $row, string $attribute, array $errors, private array $values = [])
-    {
-        $this->row       = $row;
-        $this->attribute = $attribute;
-        $this->errors    = $errors;
+    public function __construct(
+        protected int $row,
+        protected string $attribute,
+        protected array $errors,
+        private array $values = [],
+    ) {
     }
 
     public function row(): int
@@ -49,10 +35,7 @@ class Failure implements Arrayable, JsonSerializable
         return $this->values;
     }
 
-    /**
-     * @return array
-     */
-    public function toArray()
+    public function toArray(): array
     {
         return collect($this->errors)->map(fn ($message) => __('There was an error on row :row. :message', ['row' => $this->row, 'message' => $message]))->all();
     }

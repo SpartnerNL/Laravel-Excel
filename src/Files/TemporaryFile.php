@@ -12,7 +12,7 @@ abstract class TemporaryFile
     abstract public function exists(): bool;
 
     /**
-     * @param @param string|resource $contents
+     * @param  string|resource  $contents
      */
     abstract public function put($contents);
 
@@ -30,10 +30,7 @@ abstract class TemporaryFile
         return $this;
     }
 
-    /**
-     * @param  string|UploadedFile  $filePath
-     */
-    public function copyFrom($filePath, ?string $disk = null): TemporaryFile
+    public function copyFrom(string|UploadedFile $filePath, ?string $disk = null): TemporaryFile
     {
         if ($filePath instanceof UploadedFile) {
             $readStream = fopen($filePath->getRealPath(), 'rb');

@@ -19,15 +19,9 @@ use Psr\SimpleCache\CacheInterface;
 
 class BatchCacheTest extends TestCase
 {
-    /**
-     * @var Repository
-     */
-    private $cache;
+    private Repository $cache;
 
-    /**
-     * @var MemoryCache
-     */
-    private $memory;
+    private MemoryCache $memory;
 
     public function test_will_get_multiple_from_memory_if_cells_hold_in_memory(): void
     {

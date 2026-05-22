@@ -17,17 +17,13 @@ class DownloadQueryMacro
             {
                 use Exportable;
 
-                /**
-                 * @param  Builder  $query
-                 */
-                public function __construct(private $query, private bool $withHeadings = false)
-                {
+                public function __construct(
+                    private Builder $query,
+                    private bool $withHeadings = false,
+                ) {
                 }
 
-                /**
-                 * @return Builder
-                 */
-                public function query()
+                public function query(): Builder
                 {
                     return $this->query;
                 }

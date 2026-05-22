@@ -4,10 +4,7 @@ namespace Maatwebsite\Excel\Files;
 
 class LocalTemporaryFile extends TemporaryFile
 {
-    /**
-     * @var string
-     */
-    private $filePath;
+    private string $filePath;
 
     public function __construct(string $filePath)
     {
@@ -52,7 +49,7 @@ class LocalTemporaryFile extends TemporaryFile
     }
 
     /**
-     * @param @param string|resource $contents
+     * @param  string|resource  $contents
      */
     public function put($contents): void
     {

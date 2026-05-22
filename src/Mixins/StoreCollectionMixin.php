@@ -9,30 +9,21 @@ use Maatwebsite\Excel\Concerns\WithHeadings;
 
 class StoreCollectionMixin
 {
-    /**
-     * @return callable
-     */
-    public function storeExcel()
+    public function storeExcel(): callable
     {
         return function (string $filePath, ?string $disk = null, ?string $writerType = null, $withHeadings = false) {
             $export = new class($this, $withHeadings) implements FromCollection, WithHeadings
             {
                 use Exportable;
 
-                /**
-                 * @var Collection
-                 */
-                private $collection;
+                private Collection $collection;
 
                 public function __construct(Collection $collection, private bool $withHeadings = false)
                 {
                     $this->collection = $collection->toBase();
                 }
 
-                /**
-                 * @return Collection
-                 */
-                public function collection()
+                public function collection(): Collection
                 {
                     return $this->collection;
                 }

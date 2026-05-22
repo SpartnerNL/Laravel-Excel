@@ -15,10 +15,7 @@ class FromUsersScoutExport implements FromQuery, WithCustomChunkSize
 {
     use Exportable;
 
-    /**
-     * @return Builder|EloquentBuilder|Relation|ScoutBuilder
-     */
-    public function query()
+    public function query(): Builder|EloquentBuilder|Relation|ScoutBuilder
     {
         return new ScoutBuilder(new User, '');
     }

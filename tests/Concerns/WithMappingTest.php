@@ -51,10 +51,7 @@ class WithMappingTest extends TestCase
                 ];
             }
 
-            /**
-             * @param  mixed  $row
-             */
-            public function map($row): array
+            public function map(mixed $row): array
             {
                 return [
                     [$row['id']],

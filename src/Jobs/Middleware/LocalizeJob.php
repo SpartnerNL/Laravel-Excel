@@ -15,17 +15,15 @@ class LocalizeJob
      *
      * @param  object  $localizable
      */
-    public function __construct(private $localizable)
-    {
+    public function __construct(
+        private $localizable,
+    ) {
     }
 
     /**
      * Handles the job.
-     *
-     * @param  mixed  $job
-     * @return mixed
      */
-    public function handle($job, Closure $next)
+    public function handle(mixed $job, Closure $next): mixed
     {
         $locale = value(function () {
             if ($this->localizable instanceof HasLocalePreference) {

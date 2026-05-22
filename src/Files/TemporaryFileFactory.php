@@ -6,8 +6,10 @@ use Illuminate\Support\Str;
 
 class TemporaryFileFactory
 {
-    public function __construct(private ?string $temporaryPath = null, private ?string $temporaryDisk = null)
-    {
+    public function __construct(
+        private ?string $temporaryPath = null,
+        private ?string $temporaryDisk = null,
+    ) {
     }
 
     public function make(?string $fileExtension = null): TemporaryFile

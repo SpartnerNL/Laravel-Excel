@@ -6,14 +6,9 @@ use Throwable;
 
 class ImportFailed
 {
-    /**
-     * @var Throwable
-     */
-    public $e;
-
-    public function __construct(Throwable $e)
-    {
-        $this->e = $e;
+    public function __construct(
+        public Throwable $e,
+    ) {
     }
 
     public function getException(): Throwable

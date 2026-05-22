@@ -11,7 +11,7 @@ class RowSkippedException extends Exception
     /**
      * @var Failure[]
      */
-    private $failures;
+    private array $failures;
 
     public function __construct(Failure ...$failures)
     {
