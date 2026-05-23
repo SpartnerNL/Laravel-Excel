@@ -288,6 +288,7 @@ class Reader
 
     public function getTotalRows(): array
     {
+        assert(method_exists($this->reader, 'listWorksheetInfo'));
         $info = $this->reader->listWorksheetInfo($this->currentFile->getLocalPath());
 
         $totalRows = [];

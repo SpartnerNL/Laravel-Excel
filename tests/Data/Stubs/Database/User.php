@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Support\Carbon;
 use Laravel\Scout\Engines\DatabaseEngine;
 use Laravel\Scout\Engines\Engine;
 use Laravel\Scout\Engines\NullEngine;
@@ -19,6 +20,8 @@ use Maatwebsite\Excel\Tests\QueuedQueryExportTest;
  * @property string $name
  * @property string $firstname
  * @property string $lastname
+ * @property Carbon $created_at
+ * @property Carbon $updated_at
  */
 class User extends Model
 {

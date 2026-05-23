@@ -16,7 +16,6 @@ use Maatwebsite\Excel\Exporter;
 use Maatwebsite\Excel\Importer;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\ExpectationFailedException;
-use SebastianBergmann\RecursionContext\InvalidArgumentException;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -281,7 +280,6 @@ class ExcelFake implements Exporter, Importer
      * @see matchByRegex for more information about file path matching
      *
      * @throws ExpectationFailedException
-     * @throws InvalidArgumentException
      * @throws Exception
      */
     protected function assertArrayHasKey(string $key, array $disk, string $message = ''): string

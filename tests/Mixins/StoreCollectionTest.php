@@ -16,6 +16,7 @@ class StoreCollectionTest extends TestCase
             ['test', 'test'],
         ]);
 
+        /** @phpstan-ignore method.notFound */
         $response = $collection->storeExcel('collection-store.xlsx');
 
         $this->assertTrue($response);
@@ -29,6 +30,7 @@ class StoreCollectionTest extends TestCase
             ['column_1' => 'test2', 'column_2' => 'test2'],
         ]);
 
+        /** @phpstan-ignore method.notFound */
         $response = $collection->storeExcel('collection-store.xlsx', null, Excel::XLSX);
 
         $file = __DIR__ . '/../Data/Disks/Local/collection-store.xlsx';
@@ -55,6 +57,7 @@ class StoreCollectionTest extends TestCase
             ['column_1' => 'test', 'column_2' => 'test'],
         ]);
 
+        /** @phpstan-ignore method.notFound */
         $response = $collection->storeExcel('collection-headers-store.xlsx', null, Excel::XLSX, true);
 
         $file = __DIR__ . '/../Data/Disks/Local/collection-headers-store.xlsx';
@@ -75,6 +78,7 @@ class StoreCollectionTest extends TestCase
     {
         $collection = User::factory()->count(2)->make();
 
+        /** @phpstan-ignore method.notFound */
         $response = $collection->storeExcel('model-collection-headers-store.xlsx', null, Excel::XLSX, true);
 
         $file = __DIR__ . '/../Data/Disks/Local/model-collection-headers-store.xlsx';

@@ -37,7 +37,8 @@
     "driftingly/rector-laravel": "^2.3",
     "phpstan/phpstan": "^2.1",
     "larastan/larastan": "^3.0",
-    "phpstan/extension-installer": "^1.4"
+    "phpstan/extension-installer": "^1.4",
+    "phpstan/phpstan-mockery": "^2.0"
   },
   "autoload": {
     "psr-4": {

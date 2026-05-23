@@ -6,8 +6,7 @@ use Illuminate\Support\Enumerable;
 
 /**
  * @template TKey of array-key
- *
- * @template-covariant TValue
+ * @template TValue
  */
 interface FromCollection
 {

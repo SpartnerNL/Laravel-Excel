@@ -43,6 +43,7 @@ class DelegatedMacroableTest extends TestCase
             public static function beforeExport(BeforeExport $event): void
             {
                 // call macro method
+                /** @phpstan-ignore method.notFound */
                 $event->writer->test();
             }
         };
@@ -66,6 +67,7 @@ class DelegatedMacroableTest extends TestCase
             public static function beforeSheet(BeforeSheet $event): void
             {
                 // call macro method
+                /** @phpstan-ignore method.notFound */
                 $event->sheet->test();
             }
         };
