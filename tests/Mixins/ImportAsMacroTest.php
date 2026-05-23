@@ -21,6 +21,7 @@ class ImportAsMacroTest extends TestCase
     {
         User::query()->truncate();
 
+        /** @phpstan-ignore staticMethod.notFound */
         User::importAs('import-users.xlsx', fn (array $row) => [
             'name'     => $row[0],
             'email'    => $row[1],

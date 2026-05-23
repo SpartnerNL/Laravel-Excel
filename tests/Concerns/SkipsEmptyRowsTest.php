@@ -148,9 +148,6 @@ class SkipsEmptyRowsTest extends TestCase
 
             public $called = false;
 
-            /**
-             * @param  array  $row
-             */
             public function onRow(Row $row): void
             {
                 Assert::assertEquals('Not empty', $row[0]);

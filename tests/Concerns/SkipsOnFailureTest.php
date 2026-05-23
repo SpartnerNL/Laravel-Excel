@@ -55,9 +55,6 @@ class SkipsOnFailureTest extends TestCase
                 ];
             }
 
-            /**
-             * @param  Failure[]  $failures
-             */
             public function onFailure(Failure ...$failures): void
             {
                 $failure = $failures[0];
@@ -114,9 +111,6 @@ class SkipsOnFailureTest extends TestCase
                 ];
             }
 
-            /**
-             * @param  Failure[]  $failures
-             */
             public function onFailure(Failure ...$failures): void
             {
                 $failure = $failures[0];

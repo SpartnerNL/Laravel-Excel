@@ -10,6 +10,8 @@ use Maatwebsite\Excel\Events\Event;
 
 trait RegistersCustomConcerns
 {
+    use HasEventBus;
+
     private static array $eventMap = [
         BeforeWriting::class => Writer::class,
         BeforeExport::class  => Writer::class,
@@ -19,8 +21,7 @@ trait RegistersCustomConcerns
 
     public static function extend(string $concern, callable $handler, string $event = BeforeWriting::class): void
     {
-        /** @var HasEventBus $delegate */
-        $delegate = static::$eventMap[$event] ?? BeforeWriting::class;
+        $delegate = self::$eventMap[$event] ?? BeforeWriting::class;
 
         $delegate::listen($event, function (Event $event) use ($concern, $handler): void {
             if ($event->appliesToConcern($concern)) {
