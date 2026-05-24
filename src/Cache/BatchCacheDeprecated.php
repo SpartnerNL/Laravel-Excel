@@ -14,14 +14,14 @@ use Psr\SimpleCache\CacheInterface;
 class BatchCacheDeprecated implements CacheInterface
 {
     /**
-     * @var null|int|\DateTimeInterface|callable
+     * @var null|int|\DateInterval|\DateTimeInterface|callable
      */
     protected $defaultTTL = null;
 
     public function __construct(
         protected CacheInterface $cache,
         protected MemoryInterface $memory,
-        int|\DateTimeInterface|callable|null $defaultTTL = null
+        int|\DateInterval|\DateTimeInterface|callable|null $defaultTTL = null
     ) {
         $this->defaultTTL = $defaultTTL;
     }
@@ -51,7 +51,9 @@ class BatchCacheDeprecated implements CacheInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @param  string  $key
+     * @param  mixed  $value
+     * @param  null|int|\DateInterval  $ttl
      */
     public function set($key, $value, $ttl = null)
     {
@@ -119,7 +121,8 @@ class BatchCacheDeprecated implements CacheInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @param  iterable  $values
+     * @param  null|int|\DateInterval  $ttl
      */
     public function setMultiple($values, $ttl = null)
     {

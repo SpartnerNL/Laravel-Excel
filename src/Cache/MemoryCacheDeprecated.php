@@ -85,7 +85,9 @@ class MemoryCacheDeprecated implements MemoryInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @param  string  $key
+     * @param  mixed  $value
+     * @param  null|int|\DateInterval  $ttl
      */
     public function set($key, $value, $ttl = null)
     {
@@ -95,7 +97,8 @@ class MemoryCacheDeprecated implements MemoryInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @param  iterable  $values
+     * @param  null|int|\DateInterval  $ttl
      */
     public function setMultiple($values, $ttl = null)
     {
