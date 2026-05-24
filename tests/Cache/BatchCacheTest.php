@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Event;
 use Maatwebsite\Excel\Cache\BatchCache;
 use Maatwebsite\Excel\Cache\BatchCacheDeprecated;
 use Maatwebsite\Excel\Cache\CacheManager;
-use Maatwebsite\Excel\Cache\MemoryCache;
+use Maatwebsite\Excel\Cache\MemoryInterface;
 use Maatwebsite\Excel\Tests\TestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Psr\SimpleCache\CacheInterface;
@@ -21,7 +21,7 @@ class BatchCacheTest extends TestCase
 {
     private Repository $cache;
 
-    private MemoryCache $memory;
+    private MemoryInterface $memory;
 
     public function test_will_get_multiple_from_memory_if_cells_hold_in_memory(): void
     {

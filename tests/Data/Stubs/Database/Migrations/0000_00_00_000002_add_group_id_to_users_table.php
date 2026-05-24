@@ -22,6 +22,7 @@ class AddGroupIdToUsersTable extends Migration
     public function down(): void
     {
         Schema::table('users', function (Blueprint $table): void {
+            $table->dropIndex('users_group_id_index');
             $table->dropColumn('group_id');
         });
     }

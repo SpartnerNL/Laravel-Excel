@@ -1,0 +1,4 @@
+parameters:
+    excludePaths:
+        - src/Cache/MemoryCache.php
+        - src/Cache/BatchCache.php
