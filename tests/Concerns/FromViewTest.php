@@ -50,7 +50,7 @@ final class FromViewTest extends TestCase
 
         $contents = $this->readAsArray(__DIR__ . '/../Data/Disks/Local/from-view.xlsx', 'Xlsx');
 
-        $expected = $users->map(fn (User $user) => [
+        $expected = $users->map(fn (User $user): array => [
             $user->name,
             $user->email,
         ])->prepend(['Name', 'Email'])->toArray();
@@ -91,22 +91,22 @@ final class FromViewTest extends TestCase
 
         $contents = $this->readAsArray(__DIR__ . '/../Data/Disks/Local/from-multiple-view.xlsx', 'Xlsx', 0);
 
-        $expected = $users->forPage(1, 100)->map(fn (User $user) => [
+        $expected = $users->forPage(1, 100)->map(fn (User $user): array => [
             $user->name,
             $user->email,
         ])->prepend(['Name', 'Email'])->toArray();
 
-        $this->assertEquals(101, count($contents));
+        $this->assertCount(101, $contents);
         $this->assertEquals($expected, $contents);
 
         $contents = $this->readAsArray(__DIR__ . '/../Data/Disks/Local/from-multiple-view.xlsx', 'Xlsx', 2);
 
-        $expected = $users->forPage(3, 100)->map(fn (User $user) => [
+        $expected = $users->forPage(3, 100)->map(fn (User $user): array => [
             $user->name,
             $user->email,
         ])->prepend(['Name', 'Email'])->toArray();
 
-        $this->assertEquals(101, count($contents));
+        $this->assertCount(101, $contents);
         $this->assertEquals($expected, $contents);
     }
 }

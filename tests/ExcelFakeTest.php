@@ -151,7 +151,7 @@ final class ExcelFakeTest extends TestCase
         ExcelFacade::import($this->givenImport(), 'stored-filename.csv', 's3');
 
         ExcelFacade::assertImported('stored-filename.csv', 's3');
-        ExcelFacade::assertImported('stored-filename.csv', 's3', fn (ToModel $import) => $import->model([]) instanceof User);
+        ExcelFacade::assertImported('stored-filename.csv', 's3', fn (ToModel $import): bool => $import->model([]) instanceof User);
         ExcelFacade::matchByRegex();
         ExcelFacade::assertImported('/\w{6}-\w{8}\.csv/', 's3');
     }
@@ -163,7 +163,7 @@ final class ExcelFakeTest extends TestCase
         ExcelFacade::import($this->givenImport(), $this->givenUploadedFile(__DIR__ . '/Data/Disks/Local/import.xlsx'));
 
         ExcelFacade::assertImported('import.xlsx');
-        ExcelFacade::assertImported('import.xlsx', fn (ToModel $import) => $import->model([]) instanceof User);
+        ExcelFacade::assertImported('import.xlsx', fn (ToModel $import): bool => $import->model([]) instanceof User);
         ExcelFacade::matchByRegex();
         ExcelFacade::assertImported('/\w{6}\.xlsx/');
     }
@@ -178,7 +178,7 @@ final class ExcelFakeTest extends TestCase
 
         ExcelFacade::assertImported('queued-filename.csv', 's3');
         ExcelFacade::assertQueued('queued-filename.csv', 's3');
-        ExcelFacade::assertQueued('queued-filename.csv', 's3', fn (ToModel $import) => $import->model([]) instanceof User);
+        ExcelFacade::assertQueued('queued-filename.csv', 's3', fn (ToModel $import): bool => $import->model([]) instanceof User);
         ExcelFacade::matchByRegex();
         ExcelFacade::assertQueued('/\w{6}-\w{8}\.csv/', 's3');
     }
@@ -193,7 +193,7 @@ final class ExcelFakeTest extends TestCase
 
         ExcelFacade::assertImported('queued-filename.csv', 's3');
         ExcelFacade::assertQueued('queued-filename.csv', 's3');
-        ExcelFacade::assertQueued('queued-filename.csv', 's3', fn (ToModel $import) => $import->model([]) instanceof User);
+        ExcelFacade::assertQueued('queued-filename.csv', 's3', fn (ToModel $import): bool => $import->model([]) instanceof User);
         ExcelFacade::matchByRegex();
         ExcelFacade::assertQueued('/\w{6}-\w{8}\.csv/', 's3');
     }

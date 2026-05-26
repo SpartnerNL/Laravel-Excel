@@ -23,5 +23,6 @@ class FileHelper
 
             return @rmdir($fileName);
         }
+        return null;
     }
 }

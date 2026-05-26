@@ -32,7 +32,7 @@ final class PhpSpreadsheetV5CompatibilityTest extends TestCase
         {
             use Importable;
 
-            private $receivedTypes;
+            private ?array $receivedTypes = null;
 
             public function __construct(&$receivedTypes)
             {
@@ -45,7 +45,7 @@ final class PhpSpreadsheetV5CompatibilityTest extends TestCase
 
                 return new class($receivedTypes) implements IReadFilter
                 {
-                    private $receivedTypes;
+                    private ?array $receivedTypes = null;
 
                     public function __construct(&$receivedTypes)
                     {
@@ -54,7 +54,7 @@ final class PhpSpreadsheetV5CompatibilityTest extends TestCase
 
                     public function readCell(string $columnAddress, int $row, string $worksheetName = ''): bool
                     {
-                        if (empty($this->receivedTypes)) {
+                        if ($this->receivedTypes === null || $this->receivedTypes === []) {
                             $this->receivedTypes = [
                                 'columnAddress' => gettype($columnAddress),
                                 'row'           => gettype($row),
@@ -83,7 +83,7 @@ final class PhpSpreadsheetV5CompatibilityTest extends TestCase
         {
             use Importable;
 
-            private $capturedCells;
+            private ?array $capturedCells = null;
 
             public function __construct(&$capturedCells)
             {
@@ -96,7 +96,7 @@ final class PhpSpreadsheetV5CompatibilityTest extends TestCase
 
                 return new class($capturedCells) implements IReadFilter
                 {
-                    private $capturedCells;
+                    private ?array $capturedCells = null;
 
                     public function __construct(&$capturedCells)
                     {
@@ -167,7 +167,7 @@ final class PhpSpreadsheetV5CompatibilityTest extends TestCase
         $result = $import->toArray('import.xlsx');
 
         foreach ($result[0] as $row) {
-            $nonNullValues = array_filter($row, fn ($v) => $v !== null);
+            $nonNullValues = array_filter($row, fn ($v): bool => $v !== null);
             $this->assertCount(1, $nonNullValues);
         }
     }
@@ -187,7 +187,7 @@ final class PhpSpreadsheetV5CompatibilityTest extends TestCase
         {
             use Importable;
 
-            private $bindValueCalled;
+            private ?bool $bindValueCalled = null;
 
             public function __construct(&$bindValueCalled)
             {

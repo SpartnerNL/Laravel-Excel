@@ -94,7 +94,7 @@ final class DownloadCollectionTest extends TestCase
         ];
         /** @phpstan-ignore method.notFound */
         $response = $collection->downloadExcel('collection-download.xlsx', Excel::XLSX, false, $responseHeaders);
-        static::assertInstanceOf(BinaryFileResponse::class, $response);
+        $this->assertInstanceOf(BinaryFileResponse::class, $response);
         $this->assertTrue($response->headers->contains('CUSTOMER-HEADER-1', 'CUSTOMER-HEADER1-VAL'));
         $this->assertTrue($response->headers->contains('CUSTOMER-HEADER-2', 'CUSTOMER-HEADER2-VAL'));
     }

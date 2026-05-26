@@ -45,7 +45,7 @@ final class RowValidatorTest extends TestCase
 
     public function test_format_rule_with_callable_input(): void
     {
-        $rule = (fn () => 'callable');
+        $rule = (fn (): string => 'callable');
 
         $result = $this->callPrivateMethod('formatRule', [$rule]);
 

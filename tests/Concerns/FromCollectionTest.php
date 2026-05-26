@@ -64,7 +64,7 @@ final class FromCollectionTest extends TestCase
 
         $this->assertEquals(
             $export->collection()->map(
-                fn (array $item) => array_values($item)
+                fn (array $item): array => array_values($item)
             )->toArray(),
             $contents
         );
@@ -82,7 +82,7 @@ final class FromCollectionTest extends TestCase
 
         $response = $export->queue('from-lazy-collection-store.xlsx');
 
-        $this->assertTrue($response instanceof PendingDispatch);
+        $this->assertInstanceOf(\Illuminate\Foundation\Bus\PendingDispatch::class, $response);
 
         // Force dispatching via __destruct.
         unset($response);
@@ -91,7 +91,7 @@ final class FromCollectionTest extends TestCase
 
         $this->assertEquals(
             $export->collection()->map(
-                fn (array $item) => array_values($item)
+                fn (array $item): array => array_values($item)
             )->toArray(),
             $contents
         );

@@ -10,6 +10,7 @@ use Rector\TypeDeclaration\Rector\ClassMethod\ParamTypeByMethodCallTypeRector;
 use Rector\TypeDeclaration\Rector\ClassMethod\ReturnTypeFromStrictFluentReturnRector;
 use RectorLaravel\Rector\ArrayDimFetch\EnvVariableToEnvHelperRector;
 use RectorLaravel\Rector\FuncCall\AppToResolveRector;
+use RectorLaravel\Rector\StaticCall\CarbonToDateFacadeRector;
 use RectorLaravel\Set\LaravelLevelSetList;
 use RectorLaravel\Set\LaravelSetList;
 
@@ -62,6 +63,11 @@ return RectorConfig::configure()
         // and pulls in Laravel's coercion semantics. For checks like Lambda
         // detection, the plain superglobal is the more honest expression.
         EnvVariableToEnvHelperRector::class,
+
+        // `Carbon::now()` → `\Illuminate\Support\Facades\Date::now()`. Useful
+        // when the project wants `Date::setTestNow()` mocking; for these
+        // tests it's pure churn and leaves an FQN behind.
+        CarbonToDateFacadeRector::class,
 
         // Deprecated cache drivers must keep untyped CacheInterface signatures
         // for psr/simple-cache ^1|^2 compatibility (see PR #4372). Both files
