@@ -5,6 +5,8 @@ declare(strict_types=1);
 use Rector\Caching\ValueObject\Storage\FileCacheStorage;
 use Rector\CodeQuality\Rector\If_\ExplicitBoolCompareRector;
 use Rector\Config\RectorConfig;
+use Rector\DeadCode\Rector\MethodCall\RemoveNullArgOnNullDefaultParamRector;
+use Rector\PHPUnit\CodeQuality\Rector\MethodCall\AssertEqualsToSameRector;
 use Rector\PHPUnit\Set\PHPUnitSetList;
 use Rector\TypeDeclaration\Rector\ClassMethod\ParamTypeByMethodCallTypeRector;
 use Rector\TypeDeclaration\Rector\ClassMethod\ReturnTypeFromStrictFluentReturnRector;
@@ -51,6 +53,21 @@ return RectorConfig::configure()
         ],
         ReturnTypeFromStrictFluentReturnRector::class => [
             __DIR__ . '/src',
+        ],
+
+        // BatchCache::set/setMultiple use func_num_args() to distinguish
+        // "no TTL passed" from "explicit null". Removing the explicit null
+        // silently changes behavior. Scoped to the one test that depends on
+        // the explicit null override.
+        RemoveNullArgOnNullDefaultParamRector::class => [
+            __DIR__ . '/tests/Cache/BatchCacheTest.php',
+        ],
+
+        // WithStrictNullComparisonTest round-trips mixed-type zeros through
+        // xlsx; PhpSpreadsheet v5 reads them back as strings. The test's
+        // intent is "not null", not exact PHP type. Keep loose comparison.
+        AssertEqualsToSameRector::class => [
+            __DIR__ . '/tests/Concerns/WithStrictNullComparisonTest.php',
         ],
 
         // `app(X::class)` → `resolve(X::class)`. Functionally equivalent but
