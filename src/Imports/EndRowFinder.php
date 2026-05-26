@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Maatwebsite\Excel\Imports;
 
 use Maatwebsite\Excel\Concerns\WithLimit;

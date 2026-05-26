@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Queue\Events\JobProcessed;
 use Illuminate\Queue\SyncQueue;
 use Illuminate\Support\Facades\DB;

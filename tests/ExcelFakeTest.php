@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Maatwebsite\Excel\Tests;
 
 use Illuminate\Contracts\Queue\ShouldQueue;
