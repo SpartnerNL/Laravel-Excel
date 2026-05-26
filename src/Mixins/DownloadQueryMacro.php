@@ -3,16 +3,18 @@
 namespace Maatwebsite\Excel\Mixins;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\Response;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Sheet;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class DownloadQueryMacro
 {
     public function __invoke()
     {
-        return function (string $fileName, ?string $writerType = null, $withHeadings = false): \Illuminate\Http\Response|\Symfony\Component\HttpFoundation\BinaryFileResponse {
+        return function (string $fileName, ?string $writerType = null, $withHeadings = false): Response|BinaryFileResponse {
             $export = new class($this, $withHeadings) implements FromQuery, WithHeadings
             {
                 use Exportable;

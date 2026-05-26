@@ -53,7 +53,7 @@ final class WithChunkReadingTest extends TestCase
 
             public $after = 0;
 
-            public function model(array $row): \Maatwebsite\Excel\Tests\Data\Stubs\Database\User
+            public function model(array $row): User
             {
                 return new User([
                     'name'     => $row[0],
@@ -99,7 +99,7 @@ final class WithChunkReadingTest extends TestCase
         {
             use Importable;
 
-            public function model(array $row): \Maatwebsite\Excel\Tests\Data\Stubs\Database\Group
+            public function model(array $row): Group
             {
                 return new Group([
                     'name' => $row[0],
@@ -131,7 +131,7 @@ final class WithChunkReadingTest extends TestCase
         {
             use Importable;
 
-            public function model(array $row): \Maatwebsite\Excel\Tests\Data\Stubs\Database\Group
+            public function model(array $row): Group
             {
                 return new Group([
                     'name' => $row['name'],
@@ -163,7 +163,7 @@ final class WithChunkReadingTest extends TestCase
         {
             use Importable;
 
-            public function model(array $row): \Maatwebsite\Excel\Tests\Data\Stubs\Database\Group
+            public function model(array $row): Group
             {
                 return new Group([
                     'name' => $row[0],
@@ -195,7 +195,7 @@ final class WithChunkReadingTest extends TestCase
         {
             use Importable;
 
-            public function model(array $row): \Maatwebsite\Excel\Tests\Data\Stubs\Database\Group
+            public function model(array $row): Group
             {
                 return new Group([
                     'name' => $row[0],
@@ -263,7 +263,7 @@ final class WithChunkReadingTest extends TestCase
                 return [
                     new class implements ToModel, WithBatchInserts
                     {
-                        public function model(array $row): \Maatwebsite\Excel\Tests\Data\Stubs\Database\Group
+                        public function model(array $row): Group
                         {
                             return new Group([
                                 'name' => $row[0],
@@ -278,7 +278,7 @@ final class WithChunkReadingTest extends TestCase
 
                     new class implements ToModel, WithBatchInserts
                     {
-                        public function model(array $row): \Maatwebsite\Excel\Tests\Data\Stubs\Database\Group
+                        public function model(array $row): Group
                         {
                             return new Group([
                                 'name' => $row[0],
@@ -318,7 +318,7 @@ final class WithChunkReadingTest extends TestCase
                 return [
                     'Worksheet' => new class implements ToModel, WithBatchInserts
                     {
-                        public function model(array $row): \Maatwebsite\Excel\Tests\Data\Stubs\Database\Group
+                        public function model(array $row): Group
                         {
                             return new Group([
                                 'name' => $row[0],
@@ -333,7 +333,7 @@ final class WithChunkReadingTest extends TestCase
 
                     'Worksheet2' => new class implements ToModel, WithBatchInserts
                     {
-                        public function model(array $row): \Maatwebsite\Excel\Tests\Data\Stubs\Database\Group
+                        public function model(array $row): Group
                         {
                             return new Group([
                                 'name' => $row[0],

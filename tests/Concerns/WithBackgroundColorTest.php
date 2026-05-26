@@ -63,7 +63,7 @@ final class WithBackgroundColorTest extends TestCase
         {
             use Exportable;
 
-            public function backgroundColor(): \PhpOffice\PhpSpreadsheet\Style\Color
+            public function backgroundColor(): Color
             {
                 return new Color(Color::COLOR_BLUE);
             }

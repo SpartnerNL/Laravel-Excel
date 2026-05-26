@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Maatwebsite\Excel\Tests\Concerns;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\OnEachRow;
@@ -115,7 +114,7 @@ final class WithGroupedHeadingRowTest extends TestCase
         {
             use Importable;
 
-            public function model(array $row): \Maatwebsite\Excel\Tests\Data\Stubs\Database\User
+            public function model(array $row): User
             {
                 return new User([
                     'name'     => $row['name'],

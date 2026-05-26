@@ -82,7 +82,7 @@ final class FromCollectionTest extends TestCase
 
         $response = $export->queue('from-lazy-collection-store.xlsx');
 
-        $this->assertInstanceOf(\Illuminate\Foundation\Bus\PendingDispatch::class, $response);
+        $this->assertInstanceOf(PendingDispatch::class, $response);
 
         // Force dispatching via __destruct.
         unset($response);

@@ -41,7 +41,7 @@ final class SkipsOnFailureTest extends TestCase
 
             public $failures = 0;
 
-            public function model(array $row): \Maatwebsite\Excel\Tests\Data\Stubs\Database\User
+            public function model(array $row): User
             {
                 return new User([
                     'name'     => $row[0],
@@ -97,7 +97,7 @@ final class SkipsOnFailureTest extends TestCase
 
             public $failures = 0;
 
-            public function model(array $row): \Maatwebsite\Excel\Tests\Data\Stubs\Database\User
+            public function model(array $row): User
             {
                 return new User([
                     'name'     => $row[0],
@@ -151,7 +151,7 @@ final class SkipsOnFailureTest extends TestCase
         {
             use Importable, SkipsFailures;
 
-            public function model(array $row): \Maatwebsite\Excel\Tests\Data\Stubs\Database\User
+            public function model(array $row): User
             {
                 return new User([
                     'name'     => $row[0],

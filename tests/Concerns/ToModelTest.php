@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Maatwebsite\Excel\Tests\Concerns;
 
 use Faker\Factory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\Importable;
@@ -36,7 +35,7 @@ final class ToModelTest extends TestCase
         {
             use Importable;
 
-            public function model(array $row): \Maatwebsite\Excel\Tests\Data\Stubs\Database\User
+            public function model(array $row): User
             {
                 return new User([
                     'name'     => $row[0],
@@ -68,7 +67,7 @@ final class ToModelTest extends TestCase
         {
             use Importable;
 
-            public function model(array $row): \Maatwebsite\Excel\Tests\Data\Stubs\Database\User
+            public function model(array $row): User
             {
                 return new User([
                     'name'     => $row[0],
@@ -169,7 +168,7 @@ final class ToModelTest extends TestCase
         {
             use Importable;
 
-            public function model(array $row): \Maatwebsite\Excel\Tests\Data\Stubs\Database\User
+            public function model(array $row): User
             {
                 $user = new User([
                     'name'     => $row[0],
@@ -213,7 +212,7 @@ final class ToModelTest extends TestCase
         {
             use Importable;
 
-            public function model(array $row): \Maatwebsite\Excel\Tests\Data\Stubs\Database\User
+            public function model(array $row): User
             {
                 $user = new User([
                     'name'     => $row[0],

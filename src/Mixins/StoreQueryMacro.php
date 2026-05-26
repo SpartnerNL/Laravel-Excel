@@ -3,6 +3,7 @@
 namespace Maatwebsite\Excel\Mixins;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Foundation\Bus\PendingDispatch;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\WithHeadings;
@@ -12,7 +13,7 @@ class StoreQueryMacro
 {
     public function __invoke()
     {
-        return function (string $filePath, ?string $disk = null, ?string $writerType = null, $withHeadings = false): bool|\Illuminate\Foundation\Bus\PendingDispatch {
+        return function (string $filePath, ?string $disk = null, ?string $writerType = null, $withHeadings = false): bool|PendingDispatch {
             $export = new class($this, $withHeadings) implements FromQuery, WithHeadings
             {
                 use Exportable;

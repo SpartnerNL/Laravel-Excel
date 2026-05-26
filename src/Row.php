@@ -62,7 +62,7 @@ class Row implements ArrayAccess
             $i++;
         }
 
-        if ($this->preparationCallback instanceof \Closure) {
+        if ($this->preparationCallback instanceof Closure) {
             $cells = ($this->preparationCallback)($cells, $this->row->getRowIndex());
         }
 

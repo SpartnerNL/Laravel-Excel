@@ -72,8 +72,8 @@ class ModelManager
     private function massFlush(ToModel $import): void
     {
         $this->rows()
-            ->flatMap(fn (array $attributes, ?int $index): \Illuminate\Support\Collection => $this->toModels($import, $attributes, $index))
-            ->mapToGroups(fn (\Illuminate\Database\Eloquent\Model $model): array => [$model::class => $this->prepare($model)->getAttributes()])
+            ->flatMap(fn (array $attributes, ?int $index): Collection => $this->toModels($import, $attributes, $index))
+            ->mapToGroups(fn (Model $model): array => [$model::class => $this->prepare($model)->getAttributes()])
             ->each(function (Collection $models, string $model) use ($import): void {
                 try {
                     /* @var Model $model */

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Maatwebsite\Excel\Tests;
 
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Bus\PendingDispatch;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\FromCollection;
@@ -255,7 +254,7 @@ final class ExcelFakeTest extends TestCase
     {
         return new class implements ToModel
         {
-            public function model(array $row): \Maatwebsite\Excel\Tests\Data\Stubs\Database\User
+            public function model(array $row): User
             {
                 return new User([]);
             }
@@ -266,7 +265,7 @@ final class ExcelFakeTest extends TestCase
     {
         return new class implements ShouldQueue, ToModel
         {
-            public function model(array $row): \Maatwebsite\Excel\Tests\Data\Stubs\Database\User
+            public function model(array $row): User
             {
                 return new User([]);
             }

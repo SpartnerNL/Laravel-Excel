@@ -345,7 +345,7 @@ class Sheet
     {
         $rows = $this->toArray($import, $startRow, $nullValue, $calculateFormulas, $formatData);
 
-        return new Collection(array_map(fn (array $row): \Illuminate\Support\Collection => new Collection($row), $rows));
+        return new Collection(array_map(fn (array $row): Collection => new Collection($row), $rows));
     }
 
     /**
