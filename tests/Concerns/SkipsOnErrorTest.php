@@ -52,7 +52,7 @@ final class SkipsOnErrorTest extends TestCase
             public function onError(Throwable $e): void
             {
                 Assert::assertInstanceOf(QueryException::class, $e);
-                Assert::stringContains($e->getMessage(), 'Duplicate entry \'patrick@maatwebsite.nl\'');
+                Assert::assertStringContainsString('patrick@maatwebsite.nl', $e->getMessage());
 
                 $this->errors++;
             }
@@ -97,7 +97,7 @@ final class SkipsOnErrorTest extends TestCase
         $e = $import->errors()->first();
 
         $this->assertInstanceOf(QueryException::class, $e);
-        $this->stringContains($e->getMessage(), 'Duplicate entry \'patrick@maatwebsite.nl\'');
+        $this->assertStringContainsString('patrick@maatwebsite.nl', $e->getMessage());
 
         // Shouldn't have rollbacked other imported rows.
         $this->assertDatabaseHas('users', [
@@ -144,7 +144,7 @@ final class SkipsOnErrorTest extends TestCase
             public function onError(Throwable $e): void
             {
                 Assert::assertInstanceOf(ValidationException::class, $e);
-                Assert::stringContains($e->getMessage(), 'The selected 1 is invalid');
+                Assert::assertStringContainsString('is invalid', $e->getMessage());
 
                 $this->errors++;
             }
@@ -205,7 +205,7 @@ final class SkipsOnErrorTest extends TestCase
         $e = $import->errors()->first();
 
         $this->assertInstanceOf(ValidationException::class, $e);
-        $this->stringContains($e->getMessage(), 'The selected 1 is invalid');
+        $this->assertStringContainsString('is invalid', $e->getMessage());
 
         // Should have inserted the valid row
         $this->assertDatabaseHas('users', [
