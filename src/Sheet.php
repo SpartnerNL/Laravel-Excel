@@ -562,7 +562,7 @@ class Sheet
         }
     }
 
-    public function hasConcern(string $concern): string
+    public function hasConcern(string $concern): bool
     {
         return $this->exportable instanceof $concern;
     }

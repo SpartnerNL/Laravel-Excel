@@ -15,7 +15,7 @@ class ValidationException extends IlluminateValidationException
     }
 
     /**
-     * @return string[]
+     * @return array<int, list<string>>
      */
     #[\Override]
     public function errors(): array
