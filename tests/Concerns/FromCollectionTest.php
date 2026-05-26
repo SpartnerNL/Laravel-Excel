@@ -50,8 +50,6 @@ class FromCollectionTest extends TestCase
     {
         if (!class_exists(LazyCollection::class)) {
             $this->markTestSkipped('Skipping test because LazyCollection is not supported');
-
-            return;
         }
 
         $export = new EloquentLazyCollectionExport;
@@ -72,8 +70,6 @@ class FromCollectionTest extends TestCase
     {
         if (!class_exists(LazyCollection::class)) {
             $this->markTestSkipped('Skipping test because LazyCollection is not supported');
-
-            return;
         }
 
         $export = new EloquentLazyCollectionQueuedExport;

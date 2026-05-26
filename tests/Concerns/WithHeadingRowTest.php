@@ -2,7 +2,6 @@
 
 namespace Maatwebsite\Excel\Tests\Concerns;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\ToArray;
@@ -31,7 +30,7 @@ class WithHeadingRowTest extends TestCase
         {
             use Importable;
 
-            public function model(array $row): Model
+            public function model(array $row): User
             {
                 return new User([
                     'name'     => $row['name'],
@@ -60,7 +59,7 @@ class WithHeadingRowTest extends TestCase
         {
             use Importable;
 
-            public function model(array $row): Model
+            public function model(array $row): User
             {
                 return new User([
                     'name'     => $row['name'],
@@ -133,7 +132,7 @@ class WithHeadingRowTest extends TestCase
         {
             use Importable;
 
-            public function model(array $row): Model
+            public function model(array $row): User
             {
                 return new User([
                     'name'     => $row['name'],

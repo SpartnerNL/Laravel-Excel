@@ -10,9 +10,12 @@ use PHPUnit\Framework\Assert;
 
 class WithReadFilterTest extends TestCase
 {
+    public static bool $spy = false;
+
     public function test_can_register_custom_read_filter(): void
     {
-        $export = new class implements WithReadFilter
+        WithReadFilterTest::$spy = false;
+        $export                  = new class implements WithReadFilter
         {
             use Importable;
 
@@ -22,10 +25,7 @@ class WithReadFilterTest extends TestCase
                 {
                     public function readCell(string $columnAddress, int $row, string $worksheetName = ''): bool
                     {
-                        // Assert read filter is being called.
-                        // If assertion is not called, test will fail due to
-                        // test having no other assertions.
-                        Assert::assertTrue(true);
+                        WithReadFilterTest::$spy = true;
 
                         return true;
                     }
@@ -34,5 +34,6 @@ class WithReadFilterTest extends TestCase
         };
 
         $export->toArray('import-users.xlsx');
+        Assert::assertTrue(WithReadFilterTest::$spy);
     }
 }

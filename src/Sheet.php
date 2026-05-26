@@ -52,6 +52,7 @@ use Maatwebsite\Excel\Imports\EndRowFinder;
 use Maatwebsite\Excel\Imports\HeadingRowExtractor;
 use Maatwebsite\Excel\Imports\ModelImporter;
 use Maatwebsite\Excel\Validators\RowValidator;
+use Maatwebsite\Excel\Validators\ValidationException;
 use PhpOffice\PhpSpreadsheet\Cell\Cell as SpreadsheetCell;
 use PhpOffice\PhpSpreadsheet\Chart\Chart;
 use PhpOffice\PhpSpreadsheet\Exception;
@@ -199,6 +200,9 @@ class Sheet
         $this->close($sheetExport);
     }
 
+    /**
+     * @throws ValidationException
+     */
     public function import(object $import, int $startRow = 1): void
     {
         if ($import instanceof WithEvents) {

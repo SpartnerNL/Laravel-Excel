@@ -16,7 +16,7 @@ class WithBackgroundColorTest extends TestCase
         {
             use Exportable;
 
-            public function backgroundColor(): string|array|Color
+            public function backgroundColor(): string
             {
                 return '000000';
             }
@@ -37,7 +37,7 @@ class WithBackgroundColorTest extends TestCase
         {
             use Exportable;
 
-            public function backgroundColor(): string|array|Color
+            public function backgroundColor(): array
             {
                 return [
                     'fillType'   => Fill::FILL_GRADIENT_LINEAR,
@@ -61,7 +61,7 @@ class WithBackgroundColorTest extends TestCase
         {
             use Exportable;
 
-            public function backgroundColor(): string|array|Color
+            public function backgroundColor(): Color
             {
                 return new Color(Color::COLOR_BLUE);
             }

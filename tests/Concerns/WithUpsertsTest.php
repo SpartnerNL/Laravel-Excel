@@ -2,8 +2,6 @@
 
 namespace Maatwebsite\Excel\Tests\Concerns;
 
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\ToModel;
@@ -20,10 +18,6 @@ class WithUpsertsTest extends TestCase
      */
     protected function setUp(): void
     {
-        if (!method_exists(Builder::class, 'upsert')) {
-            $this->markTestSkipped('The upsert feature is available on Laravel 8.10+');
-        }
-
         parent::setUp();
 
         $this->loadLaravelMigrations(['--database' => 'testing']);
@@ -43,7 +37,7 @@ class WithUpsertsTest extends TestCase
         {
             use Importable;
 
-            public function model(array $row): ?Model
+            public function model(array $row): User
             {
                 return new User([
                     'name'     => $row[0],
@@ -52,7 +46,7 @@ class WithUpsertsTest extends TestCase
                 ]);
             }
 
-            public function uniqueBy(): string|array
+            public function uniqueBy(): string
             {
                 return 'email';
             }
@@ -97,10 +91,7 @@ class WithUpsertsTest extends TestCase
         {
             use Importable;
 
-            /**
-             * @return Model|Model[]|null
-             */
-            public function model(array $row): Model|array|null
+            public function model(array $row): User
             {
                 return new User([
                     'name'     => $row[0],
@@ -109,7 +100,7 @@ class WithUpsertsTest extends TestCase
                 ]);
             }
 
-            public function uniqueBy(): string|array
+            public function uniqueBy(): string
             {
                 return 'email';
             }
@@ -149,7 +140,7 @@ class WithUpsertsTest extends TestCase
         {
             use Importable;
 
-            public function model(array $row): ?Model
+            public function model(array $row): User
             {
                 return new User([
                     'name'     => $row[0],
@@ -158,7 +149,7 @@ class WithUpsertsTest extends TestCase
                 ]);
             }
 
-            public function uniqueBy(): string|array
+            public function uniqueBy(): string
             {
                 return 'email';
             }
@@ -208,10 +199,7 @@ class WithUpsertsTest extends TestCase
         {
             use Importable;
 
-            /**
-             * @return Model|Model[]|null
-             */
-            public function model(array $row): Model|array|null
+            public function model(array $row): User
             {
                 return new User([
                     'name'     => $row[0],
@@ -220,7 +208,7 @@ class WithUpsertsTest extends TestCase
                 ]);
             }
 
-            public function uniqueBy(): string|array
+            public function uniqueBy(): string
             {
                 return 'email';
             }

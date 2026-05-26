@@ -3,7 +3,6 @@
 namespace Maatwebsite\Excel\Tests\Concerns;
 
 use Illuminate\Contracts\Validation\Validator;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
 use Maatwebsite\Excel\Concerns\Importable;
@@ -41,7 +40,7 @@ class WithValidationTest extends TestCase
         {
             use Importable;
 
-            public function model(array $row): ?Model
+            public function model(array $row): User
             {
                 return new User([
                     'name'     => $row[0],
@@ -79,7 +78,7 @@ class WithValidationTest extends TestCase
         {
             use Importable;
 
-            public function model(array $row): ?Model
+            public function model(array $row): User
             {
                 return new User([
                     'name'     => $row[0],
@@ -121,7 +120,7 @@ class WithValidationTest extends TestCase
         {
             use Importable;
 
-            public function model(array $row): ?Model
+            public function model(array $row): User
             {
                 return new User([
                     'name'     => $row[0],
@@ -146,7 +145,7 @@ class WithValidationTest extends TestCase
                         /**
                          * Get the validation error message.
                          */
-                        public function message(): string|array
+                        public function message(): string
                         {
                             return 'Value is not an allowed e-mail.';
                         }
@@ -176,7 +175,7 @@ class WithValidationTest extends TestCase
         {
             use Importable;
 
-            public function model(array $row): ?Model
+            public function model(array $row): User
             {
                 return new User([
                     'name'     => $row[0],
@@ -209,7 +208,7 @@ class WithValidationTest extends TestCase
         {
             use Importable;
 
-            public function model(array $row): ?Model
+            public function model(array $row): User
             {
                 return new User([
                     'name'     => $row[0],
@@ -242,7 +241,7 @@ class WithValidationTest extends TestCase
         {
             use Importable;
 
-            public function model(array $row): ?Model
+            public function model(array $row): User
             {
                 return new User([
                     'name'     => $row[0],
@@ -281,7 +280,7 @@ class WithValidationTest extends TestCase
         {
             use Importable;
 
-            public function model(array $row): ?Model
+            public function model(array $row): User
             {
                 return new User([
                     'name'     => $row[0],
@@ -319,7 +318,7 @@ class WithValidationTest extends TestCase
         {
             use Importable;
 
-            public function model(array $row): ?Model
+            public function model(array $row): User
             {
                 return new User([
                     'name'     => $row[0],
@@ -358,7 +357,7 @@ class WithValidationTest extends TestCase
         {
             use Importable;
 
-            public function model(array $row): ?Model
+            public function model(array $row): User
             {
                 return new User([
                     'name'     => $row[0],
@@ -398,7 +397,7 @@ class WithValidationTest extends TestCase
         {
             use Importable;
 
-            public function model(array $row): ?Model
+            public function model(array $row): User
             {
                 return new User([
                     'name'     => $row['name'],
@@ -444,7 +443,7 @@ class WithValidationTest extends TestCase
                 return $row;
             }
 
-            public function model(array $row): ?Model
+            public function model(array $row): User
             {
                 return new User([
                     'name'     => $row['name'],
@@ -478,7 +477,7 @@ class WithValidationTest extends TestCase
         {
             use Importable;
 
-            public function model(array $row): ?Model
+            public function model(array $row): User
             {
                 return new User([
                     'name'     => $row['name'],
@@ -516,7 +515,7 @@ class WithValidationTest extends TestCase
         {
             use Importable;
 
-            public function onRow(Row $row): ?Model
+            public function onRow(Row $row): User
             {
                 $values = $row->toArray();
 
@@ -609,7 +608,7 @@ class WithValidationTest extends TestCase
         {
             use Importable;
 
-            public function model(array $row): ?Model
+            public function model(array $row): User
             {
                 return new User([
                     'name'     => $row[0],
@@ -768,10 +767,7 @@ class WithValidationTest extends TestCase
                 return $row;
             }
 
-            /**
-             * @return Model|Model[]|null
-             */
-            public function model(array $row): Model|array|null
+            public function model(array $row): User
             {
                 return new User([
                     'name'     => $row[0],

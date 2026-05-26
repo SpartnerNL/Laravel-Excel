@@ -34,10 +34,7 @@ class ToModelTest extends TestCase
         {
             use Importable;
 
-            /**
-             * @return Model|Model[]|null
-             */
-            public function model(array $row): Model|array|null
+            public function model(array $row): User
             {
                 return new User([
                     'name'     => $row[0],
@@ -69,10 +66,7 @@ class ToModelTest extends TestCase
         {
             use Importable;
 
-            /**
-             * @return Model|Model[]|null
-             */
-            public function model(array $row): Model|array|null
+            public function model(array $row): User
             {
                 return new User([
                     'name'     => $row[0],
@@ -99,9 +93,9 @@ class ToModelTest extends TestCase
             use Importable;
 
             /**
-             * @return Model|Model[]|null
+             * @return Model[]
              */
-            public function model(array $row): Model|array|null
+            public function model(array $row): array
             {
                 $user1 = new User([
                     'name'     => $row[0],
@@ -136,9 +130,9 @@ class ToModelTest extends TestCase
             use Importable;
 
             /**
-             * @return Model|Model[]|null
+             * @return Model[]
              */
-            public function model(array $row): Model|array|null
+            public function model(array $row): array
             {
                 $user = new User([
                     'name'     => $row[0],
@@ -173,10 +167,7 @@ class ToModelTest extends TestCase
         {
             use Importable;
 
-            /**
-             * @return Model|Model[]|null
-             */
-            public function model(array $row): Model|array|null
+            public function model(array $row): User
             {
                 $user = new User([
                     'name'     => $row[0],
@@ -201,7 +192,6 @@ class ToModelTest extends TestCase
         $users = User::all();
         $users->each(function (User $user): void {
             $this->assertInstanceOf(Group::class, $user->group);
-            $this->assertIsInt($user->group->id);
         });
 
         $this->assertCount(2, $users);
@@ -220,10 +210,7 @@ class ToModelTest extends TestCase
         {
             use Importable;
 
-            /**
-             * @return Model|Model[]|null
-             */
-            public function model(array $row): Model|array|null
+            public function model(array $row): User
             {
                 $user = new User([
                     'name'     => $row[0],

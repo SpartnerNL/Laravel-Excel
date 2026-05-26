@@ -17,7 +17,7 @@ class WithDefaultStylesTest extends TestCase
         {
             use Exportable;
 
-            public function defaultStyles(Style $defaultStyle): ?array
+            public function defaultStyles(Style $defaultStyle): array
             {
                 return [
                     'fill' => [

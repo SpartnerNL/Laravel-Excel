@@ -2,7 +2,6 @@
 
 namespace Maatwebsite\Excel\Tests\Concerns;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\OnEachRow;
@@ -69,10 +68,7 @@ class SkipsEmptyRowsTest extends TestCase
 
             public $rows = 0;
 
-            /**
-             * @return Model|Model[]|null
-             */
-            public function model(array $row): Model|array|null
+            public function model(array $row): null
             {
                 $this->rows++;
 

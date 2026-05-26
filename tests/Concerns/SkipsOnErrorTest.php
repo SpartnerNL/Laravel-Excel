@@ -2,7 +2,6 @@
 
 namespace Maatwebsite\Excel\Tests\Concerns;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\QueryException;
 use Illuminate\Validation\Rule;
 use Maatwebsite\Excel\Concerns\Importable;
@@ -38,7 +37,7 @@ class SkipsOnErrorTest extends TestCase
 
             public $errors = 0;
 
-            public function model(array $row): ?Model
+            public function model(array $row): User
             {
                 return new User([
                     'name'     => $row[0],
@@ -77,7 +76,7 @@ class SkipsOnErrorTest extends TestCase
         {
             use Importable, SkipsErrors;
 
-            public function model(array $row): ?Model
+            public function model(array $row): User
             {
                 return new User([
                     'name'     => $row[0],

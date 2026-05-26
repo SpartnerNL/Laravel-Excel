@@ -2,7 +2,6 @@
 
 namespace Maatwebsite\Excel\Tests\Concerns;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
 use Maatwebsite\Excel\Concerns\Importable;
@@ -39,7 +38,7 @@ class SkipsOnFailureTest extends TestCase
 
             public $failures = 0;
 
-            public function model(array $row): ?Model
+            public function model(array $row): User
             {
                 return new User([
                     'name'     => $row[0],
@@ -95,7 +94,7 @@ class SkipsOnFailureTest extends TestCase
 
             public $failures = 0;
 
-            public function model(array $row): ?Model
+            public function model(array $row): User
             {
                 return new User([
                     'name'     => $row[0],
@@ -149,7 +148,7 @@ class SkipsOnFailureTest extends TestCase
         {
             use Importable, SkipsFailures;
 
-            public function model(array $row): ?Model
+            public function model(array $row): User
             {
                 return new User([
                     'name'     => $row[0],
@@ -194,7 +193,7 @@ class SkipsOnFailureTest extends TestCase
         {
             use Importable, SkipsFailures;
 
-            public function onRow(Row $row): ?Model
+            public function onRow(Row $row): User
             {
                 $row = $row->toArray();
 

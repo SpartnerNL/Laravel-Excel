@@ -51,7 +51,7 @@ class WithChunkReadingTest extends TestCase
 
             public $after = 0;
 
-            public function model(array $row): ?Model
+            public function model(array $row): User
             {
                 return new User([
                     'name'     => $row[0],
@@ -97,7 +97,7 @@ class WithChunkReadingTest extends TestCase
         {
             use Importable;
 
-            public function model(array $row): ?Model
+            public function model(array $row): Group
             {
                 return new Group([
                     'name' => $row[0],
@@ -129,7 +129,7 @@ class WithChunkReadingTest extends TestCase
         {
             use Importable;
 
-            public function model(array $row): ?Model
+            public function model(array $row): Group
             {
                 return new Group([
                     'name' => $row['name'],
@@ -161,7 +161,7 @@ class WithChunkReadingTest extends TestCase
         {
             use Importable;
 
-            public function model(array $row): ?Model
+            public function model(array $row): Group
             {
                 return new Group([
                     'name' => $row[0],
@@ -193,7 +193,7 @@ class WithChunkReadingTest extends TestCase
         {
             use Importable;
 
-            public function model(array $row): ?Model
+            public function model(array $row): Group
             {
                 return new Group([
                     'name' => $row[0],
@@ -261,7 +261,7 @@ class WithChunkReadingTest extends TestCase
                 return [
                     new class implements ToModel, WithBatchInserts
                     {
-                        public function model(array $row): ?Model
+                        public function model(array $row): Group
                         {
                             return new Group([
                                 'name' => $row[0],
@@ -276,7 +276,7 @@ class WithChunkReadingTest extends TestCase
 
                     new class implements ToModel, WithBatchInserts
                     {
-                        public function model(array $row): ?Model
+                        public function model(array $row): Group
                         {
                             return new Group([
                                 'name' => $row[0],
@@ -316,7 +316,7 @@ class WithChunkReadingTest extends TestCase
                 return [
                     'Worksheet' => new class implements ToModel, WithBatchInserts
                     {
-                        public function model(array $row): ?Model
+                        public function model(array $row): Group
                         {
                             return new Group([
                                 'name' => $row[0],
@@ -331,7 +331,7 @@ class WithChunkReadingTest extends TestCase
 
                     'Worksheet2' => new class implements ToModel, WithBatchInserts
                     {
-                        public function model(array $row): ?Model
+                        public function model(array $row): Group
                         {
                             return new Group([
                                 'name' => $row[0],
