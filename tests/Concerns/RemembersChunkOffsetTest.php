@@ -22,7 +22,7 @@ final class RemembersChunkOffsetTest extends TestCase
 
         $import->setChunkOffset(50);
 
-        $this->assertEquals(50, $import->getChunkOffset());
+        $this->assertSame(50, $import->getChunkOffset());
     }
 
     public function test_can_access_chunk_offset_on_import_to_array_in_chunks(): void

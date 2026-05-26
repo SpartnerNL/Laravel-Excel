@@ -390,7 +390,7 @@ final class WithChunkReadingTest extends TestCase
             $import->import('import-users.xlsx');
         } catch (Throwable $e) {
             $this->assertInstanceOf(Exception::class, $e);
-            $this->assertEquals('Something went wrong in the chunk', $e->getMessage());
+            $this->assertSame('Something went wrong in the chunk', $e->getMessage());
         }
 
         $this->assertTrue($import->failed, 'ImportFailed event was not called.');

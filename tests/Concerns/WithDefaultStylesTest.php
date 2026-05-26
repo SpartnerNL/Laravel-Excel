@@ -43,7 +43,7 @@ final class WithDefaultStylesTest extends TestCase
         $spreadsheet = $this->read(__DIR__ . '/../Data/Disks/Local/with-default-styles.xlsx', 'Xlsx');
         $sheet       = $spreadsheet->getDefaultStyle();
 
-        $this->assertEquals(Fill::FILL_SOLID, $sheet->getFill()->getFillType());
-        $this->assertEquals('fff2f2f2', $sheet->getFill()->getStartColor()->getARGB());
+        $this->assertSame(Fill::FILL_SOLID, $sheet->getFill()->getFillType());
+        $this->assertSame('fff2f2f2', $sheet->getFill()->getStartColor()->getARGB());
     }
 }

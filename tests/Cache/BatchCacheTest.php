@@ -35,7 +35,7 @@ final class BatchCacheTest extends TestCase
 
         $cache = $this->givenCache($inMemory);
 
-        $this->assertEquals(
+        $this->assertSame(
             $inMemory,
             $cache->getMultiple(['A1', 'A2', 'A3'])
         );
@@ -54,7 +54,7 @@ final class BatchCacheTest extends TestCase
 
         $cache = $this->givenCache($inMemory, $persisted);
 
-        $this->assertEquals(
+        $this->assertSame(
             $persisted,
             $cache->getMultiple(['A1', 'A2', 'A3'])
         );
@@ -77,7 +77,7 @@ final class BatchCacheTest extends TestCase
 
         $cache = $this->givenCache($inMemory, $persisted);
 
-        $this->assertEquals(
+        $this->assertSame(
             array_merge($inMemory, $persisted),
             $cache->getMultiple(['A1', 'A2', 'A3', 'A4', 'A5', 'A6'])
         );
@@ -105,7 +105,7 @@ final class BatchCacheTest extends TestCase
         $this->assertEquals([], array_filter($this->memory->getMultiple(['A1', 'A2', 'A3', 'A4'])));
 
         // All 4 cells show be persisted
-        $this->assertEquals([
+        $this->assertSame([
             'A1' => 'A1-value',
             'A2' => 'A2-value',
             'A3' => 'A3-value',
@@ -113,7 +113,7 @@ final class BatchCacheTest extends TestCase
         ], $this->cache->getMultiple(['A1', 'A2', 'A3', 'A4']));
 
         // Batch cache should return all 4 cells
-        $this->assertEquals([
+        $this->assertSame([
             'A1' => 'A1-value',
             'A2' => 'A2-value',
             'A3' => 'A3-value',
@@ -143,7 +143,7 @@ final class BatchCacheTest extends TestCase
         $this->assertEquals([], array_filter($this->memory->getMultiple(['A1', 'A2', 'A3', 'A4', 'A5'])));
 
         // All 4 cells show be persisted
-        $this->assertEquals([
+        $this->assertSame([
             'A1' => 'A1-value',
             'A2' => 'A2-value',
             'A3' => 'A3-value',
@@ -152,7 +152,7 @@ final class BatchCacheTest extends TestCase
         ], $this->cache->getMultiple(['A1', 'A2', 'A3', 'A4', 'A5']));
 
         // Batch cache should return all 4 cells
-        $this->assertEquals([
+        $this->assertSame([
             'A1' => 'A1-value',
             'A2' => 'A2-value',
             'A3' => 'A3-value',

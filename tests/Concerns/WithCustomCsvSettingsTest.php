@@ -90,7 +90,7 @@ final class WithCustomCsvSettingsTest extends TestCase
 
         $contents = file_get_contents(__DIR__ . '/../Data/Disks/Local/custom-csv-iso.csv');
 
-        Assert::assertEquals('ISO-8859-15', mb_detect_encoding($contents, 'ISO-8859-15', true));
+        Assert::assertSame('ISO-8859-15', mb_detect_encoding($contents, 'ISO-8859-15', true));
         Assert::assertFalse(mb_detect_encoding($contents, 'UTF-8', true));
 
         $contents = mb_convert_encoding($contents, 'UTF-8', 'ISO-8859-15');
@@ -102,7 +102,7 @@ final class WithCustomCsvSettingsTest extends TestCase
 
     public function test_can_read_csv_with_auto_detecting_delimiter_semicolon(): void
     {
-        $this->assertEquals([
+        $this->assertSame([
             [
                 ['a1', 'b1'],
             ],
@@ -111,7 +111,7 @@ final class WithCustomCsvSettingsTest extends TestCase
 
     public function test_can_read_csv_with_auto_detecting_delimiter_comma(): void
     {
-        $this->assertEquals([
+        $this->assertSame([
             [
                 ['a1', 'b1'],
             ],

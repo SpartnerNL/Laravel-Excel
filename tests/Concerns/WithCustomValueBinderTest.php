@@ -82,12 +82,12 @@ final class WithCustomValueBinderTest extends TestCase
         $this->assertSame(Date::dateTimeToExcel(Carbon::now()), $sheet->getCell('A1')->getValue());
 
         // Check if formatted as datetime
-        $this->assertEquals(NumberFormat::FORMAT_DATE_DATETIME, $sheet->getCell('A1')->getStyle()->getNumberFormat()->getFormatCode());
+        $this->assertSame(NumberFormat::FORMAT_DATE_DATETIME, $sheet->getCell('A1')->getStyle()->getNumberFormat()->getFormatCode());
 
         // Check if the cell has the converted percentage
-        $this->assertSame(0.1, $sheet->getCell('B1')->getValue());
+        $this->assertEqualsWithDelta(0.1, $sheet->getCell('B1')->getValue(), PHP_FLOAT_EPSILON);
 
         // Check if formatted as percentage
-        $this->assertEquals(NumberFormat::FORMAT_PERCENTAGE_00, $sheet->getCell('B1')->getStyle()->getNumberFormat()->getFormatCode());
+        $this->assertSame(NumberFormat::FORMAT_PERCENTAGE_00, $sheet->getCell('B1')->getStyle()->getNumberFormat()->getFormatCode());
     }
 }

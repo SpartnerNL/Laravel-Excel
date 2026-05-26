@@ -167,7 +167,7 @@ final class QueuedImportTest extends TestCase
         try {
             (new QueuedImportWithFailure)->queue('import-batches.xlsx');
         } catch (Throwable $e) {
-            $this->assertEquals('Something went wrong in the chunk', $e->getMessage());
+            $this->assertSame('Something went wrong in the chunk', $e->getMessage());
         }
 
         $this->assertFalse($tempFile?->existsLocally());
@@ -187,7 +187,7 @@ final class QueuedImportTest extends TestCase
         try {
             (new QueuedImportWithFailure)->queue('import-batches.xlsx');
         } catch (Throwable $e) {
-            $this->assertEquals('Something went wrong in the chunk', $e->getMessage());
+            $this->assertSame('Something went wrong in the chunk', $e->getMessage());
         }
 
         $this->assertTrue($tempFile?->exists());
@@ -218,7 +218,7 @@ final class QueuedImportTest extends TestCase
         try {
             (new QueuedImportWithMiddleware)->queue('import-batches.xlsx');
         } catch (Throwable $e) {
-            $this->assertEquals('Job reached middleware method', $e->getMessage());
+            $this->assertSame('Job reached middleware method', $e->getMessage());
         }
     }
 
@@ -227,7 +227,7 @@ final class QueuedImportTest extends TestCase
         try {
             (new QueuedImportWithRetryUntil)->queue('import-batches.xlsx');
         } catch (Throwable $e) {
-            $this->assertEquals('Job reached retryUntil method', $e->getMessage());
+            $this->assertSame('Job reached retryUntil method', $e->getMessage());
         }
     }
 
@@ -246,7 +246,7 @@ final class QueuedImportTest extends TestCase
             $import->maxExceptions = 3;
             $import->queue('import-batches.xlsx');
         } catch (Throwable $e) {
-            $this->assertEquals('Something went wrong in the chunk', $e->getMessage());
+            $this->assertSame('Something went wrong in the chunk', $e->getMessage());
         }
 
         $this->assertEquals(3, $maxExceptionsCount);

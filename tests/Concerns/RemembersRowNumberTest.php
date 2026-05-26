@@ -23,7 +23,7 @@ final class RemembersRowNumberTest extends TestCase
 
         $import->rememberRowNumber(50);
 
-        $this->assertEquals(50, $import->getRowNumber());
+        $this->assertSame(50, $import->getRowNumber());
     }
 
     public function test_can_access_row_number_on_import_to_model(): void
@@ -45,7 +45,7 @@ final class RemembersRowNumberTest extends TestCase
 
         $import->import('import-batches.xlsx');
 
-        $this->assertEquals([46, 47, 48, 49, 50, 51, 52, 53, 54, 55], array_slice($import->rowNumbers, 45, 10));
+        $this->assertSame([46, 47, 48, 49, 50, 51, 52, 53, 54, 55], array_slice($import->rowNumbers, 45, 10));
     }
 
     public function test_can_access_row_number_on_import_to_array_in_chunks(): void
@@ -72,7 +72,7 @@ final class RemembersRowNumberTest extends TestCase
 
         $import->import('import-batches.xlsx');
 
-        $this->assertEquals([46, 47, 48, 49, 50, 51, 52, 53, 54, 55], array_slice($import->rowNumbers, 45, 10));
+        $this->assertSame([46, 47, 48, 49, 50, 51, 52, 53, 54, 55], array_slice($import->rowNumbers, 45, 10));
     }
 
     public function test_can_access_row_number_on_import_to_array_in_chunks_with_batch_inserts(): void
@@ -104,6 +104,6 @@ final class RemembersRowNumberTest extends TestCase
 
         $import->import('import-batches.xlsx');
 
-        $this->assertEquals([46, 47, 48, 49, 50, 51, 52, 53, 54, 55], array_slice($import->rowNumbers, 45, 10));
+        $this->assertSame([46, 47, 48, 49, 50, 51, 52, 53, 54, 55], array_slice($import->rowNumbers, 45, 10));
     }
 }

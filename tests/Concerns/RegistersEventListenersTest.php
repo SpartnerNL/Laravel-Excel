@@ -52,7 +52,7 @@ final class RegistersEventListenersTest extends TestCase
         };
 
         $this->assertInstanceOf(BinaryFileResponse::class, $event->download('filename.xlsx'));
-        $this->assertEquals(4, $eventsTriggered);
+        $this->assertSame(4, $eventsTriggered);
     }
 
     public function test_events_get_called_when_importing(): void
@@ -80,7 +80,7 @@ final class RegistersEventListenersTest extends TestCase
         };
 
         $event->import('import.xlsx');
-        $this->assertEquals(3, $eventsTriggered);
+        $this->assertSame(3, $eventsTriggered);
     }
 
     public function test_can_have_invokable_class_as_listener(): void

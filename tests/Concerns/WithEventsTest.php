@@ -65,7 +65,7 @@ final class WithEventsTest extends TestCase
         };
 
         $this->assertInstanceOf(BinaryFileResponse::class, $event->download('filename.xlsx'));
-        $this->assertEquals(4, $eventsTriggered);
+        $this->assertSame(4, $eventsTriggered);
     }
 
     public function test_import_events_get_called(): void
@@ -99,7 +99,7 @@ final class WithEventsTest extends TestCase
         };
 
         $import->import('import.xlsx');
-        $this->assertEquals(4, $eventsTriggered);
+        $this->assertSame(4, $eventsTriggered);
     }
 
     public function test_import_chunked_events_get_called(): void
@@ -116,13 +116,13 @@ final class WithEventsTest extends TestCase
         $import->beforeImport = function (BeforeImport $event) use (&$beforeImport): void {
             $this->assertInstanceOf(Reader::class, $event->getReader());
             // Ensure event is fired only once
-            $this->assertEquals(0, $beforeImport, 'Before import called twice');
+            $this->assertSame(0, $beforeImport, 'Before import called twice');
             $beforeImport++;
         };
 
         $import->afterImport = function (AfterImport $event) use (&$afterImport): void {
             $this->assertInstanceOf(Reader::class, $event->getReader());
-            $this->assertEquals(0, $afterImport, 'After import called twice');
+            $this->assertSame(0, $afterImport, 'After import called twice');
             $afterImport++;
         };
 
@@ -137,12 +137,12 @@ final class WithEventsTest extends TestCase
         };
 
         $import->afterBatch = function (AfterBatch $event) use ($import, &$afterBatch): void {
-            $this->assertEquals(
+            $this->assertSame(
                 $import->batchSize(),
                 $event->getBatchSize(),
                 'Wrong Batch size'
             );
-            $this->assertEquals(
+            $this->assertSame(
                 $afterBatch * $import->batchSize() + 1,
                 $event->getStartRow(),
                 'Wrong batch start row'
@@ -151,7 +151,7 @@ final class WithEventsTest extends TestCase
         };
 
         $import->afterChunk = function (AfterChunk $event) use ($import, &$afterChunk): void {
-            $this->assertEquals(
+            $this->assertSame(
                 $event->getStartRow(),
                 $afterChunk * $import->chunkSize() + 1,
                 'Wrong chunk start row'
@@ -160,10 +160,10 @@ final class WithEventsTest extends TestCase
         };
 
         $import->import('import-batches.xlsx');
-        $this->assertEquals(10, $afterSheet);
-        $this->assertEquals(10, $beforeSheet);
-        $this->assertEquals(50, $afterBatch);
-        $this->assertEquals(10, $afterChunk);
+        $this->assertSame(10, $afterSheet);
+        $this->assertSame(10, $beforeSheet);
+        $this->assertSame(50, $afterBatch);
+        $this->assertSame(10, $afterChunk);
     }
 
     public function test_can_have_invokable_class_as_listener(): void
@@ -236,7 +236,7 @@ final class WithEventsTest extends TestCase
 
         $exportWithConcern->store('with-custom-concern.xlsx');
         $actual = $this->readAsArray(__DIR__ . '/../Data/Disks/Local/with-custom-concern.xlsx', 'Xlsx');
-        $this->assertEquals([
+        $this->assertSame([
             ['a', 'b'],
         ], $actual);
 
@@ -274,7 +274,7 @@ final class WithEventsTest extends TestCase
 
         $exportWithConcern->store('with-custom-concern.xlsx');
         $actual = $this->readAsArray(__DIR__ . '/../Data/Disks/Local/with-custom-concern.xlsx', 'Xlsx');
-        $this->assertEquals([
+        $this->assertSame([
             ['c', 'd'],
         ], $actual);
 

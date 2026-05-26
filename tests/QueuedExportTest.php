@@ -91,7 +91,7 @@ final class QueuedExportTest extends TestCase
         $array = $this->readAsArray(__DIR__ . '/Data/Disks/Local/queued-export.xlsx', Excel::XLSX);
 
         $this->assertCount(100, $array);
-        $this->assertEquals(3, $jobs);
+        $this->assertSame(3, $jobs);
     }
 
     public function test_can_queue_export_with_remote_temp_disk_and_prefix(): void
@@ -125,7 +125,7 @@ final class QueuedExportTest extends TestCase
 
         $actual = $this->readAsArray(__DIR__ . '/Data/Disks/Local/queued-export.xlsx', 'Xlsx');
 
-        $this->assertEquals([
+        $this->assertSame([
             ['Patrick', 'Brouwers'],
         ], $actual);
     }

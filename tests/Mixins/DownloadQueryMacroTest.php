@@ -32,7 +32,7 @@ final class DownloadQueryMacroTest extends TestCase
         $this->assertCount(100, $array);
 
         $this->assertInstanceOf(BinaryFileResponse::class, $response);
-        $this->assertEquals(
+        $this->assertSame(
             'attachment; filename=query-download.xlsx',
             str_replace('"', '', $response->headers->get('Content-Disposition'))
         );

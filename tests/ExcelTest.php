@@ -43,7 +43,7 @@ final class ExcelTest extends TestCase
         $response = ExcelFacade::download($export, 'filename.xlsx');
 
         $this->assertInstanceOf(BinaryFileResponse::class, $response);
-        $this->assertEquals('attachment; filename=filename.xlsx', str_replace('"', '', $response->headers->get('Content-Disposition')));
+        $this->assertSame('attachment; filename=filename.xlsx', str_replace('"', '', $response->headers->get('Content-Disposition')));
     }
 
     public function test_can_download_an_export_object(): void
@@ -53,7 +53,7 @@ final class ExcelTest extends TestCase
         $response = $this->SUT->download($export, 'filename.xlsx');
 
         $this->assertInstanceOf(BinaryFileResponse::class, $response);
-        $this->assertEquals('attachment; filename=filename.xlsx', str_replace('"', '', $response->headers->get('Content-Disposition')));
+        $this->assertSame('attachment; filename=filename.xlsx', str_replace('"', '', $response->headers->get('Content-Disposition')));
     }
 
     public function test_can_store_an_export_object_on_default_disk(): void
@@ -194,7 +194,7 @@ final class ExcelTest extends TestCase
             use Importable;
         };
 
-        $this->assertEquals([
+        $this->assertSame([
             [
                 ['test', 'test'],
                 ['test', 'test'],

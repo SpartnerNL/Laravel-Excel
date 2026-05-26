@@ -307,7 +307,7 @@ final class SkipsOnErrorTest extends TestCase
         $e = $import->errors()->first();
 
         $this->assertInstanceOf(\RuntimeException::class, $e);
-        $this->assertEquals('Runtime error in onRow for Taylor', $e->getMessage());
+        $this->assertSame('Runtime error in onRow for Taylor', $e->getMessage());
 
         // Should have inserted the valid row
         $this->assertDatabaseHas('users', [

@@ -45,8 +45,8 @@ final class TemporaryFileTest extends TestCase
         $temporaryFile->put('data-set');
 
         $this->assertFileExists($temporaryFile->getLocalPath());
-        $this->assertEquals($this->defaultDirectoryPermissions, substr(sprintf('%o', fileperms(dirname($temporaryFile->getLocalPath()))), -4));
-        $this->assertEquals($this->defaultFilePermissions, substr(sprintf('%o', fileperms($temporaryFile->getLocalPath())), -4));
+        $this->assertSame($this->defaultDirectoryPermissions, substr(sprintf('%o', fileperms(dirname($temporaryFile->getLocalPath()))), -4));
+        $this->assertSame($this->defaultFilePermissions, substr(sprintf('%o', fileperms($temporaryFile->getLocalPath())), -4));
     }
 
     public function test_can_use_dir_rights(): void
@@ -64,7 +64,7 @@ final class TemporaryFileTest extends TestCase
 
         $this->assertFileExists($temporaryFile->getLocalPath());
         $this->assertEquals('0700', substr(sprintf('%o', fileperms(dirname($temporaryFile->getLocalPath()))), -4));
-        $this->assertEquals($this->defaultFilePermissions, substr(sprintf('%o', fileperms($temporaryFile->getLocalPath())), -4));
+        $this->assertSame($this->defaultFilePermissions, substr(sprintf('%o', fileperms($temporaryFile->getLocalPath())), -4));
     }
 
     public function test_can_use_file_rights(): void
@@ -81,7 +81,7 @@ final class TemporaryFileTest extends TestCase
         $temporaryFile->put('data-set');
 
         $this->assertFileExists($temporaryFile->getLocalPath());
-        $this->assertEquals($this->defaultDirectoryPermissions, substr(sprintf('%o', fileperms(dirname($temporaryFile->getLocalPath()))), -4));
+        $this->assertSame($this->defaultDirectoryPermissions, substr(sprintf('%o', fileperms(dirname($temporaryFile->getLocalPath()))), -4));
         $this->assertEquals('0600', substr(sprintf('%o', fileperms($temporaryFile->getLocalPath())), -4));
     }
 }

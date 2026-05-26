@@ -35,7 +35,7 @@ final class WithMappingTest extends TestCase
             ],
         ];
 
-        $this->assertEquals($expected, $actual);
+        $this->assertSame($expected, $actual);
     }
 
     public function test_can_return_multiple_rows_in_map(): void
