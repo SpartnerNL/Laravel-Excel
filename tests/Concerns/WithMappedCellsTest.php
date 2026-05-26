@@ -13,7 +13,7 @@ use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
 use Maatwebsite\Excel\Tests\TestCase;
 use PHPUnit\Framework\Assert;
 
-class WithMappedCellsTest extends TestCase
+final class WithMappedCellsTest extends TestCase
 {
     /**
      * Setup the test environment.

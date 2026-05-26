@@ -13,7 +13,7 @@ use Maatwebsite\Excel\Concerns\WithSkipDuplicates;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
 use Maatwebsite\Excel\Tests\TestCase;
 
-class WithSkipDuplicatesTest extends TestCase
+final class WithSkipDuplicatesTest extends TestCase
 {
     /**
      * Setup the test environment.
@@ -39,7 +39,7 @@ class WithSkipDuplicatesTest extends TestCase
         {
             use Importable;
 
-            public function model(array $row): ?Model
+            public function model(array $row): \Maatwebsite\Excel\Tests\Data\Stubs\Database\User
             {
                 return new User([
                     'name'     => $row[0],
@@ -48,7 +48,7 @@ class WithSkipDuplicatesTest extends TestCase
                 ]);
             }
 
-            public function uniqueBy(): string|array
+            public function uniqueBy(): string
             {
                 return 'email';
             }
@@ -93,10 +93,7 @@ class WithSkipDuplicatesTest extends TestCase
         {
             use Importable;
 
-            /**
-             * @return Model|Model[]|null
-             */
-            public function model(array $row): Model|array|null
+            public function model(array $row): \Maatwebsite\Excel\Tests\Data\Stubs\Database\User
             {
                 return new User([
                     'name'     => $row[0],
@@ -105,7 +102,7 @@ class WithSkipDuplicatesTest extends TestCase
                 ]);
             }
 
-            public function uniqueBy(): string|array
+            public function uniqueBy(): string
             {
                 return 'email';
             }

@@ -10,7 +10,7 @@ use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
 use Maatwebsite\Excel\Tests\Data\Stubs\FromQueryWithCustomQuerySize;
 use Maatwebsite\Excel\Tests\TestCase;
 
-class WithCustomQuerySizeTest extends TestCase
+final class WithCustomQuerySizeTest extends TestCase
 {
     /**
      * Setup the test environment.

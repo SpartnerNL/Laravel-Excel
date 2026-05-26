@@ -24,7 +24,7 @@ use Maatwebsite\Excel\Tests\TestCase;
 use Maatwebsite\Excel\Validators\ValidationException;
 use PHPUnit\Framework\Assert;
 
-class WithValidationTest extends TestCase
+final class WithValidationTest extends TestCase
 {
     /**
      * Setup the test environment.
@@ -43,7 +43,7 @@ class WithValidationTest extends TestCase
         {
             use Importable;
 
-            public function model(array $row): ?Model
+            public function model(array $row): \Maatwebsite\Excel\Tests\Data\Stubs\Database\User
             {
                 return new User([
                     'name'     => $row[0],
@@ -81,7 +81,7 @@ class WithValidationTest extends TestCase
         {
             use Importable;
 
-            public function model(array $row): ?Model
+            public function model(array $row): \Maatwebsite\Excel\Tests\Data\Stubs\Database\User
             {
                 return new User([
                     'name'     => $row[0],
@@ -123,7 +123,7 @@ class WithValidationTest extends TestCase
         {
             use Importable;
 
-            public function model(array $row): ?Model
+            public function model(array $row): \Maatwebsite\Excel\Tests\Data\Stubs\Database\User
             {
                 return new User([
                     'name'     => $row[0],
@@ -148,7 +148,7 @@ class WithValidationTest extends TestCase
                         /**
                          * Get the validation error message.
                          */
-                        public function message(): string|array
+                        public function message(): string
                         {
                             return 'Value is not an allowed e-mail.';
                         }
@@ -178,7 +178,7 @@ class WithValidationTest extends TestCase
         {
             use Importable;
 
-            public function model(array $row): ?Model
+            public function model(array $row): \Maatwebsite\Excel\Tests\Data\Stubs\Database\User
             {
                 return new User([
                     'name'     => $row[0],
@@ -211,7 +211,7 @@ class WithValidationTest extends TestCase
         {
             use Importable;
 
-            public function model(array $row): ?Model
+            public function model(array $row): \Maatwebsite\Excel\Tests\Data\Stubs\Database\User
             {
                 return new User([
                     'name'     => $row[0],
@@ -244,7 +244,7 @@ class WithValidationTest extends TestCase
         {
             use Importable;
 
-            public function model(array $row): ?Model
+            public function model(array $row): \Maatwebsite\Excel\Tests\Data\Stubs\Database\User
             {
                 return new User([
                     'name'     => $row[0],
@@ -283,7 +283,7 @@ class WithValidationTest extends TestCase
         {
             use Importable;
 
-            public function model(array $row): ?Model
+            public function model(array $row): \Maatwebsite\Excel\Tests\Data\Stubs\Database\User
             {
                 return new User([
                     'name'     => $row[0],
@@ -321,7 +321,7 @@ class WithValidationTest extends TestCase
         {
             use Importable;
 
-            public function model(array $row): ?Model
+            public function model(array $row): \Maatwebsite\Excel\Tests\Data\Stubs\Database\User
             {
                 return new User([
                     'name'     => $row[0],
@@ -360,7 +360,7 @@ class WithValidationTest extends TestCase
         {
             use Importable;
 
-            public function model(array $row): ?Model
+            public function model(array $row): \Maatwebsite\Excel\Tests\Data\Stubs\Database\User
             {
                 return new User([
                     'name'     => $row[0],
@@ -400,7 +400,7 @@ class WithValidationTest extends TestCase
         {
             use Importable;
 
-            public function model(array $row): ?Model
+            public function model(array $row): \Maatwebsite\Excel\Tests\Data\Stubs\Database\User
             {
                 return new User([
                     'name'     => $row['name'],
@@ -446,7 +446,7 @@ class WithValidationTest extends TestCase
                 return $row;
             }
 
-            public function model(array $row): ?Model
+            public function model(array $row): \Maatwebsite\Excel\Tests\Data\Stubs\Database\User
             {
                 return new User([
                     'name'     => $row['name'],
@@ -480,7 +480,7 @@ class WithValidationTest extends TestCase
         {
             use Importable;
 
-            public function model(array $row): ?Model
+            public function model(array $row): \Maatwebsite\Excel\Tests\Data\Stubs\Database\User
             {
                 return new User([
                     'name'     => $row['name'],
@@ -518,7 +518,7 @@ class WithValidationTest extends TestCase
         {
             use Importable;
 
-            public function onRow(Row $row): ?Model
+            public function onRow(Row $row): \Maatwebsite\Excel\Tests\Data\Stubs\Database\User
             {
                 $values = $row->toArray();
 
@@ -611,7 +611,7 @@ class WithValidationTest extends TestCase
         {
             use Importable;
 
-            public function model(array $row): ?Model
+            public function model(array $row): \Maatwebsite\Excel\Tests\Data\Stubs\Database\User
             {
                 return new User([
                     'name'     => $row[0],
@@ -770,10 +770,7 @@ class WithValidationTest extends TestCase
                 return $row;
             }
 
-            /**
-             * @return Model|Model[]|null
-             */
-            public function model(array $row): Model|array|null
+            public function model(array $row): \Maatwebsite\Excel\Tests\Data\Stubs\Database\User
             {
                 return new User([
                     'name'     => $row[0],

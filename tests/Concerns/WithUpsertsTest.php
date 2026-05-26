@@ -15,7 +15,7 @@ use Maatwebsite\Excel\Concerns\WithUpserts;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
 use Maatwebsite\Excel\Tests\TestCase;
 
-class WithUpsertsTest extends TestCase
+final class WithUpsertsTest extends TestCase
 {
     /**
      * Setup the test environment.
@@ -45,7 +45,7 @@ class WithUpsertsTest extends TestCase
         {
             use Importable;
 
-            public function model(array $row): ?Model
+            public function model(array $row): \Maatwebsite\Excel\Tests\Data\Stubs\Database\User
             {
                 return new User([
                     'name'     => $row[0],
@@ -54,7 +54,7 @@ class WithUpsertsTest extends TestCase
                 ]);
             }
 
-            public function uniqueBy(): string|array
+            public function uniqueBy(): string
             {
                 return 'email';
             }
@@ -99,10 +99,7 @@ class WithUpsertsTest extends TestCase
         {
             use Importable;
 
-            /**
-             * @return Model|Model[]|null
-             */
-            public function model(array $row): Model|array|null
+            public function model(array $row): \Maatwebsite\Excel\Tests\Data\Stubs\Database\User
             {
                 return new User([
                     'name'     => $row[0],
@@ -111,7 +108,7 @@ class WithUpsertsTest extends TestCase
                 ]);
             }
 
-            public function uniqueBy(): string|array
+            public function uniqueBy(): string
             {
                 return 'email';
             }
@@ -151,7 +148,7 @@ class WithUpsertsTest extends TestCase
         {
             use Importable;
 
-            public function model(array $row): ?Model
+            public function model(array $row): \Maatwebsite\Excel\Tests\Data\Stubs\Database\User
             {
                 return new User([
                     'name'     => $row[0],
@@ -160,7 +157,7 @@ class WithUpsertsTest extends TestCase
                 ]);
             }
 
-            public function uniqueBy(): string|array
+            public function uniqueBy(): string
             {
                 return 'email';
             }
@@ -210,10 +207,7 @@ class WithUpsertsTest extends TestCase
         {
             use Importable;
 
-            /**
-             * @return Model|Model[]|null
-             */
-            public function model(array $row): Model|array|null
+            public function model(array $row): \Maatwebsite\Excel\Tests\Data\Stubs\Database\User
             {
                 return new User([
                     'name'     => $row[0],
@@ -222,7 +216,7 @@ class WithUpsertsTest extends TestCase
                 ]);
             }
 
-            public function uniqueBy(): string|array
+            public function uniqueBy(): string
             {
                 return 'email';
             }

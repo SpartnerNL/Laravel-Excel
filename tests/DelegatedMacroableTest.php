@@ -13,7 +13,7 @@ use Maatwebsite\Excel\Sheet;
 use Maatwebsite\Excel\Writer;
 use PhpOffice\PhpSpreadsheet\Document\Properties;
 
-class DelegatedMacroableTest extends TestCase
+final class DelegatedMacroableTest extends TestCase
 {
     public function test_can_call_methods_from_delegate(): void
     {

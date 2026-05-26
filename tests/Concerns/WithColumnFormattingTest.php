@@ -14,7 +14,7 @@ use Maatwebsite\Excel\Tests\TestCase;
 use PhpOffice\PhpSpreadsheet\Shared\Date;
 use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 
-class WithColumnFormattingTest extends TestCase
+final class WithColumnFormattingTest extends TestCase
 {
     public function test_can_export_with_column_formatting(): void
     {

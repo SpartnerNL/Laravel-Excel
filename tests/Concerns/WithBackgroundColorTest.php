@@ -10,7 +10,7 @@ use Maatwebsite\Excel\Tests\TestCase;
 use PhpOffice\PhpSpreadsheet\Style\Color;
 use PhpOffice\PhpSpreadsheet\Style\Fill;
 
-class WithBackgroundColorTest extends TestCase
+final class WithBackgroundColorTest extends TestCase
 {
     public function test_can_configure_background_color_from_rgb_string(): void
     {
@@ -18,7 +18,7 @@ class WithBackgroundColorTest extends TestCase
         {
             use Exportable;
 
-            public function backgroundColor(): string|array|Color
+            public function backgroundColor(): string
             {
                 return '000000';
             }
@@ -39,7 +39,7 @@ class WithBackgroundColorTest extends TestCase
         {
             use Exportable;
 
-            public function backgroundColor(): string|array|Color
+            public function backgroundColor(): array
             {
                 return [
                     'fillType'   => Fill::FILL_GRADIENT_LINEAR,
@@ -63,7 +63,7 @@ class WithBackgroundColorTest extends TestCase
         {
             use Exportable;
 
-            public function backgroundColor(): string|array|Color
+            public function backgroundColor(): \PhpOffice\PhpSpreadsheet\Style\Color
             {
                 return new Color(Color::COLOR_BLUE);
             }

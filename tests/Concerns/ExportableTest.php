@@ -15,7 +15,7 @@ use Maatwebsite\Excel\Tests\Data\Stubs\EmptyExport;
 use Maatwebsite\Excel\Tests\TestCase;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
-class ExportableTest extends TestCase
+final class ExportableTest extends TestCase
 {
     public function test_needs_to_have_a_file_name_when_downloading(): void
     {

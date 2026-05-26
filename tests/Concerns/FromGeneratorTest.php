@@ -9,7 +9,7 @@ use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromGenerator;
 use Maatwebsite\Excel\Tests\TestCase;
 
-class FromGeneratorTest extends TestCase
+final class FromGeneratorTest extends TestCase
 {
     public function test_can_export_from_generator(): void
     {

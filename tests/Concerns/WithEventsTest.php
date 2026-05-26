@@ -30,7 +30,7 @@ use Maatwebsite\Excel\Tests\TestCase;
 use Maatwebsite\Excel\Writer;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
-class WithEventsTest extends TestCase
+final class WithEventsTest extends TestCase
 {
     use WithFaker;
 
@@ -226,7 +226,7 @@ class WithEventsTest extends TestCase
         {
             use Exportable;
 
-            public function custom()
+            public function custom(): array
             {
                 return [
                     ['a', 'b'],
@@ -264,7 +264,7 @@ class WithEventsTest extends TestCase
         {
             use Exportable;
 
-            public function custom()
+            public function custom(): array
             {
                 return [
                     ['c', 'd'],

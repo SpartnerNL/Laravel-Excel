@@ -16,11 +16,11 @@ use PhpOffice\PhpSpreadsheet\Cell\DefaultValueBinder;
 use PhpOffice\PhpSpreadsheet\Shared\Date;
 use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 
-class WithCustomValueBinderTest extends TestCase
+final class WithCustomValueBinderTest extends TestCase
 {
     public function test_can_set_a_value_binder_on_export(): void
     {
-        Carbon::setTestNow(new Carbon('2018-08-07 18:00:00'));
+        \Illuminate\Support\Facades\Date::setTestNow(new Carbon('2018-08-07 18:00:00'));
 
         $export = new class extends DefaultValueBinder implements FromCollection, WithCustomValueBinder
         {

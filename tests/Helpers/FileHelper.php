@@ -4,12 +4,12 @@ namespace Maatwebsite\Excel\Tests\Helpers;
 
 class FileHelper
 {
-    public static function absolutePath($fileName, $diskName)
+    public static function absolutePath(string $fileName, string $diskName): string
     {
         return config('filesystems.disks.' . $diskName . '.root') . DIRECTORY_SEPARATOR . $fileName;
     }
 
-    public static function recursiveDelete($fileName)
+    public static function recursiveDelete($fileName): ?bool
     {
         if (is_file($fileName)) {
             return @unlink($fileName);

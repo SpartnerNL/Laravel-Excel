@@ -21,7 +21,7 @@ use Maatwebsite\Excel\Tests\TestCase;
 use Maatwebsite\Excel\Validators\Failure;
 use PHPUnit\Framework\Assert;
 
-class SkipsOnFailureTest extends TestCase
+final class SkipsOnFailureTest extends TestCase
 {
     /**
      * Setup the test environment.
@@ -41,7 +41,7 @@ class SkipsOnFailureTest extends TestCase
 
             public $failures = 0;
 
-            public function model(array $row): ?Model
+            public function model(array $row): \Maatwebsite\Excel\Tests\Data\Stubs\Database\User
             {
                 return new User([
                     'name'     => $row[0],
@@ -97,7 +97,7 @@ class SkipsOnFailureTest extends TestCase
 
             public $failures = 0;
 
-            public function model(array $row): ?Model
+            public function model(array $row): \Maatwebsite\Excel\Tests\Data\Stubs\Database\User
             {
                 return new User([
                     'name'     => $row[0],
@@ -151,7 +151,7 @@ class SkipsOnFailureTest extends TestCase
         {
             use Importable, SkipsFailures;
 
-            public function model(array $row): ?Model
+            public function model(array $row): \Maatwebsite\Excel\Tests\Data\Stubs\Database\User
             {
                 return new User([
                     'name'     => $row[0],

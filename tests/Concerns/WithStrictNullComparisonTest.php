@@ -11,7 +11,7 @@ use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithStrictNullComparison;
 use Maatwebsite\Excel\Tests\TestCase;
 
-class WithStrictNullComparisonTest extends TestCase
+final class WithStrictNullComparisonTest extends TestCase
 {
     public function test_exported_zero_values_are_not_null_when_exporting_with_strict_null_comparison(): void
     {

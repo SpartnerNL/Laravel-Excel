@@ -17,7 +17,7 @@ use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
 use Maatwebsite\Excel\Tests\TestCase;
 use PHPUnit\Framework\Assert;
 
-class WithGroupedHeadingRowTest extends TestCase
+final class WithGroupedHeadingRowTest extends TestCase
 {
     /**
      * Setup the test environment.
@@ -115,7 +115,7 @@ class WithGroupedHeadingRowTest extends TestCase
         {
             use Importable;
 
-            public function model(array $row): Model
+            public function model(array $row): \Maatwebsite\Excel\Tests\Data\Stubs\Database\User
             {
                 return new User([
                     'name'     => $row['name'],

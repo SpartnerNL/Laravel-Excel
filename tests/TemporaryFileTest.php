@@ -7,11 +7,11 @@ namespace Maatwebsite\Excel\Tests;
 use Maatwebsite\Excel\Files\TemporaryFileFactory;
 use Maatwebsite\Excel\Tests\Helpers\FileHelper;
 
-class TemporaryFileTest extends TestCase
+final class TemporaryFileTest extends TestCase
 {
-    private $defaultDirectoryPermissions;
+    private string $defaultDirectoryPermissions;
 
-    private $defaultFilePermissions;
+    private string $defaultFilePermissions;
 
     /**
      * Setup the test environment.

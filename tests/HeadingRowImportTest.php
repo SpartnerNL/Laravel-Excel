@@ -7,7 +7,7 @@ namespace Maatwebsite\Excel\Tests;
 use Maatwebsite\Excel\HeadingRowImport;
 use Maatwebsite\Excel\Imports\HeadingRowFormatter;
 
-class HeadingRowImportTest extends TestCase
+final class HeadingRowImportTest extends TestCase
 {
     protected function tearDown(): void
     {

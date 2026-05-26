@@ -12,7 +12,7 @@ use Maatwebsite\Excel\Tests\Data\Stubs\FromUsersQueryExport;
 use Maatwebsite\Excel\Tests\Data\Stubs\FromUsersQueryExportWithMapping;
 use Maatwebsite\Excel\Tests\Data\Stubs\FromUsersScoutExport;
 
-class QueuedQueryExportTest extends TestCase
+final class QueuedQueryExportTest extends TestCase
 {
     /**
      * Setup the test environment.

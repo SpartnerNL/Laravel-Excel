@@ -7,7 +7,7 @@ namespace Maatwebsite\Excel\Tests\Mixins;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
 use Maatwebsite\Excel\Tests\TestCase;
 
-class ImportMacroTest extends TestCase
+final class ImportMacroTest extends TestCase
 {
     /**
      * Setup the test environment.

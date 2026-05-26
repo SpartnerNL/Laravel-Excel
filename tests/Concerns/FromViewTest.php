@@ -13,7 +13,7 @@ use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
 use Maatwebsite\Excel\Tests\Data\Stubs\SheetForUsersFromView;
 use Maatwebsite\Excel\Tests\TestCase;
 
-class FromViewTest extends TestCase
+final class FromViewTest extends TestCase
 {
     protected function setUp(): void
     {

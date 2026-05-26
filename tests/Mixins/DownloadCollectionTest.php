@@ -10,7 +10,7 @@ use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
 use Maatwebsite\Excel\Tests\TestCase;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
-class DownloadCollectionTest extends TestCase
+final class DownloadCollectionTest extends TestCase
 {
     public function test_can_download_a_collection_as_excel(): void
     {

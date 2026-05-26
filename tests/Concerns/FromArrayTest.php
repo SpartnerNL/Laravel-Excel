@@ -8,7 +8,7 @@ use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromArray;
 use Maatwebsite\Excel\Tests\TestCase;
 
-class FromArrayTest extends TestCase
+final class FromArrayTest extends TestCase
 {
     public function test_can_export_from_array(): void
     {

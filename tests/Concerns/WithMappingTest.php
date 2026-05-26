@@ -10,7 +10,7 @@ use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Tests\Data\Stubs\WithMappingExport;
 use Maatwebsite\Excel\Tests\TestCase;
 
-class WithMappingTest extends TestCase
+final class WithMappingTest extends TestCase
 {
     public function test_can_export_with_heading(): void
     {

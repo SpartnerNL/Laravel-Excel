@@ -12,7 +12,7 @@ use Maatwebsite\Excel\Tests\Data\Stubs\QueuedExport;
 use Maatwebsite\Excel\Tests\Data\Stubs\SheetWith100Rows;
 use Maatwebsite\Excel\Tests\TestCase;
 
-class FromCollectionTest extends TestCase
+final class FromCollectionTest extends TestCase
 {
     public function test_can_export_from_collection(): void
     {

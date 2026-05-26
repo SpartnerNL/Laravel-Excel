@@ -11,7 +11,7 @@ use Maatwebsite\Excel\Tests\TestCase;
 use PhpOffice\PhpSpreadsheet\Style\Fill;
 use PhpOffice\PhpSpreadsheet\Style\Style;
 
-class WithDefaultStylesTest extends TestCase
+final class WithDefaultStylesTest extends TestCase
 {
     public function test_can_configure_default_styles(): void
     {
@@ -19,7 +19,7 @@ class WithDefaultStylesTest extends TestCase
         {
             use Exportable;
 
-            public function defaultStyles(Style $defaultStyle): ?array
+            public function defaultStyles(Style $defaultStyle): array
             {
                 return [
                     'fill' => [

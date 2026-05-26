@@ -9,7 +9,7 @@ use Maatwebsite\Excel\Concerns\FromArray;
 use Maatwebsite\Excel\Concerns\WithColumnWidths;
 use Maatwebsite\Excel\Tests\TestCase;
 
-class WithColumnWidthsTest extends TestCase
+final class WithColumnWidthsTest extends TestCase
 {
     public function test_can_set_column_width(): void
     {

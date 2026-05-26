@@ -25,7 +25,7 @@ use Maatwebsite\Excel\Tests\Helpers\FileHelper;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
-class ExcelTest extends TestCase
+final class ExcelTest extends TestCase
 {
     protected Excel $SUT;
 

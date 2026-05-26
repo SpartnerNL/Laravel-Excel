@@ -11,7 +11,7 @@ use Maatwebsite\Excel\Jobs\AppendViewToSheet;
 use Maatwebsite\Excel\Jobs\QueueExport;
 use Maatwebsite\Excel\Jobs\ReadChunk;
 
-class InteractsWithQueueTest extends TestCase
+final class InteractsWithQueueTest extends TestCase
 {
     /**
      * Setup the test environment.

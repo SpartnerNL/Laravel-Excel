@@ -15,7 +15,7 @@ use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
 use Maatwebsite\Excel\Tests\TestCase;
 use PHPUnit\Framework\Assert;
 
-class WithLimitTest extends TestCase
+final class WithLimitTest extends TestCase
 {
     /**
      * Setup the test environment.
@@ -33,7 +33,7 @@ class WithLimitTest extends TestCase
         {
             use Importable;
 
-            public function model(array $row): Model
+            public function model(array $row): \Maatwebsite\Excel\Tests\Data\Stubs\Database\User
             {
                 return new User([
                     'name'     => $row[0],

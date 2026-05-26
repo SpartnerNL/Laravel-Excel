@@ -10,7 +10,7 @@ use Maatwebsite\Excel\Concerns\WithTitle;
 use Maatwebsite\Excel\Tests\Data\Stubs\WithTitleExport;
 use Maatwebsite\Excel\Tests\TestCase;
 
-class WithTitleTest extends TestCase
+final class WithTitleTest extends TestCase
 {
     public function test_can_export_with_title(): void
     {

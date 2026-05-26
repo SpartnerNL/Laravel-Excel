@@ -20,7 +20,7 @@ use Maatwebsite\Excel\Validators\ValidationException;
 use PHPUnit\Framework\Assert;
 use Throwable;
 
-class SkipsOnErrorTest extends TestCase
+final class SkipsOnErrorTest extends TestCase
 {
     /**
      * Setup the test environment.
@@ -40,7 +40,7 @@ class SkipsOnErrorTest extends TestCase
 
             public $errors = 0;
 
-            public function model(array $row): ?Model
+            public function model(array $row): \Maatwebsite\Excel\Tests\Data\Stubs\Database\User
             {
                 return new User([
                     'name'     => $row[0],
@@ -79,7 +79,7 @@ class SkipsOnErrorTest extends TestCase
         {
             use Importable, SkipsErrors;
 
-            public function model(array $row): ?Model
+            public function model(array $row): \Maatwebsite\Excel\Tests\Data\Stubs\Database\User
             {
                 return new User([
                     'name'     => $row[0],

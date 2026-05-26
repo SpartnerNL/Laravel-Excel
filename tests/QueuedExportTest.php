@@ -22,7 +22,7 @@ use Maatwebsite\Excel\Tests\Data\Stubs\ShouldBatchExport;
 use Maatwebsite\Excel\Tests\Data\Stubs\ShouldQueueExport;
 use Throwable;
 
-class QueuedExportTest extends TestCase
+final class QueuedExportTest extends TestCase
 {
     public function test_can_queue_an_export(): void
     {

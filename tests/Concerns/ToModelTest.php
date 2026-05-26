@@ -15,7 +15,7 @@ use Maatwebsite\Excel\Tests\Data\Stubs\Database\Group;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
 use Maatwebsite\Excel\Tests\TestCase;
 
-class ToModelTest extends TestCase
+final class ToModelTest extends TestCase
 {
     /**
      * Setup the test environment.
@@ -36,10 +36,7 @@ class ToModelTest extends TestCase
         {
             use Importable;
 
-            /**
-             * @return Model|Model[]|null
-             */
-            public function model(array $row): Model|array|null
+            public function model(array $row): \Maatwebsite\Excel\Tests\Data\Stubs\Database\User
             {
                 return new User([
                     'name'     => $row[0],
@@ -71,10 +68,7 @@ class ToModelTest extends TestCase
         {
             use Importable;
 
-            /**
-             * @return Model|Model[]|null
-             */
-            public function model(array $row): Model|array|null
+            public function model(array $row): \Maatwebsite\Excel\Tests\Data\Stubs\Database\User
             {
                 return new User([
                     'name'     => $row[0],
@@ -101,9 +95,9 @@ class ToModelTest extends TestCase
             use Importable;
 
             /**
-             * @return Model|Model[]|null
+             * @return array{0: User, 1: User}
              */
-            public function model(array $row): Model|array|null
+            public function model(array $row): array
             {
                 $user1 = new User([
                     'name'     => $row[0],
@@ -138,9 +132,9 @@ class ToModelTest extends TestCase
             use Importable;
 
             /**
-             * @return Model|Model[]|null
+             * @return array{0: User, 1: Group}
              */
-            public function model(array $row): Model|array|null
+            public function model(array $row): array
             {
                 $user = new User([
                     'name'     => $row[0],
@@ -175,10 +169,7 @@ class ToModelTest extends TestCase
         {
             use Importable;
 
-            /**
-             * @return Model|Model[]|null
-             */
-            public function model(array $row): Model|array|null
+            public function model(array $row): \Maatwebsite\Excel\Tests\Data\Stubs\Database\User
             {
                 $user = new User([
                     'name'     => $row[0],
@@ -222,10 +213,7 @@ class ToModelTest extends TestCase
         {
             use Importable;
 
-            /**
-             * @return Model|Model[]|null
-             */
-            public function model(array $row): Model|array|null
+            public function model(array $row): \Maatwebsite\Excel\Tests\Data\Stubs\Database\User
             {
                 $user = new User([
                     'name'     => $row[0],

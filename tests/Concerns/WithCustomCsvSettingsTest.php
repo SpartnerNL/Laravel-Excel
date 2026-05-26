@@ -13,7 +13,7 @@ use Maatwebsite\Excel\HeadingRowImport;
 use Maatwebsite\Excel\Tests\TestCase;
 use PHPUnit\Framework\Assert;
 
-class WithCustomCsvSettingsTest extends TestCase
+final class WithCustomCsvSettingsTest extends TestCase
 {
     protected Excel $SUT;
 

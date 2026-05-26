@@ -17,7 +17,7 @@ use Maatwebsite\Excel\Tests\Data\Stubs\ChainedJobStub;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
-class ExcelFakeTest extends TestCase
+final class ExcelFakeTest extends TestCase
 {
     public function test_can_fake_an_export(): void
     {
@@ -255,7 +255,7 @@ class ExcelFakeTest extends TestCase
     {
         return new class implements ToModel
         {
-            public function model(array $row): ?Model
+            public function model(array $row): \Maatwebsite\Excel\Tests\Data\Stubs\Database\User
             {
                 return new User([]);
             }
@@ -266,7 +266,7 @@ class ExcelFakeTest extends TestCase
     {
         return new class implements ShouldQueue, ToModel
         {
-            public function model(array $row): ?Model
+            public function model(array $row): \Maatwebsite\Excel\Tests\Data\Stubs\Database\User
             {
                 return new User([]);
             }

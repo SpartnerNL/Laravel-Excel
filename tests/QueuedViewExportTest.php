@@ -10,7 +10,7 @@ use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
 use Maatwebsite\Excel\Tests\Data\Stubs\FromViewExportWithMultipleSheets;
 use Maatwebsite\Excel\Tests\Data\Stubs\SheetForUsersFromView;
 
-class QueuedViewExportTest extends TestCase
+final class QueuedViewExportTest extends TestCase
 {
     /**
      * Setup the test environment.

@@ -10,7 +10,7 @@ use Maatwebsite\Excel\Concerns\ToArray;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Tests\TestCase;
 
-class RemembersChunkOffsetTest extends TestCase
+final class RemembersChunkOffsetTest extends TestCase
 {
     public function test_can_set_and_get_chunk_offset(): void
     {

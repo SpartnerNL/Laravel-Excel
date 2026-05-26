@@ -13,7 +13,7 @@ use Maatwebsite\Excel\Jobs\ReadChunk;
 use Maatwebsite\Excel\Tests\Data\Stubs\QueueImportWithoutJobChaining;
 use Maatwebsite\Excel\Tests\TestCase;
 
-class ShouldQueueWithoutChainTest extends TestCase
+final class ShouldQueueWithoutChainTest extends TestCase
 {
     /**
      * Setup the test environment.

@@ -11,7 +11,7 @@ use Maatwebsite\Excel\Concerns\WithColumnLimit;
 use Maatwebsite\Excel\Tests\TestCase;
 use PHPUnit\Framework\Assert;
 
-class WithColumnLimitTest extends TestCase
+final class WithColumnLimitTest extends TestCase
 {
     /**
      * Setup the test environment.

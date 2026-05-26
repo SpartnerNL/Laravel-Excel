@@ -10,7 +10,7 @@ use Maatwebsite\Excel\Concerns\WithStyles;
 use Maatwebsite\Excel\Tests\TestCase;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
-class WithStylesTest extends TestCase
+final class WithStylesTest extends TestCase
 {
     public function test_can_configure_styles(): void
     {
@@ -18,7 +18,7 @@ class WithStylesTest extends TestCase
         {
             use Exportable;
 
-            public function styles(Worksheet $sheet)
+            public function styles(Worksheet $sheet): array
             {
                 return [
                     1    => ['font' => ['italic' => true]],

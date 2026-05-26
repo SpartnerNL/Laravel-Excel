@@ -16,7 +16,7 @@ use Maatwebsite\Excel\Concerns\WithStartRow;
 use Maatwebsite\Excel\Tests\TestCase;
 use PHPUnit\Framework\Assert;
 
-class WithCalculatedFormulasTest extends TestCase
+final class WithCalculatedFormulasTest extends TestCase
 {
     public function test_by_default_does_not_calculate_formulas(): void
     {

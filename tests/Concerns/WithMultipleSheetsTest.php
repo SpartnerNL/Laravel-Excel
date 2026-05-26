@@ -17,7 +17,7 @@ use Maatwebsite\Excel\Tests\Data\Stubs\SheetWith100Rows;
 use Maatwebsite\Excel\Tests\TestCase;
 use PHPUnit\Framework\Assert;
 
-class WithMultipleSheetsTest extends TestCase
+final class WithMultipleSheetsTest extends TestCase
 {
     public function test_can_export_with_multiple_sheets_using_collections(): void
     {

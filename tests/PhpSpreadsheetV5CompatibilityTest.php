@@ -18,7 +18,7 @@ use PhpOffice\PhpSpreadsheet\Cell\Cell;
 use PhpOffice\PhpSpreadsheet\Cell\DefaultValueBinder;
 use PhpOffice\PhpSpreadsheet\Reader\IReadFilter;
 
-class PhpSpreadsheetV5CompatibilityTest extends TestCase
+final class PhpSpreadsheetV5CompatibilityTest extends TestCase
 {
     // ---------------------------------------------------------------
     // IReadFilter typed signature tests (v5 changed param types)

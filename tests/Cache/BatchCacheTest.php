@@ -19,7 +19,7 @@ use Maatwebsite\Excel\Tests\TestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Psr\SimpleCache\CacheInterface;
 
-class BatchCacheTest extends TestCase
+final class BatchCacheTest extends TestCase
 {
     private Repository $cache;
 

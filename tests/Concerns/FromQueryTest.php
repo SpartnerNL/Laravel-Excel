@@ -18,7 +18,7 @@ use Maatwebsite\Excel\Tests\Data\Stubs\FromUsersQueryWithJoinExport;
 use Maatwebsite\Excel\Tests\Data\Stubs\FromUsersScoutExport;
 use Maatwebsite\Excel\Tests\TestCase;
 
-class FromQueryTest extends TestCase
+final class FromQueryTest extends TestCase
 {
     /**
      * Setup the test environment.

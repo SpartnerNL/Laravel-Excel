@@ -15,7 +15,7 @@ use Maatwebsite\Excel\Row;
 use Maatwebsite\Excel\Tests\TestCase;
 use PHPUnit\Framework\Assert;
 
-class SkipsEmptyRowsTest extends TestCase
+final class SkipsEmptyRowsTest extends TestCase
 {
     public function test_skips_empty_rows_when_importing_to_collection(): void
     {
@@ -105,7 +105,7 @@ class SkipsEmptyRowsTest extends TestCase
                 ], $collection->toArray());
             }
 
-            public function isEmptyWhen(array $row)
+            public function isEmptyWhen(array $row): bool
             {
                 return $row[0] == 'Test5' && $row[1] == 'Test6';
             }

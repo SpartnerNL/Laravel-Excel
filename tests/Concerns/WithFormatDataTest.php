@@ -15,7 +15,7 @@ use Maatwebsite\Excel\Concerns\WithFormatData;
 use Maatwebsite\Excel\Tests\TestCase;
 use PHPUnit\Framework\Assert;
 
-class WithFormatDataTest extends TestCase
+final class WithFormatDataTest extends TestCase
 {
     public function test_by_default_import_to_array(): void
     {

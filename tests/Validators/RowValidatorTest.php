@@ -8,7 +8,7 @@ use Illuminate\Contracts\Validation\Factory;
 use Maatwebsite\Excel\Tests\TestCase;
 use Maatwebsite\Excel\Validators\RowValidator;
 
-class RowValidatorTest extends TestCase
+final class RowValidatorTest extends TestCase
 {
     /**
      * The RowValidator instance.

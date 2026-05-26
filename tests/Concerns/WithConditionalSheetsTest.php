@@ -10,7 +10,7 @@ use Maatwebsite\Excel\Concerns\WithConditionalSheets;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 use Maatwebsite\Excel\Tests\TestCase;
 
-class WithConditionalSheetsTest extends TestCase
+final class WithConditionalSheetsTest extends TestCase
 {
     public function test_can_select_which_sheets_will_be_imported(): void
     {

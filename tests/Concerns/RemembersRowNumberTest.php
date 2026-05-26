@@ -11,7 +11,7 @@ use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Tests\TestCase;
 
-class RemembersRowNumberTest extends TestCase
+final class RemembersRowNumberTest extends TestCase
 {
     public function test_can_set_and_get_row_number(): void
     {
