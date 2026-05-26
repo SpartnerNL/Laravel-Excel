@@ -3,11 +3,15 @@
 declare(strict_types=1);
 
 use Rector\Caching\ValueObject\Storage\FileCacheStorage;
+use Rector\CodeQuality\Rector\If_\ExplicitBoolCompareRector;
 use Rector\Config\RectorConfig;
-use Rector\Php70\Rector\FuncCall\RandomFunctionRector;
-use Rector\Php81\Rector\Property\ReadOnlyPropertyRector;
-use Rector\TypeDeclaration\Rector\ClassMethod\ReturnNeverTypeRector;
+use Rector\PHPUnit\Set\PHPUnitSetList;
+use Rector\TypeDeclaration\Rector\ClassMethod\ParamTypeByMethodCallTypeRector;
+use Rector\TypeDeclaration\Rector\ClassMethod\ReturnTypeFromStrictFluentReturnRector;
+use RectorLaravel\Rector\ArrayDimFetch\EnvVariableToEnvHelperRector;
+use RectorLaravel\Rector\FuncCall\AppToResolveRector;
 use RectorLaravel\Set\LaravelLevelSetList;
+use RectorLaravel\Set\LaravelSetList;
 
 return RectorConfig::configure()
     ->withCache(
@@ -20,11 +24,51 @@ return RectorConfig::configure()
         __DIR__ . '/tests',
     ])
     ->withPhpSets()
+    ->withComposerBased(
+        phpunit: true,
+    )
+    ->withPreparedSets(
+        deadCode: true,
+        codeQuality: true,
+        typeDeclarations: true,
+    )
     ->withSets([
         LaravelLevelSetList::UP_TO_LARAVEL_120,
+        LaravelSetList::LARAVEL_CODE_QUALITY,
+        PHPUnitSetList::ANNOTATIONS_TO_ATTRIBUTES,
+        PHPUnitSetList::PHPUNIT_CODE_QUALITY,
     ])
     ->withSkip([
-        ReadOnlyPropertyRector::class,
-        ReturnNeverTypeRector::class,
-        RandomFunctionRector::class,
+        // Forces `if ($x)` → `if ($x !== null)` / `!== ''` / `!== 0`.
+        // Noisy on a library that intentionally uses truthy checks.
+        ExplicitBoolCompareRector::class,
+
+        // Skip signature-narrowing rules in src/ to preserve BC for downstream
+        // subclassers. Tests can still benefit from these inferences.
+        ParamTypeByMethodCallTypeRector::class => [
+            __DIR__ . '/src',
+        ],
+        ReturnTypeFromStrictFluentReturnRector::class => [
+            __DIR__ . '/src',
+        ],
+
+        // `app(X::class)` → `resolve(X::class)`. Functionally equivalent but
+        // `app()` is the canonical Laravel helper; reviewers and downstream
+        // forks recognize it. Pure churn.
+        AppToResolveRector::class,
+
+        // `isset($_ENV['X'])` → `Env::get('X') !== null`. Not strictly
+        // equivalent: Env::get parses literal "null"/"true"/"false" strings,
+        // and pulls in Laravel's coercion semantics. For checks like Lambda
+        // detection, the plain superglobal is the more honest expression.
+        EnvVariableToEnvHelperRector::class,
+
+        // Deprecated cache drivers must keep untyped CacheInterface signatures
+        // for psr/simple-cache ^1|^2 compatibility (see PR #4372). Both files
+        // also carry an in-source directive to the same effect.
+        __DIR__ . '/src/Cache/BatchCacheDeprecated.php',
+        __DIR__ . '/src/Cache/MemoryCacheDeprecated.php',
+
+        // Skip vendor-style fixtures or generated files if any get added.
+        __DIR__ . '/tests/Data',
     ]);
