@@ -23,7 +23,7 @@ class FileTypeDetector
             $extension = $filePath->getClientOriginalExtension();
         }
 
-        if ($type === null && trim($extension) === '') {
+        if (trim($extension) === '') {
             throw new NoTypeDetectedException;
         }
 

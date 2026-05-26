@@ -18,7 +18,7 @@ trait WithConditionalSheets
 
     public function sheets(): array
     {
-        return \array_filter($this->conditionalSheets(), fn ($name) => \in_array($name, $this->conditionallySelectedSheets, false), ARRAY_FILTER_USE_KEY);
+        return \array_filter($this->conditionalSheets(), fn ($name): bool => \in_array($name, $this->conditionallySelectedSheets, false), ARRAY_FILTER_USE_KEY);
     }
 
     abstract public function conditionalSheets(): array;

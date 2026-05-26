@@ -98,10 +98,8 @@ class QueuedWriter
         return $export
             ->collection()
             ->chunk($this->getChunkSize($export))
-            ->map(function ($rows) use ($writerType, $temporaryFile, $sheetIndex, $export) {
-                if ($rows instanceof Traversable) {
-                    $rows = iterator_to_array($rows);
-                }
+            ->map(function ($rows) use ($writerType, $temporaryFile, $sheetIndex, $export): \Maatwebsite\Excel\Jobs\AppendDataToSheet {
+                $rows = iterator_to_array($rows);
 
                 return new AppendDataToSheet(
                     $export,

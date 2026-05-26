@@ -11,8 +11,8 @@ class AfterBatch extends Event
     public function __construct(
         public ModelManager $manager,
         object $importable,
-        private int $batchSize,
-        private int $startRow,
+        private readonly int $batchSize,
+        private readonly int $startRow,
     ) {
         parent::__construct($importable);
     }

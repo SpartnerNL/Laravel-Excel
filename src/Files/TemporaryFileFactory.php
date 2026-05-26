@@ -7,8 +7,8 @@ use Illuminate\Support\Str;
 class TemporaryFileFactory
 {
     public function __construct(
-        private ?string $temporaryPath = null,
-        private ?string $temporaryDisk = null,
+        private readonly ?string $temporaryPath = null,
+        private readonly ?string $temporaryDisk = null,
     ) {
     }
 

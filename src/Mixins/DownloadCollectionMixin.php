@@ -13,7 +13,7 @@ class DownloadCollectionMixin
 {
     public function downloadExcel(): callable
     {
-        return function (string $fileName, ?string $writerType = null, $withHeadings = false, array $responseHeaders = []) {
+        return function (string $fileName, ?string $writerType = null, $withHeadings = false, array $responseHeaders = []): \Illuminate\Http\Response|\Symfony\Component\HttpFoundation\BinaryFileResponse {
             $export = new class($this, $withHeadings) implements FromCollection, WithHeadings
             {
                 use Exportable;

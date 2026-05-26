@@ -11,7 +11,7 @@ use Maatwebsite\Excel\Transactions\TransactionHandler;
 /** @todo  */
 class CascadePersistManager
 {
-    private TransactionHandler $transaction;
+    private readonly TransactionHandler $transaction;
 
     public function __construct(TransactionHandler $transaction)
     {
@@ -20,7 +20,7 @@ class CascadePersistManager
 
     public function persist(Model $model): bool
     {
-        return ($this->transaction)(fn () => $this->save($model));
+        return ($this->transaction)(fn (): bool => $this->save($model));
     }
 
     private function save(Model $model): bool
@@ -36,16 +36,12 @@ class CascadePersistManager
 
             $relation = $model->{$relationName}();
 
-            if ($relation instanceof BelongsTo) {
-                if (!$this->persistBelongsTo($relation, $models)) {
-                    return false;
-                }
+            if ($relation instanceof BelongsTo && !$this->persistBelongsTo($relation, $models)) {
+                return false;
             }
 
-            if ($relation instanceof BelongsToMany) {
-                if (!$this->persistBelongsToMany($relation, $models)) {
-                    return false;
-                }
+            if ($relation instanceof BelongsToMany && !$this->persistBelongsToMany($relation, $models)) {
+                return false;
             }
         }
 

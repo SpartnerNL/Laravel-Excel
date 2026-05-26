@@ -180,7 +180,7 @@ class ReadChunk implements ShouldQueue
 
     private function cleanUpTempFile(bool $force = false): bool
     {
-        if (!empty($this->uniqueId)) {
+        if (isset($this->uniqueId) && ($this->uniqueId !== '' && $this->uniqueId !== '0')) {
             Cache::delete('laravel-excel/read-chunk/' . $this->uniqueId);
         }
 

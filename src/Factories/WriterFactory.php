@@ -70,7 +70,7 @@ class WriterFactory
         return $writer;
     }
 
-    private static function includesCharts($export): bool
+    private static function includesCharts(object $export): bool
     {
         if ($export instanceof WithCharts) {
             return true;

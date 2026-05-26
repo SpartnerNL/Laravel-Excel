@@ -20,7 +20,7 @@ class AfterImportJob implements ShouldQueue
 
     private iterable $dependencyIds = [];
 
-    private $interval = 60;
+    private int $interval = 60;
 
     /**
      * @param  object  $import
@@ -38,7 +38,7 @@ class AfterImportJob implements ShouldQueue
 
     public function setDependencies(Collection $jobs): void
     {
-        $this->dependencyIds = $jobs->map(fn (ReadChunk $job) => $job->getUniqueId())->all();
+        $this->dependencyIds = $jobs->map(fn (ReadChunk $job): string => $job->getUniqueId())->all();
     }
 
     public function handle(): void

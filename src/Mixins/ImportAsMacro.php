@@ -10,7 +10,7 @@ class ImportAsMacro
 {
     public function __invoke()
     {
-        return function (string $filename, callable $mapping, ?string $disk = null, ?string $readerType = null) {
+        return function (string $filename, callable $mapping, ?string $disk = null, ?string $readerType = null): \Maatwebsite\Excel\Importer|\Illuminate\Foundation\Bus\PendingDispatch|\Illuminate\Bus\PendingBatch {
             /** @phpstan-ignore method.notFound */
             $import = new class($this->getModel()::class, $mapping) implements ToModel
             {

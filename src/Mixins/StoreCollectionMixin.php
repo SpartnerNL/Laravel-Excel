@@ -11,7 +11,7 @@ class StoreCollectionMixin
 {
     public function storeExcel(): callable
     {
-        return function (string $filePath, ?string $disk = null, ?string $writerType = null, $withHeadings = false) {
+        return function (string $filePath, ?string $disk = null, ?string $writerType = null, $withHeadings = false): bool|\Illuminate\Foundation\Bus\PendingDispatch {
             $export = new class($this, $withHeadings) implements FromCollection, WithHeadings
             {
                 use Exportable;

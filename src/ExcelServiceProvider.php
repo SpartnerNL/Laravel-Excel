@@ -66,20 +66,20 @@ class ExcelServiceProvider extends ServiceProvider
             'excel'
         );
 
-        $this->app->bind(CacheManager::class, fn ($app) => new CacheManager($app));
+        $this->app->bind(CacheManager::class, fn ($app): \Maatwebsite\Excel\Cache\CacheManager => new CacheManager($app));
 
-        $this->app->singleton(TransactionManager::class, fn ($app) => new TransactionManager($app));
+        $this->app->singleton(TransactionManager::class, fn ($app): \Maatwebsite\Excel\Transactions\TransactionManager => new TransactionManager($app));
 
         $this->app->bind(TransactionHandler::class, fn ($app) => $app->make(TransactionManager::class)->driver());
 
-        $this->app->bind(TemporaryFileFactory::class, fn () => new TemporaryFileFactory(
+        $this->app->bind(TemporaryFileFactory::class, fn (): \Maatwebsite\Excel\Files\TemporaryFileFactory => new TemporaryFileFactory(
             config('excel.temporary_files.local_path', config('excel.exports.temp_path', storage_path('framework/laravel-excel'))),
             config('excel.temporary_files.remote_disk')
         ));
 
-        $this->app->bind(Filesystem::class, fn ($app) => new Filesystem($app->make('filesystem')));
+        $this->app->bind(Filesystem::class, fn ($app): \Maatwebsite\Excel\Files\Filesystem => new Filesystem($app->make('filesystem')));
 
-        $this->app->bind('excel', fn ($app) => new Excel(
+        $this->app->bind('excel', fn ($app): \Maatwebsite\Excel\Excel => new Excel(
             $app->make(Writer::class),
             $app->make(QueuedWriter::class),
             $app->make(Reader::class),

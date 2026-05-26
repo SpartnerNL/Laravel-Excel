@@ -7,9 +7,9 @@ use Maatwebsite\Excel\Sheet;
 class AfterChunk extends Event
 {
     public function __construct(
-        private Sheet $sheet,
+        private readonly Sheet $sheet,
         $importable,
-        private int $startRow,
+        private readonly int $startRow,
     ) {
         parent::__construct($importable);
     }

@@ -8,10 +8,10 @@ use PhpOffice\PhpSpreadsheet\Reader\IReadFilter;
 
 class LimitFilter implements IReadFilter
 {
-    private int $endRow;
+    private readonly int $endRow;
 
     public function __construct(
-        private int $startRow,
+        private readonly int $startRow,
         int $limit,
     ) {
         $this->endRow = $this->startRow + $limit;
