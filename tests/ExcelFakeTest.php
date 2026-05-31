@@ -3,7 +3,6 @@
 namespace Maatwebsite\Excel\Tests;
 
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Bus\PendingDispatch;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\FromCollection;
@@ -136,8 +135,6 @@ class ExcelFakeTest extends TestCase
 
         $response = ExcelFacade::raw($this->givenExport(), Excel::XLSX);
 
-        $this->assertIsString($response);
-
         ExcelFacade::assertExportedInRaw($this->givenExport()::class);
         ExcelFacade::assertExportedInRaw($this->givenExport()::class, fn (FromCollection $export) => $export->collection()->contains('foo'));
     }
@@ -253,7 +250,7 @@ class ExcelFakeTest extends TestCase
     {
         return new class implements ToModel
         {
-            public function model(array $row): ?Model
+            public function model(array $row): User
             {
                 return new User([]);
             }
@@ -264,7 +261,7 @@ class ExcelFakeTest extends TestCase
     {
         return new class implements ShouldQueue, ToModel
         {
-            public function model(array $row): ?Model
+            public function model(array $row): User
             {
                 return new User([]);
             }

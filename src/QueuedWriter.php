@@ -5,8 +5,8 @@ namespace Maatwebsite\Excel;
 use Illuminate\Bus\PendingBatch;
 use Illuminate\Foundation\Bus\PendingDispatch;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Enumerable;
 use Illuminate\Support\Facades\Bus;
-use Illuminate\Support\LazyCollection;
 use Laravel\Scout\Builder;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\FromQuery;
@@ -94,7 +94,7 @@ class QueuedWriter
         TemporaryFile $temporaryFile,
         string $writerType,
         int $sheetIndex
-    ): Collection|LazyCollection {
+    ): Enumerable {
         return $export
             ->collection()
             ->chunk($this->getChunkSize($export))

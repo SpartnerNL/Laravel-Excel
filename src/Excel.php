@@ -10,6 +10,7 @@ use Illuminate\Support\Traits\Macroable;
 use Maatwebsite\Excel\Files\Filesystem;
 use Maatwebsite\Excel\Files\TemporaryFile;
 use Maatwebsite\Excel\Helpers\FileTypeDetector;
+use Maatwebsite\Excel\Validators\ValidationException;
 use PhpOffice\PhpSpreadsheet\Exception;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
@@ -113,6 +114,9 @@ class Excel implements Exporter, Importer
         return $contents;
     }
 
+    /**
+     * @throws ValidationException
+     */
     public function import($import, $filePath, ?string $disk = null, ?string $readerType = null): static|Reader|PendingDispatch|PendingBatch
     {
         $readerType = FileTypeDetector::detect($filePath, $readerType);

@@ -181,16 +181,11 @@ class PhpSpreadsheetV5CompatibilityTest extends TestCase
         // The test documents the current v5 behavior.
         $bindValueCalled = false;
 
-        $import = new class($bindValueCalled) extends DefaultValueBinder implements WithCustomValueBinder
+        $import = new class extends DefaultValueBinder implements WithCustomValueBinder
         {
             use Importable;
 
-            private $bindValueCalled;
-
-            public function __construct(&$bindValueCalled)
-            {
-                $this->bindValueCalled = &$bindValueCalled;
-            }
+            public bool $bindValueCalled = false;
 
             public function bindValue(Cell $cell, mixed $value): bool
             {
@@ -202,7 +197,7 @@ class PhpSpreadsheetV5CompatibilityTest extends TestCase
 
         $result = $import->toArray('value-binder-import.xlsx');
 
-        $this->assertFalse($bindValueCalled, 'PHPSpreadsheet v5 does not call value binders during import');
+        $this->assertFalse($import->bindValueCalled, 'PHPSpreadsheet v5 does not call value binders during import');
         $this->assertNotEmpty($result[0], 'Data should still be imported without the value binder');
     }
 

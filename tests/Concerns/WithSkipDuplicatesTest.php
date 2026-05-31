@@ -2,7 +2,6 @@
 
 namespace Maatwebsite\Excel\Tests\Concerns;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\ToModel;
@@ -37,7 +36,7 @@ class WithSkipDuplicatesTest extends TestCase
         {
             use Importable;
 
-            public function model(array $row): ?Model
+            public function model(array $row): User
             {
                 return new User([
                     'name'     => $row[0],
@@ -46,7 +45,7 @@ class WithSkipDuplicatesTest extends TestCase
                 ]);
             }
 
-            public function uniqueBy(): string|array
+            public function uniqueBy(): string
             {
                 return 'email';
             }
@@ -91,10 +90,7 @@ class WithSkipDuplicatesTest extends TestCase
         {
             use Importable;
 
-            /**
-             * @return Model|Model[]|null
-             */
-            public function model(array $row): Model|array|null
+            public function model(array $row): User
             {
                 return new User([
                     'name'     => $row[0],
@@ -103,7 +99,7 @@ class WithSkipDuplicatesTest extends TestCase
                 ]);
             }
 
-            public function uniqueBy(): string|array
+            public function uniqueBy(): string
             {
                 return 'email';
             }

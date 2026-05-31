@@ -20,8 +20,8 @@ use Maatwebsite\Excel\Tests\QueuedQueryExportTest;
  * @property string $name
  * @property string $firstname
  * @property string $lastname
- * @property Carbon $created_at
- * @property Carbon $updated_at
+ * @property ?Carbon $created_at
+ * @property ?Carbon $updated_at
  */
 class User extends Model
 {

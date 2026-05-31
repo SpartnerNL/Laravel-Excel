@@ -10,6 +10,7 @@ use Illuminate\Support\Collection;
 use InvalidArgumentException;
 use Maatwebsite\Excel\Exceptions\NoFilePathGivenException;
 use Maatwebsite\Excel\Importer;
+use Maatwebsite\Excel\Validators\ValidationException;
 use Symfony\Component\Console\Input\StringInput;
 use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -25,6 +26,7 @@ trait Importable
     protected string|UploadedFile|null $filePath = null;
 
     /**
+     * @throws ValidationException
      * @throws NoFilePathGivenException
      */
     public function import(string|UploadedFile|null $filePath = null, ?string $disk = null, ?string $readerType = null): Importer|PendingDispatch|PendingBatch

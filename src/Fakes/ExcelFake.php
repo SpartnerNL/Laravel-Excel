@@ -61,7 +61,7 @@ class ExcelFake implements Exporter, Importer
         return true;
     }
 
-    public function queue($export, string $filePath, ?string $disk = null, ?string $writerType = null, $diskOptions = []): PendingDispatch
+    public function queue($export, string $filePath, ?string $disk = null, ?string $writerType = null, $diskOptions = []): PendingDispatch|PendingBatch
     {
         Queue::fake();
 

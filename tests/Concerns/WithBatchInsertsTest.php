@@ -32,7 +32,7 @@ class WithBatchInsertsTest extends TestCase
         {
             use Importable;
 
-            public function model(array $row): ?Model
+            public function model(array $row): User
             {
                 return new User([
                     'name'     => $row[0],
@@ -71,7 +71,7 @@ class WithBatchInsertsTest extends TestCase
         {
             use Importable;
 
-            public function model(array $row): ?Model
+            public function model(array $row): Group
             {
                 return new Group([
                     'name' => $row[0],
@@ -99,9 +99,9 @@ class WithBatchInsertsTest extends TestCase
             use Importable;
 
             /**
-             * @return Model|Model[]|null
+             * @return Model[]
              */
-            public function model(array $row): Model|array|null
+            public function model(array $row): array
             {
                 $user = new User([
                     'name'     => $row[0],
@@ -139,10 +139,7 @@ class WithBatchInsertsTest extends TestCase
         {
             use Importable;
 
-            /**
-             * @return Model|Model[]|null
-             */
-            public function model(array $row): Model|array|null
+            public function model(array $row): User
             {
                 return new User([
                     'name'     => $row[0],

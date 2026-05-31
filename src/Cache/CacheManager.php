@@ -34,7 +34,7 @@ class CacheManager extends Manager
     }
 
     /**
-     * @return MemoryCache
+     * @return MemoryInterface
      */
     public function createMemoryDriver(): CacheInterface
     {
@@ -49,9 +49,6 @@ class CacheManager extends Manager
         );
     }
 
-    /**
-     * @return BatchCache
-     */
     public function createBatchDriver(): CacheInterface
     {
         if (!InstalledVersions::satisfies(new VersionParser, 'psr/simple-cache', '^3.0')) {
