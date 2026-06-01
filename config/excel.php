@@ -152,13 +152,13 @@ return [
         ],
 
         /*
-       |--------------------------------------------------------------------------
-       | Cell Middleware
-       |--------------------------------------------------------------------------
-       |
-       | Configure middleware that is executed on getting a cell value
-       |
-       */
+        |--------------------------------------------------------------------------
+        | Cell Middleware
+        |--------------------------------------------------------------------------
+        |
+        | Configure middleware that is executed on getting a cell value
+        |
+        */
         'cells'        => [
             'middleware' => [
                 //\Maatwebsite\Excel\Middleware\TrimCellValue::class,
