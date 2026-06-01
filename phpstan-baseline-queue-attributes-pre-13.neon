@@ -1,0 +1,8 @@
+parameters:
+    excludePaths:
+        # The #[Queue]/#[Connection] attributes and the ReadsQueueAttributes
+        # trait only ship with Laravel 13+. On older versions QueueResolver
+        # falls back to a plain property read (guarded by trait_exists), so
+        # these symbols are unresolvable to PHPStan but safe at runtime.
+        - src/Helpers/QueueResolver.php
+        - tests/Data/Stubs/QueuedImportWithQueueAttribute.php
