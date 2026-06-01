@@ -20,28 +20,29 @@
     }
   ],
   "require": {
-    "ext-json": "*",
     "php": "^8.3",
+    "composer/semver": "^3.3",
+    "illuminate/support": "^12.0 || ^13.0",
     "phpoffice/phpspreadsheet": "^5.3",
-    "illuminate/support": "^12.0||^13.0",
-    "psr/simple-cache": "^1.0||^2.0||^3.0",
-    "composer/semver": "^3.3"
+    "psr/simple-cache": "^1.0 || ^2.0 || ^3.0"
   },
   "require-dev": {
-    "orchestra/testbench": "^10.0||^11.0",
-    "phpunit/phpunit": "^12.5.3||^13.0.0",
-    "brianium/paratest": "^7.19||^8.0",
     "ext-sqlite3": "*",
-    "predis/predis": "^1.1",
-    "laravel/scout": "^10.0||^11.0",
-    "laravel/pint": "^1.0",
-    "rector/rector": "^2.4.2",
+    "brianium/paratest": "^7.19 || ^8.0",
     "driftingly/rector-laravel": "^2.3",
-    "phpstan/phpstan": "^2.1.55",
     "larastan/larastan": "^3.9",
+    "laravel/pint": "^1.0",
+    "laravel/scout": "^10.0 || ^11.0",
+    "orchestra/testbench": "^10.0 || ^11.0",
     "phpstan/extension-installer": "^1.4",
-    "phpstan/phpstan-mockery": "^2.0"
+    "phpstan/phpstan": "^2.1.55",
+    "phpstan/phpstan-mockery": "^2.0",
+    "phpunit/phpunit": "^12.5.3 || ^13.0.0",
+    "predis/predis": "^1.1",
+    "rector/rector": "^2.4.2"
   },
+  "minimum-stability": "dev",
+  "prefer-stable": true,
   "autoload": {
     "psr-4": {
       "Maatwebsite\\Excel\\": "src/"
@@ -52,21 +53,19 @@
       "Maatwebsite\\Excel\\Tests\\": "tests/"
     }
   },
-  "extra": {
-    "laravel": {
-      "providers": [
-        "Maatwebsite\\Excel\\ExcelServiceProvider"
-      ],
-      "aliases": {
-        "Excel": "Maatwebsite\\Excel\\Facades\\Excel"
-      }
-    }
-  },
-  "minimum-stability": "dev",
-  "prefer-stable": true,
   "config": {
     "allow-plugins": {
       "phpstan/extension-installer": true
+    }
+  },
+  "extra": {
+    "laravel": {
+      "aliases": {
+        "Excel": "Maatwebsite\\Excel\\Facades\\Excel"
+      },
+      "providers": [
+        "Maatwebsite\\Excel\\ExcelServiceProvider"
+      ]
     }
   }
 }
