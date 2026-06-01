@@ -2,7 +2,6 @@
 
 namespace Maatwebsite\Excel\Tests\Data\Stubs;
 
-use Illuminate\Database\Eloquent\Model;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\ShouldQueueWithoutChain;
 use Maatwebsite\Excel\Concerns\ToModel;
@@ -24,7 +23,7 @@ class QueueImportWithoutJobChaining implements ShouldQueueWithoutChain, ToModel,
 
     public $after = false;
 
-    public function model(array $row): ?Model
+    public function model(array $row): User
     {
         return new User([
             'name'     => $row[0],

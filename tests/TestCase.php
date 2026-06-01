@@ -12,7 +12,6 @@ use Orchestra\Testbench\TestCase as OrchestraTestCase;
 use PhpOffice\PhpSpreadsheet\Exception;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use PHPUnit\Framework\Constraint\StringContains;
 
 class TestCase extends OrchestraTestCase
 {
@@ -93,32 +92,16 @@ class TestCase extends OrchestraTestCase
 
     protected function assertStringContains(string $needle, string $haystack, string $message = ''): void
     {
-        if (method_exists($this, 'assertStringContainsString')) {
-            $this->assertStringContainsString($needle, $haystack, $message);
-        } else {
-            $this->assertThat($haystack, new StringContains($needle, false), $message);
-        }
+        $this->assertStringContainsString($needle, $haystack, $message);
     }
 
     protected function assertFileMissing(string $path): void
     {
-        if (method_exists($this, 'assertFileDoesNotExist')) {
-            $this->assertFileDoesNotExist($path);
-        } elseif (method_exists($this, 'assertFileNotExists')) {
-            $this->assertFileNotExists($path);
-        } else {
-            throw new Exception('Missing file assert type');
-        }
+        $this->assertFileDoesNotExist($path);
     }
 
     protected function assertRegex(string $pattern, string $string): void
     {
-        if (method_exists($this, 'assertMatchesRegularExpression')) {
-            $this->assertMatchesRegularExpression($pattern, $string);
-        } elseif (method_exists($this, 'assertRegExp')) {
-            $this->assertRegExp($pattern, $string);
-        } else {
-            throw new Exception('Missing regex assert type');
-        }
+        $this->assertMatchesRegularExpression($pattern, $string);
     }
 }

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Maatwebsite\Excel\Tests\Concerns;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
 use Maatwebsite\Excel\Concerns\Importable;
@@ -196,7 +195,7 @@ final class SkipsOnFailureTest extends TestCase
         {
             use Importable, SkipsFailures;
 
-            public function onRow(Row $row): ?Model
+            public function onRow(Row $row): User
             {
                 $row = $row->toArray();
 

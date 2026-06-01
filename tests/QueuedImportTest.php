@@ -171,7 +171,7 @@ final class QueuedImportTest extends TestCase
         }
 
         $this->assertFalse($tempFile?->existsLocally());
-        $this->assertTrue($tempFile?->exists());
+        $this->assertTrue($tempFile->exists());
     }
 
     public function test_cannot_automatically_delete_temp_file_on_failure_when_using_local_disk(): void

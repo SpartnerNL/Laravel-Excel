@@ -193,8 +193,6 @@ final class FromQueryTest extends TestCase
     {
         $export = new FromUsersQueryExportWithPrepareRows;
 
-        $this->assertTrue(method_exists($export, 'prepareRows'));
-
         $response = $export->store('from-query-store.xlsx');
 
         $this->assertTrue($response);
@@ -214,8 +212,6 @@ final class FromQueryTest extends TestCase
     {
         if (!class_exists(DatabaseEngine::class)) {
             $this->markTestSkipped('Laravel Scout is too old');
-
-            return;
         }
 
         $export = new FromUsersScoutExport;

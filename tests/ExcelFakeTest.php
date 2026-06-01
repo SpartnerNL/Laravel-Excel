@@ -135,9 +135,7 @@ final class ExcelFakeTest extends TestCase
     {
         ExcelFacade::fake();
 
-        $response = ExcelFacade::raw($this->givenExport(), Excel::XLSX);
-
-        $this->assertIsString($response);
+        ExcelFacade::raw($this->givenExport(), Excel::XLSX);
 
         ExcelFacade::assertExportedInRaw($this->givenExport()::class);
         ExcelFacade::assertExportedInRaw($this->givenExport()::class, fn (FromCollection $export) => $export->collection()->contains('foo'));

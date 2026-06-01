@@ -90,8 +90,26 @@ class BatchCache implements CacheInterface
     public function getMultiple(iterable $keys, mixed $default = null): iterable
     {
         // Check if all keys are still in memory
-        $memory              = $this->memory->getMultiple($keys, $default);
-        $actualItemsInMemory = count(array_filter($memory));
+        $memory = $this->memory->getMultiple($keys, $default);
+        if (is_array($memory)) {
+            $actualItemsInMemory = count(array_filter($memory));
+        } else {
+            $actualItemsInMemory = 0;
+            foreach ($memory as $value) {
+                if ($value) {
+                    $actualItemsInMemory++;
+                }
+            }
+        }
+
+        if (is_countable($keys)) {
+            $keyCount = count($keys);
+        } else {
+            $keyCount = 0;
+            foreach ($keys as $key) {
+                $keyCount++;
+            }
+        }
 
         if ($actualItemsInMemory === count($keys)) {
             return $memory;

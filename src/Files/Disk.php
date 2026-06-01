@@ -5,7 +5,7 @@ namespace Maatwebsite\Excel\Files;
 use Illuminate\Contracts\Filesystem\Filesystem as IlluminateFilesystem;
 
 /**
- * @method bool get(string $filename)
+ * @method string get(string $filename)
  * @method resource readStream(string $filename)
  * @method bool delete(string $filename)
  * @method bool exists(string $filename)

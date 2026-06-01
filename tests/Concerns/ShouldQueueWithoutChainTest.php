@@ -67,10 +67,6 @@ final class ShouldQueueWithoutChainTest extends TestCase
     {
         $fake = Queue::fake();
 
-        if (method_exists($fake, 'serializeAndRestore')) {
-            $fake->serializeAndRestore(); // More realism
-        }
-
         $import = new QueueImportWithoutJobChaining;
 
         $import->import('import-users.xlsx');
@@ -84,13 +80,8 @@ final class ShouldQueueWithoutChainTest extends TestCase
         $this->assertCount(2, $chunks);
         $afterImport = $jobs[AfterImportJob::class][0]['job'];
 
-        if (!method_exists($fake, 'except')) {
-            /** @var SyncQueue $fake */
-            $fake = app(SyncQueue::class);
-            $fake->setContainer(app());
-        } else {
-            $fake->except([AfterImportJob::class, ReadChunk::class]);
-        }
+        $fake = app(SyncQueue::class);
+        $fake->setContainer(app());
         $fake->push($chunks->first());
         $this->assertTrue(ReadChunk::isComplete($chunks->first()->getUniqueId()));
         $this->assertFalse(ReadChunk::isComplete($chunks->last()->getUniqueId()));

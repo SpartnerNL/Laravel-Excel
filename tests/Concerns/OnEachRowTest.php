@@ -52,7 +52,7 @@ final class OnEachRowTest extends TestCase
                 // Accessing a row as an array calls toArray() without an end
                 // column. This saves the row in the cache, so we have to
                 // invalidate the cache once the end column changes
-                $row[0];
+                Assert::assertIsString($row[0]);
 
                 Assert::assertEquals([
                     'test',

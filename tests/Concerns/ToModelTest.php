@@ -193,7 +193,6 @@ final class ToModelTest extends TestCase
         $users = User::all();
         $users->each(function (User $user): void {
             $this->assertInstanceOf(Group::class, $user->group);
-            $this->assertIsInt($user->group->id);
         });
 
         $this->assertCount(2, $users);
