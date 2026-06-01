@@ -17,4 +17,14 @@ if (!$isPsrV3) {
     $includes[] = __DIR__ . '/phpstan-baseline-psr-cache-3.neon';
 }
 
+$hasQueueAttributes = InstalledVersions::isInstalled('laravel/framework')
+    && InstalledVersions::satisfies(new VersionParser, 'laravel/framework', '>=13.0');
+
+if (!$hasQueueAttributes) {
+    // Laravel < 13: the #[Queue]/#[Connection] attributes don't exist yet, so
+    // QueueResolver's attribute path is unresolvable to PHPStan (it falls back
+    // to a property read at runtime via a trait_exists guard).
+    $includes[] = __DIR__ . '/phpstan-baseline-queue-attributes-pre-13.neon';
+}
+
 return ['includes' => $includes];
