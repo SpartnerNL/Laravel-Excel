@@ -28,6 +28,7 @@ use Maatwebsite\Excel\Tests\Data\Stubs\ImportWithEvents;
 use Maatwebsite\Excel\Tests\Data\Stubs\ImportWithEventsChunksAndBatches;
 use Maatwebsite\Excel\Tests\TestCase;
 use Maatwebsite\Excel\Writer;
+use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 final class WithEventsTest extends TestCase
@@ -164,6 +165,18 @@ final class WithEventsTest extends TestCase
         $this->assertSame(10, $beforeSheet);
         $this->assertSame(50, $afterBatch);
         $this->assertSame(10, $afterChunk);
+    }
+
+    public function test_after_chunk_event_sheet_delegate_is_accessible(): void
+    {
+        $import = new ImportWithEventsChunksAndBatches();
+
+        $import->afterChunk = function (AfterChunk $event): void {
+            $this->assertInstanceOf(Sheet::class, $event->getSheet());
+            $this->assertInstanceOf(Worksheet::class, $event->getSheet()->getDelegate());
+        };
+
+        $import->import('import-batches.xlsx');
     }
 
     public function test_can_have_invokable_class_as_listener(): void

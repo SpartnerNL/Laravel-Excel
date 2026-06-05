@@ -160,11 +160,11 @@ class ReadChunk implements ShouldQueue
                 $this->startRow
             );
 
+            $sheet->raise(new AfterChunk($sheet, $this->import, $this->startRow));
+
             $sheet->disconnect();
 
             $this->cleanUpTempFile();
-
-            $sheet->raise(new AfterChunk($sheet, $this->import, $this->startRow));
         });
     }
 
