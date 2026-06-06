@@ -24,7 +24,6 @@ use Maatwebsite\Excel\Jobs\AppendViewToSheet;
 use Maatwebsite\Excel\Jobs\CloseSheet;
 use Maatwebsite\Excel\Jobs\QueueExport;
 use Maatwebsite\Excel\Jobs\StoreQueuedExport;
-use Traversable;
 
 class QueuedWriter
 {
@@ -99,9 +98,7 @@ class QueuedWriter
             ->collection()
             ->chunk($this->getChunkSize($export))
             ->map(function ($rows) use ($writerType, $temporaryFile, $sheetIndex, $export) {
-                if ($rows instanceof Traversable) {
-                    $rows = iterator_to_array($rows);
-                }
+                $rows = iterator_to_array($rows);
 
                 return new AppendDataToSheet(
                     $export,

@@ -30,6 +30,9 @@ abstract class TemporaryFile
         return $this;
     }
 
+    /**
+     * @throws FileNotFoundException
+     */
     public function copyFrom(string|UploadedFile $filePath, ?string $disk = null): TemporaryFile
     {
         if ($filePath instanceof UploadedFile) {

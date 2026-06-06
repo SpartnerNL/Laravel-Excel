@@ -261,7 +261,7 @@ class Sheet
 
                 $rowArray                    = $sheetRow->toArray(null, $import instanceof WithCalculatedFormulas, $import instanceof WithFormatData, $endColumn);
                 $rowIsEmptyAccordingToImport = $import instanceof SkipsEmptyRows && method_exists($import, 'isEmptyWhen') && $import->isEmptyWhen($rowArray);
-                if (!$import instanceof SkipsEmptyRows || ($import instanceof SkipsEmptyRows && (!$rowIsEmptyAccordingToImport && !$sheetRow->isEmpty($calculatesFormulas)))) {
+                if (!$import instanceof SkipsEmptyRows || (!$rowIsEmptyAccordingToImport && !$sheetRow->isEmpty($calculatesFormulas))) {
                     if ($import instanceof WithValidation) {
                         $toValidate = [$sheetRow->getIndex() => $rowArray];
 

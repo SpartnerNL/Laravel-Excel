@@ -2,14 +2,19 @@ includes:
     - phpstan-baseline.neon.php
 
 parameters:
-    level: 3
+    level: 4
     paths:
         - ./src
         - ./tests
         - ./config
     exceptions:
         implicitThrows: false
+        reportUncheckedExceptionDeadCatch: false
+        check:
+            missingCheckedExceptionInThrows: true
+        uncheckedExceptionClasses:
+            - Psr\SimpleCache\InvalidArgumentException
+            - Throwable
     configDirectories:
         - ./tests
         - ./config
-

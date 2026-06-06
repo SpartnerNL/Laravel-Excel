@@ -35,7 +35,7 @@
     "laravel/scout": "^10.0 || ^11.0",
     "orchestra/testbench": "^10.0 || ^11.0",
     "phpstan/extension-installer": "^1.4",
-    "phpstan/phpstan": "^2.1.55",
+    "phpstan/phpstan": "^2.2.2",
     "phpstan/phpstan-mockery": "^2.0",
     "phpunit/phpunit": "^12.5.3 || ^13.0.0",
     "predis/predis": "^1.1",

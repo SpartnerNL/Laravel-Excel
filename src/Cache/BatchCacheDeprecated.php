@@ -98,8 +98,17 @@ class BatchCacheDeprecated implements CacheInterface
     public function getMultiple($keys, $default = null)
     {
         // Check if all keys are still in memory
-        $memory              = $this->memory->getMultiple($keys, $default);
-        $actualItemsInMemory = count(array_filter($memory));
+        $memory = $this->memory->getMultiple($keys, $default);
+        if (is_array($memory)) {
+            $actualItemsInMemory = count(array_filter($memory));
+        } else {
+            $actualItemsInMemory = 0;
+            foreach ($memory as $value) {
+                if ($value) {
+                    $actualItemsInMemory++;
+                }
+            }
+        }
 
         if ($actualItemsInMemory === count($keys)) {
             return $memory;
