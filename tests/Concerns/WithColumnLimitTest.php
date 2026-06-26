@@ -29,7 +29,7 @@ class WithColumnLimitTest extends TestCase
 
             public function array(array $array): void
             {
-                Assert::assertEquals([
+                Assert::assertSame([
                     [
                         'Patrick Brouwers',
                     ],
@@ -56,7 +56,7 @@ class WithColumnLimitTest extends TestCase
 
             public function array(array $array): void
             {
-                Assert::assertEquals([
+                Assert::assertSame([
                     [
                         'Test1',
                         'Test2',

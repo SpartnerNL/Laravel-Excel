@@ -24,10 +24,10 @@ class DownloadCollectionTest extends TestCase
 
         // First row are not headings
         $firstRow = collect($array)->first();
-        $this->assertEquals(['test', 'test'], $firstRow);
+        $this->assertSame(['test', 'test'], $firstRow);
 
         $this->assertInstanceOf(BinaryFileResponse::class, $response);
-        $this->assertEquals(
+        $this->assertSame(
             'attachment; filename=collection-download.xlsx',
             str_replace('"', '', $response->headers->get('Content-Disposition'))
         );
@@ -45,7 +45,7 @@ class DownloadCollectionTest extends TestCase
 
         $array = $this->readAsArray($response->getFile()->getPathName(), Excel::XLSX);
 
-        $this->assertEquals(['column_1', 'column_2'], collect($array)->first());
+        $this->assertSame(['column_1', 'column_2'], collect($array)->first());
     }
 
     public function test_can_download_collection_with_headers_with_hidden_eloquent_attributes(): void
@@ -59,7 +59,7 @@ class DownloadCollectionTest extends TestCase
 
         $array = $this->readAsArray($response->getFile()->getPathName(), Excel::XLSX);
 
-        $this->assertEquals(['name'], collect($array)->first());
+        $this->assertSame(['name'], collect($array)->first());
     }
 
     public function test_can_download_collection_with_headers_when_making_attributes_visible(): void
@@ -76,7 +76,7 @@ class DownloadCollectionTest extends TestCase
 
         $array = $this->readAsArray($response->getFile()->getPathName(), Excel::XLSX);
 
-        $this->assertEquals(['name', 'password'], collect($array)->first());
+        $this->assertSame(['name', 'password'], collect($array)->first());
     }
 
     public function test_can_set_custom_response_headers(): void

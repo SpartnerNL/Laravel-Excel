@@ -147,8 +147,8 @@ class SkipsOnErrorTest extends TestCase
 
         $import->import('import-users.xlsx');
 
-        $this->assertEquals(1, $import->errors);
-        $this->assertEquals(1, $import->processedRows); // Only the valid row should be processed
+        $this->assertSame(1, $import->errors);
+        $this->assertSame(1, $import->processedRows); // Only the valid row should be processed
 
         // Should have inserted the valid row
         $this->assertDatabaseHas('users', [
@@ -194,7 +194,7 @@ class SkipsOnErrorTest extends TestCase
         $import->import('import-users.xlsx');
 
         $this->assertCount(1, $import->errors());
-        $this->assertEquals(1, $import->processedRows); // Only the valid row should be processed
+        $this->assertSame(1, $import->processedRows); // Only the valid row should be processed
 
         /** @var Throwable $e */
         $e = $import->errors()->first();
@@ -252,8 +252,8 @@ class SkipsOnErrorTest extends TestCase
 
         $import->import('import-users.xlsx');
 
-        $this->assertEquals(1, $import->errors);
-        $this->assertEquals(2, $import->processedRows); // Both rows should be processed, but one throws exception
+        $this->assertSame(1, $import->errors);
+        $this->assertSame(2, $import->processedRows); // Both rows should be processed, but one throws exception
 
         // Should have inserted the valid row
         $this->assertDatabaseHas('users', [
@@ -296,7 +296,7 @@ class SkipsOnErrorTest extends TestCase
         $import->import('import-users.xlsx');
 
         $this->assertCount(1, $import->errors());
-        $this->assertEquals(2, $import->processedRows); // Both rows should be processed, but one throws exception
+        $this->assertSame(2, $import->processedRows); // Both rows should be processed, but one throws exception
 
         /** @var Throwable $e */
         $e = $import->errors()->first();

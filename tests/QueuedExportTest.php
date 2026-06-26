@@ -38,7 +38,7 @@ class QueuedExportTest extends TestCase
         $batch = $export->queue('batch-export.xlsx', 'test')->name('batch-export-name');
 
         $this->assertInstanceOf(PendingBatch::class, $batch);
-        $this->assertEquals('batch-export-name', $batch->name);
+        $this->assertSame('batch-export-name', $batch->name);
         $this->assertCount(1, $batch->jobs);
     }
 
@@ -89,7 +89,7 @@ class QueuedExportTest extends TestCase
         $array = $this->readAsArray(__DIR__ . '/Data/Disks/Local/queued-export.xlsx', Excel::XLSX);
 
         $this->assertCount(100, $array);
-        $this->assertEquals(3, $jobs);
+        $this->assertSame(3, $jobs);
     }
 
     public function test_can_queue_export_with_remote_temp_disk_and_prefix(): void
@@ -123,7 +123,7 @@ class QueuedExportTest extends TestCase
 
         $actual = $this->readAsArray(__DIR__ . '/Data/Disks/Local/queued-export.xlsx', 'Xlsx');
 
-        $this->assertEquals([
+        $this->assertSame([
             ['Patrick', 'Brouwers'],
         ], $actual);
     }
@@ -161,7 +161,7 @@ class QueuedExportTest extends TestCase
 
         $this->assertTrue(app('queue-has-correct-locale'));
 
-        $this->assertEquals($currentLocale, app()->getLocale());
+        $this->assertSame($currentLocale, app()->getLocale());
     }
 
     public function test_can_queue_export_not_flushing_the_cache(): void
@@ -179,6 +179,6 @@ class QueuedExportTest extends TestCase
         $array = $this->readAsArray(__DIR__ . '/Data/Disks/Local/queued-export.xlsx', Excel::XLSX);
         $this->assertCount(100, $array);
 
-        $this->assertEquals('test', Cache::get('test'));
+        $this->assertSame('test', Cache::get('test'));
     }
 }

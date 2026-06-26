@@ -29,6 +29,6 @@ class FromArrayTest extends TestCase
 
         $contents = $this->readAsArray(__DIR__ . '/../Data/Disks/Local/from-array-store.xlsx', 'Xlsx');
 
-        $this->assertEquals($export->array(), $contents);
+        $this->assertSame($export->array(), $contents);
     }
 }

@@ -151,8 +151,8 @@ class ToModelTest extends TestCase
         $import->import('import-users.xlsx');
 
         $this->assertCount(4, DB::getQueryLog());
-        $this->assertEquals(2, User::count());
-        $this->assertEquals(2, Group::count());
+        $this->assertSame(2, User::count());
+        $this->assertSame(2, Group::count());
         DB::connection()->disableQueryLog();
     }
 
@@ -195,7 +195,7 @@ class ToModelTest extends TestCase
         });
 
         $this->assertCount(2, $users);
-        $this->assertEquals(2, Group::count());
+        $this->assertSame(2, Group::count());
         DB::connection()->disableQueryLog();
     }
 
@@ -238,7 +238,7 @@ class ToModelTest extends TestCase
         });
 
         $this->assertCount(2, $users);
-        $this->assertEquals(2, Group::count());
+        $this->assertSame(2, Group::count());
         DB::connection()->disableQueryLog();
     }
 }

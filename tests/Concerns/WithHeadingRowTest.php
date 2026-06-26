@@ -95,7 +95,7 @@ class WithHeadingRowTest extends TestCase
 
             public function array(array $array): void
             {
-                Assert::assertEquals([
+                Assert::assertSame([
                     [
                         'name'  => 'Patrick Brouwers',
                         'email' => 'patrick@maatwebsite.nl',
@@ -158,7 +158,7 @@ class WithHeadingRowTest extends TestCase
             {
                 $this->called = true;
 
-                Assert::assertEquals([
+                Assert::assertSame([
                     0 => 0,
                     1 => 'email',
                     2 => 'status',

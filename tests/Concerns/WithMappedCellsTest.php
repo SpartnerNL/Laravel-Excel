@@ -39,7 +39,7 @@ class WithMappedCellsTest extends TestCase
 
             public function array(array $array): void
             {
-                Assert::assertEquals([
+                Assert::assertSame([
                     'name'  => 'Patrick Brouwers',
                     'email' => 'patrick@maatwebsite.nl',
                 ], $array);
@@ -71,7 +71,7 @@ class WithMappedCellsTest extends TestCase
 
             public function array(array $array): void
             {
-                Assert::assertEquals([
+                Assert::assertSame([
                     [
                         'name'  => 'Patrick Brouwers',
                         'email' => 'patrick@maatwebsite.nl',
@@ -103,7 +103,7 @@ class WithMappedCellsTest extends TestCase
 
             public function model(array $array): User
             {
-                Assert::assertEquals([
+                Assert::assertSame([
                     'name'  => 'Patrick Brouwers',
                     'email' => 'patrick@maatwebsite.nl',
                 ], $array);

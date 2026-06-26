@@ -22,7 +22,7 @@ class FromCollectionTest extends TestCase
 
         $contents = $this->readAsArray(__DIR__ . '/../Data/Disks/Local/from-collection-store.xlsx', 'Xlsx');
 
-        $this->assertEquals($export->collection()->toArray(), $contents);
+        $this->assertSame($export->collection()->toArray(), $contents);
     }
 
     public function test_can_export_with_multiple_sheets_from_collection(): void
@@ -41,8 +41,8 @@ class FromCollectionTest extends TestCase
 
             $worksheet = $spreadsheet->getSheet($sheetIndex);
 
-            $this->assertEquals($sheet->collection()->toArray(), $worksheet->toArray());
-            $this->assertEquals($sheet->title(), $worksheet->getTitle());
+            $this->assertSame($sheet->collection()->toArray(), $worksheet->toArray());
+            $this->assertSame($sheet->title(), $worksheet->getTitle());
         }
     }
 
@@ -58,7 +58,7 @@ class FromCollectionTest extends TestCase
 
         $contents = $this->readAsArray(__DIR__ . '/../Data/Disks/Local/from-lazy-collection-store.xlsx', 'Xlsx');
 
-        $this->assertEquals(
+        $this->assertSame(
             $export->collection()->map(
                 fn (array $item) => array_values($item)
             )->toArray(),
@@ -83,7 +83,7 @@ class FromCollectionTest extends TestCase
 
         $contents = $this->readAsArray(__DIR__ . '/../Data/Disks/Local/from-lazy-collection-store.xlsx', 'Xlsx');
 
-        $this->assertEquals(
+        $this->assertSame(
             $export->collection()->map(
                 fn (array $item) => array_values($item)
             )->toArray(),

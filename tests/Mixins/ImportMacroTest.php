@@ -28,7 +28,7 @@ class ImportMacroTest extends TestCase
         User::import('import-users-with-headings.xlsx');
 
         $this->assertCount(2, User::all());
-        $this->assertEquals([
+        $this->assertSame([
             'patrick@maatwebsite.nl',
             'taylor@laravel.com',
         ], User::query()->pluck('email')->all());

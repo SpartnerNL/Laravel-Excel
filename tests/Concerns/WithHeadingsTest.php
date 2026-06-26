@@ -43,7 +43,7 @@ class WithHeadingsTest extends TestCase
             ['A2', 'B2', 'C2'],
         ];
 
-        $this->assertEquals($expected, $actual);
+        $this->assertSame($expected, $actual);
     }
 
     public function test_can_export_from_collection_with_multiple_heading_rows(): void
@@ -82,7 +82,7 @@ class WithHeadingsTest extends TestCase
             ['A2', 'B2', 'C2'],
         ];
 
-        $this->assertEquals($expected, $actual);
+        $this->assertSame($expected, $actual);
     }
 
     public function test_can_export_from_collection_with_heading_row_with_custom_start_cell(): void
@@ -123,6 +123,6 @@ class WithHeadingsTest extends TestCase
             [null, 'A2', 'B2', 'C2'],
         ];
 
-        $this->assertEquals($expected, $actual);
+        $this->assertSame($expected, $actual);
     }
 }

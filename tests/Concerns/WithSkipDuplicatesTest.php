@@ -73,7 +73,7 @@ class WithSkipDuplicatesTest extends TestCase
             'password' => 'secret',
         ]);
 
-        $this->assertEquals(2, User::count());
+        $this->assertSame(2, User::count());
     }
 
     public function test_can_skip_duplicate_models_in_rows(): void
@@ -122,6 +122,6 @@ class WithSkipDuplicatesTest extends TestCase
             'password' => 'secret',
         ]);
 
-        $this->assertEquals(2, User::count());
+        $this->assertSame(2, User::count());
     }
 }

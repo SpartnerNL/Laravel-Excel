@@ -35,15 +35,15 @@ class WithPropertiesTest extends TestCase
         $spreadsheet = $this->read(__DIR__ . '/../Data/Disks/Local/with-properties.xlsx', 'Xlsx');
         $props       = $spreadsheet->getProperties();
 
-        $this->assertEquals('A', $props->getCreator());
-        $this->assertEquals('B', $props->getLastModifiedBy());
-        $this->assertEquals('C', $props->getTitle());
-        $this->assertEquals('D', $props->getDescription());
-        $this->assertEquals('E', $props->getSubject());
-        $this->assertEquals('F', $props->getKeywords());
-        $this->assertEquals('G', $props->getCategory());
-        $this->assertEquals('H', $props->getManager());
-        $this->assertEquals('I', $props->getCompany());
+        $this->assertSame('A', $props->getCreator());
+        $this->assertSame('B', $props->getLastModifiedBy());
+        $this->assertSame('C', $props->getTitle());
+        $this->assertSame('D', $props->getDescription());
+        $this->assertSame('E', $props->getSubject());
+        $this->assertSame('F', $props->getKeywords());
+        $this->assertSame('G', $props->getCategory());
+        $this->assertSame('H', $props->getManager());
+        $this->assertSame('I', $props->getCompany());
     }
 
     public function test_it_merges_with_default_properties(): void
@@ -68,8 +68,8 @@ class WithPropertiesTest extends TestCase
         $spreadsheet = $this->read(__DIR__ . '/../Data/Disks/Local/with-properties.xlsx', 'Xlsx');
         $props       = $spreadsheet->getProperties();
 
-        $this->assertEquals('Default Title', $props->getTitle());
-        $this->assertEquals('Custom Description', $props->getDescription());
+        $this->assertSame('Default Title', $props->getTitle());
+        $this->assertSame('Custom Description', $props->getDescription());
     }
 
     public function test_it_ignores_empty_properties(): void

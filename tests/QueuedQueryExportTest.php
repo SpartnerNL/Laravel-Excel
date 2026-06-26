@@ -75,7 +75,7 @@ class QueuedQueryExportTest extends TestCase
 
         // Only 1 column when using map()
         $this->assertCount(1, $actual[0]);
-        $this->assertEquals(User::value('name'), $actual[0][0]);
+        $this->assertSame(User::value('name'), $actual[0][0]);
     }
 
     public function test_can_queue_scout_export(): void

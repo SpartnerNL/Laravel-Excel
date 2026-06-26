@@ -127,8 +127,8 @@ class WithBatchInsertsTest extends TestCase
         // Expected 2 batch queries, 1 for users, 1 for groups
         $this->assertCount(2, DB::getQueryLog());
 
-        $this->assertEquals(2, User::count());
-        $this->assertEquals(2, Group::count());
+        $this->assertSame(2, User::count());
+        $this->assertSame(2, Group::count());
 
         DB::connection()->disableQueryLog();
     }

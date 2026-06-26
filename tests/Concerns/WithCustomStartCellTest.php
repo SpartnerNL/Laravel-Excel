@@ -41,7 +41,7 @@ class WithCustomStartCellTest extends TestCase
 
         $contents = $this->readAsArray(__DIR__ . '/../Data/Disks/Local/custom-start-cell.csv', 'Csv');
 
-        $this->assertEquals([
+        $this->assertSame([
             [null, null, null],
             [null, 'A1', 'B1'],
             [null, 'A2', 'B2'],

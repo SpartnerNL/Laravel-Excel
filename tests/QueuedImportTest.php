@@ -67,7 +67,7 @@ class QueuedImportTest extends TestCase
         $batch = $import->queue('import-batches.xlsx')->name('batch-import-name');
 
         $this->assertInstanceOf(PendingBatch::class, $batch);
-        $this->assertEquals('batch-import-name', $batch->name);
+        $this->assertSame('batch-import-name', $batch->name);
         $this->assertCount(1, $batch->jobs);
     }
 
@@ -165,7 +165,7 @@ class QueuedImportTest extends TestCase
         try {
             (new QueuedImportWithFailure)->queue('import-batches.xlsx');
         } catch (Throwable $e) {
-            $this->assertEquals('Something went wrong in the chunk', $e->getMessage());
+            $this->assertSame('Something went wrong in the chunk', $e->getMessage());
         }
 
         $this->assertFalse($tempFile?->existsLocally());
@@ -185,7 +185,7 @@ class QueuedImportTest extends TestCase
         try {
             (new QueuedImportWithFailure)->queue('import-batches.xlsx');
         } catch (Throwable $e) {
-            $this->assertEquals('Something went wrong in the chunk', $e->getMessage());
+            $this->assertSame('Something went wrong in the chunk', $e->getMessage());
         }
 
         $this->assertTrue($tempFile?->exists());
@@ -216,7 +216,7 @@ class QueuedImportTest extends TestCase
         try {
             (new QueuedImportWithMiddleware)->queue('import-batches.xlsx');
         } catch (Throwable $e) {
-            $this->assertEquals('Job reached middleware method', $e->getMessage());
+            $this->assertSame('Job reached middleware method', $e->getMessage());
         }
     }
 
@@ -225,7 +225,7 @@ class QueuedImportTest extends TestCase
         try {
             (new QueuedImportWithRetryUntil)->queue('import-batches.xlsx');
         } catch (Throwable $e) {
-            $this->assertEquals('Job reached retryUntil method', $e->getMessage());
+            $this->assertSame('Job reached retryUntil method', $e->getMessage());
         }
     }
 
@@ -244,9 +244,9 @@ class QueuedImportTest extends TestCase
             $import->maxExceptions = 3;
             $import->queue('import-batches.xlsx');
         } catch (Throwable $e) {
-            $this->assertEquals('Something went wrong in the chunk', $e->getMessage());
+            $this->assertSame('Something went wrong in the chunk', $e->getMessage());
         }
 
-        $this->assertEquals(3, $maxExceptionsCount);
+        $this->assertSame(3, $maxExceptionsCount);
     }
 }
