@@ -9,6 +9,7 @@ use Maatwebsite\Excel\Excel;
 use Maatwebsite\Excel\Importer;
 use Maatwebsite\Excel\Tests\TestCase;
 use PHPUnit\Framework\Assert;
+use Symfony\Component\Console\Output\NullOutput;
 
 class ImportableTest extends TestCase
 {
@@ -128,5 +129,16 @@ class ImportableTest extends TestCase
         };
 
         $import->import('doesnotexistanywhere.xlsx');
+    }
+
+    public function test_default_output_style_is_set(): void
+    {
+        $import = new class
+        {
+            use Importable;
+        };
+
+        $style = $import->getConsoleOutput();
+        $this->assertInstanceOf(NullOutput::class, $style->getOutput());
     }
 }
