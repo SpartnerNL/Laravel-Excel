@@ -5,13 +5,10 @@ namespace Maatwebsite\Excel\Jobs;
 use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
-use Illuminate\Database\Eloquent\Relations\Relation;
-use Illuminate\Database\Query\Builder;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
-use Laravel\Scout\Builder as ScoutBuilder;
 use Maatwebsite\Excel\Concerns\FromQuery;
+use Maatwebsite\Excel\Concerns\FromScout;
 use Maatwebsite\Excel\Files\TemporaryFile;
 use Maatwebsite\Excel\Jobs\Middleware\LocalizeJob;
 use Maatwebsite\Excel\Writer;
@@ -22,7 +19,7 @@ class AppendPaginatedToSheet implements ShouldQueue
     use Batchable, Dispatchable, InteractsWithQueue, ProxyFailures, Queueable;
 
     public function __construct(
-        public FromQuery $sheetExport,
+        public FromQuery|FromScout $sheetExport,
         public TemporaryFile $temporaryFile,
         public string $writerType,
         public int $sheetIndex,
@@ -55,19 +52,19 @@ class AppendPaginatedToSheet implements ShouldQueue
 
             $sheet = $writer->getSheetByIndex($this->sheetIndex);
 
-            $sheet->appendRows($this->chunk($this->sheetExport->query()), $this->sheetExport);
+            $sheet->appendRows($this->chunk(), $this->sheetExport);
 
             $writer->write($this->sheetExport, $this->temporaryFile, $this->writerType);
         });
     }
 
-    protected function chunk(Builder|Relation|EloquentBuilder|ScoutBuilder $query)
+    protected function chunk(): iterable
     {
-        if ($query instanceof ScoutBuilder) {
-            return $query->paginate($this->perPage, 'page', $this->page)->items();
+        if ($this->sheetExport instanceof FromScout) {
+            return $this->sheetExport->scout()->paginate($this->perPage, 'page', $this->page)->items();
         }
 
         // Fallback
-        return $query->forPage($this->page, $this->perPage)->get();
+        return $this->sheetExport->query()->forPage($this->page, $this->perPage)->get();
     }
 }
