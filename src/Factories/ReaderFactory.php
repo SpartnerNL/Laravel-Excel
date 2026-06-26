@@ -33,13 +33,8 @@ class ReaderFactory
             $readerType ?: static::identify($file)
         );
 
-        if (method_exists($reader, 'setReadDataOnly')) {
-            $reader->setReadDataOnly(config('excel.imports.read_only', true));
-        }
-
-        if (method_exists($reader, 'setReadEmptyCells')) {
-            $reader->setReadEmptyCells(!config('excel.imports.ignore_empty', false));
-        }
+        $reader->setReadDataOnly(config('excel.imports.read_only', true));
+        $reader->setReadEmptyCells(!config('excel.imports.ignore_empty', false));
 
         if ($reader instanceof Csv) {
             static::applyCsvSettings(config('excel.imports.csv', []));
@@ -53,9 +48,7 @@ class ReaderFactory
             $reader->setEscapeCharacter(static::$escapeCharacter);
             $reader->setContiguous(static::$contiguous);
             $reader->setInputEncoding(static::$inputEncoding);
-            if (method_exists($reader, 'setTestAutoDetect')) {
-                $reader->setTestAutoDetect(static::$testAutoDetect);
-            }
+            $reader->setTestAutoDetect(static::$testAutoDetect);
         }
 
         if ($import instanceof WithReadFilter) {
