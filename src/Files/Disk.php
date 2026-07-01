@@ -51,9 +51,7 @@ class Disk
             $success = $this->put($destination, $readStream);
         }
 
-        if (is_resource($readStream)) {
-            fclose($readStream);
-        }
+        fclose($readStream);
 
         return $success;
     }
