@@ -564,7 +564,7 @@ final class WithValidationTest extends TestCase
         {
             use Importable;
 
-            public function collection(Collection $rows): void
+            public function collection(Collection $collection): void
             {
                 //
             }
@@ -593,7 +593,7 @@ final class WithValidationTest extends TestCase
         {
             use Importable;
 
-            public function array(array $rows): void
+            public function array(array $array): void
             {
                 //
             }

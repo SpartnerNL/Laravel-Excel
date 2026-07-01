@@ -236,9 +236,9 @@ final class SkipsOnFailureTest extends TestCase
         {
             use Importable, SkipsFailures;
 
-            public function collection(Collection $rows): void
+            public function collection(Collection $collection): void
             {
-                $rows->each(fn ($row) => User::create([
+                $collection->each(fn ($row) => User::create([
                     'name'     => $row[0],
                     'email'    => $row[1],
                     'password' => 'secret',
