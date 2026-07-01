@@ -4,6 +4,7 @@ namespace Maatwebsite\Excel\Validators;
 
 use Illuminate\Contracts\Support\Arrayable;
 use JsonSerializable;
+use ReturnTypeWillChange;
 
 /**
  * @implements Arrayable<array-key, mixed>
@@ -59,7 +60,7 @@ class Failure implements Arrayable, JsonSerializable
     /**
      * @return array<string, mixed>
      */
-    #[\ReturnTypeWillChange]
+    #[ReturnTypeWillChange]
     public function jsonSerialize()
     {
         return [

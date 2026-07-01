@@ -4,9 +4,13 @@ declare(strict_types=1);
 
 namespace Maatwebsite\Excel\Tests\Validators;
 
+use Closure;
 use Illuminate\Contracts\Validation\Factory;
 use Maatwebsite\Excel\Tests\TestCase;
 use Maatwebsite\Excel\Validators\RowValidator;
+use ReflectionException;
+use ReflectionMethod;
+use stdClass;
 
 final class RowValidatorTest extends TestCase
 {
@@ -33,7 +37,7 @@ final class RowValidatorTest extends TestCase
 
     public function test_format_rule_with_object_input(): void
     {
-        $rule = new \stdClass;
+        $rule = new stdClass;
 
         $result = $this->callPrivateMethod('formatRule', [$rule]);
 
@@ -83,8 +87,6 @@ final class RowValidatorTest extends TestCase
      */
     public function callPrivateMethod(string $name, array $args): mixed
     {
-        $method = new \ReflectionMethod(RowValidator::class, $name);
-
-        return $method->invokeArgs($this->validator, $args);
+        return (new ReflectionMethod(RowValidator::class, $name))->invokeArgs($this->validator, $args);
     }
 }

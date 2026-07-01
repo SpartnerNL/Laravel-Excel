@@ -258,6 +258,9 @@ final class WithChunkReadingTest extends TestCase
                 return 1000;
             }
 
+            /**
+             * @return ToModel[]
+             */
             public function sheets(): array
             {
                 return [
@@ -313,6 +316,9 @@ final class WithChunkReadingTest extends TestCase
                 return 1000;
             }
 
+            /**
+             * @return array<string, ToModel>
+             */
             public function sheets(): array
             {
                 return [

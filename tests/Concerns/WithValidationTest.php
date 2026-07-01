@@ -9,6 +9,7 @@ use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\In;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\OnEachRow;
 use Maatwebsite\Excel\Concerns\SkipsEmptyRows;
@@ -53,6 +54,9 @@ final class WithValidationTest extends TestCase
                 ]);
             }
 
+            /**
+             * @return In[]
+             */
             public function rules(): array
             {
                 return [
@@ -91,6 +95,9 @@ final class WithValidationTest extends TestCase
                 ]);
             }
 
+            /**
+             * @return Closure[]
+             */
             public function rules(): array
             {
                 return [
@@ -284,6 +291,9 @@ final class WithValidationTest extends TestCase
                 ]);
             }
 
+            /**
+             * @return In[]
+             */
             public function rules(): array
             {
                 return [
@@ -367,6 +377,9 @@ final class WithValidationTest extends TestCase
                 ]);
             }
 
+            /**
+             * @return In[]
+             */
             public function rules(): array
             {
                 return [
@@ -410,6 +423,9 @@ final class WithValidationTest extends TestCase
                 ]);
             }
 
+            /**
+             * @return In[]
+             */
             public function rules(): array
             {
                 return [
@@ -498,6 +514,9 @@ final class WithValidationTest extends TestCase
                 return 2;
             }
 
+            /**
+             * @return In[]
+             */
             public function rules(): array
             {
                 return [
@@ -533,6 +552,9 @@ final class WithValidationTest extends TestCase
                 ]);
             }
 
+            /**
+             * @return In[]
+             */
             public function rules(): array
             {
                 return [
@@ -562,6 +584,9 @@ final class WithValidationTest extends TestCase
                 //
             }
 
+            /**
+             * @return In[]
+             */
             public function rules(): array
             {
                 return [
@@ -591,6 +616,9 @@ final class WithValidationTest extends TestCase
                 //
             }
 
+            /**
+             * @return In[]
+             */
             public function rules(): array
             {
                 return [
@@ -631,12 +659,7 @@ final class WithValidationTest extends TestCase
                 ];
             }
 
-            /**
-             * Configure the validator.
-             *
-             * @param  Validator  $validator
-             */
-            public function withValidator($validator): void
+            public function withValidator(Validator $validator): void
             {
                 $validator->sometimes('*.1', [Rule::in(['patrick@maatwebsite.nl'])], fn (): true => true);
             }

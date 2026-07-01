@@ -6,6 +6,7 @@ use ArrayAccess;
 use Closure;
 use Illuminate\Support\Collection;
 use PhpOffice\PhpSpreadsheet\Worksheet\Row as SpreadsheetRow;
+use ReturnTypeWillChange;
 
 /**
  * @implements ArrayAccess<array-key, mixed>
@@ -100,25 +101,25 @@ class Row implements ArrayAccess
         return $this->row->getRowIndex();
     }
 
-    #[\ReturnTypeWillChange]
+    #[ReturnTypeWillChange]
     public function offsetExists($offset)
     {
         return isset($this->toArray()[$offset]);
     }
 
-    #[\ReturnTypeWillChange]
+    #[ReturnTypeWillChange]
     public function offsetGet($offset)
     {
         return $this->toArray()[$offset];
     }
 
-    #[\ReturnTypeWillChange]
+    #[ReturnTypeWillChange]
     public function offsetSet($offset, $value): void
     {
         //
     }
 
-    #[\ReturnTypeWillChange]
+    #[ReturnTypeWillChange]
     public function offsetUnset($offset): void
     {
         //

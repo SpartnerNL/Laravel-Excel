@@ -2,6 +2,7 @@
 
 namespace Maatwebsite\Excel\Cache;
 
+use DateInterval;
 use PhpOffice\PhpSpreadsheet\Cell\Cell;
 
 class MemoryCache implements MemoryInterface
@@ -84,7 +85,7 @@ class MemoryCache implements MemoryInterface
     /**
      * {@inheritdoc}
      */
-    public function set(string $key, mixed $value, null|int|\DateInterval $ttl = null): bool
+    public function set(string $key, mixed $value, null|int|DateInterval $ttl = null): bool
     {
         $this->cache[$key] = $value;
 

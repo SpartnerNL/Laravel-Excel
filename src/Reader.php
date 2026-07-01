@@ -25,7 +25,6 @@ use Maatwebsite\Excel\Factories\ReaderFactory;
 use Maatwebsite\Excel\Files\TemporaryFile;
 use Maatwebsite\Excel\Files\TemporaryFileFactory;
 use Maatwebsite\Excel\Transactions\TransactionHandler;
-use Maatwebsite\Excel\Validators\ValidationException;
 use PhpOffice\PhpSpreadsheet\Cell\Cell;
 use PhpOffice\PhpSpreadsheet\Reader\Exception;
 use PhpOffice\PhpSpreadsheet\Reader\IReader;
@@ -61,6 +60,9 @@ class Reader
         $this->transaction = $transaction;
     }
 
+    /**
+     * @return array<int, string>
+     */
     public function __sleep()
     {
         return ['spreadsheet', 'sheetImports', 'currentFile', 'temporaryFileFactory', 'reader'];
@@ -74,10 +76,10 @@ class Reader
     /**
      * @return static|PendingDispatch|PendingBatch|Collection<int, object>|null
      *
-     * @throws ValidationException
-     * @throws NoTypeDetectedException
      * @throws FileNotFoundException
-     * @throws Exception
+     * @throws NoTypeDetectedException
+     * @throws SheetNotFoundException
+     * @throws Throwable
      */
     public function read(object $import, string|UploadedFile $filePath, ?string $readerType = null, ?string $disk = null): static|PendingDispatch|PendingBatch|Collection|null
     {

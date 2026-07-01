@@ -2,24 +2,28 @@
 
 namespace Maatwebsite\Excel\Cache;
 
+use DateInterval;
 use Illuminate\Support\Facades\Cache;
 use Psr\SimpleCache\CacheInterface;
 
 class BatchCache implements CacheInterface
 {
     /**
-     * @var null|int|\DateInterval|callable
+     * @var null|int|DateInterval|callable
      */
     protected $defaultTTL;
 
     public function __construct(
         protected CacheInterface $cache,
         protected MemoryInterface $memory,
-        null|int|\DateInterval|callable $defaultTTL = null
+        null|int|DateInterval|callable $defaultTTL = null
     ) {
         $this->defaultTTL = $defaultTTL;
     }
 
+    /**
+     * @return array<int, string>
+     */
     public function __sleep()
     {
         return ['memory'];
@@ -47,7 +51,7 @@ class BatchCache implements CacheInterface
     /**
      * {@inheritdoc}
      */
-    public function set(string $key, mixed $value, null|int|\DateInterval $ttl = null): bool
+    public function set(string $key, mixed $value, null|int|DateInterval $ttl = null): bool
     {
         if (func_num_args() === 2) {
             $ttl = value($this->defaultTTL);
@@ -126,7 +130,7 @@ class BatchCache implements CacheInterface
      *
      * @param  iterable<string, mixed>  $values
      */
-    public function setMultiple(iterable $values, null|int|\DateInterval $ttl = null): bool
+    public function setMultiple(iterable $values, null|int|DateInterval $ttl = null): bool
     {
         if (func_num_args() === 1) {
             $ttl = value($this->defaultTTL);

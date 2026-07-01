@@ -3,6 +3,7 @@
 namespace Maatwebsite\Excel\Console;
 
 use Illuminate\Console\GeneratorCommand;
+use Override;
 use Symfony\Component\Console\Input\InputOption;
 
 class ImportMakeCommand extends GeneratorCommand
@@ -46,7 +47,7 @@ class ImportMakeCommand extends GeneratorCommand
      * @param  string  $rootNamespace
      * @return string
      */
-    #[\Override]
+    #[Override]
     protected function getDefaultNamespace($rootNamespace)
     {
         return $rootNamespace . '\Imports';
@@ -59,7 +60,7 @@ class ImportMakeCommand extends GeneratorCommand
      * @param  string  $name
      * @return string
      */
-    #[\Override]
+    #[Override]
     protected function buildClass($name)
     {
         $replace = [];
@@ -74,7 +75,7 @@ class ImportMakeCommand extends GeneratorCommand
         );
     }
 
-    #[\Override]
+    #[Override]
     protected function getOptions()
     {
         return [
