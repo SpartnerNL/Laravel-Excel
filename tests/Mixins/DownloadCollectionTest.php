@@ -17,7 +17,6 @@ class DownloadCollectionTest extends TestCase
             ['column_1' => 'test2', 'column_2' => 'test2'],
         ]);
 
-        /** @phpstan-ignore method.notFound */
         $response = $collection->downloadExcel('collection-download.xlsx', Excel::XLSX);
 
         $array = $this->readAsArray($response->getFile()->getPathName(), Excel::XLSX);
@@ -40,7 +39,6 @@ class DownloadCollectionTest extends TestCase
             ['column_1' => 'test', 'column_2' => 'test'],
         ]);
 
-        /** @phpstan-ignore method.notFound */
         $response = $collection->downloadExcel('collection-headers-download.xlsx', Excel::XLSX, true);
 
         $array = $this->readAsArray($response->getFile()->getPathName(), Excel::XLSX);
@@ -54,7 +52,6 @@ class DownloadCollectionTest extends TestCase
             new User(['name' => 'Patrick', 'password' => 'my_password']),
         ]);
 
-        /** @phpstan-ignore method.notFound */
         $response = $collection->downloadExcel('collection-headers-download.xlsx', Excel::XLSX, true);
 
         $array = $this->readAsArray($response->getFile()->getPathName(), Excel::XLSX);
@@ -71,7 +68,6 @@ class DownloadCollectionTest extends TestCase
             $user,
         ]);
 
-        /** @phpstan-ignore method.notFound */
         $response = $collection->downloadExcel('collection-headers-download.xlsx', Excel::XLSX, true);
 
         $array = $this->readAsArray($response->getFile()->getPathName(), Excel::XLSX);
@@ -90,7 +86,6 @@ class DownloadCollectionTest extends TestCase
             'CUSTOMER-HEADER-1' => 'CUSTOMER-HEADER1-VAL',
             'CUSTOMER-HEADER-2' => 'CUSTOMER-HEADER2-VAL',
         ];
-        /** @phpstan-ignore method.notFound */
         $response = $collection->downloadExcel('collection-download.xlsx', Excel::XLSX, false, $responseHeaders);
         static::assertInstanceOf(BinaryFileResponse::class, $response);
         $this->assertTrue($response->headers->contains('CUSTOMER-HEADER-1', 'CUSTOMER-HEADER1-VAL'));

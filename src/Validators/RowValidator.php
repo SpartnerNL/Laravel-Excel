@@ -37,7 +37,7 @@ class RowValidator
         } catch (IlluminateValidationException $e) {
             $failures = [];
             foreach ($e->errors() as $attribute => $messages) {
-                $row           = strtok($attribute, '.');
+                $row           = (int) strtok($attribute, '.');
                 $attributeName = strtok('');
                 $attributeName = $attributes['*.' . $attributeName] ?? $attributeName;
 

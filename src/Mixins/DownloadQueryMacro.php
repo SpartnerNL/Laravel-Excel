@@ -13,7 +13,7 @@ class DownloadQueryMacro
     public function __invoke()
     {
         return function (string $fileName, ?string $writerType = null, $withHeadings = false) {
-            $export = new class($this, $withHeadings) implements FromQuery, WithHeadings
+            $export = new class($this, $withHeadings) implements FromQuery, WithHeadings // @phpstan-ignore argument.type
             {
                 use Exportable;
 
