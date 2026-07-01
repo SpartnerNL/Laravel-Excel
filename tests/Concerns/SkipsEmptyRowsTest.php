@@ -106,7 +106,7 @@ final class SkipsEmptyRowsTest extends TestCase
              */
             public function isEmptyWhen(array $row): bool
             {
-                return $row[0] == 'Test5' && $row[1] == 'Test6';
+                return $row[0] === 'Test5' && $row[1] === 'Test6';
             }
         };
 
