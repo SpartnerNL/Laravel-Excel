@@ -897,10 +897,10 @@ class WithValidationTest extends TestCase
         $failures = $e->failures();
         $failure  = head($failures);
 
-        $this->assertEquals($row, $failure->row());
-        $this->assertEquals($attribute, $failure->attribute());
-        $this->assertEquals($row, $failure->jsonSerialize()['row']);
-        $this->assertEquals($attribute, $failure->jsonSerialize()['attribute']);
+        $this->assertSame($row, $failure->row());
+        $this->assertSame($attribute, $failure->attribute());
+        $this->assertSame($row, $failure->jsonSerialize()['row']);
+        $this->assertSame($attribute, $failure->jsonSerialize()['attribute']);
 
         $this->assertRegex('/' . $messages[0] . '/', $failure->errors()[0]);
         $this->assertRegex('/' . $messages[0] . '/', $failure->jsonSerialize()['errors'][0]);

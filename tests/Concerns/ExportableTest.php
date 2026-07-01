@@ -99,7 +99,7 @@ class ExportableTest extends TestCase
                 'Content-Type' => 'text/csv',
             ]
         );
-        $this->assertEquals('text/csv', $response->headers->get('Content-Type'));
+        $this->assertSame('text/csv', $response->headers->get('Content-Type'));
     }
 
     public function test_can_set_custom_headers_in_export_class(): void
@@ -117,7 +117,7 @@ class ExportableTest extends TestCase
         };
         $response = $export->toResponse(request());
 
-        $this->assertEquals('text/csv', $response->headers->get('Content-Type'));
+        $this->assertSame('text/csv', $response->headers->get('Content-Type'));
     }
 
     public function test_can_get_raw_export_contents(): void

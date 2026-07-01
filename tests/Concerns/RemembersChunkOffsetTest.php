@@ -20,7 +20,7 @@ class RemembersChunkOffsetTest extends TestCase
 
         $import->setChunkOffset(50);
 
-        $this->assertEquals(50, $import->getChunkOffset());
+        $this->assertSame(50, $import->getChunkOffset());
     }
 
     public function test_can_access_chunk_offset_on_import_to_array_in_chunks(): void
@@ -45,6 +45,6 @@ class RemembersChunkOffsetTest extends TestCase
 
         $import->import('import-batches.xlsx');
 
-        $this->assertEquals([1, 2001, 4001], $import->offsets);
+        $this->assertSame([1, 2001, 4001], $import->offsets);
     }
 }

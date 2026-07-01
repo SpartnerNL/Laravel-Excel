@@ -20,7 +20,7 @@ class ImportableTest extends TestCase
 
             public function array(array $array): void
             {
-                Assert::assertEquals([
+                Assert::assertSame([
                     ['test', 'test'],
                     ['test', 'test'],
                 ], $array);
@@ -40,7 +40,7 @@ class ImportableTest extends TestCase
 
             public function array(array $array): void
             {
-                Assert::assertEquals([
+                Assert::assertSame([
                     ['test', 'test'],
                     ['test', 'test'],
                 ], $array);
@@ -58,7 +58,7 @@ class ImportableTest extends TestCase
 
             public function array(array $array): void
             {
-                Assert::assertEquals([
+                Assert::assertSame([
                     ['key1', 'A', 'row1'],
                     ['key2', 'B', '<p>row2</p>'],
                     ['key3', 'C', 'row3'],
@@ -82,7 +82,7 @@ class ImportableTest extends TestCase
 
             public function array(array $array): void
             {
-                Assert::assertEquals([
+                Assert::assertSame([
                     ['test', 'test'],
                     ['test', 'test'],
                 ], $array);
@@ -104,11 +104,11 @@ class ImportableTest extends TestCase
 
             public function array(array $array): void
             {
-                Assert::assertEquals([
+                Assert::assertSame([
                     ['test', 'test'],
                     ['test', 'test'],
-                    ['', ''],
-                    ['', ''],
+                    [null, null],
+                    [null, null],
                 ], $array);
             }
         };

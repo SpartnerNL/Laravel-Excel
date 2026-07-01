@@ -27,8 +27,8 @@ class WithBackgroundColorTest extends TestCase
         $spreadsheet = $this->read(__DIR__ . '/../Data/Disks/Local/background-styles.xlsx', 'Xlsx');
         $sheet       = $spreadsheet->getDefaultStyle();
 
-        $this->assertEquals(Fill::FILL_SOLID, $sheet->getFill()->getFillType());
-        $this->assertEquals('000000', $sheet->getFill()->getStartColor()->getRGB());
+        $this->assertSame(Fill::FILL_SOLID, $sheet->getFill()->getFillType());
+        $this->assertSame('000000', $sheet->getFill()->getStartColor()->getRGB());
     }
 
     public function test_can_configure_background_color_as_array(): void
@@ -51,8 +51,8 @@ class WithBackgroundColorTest extends TestCase
         $spreadsheet = $this->read(__DIR__ . '/../Data/Disks/Local/background-styles.xlsx', 'Xlsx');
         $sheet       = $spreadsheet->getDefaultStyle();
 
-        $this->assertEquals(Fill::FILL_GRADIENT_LINEAR, $sheet->getFill()->getFillType());
-        $this->assertEquals(Color::COLOR_RED, $sheet->getFill()->getStartColor()->getARGB());
+        $this->assertSame(Fill::FILL_GRADIENT_LINEAR, $sheet->getFill()->getFillType());
+        $this->assertSame(Color::COLOR_RED, $sheet->getFill()->getStartColor()->getARGB());
     }
 
     public function test_can_configure_background_color_with_color_instance(): void
@@ -72,7 +72,7 @@ class WithBackgroundColorTest extends TestCase
         $spreadsheet = $this->read(__DIR__ . '/../Data/Disks/Local/background-styles.xlsx', 'Xlsx');
         $sheet       = $spreadsheet->getDefaultStyle();
 
-        $this->assertEquals(Fill::FILL_SOLID, $sheet->getFill()->getFillType());
-        $this->assertEquals(Color::COLOR_BLUE, $sheet->getFill()->getStartColor()->getARGB());
+        $this->assertSame(Fill::FILL_SOLID, $sheet->getFill()->getFillType());
+        $this->assertSame(Color::COLOR_BLUE, $sheet->getFill()->getStartColor()->getARGB());
     }
 }

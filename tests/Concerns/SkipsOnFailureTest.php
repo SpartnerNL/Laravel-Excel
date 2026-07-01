@@ -58,14 +58,14 @@ class SkipsOnFailureTest extends TestCase
             {
                 $failure = $failures[0];
 
-                Assert::assertEquals(2, $failure->row());
-                Assert::assertEquals('1', $failure->attribute());
-                Assert::assertEquals(['The selected 1 is invalid.'], $failure->errors());
-                Assert::assertEquals(['Taylor Otwell', 'taylor@laravel.com'], $failure->values());
-                Assert::assertEquals(2, $failure->jsonSerialize()['row']);
-                Assert::assertEquals('1', $failure->jsonSerialize()['attribute']);
-                Assert::assertEquals(['The selected 1 is invalid.'], $failure->jsonSerialize()['errors']);
-                Assert::assertEquals(['Taylor Otwell', 'taylor@laravel.com'], $failure->jsonSerialize()['values']);
+                Assert::assertSame(2, $failure->row());
+                Assert::assertSame('1', $failure->attribute());
+                Assert::assertSame(['The selected 1 is invalid.'], $failure->errors());
+                Assert::assertSame(['Taylor Otwell', 'taylor@laravel.com'], $failure->values());
+                Assert::assertSame(2, $failure->jsonSerialize()['row']);
+                Assert::assertSame('1', $failure->jsonSerialize()['attribute']);
+                Assert::assertSame(['The selected 1 is invalid.'], $failure->jsonSerialize()['errors']);
+                Assert::assertSame(['Taylor Otwell', 'taylor@laravel.com'], $failure->jsonSerialize()['values']);
 
                 $this->failures += \count($failures);
             }
@@ -73,7 +73,7 @@ class SkipsOnFailureTest extends TestCase
 
         $import->import('import-users.xlsx');
 
-        $this->assertEquals(1, $import->failures);
+        $this->assertSame(1, $import->failures);
 
         // Shouldn't have rollbacked other imported rows.
         $this->assertDatabaseHas('users', [
@@ -114,9 +114,9 @@ class SkipsOnFailureTest extends TestCase
             {
                 $failure = $failures[0];
 
-                Assert::assertEquals(2, $failure->row());
-                Assert::assertEquals('1', $failure->attribute());
-                Assert::assertEquals(['The selected 1 is invalid.'], $failure->errors());
+                Assert::assertSame(2, $failure->row());
+                Assert::assertSame('1', $failure->attribute());
+                Assert::assertSame(['The selected 1 is invalid.'], $failure->errors());
 
                 $this->failures += \count($failures);
             }
@@ -129,7 +129,7 @@ class SkipsOnFailureTest extends TestCase
 
         $import->import('import-users.xlsx');
 
-        $this->assertEquals(1, $import->failures);
+        $this->assertSame(1, $import->failures);
 
         // Shouldn't have rollbacked/skipped the rest of the batch.
         $this->assertDatabaseHas('users', [
@@ -172,9 +172,9 @@ class SkipsOnFailureTest extends TestCase
         /** @var Failure $failure */
         $failure = $import->failures()->first();
 
-        $this->assertEquals(2, $failure->row());
-        $this->assertEquals('1', $failure->attribute());
-        $this->assertEquals(['The selected 1 is invalid.'], $failure->errors());
+        $this->assertSame(2, $failure->row());
+        $this->assertSame('1', $failure->attribute());
+        $this->assertSame(['The selected 1 is invalid.'], $failure->errors());
 
         // Shouldn't have rollbacked other imported rows.
         $this->assertDatabaseHas('users', [

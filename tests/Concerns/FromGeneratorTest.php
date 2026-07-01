@@ -29,6 +29,6 @@ class FromGeneratorTest extends TestCase
 
         $contents = $this->readAsArray(__DIR__ . '/../Data/Disks/Local/from-generator-store.xlsx', 'Xlsx');
 
-        $this->assertEquals(iterator_to_array($export->generator()), $contents);
+        $this->assertSame(iterator_to_array($export->generator()), $contents);
     }
 }

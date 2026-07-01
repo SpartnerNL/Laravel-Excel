@@ -19,7 +19,7 @@ class HeadingRowImportTest extends TestCase
 
         $headings = $import->toArray('import-users-with-headings.xlsx');
 
-        $this->assertEquals([
+        $this->assertSame([
             [
                 ['name', 'email'],
             ],
@@ -36,7 +36,7 @@ class HeadingRowImportTest extends TestCase
 
         $headings = $import->toArray('import-users-with-headings.xlsx');
 
-        $this->assertEquals([
+        $this->assertSame([
             [
                 ['custom-name', 'custom-email'],
             ],
@@ -53,7 +53,7 @@ class HeadingRowImportTest extends TestCase
 
         $headings = $import->toArray('import-users-with-headings.xlsx');
 
-        $this->assertEquals([
+        $this->assertSame([
             [
                 [0, 1],
             ],
@@ -66,7 +66,7 @@ class HeadingRowImportTest extends TestCase
 
         $headings = $import->toArray('import-users-with-headings.xlsx');
 
-        $this->assertEquals([
+        $this->assertSame([
             [
                 ['patrick_brouwers', 'patrick_at_maatwebsitenl'],
             ],
@@ -79,7 +79,7 @@ class HeadingRowImportTest extends TestCase
 
         $headings = $import->toArray('import-multiple-sheets.xlsx');
 
-        $this->assertEquals([
+        $this->assertSame([
             [
                 ['1a1', '1b1'], // slugged first row of sheet 1
             ],
@@ -98,7 +98,7 @@ class HeadingRowImportTest extends TestCase
 
         $headings = $import->toArray('import-multiple-sheets.xlsx');
 
-        $this->assertEquals([
+        $this->assertSame([
             [
                 [0, 1], // slugged first row of sheet 1
             ],
@@ -114,7 +114,7 @@ class HeadingRowImportTest extends TestCase
 
         $headings = $import->toArray('import-multiple-sheets.xlsx');
 
-        $this->assertEquals([
+        $this->assertSame([
             [
                 ['1a2', '1b2'], // slugged 2nd row of sheet 1
             ],
@@ -134,7 +134,7 @@ class HeadingRowImportTest extends TestCase
 
         $headings = $import->toArray('import-users-with-headings.xlsx');
 
-        $this->assertEquals([
+        $this->assertSame([
             [
                 ['custom2-name', 'custom2-email'],
             ],

@@ -74,7 +74,7 @@ class WithStrictNullComparisonTest extends TestCase
             ['string', null, null, 'string'],
         ];
 
-        $this->assertEquals($expected, $actual);
+        $this->assertSame($expected, $actual);
     }
 
     public function test_exports_trailing_empty_cells(): void
@@ -104,7 +104,7 @@ class WithStrictNullComparisonTest extends TestCase
             ['a2', null, null, 'd2'],
         ];
 
-        $this->assertEquals($expected, $actual);
+        $this->assertSame($expected, $actual);
 
         $contents = file_get_contents($file);
         $this->assertStringContains('"a1","","","d1",""', $contents);

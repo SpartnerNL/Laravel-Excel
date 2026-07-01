@@ -43,6 +43,6 @@ class WithStylesTest extends TestCase
         $this->assertTrue($sheet->getStyle('B1')->getFont()->getItalic());
         $this->assertTrue($sheet->getStyle('B2')->getFont()->getBold());
         $this->assertFalse($sheet->getStyle('A2')->getFont()->getBold());
-        $this->assertEquals(16, $sheet->getStyle('C2')->getFont()->getSize());
+        $this->assertSame(16.0, $sheet->getStyle('C2')->getFont()->getSize());
     }
 }

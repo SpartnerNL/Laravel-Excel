@@ -42,9 +42,9 @@ class StoreCollectionTest extends TestCase
 
         // First row are not headings
         $firstRow = collect($array)->first();
-        $this->assertEquals(['test', 'test'], $firstRow);
+        $this->assertSame(['test', 'test'], $firstRow);
 
-        $this->assertEquals([
+        $this->assertSame([
             ['test', 'test'],
             ['test2', 'test2'],
         ], collect($array)->values()->all());
@@ -66,9 +66,9 @@ class StoreCollectionTest extends TestCase
         $this->assertFileExists($file);
 
         $array = $this->readAsArray($file, Excel::XLSX);
-        $this->assertEquals(['column_1', 'column_2'], collect($array)->first());
+        $this->assertSame(['column_1', 'column_2'], collect($array)->first());
 
-        $this->assertEquals([
+        $this->assertSame([
             ['test', 'test'],
             ['test', 'test'],
         ], collect($array)->except(0)->values()->all());
@@ -87,6 +87,6 @@ class StoreCollectionTest extends TestCase
         $this->assertFileExists($file);
 
         $array = $this->readAsArray($file, Excel::XLSX);
-        $this->assertEquals(['name', 'email', 'remember_token'], collect($array)->first());
+        $this->assertSame(['name', 'email', 'remember_token'], collect($array)->first());
     }
 }

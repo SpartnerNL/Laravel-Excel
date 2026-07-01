@@ -41,7 +41,7 @@ class ExcelTest extends TestCase
         $response = ExcelFacade::download($export, 'filename.xlsx');
 
         $this->assertInstanceOf(BinaryFileResponse::class, $response);
-        $this->assertEquals('attachment; filename=filename.xlsx', str_replace('"', '', $response->headers->get('Content-Disposition')));
+        $this->assertSame('attachment; filename=filename.xlsx', str_replace('"', '', $response->headers->get('Content-Disposition')));
     }
 
     public function test_can_download_an_export_object(): void
@@ -51,7 +51,7 @@ class ExcelTest extends TestCase
         $response = $this->SUT->download($export, 'filename.xlsx');
 
         $this->assertInstanceOf(BinaryFileResponse::class, $response);
-        $this->assertEquals('attachment; filename=filename.xlsx', str_replace('"', '', $response->headers->get('Content-Disposition')));
+        $this->assertSame('attachment; filename=filename.xlsx', str_replace('"', '', $response->headers->get('Content-Disposition')));
     }
 
     public function test_can_store_an_export_object_on_default_disk(): void
@@ -192,7 +192,7 @@ class ExcelTest extends TestCase
             use Importable;
         };
 
-        $this->assertEquals([
+        $this->assertSame([
             [
                 ['test', 'test'],
                 ['test', 'test'],
@@ -231,7 +231,7 @@ class ExcelTest extends TestCase
         {
             public function array(array $array): void
             {
-                Assert::assertEquals([
+                Assert::assertSame([
                     ['test', 'test'],
                     ['test', 'test'],
                 ], $array);
@@ -249,7 +249,7 @@ class ExcelTest extends TestCase
         {
             public function array(array $array): void
             {
-                Assert::assertEquals([
+                Assert::assertSame([
                     'tconst',
                     'titleType',
                     'primaryTitle',
@@ -281,7 +281,7 @@ class ExcelTest extends TestCase
         {
             public function array(array $array): void
             {
-                Assert::assertEquals([
+                Assert::assertSame([
                     ['test', 'test'],
                     ['test', 'test'],
                 ], $array);
@@ -292,7 +292,7 @@ class ExcelTest extends TestCase
         {
             public function array(array $array): void
             {
-                Assert::assertEquals([
+                Assert::assertSame([
                     ['test', 'test'],
                     ['test', 'test'],
                 ], $array);
@@ -312,7 +312,7 @@ class ExcelTest extends TestCase
         {
             public function array(array $array): void
             {
-                Assert::assertEquals([
+                Assert::assertSame([
                     ['test', 'test'],
                     ['test', 'test'],
                 ], $array);
@@ -328,7 +328,7 @@ class ExcelTest extends TestCase
         {
             public function array(array $array): void
             {
-                Assert::assertEquals([
+                Assert::assertSame([
                     ['test', 'test'],
                     ['test', 'test'],
                 ], $array);
@@ -346,7 +346,7 @@ class ExcelTest extends TestCase
         {
             public function array(array $array): void
             {
-                Assert::assertEquals([
+                Assert::assertSame([
                     ['test', 'test'],
                     ['test', 'test'],
                 ], $array);
@@ -377,7 +377,7 @@ class ExcelTest extends TestCase
         {
             public function array(array $array): void
             {
-                Assert::assertEquals([
+                Assert::assertSame([
                     ['test', 'test'],
                     ['test', 'test'],
                 ], $array);

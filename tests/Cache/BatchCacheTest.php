@@ -33,12 +33,12 @@ class BatchCacheTest extends TestCase
 
         $cache = $this->givenCache($inMemory);
 
-        $this->assertEquals(
+        $this->assertSame(
             $inMemory,
             $cache->getMultiple(['A1', 'A2', 'A3'])
         );
 
-        $this->assertEquals('A3-value', $cache->get('A3'));
+        $this->assertSame('A3-value', $cache->get('A3'));
     }
 
     public function test_will_get_multiple_from_cache_if_cells_are_persisted(): void
@@ -52,12 +52,12 @@ class BatchCacheTest extends TestCase
 
         $cache = $this->givenCache($inMemory, $persisted);
 
-        $this->assertEquals(
+        $this->assertSame(
             $persisted,
             $cache->getMultiple(['A1', 'A2', 'A3'])
         );
 
-        $this->assertEquals('A3-value', $cache->get('A3'));
+        $this->assertSame('A3-value', $cache->get('A3'));
     }
 
     public function test_will_get_multiple_from_cache_and_persisted(): void
@@ -75,13 +75,13 @@ class BatchCacheTest extends TestCase
 
         $cache = $this->givenCache($inMemory, $persisted);
 
-        $this->assertEquals(
+        $this->assertSame(
             array_merge($inMemory, $persisted),
             $cache->getMultiple(['A1', 'A2', 'A3', 'A4', 'A5', 'A6'])
         );
 
-        $this->assertEquals('A3-value', $cache->get('A3'));
-        $this->assertEquals('A6-value', $cache->get('A6'));
+        $this->assertSame('A3-value', $cache->get('A3'));
+        $this->assertSame('A6-value', $cache->get('A6'));
     }
 
     public function test_it_persists_to_cache_when_memory_limit_reached_on_setting_a_value(): void
@@ -100,10 +100,10 @@ class BatchCacheTest extends TestCase
         $cache->set('A4', 'A4-value', 10000);
 
         // Nothing in memory anymore
-        $this->assertEquals([], array_filter($this->memory->getMultiple(['A1', 'A2', 'A3', 'A4'])));
+        $this->assertSame([], array_filter($this->memory->getMultiple(['A1', 'A2', 'A3', 'A4'])));
 
         // All 4 cells show be persisted
-        $this->assertEquals([
+        $this->assertSame([
             'A1' => 'A1-value',
             'A2' => 'A2-value',
             'A3' => 'A3-value',
@@ -111,7 +111,7 @@ class BatchCacheTest extends TestCase
         ], $this->cache->getMultiple(['A1', 'A2', 'A3', 'A4']));
 
         // Batch cache should return all 4 cells
-        $this->assertEquals([
+        $this->assertSame([
             'A1' => 'A1-value',
             'A2' => 'A2-value',
             'A3' => 'A3-value',
@@ -138,10 +138,10 @@ class BatchCacheTest extends TestCase
         ], 10000);
 
         // Nothing in memory anymore
-        $this->assertEquals([], array_filter($this->memory->getMultiple(['A1', 'A2', 'A3', 'A4', 'A5'])));
+        $this->assertSame([], array_filter($this->memory->getMultiple(['A1', 'A2', 'A3', 'A4', 'A5'])));
 
         // All 4 cells show be persisted
-        $this->assertEquals([
+        $this->assertSame([
             'A1' => 'A1-value',
             'A2' => 'A2-value',
             'A3' => 'A3-value',
@@ -150,7 +150,7 @@ class BatchCacheTest extends TestCase
         ], $this->cache->getMultiple(['A1', 'A2', 'A3', 'A4', 'A5']));
 
         // Batch cache should return all 4 cells
-        $this->assertEquals([
+        $this->assertSame([
             'A1' => 'A1-value',
             'A2' => 'A2-value',
             'A3' => 'A3-value',
