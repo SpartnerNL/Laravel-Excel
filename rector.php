@@ -10,6 +10,7 @@ use Rector\PHPUnit\CodeQuality\Rector\MethodCall\AssertEqualsToSameRector;
 use Rector\PHPUnit\Set\PHPUnitSetList;
 use Rector\TypeDeclaration\Rector\ClassMethod\ParamTypeByMethodCallTypeRector;
 use Rector\TypeDeclaration\Rector\ClassMethod\ReturnTypeFromStrictFluentReturnRector;
+use Rector\TypeDeclarationDocblocks\Rector\ClassMethod\AddReturnDocblockForCommonObjectDenominatorRector;
 use RectorLaravel\Rector\ArrayDimFetch\EnvVariableToEnvHelperRector;
 use RectorLaravel\Rector\FuncCall\AppToResolveRector;
 use RectorLaravel\Rector\StaticCall\CarbonToDateFacadeRector;
@@ -34,7 +35,9 @@ return RectorConfig::configure()
         deadCode: true,
         codeQuality: true,
         typeDeclarations: true,
+        typeDeclarationDocblocks: true,
     )
+    ->withImportNames()
     ->withSets([
         LaravelLevelSetList::UP_TO_LARAVEL_120,
         LaravelSetList::LARAVEL_CODE_QUALITY,
@@ -94,4 +97,14 @@ return RectorConfig::configure()
 
         // Skip vendor-style fixtures or generated files if any get added.
         __DIR__ . '/tests/Data',
+
+        // These tests declare anonymous classes that are returned from functions.
+        // These identifiers are non-fixed, so declaring a return type like
+        // @return \AnonymousClass8985ceefe39748fba5ed7c0d9a8fe5be[] means nothing
+        AddReturnDocblockForCommonObjectDenominatorRector::class => [
+            __DIR__ . '/tests/Concerns/WithMultipleSheetsTest.php',
+            __DIR__ . '/tests/Concerns/WithTitleTest.php',
+            __DIR__ . '/tests/Concerns/WithValidationTest.php',
+            __DIR__ . '/tests/PhpSpreadsheetV5CompatibilityTest.php',
+        ],
     ]);
