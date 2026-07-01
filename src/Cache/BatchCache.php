@@ -102,15 +102,6 @@ class BatchCache implements CacheInterface
             }
         }
 
-        if (is_countable($keys)) {
-            $keyCount = count($keys);
-        } else {
-            $keyCount = 0;
-            foreach ($keys as $key) {
-                $keyCount++;
-            }
-        }
-
         if ($actualItemsInMemory === count($keys)) {
             return $memory;
         }
