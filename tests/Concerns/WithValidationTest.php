@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Maatwebsite\Excel\Tests\Concerns;
 
+use Closure;
+use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
@@ -134,22 +136,13 @@ final class WithValidationTest extends TestCase
             public function rules(): array
             {
                 return [
-                    '1' => new class implements \Illuminate\Contracts\Validation\Rule
+                    '1' => new class implements ValidationRule
                     {
-                        /**
-                         * @param  string  $attribute
-                         */
-                        public function passes($attribute, mixed $value): bool
+                        public function validate(string $attribute, mixed $value, Closure $fail): void
                         {
-                            return $value === 'patrick@maatwebsite.nl';
-                        }
-
-                        /**
-                         * Get the validation error message.
-                         */
-                        public function message(): string
-                        {
-                            return 'Value is not an allowed e-mail.';
+                            if ($value !== 'patrick@maatwebsite.nl') {
+                                $fail('Value is not an allowed e-mail.');
+                            }
                         }
                     },
                 ];
