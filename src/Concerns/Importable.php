@@ -17,7 +17,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 trait Importable
 {
-    protected ?OutputStyle $output;
+    protected OutputStyle $output;
 
     protected ?string $disk = null;
 
@@ -96,11 +96,7 @@ trait Importable
 
     public function getConsoleOutput(): OutputStyle
     {
-        if (!$this->output instanceof OutputStyle) {
-            $this->output = new OutputStyle(new StringInput(''), new NullOutput);
-        }
-
-        return $this->output;
+        return $this->output ??= new OutputStyle(new StringInput(''), new NullOutput);
     }
 
     /**
