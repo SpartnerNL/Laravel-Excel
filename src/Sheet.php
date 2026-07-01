@@ -6,12 +6,12 @@ use Closure;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Collection;
 use Illuminate\Support\LazyCollection;
-use Laravel\Scout\Builder;
 use Maatwebsite\Excel\Concerns\FromArray;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\FromGenerator;
 use Maatwebsite\Excel\Concerns\FromIterator;
 use Maatwebsite\Excel\Concerns\FromQuery;
+use Maatwebsite\Excel\Concerns\FromScout;
 use Maatwebsite\Excel\Concerns\FromView;
 use Maatwebsite\Excel\Concerns\OnEachRow;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
@@ -148,7 +148,11 @@ class Sheet
             $this->worksheet->setTitle($title);
         }
 
-        if (($sheetExport instanceof FromQuery || $sheetExport instanceof FromCollection || $sheetExport instanceof FromArray) && $sheetExport instanceof FromView) {
+        if (($sheetExport instanceof FromQuery
+                || $sheetExport instanceof FromCollection
+                || $sheetExport instanceof FromArray
+                || $sheetExport instanceof FromScout)
+            && $sheetExport instanceof FromView) {
             throw ConcernConflictException::queryOrCollectionAndView();
         }
 
@@ -178,6 +182,12 @@ class Sheet
         } else {
             if ($sheetExport instanceof FromQuery) {
                 $this->fromQuery($sheetExport, $this->worksheet);
+            }
+
+            if ($sheetExport instanceof FromScout) {
+                $this->fromScout($sheetExport, $this->worksheet);
+
+                return;
             }
 
             if ($sheetExport instanceof FromCollection) {
@@ -424,11 +434,6 @@ class Sheet
     public function fromQuery(FromQuery $sheetExport, Worksheet $worksheet): void
     {
         $query = $sheetExport->query();
-        if ($query instanceof Builder) {
-            $this->fromScout($sheetExport, $worksheet);
-
-            return;
-        }
 
         // Operate on a clone to avoid altering the original
         // and use the clone operator directly to support old versions of Laravel
@@ -439,9 +444,9 @@ class Sheet
         });
     }
 
-    public function fromScout(FromQuery $sheetExport, Worksheet $worksheet): void
+    public function fromScout(FromScout $sheetExport, Worksheet $worksheet): void
     {
-        $scout     = $sheetExport->query();
+        $scout     = $sheetExport->scout();
         $chunkSize = $this->getChunkSize($sheetExport);
 
         $chunk = $scout->paginate($chunkSize);

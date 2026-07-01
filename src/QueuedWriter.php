@@ -7,9 +7,9 @@ use Illuminate\Foundation\Bus\PendingDispatch;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Enumerable;
 use Illuminate\Support\Facades\Bus;
-use Laravel\Scout\Builder;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\FromQuery;
+use Maatwebsite\Excel\Concerns\FromScout;
 use Maatwebsite\Excel\Concerns\FromView;
 use Maatwebsite\Excel\Concerns\ShouldBatch;
 use Maatwebsite\Excel\Concerns\WithCustomChunkSize;
@@ -78,6 +78,8 @@ class QueuedWriter
                 $jobs = $jobs->merge($this->exportCollection($sheetExport, $temporaryFile, $writerType, $sheetIndex));
             } elseif ($sheetExport instanceof FromQuery) {
                 $jobs = $jobs->merge($this->exportQuery($sheetExport, $temporaryFile, $writerType, $sheetIndex));
+            } elseif ($sheetExport instanceof FromScout) {
+                $jobs = $jobs->merge($this->exportScout($sheetExport, $temporaryFile, $writerType, $sheetIndex));
             } elseif ($sheetExport instanceof FromView) {
                 $jobs = $jobs->merge($this->exportView($sheetExport, $temporaryFile, $writerType, $sheetIndex));
             }
@@ -117,11 +119,6 @@ class QueuedWriter
         int $sheetIndex
     ): Collection {
         $query = $export->query();
-
-        if ($query instanceof Builder) {
-            return $this->exportScout($export, $temporaryFile, $writerType, $sheetIndex);
-        }
-
         $count = $export instanceof WithCustomQuerySize ? $export->querySize() : $query->count();
         $spins = ceil($count / $this->getChunkSize($export));
 
@@ -142,14 +139,14 @@ class QueuedWriter
     }
 
     private function exportScout(
-        FromQuery $export,
+        FromScout $export,
         TemporaryFile $temporaryFile,
         string $writerType,
         int $sheetIndex
     ): Collection {
         $jobs = new Collection;
 
-        $chunk = $export->query()->paginate($this->getChunkSize($export));
+        $chunk = $export->scout()->paginate($this->getChunkSize($export));
         // Append first page
         $jobs->push(new AppendDataToSheet(
             $export,

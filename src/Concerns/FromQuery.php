@@ -5,7 +5,6 @@ namespace Maatwebsite\Excel\Concerns;
 use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Database\Query\Builder;
-use Laravel\Scout\Builder as ScoutBuilder;
 
 interface FromQuery
 {
@@ -38,5 +37,5 @@ interface FromQuery
      * still works as a tie-breaker — there's no special handling needed,
      * just always set one.
      */
-    public function query(): Builder|EloquentBuilder|Relation|ScoutBuilder;
+    public function query(): Builder|EloquentBuilder|Relation;
 }
