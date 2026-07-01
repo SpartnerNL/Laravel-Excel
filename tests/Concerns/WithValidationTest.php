@@ -675,9 +675,8 @@ class WithValidationTest extends TestCase
                 return $row;
             }
 
-            public function array(array $array): array
+            public function array(array $array): void
             {
-                return [];
             }
         };
 
@@ -721,9 +720,8 @@ class WithValidationTest extends TestCase
                 return $row;
             }
 
-            public function collection(Collection $collection): mixed
+            public function collection(Collection $collection): void
             {
-                return collect();
             }
         };
 

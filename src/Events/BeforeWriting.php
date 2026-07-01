@@ -6,8 +6,6 @@ use Maatwebsite\Excel\Writer;
 
 class BeforeWriting extends Event
 {
-    private object $exportable;
-
     public function __construct(
         public Writer $writer,
         object $exportable

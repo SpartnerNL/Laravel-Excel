@@ -2,6 +2,7 @@
 
 namespace Maatwebsite\Excel;
 
+use Illuminate\Bus\PendingBatch;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\PendingDispatch;
@@ -70,14 +71,14 @@ class Reader
     }
 
     /**
-     * @return PendingDispatch|$this
+     * @return $this|PendingDispatch|PendingBatch|Collection|null
      *
      * @throws ValidationException
      * @throws NoTypeDetectedException
      * @throws FileNotFoundException
      * @throws Exception
      */
-    public function read(object $import, string|UploadedFile $filePath, ?string $readerType = null, ?string $disk = null)
+    public function read(object $import, string|UploadedFile $filePath, ?string $readerType = null, ?string $disk = null): static|PendingDispatch|PendingBatch|Collection|null
     {
         $this->reader = $this->getReader($import, $filePath, $readerType, $disk);
 
@@ -273,11 +274,9 @@ class Reader
             }
 
             // Load specific sheets.
-            if (method_exists($this->reader, 'setLoadSheetsOnly')) {
-                $this->reader->setLoadSheetsOnly(
-                    collect($worksheetNames)->intersect(array_keys($worksheets))->values()->all()
-                );
-            }
+            $this->reader->setLoadSheetsOnly(
+                collect($worksheetNames)->intersect(array_keys($worksheets))->values()->all()
+            );
         } else {
             // Each worksheet the same import class.
             foreach ($worksheetNames as $name) {
@@ -334,16 +333,11 @@ class Reader
 
             // When only sheet names are given and the reader has
             // an option to load only the selected sheets.
-            if (
-                method_exists($this->reader, 'setLoadSheetsOnly')
-                && count(array_filter(array_keys($sheetImports), is_numeric(...))) === 0
-            ) {
+            if (count(array_filter(array_keys($sheetImports), is_numeric(...))) === 0) {
                 $this->reader->setLoadSheetsOnly(array_keys($sheetImports));
             }
 
-            if (method_exists($this->reader, 'setCreateBlankSheetIfNoneRead')) {
-                $this->reader->setCreateBlankSheetIfNoneRead(true);
-            }
+            $this->reader->setCreateBlankSheetIfNoneRead(true);
         }
 
         return $sheetImports;
