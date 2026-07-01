@@ -4,12 +4,20 @@ namespace Maatwebsite\Excel;
 
 trait HasEventBus
 {
+    /**
+     * @var array<string, array<int, callable>>
+     */
     protected static array $globalEvents = [];
 
+    /**
+     * @var array<string, array<int, callable>>
+     */
     protected array $events = [];
 
     /**
      * Register local event listeners.
+     *
+     * @param  array<string, callable>  $listeners
      */
     public function registerListeners(array $listeners): void
     {

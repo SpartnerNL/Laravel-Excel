@@ -16,6 +16,7 @@ class WithConditionalSheetsTest extends TestCase
         {
             use Importable, WithConditionalSheets;
 
+            /** @var array<string, object> */
             public $sheets = [];
 
             public function __construct()
@@ -28,7 +29,7 @@ class WithConditionalSheetsTest extends TestCase
                 $this->sheets = [
                     'Sheet1' => new class implements ToArray
                     {
-                        public $called = false;
+                        public bool $called = false;
 
                         public function array(array $array): void
                         {
@@ -37,7 +38,7 @@ class WithConditionalSheetsTest extends TestCase
                     },
                     'Sheet2' => new class implements ToArray
                     {
-                        public $called = false;
+                        public bool $called = false;
 
                         public function array(array $array): void
                         {

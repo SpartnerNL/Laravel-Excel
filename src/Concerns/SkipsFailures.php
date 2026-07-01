@@ -8,7 +8,7 @@ use Maatwebsite\Excel\Validators\Failure;
 trait SkipsFailures
 {
     /**
-     * @var Failure[]
+     * @var array<int, Failure>
      */
     protected array $failures = [];
 
@@ -18,7 +18,7 @@ trait SkipsFailures
     }
 
     /**
-     * @return Failure[]|Collection
+     * @return Collection<int, Failure>
      */
     public function failures(): Collection
     {

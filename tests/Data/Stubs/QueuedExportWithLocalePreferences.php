@@ -9,6 +9,9 @@ use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
 use PHPUnit\Framework\Assert;
 
+/**
+ * @implements FromCollection<int, User>
+ */
 class QueuedExportWithLocalePreferences implements FromCollection, HasLocalePreference
 {
     use Exportable;
@@ -21,6 +24,9 @@ class QueuedExportWithLocalePreferences implements FromCollection, HasLocalePref
     ) {
     }
 
+    /**
+     * @return Collection<int, User>
+     */
     public function collection(): Collection
     {
         return collect([
@@ -37,7 +43,8 @@ class QueuedExportWithLocalePreferences implements FromCollection, HasLocalePref
     }
 
     /**
-     * @param  iterable  $rows
+     * @param  iterable<array-key, mixed>  $rows
+     * @return iterable<array-key, mixed>
      */
     public function prepareRows($rows): iterable
     {

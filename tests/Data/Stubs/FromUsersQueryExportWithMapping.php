@@ -12,6 +12,9 @@ use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Events\BeforeSheet;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
 
+/**
+ * @implements WithMapping<User>
+ */
 class FromUsersQueryExportWithMapping implements FromQuery, WithEvents, WithMapping
 {
     use Exportable;

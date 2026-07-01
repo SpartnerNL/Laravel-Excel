@@ -23,14 +23,29 @@ class ExcelFake implements Exporter, Importer
 {
     use Macroable;
 
+    /**
+     * @var array<string, object>
+     */
     protected array $downloads = [];
 
+    /**
+     * @var array<string, array<string, object>>
+     */
     protected array $stored = [];
 
+    /**
+     * @var array<string, array<string, object>>
+     */
     protected array $queued = [];
 
+    /**
+     * @var array<class-string, object>
+     */
     protected array $raws = [];
 
+    /**
+     * @var array<string, array<string, object>>
+     */
     protected array $imported = [];
 
     protected bool $matchByRegex = false;
@@ -39,8 +54,10 @@ class ExcelFake implements Exporter, Importer
 
     /**
      * {@inheritdoc}
+     *
+     * @param  array<string, string>  $headers
      */
-    public function download($export, string $fileName, ?string $writerType = null, array $headers = []): BinaryFileResponse
+    public function download(object $export, string $fileName, ?string $writerType = null, array $headers = []): BinaryFileResponse
     {
         $this->downloads[$fileName] = $export;
 
@@ -50,7 +67,7 @@ class ExcelFake implements Exporter, Importer
     /**
      * @param  string|null  $diskName  Fallback for usage with named properties
      */
-    public function store($export, string $filePath, ?string $disk = null, ?string $writerType = null, $diskOptions = [], ?string $diskName = null): bool|PendingDispatch
+    public function store(object $export, string $filePath, ?string $disk = null, ?string $writerType = null, mixed $diskOptions = [], ?string $diskName = null): bool|PendingDispatch
     {
         if ($export instanceof ShouldQueue) {
             return $this->queue($export, $filePath, $disk ?: $diskName, $writerType);
@@ -61,7 +78,7 @@ class ExcelFake implements Exporter, Importer
         return true;
     }
 
-    public function queue($export, string $filePath, ?string $disk = null, ?string $writerType = null, $diskOptions = []): PendingDispatch|PendingBatch
+    public function queue(object $export, string $filePath, ?string $disk = null, ?string $writerType = null, mixed $diskOptions = []): PendingDispatch|PendingBatch
     {
         Queue::fake();
 
@@ -108,6 +125,9 @@ class ExcelFake implements Exporter, Importer
         return $this;
     }
 
+    /**
+     * @return array<array-key, array<int, array<array-key, mixed>>>
+     */
     public function toArray(object $import, string|UploadedFile $file, ?string $disk = null, ?string $readerType = null): array
     {
         $filePath = ($file instanceof UploadedFile) ? $file->getFilename() : $file;
@@ -117,6 +137,9 @@ class ExcelFake implements Exporter, Importer
         return [];
     }
 
+    /**
+     * @return Collection<array-key, Collection<int, Collection<array-key, mixed>>>
+     */
     public function toCollection(?object $import, string|UploadedFile $file, ?string $disk = null, ?string $readerType = null): Collection
     {
         $filePath = ($file instanceof UploadedFile) ? $file->getFilename() : $file;
@@ -233,7 +256,10 @@ class ExcelFake implements Exporter, Importer
         );
     }
 
-    public function assertQueuedWithChain($chain): void
+    /**
+     * @param  array<int, object>  $chain
+     */
+    public function assertQueuedWithChain(array $chain): void
     {
         Queue::assertPushedWithChain($this->job::class, $chain);
     }
@@ -278,6 +304,8 @@ class ExcelFake implements Exporter, Importer
      * Asserts that an array has a specified key and returns the key if successful.
      *
      * @see matchByRegex for more information about file path matching
+     *
+     * @param  array<string, object>  $disk
      *
      * @throws ExpectationFailedException
      * @throws Exception

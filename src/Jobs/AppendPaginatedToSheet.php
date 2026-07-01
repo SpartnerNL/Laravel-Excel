@@ -30,6 +30,8 @@ class AppendPaginatedToSheet implements ShouldQueue
 
     /**
      * Get the middleware the job should be dispatched through.
+     *
+     * @return array<int, object>
      */
     public function middleware(): array
     {
@@ -58,6 +60,9 @@ class AppendPaginatedToSheet implements ShouldQueue
         });
     }
 
+    /**
+     * @return iterable<array-key, mixed>
+     */
     protected function chunk(): iterable
     {
         if ($this->sheetExport instanceof FromScout) {

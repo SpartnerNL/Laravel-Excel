@@ -9,7 +9,7 @@ use Maatwebsite\Excel\Validators\Failure;
 class RowSkippedException extends Exception
 {
     /**
-     * @var Failure[]
+     * @var array<int, Failure>
      */
     private array $failures;
 
@@ -21,7 +21,7 @@ class RowSkippedException extends Exception
     }
 
     /**
-     * @return Failure[]|Collection
+     * @return Collection<int, Failure>
      */
     public function failures(): Collection
     {

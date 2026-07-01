@@ -23,9 +23,12 @@ class WithCustomStartCellTest extends TestCase
     {
         $export = new class implements FromCollection, WithCustomStartCell
         {
+            /**
+             * @return Collection<int, mixed>
+             */
             public function collection(): Collection
             {
-                return collect([
+                return new Collection([
                     ['A1', 'B1'],
                     ['A2', 'B2'],
                 ]);

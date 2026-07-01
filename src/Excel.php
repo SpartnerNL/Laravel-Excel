@@ -13,6 +13,7 @@ use Maatwebsite\Excel\Helpers\FileTypeDetector;
 use Maatwebsite\Excel\Validators\ValidationException;
 use PhpOffice\PhpSpreadsheet\Exception;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class Excel implements Exporter, Importer
 {
@@ -52,8 +53,10 @@ class Excel implements Exporter, Importer
 
     /**
      * {@inheritdoc}
+     *
+     * @param  array<string, string>  $headers
      */
-    public function download($export, string $fileName, ?string $writerType = null, array $headers = []): BinaryFileResponse
+    public function download(object $export, string $fileName, ?string $writerType = null, array $headers = []): BinaryFileResponse
     {
         // Clear output buffer to prevent stuff being prepended to the Excel output.
         if (ob_get_length() > 0) {
@@ -73,7 +76,7 @@ class Excel implements Exporter, Importer
      *
      * @param  string|null  $disk  Fallback for usage with named properties
      */
-    public function store($export, string $filePath, ?string $diskName = null, ?string $writerType = null, $diskOptions = [], ?string $disk = null): bool|PendingDispatch|PendingBatch
+    public function store(object $export, string $filePath, ?string $diskName = null, ?string $writerType = null, mixed $diskOptions = [], ?string $disk = null): bool|PendingDispatch|PendingBatch
     {
         if ($export instanceof ShouldQueue) {
             return $this->queue($export, $filePath, $diskName ?: $disk, $writerType, $diskOptions);
@@ -91,7 +94,7 @@ class Excel implements Exporter, Importer
         return $exported;
     }
 
-    public function queue($export, string $filePath, ?string $disk = null, ?string $writerType = null, $diskOptions = []): PendingDispatch|PendingBatch
+    public function queue(object $export, string $filePath, ?string $disk = null, ?string $writerType = null, mixed $diskOptions = []): PendingDispatch|PendingBatch
     {
         $writerType = FileTypeDetector::detectStrict($filePath, $writerType);
 
@@ -104,7 +107,7 @@ class Excel implements Exporter, Importer
         );
     }
 
-    public function raw($export, string $writerType): string
+    public function raw(object $export, string $writerType): string
     {
         $temporaryFile = $this->writer->export($export, $writerType);
 
@@ -117,7 +120,7 @@ class Excel implements Exporter, Importer
     /**
      * @throws ValidationException
      */
-    public function import($import, $filePath, ?string $disk = null, ?string $readerType = null): static|Reader|PendingDispatch|PendingBatch
+    public function import(object $import, string|UploadedFile $filePath, ?string $disk = null, ?string $readerType = null): static|Reader|PendingDispatch|PendingBatch
     {
         $readerType = FileTypeDetector::detect($filePath, $readerType);
         $response   = $this->reader->read($import, $filePath, $readerType, $disk);
@@ -129,21 +132,27 @@ class Excel implements Exporter, Importer
         return $this;
     }
 
-    public function toArray($import, $filePath, ?string $disk = null, ?string $readerType = null): array
+    /**
+     * @return array<array-key, array<int, array<array-key, mixed>>>
+     */
+    public function toArray(object $import, string|UploadedFile $filePath, ?string $disk = null, ?string $readerType = null): array
     {
         $readerType = FileTypeDetector::detect($filePath, $readerType);
 
         return $this->reader->toArray($import, $filePath, $readerType, $disk);
     }
 
-    public function toCollection(?object $import, $filePath, ?string $disk = null, ?string $readerType = null): Collection
+    /**
+     * @return Collection<array-key, Collection<int, Collection<array-key, mixed>>>
+     */
+    public function toCollection(?object $import, string|UploadedFile $filePath, ?string $disk = null, ?string $readerType = null): Collection
     {
         $readerType = FileTypeDetector::detect($filePath, $readerType);
 
         return $this->reader->toCollection($import, $filePath, $readerType, $disk);
     }
 
-    public function queueImport(ShouldQueue $import, $filePath, ?string $disk = null, ?string $readerType = null): PendingDispatch|PendingBatch
+    public function queueImport(ShouldQueue $import, string|UploadedFile $filePath, ?string $disk = null, ?string $readerType = null): PendingDispatch|PendingBatch
     {
         return $this->import($import, $filePath, $disk, $readerType);
     }

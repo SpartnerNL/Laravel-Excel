@@ -7,7 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 interface ToModel
 {
     /**
-     * @return Model|Model[]|null
+     * @param  array<array-key, mixed>  $row
+     * @return Model|array<int, Model>|null
      */
     public function model(array $row): Model|array|null;
 }

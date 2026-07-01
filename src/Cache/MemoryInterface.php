@@ -8,5 +8,8 @@ interface MemoryInterface extends CacheInterface
 {
     public function reachedMemoryLimit(): bool;
 
+    /**
+     * @return array<string, mixed>
+     */
     public function flush(): array;
 }

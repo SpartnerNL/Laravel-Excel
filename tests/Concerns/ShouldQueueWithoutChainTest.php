@@ -85,8 +85,8 @@ class ShouldQueueWithoutChainTest extends TestCase
 
         $import->import('import-users.xlsx');
 
-        /** @phpstan-ignore staticMethod.notFound */
-        $jobs   = Queue::pushedJobs();
+        /** @var array<class-string, array<int, array<string, mixed>>> $jobs */
+        $jobs   = Queue::pushedJobs(); // @phpstan-ignore staticMethod.notFound
         $chunks = collect($jobs[ReadChunk::class])->pluck('job');
         $chunks->each(function (ReadChunk $chunk): void {
             self::assertFalse(ReadChunk::isComplete($chunk->getUniqueId()));

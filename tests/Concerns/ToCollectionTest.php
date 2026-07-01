@@ -16,7 +16,7 @@ class ToCollectionTest extends TestCase
         {
             use Importable;
 
-            public $called = false;
+            public bool $called = false;
 
             public function collection(Collection $collection): void
             {
@@ -40,7 +40,7 @@ class ToCollectionTest extends TestCase
         {
             use Importable;
 
-            public $called = 0;
+            public int $called = 0;
 
             public function collection(Collection $collection): void
             {

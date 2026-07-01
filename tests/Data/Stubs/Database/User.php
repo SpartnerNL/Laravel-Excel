@@ -24,18 +24,26 @@ use Maatwebsite\Excel\Tests\QueuedQueryExportTest;
  */
 class User extends Model
 {
+    /** @use HasFactory<UserFactory> */
     use HasFactory;
+
     use Searchable;
 
     protected $guarded = [];
 
     protected $hidden = ['password', 'email_verified_at', 'options', 'group_id'];
 
+    /**
+     * @return BelongsToMany<Group, $this>
+     */
     public function groups(): BelongsToMany
     {
         return $this->belongsToMany(Group::class);
     }
 
+    /**
+     * @return BelongsTo<Group, $this>
+     */
     public function group(): BelongsTo
     {
         return $this->belongsTo(Group::class);

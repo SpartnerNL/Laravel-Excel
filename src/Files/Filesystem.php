@@ -11,6 +11,9 @@ class Filesystem
     ) {
     }
 
+    /**
+     * @param  array<string, mixed>  $diskOptions
+     */
     public function disk(?string $disk = null, array $diskOptions = []): Disk
     {
         return new Disk(

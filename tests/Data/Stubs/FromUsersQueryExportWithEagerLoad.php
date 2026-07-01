@@ -3,13 +3,14 @@
 namespace Maatwebsite\Excel\Tests\Data\Stubs;
 
 use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
-use Illuminate\Database\Eloquent\Relations\Relation;
-use Illuminate\Database\Query\Builder;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
 
+/**
+ * @implements WithMapping<User>
+ */
 class FromUsersQueryExportWithEagerLoad implements FromQuery, WithMapping
 {
     use Exportable;
@@ -17,7 +18,7 @@ class FromUsersQueryExportWithEagerLoad implements FromQuery, WithMapping
     /**
      * @return EloquentBuilder<User>
      */
-    public function query(): Builder|EloquentBuilder|Relation
+    public function query(): EloquentBuilder
     {
         return User::query()->with([
             'groups' => function ($query): void {

@@ -9,7 +9,7 @@ use Maatwebsite\Excel\Concerns\WithStartRow;
 use Maatwebsite\Excel\Imports\HeadingRowFormatter;
 
 /**
- * @implements WithMapping<array>
+ * @implements WithMapping<array<array-key, mixed>>
  */
 class HeadingRowImport implements WithLimit, WithMapping, WithStartRow
 {
@@ -30,6 +30,9 @@ class HeadingRowImport implements WithLimit, WithMapping, WithStartRow
         return 1;
     }
 
+    /**
+     * @return array<array-key, mixed>
+     */
     public function map(mixed $row): array
     {
         return HeadingRowFormatter::format($row);

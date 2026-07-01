@@ -14,6 +14,7 @@ use Maatwebsite\Excel\Tests\Data\Stubs\Database\Factories\GroupFactory;
  */
 class Group extends Model
 {
+    /** @use HasFactory<GroupFactory> */
     use HasFactory;
 
     public $timestamps = false;

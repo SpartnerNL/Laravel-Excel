@@ -31,7 +31,8 @@ class RemembersRowNumberTest extends TestCase
             use Importable;
             use RemembersRowNumber;
 
-            public $rowNumbers = [];
+            /** @var array<int, int> */
+            public array $rowNumbers = [];
 
             public function model(array $row): null
             {
@@ -53,7 +54,8 @@ class RemembersRowNumberTest extends TestCase
             use Importable;
             use RemembersRowNumber;
 
-            public $rowNumbers = [];
+            /** @var array<int, int> */
+            public array $rowNumbers = [];
 
             public function chunkSize(): int
             {
@@ -80,7 +82,8 @@ class RemembersRowNumberTest extends TestCase
             use Importable;
             use RemembersRowNumber;
 
-            public $rowNumbers = [];
+            /** @var array<int, int> */
+            public array $rowNumbers = [];
 
             public function chunkSize(): int
             {

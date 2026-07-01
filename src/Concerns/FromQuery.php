@@ -3,6 +3,8 @@
 namespace Maatwebsite\Excel\Concerns;
 
 use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Database\Query\Builder;
 
@@ -36,6 +38,8 @@ interface FromQuery
      * have a deterministic lexicographic total order, so `orderBy('id')`
      * still works as a tie-breaker — there's no special handling needed,
      * just always set one.
+     *
+     * @return Builder|EloquentBuilder<covariant Model>|Relation<covariant Model, covariant Model, Collection<int, Model>>
      */
     public function query(): Builder|EloquentBuilder|Relation;
 }

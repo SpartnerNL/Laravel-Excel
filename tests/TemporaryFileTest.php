@@ -8,9 +8,9 @@ use RuntimeException;
 
 class TemporaryFileTest extends TestCase
 {
-    private $defaultDirectoryPermissions;
+    private string $defaultDirectoryPermissions;
 
-    private $defaultFilePermissions;
+    private string $defaultFilePermissions;
 
     /**
      * Setup the test environment.
@@ -84,7 +84,7 @@ class TemporaryFileTest extends TestCase
         $this->assertSame('0600', substr(sprintf('%o', fileperms($temporaryFile->getLocalPath())), -4));
     }
 
-    public function test_cannot_use_file_as_temporary_directory()
+    public function test_cannot_use_file_as_temporary_directory(): void
     {
         $path = FileHelper::absolutePath('temporary-directory-file', 'local');
         FileHelper::recursiveDelete($path);

@@ -10,12 +10,19 @@ use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
 use PHPUnit\Framework\Assert;
 
+/**
+ * @implements FromCollection<int, User>
+ * @implements WithMapping<User>
+ */
 class QueuedExportWithFailedHook implements FromCollection, WithMapping
 {
     use Exportable;
 
     public bool $failed = false;
 
+    /**
+     * @return Collection<int, User>
+     */
     public function collection(): Collection
     {
         return collect([

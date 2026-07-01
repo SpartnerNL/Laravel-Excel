@@ -16,7 +16,7 @@ class WithStylesTest extends TestCase
         {
             use Exportable;
 
-            public function styles(Worksheet $sheet)
+            public function styles(Worksheet $sheet): array
             {
                 return [
                     1    => ['font' => ['italic' => true]],

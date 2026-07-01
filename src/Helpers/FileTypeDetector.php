@@ -10,7 +10,7 @@ class FileTypeDetector
     /**
      * @throws NoTypeDetectedException
      */
-    public static function detect($filePath, ?string $type = null): ?string
+    public static function detect(string|UploadedFile $filePath, ?string $type = null): ?string
     {
         if ($type !== null) {
             return $type;

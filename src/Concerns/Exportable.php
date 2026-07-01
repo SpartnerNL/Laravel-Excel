@@ -17,6 +17,9 @@ trait Exportable
 
     protected ?string $writerType = null;
 
+    /**
+     * @var array<string, string>|null
+     */
     protected ?array $headers = [];
 
     protected ?string $filePath = null;
@@ -26,6 +29,8 @@ trait Exportable
     protected mixed $diskOptions = [];
 
     /**
+     * @param  array<string, string>|null  $headers
+     *
      * @throws NoFilenameGivenException
      */
     public function download(?string $fileName = null, ?string $writerType = null, ?array $headers = null): Response|BinaryFileResponse
