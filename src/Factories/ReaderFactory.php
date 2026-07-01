@@ -21,6 +21,7 @@ class ReaderFactory
 
     /**
      * @throws Exception
+     * @throws NoTypeDetectedException
      */
     public static function make(?object $import, TemporaryFile $file, ?string $readerType = null): IReader
     {
@@ -28,13 +29,8 @@ class ReaderFactory
             $readerType ?: self::identify($file)
         );
 
-        if (method_exists($reader, 'setReadDataOnly')) {
-            $reader->setReadDataOnly(config('excel.imports.read_only', true));
-        }
-
-        if (method_exists($reader, 'setReadEmptyCells')) {
-            $reader->setReadEmptyCells(!config('excel.imports.ignore_empty', false));
-        }
+        $reader->setReadDataOnly(config('excel.imports.read_only', true));
+        $reader->setReadEmptyCells(!config('excel.imports.ignore_empty', false));
 
         if ($reader instanceof Csv) {
             static::applyCsvSettings(config('excel.imports.csv', []));
@@ -48,9 +44,7 @@ class ReaderFactory
             $reader->setEscapeCharacter(static::$escapeCharacter);
             $reader->setContiguous(static::$contiguous);
             $reader->setInputEncoding(static::$inputEncoding);
-            if (method_exists($reader, 'setTestAutoDetect')) {
-                $reader->setTestAutoDetect(static::$testAutoDetect);
-            }
+            $reader->setTestAutoDetect(static::$testAutoDetect);
         }
 
         if ($import instanceof WithReadFilter) {
@@ -71,6 +65,7 @@ class ReaderFactory
     private static function identify(TemporaryFile $temporaryFile): string
     {
         try {
+            /** @throws Exception */
             return IOFactory::identify($temporaryFile->getLocalPath());
         } catch (Exception $e) {
             throw new NoTypeDetectedException('', 0, $e);

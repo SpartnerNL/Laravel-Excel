@@ -76,7 +76,7 @@ final class WithUpsertsTest extends TestCase
             'password' => 'secret',
         ]);
 
-        $this->assertEquals(2, User::count());
+        $this->assertSame(2, User::count());
     }
 
     public function test_can_upsert_models_in_rows(): void
@@ -125,7 +125,7 @@ final class WithUpsertsTest extends TestCase
             'password' => 'secret',
         ]);
 
-        $this->assertEquals(2, User::count());
+        $this->assertSame(2, User::count());
     }
 
     public function test_can_upsert_models_in_batches_with_defined_upsert_columns(): void
@@ -184,7 +184,7 @@ final class WithUpsertsTest extends TestCase
             'password' => 'secret',
         ]);
 
-        $this->assertEquals(2, User::count());
+        $this->assertSame(2, User::count());
     }
 
     public function test_can_upsert_models_in_rows_with_defined_upsert_columns(): void
@@ -238,6 +238,6 @@ final class WithUpsertsTest extends TestCase
             'password' => 'secret',
         ]);
 
-        $this->assertEquals(2, User::count());
+        $this->assertSame(2, User::count());
     }
 }

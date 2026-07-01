@@ -73,7 +73,7 @@ final class WithLimitTest extends TestCase
 
             public function array(array $array): void
             {
-                Assert::assertEquals([
+                Assert::assertSame([
                     [
                         'Patrick Brouwers',
                         'patrick@maatwebsite.nl',
@@ -98,7 +98,7 @@ final class WithLimitTest extends TestCase
 
             public function array(array $array): void
             {
-                Assert::assertEquals([
+                Assert::assertSame([
                     [
                         'name'  => 'Patrick Brouwers',
                         'email' => 'patrick@maatwebsite.nl',
@@ -123,7 +123,7 @@ final class WithLimitTest extends TestCase
 
             public function array(array $array): void
             {
-                Assert::assertEquals([
+                Assert::assertSame([
                     [
                         'name'  => 'Patrick Brouwers',
                         'email' => 'patrick@maatwebsite.nl',

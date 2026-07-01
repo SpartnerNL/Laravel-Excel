@@ -37,7 +37,7 @@ class Failure implements Arrayable, JsonSerializable
 
     public function toArray(): array
     {
-        return collect($this->errors)->map(fn ($message): array|string|null => __('There was an error on row :row. :message', ['row' => $this->row, 'message' => $message]))->all();
+        return collect($this->errors)->map(fn ($message): array|string => __('There was an error on row :row. :message', ['row' => $this->row, 'message' => $message]))->all();
     }
 
     /**

@@ -167,7 +167,7 @@ final class ExcelTest extends TestCase
     public function test_cannot_use_from_collection_and_from_view_on_same_export(): void
     {
         $this->expectException(ConcernConflictException::class);
-        $this->expectExceptionMessage('Cannot use FromQuery, FromArray or FromCollection and FromView on the same sheet');
+        $this->expectExceptionMessage('Cannot use FromQuery, FromScout, FromArray or FromCollection and FromView on the same sheet.');
 
         $export = new class implements FromCollection, FromView
         {
@@ -233,7 +233,7 @@ final class ExcelTest extends TestCase
         {
             public function array(array $array): void
             {
-                Assert::assertEquals([
+                Assert::assertSame([
                     ['test', 'test'],
                     ['test', 'test'],
                 ], $array);
@@ -251,7 +251,7 @@ final class ExcelTest extends TestCase
         {
             public function array(array $array): void
             {
-                Assert::assertEquals([
+                Assert::assertSame([
                     'tconst',
                     'titleType',
                     'primaryTitle',
@@ -283,7 +283,7 @@ final class ExcelTest extends TestCase
         {
             public function array(array $array): void
             {
-                Assert::assertEquals([
+                Assert::assertSame([
                     ['test', 'test'],
                     ['test', 'test'],
                 ], $array);
@@ -294,7 +294,7 @@ final class ExcelTest extends TestCase
         {
             public function array(array $array): void
             {
-                Assert::assertEquals([
+                Assert::assertSame([
                     ['test', 'test'],
                     ['test', 'test'],
                 ], $array);
@@ -314,7 +314,7 @@ final class ExcelTest extends TestCase
         {
             public function array(array $array): void
             {
-                Assert::assertEquals([
+                Assert::assertSame([
                     ['test', 'test'],
                     ['test', 'test'],
                 ], $array);
@@ -330,7 +330,7 @@ final class ExcelTest extends TestCase
         {
             public function array(array $array): void
             {
-                Assert::assertEquals([
+                Assert::assertSame([
                     ['test', 'test'],
                     ['test', 'test'],
                 ], $array);
@@ -348,7 +348,7 @@ final class ExcelTest extends TestCase
         {
             public function array(array $array): void
             {
-                Assert::assertEquals([
+                Assert::assertSame([
                     ['test', 'test'],
                     ['test', 'test'],
                 ], $array);
@@ -379,7 +379,7 @@ final class ExcelTest extends TestCase
         {
             public function array(array $array): void
             {
-                Assert::assertEquals([
+                Assert::assertSame([
                     ['test', 'test'],
                     ['test', 'test'],
                 ], $array);

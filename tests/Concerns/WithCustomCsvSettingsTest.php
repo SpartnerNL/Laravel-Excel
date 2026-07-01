@@ -135,7 +135,7 @@ final class WithCustomCsvSettingsTest extends TestCase
 
             public function array(array $array): void
             {
-                Assert::assertEquals([
+                Assert::assertSame([
                     ['A1', 'B1'],
                     ['A2', 'B2'],
                 ], $array);
@@ -158,7 +158,7 @@ final class WithCustomCsvSettingsTest extends TestCase
 
             public function array(array $array): void
             {
-                Assert::assertEquals([
+                Assert::assertSame([
                     ['A1;B1'],
                     ['A2;B2'],
                 ], $array);

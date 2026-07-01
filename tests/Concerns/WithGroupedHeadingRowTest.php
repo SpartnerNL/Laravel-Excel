@@ -37,7 +37,7 @@ final class WithGroupedHeadingRowTest extends TestCase
 
             public function array(array $array): void
             {
-                Assert::assertEquals([
+                Assert::assertSame([
                     [
                         'name'    => 'Patrick Brouwers',
                         'email'   => 'patrick@maatwebsite.nl',
@@ -61,7 +61,7 @@ final class WithGroupedHeadingRowTest extends TestCase
 
             public function onRow(Row $row): void
             {
-                Assert::assertEquals(
+                Assert::assertSame(
                     [
                         'name'    => 'Patrick Brouwers',
                         'email'   => 'patrick@maatwebsite.nl',
@@ -90,7 +90,7 @@ final class WithGroupedHeadingRowTest extends TestCase
             {
                 $this->called = true;
 
-                Assert::assertEquals([
+                Assert::assertSame([
                     [
                         'name'    => 'Patrick Brouwers',
                         'email'   => 'patrick@maatwebsite.nl',

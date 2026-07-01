@@ -37,6 +37,6 @@ final class WithColumnWidthsTest extends TestCase
 
         $spreadsheet = $this->read(__DIR__ . '/../Data/Disks/Local/with-column-widths.xlsx', 'Xlsx');
 
-        $this->assertEquals(55, $spreadsheet->getActiveSheet()->getColumnDimension('A')->getWidth());
+        $this->assertEqualsWithDelta(55.0, $spreadsheet->getActiveSheet()->getColumnDimension('A')->getWidth(), PHP_FLOAT_EPSILON);
     }
 }

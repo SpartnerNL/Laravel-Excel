@@ -18,6 +18,7 @@ use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\WithLimit;
 use Maatwebsite\Excel\Concerns\WithProgressBar;
 use Maatwebsite\Excel\Files\TemporaryFile;
+use Maatwebsite\Excel\Helpers\QueueResolver;
 use Maatwebsite\Excel\Imports\HeadingRowExtractor;
 use Maatwebsite\Excel\Jobs\AfterImportJob;
 use Maatwebsite\Excel\Jobs\QueueImport;
@@ -40,7 +41,7 @@ class ChunkReader
         $chunkSize    = $import->chunkSize();
         $totalRows    = $reader->getTotalRows();
         $worksheets   = $reader->getWorksheets($import);
-        $queue        = property_exists($import, 'queue') ? $import->queue : null;
+        $queue        = QueueResolver::queue($import);
         $delayCleanup = property_exists($import, 'cleanupInterval') ? $import->cleanupInterval : 60;
 
         if ($import instanceof WithProgressBar) {

@@ -152,7 +152,7 @@ final class WithMultipleSheetsTest extends TestCase
 
         $import->import('import-multiple-sheets.xlsx');
 
-        $this->assertEquals('Some Random Sheet Name', $import->unknown);
+        $this->assertSame('Some Random Sheet Name', $import->unknown);
     }
 
     public function test_unknown_sheet_indices_can_be_ignored_per_name(): void
@@ -171,7 +171,7 @@ final class WithMultipleSheetsTest extends TestCase
                          */
                         public function onUnknownSheet($sheetName): void
                         {
-                            Assert::assertEquals('Some Random Sheet Name', $sheetName);
+                            Assert::assertSame('Some Random Sheet Name', $sheetName);
                         }
                     },
                 ];
@@ -209,7 +209,7 @@ final class WithMultipleSheetsTest extends TestCase
 
         $import->import('import-multiple-sheets.xlsx');
 
-        $this->assertEquals(99999, $import->unknown);
+        $this->assertSame(99999, $import->unknown);
     }
 
     public function test_unknown_sheet_indices_can_be_ignored_per_sheet(): void
@@ -228,7 +228,7 @@ final class WithMultipleSheetsTest extends TestCase
                          */
                         public function onUnknownSheet($sheetName): void
                         {
-                            Assert::assertEquals(99999, $sheetName);
+                            Assert::assertSame(99999, $sheetName);
                         }
                     },
                 ];
@@ -251,7 +251,7 @@ final class WithMultipleSheetsTest extends TestCase
                     {
                         public function array(array $array): void
                         {
-                            Assert::assertEquals([
+                            Assert::assertSame([
                                 ['1.A1', '1.B1'],
                                 ['1.A2', '1.B2'],
                             ], $array);
@@ -261,7 +261,7 @@ final class WithMultipleSheetsTest extends TestCase
                     {
                         public function array(array $array): void
                         {
-                            Assert::assertEquals([
+                            Assert::assertSame([
                                 ['2.A1', '2.B1'],
                                 ['2.A2', '2.B2'],
                             ], $array);
@@ -287,7 +287,7 @@ final class WithMultipleSheetsTest extends TestCase
                     {
                         public function array(array $array): void
                         {
-                            Assert::assertEquals([
+                            Assert::assertSame([
                                 ['2.A1', '2.B1'],
                                 ['2.A2', '2.B2'],
                             ], $array);
@@ -297,7 +297,7 @@ final class WithMultipleSheetsTest extends TestCase
                     {
                         public function array(array $array): void
                         {
-                            Assert::assertEquals([
+                            Assert::assertSame([
                                 ['1.A1', '1.B1'],
                                 ['1.A2', '1.B2'],
                             ], $array);
@@ -328,7 +328,7 @@ final class WithMultipleSheetsTest extends TestCase
                         public function array(array $array): void
                         {
                             $this->called = true;
-                            Assert::assertEquals([
+                            Assert::assertSame([
                                 ['1.A1', '1.B1'],
                                 ['1.A2', '1.B2'],
                             ], $array);
@@ -341,7 +341,7 @@ final class WithMultipleSheetsTest extends TestCase
                         public function array(array $array): void
                         {
                             $this->called = true;
-                            Assert::assertEquals([
+                            Assert::assertSame([
                                 ['2.A1', '2.B1'],
                                 ['2.A2', '2.B2'],
                             ], $array);
@@ -381,7 +381,7 @@ final class WithMultipleSheetsTest extends TestCase
                         public function array(array $array): void
                         {
                             $this->called = true;
-                            Assert::assertEquals([
+                            Assert::assertSame([
                                 ['1.A1', '1.B1'],
                                 ['1.A2', '1.B2'],
                             ], $array);
@@ -394,7 +394,7 @@ final class WithMultipleSheetsTest extends TestCase
                         public function array(array $array): void
                         {
                             $this->called = true;
-                            Assert::assertEquals([
+                            Assert::assertSame([
                                 ['2.A1', '2.B1'],
                                 ['2.A2', '2.B2'],
                             ], $array);

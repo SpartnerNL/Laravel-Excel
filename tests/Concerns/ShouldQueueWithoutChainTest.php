@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Queue;
 use Maatwebsite\Excel\Jobs\AfterImportJob;
 use Maatwebsite\Excel\Jobs\QueueImport;
 use Maatwebsite\Excel\Jobs\ReadChunk;
+use Maatwebsite\Excel\Tests\Data\Stubs\QueuedImportWithQueueAttribute;
 use Maatwebsite\Excel\Tests\Data\Stubs\QueueImportWithoutJobChaining;
 use Maatwebsite\Excel\Tests\TestCase;
 
@@ -61,6 +62,21 @@ final class ShouldQueueWithoutChainTest extends TestCase
 
         Queue::assertPushedOn('queue-name', ReadChunk::class);
         Queue::assertPushedOn('queue-name', AfterImportJob::class);
+    }
+
+    public function test_a_queue_attribute_is_used_when_importing(): void
+    {
+        if (!class_exists(Illuminate\Queue\Attributes\Queue::class)) {
+            $this->markTestSkipped('The #[Queue] attribute is not available on this Laravel version');
+        }
+
+        Queue::fake();
+
+        $import = new QueuedImportWithQueueAttribute;
+        $import->import('import-users.xlsx');
+
+        Queue::assertPushedOn('excel-imports', ReadChunk::class);
+        Queue::assertPushedOn('excel-imports', AfterImportJob::class);
     }
 
     public function test_the_cleanup_only_runs_when_all_jobs_are_done(): void

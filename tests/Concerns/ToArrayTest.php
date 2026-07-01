@@ -23,7 +23,7 @@ final class ToArrayTest extends TestCase
             {
                 $this->called = true;
 
-                Assert::assertEquals([
+                Assert::assertSame([
                     ['test', 'test'],
                     ['test', 'test'],
                 ], $array);
@@ -49,7 +49,7 @@ final class ToArrayTest extends TestCase
 
                 $sheetNumber = $this->called;
 
-                Assert::assertEquals([
+                Assert::assertSame([
                     [$sheetNumber . '.A1', $sheetNumber . '.B1'],
                     [$sheetNumber . '.A2', $sheetNumber . '.B2'],
                 ], $array);
@@ -58,6 +58,6 @@ final class ToArrayTest extends TestCase
 
         $import->import('import-multiple-sheets.xlsx');
 
-        $this->assertEquals(2, $import->called);
+        $this->assertSame(2, $import->called);
     }
 }

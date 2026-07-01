@@ -128,8 +128,8 @@ final class WithCalculatedFormulasTest extends TestCase
 
                         public function array(array $array): void
                         {
-                            Assert::assertEquals([
-                                ['1', '1'],
+                            Assert::assertSame([
+                                [1, 1],
                             ], $array);
                         }
                     },
@@ -139,8 +139,8 @@ final class WithCalculatedFormulasTest extends TestCase
 
                         public function array(array $array): void
                         {
-                            Assert::assertEquals([
-                                ['2'],
+                            Assert::assertSame([
+                                [2],
                             ], $array);
                         }
                     },

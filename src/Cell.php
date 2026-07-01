@@ -50,10 +50,7 @@ class Cell
 
             if ($formatData) {
                 $style = $this->cell->getWorksheet()->getParent()->getCellXfByIndex($this->cell->getXfIndex());
-                $value = NumberFormat::toFormattedString(
-                    $value,
-                    ($style && $style->getNumberFormat()) ? $style->getNumberFormat()->getFormatCode() : NumberFormat::FORMAT_GENERAL
-                );
+                $value = NumberFormat::toFormattedString($value, $style->getNumberFormat()->getFormatCode());
             }
         }
 

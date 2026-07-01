@@ -30,7 +30,7 @@ final class WithBackgroundColorTest extends TestCase
         $sheet       = $spreadsheet->getDefaultStyle();
 
         $this->assertSame(Fill::FILL_SOLID, $sheet->getFill()->getFillType());
-        $this->assertEquals('000000', $sheet->getFill()->getStartColor()->getRGB());
+        $this->assertSame('000000', $sheet->getFill()->getStartColor()->getRGB());
     }
 
     public function test_can_configure_background_color_as_array(): void

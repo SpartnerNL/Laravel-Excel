@@ -49,6 +49,6 @@ final class WithTitleTest extends TestCase
         $spreadsheet = $this->read(__DIR__ . '/../Data/Disks/Local/with-title-store.xlsx', 'Xlsx');
 
         $this->assertSame('12/3456789123/45678912345/678912345/6789', $spreadsheet->getProperties()->getTitle());
-        $this->assertEquals('1234567891234567891234567891234', $spreadsheet->getActiveSheet()->getTitle());
+        $this->assertSame('1234567891234567891234567891234', $spreadsheet->getActiveSheet()->getTitle());
     }
 }

@@ -28,7 +28,7 @@ class QueuedExportWithFailedEvents implements WithEvents, WithMultipleSheets
 
     public function failed(Throwable $exception): void
     {
-        Assert::assertEquals('catch exception from QueueExport job', $exception->getMessage());
+        Assert::assertSame('catch exception from QueueExport job', $exception->getMessage());
 
         app()->bind('queue-has-failed-from-queue-export-job', fn () => true);
     }

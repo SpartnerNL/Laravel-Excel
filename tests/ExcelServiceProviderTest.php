@@ -31,7 +31,7 @@ final class ExcelServiceProviderTest extends TestCase
     public function test_has_aliased(): void
     {
         $this->assertTrue($this->app->isAlias(Excel::class));
-        $this->assertEquals('excel', $this->app->getAlias(Excel::class));
+        $this->assertSame('excel', $this->app->getAlias(Excel::class));
     }
 
     public function test_registers_console_commands(): void
@@ -48,7 +48,7 @@ final class ExcelServiceProviderTest extends TestCase
     {
         $driver = config('excel.cache.driver');
 
-        $this->assertEquals('memory', $driver);
+        $this->assertSame('memory', $driver);
 
         if (InstalledVersions::satisfies(new VersionParser, 'psr/simple-cache', '^3.0')) {
             $this->assertInstanceOf(

@@ -66,7 +66,7 @@ final class WithStartRowTest extends TestCase
 
             public function array(array $array): void
             {
-                Assert::assertEquals([
+                Assert::assertSame([
                     [
                         'Patrick Brouwers',
                         'patrick@maatwebsite.nl',

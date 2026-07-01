@@ -125,6 +125,6 @@ final class WithHeadingsTest extends TestCase
             [null, 'A2', 'B2', 'C2'],
         ];
 
-        $this->assertEquals($expected, $actual);
+        $this->assertSame($expected, $actual);
     }
 }

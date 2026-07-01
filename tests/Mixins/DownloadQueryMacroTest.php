@@ -47,6 +47,6 @@ final class DownloadQueryMacroTest extends TestCase
 
         $this->assertCount(101, $array);
 
-        $this->assertEquals(['id', 'name', 'email', 'remember_token', 'created_at', 'updated_at'], collect($array)->first());
+        $this->assertSame(['id', 'name', 'email', 'remember_token', 'created_at', 'updated_at'], collect($array)->first());
     }
 }

@@ -55,7 +55,7 @@ final class FromViewTest extends TestCase
             $user->email,
         ])->prepend(['Name', 'Email'])->toArray();
 
-        $this->assertEquals($expected, $contents);
+        $this->assertSame($expected, $contents);
     }
 
     public function test_can_export_multiple_sheets_from_view(): void
@@ -97,7 +97,7 @@ final class FromViewTest extends TestCase
         ])->prepend(['Name', 'Email'])->toArray();
 
         $this->assertCount(101, $contents);
-        $this->assertEquals($expected, $contents);
+        $this->assertSame($expected, $contents);
 
         $contents = $this->readAsArray(__DIR__ . '/../Data/Disks/Local/from-multiple-view.xlsx', 'Xlsx', 2);
 
@@ -107,6 +107,6 @@ final class FromViewTest extends TestCase
         ])->prepend(['Name', 'Email'])->toArray();
 
         $this->assertCount(101, $contents);
-        $this->assertEquals($expected, $contents);
+        $this->assertSame($expected, $contents);
     }
 }

@@ -16,10 +16,10 @@ final class CellTest extends TestCase
 
         $worksheet = $this->read(__DIR__ . '/Data/Disks/Local/import-middleware.xlsx', 'Xlsx');
 
-        $this->assertEquals('test', Cell::make($worksheet->getActiveSheet(), 'A1')->getValue());
+        $this->assertSame('test', Cell::make($worksheet->getActiveSheet(), 'A1')->getValue());
 
         // By default spaces are not removed
-        $this->assertEquals('       ', Cell::make($worksheet->getActiveSheet(), 'A2')->getValue());
+        $this->assertSame('       ', Cell::make($worksheet->getActiveSheet(), 'A2')->getValue());
     }
 
     public function test_can_trim_empty_cells(): void
@@ -30,7 +30,7 @@ final class CellTest extends TestCase
 
         $worksheet = $this->read(__DIR__ . '/Data/Disks/Local/import-middleware.xlsx', 'Xlsx');
 
-        $this->assertEquals('', Cell::make($worksheet->getActiveSheet(), 'A2')->getValue());
+        $this->assertSame('', Cell::make($worksheet->getActiveSheet(), 'A2')->getValue());
 
         config()->set('excel.imports.cells.middleware', []);
     }
@@ -44,7 +44,7 @@ final class CellTest extends TestCase
 
         $worksheet = $this->read(__DIR__ . '/Data/Disks/Local/import-middleware.xlsx', 'Xlsx');
 
-        $this->assertEquals(null, Cell::make($worksheet->getActiveSheet(), 'A2')->getValue());
+        $this->assertNull(Cell::make($worksheet->getActiveSheet(), 'A2')->getValue());
 
         config()->set('excel.imports.cells.middleware', []);
     }

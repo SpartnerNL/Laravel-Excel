@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Maatwebsite\Excel\Tests;
 
-use Laravel\Scout\Engines\DatabaseEngine;
 use Maatwebsite\Excel\SettingsProvider;
 use Maatwebsite\Excel\Tests\Data\Stubs\AfterQueueExportJob;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
@@ -77,15 +76,11 @@ final class QueuedQueryExportTest extends TestCase
 
         // Only 1 column when using map()
         $this->assertCount(1, $actual[0]);
-        $this->assertEquals(User::value('name'), $actual[0][0]);
+        $this->assertSame(User::value('name'), $actual[0][0]);
     }
 
     public function test_can_queue_scout_export(): void
     {
-        if (!class_exists(DatabaseEngine::class)) {
-            $this->markTestSkipped('Laravel Scout is too old');
-        }
-
         $export = new FromUsersScoutExport;
 
         $export->queue('queued-scout-export.xlsx')->chain([

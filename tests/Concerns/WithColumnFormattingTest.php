@@ -62,6 +62,6 @@ final class WithColumnFormattingTest extends TestCase
             ['06/12/2021', '100.00 €'],
         ];
 
-        $this->assertEquals($expected, $actual);
+        $this->assertSame($expected, $actual);
     }
 }

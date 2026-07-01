@@ -96,6 +96,7 @@ final class PhpSpreadsheetV5CompatibilityTest extends TestCase
 
                 return new class($capturedCells) implements IReadFilter
                 {
+                    // @phpstan-ignore property.onlyWritten
                     private ?array $capturedCells = null;
 
                     public function __construct(&$capturedCells)

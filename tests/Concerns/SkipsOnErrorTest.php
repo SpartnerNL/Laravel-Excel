@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Maatwebsite\Excel\Tests\Concerns;
 
-use Illuminate\Database\QueryException;
+use Illuminate\Database\UniqueConstraintViolationException;
 use Illuminate\Validation\Rule;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\OnEachRow;
@@ -50,8 +50,7 @@ final class SkipsOnErrorTest extends TestCase
 
             public function onError(Throwable $e): void
             {
-                Assert::assertInstanceOf(QueryException::class, $e);
-                Assert::assertStringContainsString('patrick@maatwebsite.nl', $e->getMessage());
+                Assert::assertInstanceOf(UniqueConstraintViolationException::class, $e);
 
                 $this->errors++;
             }
@@ -59,7 +58,7 @@ final class SkipsOnErrorTest extends TestCase
 
         $import->import('import-users-with-duplicates.xlsx');
 
-        $this->assertEquals(1, $import->errors);
+        $this->assertSame(1, $import->errors);
 
         // Shouldn't have rollbacked other imported rows.
         $this->assertDatabaseHas('users', [
@@ -95,8 +94,7 @@ final class SkipsOnErrorTest extends TestCase
         /** @var Throwable $e */
         $e = $import->errors()->first();
 
-        $this->assertInstanceOf(QueryException::class, $e);
-        $this->assertStringContainsString('patrick@maatwebsite.nl', $e->getMessage());
+        $this->assertInstanceOf(UniqueConstraintViolationException::class, $e);
 
         // Shouldn't have rollbacked other imported rows.
         $this->assertDatabaseHas('users', [
@@ -143,7 +141,7 @@ final class SkipsOnErrorTest extends TestCase
             public function onError(Throwable $e): void
             {
                 Assert::assertInstanceOf(ValidationException::class, $e);
-                Assert::assertStringContainsString('is invalid', $e->getMessage());
+                Assert::assertSame('The selected 2.1 is invalid.', $e->getMessage());
 
                 $this->errors++;
             }
@@ -151,8 +149,8 @@ final class SkipsOnErrorTest extends TestCase
 
         $import->import('import-users.xlsx');
 
-        $this->assertEquals(1, $import->errors);
-        $this->assertEquals(1, $import->processedRows); // Only the valid row should be processed
+        $this->assertSame(1, $import->errors);
+        $this->assertSame(1, $import->processedRows); // Only the valid row should be processed
 
         // Should have inserted the valid row
         $this->assertDatabaseHas('users', [
@@ -198,13 +196,13 @@ final class SkipsOnErrorTest extends TestCase
         $import->import('import-users.xlsx');
 
         $this->assertCount(1, $import->errors());
-        $this->assertEquals(1, $import->processedRows); // Only the valid row should be processed
+        $this->assertSame(1, $import->processedRows); // Only the valid row should be processed
 
         /** @var Throwable $e */
         $e = $import->errors()->first();
 
         $this->assertInstanceOf(ValidationException::class, $e);
-        $this->assertStringContainsString('is invalid', $e->getMessage());
+        $this->assertSame('The selected 2.1 is invalid.', $e->getMessage());
 
         // Should have inserted the valid row
         $this->assertDatabaseHas('users', [
@@ -248,7 +246,7 @@ final class SkipsOnErrorTest extends TestCase
             public function onError(Throwable $e): void
             {
                 Assert::assertInstanceOf(\Exception::class, $e);
-                Assert::assertEquals('Custom error in onRow for Taylor', $e->getMessage());
+                Assert::assertSame('Custom error in onRow for Taylor', $e->getMessage());
 
                 $this->errors++;
             }
@@ -256,8 +254,8 @@ final class SkipsOnErrorTest extends TestCase
 
         $import->import('import-users.xlsx');
 
-        $this->assertEquals(1, $import->errors);
-        $this->assertEquals(2, $import->processedRows); // Both rows should be processed, but one throws exception
+        $this->assertSame(1, $import->errors);
+        $this->assertSame(2, $import->processedRows); // Both rows should be processed, but one throws exception
 
         // Should have inserted the valid row
         $this->assertDatabaseHas('users', [
@@ -300,7 +298,7 @@ final class SkipsOnErrorTest extends TestCase
         $import->import('import-users.xlsx');
 
         $this->assertCount(1, $import->errors());
-        $this->assertEquals(2, $import->processedRows); // Both rows should be processed, but one throws exception
+        $this->assertSame(2, $import->processedRows); // Both rows should be processed, but one throws exception
 
         /** @var Throwable $e */
         $e = $import->errors()->first();

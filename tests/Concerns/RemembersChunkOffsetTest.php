@@ -47,6 +47,6 @@ final class RemembersChunkOffsetTest extends TestCase
 
         $import->import('import-batches.xlsx');
 
-        $this->assertEquals([1, 2001, 4001], $import->offsets);
+        $this->assertSame([1, 2001, 4001], $import->offsets);
     }
 }

@@ -23,14 +23,14 @@ final class OnEachRowTest extends TestCase
             public function onRow(Row $row): void
             {
                 foreach ($row->getCellIterator() as $cell) {
-                    Assert::assertEquals('test', $cell->getValue());
+                    Assert::assertSame('test', $cell->getValue());
                 }
 
-                Assert::assertEquals([
+                Assert::assertSame([
                     'test', 'test',
                 ], $row->toArray());
 
-                Assert::assertEquals('test', $row[0]);
+                Assert::assertSame('test', $row[0]);
 
                 $this->called++;
             }
@@ -38,7 +38,7 @@ final class OnEachRowTest extends TestCase
 
         $import->import('import.xlsx');
 
-        $this->assertEquals(2, $import->called);
+        $this->assertSame(2, $import->called);
     }
 
     public function test_it_respects_the_end_column(): void
@@ -54,7 +54,7 @@ final class OnEachRowTest extends TestCase
                 // invalidate the cache once the end column changes
                 Assert::assertIsString($row[0]);
 
-                Assert::assertEquals([
+                Assert::assertSame([
                     'test',
                 ], $row->toArray(null, false, true, 'A'));
             }

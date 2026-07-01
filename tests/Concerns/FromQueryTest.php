@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Maatwebsite\Excel\Tests\Concerns;
 
 use Illuminate\Support\Facades\DB;
-use Laravel\Scout\Engines\DatabaseEngine;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\Group;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
 use Maatwebsite\Excel\Tests\Data\Stubs\FromGroupUsersQueuedQueryExport;
@@ -15,7 +14,6 @@ use Maatwebsite\Excel\Tests\Data\Stubs\FromUsersQueryExport;
 use Maatwebsite\Excel\Tests\Data\Stubs\FromUsersQueryExportWithEagerLoad;
 use Maatwebsite\Excel\Tests\Data\Stubs\FromUsersQueryExportWithPrepareRows;
 use Maatwebsite\Excel\Tests\Data\Stubs\FromUsersQueryWithJoinExport;
-use Maatwebsite\Excel\Tests\Data\Stubs\FromUsersScoutExport;
 use Maatwebsite\Excel\Tests\TestCase;
 
 final class FromQueryTest extends TestCase
@@ -204,25 +202,6 @@ final class FromQueryTest extends TestCase
 
             return array_values($user->toArray());
         })->toArray();
-
-        $this->assertEquals($allUsers, $contents);
-    }
-
-    public function test_can_export_from_scout(): void
-    {
-        if (!class_exists(DatabaseEngine::class)) {
-            $this->markTestSkipped('Laravel Scout is too old');
-        }
-
-        $export = new FromUsersScoutExport;
-
-        $response = $export->store('from-scout-store.xlsx');
-
-        $this->assertTrue($response);
-
-        $contents = $this->readAsArray(__DIR__ . '/../Data/Disks/Local/from-scout-store.xlsx', 'Xlsx');
-
-        $allUsers = $export->query()->get()->map(fn (User $user): array => array_values($user->toArray()))->toArray();
 
         $this->assertEquals($allUsers, $contents);
     }

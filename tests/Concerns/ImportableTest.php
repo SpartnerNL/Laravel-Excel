@@ -11,6 +11,7 @@ use Maatwebsite\Excel\Excel;
 use Maatwebsite\Excel\Importer;
 use Maatwebsite\Excel\Tests\TestCase;
 use PHPUnit\Framework\Assert;
+use Symfony\Component\Console\Output\NullOutput;
 
 final class ImportableTest extends TestCase
 {
@@ -22,7 +23,7 @@ final class ImportableTest extends TestCase
 
             public function array(array $array): void
             {
-                Assert::assertEquals([
+                Assert::assertSame([
                     ['test', 'test'],
                     ['test', 'test'],
                 ], $array);
@@ -42,7 +43,7 @@ final class ImportableTest extends TestCase
 
             public function array(array $array): void
             {
-                Assert::assertEquals([
+                Assert::assertSame([
                     ['test', 'test'],
                     ['test', 'test'],
                 ], $array);
@@ -60,7 +61,7 @@ final class ImportableTest extends TestCase
 
             public function array(array $array): void
             {
-                Assert::assertEquals([
+                Assert::assertSame([
                     ['key1', 'A', 'row1'],
                     ['key2', 'B', '<p>row2</p>'],
                     ['key3', 'C', 'row3'],
@@ -84,7 +85,7 @@ final class ImportableTest extends TestCase
 
             public function array(array $array): void
             {
-                Assert::assertEquals([
+                Assert::assertSame([
                     ['test', 'test'],
                     ['test', 'test'],
                 ], $array);
@@ -106,11 +107,11 @@ final class ImportableTest extends TestCase
 
             public function array(array $array): void
             {
-                Assert::assertEquals([
+                Assert::assertSame([
                     ['test', 'test'],
                     ['test', 'test'],
-                    ['', ''],
-                    ['', ''],
+                    [null, null],
+                    [null, null],
                 ], $array);
             }
         };
@@ -130,5 +131,16 @@ final class ImportableTest extends TestCase
         };
 
         $import->import('doesnotexistanywhere.xlsx');
+    }
+
+    public function test_default_output_style_is_set(): void
+    {
+        $import = new class
+        {
+            use Importable;
+        };
+
+        $style = $import->getConsoleOutput();
+        $this->assertInstanceOf(NullOutput::class, $style->getOutput());
     }
 }

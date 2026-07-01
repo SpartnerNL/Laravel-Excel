@@ -28,7 +28,7 @@ final class SkipsEmptyRowsTest extends TestCase
             {
                 $this->called = true;
 
-                Assert::assertEquals([
+                Assert::assertSame([
                     ['Test1', 'Test2'],
                     ['Test3', 'Test4'],
                     ['Test5', 'Test6'],
@@ -59,7 +59,7 @@ final class SkipsEmptyRowsTest extends TestCase
 
         $import->import('import-empty-rows.xlsx');
 
-        $this->assertEquals(3, $import->rows);
+        $this->assertSame(3, $import->rows);
     }
 
     public function test_skips_empty_rows_when_importing_to_model(): void
@@ -80,7 +80,7 @@ final class SkipsEmptyRowsTest extends TestCase
 
         $import->import('import-empty-rows.xlsx');
 
-        $this->assertEquals(3, $import->rows);
+        $this->assertSame(3, $import->rows);
     }
 
     public function test_custom_skips_rows_when_importing_to_collection(): void
@@ -95,7 +95,7 @@ final class SkipsEmptyRowsTest extends TestCase
             {
                 $this->called = true;
 
-                Assert::assertEquals([
+                Assert::assertSame([
                     ['Test1', 'Test2'],
                     ['Test3', 'Test4'],
                 ], $collection->toArray());
@@ -121,7 +121,7 @@ final class SkipsEmptyRowsTest extends TestCase
 
             public function model(array $row): null
             {
-                Assert::assertEquals('Not empty', $row[0]);
+                Assert::assertSame('Not empty', $row[0]);
 
                 return null;
             }
@@ -148,7 +148,7 @@ final class SkipsEmptyRowsTest extends TestCase
 
             public function onRow(Row $row): void
             {
-                Assert::assertEquals('Not empty', $row[0]);
+                Assert::assertSame('Not empty', $row[0]);
             }
 
             public function isEmptyWhen(array $row): bool

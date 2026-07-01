@@ -17,6 +17,7 @@ use Maatwebsite\Excel\Files\RemoteTemporaryFile;
 use Maatwebsite\Excel\Files\TemporaryFile;
 use Maatwebsite\Excel\Filters\ChunkReadFilter;
 use Maatwebsite\Excel\HasEventBus;
+use Maatwebsite\Excel\Helpers\QueueResolver;
 use Maatwebsite\Excel\Imports\HeadingRowExtractor;
 use Maatwebsite\Excel\Sheet;
 use Maatwebsite\Excel\Transactions\TransactionHandler;
@@ -62,8 +63,8 @@ class ReadChunk implements ShouldQueue
         $this->tries         = $this->import->tries ?? null;
         $this->maxExceptions = $this->import->maxExceptions ?? null;
         $this->backoff       = method_exists($this->import, 'backoff') ? $this->import->backoff() : ($this->import->backoff ?? null);
-        $this->connection    = property_exists($this->import, 'connection') ? $this->import->connection : null;
-        $this->queue         = property_exists($this->import, 'queue') ? $this->import->queue : null;
+        $this->connection    = QueueResolver::connection($this->import);
+        $this->queue         = QueueResolver::queue($this->import);
     }
 
     public function getUniqueId(): string

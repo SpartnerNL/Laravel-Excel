@@ -10,6 +10,6 @@ final class ConcernConflictException extends LogicException implements LaravelEx
 {
     public static function queryOrCollectionAndView(): ConcernConflictException
     {
-        return new self('Cannot use FromQuery, FromArray or FromCollection and FromView on the same sheet.');
+        return new self('Cannot use FromQuery, FromScout, FromArray or FromCollection and FromView on the same sheet.');
     }
 }

@@ -69,7 +69,7 @@ final class QueuedImportTest extends TestCase
         $batch = $import->queue('import-batches.xlsx')->name('batch-import-name');
 
         $this->assertInstanceOf(PendingBatch::class, $batch);
-        $this->assertEquals('batch-import-name', $batch->name);
+        $this->assertSame('batch-import-name', $batch->name);
         $this->assertCount(1, $batch->jobs);
     }
 
@@ -249,6 +249,6 @@ final class QueuedImportTest extends TestCase
             $this->assertSame('Something went wrong in the chunk', $e->getMessage());
         }
 
-        $this->assertEquals(3, $maxExceptionsCount);
+        $this->assertSame(3, $maxExceptionsCount);
     }
 }

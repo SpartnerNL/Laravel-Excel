@@ -248,7 +248,7 @@ final class WithEventsTest extends TestCase
         $exportWithoutConcern->store('without-custom-concern.xlsx');
         $actual = $this->readAsArray(__DIR__ . '/../Data/Disks/Local/without-custom-concern.xlsx', 'Xlsx');
 
-        $this->assertEquals([[null]], $actual);
+        $this->assertSame([[null]], $actual);
     }
 
     public function test_can_have_custom_sheet_concern_handlers(): void
@@ -286,7 +286,7 @@ final class WithEventsTest extends TestCase
         $exportWithoutConcern->store('without-custom-concern.xlsx');
         $actual = $this->readAsArray(__DIR__ . '/../Data/Disks/Local/without-custom-concern.xlsx', 'Xlsx');
 
-        $this->assertEquals([[null]], $actual);
+        $this->assertSame([[null]], $actual);
     }
 
     public function test_export_chunked_events_get_called(): void
@@ -313,6 +313,6 @@ final class WithEventsTest extends TestCase
         $export->queue('filename.xlsx');
 
         // Chunk size is 1, so we expect 2 chunks to be executed with a total of 2 users
-        $this->assertEquals(2, ExportWithEventsChunks::$calledEvent);
+        $this->assertSame(2, ExportWithEventsChunks::$calledEvent);
     }
 }

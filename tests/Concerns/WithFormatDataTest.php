@@ -90,13 +90,11 @@ final class WithFormatDataTest extends TestCase
 
             public $called = false;
 
-            public function collection(Collection $collection): ?Model
+            public function collection(Collection $collection): void
             {
                 $this->called = true;
 
                 Assert::assertSame(44328, $collection[0][0]);
-
-                return null;
             }
         };
 
@@ -114,13 +112,11 @@ final class WithFormatDataTest extends TestCase
 
             public $called = false;
 
-            public function collection(Collection $collection): ?Model
+            public function collection(Collection $collection): void
             {
                 $this->called = true;
 
                 Assert::assertSame('5/12/2021', $collection[0][0]);
-
-                return null;
             }
         };
 
