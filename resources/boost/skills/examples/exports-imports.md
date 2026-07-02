@@ -1,5 +1,7 @@
 # Laravel Excel Examples
 
+These examples are representative patterns. For complete feature coverage, use `../references/package.md`.
+
 ## Collection Export
 
 ```php
@@ -43,7 +45,7 @@ use Maatwebsite\Excel\Facades\Excel;
 return Excel::download(new UsersExport, 'users.xlsx');
 ```
 
-## Query Export For Large Data
+## Queued Query Export
 
 ```php
 <?php
@@ -54,10 +56,11 @@ use App\Models\Order;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Database\Eloquent\Builder;
 use Maatwebsite\Excel\Concerns\FromQuery;
+use Maatwebsite\Excel\Concerns\WithCustomChunkSize;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
 
-class OrdersExport implements FromQuery, ShouldQueue, WithHeadings, WithMapping
+class OrdersExport implements FromQuery, ShouldQueue, WithCustomChunkSize, WithHeadings, WithMapping
 {
     public function query(): Builder
     {
@@ -78,11 +81,97 @@ class OrdersExport implements FromQuery, ShouldQueue, WithHeadings, WithMapping
             $order->paid_at?->toDateString(),
         ];
     }
+
+    public function chunkSize(): int
+    {
+        return 1000;
+    }
 }
 ```
 
 ```php
 Excel::queue(new OrdersExport, 'exports/orders.xlsx', 's3');
+```
+
+## Multi-Sheet Export
+
+```php
+<?php
+
+namespace App\Exports;
+
+use Maatwebsite\Excel\Concerns\WithMultipleSheets;
+
+class ReportsWorkbookExport implements WithMultipleSheets
+{
+    public function sheets(): array
+    {
+        return [
+            'users' => new UsersExport,
+            'orders' => new OrdersExport,
+        ];
+    }
+}
+```
+
+## Styling, Events, And CSV Settings
+
+```php
+<?php
+
+namespace App\Exports;
+
+use Maatwebsite\Excel\Concerns\FromArray;
+use Maatwebsite\Excel\Concerns\ShouldAutoSize;
+use Maatwebsite\Excel\Concerns\WithColumnFormatting;
+use Maatwebsite\Excel\Concerns\WithCustomCsvSettings;
+use Maatwebsite\Excel\Concerns\WithEvents;
+use Maatwebsite\Excel\Concerns\WithStyles;
+use Maatwebsite\Excel\Events\AfterSheet;
+use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
+use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
+
+class RevenueExport implements FromArray, ShouldAutoSize, WithColumnFormatting, WithCustomCsvSettings, WithEvents, WithStyles
+{
+    public function array(): array
+    {
+        return [
+            ['Month', 'Revenue'],
+            ['January', 12345.67],
+        ];
+    }
+
+    public function columnFormats(): array
+    {
+        return [
+            'B' => NumberFormat::FORMAT_CURRENCY_USD_SIMPLE,
+        ];
+    }
+
+    public function getCsvSettings(): array
+    {
+        return [
+            'delimiter' => ';',
+            'use_bom' => true,
+        ];
+    }
+
+    public function registerEvents(): array
+    {
+        return [
+            AfterSheet::class => function (AfterSheet $event): void {
+                $event->sheet->freezePane('A2');
+            },
+        ];
+    }
+
+    public function styles(Worksheet $sheet): array
+    {
+        return [
+            1 => ['font' => ['bold' => true]],
+        ];
+    }
+}
 ```
 
 ## Validated Chunked Import
@@ -142,6 +231,34 @@ $import->import($request->file('users'));
 
 if ($import->failures()->isNotEmpty()) {
     // Return validation feedback to the user.
+}
+```
+
+## Mapped Cells Import
+
+```php
+<?php
+
+namespace App\Imports;
+
+use Maatwebsite\Excel\Concerns\ToArray;
+use Maatwebsite\Excel\Concerns\WithMappedCells;
+
+class InvoiceImport implements ToArray, WithMappedCells
+{
+    public function mapping(): array
+    {
+        return [
+            'invoice_number' => 'B2',
+            'customer_name' => 'B3',
+            'total' => 'E20',
+        ];
+    }
+
+    public function array(array $array): void
+    {
+        // Handle mapped values.
+    }
 }
 ```
 
