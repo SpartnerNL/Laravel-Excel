@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Maatwebsite\Excel\Tests\Data\Stubs;
 
+use Closure;
 use Exception;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\WithEvents;
@@ -30,9 +33,12 @@ class QueuedExportWithFailedEvents implements WithEvents, WithMultipleSheets
     {
         Assert::assertSame('catch exception from QueueExport job', $exception->getMessage());
 
-        app()->bind('queue-has-failed-from-queue-export-job', fn () => true);
+        app()->bind('queue-has-failed-from-queue-export-job', fn (): true => true);
     }
 
+    /**
+     * @return Closure[]
+     */
     public function registerEvents(): array
     {
         return [

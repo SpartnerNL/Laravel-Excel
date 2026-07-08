@@ -1,7 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Maatwebsite\Excel\Tests\Data\Stubs;
 
+use Closure;
+use Exception;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\ToModel;
@@ -20,12 +24,12 @@ class QueuedImportWithMiddleware implements ShouldQueue, ToModel, WithChunkReadi
     }
 
     /**
-     * @return array<int, object>
+     * @return Closure[]
      */
     public function middleware(): array
     {
         return [function (): void {
-            throw new \Exception('Job reached middleware method');
+            throw new Exception('Job reached middleware method');
         }];
     }
 

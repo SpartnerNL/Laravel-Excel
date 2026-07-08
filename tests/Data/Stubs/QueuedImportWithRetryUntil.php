@@ -1,7 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Maatwebsite\Excel\Tests\Data\Stubs;
 
+use DateTime;
+use Exception;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\ToModel;
@@ -27,8 +31,8 @@ class QueuedImportWithRetryUntil implements ShouldQueue, ToModel, WithChunkReadi
     /**
      * Determine the time at which the job should timeout.
      */
-    public function retryUntil(): \DateTime
+    public function retryUntil(): DateTime
     {
-        throw new \Exception('Job reached retryUntil method');
+        throw new Exception('Job reached retryUntil method');
     }
 }

@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use Rector\Caching\ValueObject\Storage\FileCacheStorage;
-use Rector\CodeQuality\Rector\If_\ExplicitBoolCompareRector;
 use Rector\Config\RectorConfig;
 use Rector\DeadCode\Rector\MethodCall\RemoveNullArgOnNullDefaultParamRector;
 use Rector\PHPUnit\CodeQuality\Rector\MethodCall\AssertEqualsToSameRector;
@@ -90,9 +89,6 @@ return RectorConfig::configure()
         // also carry an in-source directive to the same effect.
         __DIR__ . '/src/Cache/BatchCacheDeprecated.php',
         __DIR__ . '/src/Cache/MemoryCacheDeprecated.php',
-
-        // Skip vendor-style fixtures or generated files if any get added.
-        __DIR__ . '/tests/Data',
 
         // These tests declare anonymous classes that are returned from functions.
         // These identifiers are non-fixed, so declaring a return type like

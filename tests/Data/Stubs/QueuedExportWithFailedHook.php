@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Maatwebsite\Excel\Tests\Data\Stubs;
 
 use Exception;
@@ -45,6 +47,6 @@ class QueuedExportWithFailedHook implements FromCollection, WithMapping
     {
         Assert::assertSame('we expect this', $exception->getMessage());
 
-        app()->bind('queue-has-failed', fn () => true);
+        app()->bind('queue-has-failed', fn (): true => true);
     }
 }
