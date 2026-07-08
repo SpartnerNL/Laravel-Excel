@@ -14,7 +14,7 @@ interface Importer
     /**
      * @throws ValidationException
      */
-    public function import(object $import, string|UploadedFile $filePath, ?string $disk = null, ?string $readerType = null): static|Reader|PendingDispatch|PendingBatch;
+    public function import(object $import, string|UploadedFile $filePath, ?string $disk = null, ?string $readerType = null): static|PendingDispatch|PendingBatch;
 
     /**
      * @return array<array-key, array<int, array<array-key, mixed>>>

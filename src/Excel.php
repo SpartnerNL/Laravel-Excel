@@ -120,7 +120,7 @@ class Excel implements Exporter, Importer
     /**
      * @throws ValidationException
      */
-    public function import(object $import, string|UploadedFile $filePath, ?string $disk = null, ?string $readerType = null): static|Reader|PendingDispatch|PendingBatch
+    public function import(object $import, string|UploadedFile $filePath, ?string $disk = null, ?string $readerType = null): static|PendingDispatch|PendingBatch
     {
         $readerType = FileTypeDetector::detect($filePath, $readerType);
         $response   = $this->reader->read($import, $filePath, $readerType, $disk);
@@ -154,7 +154,13 @@ class Excel implements Exporter, Importer
 
     public function queueImport(ShouldQueue $import, string|UploadedFile $filePath, ?string $disk = null, ?string $readerType = null): PendingDispatch|PendingBatch
     {
-        return $this->import($import, $filePath, $disk, $readerType);
+        $response = $this->import($import, $filePath, $disk, $readerType);
+
+        // A ShouldQueue import always yields a pending dispatch or batch; the
+        // reader throws before reaching this point when it cannot be queued.
+        assert($response instanceof PendingDispatch || $response instanceof PendingBatch);
+
+        return $response;
     }
 
     /**

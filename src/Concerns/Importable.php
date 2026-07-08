@@ -79,13 +79,18 @@ trait Importable
      * @throws NoFilePathGivenException
      * @throws InvalidArgumentException
      */
-    public function queue(string|UploadedFile|null $filePath = null, ?string $disk = null, ?string $readerType = null): static|PendingDispatch|PendingBatch
+    public function queue(string|UploadedFile|null $filePath = null, ?string $disk = null, ?string $readerType = null): PendingDispatch|PendingBatch
     {
         if (!$this instanceof ShouldQueue) {
             throw new InvalidArgumentException('Importable should implement ShouldQueue to be queued.');
         }
 
-        return $this->import($filePath, $disk, $readerType);
+        return $this->getImporter()->queueImport(
+            $this,
+            $this->getFilePath($filePath),
+            $disk ?? $this->disk,
+            $readerType ?? $this->readerType
+        );
     }
 
     /**

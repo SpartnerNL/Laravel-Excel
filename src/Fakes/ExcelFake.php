@@ -67,7 +67,7 @@ class ExcelFake implements Exporter, Importer
     /**
      * @param  string|null  $diskName  Fallback for usage with named properties
      */
-    public function store(object $export, string $filePath, ?string $disk = null, ?string $writerType = null, mixed $diskOptions = [], ?string $diskName = null): bool|PendingDispatch
+    public function store(object $export, string $filePath, ?string $disk = null, ?string $writerType = null, mixed $diskOptions = [], ?string $diskName = null): bool|PendingDispatch|PendingBatch
     {
         if ($export instanceof ShouldQueue) {
             return $this->queue($export, $filePath, $disk ?: $diskName, $writerType);
