@@ -45,10 +45,6 @@ return RectorConfig::configure()
         PHPUnitSetList::PHPUNIT_CODE_QUALITY,
     ])
     ->withSkip([
-        // Forces `if ($x)` → `if ($x !== null)` / `!== ''` / `!== 0`.
-        // Noisy on a library that intentionally uses truthy checks.
-        ExplicitBoolCompareRector::class,
-
         // Skip signature-narrowing rules in src/ to preserve BC for downstream
         // subclassers. Tests can still benefit from these inferences.
         ParamTypeByMethodCallTypeRector::class => [
