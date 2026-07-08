@@ -219,6 +219,7 @@ final class BatchCacheTest extends TestCase
 
     /**
      * @return array<string, array{int|Closure|null, int|Closure|null}>
+     *
      * @throws RandomException
      */
     public static function defaultTTLDataProvider(): array
@@ -236,8 +237,7 @@ final class BatchCacheTest extends TestCase
      *
      * @param  array<string, mixed>  $memory
      * @param  array<string, mixed>  $persisted
-     * @param  int|null  $memoryLimit
-     * @return CacheInterface
+     *
      * @throws BindingResolutionException
      * @throws InvalidArgumentException
      */

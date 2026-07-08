@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace Maatwebsite\Excel\Tests\Validators;
 
-use Closure;
 use Illuminate\Contracts\Validation\Factory;
 use Maatwebsite\Excel\Tests\TestCase;
 use Maatwebsite\Excel\Validators\RowValidator;
-use ReflectionException;
 use ReflectionMethod;
 use stdClass;
 
