@@ -24,7 +24,6 @@ final class StoreQueryMacroTest extends TestCase
 
     public function test_can_download_a_query_as_excel(): void
     {
-        /** @phpstan-ignore staticMethod.notFound */
         $response = User::storeExcel('query-store.xlsx', null, Excel::XLSX);
 
         $this->assertTrue($response);
@@ -36,7 +35,6 @@ final class StoreQueryMacroTest extends TestCase
 
     public function test_can_download_a_query_as_excel_on_different_disk(): void
     {
-        /** @phpstan-ignore staticMethod.notFound */
         $response = User::storeExcel('query-store.xlsx', 'test', Excel::XLSX);
 
         $this->assertTrue($response);
@@ -48,7 +46,6 @@ final class StoreQueryMacroTest extends TestCase
 
     public function test_can_store_a_query_with_headers_as_excel(): void
     {
-        /** @phpstan-ignore staticMethod.notFound */
         $response = User::storeExcel('query-headers-store.xlsx', null, Excel::XLSX, true);
 
         $this->assertTrue($response);

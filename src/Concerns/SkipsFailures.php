@@ -17,9 +17,6 @@ trait SkipsFailures
         $this->failures = array_merge($this->failures, $failures);
     }
 
-    /**
-     * @return Failure[]|Collection
-     */
     public function failures(): Collection
     {
         return new Collection($this->failures);

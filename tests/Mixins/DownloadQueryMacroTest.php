@@ -25,7 +25,6 @@ final class DownloadQueryMacroTest extends TestCase
 
     public function test_can_download_a_query_as_excel(): void
     {
-        /** @phpstan-ignore staticMethod.notFound */
         $response = User::downloadExcel('query-download.xlsx', Excel::XLSX);
 
         $array = $this->readAsArray($response->getFile()->getPathName(), Excel::XLSX);
@@ -40,7 +39,6 @@ final class DownloadQueryMacroTest extends TestCase
 
     public function test_can_download_a_collection_with_headers_as_excel(): void
     {
-        /** @phpstan-ignore staticMethod.notFound */
         $response = User::downloadExcel('collection-headers-download.xlsx', Excel::XLSX, true);
 
         $array = $this->readAsArray($response->getFile()->getPathName(), Excel::XLSX);

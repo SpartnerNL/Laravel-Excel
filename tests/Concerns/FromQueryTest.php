@@ -70,7 +70,7 @@ final class FromQueryTest extends TestCase
 
         $contents = $this->readAsArray(__DIR__ . '/../Data/Disks/Local/from-query-store.xlsx', 'Xlsx');
 
-        $allUsers = $export->query()->get()->map(fn ($row): array => $export->map($row))->toArray();
+        $allUsers = $export->query()->get()->map(fn (User $row): array => $export->map($row))->toArray();
 
         $this->assertEquals($allUsers, $contents);
     }

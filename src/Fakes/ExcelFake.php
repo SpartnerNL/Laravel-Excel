@@ -117,7 +117,7 @@ class ExcelFake implements Exporter, Importer
         return [];
     }
 
-    public function toCollection(object $import, string|UploadedFile $file, ?string $disk = null, ?string $readerType = null): Collection
+    public function toCollection(?object $import, string|UploadedFile $file, ?string $disk = null, ?string $readerType = null): Collection
     {
         $filePath = ($file instanceof UploadedFile) ? $file->getFilename() : $file;
 

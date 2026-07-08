@@ -57,9 +57,6 @@ class ModelManager
         $this->rows = [];
     }
 
-    /**
-     * @return Model[]|Collection
-     */
     public function toModels(ToModel $import, array $attributes, ?int $rowNumber = null): Collection
     {
         if ($this->remembersRowNumber && method_exists($import, 'rememberRowNumber')) {

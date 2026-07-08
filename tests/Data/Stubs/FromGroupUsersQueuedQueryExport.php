@@ -20,6 +20,9 @@ class FromGroupUsersQueuedQueryExport implements FromQuery, ShouldQueue, WithCus
 {
     use Exportable;
 
+    /**
+     * @return EloquentBuilder<User>
+     */
     public function query(): Builder|EloquentBuilder|Relation
     {
         return Group::first()->users();

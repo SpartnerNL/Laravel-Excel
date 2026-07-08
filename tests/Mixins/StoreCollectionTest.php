@@ -18,7 +18,6 @@ final class StoreCollectionTest extends TestCase
             ['test', 'test'],
         ]);
 
-        /** @phpstan-ignore method.notFound */
         $response = $collection->storeExcel('collection-store.xlsx');
 
         $this->assertTrue($response);
@@ -32,7 +31,6 @@ final class StoreCollectionTest extends TestCase
             ['column_1' => 'test2', 'column_2' => 'test2'],
         ]);
 
-        /** @phpstan-ignore method.notFound */
         $response = $collection->storeExcel('collection-store.xlsx', null, Excel::XLSX);
 
         $file = __DIR__ . '/../Data/Disks/Local/collection-store.xlsx';
@@ -59,7 +57,6 @@ final class StoreCollectionTest extends TestCase
             ['column_1' => 'test', 'column_2' => 'test'],
         ]);
 
-        /** @phpstan-ignore method.notFound */
         $response = $collection->storeExcel('collection-headers-store.xlsx', null, Excel::XLSX, true);
 
         $file = __DIR__ . '/../Data/Disks/Local/collection-headers-store.xlsx';
@@ -73,14 +70,13 @@ final class StoreCollectionTest extends TestCase
         $this->assertSame([
             ['test', 'test'],
             ['test', 'test'],
-        ], collect($array)->except(0)->values()->all());
+        ], collect($array)->except('0')->values()->all());
     }
 
     public function test_can_store_a_model_collection_with_headings_as_excel(): void
     {
         $collection = User::factory()->count(2)->make();
 
-        /** @phpstan-ignore method.notFound */
         $response = $collection->storeExcel('model-collection-headers-store.xlsx', null, Excel::XLSX, true);
 
         $file = __DIR__ . '/../Data/Disks/Local/model-collection-headers-store.xlsx';

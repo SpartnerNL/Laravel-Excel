@@ -200,9 +200,6 @@ class Reader
         return $this->spreadsheet;
     }
 
-    /**
-     * @return $this
-     */
     public function setDefaultValueBinder(): self
     {
         Cell::setValueBinder(
@@ -304,7 +301,7 @@ class Reader
      * @throws \PhpOffice\PhpSpreadsheet\Exception
      * @throws SheetNotFoundException
      */
-    protected function getSheet($import, $sheetImport, $index): ?Sheet
+    protected function getSheet($import, $sheetImport, string|int $index): ?Sheet
     {
         try {
             return Sheet::make($this->spreadsheet, $index);

@@ -14,6 +14,9 @@ class FromNestedArraysQueryExport implements FromQuery, WithMapping
 {
     use Exportable;
 
+    /**
+     * @return EloquentBuilder<Group>
+     */
     public function query(): Builder|EloquentBuilder|Relation
     {
         $query = Group::with('users');

@@ -20,7 +20,7 @@ interface Importer
 
     public function toArray(object $import, string|UploadedFile $filePath, ?string $disk = null, ?string $readerType = null): array;
 
-    public function toCollection(object $import, string|UploadedFile $filePath, ?string $disk = null, ?string $readerType = null): Collection;
+    public function toCollection(?object $import, string|UploadedFile $filePath, ?string $disk = null, ?string $readerType = null): Collection;
 
     public function queueImport(ShouldQueue $import, string|UploadedFile $filePath, ?string $disk = null, ?string $readerType = null): PendingDispatch|PendingBatch;
 }

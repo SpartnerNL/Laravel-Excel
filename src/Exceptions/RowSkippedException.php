@@ -20,9 +20,6 @@ class RowSkippedException extends Exception
         parent::__construct();
     }
 
-    /**
-     * @return Failure[]|Collection
-     */
     public function failures(): Collection
     {
         return new Collection($this->failures);

@@ -6,6 +6,7 @@ namespace Maatwebsite\Excel\Tests;
 
 use Maatwebsite\Excel\Files\TemporaryFileFactory;
 use Maatwebsite\Excel\Tests\Helpers\FileHelper;
+use RuntimeException;
 
 final class TemporaryFileTest extends TestCase
 {
@@ -83,5 +84,24 @@ final class TemporaryFileTest extends TestCase
         $this->assertFileExists($temporaryFile->getLocalPath());
         $this->assertSame($this->defaultDirectoryPermissions, substr(sprintf('%o', fileperms(dirname($temporaryFile->getLocalPath()))), -4));
         $this->assertSame('0600', substr(sprintf('%o', fileperms($temporaryFile->getLocalPath())), -4));
+    }
+
+    public function test_cannot_use_file_as_temporary_directory(): void
+    {
+        $path = FileHelper::absolutePath('temporary-directory-file', 'local');
+        FileHelper::recursiveDelete($path);
+
+        touch($path);
+        config()->set('excel.temporary_files.local_path', $path);
+
+        try {
+            app(TemporaryFileFactory::class)->makeLocal(null, 'txt');
+
+            $this->fail('Expected temporary file creation to fail.');
+        } catch (RuntimeException $e) {
+            $this->assertSame(sprintf('Directory "%s" was not created', $path), $e->getMessage());
+        } finally {
+            @unlink($path);
+        }
     }
 }

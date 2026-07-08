@@ -17,9 +17,6 @@ trait SkipsErrors
         $this->errors[] = $e;
     }
 
-    /**
-     * @return Throwable[]|Collection
-     */
     public function errors(): Collection
     {
         return new Collection($this->errors);

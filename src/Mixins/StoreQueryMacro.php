@@ -14,7 +14,7 @@ class StoreQueryMacro
     public function __invoke()
     {
         return function (string $filePath, ?string $disk = null, ?string $writerType = null, $withHeadings = false): bool|PendingDispatch {
-            $export = new class($this, $withHeadings) implements FromQuery, WithHeadings
+            $export = new class($this, $withHeadings) implements FromQuery, WithHeadings // @phpstan-ignore argument.type
             {
                 use Exportable;
 

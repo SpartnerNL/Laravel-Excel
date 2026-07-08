@@ -14,6 +14,9 @@ class FromUsersQueryExportWithEagerLoad implements FromQuery, WithMapping
 {
     use Exportable;
 
+    /**
+     * @return EloquentBuilder<User>
+     */
     public function query(): Builder|EloquentBuilder|Relation
     {
         return User::query()->with([

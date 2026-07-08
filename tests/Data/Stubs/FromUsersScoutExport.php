@@ -12,6 +12,9 @@ class FromUsersScoutExport implements FromScout, WithCustomChunkSize
 {
     use Exportable;
 
+    /**
+     * @return Builder<User>
+     */
     public function scout(): Builder
     {
         return new Builder(new User, '');
