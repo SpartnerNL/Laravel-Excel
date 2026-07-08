@@ -56,10 +56,7 @@ class Writer
         return $this->write($export, $this->temporaryFileFactory->makeLocal(null, strtolower($writerType)), $writerType);
     }
 
-    /**
-     * @return $this
-     */
-    public function open(object $export)
+    public function open(object $export): static
     {
         $this->exportable = $export;
 
@@ -181,10 +178,7 @@ class Writer
         return $this->spreadsheet;
     }
 
-    /**
-     * @return $this
-     */
-    public function setDefaultValueBinder()
+    public function setDefaultValueBinder(): static
     {
         Cell::setValueBinder(
             app(config('excel.value_binder.default', DefaultValueBinder::class))

@@ -44,15 +44,6 @@ return RectorConfig::configure()
         PHPUnitSetList::PHPUNIT_CODE_QUALITY,
     ])
     ->withSkip([
-        // Skip signature-narrowing rules in src/ to preserve BC for downstream
-        // subclassers. Tests can still benefit from these inferences.
-        ParamTypeByMethodCallTypeRector::class => [
-            __DIR__ . '/src',
-        ],
-        ReturnTypeFromStrictFluentReturnRector::class => [
-            __DIR__ . '/src',
-        ],
-
         // BatchCache::set/setMultiple use func_num_args() to distinguish
         // "no TTL passed" from "explicit null". Removing the explicit null
         // silently changes behavior. Scoped to the one test that depends on
