@@ -17,7 +17,7 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
  * @method static string raw(object $export, string $writerType)
  * @method static BaseExcel import(object $import, string|UploadedFile $filePath, string $disk = null, string $readerType = null)
  * @method static array toArray(object $import, string|UploadedFile $filePath, string $disk = null, string $readerType = null)
- * @method static Collection toCollection(object $import, string|UploadedFile $filePath, string $disk = null, string $readerType = null)
+ * @method static Collection toCollection(?object $import, string|UploadedFile $filePath, string $disk = null, string $readerType = null)
  * @method static PendingDispatch queueImport(object $import, string|UploadedFile $filePath, string $disk = null, string $readerType = null)
  * @method static void matchByRegex()
  * @method static void doNotMatchByRegex()

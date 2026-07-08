@@ -14,7 +14,7 @@ class DownloadCollectionMixin
     public function downloadExcel(): callable
     {
         return function (string $fileName, ?string $writerType = null, $withHeadings = false, array $responseHeaders = []) {
-            $export = new class($this, $withHeadings) implements FromCollection, WithHeadings
+            $export = new class($this, $withHeadings) implements FromCollection, WithHeadings // @phpstan-ignore argument.type
             {
                 use Exportable;
 

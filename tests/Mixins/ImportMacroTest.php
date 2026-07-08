@@ -24,7 +24,6 @@ class ImportMacroTest extends TestCase
             $user->password = 'secret';
         });
 
-        /** @phpstan-ignore staticMethod.notFound */
         User::import('import-users-with-headings.xlsx');
 
         $this->assertCount(2, User::all());

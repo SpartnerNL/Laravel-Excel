@@ -59,29 +59,8 @@ class TestCase extends OrchestraTestCase
     {
         return [
             ExcelServiceProvider::class,
+            TestAppConfigProvider::class,
         ];
-    }
-
-    /**
-     * @param  Application  $app
-     */
-    protected function getEnvironmentSetUp($app): void
-    {
-        $app['config']->set('filesystems.disks.local.root', __DIR__ . '/Data/Disks/Local');
-        $app['config']->set('filesystems.disks.test', [
-            'driver' => 'local',
-            'root'   => __DIR__ . '/Data/Disks/Test',
-        ]);
-
-        $app['config']->set('database.default', 'testing');
-        $app['config']->set('database.connections.testing', [
-            'driver'   => 'sqlite',
-            'database' => ':memory:',
-        ]);
-
-        $app['config']->set('view.paths', [
-            __DIR__ . '/Data/Stubs/Views',
-        ]);
     }
 
     protected function inspectJobProperty(Job $job, string $property): mixed

@@ -12,7 +12,7 @@ class StoreCollectionMixin
     public function storeExcel(): callable
     {
         return function (string $filePath, ?string $disk = null, ?string $writerType = null, $withHeadings = false) {
-            $export = new class($this, $withHeadings) implements FromCollection, WithHeadings
+            $export = new class($this, $withHeadings) implements FromCollection, WithHeadings // @phpstan-ignore argument.type
             {
                 use Exportable;
 
