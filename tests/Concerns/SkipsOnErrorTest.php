@@ -37,7 +37,7 @@ final class SkipsOnErrorTest extends TestCase
         {
             use Importable;
 
-            public $errors = 0;
+            public int $errors = 0;
 
             public function model(array $row): User
             {
@@ -113,9 +113,9 @@ final class SkipsOnErrorTest extends TestCase
         {
             use Importable;
 
-            public $errors = 0;
+            public int $errors = 0;
 
-            public $processedRows = 0;
+            public int $processedRows = 0;
 
             public function onRow(Row $row): void
             {
@@ -169,7 +169,7 @@ final class SkipsOnErrorTest extends TestCase
         {
             use Importable, SkipsErrors;
 
-            public $processedRows = 0;
+            public int $processedRows = 0;
 
             public function onRow(Row $row): void
             {
@@ -221,9 +221,9 @@ final class SkipsOnErrorTest extends TestCase
         {
             use Importable;
 
-            public $errors = 0;
+            public int $errors = 0;
 
-            public $processedRows = 0;
+            public int $processedRows = 0;
 
             public function onRow(Row $row): void
             {
@@ -274,7 +274,7 @@ final class SkipsOnErrorTest extends TestCase
         {
             use Importable, SkipsErrors;
 
-            public $processedRows = 0;
+            public int $processedRows = 0;
 
             public function onRow(Row $row): void
             {

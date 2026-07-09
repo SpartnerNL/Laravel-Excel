@@ -312,6 +312,9 @@ class Sheet
         }
     }
 
+    /**
+     * @return array<int, array<array-key, mixed>>
+     */
     public function toArray(?object $import, ?int $startRow = null, mixed $nullValue = null, bool $calculateFormulas = false, bool $formatData = false): array
     {
         if ($startRow > $this->worksheet->getHighestRow()) {
@@ -355,6 +358,9 @@ class Sheet
         return $rows;
     }
 
+    /**
+     * @return Collection<int, Collection<array-key, mixed>>
+     */
     public function toCollection(?object $import, ?int $startRow = null, mixed $nullValue = null, bool $calculateFormulas = false, bool $formatData = false): Collection
     {
         $rows = $this->toArray($import, $startRow, $nullValue, $calculateFormulas, $formatData);
@@ -459,6 +465,9 @@ class Sheet
         }
     }
 
+    /**
+     * @param  FromCollection<array-key, mixed>  $sheetExport
+     */
     public function fromCollection(FromCollection $sheetExport): void
     {
         $this->appendRows($sheetExport->collection()->all(), $sheetExport);
@@ -491,6 +500,9 @@ class Sheet
         $this->appendRows($generator, $sheetExport);
     }
 
+    /**
+     * @param  array<array-key, mixed>  $rows
+     */
     public function append(array $rows, ?string $startCell = null, bool $strictNullComparison = false): void
     {
         if (!$startCell) {
@@ -576,6 +588,9 @@ class Sheet
         return $this->exportable instanceof $concern;
     }
 
+    /**
+     * @param  iterable<array-key, mixed>  $rows
+     */
     public function appendRows(iterable $rows, object $sheetExport): void
     {
         if (method_exists($sheetExport, 'prepareRows')) {
@@ -605,6 +620,9 @@ class Sheet
         });
     }
 
+    /**
+     * @return array<array-key, mixed>
+     */
     public static function mapArraybleRow(mixed $row): array
     {
         // When dealing with eloquent models, we'll skip the relations
@@ -625,7 +643,7 @@ class Sheet
         return $row;
     }
 
-    public function getStartRow($sheetImport): int
+    public function getStartRow(?object $sheetImport): int
     {
         return HeadingRowExtractor::determineStartRow($sheetImport);
     }
@@ -639,7 +657,11 @@ class Sheet
         unset($this->worksheet);
     }
 
-    protected function validated(WithValidation $import, int $startRow, $rows): Collection|array
+    /**
+     * @param  Collection<int, Collection<array-key, mixed>>|array<int, array<array-key, mixed>>  $rows
+     * @return Collection<int, Collection<array-key, mixed>>|array<int, array<array-key, mixed>>
+     */
+    protected function validated(WithValidation $import, int $startRow, Collection|array $rows): Collection|array
     {
         $toValidate = (new Collection($rows))->mapWithKeys(fn ($row, $index): array => [($startRow + $index) => $row]);
 

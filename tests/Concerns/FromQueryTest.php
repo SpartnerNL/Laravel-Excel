@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Maatwebsite\Excel\Tests\Concerns;
 
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\Group;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
@@ -207,9 +208,10 @@ final class FromQueryTest extends TestCase
     }
 
     /**
-     * @return array{mixed, mixed}[]
+     * @param  Collection<int, Group>  $groups
+     * @return array<int, array<int, string>>
      */
-    protected function format_nested_arrays_expected_data($groups): array
+    protected function format_nested_arrays_expected_data(Collection $groups): array
     {
         $expected = [];
         foreach ($groups as $group) {

@@ -9,6 +9,9 @@ trait WithModelStub
 {
     /**
      * Build the model replacement values.
+     *
+     * @param  array<string, string>  $replace
+     * @return array<string, string>
      */
     protected function buildModelReplacements(array $replace): array
     {

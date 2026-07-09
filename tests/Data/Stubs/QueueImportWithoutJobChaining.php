@@ -17,11 +17,11 @@ class QueueImportWithoutJobChaining implements ShouldQueueWithoutChain, ToModel,
 {
     use Importable;
 
-    public $queue;
+    public ?string $queue = null;
 
-    public $before = false;
+    public bool $before = false;
 
-    public $after = false;
+    public bool $after = false;
 
     public function model(array $row): User
     {

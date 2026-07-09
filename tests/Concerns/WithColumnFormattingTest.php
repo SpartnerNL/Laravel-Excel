@@ -22,9 +22,12 @@ final class WithColumnFormattingTest extends TestCase
         {
             use Exportable;
 
+            /**
+             * @return Collection<int, mixed>
+             */
             public function collection(): Collection
             {
-                return collect([
+                return new Collection([
                     [Carbon::createFromDate(2018, 3, 6)],
                     [Carbon::createFromDate(2018, 3, 7)],
                     [Carbon::createFromDate(2018, 3, 8)],

@@ -12,6 +12,9 @@ use PhpOffice\PhpSpreadsheet\Cell\Cell;
  */
 class MemoryCacheDeprecated implements MemoryInterface
 {
+    /**
+     * @var array<string, mixed>
+     */
     protected array $cache = [];
 
     public function __construct(
@@ -41,6 +44,8 @@ class MemoryCacheDeprecated implements MemoryInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @param  iterable<string>  $keys
      */
     public function deleteMultiple($keys)
     {
@@ -65,6 +70,9 @@ class MemoryCacheDeprecated implements MemoryInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @param  iterable<string>  $keys
+     * @return iterable<string, mixed>
      */
     public function getMultiple($keys, $default = null)
     {
@@ -97,7 +105,7 @@ class MemoryCacheDeprecated implements MemoryInterface
     }
 
     /**
-     * @param  iterable  $values
+     * @param  iterable<string, mixed>  $values
      * @param  null|int|\DateInterval  $ttl
      */
     public function setMultiple($values, $ttl = null)

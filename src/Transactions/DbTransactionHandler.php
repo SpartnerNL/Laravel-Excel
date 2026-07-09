@@ -12,6 +12,11 @@ class DbTransactionHandler implements TransactionHandler
     }
 
     /**
+     * @template TReturn
+     *
+     * @param  \Closure(): TReturn  $callback
+     * @return TReturn
+     *
      * @throws \Throwable
      */
     public function __invoke(callable $callback): mixed

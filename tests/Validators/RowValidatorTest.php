@@ -10,10 +10,7 @@ use Maatwebsite\Excel\Validators\RowValidator;
 
 final class RowValidatorTest extends TestCase
 {
-    /**
-     * The RowValidator instance.
-     */
-    protected $validator;
+    protected RowValidator $validator;
 
     /**
      * Set up the test.
@@ -81,6 +78,8 @@ final class RowValidatorTest extends TestCase
 
     /**
      * Call a private function.
+     *
+     * @param  array<mixed>  $args
      */
     public function callPrivateMethod(string $name, array $args): mixed
     {

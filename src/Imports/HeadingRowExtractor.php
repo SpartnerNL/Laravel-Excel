@@ -35,6 +35,9 @@ class HeadingRowExtractor
             : self::DEFAULT_HEADING_ROW;
     }
 
+    /**
+     * @return array<array-key, mixed>
+     */
     public static function extract(Worksheet $worksheet, mixed $importable): array
     {
         if (!$importable instanceof WithHeadingRow) {
@@ -49,6 +52,10 @@ class HeadingRowExtractor
         return HeadingRowFormatter::format((new Row($headingRow))->toArray(null, false, false, $endColumn));
     }
 
+    /**
+     * @param  array<array-key, mixed>  $headingRow
+     * @return array<int, bool>
+     */
     public static function extractGrouping(array $headingRow, mixed $importable): array
     {
         $headerIsGrouped = array_fill(0, count($headingRow), false);

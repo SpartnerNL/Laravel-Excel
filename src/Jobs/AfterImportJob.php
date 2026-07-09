@@ -18,6 +18,9 @@ class AfterImportJob implements ShouldQueue
 {
     use Batchable, Dispatchable, HasEventBus, InteractsWithQueue, Queueable;
 
+    /**
+     * @var iterable<array-key, string>
+     */
     private iterable $dependencyIds = [];
 
     private int $interval = 60;
@@ -36,6 +39,9 @@ class AfterImportJob implements ShouldQueue
         $this->interval = $interval;
     }
 
+    /**
+     * @param  Collection<int, ReadChunk>  $jobs
+     */
     public function setDependencies(Collection $jobs): void
     {
         $this->dependencyIds = $jobs->map(fn (ReadChunk $job): string => $job->getUniqueId())->all();

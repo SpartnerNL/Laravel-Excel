@@ -12,6 +12,9 @@ trait RegistersCustomConcerns
 {
     use HasEventBus;
 
+    /**
+     * @var array<class-string, class-string>
+     */
     private static array $eventMap = [
         BeforeWriting::class => Writer::class,
         BeforeExport::class  => Writer::class,

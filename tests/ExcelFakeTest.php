@@ -226,10 +226,16 @@ final class ExcelFakeTest extends TestCase
         ExcelFacade::assertQueued('/\w{6}-\w{8}\.csv/');
     }
 
+    /**
+     * @return FromCollection<int, string>
+     */
     private function givenExport(): FromCollection
     {
         return new class implements FromCollection
         {
+            /**
+             * @return Collection<int, string>
+             */
             public function collection(): Collection
             {
                 return collect(['foo', 'bar']);
@@ -237,10 +243,16 @@ final class ExcelFakeTest extends TestCase
         };
     }
 
+    /**
+     * @return FromCollection<int, string>
+     */
     private function givenQueuedExport(): FromCollection
     {
         return new class implements FromCollection, ShouldQueue
         {
+            /**
+             * @return Collection<int, string>
+             */
             public function collection(): Collection
             {
                 return collect(['foo', 'bar']);

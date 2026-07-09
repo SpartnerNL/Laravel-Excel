@@ -18,7 +18,7 @@ final class OnEachRowTest extends TestCase
         {
             use Importable;
 
-            public $called = 0;
+            public int $called = 0;
 
             public function onRow(Row $row): void
             {

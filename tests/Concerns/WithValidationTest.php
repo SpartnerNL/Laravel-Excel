@@ -298,6 +298,9 @@ final class WithValidationTest extends TestCase
                 ];
             }
 
+            /**
+             * @return array<int, string>
+             */
             public function customValidationAttributes(): array
             {
                 return ['1' => 'email'];
@@ -337,6 +340,9 @@ final class WithValidationTest extends TestCase
                 ];
             }
 
+            /**
+             * @return array<int, string>
+             */
             public function customValidationAttributes(): array
             {
                 return ['1' => 'email', '2' => 'password'];
@@ -375,6 +381,9 @@ final class WithValidationTest extends TestCase
                 ];
             }
 
+            /**
+             * @return array<string, string>
+             */
             public function customValidationMessages(): array
             {
                 return [
@@ -434,6 +443,9 @@ final class WithValidationTest extends TestCase
 
             /**
              * Prepare the data for validation.
+             *
+             * @param  array<array-key, mixed>  $row
+             * @return array<array-key, mixed>
              */
             public function prepareForValidation(array $row, int $index): array
             {
@@ -667,6 +679,9 @@ final class WithValidationTest extends TestCase
 
             /**
              * Prepare the data for validation.
+             *
+             * @param  array<array-key, mixed>  $row
+             * @return array<array-key, mixed>
              */
             public function prepareForValidation(array $row, int $index): array
             {
@@ -712,6 +727,9 @@ final class WithValidationTest extends TestCase
 
             /**
              * Prepare the data for validation.
+             *
+             * @param  array<array-key, mixed>  $row
+             * @return array<array-key, mixed>
              */
             public function prepareForValidation(array $row, int $index): array
             {
@@ -757,6 +775,9 @@ final class WithValidationTest extends TestCase
 
             /**
              * Prepare the data for validation.
+             *
+             * @param  array<array-key, mixed>  $row
+             * @return array<array-key, mixed>
              */
             public function prepareForValidation(array $row, int $index): array
             {
@@ -807,6 +828,9 @@ final class WithValidationTest extends TestCase
 
             /**
              * Prepare the data for validation.
+             *
+             * @param  array<array-key, mixed>  $row
+             * @return array<array-key, mixed>
              */
             public function prepareForValidation(array $row, int $index): array
             {
@@ -857,6 +881,9 @@ final class WithValidationTest extends TestCase
 
             /**
              * Prepare the data for validation.
+             *
+             * @param  array<array-key, mixed>  $row
+             * @return array<array-key, mixed>
              */
             public function prepareForValidation(array $row, int $index): array
             {
@@ -892,6 +919,9 @@ final class WithValidationTest extends TestCase
         }
     }
 
+    /**
+     * @param  array<int, string>  $messages
+     */
     private function validateFailure(ValidationException $e, int $row, string $attribute, array $messages): void
     {
         $failures = $e->failures();

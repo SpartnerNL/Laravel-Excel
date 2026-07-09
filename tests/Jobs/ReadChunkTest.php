@@ -30,7 +30,7 @@ final class ReadChunkTest extends TestCase
     {
         $import = new class implements WithChunkReading
         {
-            public $queue = 'plain-queue';
+            public string $queue = 'plain-queue';
 
             public function chunkSize(): int
             {

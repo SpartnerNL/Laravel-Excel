@@ -25,14 +25,21 @@ class HeadingRowFormatter
      */
     protected static array $customFormatters = [];
 
+    /**
+     * @var array<int, string>
+     */
     protected static array $defaultFormatters = [
         self::FORMATTER_NONE,
         self::FORMATTER_SLUG,
     ];
 
+    /**
+     * @param  array<array-key, mixed>  $headings
+     * @return array<array-key, mixed>
+     */
     public static function format(array $headings): array
     {
-        return (new Collection($headings))->map(fn ($value, $key): mixed => static::callFormatter($value, $key))->toArray();
+        return (new Collection($headings))->map(fn ($value, int|string|null $key): mixed => static::callFormatter($value, $key))->toArray();
     }
 
     public static function default(?string $name = null): void
@@ -57,7 +64,7 @@ class HeadingRowFormatter
         static::default();
     }
 
-    protected static function callFormatter(mixed $value, $key = null): mixed
+    protected static function callFormatter(mixed $value, int|string|null $key = null): mixed
     {
         static::$formatter ??= config('excel.imports.heading_row.formatter', self::FORMATTER_SLUG);
 

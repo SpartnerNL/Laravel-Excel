@@ -42,6 +42,8 @@ trait Importable
     }
 
     /**
+     * @return array<array-key, array<int, array<array-key, mixed>>>
+     *
      * @throws NoFilePathGivenException
      */
     public function toArray(string|UploadedFile|null $filePath = null, ?string $disk = null, ?string $readerType = null): array
@@ -57,6 +59,8 @@ trait Importable
     }
 
     /**
+     * @return Collection<array-key, Collection<int, Collection<array-key, mixed>>>
+     *
      * @throws NoFilePathGivenException
      */
     public function toCollection(string|UploadedFile|null $filePath = null, ?string $disk = null, ?string $readerType = null): Collection
@@ -75,13 +79,18 @@ trait Importable
      * @throws NoFilePathGivenException
      * @throws InvalidArgumentException
      */
-    public function queue(string|UploadedFile|null $filePath = null, ?string $disk = null, ?string $readerType = null): static|PendingDispatch|PendingBatch
+    public function queue(string|UploadedFile|null $filePath = null, ?string $disk = null, ?string $readerType = null): PendingDispatch|PendingBatch
     {
         if (!$this instanceof ShouldQueue) {
             throw new InvalidArgumentException('Importable should implement ShouldQueue to be queued.');
         }
 
-        return $this->import($filePath, $disk, $readerType);
+        return $this->getImporter()->queueImport(
+            $this,
+            $this->getFilePath($filePath),
+            $disk ?? $this->disk,
+            $readerType ?? $this->readerType
+        );
     }
 
     /**

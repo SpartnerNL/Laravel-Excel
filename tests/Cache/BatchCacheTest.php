@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Maatwebsite\Excel\Tests\Cache;
 
+use Closure;
 use Composer\InstalledVersions;
 use Composer\Semver\VersionParser;
 use DateInterval;
@@ -162,7 +163,7 @@ final class BatchCacheTest extends TestCase
     }
 
     #[DataProvider('defaultTTLDataProvider')]
-    public function test_it_writes_to_cache_with_default_ttl(\Closure|int|null $defaultTTL, \Closure|int|null $receivedAs): void
+    public function test_it_writes_to_cache_with_default_ttl(int|Closure|null $defaultTTL, int|Closure|null $receivedAs): void
     {
         config()->set('excel.cache.default_ttl', $defaultTTL);
 
@@ -213,6 +214,9 @@ final class BatchCacheTest extends TestCase
         $this->assertCount(2, $dispatchedCollection);
     }
 
+    /**
+     * @return array<string, array{int|Closure|null, int|Closure|null}>
+     */
     public static function defaultTTLDataProvider(): array
     {
         return [
@@ -225,6 +229,9 @@ final class BatchCacheTest extends TestCase
     /**
      * Construct a BatchCache with a in memory store
      * and an array cache, pretending to be a persistence store.
+     *
+     * @param  array<string, mixed>  $memory
+     * @param  array<string, mixed>  $persisted
      */
     private function givenCache(array $memory = [], array $persisted = [], ?int $memoryLimit = null): CacheInterface
     {

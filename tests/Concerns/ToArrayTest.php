@@ -17,7 +17,7 @@ final class ToArrayTest extends TestCase
         {
             use Importable;
 
-            public $called = false;
+            public bool $called = false;
 
             public function array(array $array): void
             {
@@ -41,7 +41,7 @@ final class ToArrayTest extends TestCase
         {
             use Importable;
 
-            public $called = 0;
+            public int $called = 0;
 
             public function array(array $array): void
             {

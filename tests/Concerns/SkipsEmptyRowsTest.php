@@ -22,7 +22,7 @@ final class SkipsEmptyRowsTest extends TestCase
         {
             use Importable;
 
-            public $called = false;
+            public bool $called = false;
 
             public function collection(Collection $collection): void
             {
@@ -47,7 +47,7 @@ final class SkipsEmptyRowsTest extends TestCase
         {
             use Importable;
 
-            public $rows = 0;
+            public int $rows = 0;
 
             public function onRow(Row $row): void
             {
@@ -68,7 +68,7 @@ final class SkipsEmptyRowsTest extends TestCase
         {
             use Importable;
 
-            public $rows = 0;
+            public int $rows = 0;
 
             public function model(array $row): null
             {
@@ -89,7 +89,7 @@ final class SkipsEmptyRowsTest extends TestCase
         {
             use Importable;
 
-            public $called = false;
+            public bool $called = false;
 
             public function collection(Collection $collection): void
             {
@@ -101,6 +101,9 @@ final class SkipsEmptyRowsTest extends TestCase
                 ], $collection->toArray());
             }
 
+            /**
+             * @param  array<array-key, mixed>  $row
+             */
             public function isEmptyWhen(array $row): bool
             {
                 return $row[0] == 'Test5' && $row[1] == 'Test6';
@@ -117,7 +120,7 @@ final class SkipsEmptyRowsTest extends TestCase
         {
             use Importable;
 
-            public $called = false;
+            public bool $called = false;
 
             public function model(array $row): null
             {
@@ -126,6 +129,9 @@ final class SkipsEmptyRowsTest extends TestCase
                 return null;
             }
 
+            /**
+             * @param  array<array-key, mixed>  $row
+             */
             public function isEmptyWhen(array $row): bool
             {
                 $this->called = true;
@@ -144,13 +150,16 @@ final class SkipsEmptyRowsTest extends TestCase
         {
             use Importable;
 
-            public $called = false;
+            public bool $called = false;
 
             public function onRow(Row $row): void
             {
                 Assert::assertSame('Not empty', $row[0]);
             }
 
+            /**
+             * @param  array<array-key, mixed>  $row
+             */
             public function isEmptyWhen(array $row): bool
             {
                 $this->called = true;

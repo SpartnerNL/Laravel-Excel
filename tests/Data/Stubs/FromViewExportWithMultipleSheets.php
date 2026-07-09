@@ -5,11 +5,15 @@ namespace Maatwebsite\Excel\Tests\Data\Stubs;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
+use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
 
 class FromViewExportWithMultipleSheets implements WithMultipleSheets
 {
     use Exportable;
 
+    /**
+     * @param  Collection<int, User>  $users
+     */
     public function __construct(
         protected Collection $users,
     ) {

@@ -23,6 +23,9 @@ class ValidationException extends IlluminateValidationException
         return collect($this->failures)->map->toArray()->all();
     }
 
+    /**
+     * @return array<int, Failure>
+     */
     public function failures(): array
     {
         return $this->failures;

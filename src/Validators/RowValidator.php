@@ -17,6 +17,8 @@ class RowValidator
     }
 
     /**
+     * @param  array<int, array<array-key, mixed>>  $rows
+     *
      * @throws ValidationException
      * @throws RowSkippedException
      */
@@ -61,6 +63,9 @@ class RowValidator
         }
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     private function messages(WithValidation $import): array
     {
         return method_exists($import, 'customValidationMessages')
@@ -68,6 +73,9 @@ class RowValidator
             : [];
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     private function attributes(WithValidation $import): array
     {
         return method_exists($import, 'customValidationAttributes')
@@ -75,11 +83,18 @@ class RowValidator
             : [];
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     private function rules(WithValidation $import): array
     {
         return $this->formatKey($import->rules());
     }
 
+    /**
+     * @param  array<array-key, mixed>  $elements
+     * @return array<string, mixed>
+     */
     private function formatKey(array $elements): array
     {
         return collect($elements)->mapWithKeys(function (string|object|callable|array $rule, $attribute): array {
@@ -89,6 +104,10 @@ class RowValidator
         })->all();
     }
 
+    /**
+     * @param  string|object|callable|array<array-key, mixed>  $rules
+     * @return string|object|callable|array<array-key, mixed>
+     */
     private function formatRule(string|object|callable|array $rules): string|object|callable|array
     {
         if (is_array($rules)) {

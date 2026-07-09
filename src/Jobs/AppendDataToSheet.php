@@ -21,12 +21,15 @@ class AppendDataToSheet implements ShouldQueue
         public TemporaryFile $temporaryFile,
         public string $writerType,
         public int $sheetIndex,
+        /** @var array<array-key, mixed> */
         public array $data,
     ) {
     }
 
     /**
      * Get the middleware the job should be dispatched through.
+     *
+     * @return array<int, object>
      */
     public function middleware(): array
     {

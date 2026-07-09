@@ -14,6 +14,9 @@ class StoreQueuedExport implements ShouldQueue
 {
     use Batchable, Dispatchable, InteractsWithQueue, Queueable;
 
+    /**
+     * @param  array<string, mixed>|string  $diskOptions
+     */
     public function __construct(
         private TemporaryFile $temporaryFile,
         private string $filePath,

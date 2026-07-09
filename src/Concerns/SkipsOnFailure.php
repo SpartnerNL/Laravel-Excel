@@ -8,5 +8,5 @@ use Maatwebsite\Excel\Validators\Failure;
 
 interface SkipsOnFailure
 {
-    public function onFailure(Failure ...$failures);
+    public function onFailure(Failure ...$failures): void;
 }

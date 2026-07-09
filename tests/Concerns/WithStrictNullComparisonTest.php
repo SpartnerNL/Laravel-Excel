@@ -19,9 +19,12 @@ final class WithStrictNullComparisonTest extends TestCase
         {
             use Exportable;
 
+            /**
+             * @return Collection<int, mixed>
+             */
             public function collection(): Collection
             {
-                return collect([
+                return new Collection([
                     ['string', '0', 0, 0.0, 'string'],
                 ]);
             }
@@ -52,9 +55,12 @@ final class WithStrictNullComparisonTest extends TestCase
         {
             use Exportable;
 
+            /**
+             * @return Collection<int, mixed>
+             */
             public function collection(): Collection
             {
-                return collect([
+                return new Collection([
                     ['string', 0, 0.0, 'string'],
                 ]);
             }
@@ -85,9 +91,12 @@ final class WithStrictNullComparisonTest extends TestCase
         {
             use Exportable;
 
+            /**
+             * @return Collection<int, mixed>
+             */
             public function collection(): Collection
             {
-                return collect([
+                return new Collection([
                     ['a1', '', '', 'd1', ''],
                     ['a2', '', '', 'd2', ''],
                 ]);
@@ -121,9 +130,12 @@ final class WithStrictNullComparisonTest extends TestCase
         {
             use Exportable;
 
+            /**
+             * @return Collection<int, mixed>
+             */
             public function collection(): Collection
             {
-                return collect([
+                return new Collection([
                     ['a1', '', '', 'd1', ''],
                     ['a2', '', '', 'd2', ''],
                 ]);

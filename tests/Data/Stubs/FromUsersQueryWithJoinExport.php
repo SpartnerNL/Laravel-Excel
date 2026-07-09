@@ -14,16 +14,16 @@ class FromUsersQueryWithJoinExport implements FromQuery, WithCustomChunkSize
 {
     use Exportable;
 
-    public $query;
+    /**
+     * @var EloquentBuilder<User>
+     */
+    public EloquentBuilder $query;
 
     public function __construct()
     {
         $this->query = User::query();
     }
 
-    /**
-     * @return EloquentBuilder<User>
-     */
     public function query(): Builder|EloquentBuilder|Relation
     {
         return $this->query

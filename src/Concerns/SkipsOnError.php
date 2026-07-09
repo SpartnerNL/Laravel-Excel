@@ -8,5 +8,5 @@ use Throwable;
 
 interface SkipsOnError
 {
-    public function onError(Throwable $e);
+    public function onError(Throwable $e): void;
 }

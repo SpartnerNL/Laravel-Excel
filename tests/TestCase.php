@@ -39,6 +39,8 @@ class TestCase extends OrchestraTestCase
     }
 
     /**
+     * @return array<array<mixed>>
+     *
      * @throws Exception
      */
     protected function readAsArray(string $filePath, string $writerType, ?int $sheetIndex = null): array
@@ -52,6 +54,7 @@ class TestCase extends OrchestraTestCase
 
     /**
      * @param  Application  $app
+     * @return list<class-string>
      */
     protected function getPackageProviders($app): array
     {

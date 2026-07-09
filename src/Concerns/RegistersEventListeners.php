@@ -16,6 +16,9 @@ use Maatwebsite\Excel\Events\ImportFailed;
 
 trait RegistersEventListeners
 {
+    /**
+     * @return array<string, callable>
+     */
     public function registerEvents(): array
     {
         $listenersClasses = [

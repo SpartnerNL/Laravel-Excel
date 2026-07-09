@@ -32,8 +32,12 @@ final class PhpSpreadsheetV5CompatibilityTest extends TestCase
         {
             use Importable;
 
+            /** @var array<string, string> */
             private ?array $receivedTypes = null;
 
+            /**
+             * @param  array<string, string>  $receivedTypes
+             */
             public function __construct(&$receivedTypes)
             {
                 $this->receivedTypes = &$receivedTypes;
@@ -45,16 +49,20 @@ final class PhpSpreadsheetV5CompatibilityTest extends TestCase
 
                 return new class($receivedTypes) implements IReadFilter
                 {
-                    private ?array $receivedTypes = null;
+                    /** @var array<string, string> */
+                    private array $receivedTypes;
 
-                    public function __construct(&$receivedTypes)
+                    /**
+                     * @param  array<string, string>  $receivedTypes
+                     */
+                    public function __construct(array &$receivedTypes)
                     {
                         $this->receivedTypes = &$receivedTypes;
                     }
 
                     public function readCell(string $columnAddress, int $row, string $worksheetName = ''): bool
                     {
-                        if ($this->receivedTypes === null || $this->receivedTypes === []) {
+                        if ($this->receivedTypes === []) {
                             $this->receivedTypes = [
                                 'columnAddress' => gettype($columnAddress),
                                 'row'           => gettype($row),
@@ -83,8 +91,12 @@ final class PhpSpreadsheetV5CompatibilityTest extends TestCase
         {
             use Importable;
 
+            /** @var array<int, array{column: string, row: int}> */
             private ?array $capturedCells = null;
 
+            /**
+             * @param  array<int, array{column: string, row: int}>  $capturedCells
+             */
             public function __construct(&$capturedCells)
             {
                 $this->capturedCells = &$capturedCells;
@@ -96,17 +108,24 @@ final class PhpSpreadsheetV5CompatibilityTest extends TestCase
 
                 return new class($capturedCells) implements IReadFilter
                 {
-                    // @phpstan-ignore property.onlyWritten
-                    private ?array $capturedCells = null;
+                    /** @var array<int, array{column: string, row: int}> */
+                    private array $capturedCells;
 
-                    public function __construct(&$capturedCells)
+                    /**
+                     * @param  array<int, array{column: string, row: int}>  $capturedCells
+                     */
+                    public function __construct(array &$capturedCells)
                     {
                         $this->capturedCells = &$capturedCells;
                     }
 
                     public function readCell(string $columnAddress, int $row, string $worksheetName = ''): bool
                     {
-                        $this->capturedCells[] = ['column' => $columnAddress, 'row' => $row];
+                        $cell = ['column' => $columnAddress, 'row' => $row];
+
+                        if (!in_array($cell, $this->capturedCells, true)) {
+                            $this->capturedCells[] = $cell;
+                        }
 
                         return true;
                     }
@@ -226,6 +245,9 @@ final class PhpSpreadsheetV5CompatibilityTest extends TestCase
         {
             use Exportable;
 
+            /**
+             * @return Collection<int, array{array{nested: string}|array{string, string, string}, string}>
+             */
             public function collection(): Collection
             {
                 return collect([
@@ -255,15 +277,23 @@ final class PhpSpreadsheetV5CompatibilityTest extends TestCase
         {
             use Importable;
 
+            /** @var array<int, string|int> */
             public $skippedSheets = [];
 
+            /**
+             * @return array<string, object>
+             */
             public function sheets(): array
             {
                 return [
                     'Sheet1' => new class implements ToArray
                     {
+                        /** @var array<array-key, mixed> */
                         public $data = [];
 
+                        /**
+                         * @param  array<array-key, mixed>  $array
+                         */
                         public function array(array $array): void
                         {
                             $this->data = $array;
@@ -271,8 +301,12 @@ final class PhpSpreadsheetV5CompatibilityTest extends TestCase
                     },
                     'NonExistentSheet' => new class implements ToArray
                     {
+                        /** @var array<array-key, mixed> */
                         public $data = [];
 
+                        /**
+                         * @param  array<array-key, mixed>  $array
+                         */
                         public function array(array $array): void
                         {
                             $this->data = $array;
@@ -281,7 +315,7 @@ final class PhpSpreadsheetV5CompatibilityTest extends TestCase
                 ];
             }
 
-            public function onUnknownSheet($sheetName): void
+            public function onUnknownSheet(string|int $sheetName): void
             {
                 $this->skippedSheets[] = $sheetName;
             }
@@ -298,8 +332,12 @@ final class PhpSpreadsheetV5CompatibilityTest extends TestCase
         {
             use Importable;
 
+            /** @var array<int, string|int> */
             public $skippedSheets = [];
 
+            /**
+             * @return array<string, object>
+             */
             public function sheets(): array
             {
                 return [
@@ -318,7 +356,7 @@ final class PhpSpreadsheetV5CompatibilityTest extends TestCase
                 ];
             }
 
-            public function onUnknownSheet($sheetName): void
+            public function onUnknownSheet(string|int $sheetName): void
             {
                 $this->skippedSheets[] = $sheetName;
             }

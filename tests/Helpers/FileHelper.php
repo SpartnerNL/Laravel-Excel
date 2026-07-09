@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Maatwebsite\Excel\Tests\Helpers;
 
 class FileHelper
@@ -9,14 +11,14 @@ class FileHelper
         return config('filesystems.disks.' . $diskName . '.root') . DIRECTORY_SEPARATOR . $fileName;
     }
 
-    public static function recursiveDelete($fileName): ?bool
+    public static function recursiveDelete(string $fileName): bool
     {
         if (is_file($fileName)) {
             return @unlink($fileName);
         }
 
         if (is_dir($fileName)) {
-            $scan = glob(rtrim((string) $fileName, '/') . '/*');
+            $scan = glob(rtrim($fileName, '/') . '/*');
             foreach ($scan as $path) {
                 self::recursiveDelete($path);
             }
@@ -24,6 +26,6 @@ class FileHelper
             return @rmdir($fileName);
         }
 
-        return null;
+        return true;
     }
 }

@@ -11,7 +11,7 @@ use Maatwebsite\Excel\Importer;
 
 class ImportAsMacro
 {
-    public function __invoke()
+    public function __invoke(): callable
     {
         return function (string $filename, callable $mapping, ?string $disk = null, ?string $readerType = null): Importer|PendingDispatch|PendingBatch {
             /** @phpstan-ignore method.notFound */
@@ -32,7 +32,8 @@ class ImportAsMacro
                 }
 
                 /**
-                 * @return Model|Model[]|null
+                 * @param  array<array-key, mixed>  $row
+                 * @return Model|array<int, Model>|null
                  */
                 public function model(array $row): Model|array|null
                 {

@@ -32,6 +32,8 @@ class AppendQueryToSheet implements ShouldQueue
 
     /**
      * Get the middleware the job should be dispatched through.
+     *
+     * @return array<int, object>
      */
     public function middleware(): array
     {

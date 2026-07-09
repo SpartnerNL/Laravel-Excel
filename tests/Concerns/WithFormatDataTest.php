@@ -23,7 +23,7 @@ final class WithFormatDataTest extends TestCase
         {
             use Importable;
 
-            public $called = false;
+            public bool $called = false;
 
             public function array(array $array): void
             {
@@ -45,7 +45,7 @@ final class WithFormatDataTest extends TestCase
         {
             use Importable;
 
-            public $called = false;
+            public bool $called = false;
 
             public function array(array $array): void
             {
@@ -67,7 +67,7 @@ final class WithFormatDataTest extends TestCase
         {
             use Importable;
 
-            public $called = false;
+            public bool $called = false;
 
             public function array(array $array): void
             {
@@ -88,7 +88,7 @@ final class WithFormatDataTest extends TestCase
         {
             use Importable;
 
-            public $called = false;
+            public bool $called = false;
 
             public function collection(Collection $collection): void
             {
@@ -110,7 +110,7 @@ final class WithFormatDataTest extends TestCase
         {
             use Importable;
 
-            public $called = false;
+            public bool $called = false;
 
             public function collection(Collection $collection): void
             {
@@ -131,7 +131,7 @@ final class WithFormatDataTest extends TestCase
         {
             use Importable;
 
-            public $called = false;
+            public bool $called = false;
 
             public function model(array $row): ?Model
             {
@@ -155,7 +155,7 @@ final class WithFormatDataTest extends TestCase
         {
             use Importable;
 
-            public $called = false;
+            public bool $called = false;
 
             public function model(array $row): ?Model
             {

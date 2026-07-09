@@ -24,13 +24,16 @@ final class FromViewTest extends TestCase
 
     public function test_can_export_from_view(): void
     {
-        /** @var Collection|User[] $users */
+        /** @var Collection<int, User> $users */
         $users = User::factory()->count(100)->create();
 
         $export = new class($users) implements FromView
         {
             use Exportable;
 
+            /**
+             * @param  Collection<int, User>  $users
+             */
             public function __construct(
                 protected Collection $users,
             ) {
@@ -60,13 +63,16 @@ final class FromViewTest extends TestCase
 
     public function test_can_export_multiple_sheets_from_view(): void
     {
-        /** @var Collection|User[] $users */
+        /** @var Collection<int, User> $users */
         $users = User::factory()->count(300)->create();
 
         $export = new class($users) implements WithMultipleSheets
         {
             use Exportable;
 
+            /**
+             * @param  Collection<int, User>  $users
+             */
             public function __construct(
                 protected Collection $users,
             ) {

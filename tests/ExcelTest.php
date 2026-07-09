@@ -135,6 +135,9 @@ final class ExcelTest extends TestCase
         {
             use RegistersEventListeners;
 
+            /**
+             * @return Collection<int, array{string, string}>
+             */
             public function collection(): Collection
             {
                 return collect([
@@ -143,6 +146,9 @@ final class ExcelTest extends TestCase
                 ]);
             }
 
+            /**
+             * @return array<string, mixed>
+             */
             public function getCsvSettings(): array
             {
                 return [
@@ -173,6 +179,9 @@ final class ExcelTest extends TestCase
         {
             use Exportable;
 
+            /**
+             * @return Collection<int, mixed>
+             */
             public function collection(): Collection
             {
                 return collect();

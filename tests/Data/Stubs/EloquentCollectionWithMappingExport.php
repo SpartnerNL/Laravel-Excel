@@ -9,12 +9,16 @@ use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
 
 /**
+ * @implements FromCollection<int, User>
  * @implements WithMapping<User>
  */
 class EloquentCollectionWithMappingExport implements FromCollection, WithMapping
 {
     use Exportable;
 
+    /**
+     * @return Collection<int, User>
+     */
     public function collection(): Collection
     {
         return collect([

@@ -48,13 +48,16 @@ final class WithMultipleSheetsTest extends TestCase
     public function test_can_export_multiple_sheets_from_view(): void
     {
         $this->loadLaravelMigrations(['--database' => 'testing']);
-        /** @var Collection|User[] $users */
+        /** @var Collection<int, User> $users */
         $users = User::factory()->count(300)->create();
 
         $export = new class($users) implements WithMultipleSheets
         {
             use Exportable;
 
+            /**
+             * @param  Collection<int, User>  $users
+             */
             public function __construct(
                 protected Collection $users,
             ) {
@@ -130,7 +133,7 @@ final class WithMultipleSheetsTest extends TestCase
         {
             use Importable;
 
-            public $unknown;
+            public string|int|null $unknown = null;
 
             public function sheets(): array
             {
@@ -187,7 +190,7 @@ final class WithMultipleSheetsTest extends TestCase
         {
             use Importable;
 
-            public $unknown;
+            public string|int|null $unknown = null;
 
             public function sheets(): array
             {
@@ -316,6 +319,7 @@ final class WithMultipleSheetsTest extends TestCase
         {
             use Importable;
 
+            /** @var array<int|string, object> */
             public $sheets = [];
 
             public function __construct()
@@ -323,7 +327,7 @@ final class WithMultipleSheetsTest extends TestCase
                 $this->sheets = [
                     0 => new class implements ToArray
                     {
-                        public $called = false;
+                        public bool $called = false;
 
                         public function array(array $array): void
                         {
@@ -336,7 +340,7 @@ final class WithMultipleSheetsTest extends TestCase
                     },
                     'Sheet2' => new class implements ToArray
                     {
-                        public $called = false;
+                        public bool $called = false;
 
                         public function array(array $array): void
                         {
@@ -369,6 +373,7 @@ final class WithMultipleSheetsTest extends TestCase
         {
             use Importable;
 
+            /** @var array<int|string, object> */
             public $sheets = [];
 
             public function __construct()
@@ -376,7 +381,7 @@ final class WithMultipleSheetsTest extends TestCase
                 $this->sheets = [
                     'Sheet1' => new class implements ToArray
                     {
-                        public $called = false;
+                        public bool $called = false;
 
                         public function array(array $array): void
                         {
@@ -389,7 +394,7 @@ final class WithMultipleSheetsTest extends TestCase
                     },
                     1 => new class implements ToArray
                     {
-                        public $called = false;
+                        public bool $called = false;
 
                         public function array(array $array): void
                         {

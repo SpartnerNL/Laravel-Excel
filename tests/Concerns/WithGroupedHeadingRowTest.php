@@ -84,7 +84,7 @@ final class WithGroupedHeadingRowTest extends TestCase
         {
             use Importable;
 
-            public $called = false;
+            public bool $called = false;
 
             public function collection(Collection $collection): void
             {

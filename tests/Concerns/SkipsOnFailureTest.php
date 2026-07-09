@@ -38,7 +38,7 @@ final class SkipsOnFailureTest extends TestCase
         {
             use Importable;
 
-            public $failures = 0;
+            public int $failures = 0;
 
             public function model(array $row): User
             {
@@ -94,7 +94,7 @@ final class SkipsOnFailureTest extends TestCase
         {
             use Importable;
 
-            public $failures = 0;
+            public int $failures = 0;
 
             public function model(array $row): User
             {

@@ -9,6 +9,7 @@ use Maatwebsite\Excel\Concerns\WithMapping;
 
 /**
  * @implements WithMapping<array<int, string>>
+ * @implements FromCollection<int, array{string, string, string}>
  */
 class WithMappingExport implements FromCollection, WithMapping
 {

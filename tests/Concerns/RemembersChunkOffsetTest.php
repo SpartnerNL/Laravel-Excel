@@ -32,7 +32,8 @@ final class RemembersChunkOffsetTest extends TestCase
             use Importable;
             use RemembersChunkOffset;
 
-            public $offsets = [];
+            /** @var array<int, int> */
+            public array $offsets = [];
 
             public function array(array $array): void
             {

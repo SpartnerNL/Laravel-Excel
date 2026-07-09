@@ -7,19 +7,30 @@ use Closure;
 use Illuminate\Support\Collection;
 use PhpOffice\PhpSpreadsheet\Worksheet\Row as SpreadsheetRow;
 
-/** @mixin SpreadsheetRow */
+/**
+ * @implements ArrayAccess<array-key, mixed>
+ *
+ * @mixin SpreadsheetRow
+ */
 class Row implements ArrayAccess
 {
     use DelegatedMacroable;
 
     protected ?Closure $preparationCallback = null;
 
+    /**
+     * @var array<array-key, mixed>|null
+     */
     protected ?array $rowCache = null;
 
     protected ?bool $rowCacheFormatData = null;
 
     protected ?string $rowCacheEndColumn = null;
 
+    /**
+     * @param  array<int, string>  $headingRow
+     * @param  array<int, bool>  $headerIsGrouped
+     */
     public function __construct(
         protected SpreadsheetRow $row,
         protected array $headingRow = [],
@@ -32,11 +43,17 @@ class Row implements ArrayAccess
         return $this->row;
     }
 
+    /**
+     * @return Collection<array-key, mixed>
+     */
     public function toCollection(mixed $nullValue = null, bool $calculateFormulas = false, bool $formatData = true, ?string $endColumn = null): Collection
     {
         return new Collection($this->toArray($nullValue, $calculateFormulas, $formatData, $endColumn));
     }
 
+    /**
+     * @return array<array-key, mixed>
+     */
     public function toArray(mixed $nullValue = null, bool $calculateFormulas = false, bool $formatData = true, ?string $endColumn = null): array
     {
         if (is_array($this->rowCache) && ($this->rowCacheFormatData === $formatData) && ($this->rowCacheEndColumn === $endColumn)) {

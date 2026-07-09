@@ -52,6 +52,10 @@ class CascadePersistManager
         return true;
     }
 
+    /**
+     * @param  BelongsTo<Model, Model>  $relation
+     * @param  array<array-key, Model>  $models
+     */
     private function persistBelongsTo(BelongsTo $relation, array $models): bool
     {
         // With belongs to, we first need to save all relations,
@@ -68,6 +72,10 @@ class CascadePersistManager
         return true;
     }
 
+    /**
+     * @param  BelongsToMany<Model, Model>  $relation
+     * @param  array<array-key, Model>  $models
+     */
     private function persistBelongsToMany(BelongsToMany $relation, array $models): bool
     {
         foreach ($models as $model) {
