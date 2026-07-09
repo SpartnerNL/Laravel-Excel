@@ -29,6 +29,7 @@ use Maatwebsite\Excel\Validators\ValidationException;
 use PhpOffice\PhpSpreadsheet\Cell\Cell;
 use PhpOffice\PhpSpreadsheet\Reader\Exception;
 use PhpOffice\PhpSpreadsheet\Reader\IReader;
+use PhpOffice\PhpSpreadsheet\Reader\IReader2;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Throwable;
@@ -261,7 +262,7 @@ class Reader
     public function getWorksheets(object $import): array
     {
         // Csv doesn't have worksheets.
-        if (!method_exists($this->reader, 'listWorksheetNames')) {
+        if (!$this->reader instanceof IReader2) {
             return ['Worksheet' => $import];
         }
 
