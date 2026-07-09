@@ -21,8 +21,6 @@ use Maatwebsite\Excel\Tests\TestCase;
 use Maatwebsite\Excel\Validators\Failure;
 use PHPUnit\Framework\Assert;
 
-use function count;
-
 final class SkipsOnFailureTest extends TestCase
 {
     /**
