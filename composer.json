@@ -37,7 +37,8 @@
     "phpstan/extension-installer": "^1.4",
     "phpstan/phpstan-mockery": "^2.0",
     "phpunit/phpunit": "^12.5 || ~13.1.14",
-    "predis/predis": "^1.1"
+    "predis/predis": "^2.3 || ^3.0",
+    "rector/rector": "^2.4.2"
   },
   "minimum-stability": "dev",
   "prefer-stable": true,

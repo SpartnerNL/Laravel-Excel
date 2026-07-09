@@ -4,6 +4,28 @@ All notable changes to this project will be documented in this file.
 
 Please view https://github.com/SpartnerNL/Laravel-Excel/releases for the most recent changelog
 
+## [4.0.0] - Unreleased
+
+See [UPGRADE-4.x.md](UPGRADE-4.x.md) for the full upgrade guide.
+
+### Added
+
+- `FromScout` export concern, replacing Scout builder support in `FromQuery` (#4390)
+- `ShouldBatch` marker interface to dispatch queued exports and chunked queued imports as job batches (#4341)
+- Support for Laravel's `#[Queue]` and `#[Connection]` attributes on imports (#4382)
+
+### Changed
+
+- Requires PHP 8.3+ and Laravel 12+ (#4361)
+- Upgraded `phpoffice/phpspreadsheet` from `^1.30` to `^5.3` (#4302, #4333)
+- Native parameter and return types across the entire code base; static analysis at PHPStan level 6 (#4371 and others)
+
+### Removed
+
+- Support for PHP below 8.3 and Laravel below 12 (#4361)
+- Scout `Builder` support in `FromQuery`, use `FromScout` instead (#4390)
+- `ext-json` requirement (#4383)
+
 ## [3.1.47] - 2023-02-16
 
 - Support Laravel 10
