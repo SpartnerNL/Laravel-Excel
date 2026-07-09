@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Maatwebsite\Excel\Tests\Concerns;
 
 use Maatwebsite\Excel\Concerns\Exportable;
@@ -8,7 +10,7 @@ use Maatwebsite\Excel\Tests\TestCase;
 use PhpOffice\PhpSpreadsheet\Style\Color;
 use PhpOffice\PhpSpreadsheet\Style\Fill;
 
-class WithBackgroundColorTest extends TestCase
+final class WithBackgroundColorTest extends TestCase
 {
     public function test_can_configure_background_color_from_rgb_string(): void
     {

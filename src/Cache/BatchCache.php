@@ -10,7 +10,7 @@ class BatchCache implements CacheInterface
     /**
      * @var null|int|\DateInterval|callable
      */
-    protected $defaultTTL = null;
+    protected $defaultTTL;
 
     public function __construct(
         protected CacheInterface $cache,

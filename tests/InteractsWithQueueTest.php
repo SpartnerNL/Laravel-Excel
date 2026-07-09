@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Maatwebsite\Excel\Tests;
 
 use Illuminate\Queue\InteractsWithQueue;
@@ -9,7 +11,7 @@ use Maatwebsite\Excel\Jobs\AppendViewToSheet;
 use Maatwebsite\Excel\Jobs\QueueExport;
 use Maatwebsite\Excel\Jobs\ReadChunk;
 
-class InteractsWithQueueTest extends TestCase
+final class InteractsWithQueueTest extends TestCase
 {
     /**
      * Setup the test environment.

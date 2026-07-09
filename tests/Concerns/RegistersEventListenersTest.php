@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Maatwebsite\Excel\Tests\Concerns;
 
 use Maatwebsite\Excel\Events\AfterSheet;
@@ -17,7 +19,7 @@ use Maatwebsite\Excel\Tests\TestCase;
 use Maatwebsite\Excel\Writer;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
-class RegistersEventListenersTest extends TestCase
+final class RegistersEventListenersTest extends TestCase
 {
     public function test_events_get_called_when_exporting(): void
     {

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Maatwebsite\Excel\Tests;
 
 use Illuminate\Support\Collection;
@@ -16,7 +18,7 @@ use PhpOffice\PhpSpreadsheet\Cell\Cell;
 use PhpOffice\PhpSpreadsheet\Cell\DefaultValueBinder;
 use PhpOffice\PhpSpreadsheet\Reader\IReadFilter;
 
-class PhpSpreadsheetV5CompatibilityTest extends TestCase
+final class PhpSpreadsheetV5CompatibilityTest extends TestCase
 {
     // ---------------------------------------------------------------
     // IReadFilter typed signature tests (v5 changed param types)
@@ -31,7 +33,7 @@ class PhpSpreadsheetV5CompatibilityTest extends TestCase
             use Importable;
 
             /** @var array<string, string> */
-            private $receivedTypes;
+            private ?array $receivedTypes = null;
 
             /**
              * @param  array<string, string>  $receivedTypes
@@ -60,7 +62,7 @@ class PhpSpreadsheetV5CompatibilityTest extends TestCase
 
                     public function readCell(string $columnAddress, int $row, string $worksheetName = ''): bool
                     {
-                        if (empty($this->receivedTypes)) {
+                        if ($this->receivedTypes === []) {
                             $this->receivedTypes = [
                                 'columnAddress' => gettype($columnAddress),
                                 'row'           => gettype($row),
@@ -90,7 +92,7 @@ class PhpSpreadsheetV5CompatibilityTest extends TestCase
             use Importable;
 
             /** @var array<int, array{column: string, row: int}> */
-            private $capturedCells;
+            private ?array $capturedCells = null;
 
             /**
              * @param  array<int, array{column: string, row: int}>  $capturedCells
@@ -185,7 +187,7 @@ class PhpSpreadsheetV5CompatibilityTest extends TestCase
         $result = $import->toArray('import.xlsx');
 
         foreach ($result[0] as $row) {
-            $nonNullValues = array_filter($row, fn ($v) => $v !== null);
+            $nonNullValues = array_filter($row, fn ($v): bool => $v !== null);
             $this->assertCount(1, $nonNullValues);
         }
     }
@@ -196,11 +198,6 @@ class PhpSpreadsheetV5CompatibilityTest extends TestCase
 
     public function test_custom_value_binder_is_not_applied_on_import(): void
     {
-        // PHPSpreadsheet v5 does not invoke WithCustomValueBinder during reads.
-        // This is a breaking change from v1 where value binders were called on import.
-        // The test documents the current v5 behavior.
-        $bindValueCalled = false;
-
         $import = new class extends DefaultValueBinder implements WithCustomValueBinder
         {
             use Importable;

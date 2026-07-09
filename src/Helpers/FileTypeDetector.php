@@ -17,7 +17,7 @@ class FileTypeDetector
         }
 
         if (!$filePath instanceof UploadedFile) {
-            $pathInfo  = pathinfo((string) $filePath);
+            $pathInfo  = pathinfo($filePath);
             $extension = $pathInfo['extension'] ?? '';
         } else {
             $extension = $filePath->getClientOriginalExtension();

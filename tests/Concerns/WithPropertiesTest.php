@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Maatwebsite\Excel\Tests\Concerns;
 
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\WithProperties;
 use Maatwebsite\Excel\Tests\TestCase;
 
-class WithPropertiesTest extends TestCase
+final class WithPropertiesTest extends TestCase
 {
     public function test_can_set_custom_document_properties(): void
     {

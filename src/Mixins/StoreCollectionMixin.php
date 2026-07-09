@@ -2,6 +2,7 @@
 
 namespace Maatwebsite\Excel\Mixins;
 
+use Illuminate\Foundation\Bus\PendingDispatch;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromCollection;
@@ -11,7 +12,7 @@ class StoreCollectionMixin
 {
     public function storeExcel(): callable
     {
-        return function (string $filePath, ?string $disk = null, ?string $writerType = null, $withHeadings = false) {
+        return function (string $filePath, ?string $disk = null, ?string $writerType = null, $withHeadings = false): bool|PendingDispatch {
             $export = new class($this, $withHeadings) implements FromCollection, WithHeadings // @phpstan-ignore argument.type
             {
                 use Exportable;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Maatwebsite\Excel\Tests\Concerns;
 
 use DateTime;
@@ -26,7 +28,7 @@ use PhpOffice\PhpSpreadsheet\Shared\Date;
 use PHPUnit\Framework\Assert;
 use Throwable;
 
-class WithChunkReadingTest extends TestCase
+final class WithChunkReadingTest extends TestCase
 {
     /**
      * Setup the test environment.

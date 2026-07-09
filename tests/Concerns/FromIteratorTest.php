@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Maatwebsite\Excel\Tests\Concerns;
 
 use ArrayIterator;
@@ -8,7 +10,7 @@ use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromIterator;
 use Maatwebsite\Excel\Tests\TestCase;
 
-class FromIteratorTest extends TestCase
+final class FromIteratorTest extends TestCase
 {
     public function test_can_export_from_iterator(): void
     {

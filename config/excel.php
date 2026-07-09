@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Maatwebsite\Excel\DefaultValueBinder;
 use Maatwebsite\Excel\Excel;
 use PhpOffice\PhpSpreadsheet\Reader\Csv;

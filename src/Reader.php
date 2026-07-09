@@ -94,7 +94,7 @@ class Reader
                 $sheetsToDisconnect = [];
 
                 foreach ($this->sheetImports as $index => $sheetImport) {
-                    if ($sheet = $this->getSheet($import, $sheetImport, $index)) {
+                    if (($sheet = $this->getSheet($import, $sheetImport, $index)) instanceof Sheet) {
                         $sheet->import($sheetImport, $sheet->getStartRow($sheetImport));
 
                         // when using WithCalculatedFormulas we need to keep the sheet until all sheets are imported
@@ -140,7 +140,7 @@ class Reader
         foreach ($this->sheetImports as $index => $sheetImport) {
             $calculatesFormulas = $sheetImport instanceof WithCalculatedFormulas;
             $formatData         = $sheetImport instanceof WithFormatData;
-            if ($sheet = $this->getSheet($import, $sheetImport, $index)) {
+            if (($sheet = $this->getSheet($import, $sheetImport, $index)) instanceof Sheet) {
                 $sheets[$index] = $sheet->toArray($sheetImport, $sheet->getStartRow($sheetImport), null, $calculatesFormulas, $formatData);
 
                 // when using WithCalculatedFormulas we need to keep the sheet until all sheets are imported
@@ -179,7 +179,7 @@ class Reader
         foreach ($this->sheetImports as $index => $sheetImport) {
             $calculatesFormulas = $sheetImport instanceof WithCalculatedFormulas;
             $formatData         = $sheetImport instanceof WithFormatData;
-            if ($sheet = $this->getSheet($import, $sheetImport, $index)) {
+            if (($sheet = $this->getSheet($import, $sheetImport, $index)) instanceof Sheet) {
                 $sheets->put($index, $sheet->toCollection($sheetImport, $sheet->getStartRow($sheetImport), null, $calculatesFormulas, $formatData));
 
                 // when using WithCalculatedFormulas we need to keep the sheet until all sheets are imported
@@ -205,9 +205,6 @@ class Reader
         return $this->spreadsheet;
     }
 
-    /**
-     * @return $this
-     */
     public function setDefaultValueBinder(): self
     {
         Cell::setValueBinder(

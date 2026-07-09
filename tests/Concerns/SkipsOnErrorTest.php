@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Maatwebsite\Excel\Tests\Concerns;
 
 use Illuminate\Database\UniqueConstraintViolationException;
@@ -17,7 +19,7 @@ use Maatwebsite\Excel\Validators\ValidationException;
 use PHPUnit\Framework\Assert;
 use Throwable;
 
-class SkipsOnErrorTest extends TestCase
+final class SkipsOnErrorTest extends TestCase
 {
     /**
      * Setup the test environment.

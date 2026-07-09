@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Maatwebsite\Excel\Tests\Mixins;
 
 use Illuminate\Support\Collection;
@@ -7,7 +9,7 @@ use Maatwebsite\Excel\Excel;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
 use Maatwebsite\Excel\Tests\TestCase;
 
-class StoreCollectionTest extends TestCase
+final class StoreCollectionTest extends TestCase
 {
     public function test_can_store_a_collection_as_excel(): void
     {

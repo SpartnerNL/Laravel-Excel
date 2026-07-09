@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Maatwebsite\Excel\Tests\Concerns;
 
 use Maatwebsite\Excel\Concerns\Exportable;
@@ -8,7 +10,7 @@ use Maatwebsite\Excel\Concerns\WithTitle;
 use Maatwebsite\Excel\Tests\Data\Stubs\WithTitleExport;
 use Maatwebsite\Excel\Tests\TestCase;
 
-class WithTitleTest extends TestCase
+final class WithTitleTest extends TestCase
 {
     public function test_can_export_with_title(): void
     {

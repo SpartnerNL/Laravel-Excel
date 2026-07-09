@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Maatwebsite\Excel\Tests\Jobs;
 
 use Illuminate\Queue\Attributes\Queue;
@@ -10,7 +12,7 @@ use Maatwebsite\Excel\Tests\Data\Stubs\QueuedImportWithQueueAttribute;
 use Maatwebsite\Excel\Tests\TestCase;
 use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
 
-class ReadChunkTest extends TestCase
+final class ReadChunkTest extends TestCase
 {
     public function test_resolves_the_queue_and_connection_from_attributes(): void
     {

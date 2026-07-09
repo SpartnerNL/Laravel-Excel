@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Maatwebsite\Excel\Tests\Mixins;
 
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
 use Maatwebsite\Excel\Tests\TestCase;
 
-class ImportAsMacroTest extends TestCase
+final class ImportAsMacroTest extends TestCase
 {
     /**
      * Setup the test environment.
@@ -21,7 +23,7 @@ class ImportAsMacroTest extends TestCase
     {
         User::query()->truncate();
 
-        User::importAs('import-users.xlsx', fn (array $row) => [
+        User::importAs('import-users.xlsx', fn (array $row): array => [
             'name'     => $row[0],
             'email'    => $row[1],
             'password' => 'secret',

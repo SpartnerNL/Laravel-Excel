@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Maatwebsite\Excel\Tests\Concerns;
 
 use Illuminate\Support\Collection;
@@ -9,7 +11,7 @@ use Maatwebsite\Excel\Concerns\WithCustomStartCell;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Tests\TestCase;
 
-class WithHeadingsTest extends TestCase
+final class WithHeadingsTest extends TestCase
 {
     public function test_can_export_from_collection_with_heading_row(): void
     {

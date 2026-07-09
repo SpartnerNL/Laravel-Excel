@@ -7,7 +7,7 @@ use Illuminate\Database\ConnectionInterface;
 class DbTransactionHandler implements TransactionHandler
 {
     public function __construct(
-        private ConnectionInterface $connection,
+        private readonly ConnectionInterface $connection,
     ) {
     }
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Maatwebsite\Excel\Tests\Concerns;
 
 use Illuminate\Support\Facades\DB;
@@ -10,7 +12,7 @@ use Maatwebsite\Excel\Concerns\WithSkipDuplicates;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
 use Maatwebsite\Excel\Tests\TestCase;
 
-class WithSkipDuplicatesTest extends TestCase
+final class WithSkipDuplicatesTest extends TestCase
 {
     /**
      * Setup the test environment.

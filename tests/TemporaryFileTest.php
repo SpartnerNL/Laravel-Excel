@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Maatwebsite\Excel\Tests;
 
 use Maatwebsite\Excel\Files\TemporaryFileFactory;
 use Maatwebsite\Excel\Tests\Helpers\FileHelper;
 use RuntimeException;
 
-class TemporaryFileTest extends TestCase
+final class TemporaryFileTest extends TestCase
 {
     private string $defaultDirectoryPermissions;
 
@@ -97,7 +99,7 @@ class TemporaryFileTest extends TestCase
 
             $this->fail('Expected temporary file creation to fail.');
         } catch (RuntimeException $e) {
-            $this->assertEquals(sprintf('Directory "%s" was not created', $path), $e->getMessage());
+            $this->assertSame(sprintf('Directory "%s" was not created', $path), $e->getMessage());
         } finally {
             @unlink($path);
         }

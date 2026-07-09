@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Maatwebsite\Excel\Tests\Concerns;
 
 use Maatwebsite\Excel\Concerns\Importable;
@@ -8,7 +10,7 @@ use Maatwebsite\Excel\Tests\TestCase;
 use PhpOffice\PhpSpreadsheet\Reader\IReadFilter;
 use PHPUnit\Framework\Assert;
 
-class WithReadFilterTest extends TestCase
+final class WithReadFilterTest extends TestCase
 {
     public static bool $spy = false;
 

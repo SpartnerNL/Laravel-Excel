@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Maatwebsite\Excel\Tests\Concerns;
 
 use Illuminate\Contracts\Validation\Validator;
@@ -21,7 +23,7 @@ use Maatwebsite\Excel\Tests\TestCase;
 use Maatwebsite\Excel\Validators\ValidationException;
 use PHPUnit\Framework\Assert;
 
-class WithValidationTest extends TestCase
+final class WithValidationTest extends TestCase
 {
     /**
      * Setup the test environment.
@@ -59,7 +61,7 @@ class WithValidationTest extends TestCase
 
         try {
             $import->import('import-users.xlsx');
-            static::fail();
+            self::fail();
         } catch (ValidationException $e) {
             $this->validateFailure($e, 2, '1', [
                 'The selected 1(field)? is invalid.',
@@ -92,7 +94,7 @@ class WithValidationTest extends TestCase
                 return [
                     '1' => function ($attribute, $value, $onFail): void {
                         if ($value !== 'patrick@maatwebsite.nl') {
-                            $onFail(sprintf('Value in column 1 is not an allowed e-mail.'));
+                            $onFail('Value in column 1 is not an allowed e-mail.');
                         }
                     },
                 ];
@@ -101,7 +103,7 @@ class WithValidationTest extends TestCase
 
         try {
             $import->import('import-users.xlsx');
-            static::fail();
+            self::fail();
         } catch (ValidationException $e) {
             $this->validateFailure($e, 2, '1', [
                 'Value in column 1 is not an allowed e-mail.',
@@ -156,7 +158,7 @@ class WithValidationTest extends TestCase
 
         try {
             $import->import('import-users.xlsx');
-            static::fail();
+            self::fail();
         } catch (ValidationException $e) {
             $this->validateFailure($e, 2, '1', [
                 'Value is not an allowed e-mail.',
@@ -194,7 +196,7 @@ class WithValidationTest extends TestCase
 
         try {
             $import->import('import-users.xlsx');
-            static::fail();
+            self::fail();
         } catch (ValidationException $e) {
             $this->validateFailure($e, 1, 'conditional_required_column', [
                 'The conditional_required_column field is required when 1.1 is patrick@maatwebsite.nl.',
@@ -227,7 +229,7 @@ class WithValidationTest extends TestCase
 
         try {
             $import->import('import-users.xlsx');
-            static::fail();
+            self::fail();
         } catch (ValidationException $e) {
             $this->validateFailure($e, 2, 'conditional_required_unless_column', [
                 'The conditional_required_unless_column field is required unless 2.1 is in patrick@maatwebsite.nl.',
@@ -266,7 +268,7 @@ class WithValidationTest extends TestCase
 
         try {
             $import->import('import-users.xlsx');
-            static::fail();
+            self::fail();
         } catch (ValidationException $e) {
             $this->validateFailure($e, 1, '1', [
                 'The 1 has already been taken.',
@@ -307,7 +309,7 @@ class WithValidationTest extends TestCase
 
         try {
             $import->import('import-users.xlsx');
-            static::fail();
+            self::fail();
         } catch (ValidationException $e) {
             $this->validateFailure($e, 2, 'email', [
                 'The selected email is invalid.',
@@ -349,7 +351,7 @@ class WithValidationTest extends TestCase
 
         try {
             $import->import('import-users.xlsx');
-            static::fail();
+            self::fail();
         } catch (ValidationException $e) {
             $this->validateFailure($e, 1, 'password', [
                 'The password field is required when email is present.',
@@ -392,7 +394,7 @@ class WithValidationTest extends TestCase
 
         try {
             $import->import('import-users.xlsx');
-            static::fail();
+            self::fail();
         } catch (ValidationException $e) {
             $this->validateFailure($e, 2, '1', [
                 'Custom message for 1.',
@@ -425,7 +427,7 @@ class WithValidationTest extends TestCase
 
         try {
             $import->import('import-users-with-headings.xlsx');
-            static::fail();
+            self::fail();
         } catch (ValidationException $e) {
             $this->validateFailure($e, 3, 'email', [
                 'The selected email is invalid.',
@@ -475,7 +477,7 @@ class WithValidationTest extends TestCase
 
         try {
             $import->import('import-users-with-grouped-headers.xlsx');
-            static::fail();
+            self::fail();
         } catch (ValidationException $e) {
             $this->validateFailure($e, 2, 'options', [
                 'The options( field)? must be an array.',
@@ -513,7 +515,7 @@ class WithValidationTest extends TestCase
 
         try {
             $import->import('import-users-with-headings.xlsx');
-            static::fail();
+            self::fail();
         } catch (ValidationException $e) {
             $this->validateFailure($e, 3, 'email', [
                 'The selected email is invalid.',
@@ -548,7 +550,7 @@ class WithValidationTest extends TestCase
 
         try {
             $import->import('import-users-with-headings.xlsx');
-            static::fail();
+            self::fail();
         } catch (ValidationException $e) {
             $this->validateFailure($e, 3, 'email', [
                 'The selected email is invalid.',
@@ -577,7 +579,7 @@ class WithValidationTest extends TestCase
 
         try {
             $import->import('import-users-with-headings.xlsx');
-            static::fail();
+            self::fail();
         } catch (ValidationException $e) {
             $this->validateFailure($e, 3, 'email', [
                 'The selected email is invalid.',
@@ -606,7 +608,7 @@ class WithValidationTest extends TestCase
 
         try {
             $import->import('import-users-with-headings.xlsx');
-            static::fail();
+            self::fail();
         } catch (ValidationException $e) {
             $this->validateFailure($e, 3, 'email', [
                 'The selected email is invalid.',
@@ -643,13 +645,13 @@ class WithValidationTest extends TestCase
              */
             public function withValidator($validator): void
             {
-                $validator->sometimes('*.1', Rule::in(['patrick@maatwebsite.nl']), fn () => true);
+                $validator->sometimes('*.1', [Rule::in(['patrick@maatwebsite.nl'])], fn (): true => true);
             }
         };
 
         try {
             $import->import('import-users.xlsx');
-            static::fail();
+            self::fail();
         } catch (ValidationException $e) {
             $this->validateFailure($e, 2, '1', [
                 'The selected 1 is invalid.',
@@ -697,7 +699,7 @@ class WithValidationTest extends TestCase
 
         try {
             $import->import('import-users.xlsx');
-            static::fail();
+            self::fail();
         } catch (ValidationException $e) {
             $this->validateFailure($e, 2, '1', [
                 'The 1( field)? must be a valid email address.',
@@ -745,7 +747,7 @@ class WithValidationTest extends TestCase
 
         try {
             $import->import('import-users.xlsx');
-            static::fail();
+            self::fail();
         } catch (ValidationException $e) {
             $this->validateFailure($e, 2, '1', [
                 'The 1( field)? must be a valid email address.',
@@ -798,7 +800,7 @@ class WithValidationTest extends TestCase
 
         try {
             $import->import('import-users.xlsx');
-            static::fail();
+            self::fail();
         } catch (ValidationException $e) {
             $this->validateFailure($e, 2, '1', [
                 'The 1( field)? must be a valid email address.',
@@ -851,7 +853,7 @@ class WithValidationTest extends TestCase
 
         try {
             $import->import('import-users.xlsx');
-            static::fail();
+            self::fail();
         } catch (ValidationException $e) {
             $this->validateFailure($e, 2, '1', [
                 'The 1( field)? must be a valid email address.',
@@ -904,7 +906,7 @@ class WithValidationTest extends TestCase
 
         try {
             $import->import('import-users.xlsx');
-            static::fail();
+            self::fail();
         } catch (ValidationException $e) {
             $this->validateFailure($e, 2, '1', [
                 'The 1( field)? must be a valid email address.',

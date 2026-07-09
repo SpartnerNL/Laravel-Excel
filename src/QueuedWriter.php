@@ -109,7 +109,7 @@ class QueuedWriter
         return $export
             ->collection()
             ->chunk($this->getChunkSize($export))
-            ->map(function ($rows) use ($writerType, $temporaryFile, $sheetIndex, $export) {
+            ->map(function ($rows) use ($writerType, $temporaryFile, $sheetIndex, $export): AppendDataToSheet {
                 $rows = iterator_to_array($rows);
 
                 return new AppendDataToSheet(

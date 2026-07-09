@@ -27,8 +27,8 @@ class ModelManager
     private bool $remembersRowNumber = false;
 
     public function __construct(
-        private RowValidator $validator,
-        private CascadePersistManager $cascade,
+        private readonly RowValidator $validator,
+        private readonly CascadePersistManager $cascade,
     ) {
     }
 
@@ -79,8 +79,8 @@ class ModelManager
     private function massFlush(ToModel $import): void
     {
         $this->rows()
-            ->flatMap(fn (array $attributes, $index) => $this->toModels($import, $attributes, $index))
-            ->mapToGroups(fn ($model) => [$model::class => $this->prepare($model)->getAttributes()])
+            ->flatMap(fn (array $attributes, ?int $index): Collection => $this->toModels($import, $attributes, $index))
+            ->mapToGroups(fn (Model $model): array => [$model::class => $this->prepare($model)->getAttributes()])
             ->each(function (Collection $models, string $model) use ($import): void {
                 try {
                     /* @var Model $model */
@@ -110,7 +110,7 @@ class ModelManager
     {
         $this
             ->rows()
-            ->each(function (array $attributes, $index) use ($import): void {
+            ->each(function (array $attributes, ?int $index) use ($import): void {
                 $this->toModels($import, $attributes, $index)->each(function (Model $model) use ($import): void {
                     try {
                         if ($import instanceof WithUpserts) {

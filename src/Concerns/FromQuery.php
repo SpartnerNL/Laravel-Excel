@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Maatwebsite\Excel\Concerns;
 
 use Illuminate\Database\Eloquent\Builder as EloquentBuilder;

@@ -1,18 +1,20 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Maatwebsite\Excel\Filters;
 
 use PhpOffice\PhpSpreadsheet\Reader\IReadFilter;
 
 class ChunkReadFilter implements IReadFilter
 {
-    private int $endRow;
+    private readonly int $endRow;
 
     public function __construct(
-        private int $headingRow,
-        private int $startRow,
+        private readonly int $headingRow,
+        private readonly int $startRow,
         int $chunkSize,
-        private string $worksheetName,
+        private readonly string $worksheetName,
     ) {
         $this->endRow = $this->startRow + $chunkSize;
     }

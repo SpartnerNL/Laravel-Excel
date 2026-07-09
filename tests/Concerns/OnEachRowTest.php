@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Maatwebsite\Excel\Tests\Concerns;
 
 use Maatwebsite\Excel\Concerns\Importable;
@@ -8,7 +10,7 @@ use Maatwebsite\Excel\Row;
 use Maatwebsite\Excel\Tests\TestCase;
 use PHPUnit\Framework\Assert;
 
-class OnEachRowTest extends TestCase
+final class OnEachRowTest extends TestCase
 {
     public function test_can_import_each_row_individually(): void
     {

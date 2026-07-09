@@ -44,7 +44,7 @@ class AfterImportJob implements ShouldQueue
      */
     public function setDependencies(Collection $jobs): void
     {
-        $this->dependencyIds = $jobs->map(fn (ReadChunk $job) => $job->getUniqueId())->all();
+        $this->dependencyIds = $jobs->map(fn (ReadChunk $job): string => $job->getUniqueId())->all();
     }
 
     public function handle(): void

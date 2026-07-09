@@ -2,16 +2,19 @@
 
 namespace Maatwebsite\Excel\Mixins;
 
+use Illuminate\Bus\PendingBatch;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Bus\PendingDispatch;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use Maatwebsite\Excel\Importer;
 
 class ImportMacro
 {
     public function __invoke(): callable
     {
-        return function (string $filename, ?string $disk = null, ?string $readerType = null) {
+        return function (string $filename, ?string $disk = null, ?string $readerType = null): Importer|PendingDispatch|PendingBatch {
             /** @phpstan-ignore method.notFound */
             $import = new class($this->getModel()::class) implements ToModel, WithHeadingRow
             {

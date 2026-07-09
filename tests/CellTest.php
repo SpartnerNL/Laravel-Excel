@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Maatwebsite\Excel\Tests;
 
 use Maatwebsite\Excel\Cell;
 use Maatwebsite\Excel\Middleware\ConvertEmptyCellValuesToNull;
 use Maatwebsite\Excel\Middleware\TrimCellValue;
 
-class CellTest extends TestCase
+final class CellTest extends TestCase
 {
     public function test_can_get_cell_value(): void
     {

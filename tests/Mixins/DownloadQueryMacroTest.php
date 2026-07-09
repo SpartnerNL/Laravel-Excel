@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Maatwebsite\Excel\Tests\Mixins;
 
 use Maatwebsite\Excel\Excel;
@@ -7,7 +9,7 @@ use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
 use Maatwebsite\Excel\Tests\TestCase;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
-class DownloadQueryMacroTest extends TestCase
+final class DownloadQueryMacroTest extends TestCase
 {
     /**
      * Setup the test environment.

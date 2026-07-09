@@ -18,7 +18,7 @@ class Failure implements Arrayable, JsonSerializable
         protected int $row,
         protected string $attribute,
         protected array $errors,
-        private array $values = [],
+        private readonly array $values = [],
     ) {
     }
 
@@ -53,7 +53,7 @@ class Failure implements Arrayable, JsonSerializable
      */
     public function toArray(): array
     {
-        return collect($this->errors)->map(fn ($message) => __('There was an error on row :row. :message', ['row' => $this->row, 'message' => $message]))->all();
+        return collect($this->errors)->map(fn ($message): array|string => __('There was an error on row :row. :message', ['row' => $this->row, 'message' => $message]))->all();
     }
 
     /**

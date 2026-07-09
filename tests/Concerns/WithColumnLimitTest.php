@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Maatwebsite\Excel\Tests\Concerns;
 
 use Maatwebsite\Excel\Concerns\Importable;
@@ -9,7 +11,7 @@ use Maatwebsite\Excel\Concerns\WithColumnLimit;
 use Maatwebsite\Excel\Tests\TestCase;
 use PHPUnit\Framework\Assert;
 
-class WithColumnLimitTest extends TestCase
+final class WithColumnLimitTest extends TestCase
 {
     /**
      * Setup the test environment.

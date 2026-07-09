@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Maatwebsite\Excel\Tests\Concerns;
 
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
@@ -11,7 +13,7 @@ use Maatwebsite\Excel\Tests\TestCase;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\Console\Output\NullOutput;
 
-class ImportableTest extends TestCase
+final class ImportableTest extends TestCase
 {
     public function test_can_import_a_simple_xlsx_file(): void
     {

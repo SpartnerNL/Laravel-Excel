@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Maatwebsite\Excel\Tests;
 
 use Illuminate\Contracts\Queue\Job;
@@ -45,11 +47,7 @@ class TestCase extends OrchestraTestCase
     {
         $spreadsheet = $this->read($filePath, $writerType);
 
-        if ($sheetIndex === null) {
-            $sheet = $spreadsheet->getActiveSheet();
-        } else {
-            $sheet = $spreadsheet->getSheet($sheetIndex);
-        }
+        $sheet = $sheetIndex === null ? $spreadsheet->getActiveSheet() : $spreadsheet->getSheet($sheetIndex);
 
         return $sheet->toArray();
     }

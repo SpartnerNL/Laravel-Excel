@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Maatwebsite\Excel\Tests\Concerns;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\ToModel;
@@ -11,7 +12,7 @@ use Maatwebsite\Excel\Tests\Data\Stubs\Database\Group;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
 use Maatwebsite\Excel\Tests\TestCase;
 
-class WithBatchInsertsTest extends TestCase
+final class WithBatchInsertsTest extends TestCase
 {
     /**
      * Setup the test environment.
@@ -99,7 +100,7 @@ class WithBatchInsertsTest extends TestCase
             use Importable;
 
             /**
-             * @return Model[]
+             * @return array{0: User, 1: Group}
              */
             public function model(array $row): array
             {

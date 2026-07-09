@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Maatwebsite\Excel\Tests;
 
 use Maatwebsite\Excel\HeadingRowImport;
 use Maatwebsite\Excel\Imports\HeadingRowFormatter;
 
-class HeadingRowImportTest extends TestCase
+final class HeadingRowImportTest extends TestCase
 {
     protected function tearDown(): void
     {
@@ -28,7 +30,7 @@ class HeadingRowImportTest extends TestCase
 
     public function test_can_import_only_heading_row_with_custom_heading_row_formatter(): void
     {
-        HeadingRowFormatter::extend('custom', fn ($value) => 'custom-' . $value);
+        HeadingRowFormatter::extend('custom', fn ($value): string => 'custom-' . $value);
 
         HeadingRowFormatter::default('custom');
 
@@ -126,7 +128,7 @@ class HeadingRowImportTest extends TestCase
 
     public function test_can_import_heading_row_with_custom_formatter_defined_in_config(): void
     {
-        HeadingRowFormatter::extend('custom2', fn ($value) => 'custom2-' . $value);
+        HeadingRowFormatter::extend('custom2', fn ($value): string => 'custom2-' . $value);
 
         config()->set('excel.imports.heading_row.formatter', 'custom2');
 

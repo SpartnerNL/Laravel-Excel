@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Maatwebsite\Excel\Tests\Concerns;
 
 use Illuminate\Foundation\Testing\WithFaker;
@@ -28,7 +30,7 @@ use Maatwebsite\Excel\Tests\TestCase;
 use Maatwebsite\Excel\Writer;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
-class WithEventsTest extends TestCase
+final class WithEventsTest extends TestCase
 {
     use WithFaker;
 
@@ -227,7 +229,7 @@ class WithEventsTest extends TestCase
             /**
              * @return array<int, array<int, string>>
              */
-            public function custom()
+            public function custom(): array
             {
                 return [
                     ['a', 'b'],
@@ -268,7 +270,7 @@ class WithEventsTest extends TestCase
             /**
              * @return array<int, array<int, string>>
              */
-            public function custom()
+            public function custom(): array
             {
                 return [
                     ['c', 'd'],

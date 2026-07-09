@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Maatwebsite\Excel\Tests;
 
 use Illuminate\Contracts\View\View;
@@ -23,7 +25,7 @@ use Maatwebsite\Excel\Tests\Helpers\FileHelper;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
-class ExcelTest extends TestCase
+final class ExcelTest extends TestCase
 {
     protected Excel $SUT;
 

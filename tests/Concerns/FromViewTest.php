@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Maatwebsite\Excel\Tests\Concerns;
 
 use Illuminate\Contracts\View\View;
@@ -11,7 +13,7 @@ use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
 use Maatwebsite\Excel\Tests\Data\Stubs\SheetForUsersFromView;
 use Maatwebsite\Excel\Tests\TestCase;
 
-class FromViewTest extends TestCase
+final class FromViewTest extends TestCase
 {
     protected function setUp(): void
     {
@@ -51,7 +53,7 @@ class FromViewTest extends TestCase
 
         $contents = $this->readAsArray(__DIR__ . '/../Data/Disks/Local/from-view.xlsx', 'Xlsx');
 
-        $expected = $users->map(fn (User $user) => [
+        $expected = $users->map(fn (User $user): array => [
             $user->name,
             $user->email,
         ])->prepend(['Name', 'Email'])->toArray();
@@ -95,22 +97,22 @@ class FromViewTest extends TestCase
 
         $contents = $this->readAsArray(__DIR__ . '/../Data/Disks/Local/from-multiple-view.xlsx', 'Xlsx', 0);
 
-        $expected = $users->forPage(1, 100)->map(fn (User $user) => [
+        $expected = $users->forPage(1, 100)->map(fn (User $user): array => [
             $user->name,
             $user->email,
         ])->prepend(['Name', 'Email'])->toArray();
 
-        $this->assertSame(101, count($contents));
+        $this->assertCount(101, $contents);
         $this->assertSame($expected, $contents);
 
         $contents = $this->readAsArray(__DIR__ . '/../Data/Disks/Local/from-multiple-view.xlsx', 'Xlsx', 2);
 
-        $expected = $users->forPage(3, 100)->map(fn (User $user) => [
+        $expected = $users->forPage(3, 100)->map(fn (User $user): array => [
             $user->name,
             $user->email,
         ])->prepend(['Name', 'Email'])->toArray();
 
-        $this->assertSame(101, count($contents));
+        $this->assertCount(101, $contents);
         $this->assertSame($expected, $contents);
     }
 }

@@ -9,8 +9,8 @@ class RemoteTemporaryFile extends TemporaryFile
     private ?Disk $diskInstance = null;
 
     public function __construct(
-        private string $disk,
-        private string $filename,
+        private readonly string $disk,
+        private readonly string $filename,
         private LocalTemporaryFile $localTemporaryFile,
     ) {
         $this->disk()->touch($this->filename);
@@ -59,10 +59,12 @@ class RemoteTemporaryFile extends TemporaryFile
                 ->makeLocal(Arr::last(explode('/', $this->filename)));
         }
 
-        $copy && $this->disk()->copy(
-            $this,
-            $this->localTemporaryFile->getLocalPath()
-        );
+        if ($copy) {
+            $this->disk()->copy(
+                $this,
+                $this->localTemporaryFile->getLocalPath()
+            );
+        }
 
         return $this;
     }

@@ -365,7 +365,7 @@ class Sheet
     {
         $rows = $this->toArray($import, $startRow, $nullValue, $calculateFormulas, $formatData);
 
-        return new Collection(array_map(fn (array $row) => new Collection($row), $rows));
+        return new Collection(array_map(fn (array $row): Collection => new Collection($row), $rows));
     }
 
     /**
@@ -445,7 +445,7 @@ class Sheet
         // and use the clone operator directly to support old versions of Laravel
         // that don't have a clone method in eloquent
         $clonedQuery = clone $query;
-        $clonedQuery->chunk($this->getChunkSize($sheetExport), function ($chunk) use ($sheetExport): void {
+        $clonedQuery->chunk($this->getChunkSize($sheetExport), function (iterable $chunk) use ($sheetExport): void {
             $this->appendRows($chunk, $sheetExport);
         });
     }
@@ -599,7 +599,7 @@ class Sheet
 
         $rows = $rows instanceof LazyCollection ? $rows : new Collection($rows);
 
-        $rows->flatMap(function ($row) use ($sheetExport) {
+        $rows->flatMap(function ($row) use ($sheetExport): array {
             if ($sheetExport instanceof WithMapping) {
                 $row = $sheetExport->map($row);
             }
@@ -663,7 +663,7 @@ class Sheet
      */
     protected function validated(WithValidation $import, int $startRow, Collection|array $rows): Collection|array
     {
-        $toValidate = (new Collection($rows))->mapWithKeys(fn ($row, $index) => [($startRow + $index) => $row]);
+        $toValidate = (new Collection($rows))->mapWithKeys(fn ($row, $index): array => [($startRow + $index) => $row]);
 
         try {
             app(RowValidator::class)->validate($toValidate->toArray(), $import);
@@ -681,7 +681,7 @@ class Sheet
         /**
          * @callable(string): string $increment
          */
-        $increment = function_exists('str_increment') ? str_increment(...) : (fn ($cell) => ++$cell);
+        $increment = function_exists('str_increment') ? str_increment(...) : (fn ($cell): int|float => ++$cell);
 
         $upper = $increment($upper);
         for ($i = $lower; $i !== $upper; $i = $increment($i)) {

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Maatwebsite\Excel\Tests\Concerns;
 
 use Illuminate\Support\Collection;
@@ -12,7 +14,7 @@ use Maatwebsite\Excel\Row;
 use Maatwebsite\Excel\Tests\TestCase;
 use PHPUnit\Framework\Assert;
 
-class SkipsEmptyRowsTest extends TestCase
+final class SkipsEmptyRowsTest extends TestCase
 {
     public function test_skips_empty_rows_when_importing_to_collection(): void
     {

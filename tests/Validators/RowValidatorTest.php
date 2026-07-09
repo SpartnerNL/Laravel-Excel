@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Maatwebsite\Excel\Tests\Validators;
 
 use Illuminate\Contracts\Validation\Factory;
 use Maatwebsite\Excel\Tests\TestCase;
 use Maatwebsite\Excel\Validators\RowValidator;
 
-class RowValidatorTest extends TestCase
+final class RowValidatorTest extends TestCase
 {
     protected RowValidator $validator;
 
@@ -40,7 +42,7 @@ class RowValidatorTest extends TestCase
 
     public function test_format_rule_with_callable_input(): void
     {
-        $rule = (fn () => 'callable');
+        $rule = (fn (): string => 'callable');
 
         $result = $this->callPrivateMethod('formatRule', [$rule]);
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Maatwebsite\Excel\Tests\Concerns;
 
 use Maatwebsite\Excel\Concerns\Exportable;
@@ -8,7 +10,7 @@ use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Tests\Data\Stubs\WithMappingExport;
 use Maatwebsite\Excel\Tests\TestCase;
 
-class WithMappingTest extends TestCase
+final class WithMappingTest extends TestCase
 {
     public function test_can_export_with_heading(): void
     {

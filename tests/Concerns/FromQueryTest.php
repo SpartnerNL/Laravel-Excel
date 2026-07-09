@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Maatwebsite\Excel\Tests\Concerns;
 
 use Illuminate\Support\Collection;
@@ -15,7 +17,7 @@ use Maatwebsite\Excel\Tests\Data\Stubs\FromUsersQueryExportWithPrepareRows;
 use Maatwebsite\Excel\Tests\Data\Stubs\FromUsersQueryWithJoinExport;
 use Maatwebsite\Excel\Tests\TestCase;
 
-class FromQueryTest extends TestCase
+final class FromQueryTest extends TestCase
 {
     /**
      * Setup the test environment.
@@ -41,7 +43,7 @@ class FromQueryTest extends TestCase
 
         $contents = $this->readAsArray(__DIR__ . '/../Data/Disks/Local/from-query-store.xlsx', 'Xlsx');
 
-        $allUsers = $export->query()->get()->map(fn (User $user) => array_values($user->toArray()))->toArray();
+        $allUsers = $export->query()->get()->map(fn (User $user): array => array_values($user->toArray()))->toArray();
 
         $this->assertEquals($allUsers, $contents);
     }
@@ -56,7 +58,7 @@ class FromQueryTest extends TestCase
 
         $contents = $this->readAsArray(__DIR__ . '/../Data/Disks/Local/from-query-store.xlsx', 'Xlsx');
 
-        $allUsers = $export->query->get()->map(fn (User $user) => array_values($user->toArray()))->toArray();
+        $allUsers = $export->query->get()->map(fn (User $user): array => array_values($user->toArray()))->toArray();
 
         $this->assertEquals($allUsers, $contents);
     }
@@ -69,7 +71,7 @@ class FromQueryTest extends TestCase
 
         $contents = $this->readAsArray(__DIR__ . '/../Data/Disks/Local/from-query-store.xlsx', 'Xlsx');
 
-        $allUsers = $export->query()->get()->map(fn (User $row) => $export->map($row))->toArray();
+        $allUsers = $export->query()->get()->map(fn (User $row): array => $export->map($row))->toArray();
 
         $this->assertEquals($allUsers, $contents);
     }
@@ -91,7 +93,7 @@ class FromQueryTest extends TestCase
 
         $contents = $this->readAsArray(__DIR__ . '/../Data/Disks/Local/from-query-with-eager-loads.xlsx', 'Xlsx');
 
-        $allUsers = $export->query()->get()->map(fn (User $user) => $export->map($user))->toArray();
+        $allUsers = $export->query()->get()->map(fn (User $user): array => $export->map($user))->toArray();
 
         $this->assertEquals($allUsers, $contents);
     }
@@ -112,7 +114,7 @@ class FromQueryTest extends TestCase
 
         $contents = $this->readAsArray(__DIR__ . '/../Data/Disks/Local/from-query-with-eager-loads.xlsx', 'Xlsx');
 
-        $allUsers = $export->query()->get()->map(fn (User $user) => $export->map($user))->toArray();
+        $allUsers = $export->query()->get()->map(fn (User $user): array => $export->map($user))->toArray();
 
         $this->assertEquals($allUsers, $contents);
     }
@@ -127,7 +129,7 @@ class FromQueryTest extends TestCase
 
         $contents = $this->readAsArray(__DIR__ . '/../Data/Disks/Local/from-query-without-eloquent.xlsx', 'Xlsx');
 
-        $allUsers = $export->query()->get()->map(fn ($row) => array_values((array) $row))->all();
+        $allUsers = $export->query()->get()->map(fn ($row): array => array_values((array) $row))->all();
 
         $this->assertEquals($allUsers, $contents);
     }
@@ -140,7 +142,7 @@ class FromQueryTest extends TestCase
 
         $contents = $this->readAsArray(__DIR__ . '/../Data/Disks/Local/from-query-without-eloquent.xlsx', 'Xlsx');
 
-        $allUsers = $export->query()->get()->map(fn ($row) => array_values((array) $row))->all();
+        $allUsers = $export->query()->get()->map(fn ($row): array => array_values((array) $row))->all();
 
         $this->assertEquals($allUsers, $contents);
     }
@@ -181,7 +183,7 @@ class FromQueryTest extends TestCase
 
         $contents = $this->readAsArray(__DIR__ . '/../Data/Disks/Local/from-query-store.xlsx', 'Xlsx');
 
-        $allUsers = $export->query()->get()->map(fn (User $user) => array_values($user->toArray()))->toArray();
+        $allUsers = $export->query()->get()->map(fn (User $user): array => array_values($user->toArray()))->toArray();
 
         $this->assertEquals($allUsers, $contents);
     }
@@ -196,7 +198,7 @@ class FromQueryTest extends TestCase
 
         $contents = $this->readAsArray(__DIR__ . '/../Data/Disks/Local/from-query-store.xlsx', 'Xlsx');
 
-        $allUsers = $export->query()->get()->map(function (User $user) {
+        $allUsers = $export->query()->get()->map(function (User $user): array {
             $user->name .= '_prepared_name';
 
             return array_values($user->toArray());

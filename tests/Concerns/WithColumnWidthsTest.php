@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Maatwebsite\Excel\Tests\Concerns;
 
 use Maatwebsite\Excel\Concerns\Exportable;
@@ -7,7 +9,7 @@ use Maatwebsite\Excel\Concerns\FromArray;
 use Maatwebsite\Excel\Concerns\WithColumnWidths;
 use Maatwebsite\Excel\Tests\TestCase;
 
-class WithColumnWidthsTest extends TestCase
+final class WithColumnWidthsTest extends TestCase
 {
     public function test_can_set_column_width(): void
     {
@@ -35,6 +37,6 @@ class WithColumnWidthsTest extends TestCase
 
         $spreadsheet = $this->read(__DIR__ . '/../Data/Disks/Local/with-column-widths.xlsx', 'Xlsx');
 
-        $this->assertSame(55.0, $spreadsheet->getActiveSheet()->getColumnDimension('A')->getWidth());
+        $this->assertEqualsWithDelta(55.0, $spreadsheet->getActiveSheet()->getColumnDimension('A')->getWidth(), PHP_FLOAT_EPSILON);
     }
 }

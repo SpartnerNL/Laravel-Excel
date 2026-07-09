@@ -11,11 +11,11 @@ class RowSkippedException extends Exception
     /**
      * @var array<int, Failure>
      */
-    private array $failures;
+    private readonly array $failures;
 
     public function __construct(Failure ...$failures)
     {
-        $this->failures = $failures;
+        $this->failures = array_values($failures);
 
         parent::__construct();
     }

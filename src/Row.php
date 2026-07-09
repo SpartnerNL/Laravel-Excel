@@ -79,7 +79,7 @@ class Row implements ArrayAccess
             $i++;
         }
 
-        if (isset($this->preparationCallback)) {
+        if ($this->preparationCallback instanceof Closure) {
             $cells = ($this->preparationCallback)($cells, $this->row->getRowIndex());
         }
 

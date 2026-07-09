@@ -200,7 +200,7 @@ class ExcelFake implements Exporter, Importer
     {
         $fileName = $this->assertArrayHasKey($fileName, $this->downloads, sprintf('%s is not downloaded', $fileName));
 
-        $callback = $callback ?: (fn () => true);
+        $callback = $callback ?: (fn (): true => true);
 
         Assert::assertTrue(
             $callback($this->downloads[$fileName]),
@@ -224,7 +224,7 @@ class ExcelFake implements Exporter, Importer
             sprintf('%s is not stored on disk %s', $filePath, $disk)
         );
 
-        $callback = $callback ?: (fn () => true);
+        $callback = $callback ?: (fn (): true => true);
 
         Assert::assertTrue(
             $callback($storedOnDisk[$filePath]),
@@ -248,7 +248,7 @@ class ExcelFake implements Exporter, Importer
             sprintf('%s is not queued for export on disk %s', $filePath, $disk)
         );
 
-        $callback = $callback ?: (fn () => true);
+        $callback = $callback ?: (fn (): true => true);
 
         Assert::assertTrue(
             $callback($queuedForDisk[$filePath]),
@@ -268,7 +268,7 @@ class ExcelFake implements Exporter, Importer
     {
         Assert::assertArrayHasKey($classname, $this->raws, sprintf('%s is not exported in raw', $classname));
 
-        $callback = $callback ?: (fn () => true);
+        $callback = $callback ?: (fn (): true => true);
 
         Assert::assertTrue(
             $callback($this->raws[$classname]),
@@ -292,7 +292,7 @@ class ExcelFake implements Exporter, Importer
             sprintf('%s is not stored on disk %s', $filePath, $disk)
         );
 
-        $callback = $callback ?: (fn () => true);
+        $callback = $callback ?: (fn (): true => true);
 
         Assert::assertTrue(
             $callback($importedOnDisk[$filePath]),
@@ -316,7 +316,7 @@ class ExcelFake implements Exporter, Importer
             $files   = array_keys($disk);
             $results = preg_grep($key, $files);
             Assert::assertGreaterThan(0, count($results), $message);
-            Assert::assertEquals(1, count($results), "More than one result matches the file name expression '$key'.");
+            Assert::assertCount(1, $results, "More than one result matches the file name expression '$key'.");
 
             return array_values($results)[0];
         }

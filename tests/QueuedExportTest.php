@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Maatwebsite\Excel\Tests;
 
 use Illuminate\Bus\PendingBatch;
@@ -20,7 +22,7 @@ use Maatwebsite\Excel\Tests\Data\Stubs\ShouldBatchExport;
 use Maatwebsite\Excel\Tests\Data\Stubs\ShouldQueueExport;
 use Throwable;
 
-class QueuedExportTest extends TestCase
+final class QueuedExportTest extends TestCase
 {
     public function test_can_queue_an_export(): void
     {
@@ -72,8 +74,8 @@ class QueuedExportTest extends TestCase
                 );
 
                 // File was deleted locally
-                $this->assertFalse(
-                    file_exists($tempFile->getLocalPath())
+                $this->assertFileDoesNotExist(
+                    $tempFile->getLocalPath()
                 );
 
                 $jobs++;

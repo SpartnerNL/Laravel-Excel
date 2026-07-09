@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Maatwebsite\Excel\Tests\Cache;
 
 use Closure;
@@ -18,7 +20,7 @@ use Maatwebsite\Excel\Tests\TestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Psr\SimpleCache\CacheInterface;
 
-class BatchCacheTest extends TestCase
+final class BatchCacheTest extends TestCase
 {
     private Repository $cache;
 
@@ -173,7 +175,7 @@ class BatchCacheTest extends TestCase
 
         $dispatchedCollection = Event::dispatched(
             KeyWritten::class,
-            fn (KeyWritten $event) => $event->seconds === $expectedTTL
+            fn (KeyWritten $event): bool => $event->seconds === $expectedTTL
         );
 
         $this->assertCount(2, $dispatchedCollection);
@@ -190,7 +192,7 @@ class BatchCacheTest extends TestCase
 
         $dispatchedCollection = Event::dispatched(
             KeyWritten::class,
-            fn (KeyWritten $event) => $event->seconds >= 59 && $event->seconds <= 60
+            fn (KeyWritten $event): bool => $event->seconds >= 59 && $event->seconds <= 60
         );
 
         $this->assertCount(2, $dispatchedCollection);
@@ -206,7 +208,7 @@ class BatchCacheTest extends TestCase
 
         $dispatchedCollection = Event::dispatched(
             KeyWritten::class,
-            fn (KeyWritten $event) => $event->seconds === null
+            fn (KeyWritten $event): bool => $event->seconds === null
         );
 
         $this->assertCount(2, $dispatchedCollection);
@@ -220,7 +222,7 @@ class BatchCacheTest extends TestCase
         return [
             'null (forever)' => [null, null],
             'int value'      => [$value = random_int(1, 100), $value],
-            'callable'       => [$closure = (fn () => 199), $closure],
+            'callable'       => [$closure = (fn (): int => 199), $closure],
         ];
     }
 

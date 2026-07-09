@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Maatwebsite\Excel\Tests\Concerns;
 
 use Maatwebsite\Excel\Concerns\Exportable;
@@ -8,7 +10,7 @@ use Maatwebsite\Excel\Concerns\WithStyles;
 use Maatwebsite\Excel\Tests\TestCase;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
-class WithStylesTest extends TestCase
+final class WithStylesTest extends TestCase
 {
     public function test_can_configure_styles(): void
     {
@@ -43,6 +45,6 @@ class WithStylesTest extends TestCase
         $this->assertTrue($sheet->getStyle('B1')->getFont()->getItalic());
         $this->assertTrue($sheet->getStyle('B2')->getFont()->getBold());
         $this->assertFalse($sheet->getStyle('A2')->getFont()->getBold());
-        $this->assertSame(16.0, $sheet->getStyle('C2')->getFont()->getSize());
+        $this->assertEqualsWithDelta(16.0, $sheet->getStyle('C2')->getFont()->getSize(), PHP_FLOAT_EPSILON);
     }
 }

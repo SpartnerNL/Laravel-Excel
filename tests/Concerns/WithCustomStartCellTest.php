@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Maatwebsite\Excel\Tests\Concerns;
 
 use Illuminate\Support\Collection;
@@ -8,7 +10,7 @@ use Maatwebsite\Excel\Concerns\WithCustomStartCell;
 use Maatwebsite\Excel\Excel;
 use Maatwebsite\Excel\Tests\TestCase;
 
-class WithCustomStartCellTest extends TestCase
+final class WithCustomStartCellTest extends TestCase
 {
     protected Excel $SUT;
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Queue\Events\JobProcessed;
 use Illuminate\Queue\SyncQueue;
 use Illuminate\Support\Facades\DB;
@@ -12,7 +14,7 @@ use Maatwebsite\Excel\Tests\Data\Stubs\QueuedImportWithQueueAttribute;
 use Maatwebsite\Excel\Tests\Data\Stubs\QueueImportWithoutJobChaining;
 use Maatwebsite\Excel\Tests\TestCase;
 
-class ShouldQueueWithoutChainTest extends TestCase
+final class ShouldQueueWithoutChainTest extends TestCase
 {
     /**
      * Setup the test environment.
@@ -45,7 +47,7 @@ class ShouldQueueWithoutChainTest extends TestCase
 
         Queue::assertPushed(ReadChunk::class, 2);
         Queue::assertPushed(AfterImportJob::class, 1);
-        Queue::assertPushed(AfterImportJob::class, fn ($import) => !is_null($import->delay));
+        Queue::assertPushed(AfterImportJob::class, fn ($import): bool => !is_null($import->delay));
         Queue::assertNotPushed(QueueImport::class);
     }
 
@@ -89,26 +91,26 @@ class ShouldQueueWithoutChainTest extends TestCase
         $jobs   = Queue::pushedJobs(); // @phpstan-ignore staticMethod.notFound
         $chunks = collect($jobs[ReadChunk::class])->pluck('job');
         $chunks->each(function (ReadChunk $chunk): void {
-            self::assertFalse(ReadChunk::isComplete($chunk->getUniqueId()));
+            $this->assertFalse(ReadChunk::isComplete($chunk->getUniqueId()));
         });
-        self::assertCount(2, $chunks);
+        $this->assertCount(2, $chunks);
         $afterImport = $jobs[AfterImportJob::class][0]['job'];
 
         $fake = app(SyncQueue::class);
         $fake->setContainer(app());
         $fake->push($chunks->first());
-        self::assertTrue(ReadChunk::isComplete($chunks->first()->getUniqueId()));
-        self::assertFalse(ReadChunk::isComplete($chunks->last()->getUniqueId()));
+        $this->assertTrue(ReadChunk::isComplete($chunks->first()->getUniqueId()));
+        $this->assertFalse(ReadChunk::isComplete($chunks->last()->getUniqueId()));
 
         Event::listen(JobProcessed::class, function (JobProcessed $event): void {
-            self::assertTrue($event->job->isReleased());
+            $this->assertTrue($event->job->isReleased());
         });
         $fake->push($afterImport);
         Event::forget(JobProcessed::class);
         $fake->push($chunks->last());
 
         Event::listen(JobProcessed::class, function (JobProcessed $event): void {
-            self::assertFalse($event->job->isReleased());
+            $this->assertFalse($event->job->isReleased());
         });
         $fake->push($afterImport);
         Event::forget(JobProcessed::class);

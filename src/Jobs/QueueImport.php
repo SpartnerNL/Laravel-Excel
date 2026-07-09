@@ -15,7 +15,7 @@ class QueueImport implements ShouldQueue
 
     public function __construct(?ShouldQueue $import = null)
     {
-        if ($import) {
+        if ($import instanceof ShouldQueue) {
             $this->timeout = $import->timeout ?? null;
             $this->tries   = $import->tries ?? null;
         }

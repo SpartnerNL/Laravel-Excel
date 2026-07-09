@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Maatwebsite\Excel\Tests\Helpers;
 
 class FileHelper
@@ -16,7 +18,7 @@ class FileHelper
         }
 
         if (is_dir($fileName)) {
-            $scan = glob(rtrim((string) $fileName, '/') . '/*');
+            $scan = glob(rtrim($fileName, '/') . '/*');
             foreach ($scan as $path) {
                 self::recursiveDelete($path);
             }

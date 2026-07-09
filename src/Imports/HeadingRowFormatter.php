@@ -39,7 +39,7 @@ class HeadingRowFormatter
      */
     public static function format(array $headings): array
     {
-        return (new Collection($headings))->map(fn ($value, $key) => static::callFormatter($value, $key))->toArray();
+        return (new Collection($headings))->map(fn ($value, int|string|null $key): mixed => static::callFormatter($value, $key))->toArray();
     }
 
     public static function default(?string $name = null): void

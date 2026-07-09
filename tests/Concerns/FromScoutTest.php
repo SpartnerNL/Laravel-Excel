@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Maatwebsite\Excel\Tests\Concerns;
 
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\Group;
@@ -7,7 +9,7 @@ use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
 use Maatwebsite\Excel\Tests\Data\Stubs\FromUsersScoutExport;
 use Maatwebsite\Excel\Tests\TestCase;
 
-class FromScoutTest extends TestCase
+final class FromScoutTest extends TestCase
 {
     /**
      * Setup the test environment.
@@ -33,7 +35,7 @@ class FromScoutTest extends TestCase
 
         $contents = $this->readAsArray(__DIR__ . '/../Data/Disks/Local/from-scout-store.xlsx', 'Xlsx');
 
-        $allUsers = $export->scout()->get()->map(fn (User $user) => array_values($user->toArray()))->toArray();
+        $allUsers = $export->scout()->get()->map(fn (User $user): array => array_values($user->toArray()))->toArray();
 
         $this->assertEquals($allUsers, $contents);
     }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Maatwebsite\Excel\Tests;
 
 use Illuminate\Bus\PendingBatch;
@@ -23,7 +25,7 @@ use Maatwebsite\Excel\Tests\Data\Stubs\QueuedImportWithRetryUntil;
 use Maatwebsite\Excel\Tests\Data\Stubs\ShouldBatchImport;
 use Throwable;
 
-class QueuedImportTest extends TestCase
+final class QueuedImportTest extends TestCase
 {
     /**
      * Setup the test environment.

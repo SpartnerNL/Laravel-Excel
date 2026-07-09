@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Maatwebsite\Excel\Tests\Concerns;
 
 use Illuminate\Support\Collection;
@@ -18,7 +20,7 @@ use Maatwebsite\Excel\Tests\TestCase;
 use Maatwebsite\Excel\Validators\Failure;
 use PHPUnit\Framework\Assert;
 
-class SkipsOnFailureTest extends TestCase
+final class SkipsOnFailureTest extends TestCase
 {
     /**
      * Setup the test environment.

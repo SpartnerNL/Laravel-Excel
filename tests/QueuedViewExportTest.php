@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Maatwebsite\Excel\Tests;
 
 use Illuminate\Support\Collection;
@@ -8,7 +10,7 @@ use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
 use Maatwebsite\Excel\Tests\Data\Stubs\FromViewExportWithMultipleSheets;
 use Maatwebsite\Excel\Tests\Data\Stubs\SheetForUsersFromView;
 
-class QueuedViewExportTest extends TestCase
+final class QueuedViewExportTest extends TestCase
 {
     /**
      * Setup the test environment.
@@ -47,22 +49,22 @@ class QueuedViewExportTest extends TestCase
 
         $contents = $this->readAsArray(__DIR__ . '/Data/Disks/Local/queued-multiple-view-export.xlsx', 'Xlsx', 0);
 
-        $expected = $users->forPage(1, 100)->map(fn (User $user) => [
+        $expected = $users->forPage(1, 100)->map(fn (User $user): array => [
             $user->name,
             $user->email,
         ])->prepend(['Name', 'Email'])->toArray();
 
-        $this->assertSame(101, count($contents));
+        $this->assertCount(101, $contents);
         $this->assertSame($expected, $contents);
 
         $contents = $this->readAsArray(__DIR__ . '/Data/Disks/Local/queued-multiple-view-export.xlsx', 'Xlsx', 2);
 
-        $expected = $users->forPage(3, 100)->map(fn (User $user) => [
+        $expected = $users->forPage(3, 100)->map(fn (User $user): array => [
             $user->name,
             $user->email,
         ])->prepend(['Name', 'Email'])->toArray();
 
-        $this->assertSame(101, count($contents));
+        $this->assertCount(101, $contents);
         $this->assertSame($expected, $contents);
     }
 }

@@ -8,12 +8,13 @@ use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Sheet;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class DownloadCollectionMixin
 {
     public function downloadExcel(): callable
     {
-        return function (string $fileName, ?string $writerType = null, $withHeadings = false, array $responseHeaders = []) {
+        return function (string $fileName, ?string $writerType = null, $withHeadings = false, array $responseHeaders = []): BinaryFileResponse {
             $export = new class($this, $withHeadings) implements FromCollection, WithHeadings // @phpstan-ignore argument.type
             {
                 use Exportable;

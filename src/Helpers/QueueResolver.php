@@ -51,10 +51,7 @@ class QueueResolver
         return property_exists($import, $property) ? $import->{$property} : null;
     }
 
-    /**
-     * @return object
-     */
-    private static function reader()
+    private static function reader(): object
     {
         return new class
         {

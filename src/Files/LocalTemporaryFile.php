@@ -4,12 +4,12 @@ namespace Maatwebsite\Excel\Files;
 
 class LocalTemporaryFile extends TemporaryFile
 {
-    private string $filePath;
+    private readonly string $filePath;
 
     public function __construct(string $filePath)
     {
         touch($filePath);
-        if (($rights = config('excel.temporary_files.local_permissions.file', null)) !== null) {
+        if (($rights = config('excel.temporary_files.local_permissions.file')) !== null) {
             chmod($filePath, $rights);
         }
 

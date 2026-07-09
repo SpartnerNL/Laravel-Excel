@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Maatwebsite\Excel\Tests\Concerns;
 
 use Maatwebsite\Excel\Concerns\Exportable;
@@ -9,7 +11,7 @@ use Maatwebsite\Excel\Tests\TestCase;
 use PhpOffice\PhpSpreadsheet\Style\Fill;
 use PhpOffice\PhpSpreadsheet\Style\Style;
 
-class WithDefaultStylesTest extends TestCase
+final class WithDefaultStylesTest extends TestCase
 {
     public function test_can_configure_default_styles(): void
     {

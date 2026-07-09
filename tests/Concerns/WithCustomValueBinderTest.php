@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Maatwebsite\Excel\Tests\Concerns;
 
 use Carbon\Carbon;
@@ -14,11 +16,11 @@ use PhpOffice\PhpSpreadsheet\Cell\DefaultValueBinder;
 use PhpOffice\PhpSpreadsheet\Shared\Date;
 use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 
-class WithCustomValueBinderTest extends TestCase
+final class WithCustomValueBinderTest extends TestCase
 {
     public function test_can_set_a_value_binder_on_export(): void
     {
-        Carbon::setTestNow(new Carbon('2018-08-07 18:00:00'));
+        \Illuminate\Support\Facades\Date::setTestNow(new Carbon('2018-08-07 18:00:00'));
 
         $export = new class extends DefaultValueBinder implements FromCollection, WithCustomValueBinder
         {
@@ -86,7 +88,7 @@ class WithCustomValueBinderTest extends TestCase
         $this->assertSame(NumberFormat::FORMAT_DATE_DATETIME, $sheet->getCell('A1')->getStyle()->getNumberFormat()->getFormatCode());
 
         // Check if the cell has the converted percentage
-        $this->assertSame(0.1, $sheet->getCell('B1')->getValue());
+        $this->assertEqualsWithDelta(0.1, $sheet->getCell('B1')->getValue(), PHP_FLOAT_EPSILON);
 
         // Check if formatted as percentage
         $this->assertSame(NumberFormat::FORMAT_PERCENTAGE_00, $sheet->getCell('B1')->getStyle()->getNumberFormat()->getFormatCode());

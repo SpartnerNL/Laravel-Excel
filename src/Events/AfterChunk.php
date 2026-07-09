@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Maatwebsite\Excel\Events;
 
 use Maatwebsite\Excel\Sheet;
@@ -7,9 +9,9 @@ use Maatwebsite\Excel\Sheet;
 class AfterChunk extends Event
 {
     public function __construct(
-        private Sheet $sheet,
+        private readonly Sheet $sheet,
         object $importable,
-        private int $startRow,
+        private readonly int $startRow,
     ) {
         parent::__construct($importable);
     }

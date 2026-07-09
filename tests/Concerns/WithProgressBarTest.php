@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Maatwebsite\Excel\Tests\Concerns;
 
 use Illuminate\Console\OutputStyle;
@@ -10,7 +12,7 @@ use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
 use Maatwebsite\Excel\Tests\TestCase;
 use Mockery;
 
-class WithProgressBarTest extends TestCase
+final class WithProgressBarTest extends TestCase
 {
     /**
      * Setup the test environment.

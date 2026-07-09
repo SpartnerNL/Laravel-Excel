@@ -12,7 +12,7 @@ use Maatwebsite\Excel\Exceptions\RowSkippedException;
 class RowValidator
 {
     public function __construct(
-        private Factory $validator,
+        private readonly Factory $validator,
     ) {
     }
 
@@ -97,7 +97,7 @@ class RowValidator
      */
     private function formatKey(array $elements): array
     {
-        return collect($elements)->mapWithKeys(function ($rule, $attribute) {
+        return collect($elements)->mapWithKeys(function (string|object|callable|array $rule, $attribute): array {
             $attribute = Str::startsWith($attribute, '*.') ? $attribute : '*.' . $attribute;
 
             return [$attribute => $this->formatRule($rule)];
@@ -123,7 +123,7 @@ class RowValidator
         }
 
         if (Str::contains($rules, 'required_without') && preg_match('/(.*?):(.*)/', $rules, $matches)) {
-            $column = array_map(fn ($match) => Str::startsWith($match, '*.') ? $match : '*.' . $match, explode(',', $matches[2]));
+            $column = array_map(fn ($match): string => Str::startsWith($match, '*.') ? $match : '*.' . $match, explode(',', $matches[2]));
 
             return $matches[1] . ':' . implode(',', $column);
         }

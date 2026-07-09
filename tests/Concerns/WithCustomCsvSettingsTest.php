@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Maatwebsite\Excel\Tests\Concerns;
 
 use Illuminate\Support\Collection;
@@ -11,7 +13,7 @@ use Maatwebsite\Excel\HeadingRowImport;
 use Maatwebsite\Excel\Tests\TestCase;
 use PHPUnit\Framework\Assert;
 
-class WithCustomCsvSettingsTest extends TestCase
+final class WithCustomCsvSettingsTest extends TestCase
 {
     protected Excel $SUT;
 

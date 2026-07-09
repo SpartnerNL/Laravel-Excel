@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Maatwebsite\Excel\Tests\Concerns;
 
 use Illuminate\Foundation\Bus\PendingDispatch;
@@ -10,7 +12,7 @@ use Maatwebsite\Excel\Tests\Data\Stubs\QueuedExport;
 use Maatwebsite\Excel\Tests\Data\Stubs\SheetWith100Rows;
 use Maatwebsite\Excel\Tests\TestCase;
 
-class FromCollectionTest extends TestCase
+final class FromCollectionTest extends TestCase
 {
     public function test_can_export_from_collection(): void
     {
@@ -60,7 +62,7 @@ class FromCollectionTest extends TestCase
 
         $this->assertSame(
             $export->collection()->map(
-                fn (array $item) => array_values($item)
+                fn (array $item): array => array_values($item)
             )->toArray(),
             $contents
         );
@@ -76,7 +78,7 @@ class FromCollectionTest extends TestCase
 
         $response = $export->queue('from-lazy-collection-store.xlsx');
 
-        $this->assertTrue($response instanceof PendingDispatch);
+        $this->assertInstanceOf(PendingDispatch::class, $response);
 
         // Force dispatching via __destruct.
         unset($response);
@@ -85,7 +87,7 @@ class FromCollectionTest extends TestCase
 
         $this->assertSame(
             $export->collection()->map(
-                fn (array $item) => array_values($item)
+                fn (array $item): array => array_values($item)
             )->toArray(),
             $contents
         );
