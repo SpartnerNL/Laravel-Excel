@@ -71,7 +71,7 @@ class Reader
     }
 
     /**
-     * @return $this|PendingDispatch|PendingBatch|Collection|null
+     * @return static|PendingDispatch|PendingBatch|Collection<int, object>|null
      *
      * @throws ValidationException
      * @throws NoTypeDetectedException
@@ -121,6 +121,8 @@ class Reader
     }
 
     /**
+     * @return array<array-key, array<int, array<array-key, mixed>>>
+     *
      * @throws FileNotFoundException
      * @throws \PhpOffice\PhpSpreadsheet\Exception
      * @throws NoTypeDetectedException
@@ -159,6 +161,8 @@ class Reader
     }
 
     /**
+     * @return Collection<array-key, Collection<int, Collection<array-key, mixed>>>
+     *
      * @throws FileNotFoundException
      * @throws \PhpOffice\PhpSpreadsheet\Exception
      * @throws NoTypeDetectedException
@@ -251,6 +255,9 @@ class Reader
         return $this->reader;
     }
 
+    /**
+     * @return array<array-key, object>
+     */
     public function getWorksheets(object $import): array
     {
         // Csv doesn't have worksheets.
@@ -258,7 +265,9 @@ class Reader
             return ['Worksheet' => $import];
         }
 
-        $worksheets     = [];
+        $worksheets = [];
+
+        /** @var array<int, string> $worksheetNames */
         $worksheetNames = $this->reader->listWorksheetNames($this->currentFile->getLocalPath());
         if ($import instanceof WithMultipleSheets) {
             $sheetImports = $import->sheets();
@@ -287,6 +296,9 @@ class Reader
         return $worksheets;
     }
 
+    /**
+     * @return array<string, int>
+     */
     public function getTotalRows(): array
     {
         assert(method_exists($this->reader, 'listWorksheetInfo'));
@@ -304,7 +316,7 @@ class Reader
      * @throws \PhpOffice\PhpSpreadsheet\Exception
      * @throws SheetNotFoundException
      */
-    protected function getSheet($import, $sheetImport, $index): ?Sheet
+    protected function getSheet(?object $import, ?object $sheetImport, string|int $index): ?Sheet
     {
         try {
             return Sheet::make($this->spreadsheet, $index);
@@ -325,6 +337,9 @@ class Reader
         }
     }
 
+    /**
+     * @return array<array-key, object>
+     */
     private function buildSheetImports(?object $import): array
     {
         $sheetImports = [];

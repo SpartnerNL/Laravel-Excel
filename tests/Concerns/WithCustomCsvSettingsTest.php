@@ -26,9 +26,12 @@ class WithCustomCsvSettingsTest extends TestCase
     {
         $export = new class implements FromCollection, WithCustomCsvSettings
         {
+            /**
+             * @return Collection<int, mixed>
+             */
             public function collection(): Collection
             {
-                return collect([
+                return new Collection([
                     ['A1', 'B1'],
                     ['A2', 'B2'],
                 ]);
@@ -62,9 +65,12 @@ class WithCustomCsvSettingsTest extends TestCase
     {
         $export = new class implements FromCollection, WithCustomCsvSettings
         {
+            /**
+             * @return Collection<int, mixed>
+             */
             public function collection(): Collection
             {
-                return collect([
+                return new Collection([
                     ['A1', '€ŠšŽžŒœŸ'],
                     ['A2', 'åßàèòìù'],
                 ]);

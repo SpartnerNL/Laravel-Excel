@@ -8,7 +8,7 @@ class AfterChunk extends Event
 {
     public function __construct(
         private Sheet $sheet,
-        $importable,
+        object $importable,
         private int $startRow,
     ) {
         parent::__construct($importable);

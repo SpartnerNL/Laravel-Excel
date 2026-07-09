@@ -6,11 +6,15 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromView;
+use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
 
 class SheetForUsersFromView implements FromView
 {
     use Exportable;
 
+    /**
+     * @param  Collection<int, User>  $users
+     */
     public function __construct(
         protected Collection $users,
     ) {

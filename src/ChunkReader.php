@@ -32,6 +32,9 @@ class ChunkReader
     ) {
     }
 
+    /**
+     * @return PendingDispatch|PendingBatch|Collection<int, object>|null
+     */
     public function read(WithChunkReading $import, Reader $reader, TemporaryFile $temporaryFile): PendingDispatch|PendingBatch|Collection|null
     {
         if ($import instanceof WithEvents) {

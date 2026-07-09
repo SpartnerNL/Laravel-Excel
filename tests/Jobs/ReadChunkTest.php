@@ -12,7 +12,7 @@ use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
 
 class ReadChunkTest extends TestCase
 {
-    public function test_resolves_the_queue_and_connection_from_attributes()
+    public function test_resolves_the_queue_and_connection_from_attributes(): void
     {
         if (!class_exists(Queue::class)) {
             $this->markTestSkipped('The #[Queue] attribute is not available on this Laravel version');
@@ -24,11 +24,11 @@ class ReadChunkTest extends TestCase
         $this->assertSame('redis', $job->connection);
     }
 
-    public function test_keeps_a_string_queue_property()
+    public function test_keeps_a_string_queue_property(): void
     {
         $import = new class implements WithChunkReading
         {
-            public $queue = 'plain-queue';
+            public string $queue = 'plain-queue';
 
             public function chunkSize(): int
             {
@@ -41,7 +41,7 @@ class ReadChunkTest extends TestCase
         $this->assertSame('plain-queue', $job->queue);
     }
 
-    public function test_resolves_to_null_without_a_queue()
+    public function test_resolves_to_null_without_a_queue(): void
     {
         $import = new class implements WithChunkReading
         {

@@ -5,7 +5,6 @@ namespace Maatwebsite\Excel\Concerns;
 use Illuminate\Bus\PendingBatch;
 use Illuminate\Foundation\Bus\PendingDispatch;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Maatwebsite\Excel\Exceptions\NoFilenameGivenException;
 use Maatwebsite\Excel\Exceptions\NoFilePathGivenException;
 use Maatwebsite\Excel\Exporter;
@@ -17,6 +16,9 @@ trait Exportable
 
     protected ?string $writerType = null;
 
+    /**
+     * @var array<string, string>|null
+     */
     protected ?array $headers = [];
 
     protected ?string $filePath = null;
@@ -26,9 +28,11 @@ trait Exportable
     protected mixed $diskOptions = [];
 
     /**
+     * @param  array<string, string>|null  $headers
+     *
      * @throws NoFilenameGivenException
      */
-    public function download(?string $fileName = null, ?string $writerType = null, ?array $headers = null): Response|BinaryFileResponse
+    public function download(?string $fileName = null, ?string $writerType = null, ?array $headers = null): BinaryFileResponse
     {
         $headers ??= $this->headers;
         $fileName ??= $this->fileName;
@@ -44,7 +48,7 @@ trait Exportable
     /**
      * @throws NoFilePathGivenException
      */
-    public function store(?string $filePath = null, ?string $disk = null, ?string $writerType = null, mixed $diskOptions = []): bool|PendingDispatch
+    public function store(?string $filePath = null, ?string $disk = null, ?string $writerType = null, mixed $diskOptions = []): bool|PendingDispatch|PendingBatch
     {
         $filePath ??= $this->filePath;
 
@@ -92,7 +96,7 @@ trait Exportable
      * Create an HTTP response that represents the object.
      *
      * @param  Request  $request
-     * @return Response
+     * @return BinaryFileResponse
      *
      * @throws NoFilenameGivenException
      */

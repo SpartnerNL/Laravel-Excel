@@ -17,9 +17,12 @@ class WithHeadingsTest extends TestCase
         {
             use Exportable;
 
+            /**
+             * @return Collection<int, mixed>
+             */
             public function collection(): Collection
             {
-                return collect([
+                return new Collection([
                     ['A1', 'B1', 'C1'],
                     ['A2', 'B2', 'C2'],
                 ]);
@@ -52,9 +55,12 @@ class WithHeadingsTest extends TestCase
         {
             use Exportable;
 
+            /**
+             * @return Collection<int, mixed>
+             */
             public function collection(): Collection
             {
-                return collect([
+                return new Collection([
                     ['A1', 'B1', 'C1'],
                     ['A2', 'B2', 'C2'],
                 ]);
@@ -91,9 +97,12 @@ class WithHeadingsTest extends TestCase
         {
             use Exportable;
 
+            /**
+             * @return Collection<int, mixed>
+             */
             public function collection(): Collection
             {
-                return collect([
+                return new Collection([
                     ['A1', 'B1', 'C1'],
                     ['A2', 'B2', 'C2'],
                 ]);

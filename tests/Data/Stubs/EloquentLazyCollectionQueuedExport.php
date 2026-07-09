@@ -7,10 +7,16 @@ use Illuminate\Support\LazyCollection;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromCollection;
 
+/**
+ * @implements FromCollection<int, array{firstname: string, lastname: string}>
+ */
 class EloquentLazyCollectionQueuedExport implements FromCollection, ShouldQueue
 {
     use Exportable;
 
+    /**
+     * @return LazyCollection<int, array{firstname: string, lastname: string}>
+     */
     public function collection(): LazyCollection
     {
         return collect([

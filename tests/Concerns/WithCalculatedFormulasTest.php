@@ -22,7 +22,7 @@ class WithCalculatedFormulasTest extends TestCase
         {
             use Importable;
 
-            public $called = false;
+            public bool $called = false;
 
             public function array(array $array): void
             {
@@ -43,7 +43,7 @@ class WithCalculatedFormulasTest extends TestCase
         {
             use Importable;
 
-            public $called = false;
+            public bool $called = false;
 
             public function array(array $array): void
             {
@@ -64,7 +64,7 @@ class WithCalculatedFormulasTest extends TestCase
         {
             use Importable;
 
-            public $called = false;
+            public bool $called = false;
 
             public function model(array $row): ?Model
             {
@@ -87,7 +87,7 @@ class WithCalculatedFormulasTest extends TestCase
         {
             use Importable;
 
-            public $called = false;
+            public bool $called = false;
 
             public function model(array $row): ?Model
             {
@@ -115,14 +115,14 @@ class WithCalculatedFormulasTest extends TestCase
         {
             use Importable;
 
-            public $test = 'test1';
+            public string $test = 'test1';
 
             public function sheets(): array
             {
                 return [
                     new class implements HasReferencesToOtherSheets, ToArray
                     {
-                        public $test = 'test2';
+                        public string $test = 'test2';
 
                         public function array(array $array): void
                         {
@@ -133,7 +133,7 @@ class WithCalculatedFormulasTest extends TestCase
                     },
                     new class implements HasReferencesToOtherSheets, ToArray, WithCalculatedFormulas
                     {
-                        public $test = 'test2';
+                        public string $test = 'test2';
 
                         public function array(array $array): void
                         {
@@ -155,7 +155,7 @@ class WithCalculatedFormulasTest extends TestCase
         {
             use Importable;
 
-            public $called = false;
+            public bool $called = false;
 
             public function array(array $array): void
             {
@@ -176,7 +176,7 @@ class WithCalculatedFormulasTest extends TestCase
         {
             use Importable;
 
-            public $called = false;
+            public bool $called = false;
 
             public function model(array $row): ?Model
             {

@@ -16,18 +16,30 @@ class StoreCollectionMixin
             {
                 use Exportable;
 
+                /**
+                 * @var Collection<array-key, mixed>
+                 */
                 private Collection $collection;
 
+                /**
+                 * @param  Collection<array-key, mixed>  $collection
+                 */
                 public function __construct(Collection $collection, private bool $withHeadings = false)
                 {
                     $this->collection = $collection->toBase();
                 }
 
+                /**
+                 * @return Collection<array-key, mixed>
+                 */
                 public function collection(): Collection
                 {
                     return $this->collection;
                 }
 
+                /**
+                 * @return array<int, mixed>
+                 */
                 public function headings(): array
                 {
                     if (!$this->withHeadings) {

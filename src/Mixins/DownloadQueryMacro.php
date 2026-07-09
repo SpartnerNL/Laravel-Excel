@@ -3,6 +3,7 @@
 namespace Maatwebsite\Excel\Mixins;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\WithHeadings;
@@ -10,24 +11,33 @@ use Maatwebsite\Excel\Sheet;
 
 class DownloadQueryMacro
 {
-    public function __invoke()
+    public function __invoke(): callable
     {
         return function (string $fileName, ?string $writerType = null, $withHeadings = false) {
             $export = new class($this, $withHeadings) implements FromQuery, WithHeadings // @phpstan-ignore argument.type
             {
                 use Exportable;
 
+                /**
+                 * @param  Builder<Model>  $query
+                 */
                 public function __construct(
                     private Builder $query,
                     private bool $withHeadings = false,
                 ) {
                 }
 
+                /**
+                 * @return Builder<Model>
+                 */
                 public function query(): Builder
                 {
                     return $this->query;
                 }
 
+                /**
+                 * @return array<int, mixed>
+                 */
                 public function headings(): array
                 {
                     if (!$this->withHeadings) {

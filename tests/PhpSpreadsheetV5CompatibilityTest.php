@@ -30,8 +30,12 @@ class PhpSpreadsheetV5CompatibilityTest extends TestCase
         {
             use Importable;
 
+            /** @var array<string, string> */
             private $receivedTypes;
 
+            /**
+             * @param  array<string, string>  $receivedTypes
+             */
             public function __construct(&$receivedTypes)
             {
                 $this->receivedTypes = &$receivedTypes;
@@ -43,9 +47,13 @@ class PhpSpreadsheetV5CompatibilityTest extends TestCase
 
                 return new class($receivedTypes) implements IReadFilter
                 {
-                    private $receivedTypes;
+                    /** @var array<string, string> */
+                    private array $receivedTypes;
 
-                    public function __construct(&$receivedTypes)
+                    /**
+                     * @param  array<string, string>  $receivedTypes
+                     */
+                    public function __construct(array &$receivedTypes)
                     {
                         $this->receivedTypes = &$receivedTypes;
                     }
@@ -81,8 +89,12 @@ class PhpSpreadsheetV5CompatibilityTest extends TestCase
         {
             use Importable;
 
+            /** @var array<int, array{column: string, row: int}> */
             private $capturedCells;
 
+            /**
+             * @param  array<int, array{column: string, row: int}>  $capturedCells
+             */
             public function __construct(&$capturedCells)
             {
                 $this->capturedCells = &$capturedCells;
@@ -94,16 +106,24 @@ class PhpSpreadsheetV5CompatibilityTest extends TestCase
 
                 return new class($capturedCells) implements IReadFilter
                 {
-                    private $capturedCells;
+                    /** @var array<int, array{column: string, row: int}> */
+                    private array $capturedCells;
 
-                    public function __construct(&$capturedCells)
+                    /**
+                     * @param  array<int, array{column: string, row: int}>  $capturedCells
+                     */
+                    public function __construct(array &$capturedCells)
                     {
                         $this->capturedCells = &$capturedCells;
                     }
 
                     public function readCell(string $columnAddress, int $row, string $worksheetName = ''): bool
                     {
-                        $this->capturedCells[] = ['column' => $columnAddress, 'row' => $row];
+                        $cell = ['column' => $columnAddress, 'row' => $row];
+
+                        if (!in_array($cell, $this->capturedCells, true)) {
+                            $this->capturedCells[] = $cell;
+                        }
 
                         return true;
                     }
@@ -228,6 +248,9 @@ class PhpSpreadsheetV5CompatibilityTest extends TestCase
         {
             use Exportable;
 
+            /**
+             * @return Collection<int, array{array{nested: string}|array{string, string, string}, string}>
+             */
             public function collection(): Collection
             {
                 return collect([
@@ -257,15 +280,23 @@ class PhpSpreadsheetV5CompatibilityTest extends TestCase
         {
             use Importable;
 
+            /** @var array<int, string|int> */
             public $skippedSheets = [];
 
+            /**
+             * @return array<string, object>
+             */
             public function sheets(): array
             {
                 return [
                     'Sheet1' => new class implements ToArray
                     {
+                        /** @var array<array-key, mixed> */
                         public $data = [];
 
+                        /**
+                         * @param  array<array-key, mixed>  $array
+                         */
                         public function array(array $array): void
                         {
                             $this->data = $array;
@@ -273,8 +304,12 @@ class PhpSpreadsheetV5CompatibilityTest extends TestCase
                     },
                     'NonExistentSheet' => new class implements ToArray
                     {
+                        /** @var array<array-key, mixed> */
                         public $data = [];
 
+                        /**
+                         * @param  array<array-key, mixed>  $array
+                         */
                         public function array(array $array): void
                         {
                             $this->data = $array;
@@ -283,7 +318,7 @@ class PhpSpreadsheetV5CompatibilityTest extends TestCase
                 ];
             }
 
-            public function onUnknownSheet($sheetName): void
+            public function onUnknownSheet(string|int $sheetName): void
             {
                 $this->skippedSheets[] = $sheetName;
             }
@@ -300,8 +335,12 @@ class PhpSpreadsheetV5CompatibilityTest extends TestCase
         {
             use Importable;
 
+            /** @var array<int, string|int> */
             public $skippedSheets = [];
 
+            /**
+             * @return array<string, object>
+             */
             public function sheets(): array
             {
                 return [
@@ -320,7 +359,7 @@ class PhpSpreadsheetV5CompatibilityTest extends TestCase
                 ];
             }
 
-            public function onUnknownSheet($sheetName): void
+            public function onUnknownSheet(string|int $sheetName): void
             {
                 $this->skippedSheets[] = $sheetName;
             }

@@ -47,9 +47,9 @@ class WithChunkReadingTest extends TestCase
         {
             use Importable;
 
-            public $before = 0;
+            public int $before = 0;
 
-            public $after = 0;
+            public int $after = 0;
 
             public function model(array $row): User
             {
@@ -223,7 +223,7 @@ class WithChunkReadingTest extends TestCase
         {
             use Importable;
 
-            public $called = 0;
+            public int $called = 0;
 
             public function array(array $array): void
             {
@@ -359,7 +359,7 @@ class WithChunkReadingTest extends TestCase
         {
             use Importable;
 
-            public $failed = false;
+            public bool $failed = false;
 
             public function model(array $row): ?Model
             {

@@ -80,11 +80,6 @@ class ExportMakeCommand extends GeneratorCommand
         );
     }
 
-    /**
-     * Get the console command options.
-     *
-     * @return array
-     */
     #[\Override]
     protected function getOptions()
     {

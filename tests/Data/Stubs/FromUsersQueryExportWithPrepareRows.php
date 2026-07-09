@@ -3,8 +3,6 @@
 namespace Maatwebsite\Excel\Tests\Data\Stubs;
 
 use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
-use Illuminate\Database\Eloquent\Relations\Relation;
-use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromQuery;
@@ -18,7 +16,7 @@ class FromUsersQueryExportWithPrepareRows implements FromQuery, WithCustomChunkS
     /**
      * @return EloquentBuilder<User>
      */
-    public function query(): Builder|EloquentBuilder|Relation
+    public function query(): EloquentBuilder
     {
         return User::query();
     }
@@ -29,7 +27,8 @@ class FromUsersQueryExportWithPrepareRows implements FromQuery, WithCustomChunkS
     }
 
     /**
-     * @param  iterable  $rows
+     * @param  iterable<array-key, User>  $rows
+     * @return array<array-key, User>
      */
     public function prepareRows($rows): iterable
     {

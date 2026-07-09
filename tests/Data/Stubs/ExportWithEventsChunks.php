@@ -16,7 +16,7 @@ class ExportWithEventsChunks implements FromQuery, ShouldQueue, WithCustomChunkS
 {
     use Exportable;
 
-    public static $calledEvent = 0;
+    public static int $calledEvent = 0;
 
     public function registerEvents(): array
     {
@@ -28,6 +28,9 @@ class ExportWithEventsChunks implements FromQuery, ShouldQueue, WithCustomChunkS
         ];
     }
 
+    /**
+     * @return Builder<User>
+     */
     public function query(): Builder
     {
         return User::query();

@@ -94,6 +94,9 @@ class BatchCacheDeprecated implements CacheInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @param  iterable<string>  $keys
+     * @return iterable<string, mixed>
      */
     public function getMultiple($keys, $default = null)
     {
@@ -130,7 +133,7 @@ class BatchCacheDeprecated implements CacheInterface
     }
 
     /**
-     * @param  iterable  $values
+     * @param  iterable<string, mixed>  $values
      * @param  null|int|\DateInterval  $ttl
      */
     public function setMultiple($values, $ttl = null)
@@ -150,6 +153,8 @@ class BatchCacheDeprecated implements CacheInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @param  iterable<string>  $keys
      */
     public function deleteMultiple($keys)
     {

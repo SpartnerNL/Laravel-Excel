@@ -19,6 +19,9 @@ use Throwable;
 
 class ModelManager
 {
+    /**
+     * @var array<int, array<array-key, mixed>>
+     */
     private array $rows = [];
 
     private bool $remembersRowNumber = false;
@@ -29,6 +32,9 @@ class ModelManager
     ) {
     }
 
+    /**
+     * @param  array<array-key, mixed>  $attributes
+     */
     public function add(int $row, array $attributes): void
     {
         $this->rows[$row] = $attributes;
@@ -58,7 +64,8 @@ class ModelManager
     }
 
     /**
-     * @return Model[]|Collection
+     * @param  array<array-key, mixed>  $attributes
+     * @return Collection<int, Model>
      */
     public function toModels(ToModel $import, array $attributes, ?int $rowNumber = null): Collection
     {
@@ -169,6 +176,9 @@ class ModelManager
         }
     }
 
+    /**
+     * @return Collection<int, array<array-key, mixed>>
+     */
     private function rows(): Collection
     {
         return new Collection($this->rows);

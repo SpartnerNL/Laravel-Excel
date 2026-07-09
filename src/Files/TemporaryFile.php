@@ -14,7 +14,7 @@ abstract class TemporaryFile
     /**
      * @param  string|resource  $contents
      */
-    abstract public function put($contents);
+    abstract public function put($contents): void;
 
     abstract public function delete(): bool;
 

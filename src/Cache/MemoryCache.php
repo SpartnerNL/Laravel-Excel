@@ -6,6 +6,9 @@ use PhpOffice\PhpSpreadsheet\Cell\Cell;
 
 class MemoryCache implements MemoryInterface
 {
+    /**
+     * @var array<string, mixed>
+     */
     protected array $cache = [];
 
     public function __construct(
@@ -90,6 +93,8 @@ class MemoryCache implements MemoryInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @param  iterable<string, mixed>  $values
      */
     public function setMultiple($values, $ttl = null): bool
     {
@@ -110,6 +115,9 @@ class MemoryCache implements MemoryInterface
         return count($this->cache) >= $this->memoryLimit;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function flush(): array
     {
         $memory = $this->cache;

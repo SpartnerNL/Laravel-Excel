@@ -36,6 +36,9 @@ class QueuedWriter
         $this->chunkSize = config('excel.exports.chunk_size', 1000);
     }
 
+    /**
+     * @param  array<string, mixed>|string  $diskOptions
+     */
     public function store(object $export, string $filePath, ?string $disk = null, ?string $writerType = null, array|string $diskOptions = []): PendingDispatch|PendingBatch
     {
         $extension     = pathinfo($filePath, PATHINFO_EXTENSION);
@@ -65,6 +68,9 @@ class QueuedWriter
         );
     }
 
+    /**
+     * @return Collection<int, object>
+     */
     private function buildExportJobs(object $export, TemporaryFile $temporaryFile, string $writerType): Collection
     {
         $sheetExports = [$export];
@@ -90,6 +96,10 @@ class QueuedWriter
         return $jobs;
     }
 
+    /**
+     * @param  FromCollection<array-key, mixed>  $export
+     * @return Enumerable<int, AppendDataToSheet>
+     */
     private function exportCollection(
         FromCollection $export,
         TemporaryFile $temporaryFile,
@@ -112,6 +122,9 @@ class QueuedWriter
             });
     }
 
+    /**
+     * @return Collection<int, object>
+     */
     private function exportQuery(
         FromQuery $export,
         TemporaryFile $temporaryFile,
@@ -138,6 +151,9 @@ class QueuedWriter
         return $jobs;
     }
 
+    /**
+     * @return Collection<int, object>
+     */
     private function exportScout(
         FromScout $export,
         TemporaryFile $temporaryFile,
@@ -171,6 +187,9 @@ class QueuedWriter
         return $jobs;
     }
 
+    /**
+     * @return Collection<int, object>
+     */
     private function exportView(
         FromView $export,
         TemporaryFile $temporaryFile,
