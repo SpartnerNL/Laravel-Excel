@@ -29,7 +29,7 @@ class Row implements ArrayAccess
     protected ?string $rowCacheEndColumn = null;
 
     /**
-     * @param  array<int, string>  $headingRow
+     * @param  list<string>  $headingRow
      * @param  array<int, bool>  $headerIsGrouped
      */
     public function __construct(

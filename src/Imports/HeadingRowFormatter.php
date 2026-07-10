@@ -20,7 +20,7 @@ class HeadingRowFormatter
     protected static array $customFormatters = [];
 
     /**
-     * @var array<int, string>
+     * @var list<string>
      */
     protected static array $defaultFormatters = [
         self::FORMATTER_NONE,

@@ -18,7 +18,7 @@ class RemoteTemporaryFile extends TemporaryFile
     }
 
     /**
-     * @return array<int, string>
+     * @return list<string>
      */
     public function __sleep()
     {

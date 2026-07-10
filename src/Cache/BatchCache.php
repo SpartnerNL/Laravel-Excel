@@ -22,7 +22,7 @@ class BatchCache implements CacheInterface
     }
 
     /**
-     * @return array<int, string>
+     * @return list<string>
      */
     public function __sleep()
     {

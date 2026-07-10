@@ -936,7 +936,7 @@ final class WithValidationTest extends TestCase
     }
 
     /**
-     * @param  array<int, string>  $messages
+     * @param  list<string>  $messages
      */
     private function validateFailure(ValidationException $e, int $row, string $attribute, array $messages): void
     {

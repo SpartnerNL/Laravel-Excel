@@ -10,7 +10,7 @@ use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithMapping;
 
 /**
- * @implements WithMapping<array<int, string>>
+ * @implements WithMapping<list<string>>
  * @implements FromCollection<int, array{string, string, string}>
  */
 class WithMappingExport implements FromCollection, WithMapping

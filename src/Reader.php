@@ -61,7 +61,7 @@ class Reader
     }
 
     /**
-     * @return array<int, string>
+     * @return list<string>
      */
     public function __sleep()
     {
@@ -267,7 +267,7 @@ class Reader
 
         $worksheets = [];
 
-        /** @var array<int, string> $worksheetNames */
+        /** @var list<string> $worksheetNames */
         $worksheetNames = $this->reader->listWorksheetNames($this->currentFile->getLocalPath());
         if ($import instanceof WithMultipleSheets) {
             $sheetImports = $import->sheets();
