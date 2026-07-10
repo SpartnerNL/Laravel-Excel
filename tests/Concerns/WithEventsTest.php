@@ -227,7 +227,7 @@ final class WithEventsTest extends TestCase
             use Exportable;
 
             /**
-             * @return array<int, array<int, string>>
+             * @return list<list<string>>
              */
             public function custom(): array
             {
@@ -268,7 +268,7 @@ final class WithEventsTest extends TestCase
             use Exportable;
 
             /**
-             * @return array<int, array<int, string>>
+             * @return list<list<string>>
              */
             public function custom(): array
             {

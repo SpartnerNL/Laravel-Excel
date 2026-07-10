@@ -11,6 +11,7 @@ use DateInterval;
 use Illuminate\Cache\ArrayStore;
 use Illuminate\Cache\Events\KeyWritten;
 use Illuminate\Cache\Repository;
+use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Support\Facades\Event;
 use Maatwebsite\Excel\Cache\BatchCache;
 use Maatwebsite\Excel\Cache\BatchCacheDeprecated;
@@ -19,6 +20,8 @@ use Maatwebsite\Excel\Cache\MemoryInterface;
 use Maatwebsite\Excel\Tests\TestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Psr\SimpleCache\CacheInterface;
+use Psr\SimpleCache\InvalidArgumentException;
+use Random\RandomException;
 
 final class BatchCacheTest extends TestCase
 {
@@ -216,6 +219,8 @@ final class BatchCacheTest extends TestCase
 
     /**
      * @return array<string, array{int|Closure|null, int|Closure|null}>
+     *
+     * @throws RandomException
      */
     public static function defaultTTLDataProvider(): array
     {
@@ -232,6 +237,9 @@ final class BatchCacheTest extends TestCase
      *
      * @param  array<string, mixed>  $memory
      * @param  array<string, mixed>  $persisted
+     *
+     * @throws BindingResolutionException
+     * @throws InvalidArgumentException
      */
     private function givenCache(array $memory = [], array $persisted = [], ?int $memoryLimit = null): CacheInterface
     {

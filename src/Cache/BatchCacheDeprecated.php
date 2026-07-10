@@ -26,7 +26,7 @@ class BatchCacheDeprecated implements CacheInterface
         $this->defaultTTL = $defaultTTL;
     }
 
-    public function __sleep()
+    public function __sleep(): array
     {
         return ['memory'];
     }

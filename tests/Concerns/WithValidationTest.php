@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 namespace Maatwebsite\Excel\Tests\Concerns;
 
+use Closure;
+use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\In;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\OnEachRow;
 use Maatwebsite\Excel\Concerns\SkipsEmptyRows;
@@ -51,6 +54,9 @@ final class WithValidationTest extends TestCase
                 ]);
             }
 
+            /**
+             * @return In[]
+             */
             public function rules(): array
             {
                 return [
@@ -89,6 +95,9 @@ final class WithValidationTest extends TestCase
                 ]);
             }
 
+            /**
+             * @return Closure[]
+             */
             public function rules(): array
             {
                 return [
@@ -134,22 +143,13 @@ final class WithValidationTest extends TestCase
             public function rules(): array
             {
                 return [
-                    '1' => new class implements \Illuminate\Contracts\Validation\Rule
+                    '1' => new class implements ValidationRule
                     {
-                        /**
-                         * @param  string  $attribute
-                         */
-                        public function passes($attribute, mixed $value): bool
+                        public function validate(string $attribute, mixed $value, Closure $fail): void
                         {
-                            return $value === 'patrick@maatwebsite.nl';
-                        }
-
-                        /**
-                         * Get the validation error message.
-                         */
-                        public function message(): string
-                        {
-                            return 'Value is not an allowed e-mail.';
+                            if ($value !== 'patrick@maatwebsite.nl') {
+                                $fail('Value is not an allowed e-mail.');
+                            }
                         }
                     },
                 ];
@@ -291,6 +291,9 @@ final class WithValidationTest extends TestCase
                 ]);
             }
 
+            /**
+             * @return In[]
+             */
             public function rules(): array
             {
                 return [
@@ -374,6 +377,9 @@ final class WithValidationTest extends TestCase
                 ]);
             }
 
+            /**
+             * @return In[]
+             */
             public function rules(): array
             {
                 return [
@@ -417,6 +423,9 @@ final class WithValidationTest extends TestCase
                 ]);
             }
 
+            /**
+             * @return In[]
+             */
             public function rules(): array
             {
                 return [
@@ -505,6 +514,9 @@ final class WithValidationTest extends TestCase
                 return 2;
             }
 
+            /**
+             * @return In[]
+             */
             public function rules(): array
             {
                 return [
@@ -540,6 +552,9 @@ final class WithValidationTest extends TestCase
                 ]);
             }
 
+            /**
+             * @return In[]
+             */
             public function rules(): array
             {
                 return [
@@ -564,11 +579,14 @@ final class WithValidationTest extends TestCase
         {
             use Importable;
 
-            public function collection(Collection $rows): void
+            public function collection(Collection $collection): void
             {
                 //
             }
 
+            /**
+             * @return In[]
+             */
             public function rules(): array
             {
                 return [
@@ -593,11 +611,14 @@ final class WithValidationTest extends TestCase
         {
             use Importable;
 
-            public function array(array $rows): void
+            public function array(array $array): void
             {
                 //
             }
 
+            /**
+             * @return In[]
+             */
             public function rules(): array
             {
                 return [
@@ -638,12 +659,7 @@ final class WithValidationTest extends TestCase
                 ];
             }
 
-            /**
-             * Configure the validator.
-             *
-             * @param  Validator  $validator
-             */
-            public function withValidator($validator): void
+            public function withValidator(Validator $validator): void
             {
                 $validator->sometimes('*.1', [Rule::in(['patrick@maatwebsite.nl'])], fn (): true => true);
             }
@@ -920,7 +936,7 @@ final class WithValidationTest extends TestCase
     }
 
     /**
-     * @param  array<int, string>  $messages
+     * @param  list<string>  $messages
      */
     private function validateFailure(ValidationException $e, int $row, string $attribute, array $messages): void
     {

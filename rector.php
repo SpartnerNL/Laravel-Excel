@@ -3,13 +3,11 @@
 declare(strict_types=1);
 
 use Rector\Caching\ValueObject\Storage\FileCacheStorage;
-use Rector\CodeQuality\Rector\If_\ExplicitBoolCompareRector;
 use Rector\Config\RectorConfig;
 use Rector\DeadCode\Rector\MethodCall\RemoveNullArgOnNullDefaultParamRector;
 use Rector\PHPUnit\CodeQuality\Rector\MethodCall\AssertEqualsToSameRector;
 use Rector\PHPUnit\Set\PHPUnitSetList;
-use Rector\TypeDeclaration\Rector\ClassMethod\ParamTypeByMethodCallTypeRector;
-use Rector\TypeDeclaration\Rector\ClassMethod\ReturnTypeFromStrictFluentReturnRector;
+use Rector\TypeDeclarationDocblocks\Rector\ClassMethod\AddReturnDocblockForCommonObjectDenominatorRector;
 use RectorLaravel\Rector\ArrayDimFetch\EnvVariableToEnvHelperRector;
 use RectorLaravel\Rector\FuncCall\AppToResolveRector;
 use RectorLaravel\Rector\StaticCall\CarbonToDateFacadeRector;
@@ -34,7 +32,9 @@ return RectorConfig::configure()
         deadCode: true,
         codeQuality: true,
         typeDeclarations: true,
+        typeDeclarationDocblocks: true,
     )
+    ->withImportNames()
     ->withSets([
         LaravelLevelSetList::UP_TO_LARAVEL_120,
         LaravelSetList::LARAVEL_CODE_QUALITY,
@@ -42,19 +42,6 @@ return RectorConfig::configure()
         PHPUnitSetList::PHPUNIT_CODE_QUALITY,
     ])
     ->withSkip([
-        // Forces `if ($x)` → `if ($x !== null)` / `!== ''` / `!== 0`.
-        // Noisy on a library that intentionally uses truthy checks.
-        ExplicitBoolCompareRector::class,
-
-        // Skip signature-narrowing rules in src/ to preserve BC for downstream
-        // subclassers. Tests can still benefit from these inferences.
-        ParamTypeByMethodCallTypeRector::class => [
-            __DIR__ . '/src',
-        ],
-        ReturnTypeFromStrictFluentReturnRector::class => [
-            __DIR__ . '/src',
-        ],
-
         // BatchCache::set/setMultiple use func_num_args() to distinguish
         // "no TTL passed" from "explicit null". Removing the explicit null
         // silently changes behavior. Scoped to the one test that depends on
@@ -92,6 +79,13 @@ return RectorConfig::configure()
         __DIR__ . '/src/Cache/BatchCacheDeprecated.php',
         __DIR__ . '/src/Cache/MemoryCacheDeprecated.php',
 
-        // Skip vendor-style fixtures or generated files if any get added.
-        __DIR__ . '/tests/Data',
+        // These tests declare anonymous classes that are returned from functions.
+        // These identifiers are non-fixed, so declaring a return type like
+        // @return \AnonymousClass8985ceefe39748fba5ed7c0d9a8fe5be[] means nothing
+        AddReturnDocblockForCommonObjectDenominatorRector::class => [
+            __DIR__ . '/tests/Concerns/WithMultipleSheetsTest.php',
+            __DIR__ . '/tests/Concerns/WithTitleTest.php',
+            __DIR__ . '/tests/Concerns/WithValidationTest.php',
+            __DIR__ . '/tests/PhpSpreadsheetV5CompatibilityTest.php',
+        ],
     ]);

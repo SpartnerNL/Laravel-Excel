@@ -19,7 +19,7 @@ final class FromIteratorTest extends TestCase
             use Exportable;
 
             /**
-             * @return array<int, array<int, string>>
+             * @return list<list<string>>
              */
             public function array(): array
             {

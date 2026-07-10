@@ -59,8 +59,7 @@ class Failure implements Arrayable, JsonSerializable
     /**
      * @return array<string, mixed>
      */
-    #[\ReturnTypeWillChange]
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         return [
             'row'       => $this->row(),

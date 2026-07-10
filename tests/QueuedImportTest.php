@@ -11,6 +11,7 @@ use Illuminate\Queue\Events\JobProcessed;
 use Illuminate\Queue\Events\JobProcessing;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Queue;
+use InvalidArgumentException;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Files\RemoteTemporaryFile;
 use Maatwebsite\Excel\Files\TemporaryFile;
@@ -40,7 +41,7 @@ final class QueuedImportTest extends TestCase
 
     public function test_cannot_queue_import_that_does_not_implement_should_queue(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Importable should implement ShouldQueue to be queued.');
 
         $import = new class

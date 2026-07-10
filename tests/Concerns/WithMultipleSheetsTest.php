@@ -144,10 +144,7 @@ final class WithMultipleSheetsTest extends TestCase
                 ];
             }
 
-            /**
-             * @param  string|int  $sheetName
-             */
-            public function onUnknownSheet($sheetName): void
+            public function onUnknownSheet(int|string $sheetName): void
             {
                 $this->unknown = $sheetName;
             }
@@ -169,10 +166,7 @@ final class WithMultipleSheetsTest extends TestCase
                 return [
                     'Some Random Sheet Name' => new class implements SkipsUnknownSheets
                     {
-                        /**
-                         * @param  string|int  $sheetName
-                         */
-                        public function onUnknownSheet($sheetName): void
+                        public function onUnknownSheet(int|string $sheetName): void
                         {
                             Assert::assertSame('Some Random Sheet Name', $sheetName);
                         }
@@ -201,10 +195,7 @@ final class WithMultipleSheetsTest extends TestCase
                 ];
             }
 
-            /**
-             * @param  string|int  $sheetName
-             */
-            public function onUnknownSheet($sheetName): void
+            public function onUnknownSheet(int|string $sheetName): void
             {
                 $this->unknown = $sheetName;
             }
@@ -226,10 +217,7 @@ final class WithMultipleSheetsTest extends TestCase
                 return [
                     99999 => new class implements SkipsUnknownSheets
                     {
-                        /**
-                         * @param  string|int  $sheetName
-                         */
-                        public function onUnknownSheet($sheetName): void
+                        public function onUnknownSheet(int|string $sheetName): void
                         {
                             Assert::assertSame(99999, $sheetName);
                         }
@@ -247,6 +235,9 @@ final class WithMultipleSheetsTest extends TestCase
         {
             use Importable;
 
+            /**
+             * @return ToArray[]
+             */
             public function sheets(): array
             {
                 return [
@@ -283,6 +274,9 @@ final class WithMultipleSheetsTest extends TestCase
         {
             use Importable;
 
+            /**
+             * @return array<string, ToArray>
+             */
             public function sheets(): array
             {
                 return [
@@ -320,7 +314,7 @@ final class WithMultipleSheetsTest extends TestCase
             use Importable;
 
             /** @var array<int|string, object> */
-            public $sheets = [];
+            public array $sheets = [];
 
             public function __construct()
             {
@@ -374,7 +368,7 @@ final class WithMultipleSheetsTest extends TestCase
             use Importable;
 
             /** @var array<int|string, object> */
-            public $sheets = [];
+            public array $sheets = [];
 
             public function __construct()
             {

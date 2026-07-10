@@ -13,6 +13,7 @@ use Laravel\Scout\Searchable;
 use Maatwebsite\Excel\Tests\Concerns\FromQueryTest;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\Factories\UserFactory;
 use Maatwebsite\Excel\Tests\QueuedQueryExportTest;
+use Override;
 
 /**
  * @property string $email
@@ -63,7 +64,7 @@ class User extends Model
         return UserFactory::new();
     }
 
-    #[\Override]
+    #[Override]
     protected function casts(): array
     {
         return [

@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Maatwebsite\Excel\Tests\Data\Stubs;
 
+use Exception;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Database\Eloquent\Model;
 use Maatwebsite\Excel\Concerns\Importable;
@@ -16,7 +19,7 @@ class QueuedImportWithFailure implements ShouldQueue, ToModel, WithChunkReading
 
     public function model(array $row): ?Model
     {
-        throw new \Exception('Something went wrong in the chunk');
+        throw new Exception('Something went wrong in the chunk');
     }
 
     public function chunkSize(): int

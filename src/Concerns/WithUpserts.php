@@ -7,7 +7,7 @@ namespace Maatwebsite\Excel\Concerns;
 interface WithUpserts
 {
     /**
-     * @return string|array<int, string>
+     * @return string|list<string>
      */
     public function uniqueBy(): string|array;
 }

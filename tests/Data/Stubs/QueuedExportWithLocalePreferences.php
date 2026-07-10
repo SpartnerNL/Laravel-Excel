@@ -50,7 +50,7 @@ class QueuedExportWithLocalePreferences implements FromCollection, HasLocalePref
     {
         Assert::assertSame('ru', app()->getLocale());
 
-        app()->bind('queue-has-correct-locale', fn () => true);
+        app()->bind('queue-has-correct-locale', fn (): true => true);
 
         return $rows;
     }

@@ -22,13 +22,11 @@ class FromQueryWithCustomQuerySize implements FromQuery, ShouldQueue, WithCustom
 
     public function query(): Builder|EloquentBuilder|Relation
     {
-        $query = Group::with('users')
+        return Group::with('users')
             ->join('group_user', 'groups.id', '=', 'group_user.group_id')
             ->select('groups.*', DB::raw('count(group_user.user_id) as number_of_users'))
             ->groupBy('groups.id')
             ->orderBy('number_of_users');
-
-        return $query;
     }
 
     public function querySize(): int

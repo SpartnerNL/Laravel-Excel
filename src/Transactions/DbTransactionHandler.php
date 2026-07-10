@@ -2,7 +2,9 @@
 
 namespace Maatwebsite\Excel\Transactions;
 
+use Closure;
 use Illuminate\Database\ConnectionInterface;
+use Throwable;
 
 class DbTransactionHandler implements TransactionHandler
 {
@@ -14,10 +16,10 @@ class DbTransactionHandler implements TransactionHandler
     /**
      * @template TReturn
      *
-     * @param  \Closure(): TReturn  $callback
+     * @param  Closure():TReturn  $callback
      * @return TReturn
      *
-     * @throws \Throwable
+     * @throws Throwable
      */
     public function __invoke(callable $callback): mixed
     {

@@ -3,6 +3,7 @@
 namespace Maatwebsite\Excel\Validators;
 
 use Illuminate\Validation\ValidationException as IlluminateValidationException;
+use Override;
 
 class ValidationException extends IlluminateValidationException
 {
@@ -15,9 +16,9 @@ class ValidationException extends IlluminateValidationException
     }
 
     /**
-     * @return array<int, list<string>>
+     * @return list<list<string>>
      */
-    #[\Override]
+    #[Override]
     public function errors(): array
     {
         return collect($this->failures)->map->toArray()->all();

@@ -7,7 +7,7 @@ namespace Maatwebsite\Excel\Concerns;
 interface WithUpsertColumns
 {
     /**
-     * @return array<int, string>
+     * @return list<string>
      */
     public function upsertColumns(): array;
 }

@@ -25,7 +25,6 @@ use Maatwebsite\Excel\Factories\ReaderFactory;
 use Maatwebsite\Excel\Files\TemporaryFile;
 use Maatwebsite\Excel\Files\TemporaryFileFactory;
 use Maatwebsite\Excel\Transactions\TransactionHandler;
-use Maatwebsite\Excel\Validators\ValidationException;
 use PhpOffice\PhpSpreadsheet\Cell\Cell;
 use PhpOffice\PhpSpreadsheet\Reader\Exception;
 use PhpOffice\PhpSpreadsheet\Reader\IReader;
@@ -61,7 +60,10 @@ class Reader
         $this->transaction = $transaction;
     }
 
-    public function __sleep()
+    /**
+     * @return list<string>
+     */
+    public function __sleep(): array
     {
         return ['spreadsheet', 'sheetImports', 'currentFile', 'temporaryFileFactory', 'reader'];
     }
@@ -74,10 +76,10 @@ class Reader
     /**
      * @return static|PendingDispatch|PendingBatch|Collection<int, object>|null
      *
-     * @throws ValidationException
-     * @throws NoTypeDetectedException
      * @throws FileNotFoundException
-     * @throws Exception
+     * @throws NoTypeDetectedException
+     * @throws SheetNotFoundException
+     * @throws Throwable
      */
     public function read(object $import, string|UploadedFile $filePath, ?string $readerType = null, ?string $disk = null): static|PendingDispatch|PendingBatch|Collection|null
     {
@@ -265,7 +267,7 @@ class Reader
 
         $worksheets = [];
 
-        /** @var array<int, string> $worksheetNames */
+        /** @var list<string> $worksheetNames */
         $worksheetNames = $this->reader->listWorksheetNames($this->currentFile->getLocalPath());
         if ($import instanceof WithMultipleSheets) {
             $sheetImports = $import->sheets();

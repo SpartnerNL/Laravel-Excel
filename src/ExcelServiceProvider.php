@@ -20,6 +20,7 @@ use Maatwebsite\Excel\Mixins\StoreCollectionMixin;
 use Maatwebsite\Excel\Mixins\StoreQueryMacro;
 use Maatwebsite\Excel\Transactions\TransactionHandler;
 use Maatwebsite\Excel\Transactions\TransactionManager;
+use Override;
 
 class ExcelServiceProvider extends ServiceProvider
 {
@@ -58,7 +59,7 @@ class ExcelServiceProvider extends ServiceProvider
     /**
      * {@inheritdoc}
      */
-    #[\Override]
+    #[Override]
     public function register(): void
     {
         $this->mergeConfigFrom(

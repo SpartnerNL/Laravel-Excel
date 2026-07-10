@@ -2,6 +2,7 @@
 
 namespace Maatwebsite\Excel\Jobs;
 
+use DateTime;
 use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -95,7 +96,7 @@ class ReadChunk implements ShouldQueue
     /**
      * Determine the time at which the job should timeout.
      */
-    public function retryUntil(): ?\DateTime
+    public function retryUntil(): ?DateTime
     {
         return (method_exists($this->import, 'retryUntil')) ? $this->import->retryUntil() : null;
     }

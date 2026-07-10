@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Maatwebsite\Excel\Tests\Data\Stubs;
 
 use Maatwebsite\Excel\Concerns\ToModel;
@@ -7,6 +9,7 @@ use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Events\AfterBatch;
 use Maatwebsite\Excel\Events\AfterChunk;
+use Override;
 
 class ImportWithEventsChunksAndBatches extends ImportWithEvents implements ToModel, WithBatchInserts, WithChunkReading
 {
@@ -20,7 +23,7 @@ class ImportWithEventsChunksAndBatches extends ImportWithEvents implements ToMod
      */
     public $afterChunk;
 
-    #[\Override]
+    #[Override]
     public function registerEvents(): array
     {
         return parent::registerEvents() + [

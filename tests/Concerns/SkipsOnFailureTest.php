@@ -6,6 +6,7 @@ namespace Maatwebsite\Excel\Tests\Concerns;
 
 use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\In;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\OnEachRow;
 use Maatwebsite\Excel\Concerns\SkipsFailures;
@@ -49,6 +50,9 @@ final class SkipsOnFailureTest extends TestCase
                 ]);
             }
 
+            /**
+             * @return In[]
+             */
             public function rules(): array
             {
                 return [
@@ -69,7 +73,7 @@ final class SkipsOnFailureTest extends TestCase
                 Assert::assertSame(['The selected 1 is invalid.'], $failure->jsonSerialize()['errors']);
                 Assert::assertSame(['Taylor Otwell', 'taylor@laravel.com'], $failure->jsonSerialize()['values']);
 
-                $this->failures += \count($failures);
+                $this->failures += count($failures);
             }
         };
 
@@ -105,6 +109,9 @@ final class SkipsOnFailureTest extends TestCase
                 ]);
             }
 
+            /**
+             * @return In[]
+             */
             public function rules(): array
             {
                 return [
@@ -120,7 +127,7 @@ final class SkipsOnFailureTest extends TestCase
                 Assert::assertSame('1', $failure->attribute());
                 Assert::assertSame(['The selected 1 is invalid.'], $failure->errors());
 
-                $this->failures += \count($failures);
+                $this->failures += count($failures);
             }
 
             public function batchSize(): int
@@ -159,6 +166,9 @@ final class SkipsOnFailureTest extends TestCase
                 ]);
             }
 
+            /**
+             * @return In[]
+             */
             public function rules(): array
             {
                 return [
@@ -206,6 +216,9 @@ final class SkipsOnFailureTest extends TestCase
                 ]);
             }
 
+            /**
+             * @return In[]
+             */
             public function rules(): array
             {
                 return [
@@ -236,15 +249,18 @@ final class SkipsOnFailureTest extends TestCase
         {
             use Importable, SkipsFailures;
 
-            public function collection(Collection $rows): void
+            public function collection(Collection $collection): void
             {
-                $rows->each(fn ($row) => User::create([
+                $collection->each(fn ($row) => User::create([
                     'name'     => $row[0],
                     'email'    => $row[1],
                     'password' => 'secret',
                 ]));
             }
 
+            /**
+             * @return In[]
+             */
             public function rules(): array
             {
                 return [

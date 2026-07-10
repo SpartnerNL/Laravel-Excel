@@ -209,7 +209,7 @@ final class FromQueryTest extends TestCase
 
     /**
      * @param  Collection<int, Group>  $groups
-     * @return array<int, array<int, string>>
+     * @return list<list<string>>
      */
     protected function format_nested_arrays_expected_data(Collection $groups): array
     {

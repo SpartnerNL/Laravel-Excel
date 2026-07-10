@@ -3,6 +3,7 @@
 namespace Maatwebsite\Excel;
 
 use Closure;
+use Generator;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Collection;
 use Illuminate\Support\LazyCollection;
@@ -676,7 +677,7 @@ class Sheet
         return $rows;
     }
 
-    protected function buildColumnRange(string $lower, string $upper): \Generator
+    protected function buildColumnRange(string $lower, string $upper): Generator
     {
         /**
          * @callable(string): string $increment

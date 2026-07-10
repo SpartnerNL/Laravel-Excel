@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Maatwebsite\Excel\Tests\Concerns;
 
+use Exception;
 use Illuminate\Database\UniqueConstraintViolationException;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\In;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\OnEachRow;
 use Maatwebsite\Excel\Concerns\SkipsErrors;
@@ -17,6 +19,7 @@ use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
 use Maatwebsite\Excel\Tests\TestCase;
 use Maatwebsite\Excel\Validators\ValidationException;
 use PHPUnit\Framework\Assert;
+use RuntimeException;
 use Throwable;
 
 final class SkipsOnErrorTest extends TestCase
@@ -131,6 +134,9 @@ final class SkipsOnErrorTest extends TestCase
                 ]);
             }
 
+            /**
+             * @return In[]
+             */
             public function rules(): array
             {
                 return [
@@ -185,6 +191,9 @@ final class SkipsOnErrorTest extends TestCase
                 ]);
             }
 
+            /**
+             * @return In[]
+             */
             public function rules(): array
             {
                 return [
@@ -233,7 +242,7 @@ final class SkipsOnErrorTest extends TestCase
 
                 // Throw an exception for the second row (Taylor Otwell)
                 if ($rowArray[1] === 'taylor@laravel.com') {
-                    throw new \Exception('Custom error in onRow for Taylor');
+                    throw new Exception('Custom error in onRow for Taylor');
                 }
 
                 User::create([
@@ -245,7 +254,7 @@ final class SkipsOnErrorTest extends TestCase
 
             public function onError(Throwable $e): void
             {
-                Assert::assertInstanceOf(\Exception::class, $e);
+                Assert::assertInstanceOf(Exception::class, $e);
                 Assert::assertSame('Custom error in onRow for Taylor', $e->getMessage());
 
                 $this->errors++;
@@ -284,7 +293,7 @@ final class SkipsOnErrorTest extends TestCase
 
                 // Throw an exception for the second row (Taylor Otwell)
                 if ($rowArray[1] === 'taylor@laravel.com') {
-                    throw new \RuntimeException('Runtime error in onRow for Taylor');
+                    throw new RuntimeException('Runtime error in onRow for Taylor');
                 }
 
                 User::create([
@@ -303,7 +312,7 @@ final class SkipsOnErrorTest extends TestCase
         /** @var Throwable $e */
         $e = $import->errors()->first();
 
-        $this->assertInstanceOf(\RuntimeException::class, $e);
+        $this->assertInstanceOf(RuntimeException::class, $e);
         $this->assertSame('Runtime error in onRow for Taylor', $e->getMessage());
 
         // Should have inserted the valid row

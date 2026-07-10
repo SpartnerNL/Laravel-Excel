@@ -119,6 +119,9 @@ final class WithCalculatedFormulasTest extends TestCase
 
             public string $test = 'test1';
 
+            /**
+             * @return HasReferencesToOtherSheets[]
+             */
             public function sheets(): array
             {
                 return [

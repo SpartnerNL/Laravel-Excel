@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Maatwebsite\Excel\Exceptions;
 
-final class SheetNotFoundException extends \Exception implements LaravelExcelException
+use Exception;
+
+final class SheetNotFoundException extends Exception implements LaravelExcelException
 {
     public static function byName(string $name): SheetNotFoundException
     {

@@ -28,7 +28,7 @@ class Row implements ArrayAccess
     protected ?string $rowCacheEndColumn = null;
 
     /**
-     * @param  array<int, string>  $headingRow
+     * @param  list<string>  $headingRow
      * @param  array<int, bool>  $headerIsGrouped
      */
     public function __construct(
@@ -100,25 +100,21 @@ class Row implements ArrayAccess
         return $this->row->getRowIndex();
     }
 
-    #[\ReturnTypeWillChange]
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         return isset($this->toArray()[$offset]);
     }
 
-    #[\ReturnTypeWillChange]
-    public function offsetGet($offset)
+    public function offsetGet($offset): mixed
     {
         return $this->toArray()[$offset];
     }
 
-    #[\ReturnTypeWillChange]
     public function offsetSet($offset, $value): void
     {
         //
     }
 
-    #[\ReturnTypeWillChange]
     public function offsetUnset($offset): void
     {
         //

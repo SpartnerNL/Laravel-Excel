@@ -3,6 +3,7 @@
 namespace Maatwebsite\Excel\Files;
 
 use Illuminate\Support\Str;
+use RuntimeException;
 
 class TemporaryFileFactory
 {
@@ -24,7 +25,7 @@ class TemporaryFileFactory
     public function makeLocal(?string $fileName = null, ?string $fileExtension = null): LocalTemporaryFile
     {
         if (!is_dir($this->temporaryPath) && !@mkdir($concurrentDirectory = $this->temporaryPath, config('excel.temporary_files.local_permissions.dir', 0o777), true) && !is_dir($concurrentDirectory)) {
-            throw new \RuntimeException(sprintf('Directory "%s" was not created', $concurrentDirectory));
+            throw new RuntimeException(sprintf('Directory "%s" was not created', $concurrentDirectory));
         }
 
         return new LocalTemporaryFile(

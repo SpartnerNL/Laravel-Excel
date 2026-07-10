@@ -3,6 +3,7 @@
 namespace Maatwebsite\Excel\Files;
 
 use Illuminate\Support\Arr;
+use Override;
 
 class RemoteTemporaryFile extends TemporaryFile
 {
@@ -16,7 +17,10 @@ class RemoteTemporaryFile extends TemporaryFile
         $this->disk()->touch($this->filename);
     }
 
-    public function __sleep()
+    /**
+     * @return list<string>
+     */
+    public function __sleep(): array
     {
         return ['disk', 'filename', 'localTemporaryFile'];
     }
@@ -51,7 +55,7 @@ class RemoteTemporaryFile extends TemporaryFile
         return $this->disk()->delete($this->filename);
     }
 
-    #[\Override]
+    #[Override]
     public function sync(bool $copy = true): TemporaryFile
     {
         if (!$this->localTemporaryFile->exists()) {
