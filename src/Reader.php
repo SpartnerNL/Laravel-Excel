@@ -63,7 +63,7 @@ class Reader
     /**
      * @return list<string>
      */
-    public function __sleep()
+    public function __sleep(): array
     {
         return ['spreadsheet', 'sheetImports', 'currentFile', 'temporaryFileFactory', 'reader'];
     }

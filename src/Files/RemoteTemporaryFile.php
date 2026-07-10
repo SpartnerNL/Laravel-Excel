@@ -20,7 +20,7 @@ class RemoteTemporaryFile extends TemporaryFile
     /**
      * @return list<string>
      */
-    public function __sleep()
+    public function __sleep(): array
     {
         return ['disk', 'filename', 'localTemporaryFile'];
     }
