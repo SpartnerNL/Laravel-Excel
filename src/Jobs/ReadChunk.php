@@ -53,7 +53,7 @@ class ReadChunk implements ShouldQueue
     private string $uniqueId;
 
     public function __construct(
-        private WithChunkReading $import,
+        private WithChunkReading&Import $import,
         private IReader $reader,
         private TemporaryFile $temporaryFile,
         private string $sheetName,

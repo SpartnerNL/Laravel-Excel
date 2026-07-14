@@ -4,6 +4,6 @@ declare(strict_types=1);
 
 namespace Maatwebsite\Excel\Concerns;
 
-interface WithHeadingRow extends Import
+interface WithHeadingRow
 {
 }

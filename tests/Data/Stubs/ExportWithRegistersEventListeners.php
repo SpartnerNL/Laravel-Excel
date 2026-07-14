@@ -2,11 +2,12 @@
 
 namespace Maatwebsite\Excel\Tests\Data\Stubs;
 
+use Maatwebsite\Excel\Concerns\Export;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\RegistersEventListeners;
 use Maatwebsite\Excel\Concerns\WithEvents;
 
-class ExportWithRegistersEventListeners implements WithEvents
+class ExportWithRegistersEventListeners implements Export, WithEvents
 {
     use Exportable, RegistersEventListeners;
 

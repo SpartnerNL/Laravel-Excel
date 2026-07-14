@@ -2,6 +2,7 @@
 
 namespace Maatwebsite\Excel;
 
+use Maatwebsite\Excel\Concerns\Import;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\WithLimit;
 use Maatwebsite\Excel\Concerns\WithMapping;
@@ -11,7 +12,7 @@ use Maatwebsite\Excel\Imports\HeadingRowFormatter;
 /**
  * @implements WithMapping<array<array-key, mixed>>
  */
-class HeadingRowImport implements WithLimit, WithMapping, WithStartRow
+class HeadingRowImport implements Import, WithLimit, WithMapping, WithStartRow
 {
     use Importable;
 

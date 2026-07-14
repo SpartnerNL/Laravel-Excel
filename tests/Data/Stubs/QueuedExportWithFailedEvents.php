@@ -6,6 +6,7 @@ namespace Maatwebsite\Excel\Tests\Data\Stubs;
 
 use Closure;
 use Exception;
+use Maatwebsite\Excel\Concerns\Export;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
@@ -13,7 +14,7 @@ use Maatwebsite\Excel\Events\BeforeExport;
 use PHPUnit\Framework\Assert;
 use Throwable;
 
-class QueuedExportWithFailedEvents implements WithEvents, WithMultipleSheets
+class QueuedExportWithFailedEvents implements Export, WithEvents, WithMultipleSheets
 {
     use Exportable;
 

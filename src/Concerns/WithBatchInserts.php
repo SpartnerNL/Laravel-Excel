@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Maatwebsite\Excel\Concerns;
 
-interface WithBatchInserts extends Import
+interface WithBatchInserts
 {
     public function batchSize(): int;
 }

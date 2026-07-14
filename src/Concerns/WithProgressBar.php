@@ -6,7 +6,7 @@ namespace Maatwebsite\Excel\Concerns;
 
 use Illuminate\Console\OutputStyle;
 
-interface WithProgressBar extends Import
+interface WithProgressBar
 {
     public function getConsoleOutput(): OutputStyle;
 }

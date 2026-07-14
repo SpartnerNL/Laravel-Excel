@@ -7,7 +7,7 @@ namespace Maatwebsite\Excel\Concerns;
 /**
  * @template RowType of mixed
  */
-interface WithMapping extends Export, Import
+interface WithMapping
 {
     /**
      * @param  RowType  $row

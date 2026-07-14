@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Maatwebsite\Excel\Concerns;
 
-interface WithColumnFormatting extends Export
+interface WithColumnFormatting
 {
     /**
      * @return array<string, string>

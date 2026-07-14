@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Maatwebsite\Excel\Tests\Concerns;
 
+use Maatwebsite\Excel\Concerns\Export;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\WithProperties;
 use Maatwebsite\Excel\Tests\TestCase;
@@ -12,7 +13,7 @@ final class WithPropertiesTest extends TestCase
 {
     public function test_can_set_custom_document_properties(): void
     {
-        $export = new class implements WithProperties
+        $export = new class implements Export, WithProperties
         {
             use Exportable;
 
@@ -53,7 +54,7 @@ final class WithPropertiesTest extends TestCase
         config()->set('excel.exports.properties.title', 'Default Title');
         config()->set('excel.exports.properties.description', 'Default Description');
 
-        $export = new class implements WithProperties
+        $export = new class implements Export, WithProperties
         {
             use Exportable;
 
@@ -76,7 +77,7 @@ final class WithPropertiesTest extends TestCase
 
     public function test_it_ignores_empty_properties(): void
     {
-        $export = new class implements WithProperties
+        $export = new class implements Export, WithProperties
         {
             use Exportable;
 

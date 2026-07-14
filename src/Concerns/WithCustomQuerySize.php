@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Maatwebsite\Excel\Concerns;
 
-interface WithCustomQuerySize extends Import
+interface WithCustomQuerySize
 {
     /**
      * Queued exportables are processed in chunks; each chunk being a job pushed to the queue by the QueuedWriter.

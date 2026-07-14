@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Maatwebsite\Excel\Tests\Concerns;
 
+use Maatwebsite\Excel\Concerns\Import;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\OnEachRow;
 use Maatwebsite\Excel\Row;
@@ -14,7 +15,7 @@ final class OnEachRowTest extends TestCase
 {
     public function test_can_import_each_row_individually(): void
     {
-        $import = new class implements OnEachRow
+        $import = new class implements Import, OnEachRow
         {
             use Importable;
 
@@ -43,7 +44,7 @@ final class OnEachRowTest extends TestCase
 
     public function test_it_respects_the_end_column(): void
     {
-        $import = new class implements OnEachRow
+        $import = new class implements Import, OnEachRow
         {
             use Importable;
 

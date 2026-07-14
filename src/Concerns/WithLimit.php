@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Maatwebsite\Excel\Concerns;
 
-interface WithLimit extends Import
+interface WithLimit
 {
     public function limit(): int;
 }

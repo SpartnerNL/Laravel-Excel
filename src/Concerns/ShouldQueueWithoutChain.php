@@ -6,6 +6,6 @@ namespace Maatwebsite\Excel\Concerns;
 
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-interface ShouldQueueWithoutChain extends Import, ShouldQueue
+interface ShouldQueueWithoutChain extends ShouldQueue
 {
 }

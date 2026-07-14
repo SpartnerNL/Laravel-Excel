@@ -6,7 +6,7 @@ namespace Maatwebsite\Excel\Concerns;
 
 use PhpOffice\PhpSpreadsheet\Worksheet\BaseDrawing;
 
-interface WithDrawings extends Export
+interface WithDrawings
 {
     /**
      * @return BaseDrawing|BaseDrawing[]

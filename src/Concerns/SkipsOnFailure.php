@@ -6,7 +6,7 @@ namespace Maatwebsite\Excel\Concerns;
 
 use Maatwebsite\Excel\Validators\Failure;
 
-interface SkipsOnFailure extends Import
+interface SkipsOnFailure
 {
     public function onFailure(Failure ...$failures): void;
 }

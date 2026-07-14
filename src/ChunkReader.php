@@ -11,6 +11,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\Jobs\SyncJob;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Bus;
+use Maatwebsite\Excel\Concerns\Import;
 use Maatwebsite\Excel\Concerns\ShouldBatch;
 use Maatwebsite\Excel\Concerns\ShouldQueueWithoutChain;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
@@ -35,7 +36,7 @@ class ChunkReader
     /**
      * @return PendingDispatch|PendingBatch|Collection<int, object>|null
      */
-    public function read(WithChunkReading $import, Reader $reader, TemporaryFile $temporaryFile): PendingDispatch|PendingBatch|Collection|null
+    public function read(WithChunkReading&Import $import, Reader $reader, TemporaryFile $temporaryFile): PendingDispatch|PendingBatch|Collection|null
     {
         if ($import instanceof WithEvents) {
             $reader->beforeImport($import);

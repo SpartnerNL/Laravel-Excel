@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Maatwebsite\Excel\Concerns;
 
-interface WithMultipleSheets extends Export, Import
+interface WithMultipleSheets
 {
     /**
      * @return array<int|string, Export|Import>

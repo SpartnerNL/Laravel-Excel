@@ -6,6 +6,6 @@ namespace Maatwebsite\Excel\Concerns;
 
 use PhpOffice\PhpSpreadsheet\Cell\IValueBinder;
 
-interface WithCustomValueBinder extends Export, Import, IValueBinder
+interface WithCustomValueBinder extends IValueBinder
 {
 }

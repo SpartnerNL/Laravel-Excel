@@ -29,7 +29,7 @@ final class PhpSpreadsheetV5CompatibilityTest extends TestCase
     {
         $receivedTypes = [];
 
-        $import = new class($receivedTypes) implements WithReadFilter
+        $import = new class($receivedTypes) implements Import, WithReadFilter
         {
             use Importable;
 
@@ -88,7 +88,7 @@ final class PhpSpreadsheetV5CompatibilityTest extends TestCase
     {
         $capturedCells = [];
 
-        $import = new class($capturedCells) implements WithReadFilter
+        $import = new class($capturedCells) implements Import, WithReadFilter
         {
             use Importable;
 
@@ -145,7 +145,7 @@ final class PhpSpreadsheetV5CompatibilityTest extends TestCase
 
     public function test_read_filter_can_filter_specific_rows(): void
     {
-        $import = new class implements WithReadFilter
+        $import = new class implements Import, WithReadFilter
         {
             use Importable;
 
@@ -169,7 +169,7 @@ final class PhpSpreadsheetV5CompatibilityTest extends TestCase
 
     public function test_read_filter_can_filter_specific_columns(): void
     {
-        $import = new class implements WithReadFilter
+        $import = new class implements Import, WithReadFilter
         {
             use Importable;
 
@@ -199,7 +199,7 @@ final class PhpSpreadsheetV5CompatibilityTest extends TestCase
 
     public function test_custom_value_binder_is_not_applied_on_import(): void
     {
-        $import = new class extends DefaultValueBinder implements WithCustomValueBinder
+        $import = new class extends DefaultValueBinder implements Import, WithCustomValueBinder
         {
             use Importable;
 
@@ -274,7 +274,7 @@ final class PhpSpreadsheetV5CompatibilityTest extends TestCase
 
     public function test_unknown_sheet_name_is_skipped_with_skips_unknown_sheets(): void
     {
-        $import = new class implements SkipsUnknownSheets, WithMultipleSheets
+        $import = new class implements Import, SkipsUnknownSheets, WithMultipleSheets
         {
             use Importable;
 
@@ -329,7 +329,7 @@ final class PhpSpreadsheetV5CompatibilityTest extends TestCase
 
     public function test_mixed_valid_and_invalid_sheet_names_with_skips(): void
     {
-        $import = new class implements SkipsUnknownSheets, WithMultipleSheets
+        $import = new class implements Import, SkipsUnknownSheets, WithMultipleSheets
         {
             use Importable;
 
@@ -379,7 +379,7 @@ final class PhpSpreadsheetV5CompatibilityTest extends TestCase
     {
         $this->expectException(SheetNotFoundException::class);
 
-        $import = new class implements WithMultipleSheets
+        $import = new class implements Import, WithMultipleSheets
         {
             use Importable;
 

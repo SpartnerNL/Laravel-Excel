@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Maatwebsite\Excel\Tests\Concerns;
 
+use Maatwebsite\Excel\Concerns\Import;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\ToArray;
 use Maatwebsite\Excel\Concerns\WithConditionalSheets;
@@ -14,7 +15,7 @@ final class WithConditionalSheetsTest extends TestCase
 {
     public function test_can_select_which_sheets_will_be_imported(): void
     {
-        $import = new class implements WithMultipleSheets
+        $import = new class implements Import, WithMultipleSheets
         {
             use Importable, WithConditionalSheets;
 

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Maatwebsite\Excel\Concerns;
 
-interface WithValidation extends Import
+interface WithValidation
 {
     /**
      * @return array<array-key, mixed>

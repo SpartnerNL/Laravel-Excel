@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Maatwebsite\Excel\Concerns;
 
-interface WithStartRow extends Import
+interface WithStartRow
 {
     public function startRow(): int;
 }

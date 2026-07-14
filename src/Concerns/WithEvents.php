@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Maatwebsite\Excel\Concerns;
 
-interface WithEvents extends Export, Import
+interface WithEvents
 {
     /**
      * @return array<string, callable>

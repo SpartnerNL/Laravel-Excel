@@ -6,7 +6,7 @@ namespace Maatwebsite\Excel\Concerns;
 
 use PhpOffice\PhpSpreadsheet\Style\Style;
 
-interface WithDefaultStyles extends Export
+interface WithDefaultStyles
 {
     /**
      * @return array<string, mixed>|null

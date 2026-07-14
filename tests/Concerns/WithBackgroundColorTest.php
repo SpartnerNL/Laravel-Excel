@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Maatwebsite\Excel\Tests\Concerns;
 
+use Maatwebsite\Excel\Concerns\Export;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\WithBackgroundColor;
 use Maatwebsite\Excel\Tests\TestCase;
@@ -14,7 +15,7 @@ final class WithBackgroundColorTest extends TestCase
 {
     public function test_can_configure_background_color_from_rgb_string(): void
     {
-        $export = new class implements WithBackgroundColor
+        $export = new class implements Export, WithBackgroundColor
         {
             use Exportable;
 
@@ -35,7 +36,7 @@ final class WithBackgroundColorTest extends TestCase
 
     public function test_can_configure_background_color_as_array(): void
     {
-        $export = new class implements WithBackgroundColor
+        $export = new class implements Export, WithBackgroundColor
         {
             use Exportable;
 
@@ -59,7 +60,7 @@ final class WithBackgroundColorTest extends TestCase
 
     public function test_can_configure_background_color_with_color_instance(): void
     {
-        $export = new class implements WithBackgroundColor
+        $export = new class implements Export, WithBackgroundColor
         {
             use Exportable;
 

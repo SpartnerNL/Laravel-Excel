@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Maatwebsite\Excel\Tests\Concerns;
 
+use Maatwebsite\Excel\Concerns\Export;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 use Maatwebsite\Excel\Concerns\WithTitle;
@@ -28,7 +29,7 @@ final class WithTitleTest extends TestCase
 
     public function test_can_export_sheet_title_when_longer_than_max_length(): void
     {
-        $export = new class implements WithMultipleSheets, WithTitle
+        $export = new class implements Export, WithMultipleSheets, WithTitle
         {
             use Exportable;
 

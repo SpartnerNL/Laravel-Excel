@@ -6,7 +6,7 @@ namespace Maatwebsite\Excel\Concerns;
 
 use PhpOffice\PhpSpreadsheet\Reader\IReadFilter;
 
-interface WithReadFilter extends Import
+interface WithReadFilter
 {
     public function readFilter(): IReadFilter;
 }

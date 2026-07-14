@@ -6,7 +6,7 @@ namespace Maatwebsite\Excel\Concerns;
 
 use Maatwebsite\Excel\Row;
 
-interface OnEachRow extends Import
+interface OnEachRow
 {
     /**
      * @return mixed

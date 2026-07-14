@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Maatwebsite\Excel\Tests\Concerns;
 
+use Maatwebsite\Excel\Concerns\Import;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\WithReadFilter;
 use Maatwebsite\Excel\Tests\TestCase;
@@ -17,7 +18,7 @@ final class WithReadFilterTest extends TestCase
     public function test_can_register_custom_read_filter(): void
     {
         WithReadFilterTest::$spy = false;
-        $export                  = new class implements WithReadFilter
+        $export                  = new class implements Import, WithReadFilter
         {
             use Importable;
 

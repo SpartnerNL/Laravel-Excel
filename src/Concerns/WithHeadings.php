@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Maatwebsite\Excel\Concerns;
 
-interface WithHeadings extends Export
+interface WithHeadings
 {
     /**
      * @return array<int, mixed>

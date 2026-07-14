@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Maatwebsite\Excel\Tests\Concerns;
 
 use Illuminate\Support\Collection;
+use Maatwebsite\Excel\Concerns\Import;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\OnEachRow;
 use Maatwebsite\Excel\Concerns\ToArray;
@@ -55,7 +56,7 @@ final class WithGroupedHeadingRowTest extends TestCase
 
     public function test_can_import_oneachrow_with_grouped_headers(): void
     {
-        $import = new class implements OnEachRow, WithGroupedHeadingRow
+        $import = new class implements Import, OnEachRow, WithGroupedHeadingRow
         {
             use Importable;
 
