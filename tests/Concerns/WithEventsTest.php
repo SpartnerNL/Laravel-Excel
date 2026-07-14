@@ -169,7 +169,7 @@ final class WithEventsTest extends TestCase
 
     public function test_after_chunk_event_sheet_delegate_is_accessible(): void
     {
-        $import = new ImportWithEventsChunksAndBatches();
+        $import = new ImportWithEventsChunksAndBatches;
 
         $import->afterChunk = function (AfterChunk $event): void {
             $this->assertInstanceOf(Sheet::class, $event->getSheet());
