@@ -7,6 +7,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
+use Maatwebsite\Excel\Concerns\Export;
 use Maatwebsite\Excel\Files\TemporaryFile;
 use Maatwebsite\Excel\Jobs\Middleware\LocalizeJob;
 use Maatwebsite\Excel\Writer;
@@ -17,7 +18,7 @@ class AppendDataToSheet implements ShouldQueue
     use Batchable, Dispatchable, InteractsWithQueue, ProxyFailures, Queueable;
 
     public function __construct(
-        public object $sheetExport,
+        public Export $sheetExport,
         public TemporaryFile $temporaryFile,
         public string $writerType,
         public int $sheetIndex,

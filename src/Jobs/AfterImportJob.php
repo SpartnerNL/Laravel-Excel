@@ -8,6 +8,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Collection;
+use Maatwebsite\Excel\Concerns\Import;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Events\ImportFailed;
 use Maatwebsite\Excel\HasEventBus;
@@ -25,12 +26,9 @@ class AfterImportJob implements ShouldQueue
 
     private int $interval = 60;
 
-    /**
-     * @param  object  $import
-     */
     public function __construct(
-        private $import,
-        private Reader $reader,
+        private readonly Import $import,
+        private readonly Reader $reader,
     ) {
     }
 

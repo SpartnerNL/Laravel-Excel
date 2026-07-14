@@ -6,6 +6,7 @@ namespace Maatwebsite\Excel\Tests\Concerns;
 
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\Exportable;
+use Maatwebsite\Excel\Concerns\Import;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\SkipsUnknownSheets;
 use Maatwebsite\Excel\Concerns\ToArray;
@@ -95,7 +96,7 @@ final class WithMultipleSheetsTest extends TestCase
             public function sheets(): array
             {
                 return [
-                    9999 => new class
+                    9999 => new class implements Import
                     {
                     },
                 ];
@@ -117,7 +118,7 @@ final class WithMultipleSheetsTest extends TestCase
             public function sheets(): array
             {
                 return [
-                    'Some Random Sheet Name' => new class
+                    'Some Random Sheet Name' => new class implements Import
                     {
                     },
                 ];
@@ -138,7 +139,7 @@ final class WithMultipleSheetsTest extends TestCase
             public function sheets(): array
             {
                 return [
-                    'Some Random Sheet Name' => new class
+                    'Some Random Sheet Name' => new class implements Import
                     {
                     },
                 ];
@@ -189,7 +190,7 @@ final class WithMultipleSheetsTest extends TestCase
             public function sheets(): array
             {
                 return [
-                    99999 => new class
+                    99999 => new class implements Import
                     {
                     },
                 ];

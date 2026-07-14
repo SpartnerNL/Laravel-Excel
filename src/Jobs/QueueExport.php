@@ -6,6 +6,7 @@ use Illuminate\Bus\Batchable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
+use Maatwebsite\Excel\Concerns\Export;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 use Maatwebsite\Excel\Exceptions\NoSheetsFoundException;
 use Maatwebsite\Excel\Files\TemporaryFile;
@@ -19,7 +20,7 @@ class QueueExport implements ShouldQueue
     use Batchable, Dispatchable, ExtendedQueueable, InteractsWithQueue;
 
     public function __construct(
-        public object $export,
+        public Export $export,
         private TemporaryFile $temporaryFile,
         private string $writerType,
     ) {

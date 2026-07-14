@@ -6,7 +6,7 @@ namespace Maatwebsite\Excel\Concerns;
 
 use Throwable;
 
-interface SkipsOnError
+interface SkipsOnError extends Import
 {
     public function onError(Throwable $e): void;
 }

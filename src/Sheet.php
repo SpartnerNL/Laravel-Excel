@@ -7,6 +7,7 @@ use Generator;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Collection;
 use Illuminate\Support\LazyCollection;
+use Maatwebsite\Excel\Concerns\Export;
 use Maatwebsite\Excel\Concerns\FromArray;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\FromGenerator;
@@ -14,6 +15,7 @@ use Maatwebsite\Excel\Concerns\FromIterator;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\FromScout;
 use Maatwebsite\Excel\Concerns\FromView;
+use Maatwebsite\Excel\Concerns\Import;
 use Maatwebsite\Excel\Concerns\OnEachRow;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\SkipsEmptyRows;
@@ -74,7 +76,7 @@ class Sheet
 
     protected TemporaryFileFactory $temporaryFileFactory;
 
-    protected ?object $exportable = null;
+    protected ?Export $exportable = null;
 
     final public function __construct(
         private Worksheet $worksheet,
@@ -124,7 +126,7 @@ class Sheet
     /**
      * @throws Exception
      */
-    public function open(object $sheetExport): void
+    public function open(Export $sheetExport): void
     {
         $this->exportable = $sheetExport;
 
@@ -174,7 +176,7 @@ class Sheet
      * @throws Exception
      * @throws \PhpOffice\PhpSpreadsheet\Reader\Exception
      */
-    public function export(object $sheetExport): void
+    public function export(Export $sheetExport): void
     {
         $this->open($sheetExport);
 
@@ -214,7 +216,7 @@ class Sheet
     /**
      * @throws ValidationException
      */
-    public function import(object $import, int $startRow = 1): void
+    public function import(Import $import, int $startRow = 1): void
     {
         if ($import instanceof WithEvents) {
             $this->registerListeners($import->registerEvents());
@@ -316,7 +318,7 @@ class Sheet
     /**
      * @return array<int, array<array-key, mixed>>
      */
-    public function toArray(?object $import, ?int $startRow = null, mixed $nullValue = null, bool $calculateFormulas = false, bool $formatData = false): array
+    public function toArray(?Import $import, ?int $startRow = null, mixed $nullValue = null, bool $calculateFormulas = false, bool $formatData = false): array
     {
         if ($startRow > $this->worksheet->getHighestRow()) {
             return [];
@@ -362,7 +364,7 @@ class Sheet
     /**
      * @return Collection<int, Collection<array-key, mixed>>
      */
-    public function toCollection(?object $import, ?int $startRow = null, mixed $nullValue = null, bool $calculateFormulas = false, bool $formatData = false): Collection
+    public function toCollection(?Import $import, ?int $startRow = null, mixed $nullValue = null, bool $calculateFormulas = false, bool $formatData = false): Collection
     {
         $rows = $this->toArray($import, $startRow, $nullValue, $calculateFormulas, $formatData);
 
@@ -372,7 +374,7 @@ class Sheet
     /**
      * @throws Exception
      */
-    public function close(object $sheetExport): void
+    public function close(Export $sheetExport): void
     {
         if ($sheetExport instanceof WithCharts) {
             $this->addCharts($sheetExport->charts());
@@ -592,7 +594,7 @@ class Sheet
     /**
      * @param  iterable<array-key, mixed>  $rows
      */
-    public function appendRows(iterable $rows, object $sheetExport): void
+    public function appendRows(iterable $rows, Export $sheetExport): void
     {
         if (method_exists($sheetExport, 'prepareRows')) {
             $rows = $sheetExport->prepareRows($rows);
@@ -644,7 +646,7 @@ class Sheet
         return $row;
     }
 
-    public function getStartRow(?object $sheetImport): int
+    public function getStartRow(?Import $sheetImport): int
     {
         return HeadingRowExtractor::determineStartRow($sheetImport);
     }
@@ -700,7 +702,7 @@ class Sheet
         return $this->worksheet->cellExists($startCell);
     }
 
-    private function hasStrictNullComparison(object $sheetExport): bool
+    private function hasStrictNullComparison(Export $sheetExport): bool
     {
         if ($sheetExport instanceof WithStrictNullComparison) {
             return true;
@@ -709,7 +711,7 @@ class Sheet
         return config('excel.exports.strict_null_comparison', false);
     }
 
-    private function getChunkSize(object $export): int
+    private function getChunkSize(Export $export): int
     {
         if ($export instanceof WithCustomChunkSize) {
             return $export->chunkSize();
@@ -718,7 +720,7 @@ class Sheet
         return $this->chunkSize;
     }
 
-    private function getPreparationCallback(object $import): ?Closure
+    private function getPreparationCallback(Import $import): ?Closure
     {
         if (!$import instanceof WithValidation || !method_exists($import, 'prepareForValidation')) {
             return null;

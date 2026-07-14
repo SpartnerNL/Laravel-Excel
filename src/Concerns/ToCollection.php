@@ -6,7 +6,7 @@ namespace Maatwebsite\Excel\Concerns;
 
 use Illuminate\Support\Collection;
 
-interface ToCollection
+interface ToCollection extends Import
 {
     /**
      * @param  Collection<array-key, mixed>  $collection

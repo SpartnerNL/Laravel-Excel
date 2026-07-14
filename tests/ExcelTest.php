@@ -10,6 +10,7 @@ use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\FromView;
+use Maatwebsite\Excel\Concerns\Import;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\RegistersEventListeners;
 use Maatwebsite\Excel\Concerns\ToArray;
@@ -198,7 +199,7 @@ final class ExcelTest extends TestCase
 
     public function test_can_import_a_simple_xlsx_file_to_array(): void
     {
-        $import = new class
+        $import = new class implements Import
         {
             use Importable;
         };
@@ -213,7 +214,7 @@ final class ExcelTest extends TestCase
 
     public function test_can_import_a_simple_xlsx_file_to_collection(): void
     {
-        $import = new class
+        $import = new class implements Import
         {
             use Importable;
         };

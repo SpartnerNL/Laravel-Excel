@@ -6,7 +6,7 @@ namespace Maatwebsite\Excel\Concerns;
 
 use Iterator;
 
-interface FromIterator
+interface FromIterator extends Export
 {
     public function iterator(): Iterator;
 }

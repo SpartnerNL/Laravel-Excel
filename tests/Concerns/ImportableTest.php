@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Maatwebsite\Excel\Tests\Concerns;
 
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
+use Maatwebsite\Excel\Concerns\Import;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\ToArray;
 use Maatwebsite\Excel\Excel;
@@ -125,7 +126,7 @@ final class ImportableTest extends TestCase
     {
         $this->expectException(FileNotFoundException::class);
 
-        $import = new class
+        $import = new class implements Import
         {
             use Importable;
         };
@@ -135,7 +136,7 @@ final class ImportableTest extends TestCase
 
     public function test_default_output_style_is_set(): void
     {
-        $import = new class
+        $import = new class implements Import
         {
             use Importable;
         };

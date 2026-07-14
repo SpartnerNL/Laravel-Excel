@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace Maatwebsite\Excel\Events;
 
+use Maatwebsite\Excel\Concerns\Export;
 use Maatwebsite\Excel\Writer;
 
 class BeforeWriting extends Event
 {
     public function __construct(
         public Writer $writer,
-        object $exportable
+        Export $exportable
     ) {
         parent::__construct($exportable);
     }

@@ -4,6 +4,6 @@ declare(strict_types=1);
 
 namespace Maatwebsite\Excel\Concerns;
 
-interface PersistRelations
+interface PersistRelations extends Import
 {
 }

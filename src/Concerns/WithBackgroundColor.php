@@ -6,7 +6,7 @@ namespace Maatwebsite\Excel\Concerns;
 
 use PhpOffice\PhpSpreadsheet\Style\Color;
 
-interface WithBackgroundColor
+interface WithBackgroundColor extends Export
 {
     /**
      * @return string|array<string, mixed>|Color

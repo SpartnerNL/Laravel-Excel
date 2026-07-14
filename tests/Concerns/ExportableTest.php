@@ -6,6 +6,7 @@ namespace Maatwebsite\Excel\Tests\Concerns;
 
 use Illuminate\Contracts\Support\Responsable;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Concerns\Export;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Excel;
 use Maatwebsite\Excel\Exceptions\NoFilenameGivenException;
@@ -22,7 +23,7 @@ final class ExportableTest extends TestCase
         $this->expectException(NoFilenameGivenException::class);
         $this->expectExceptionMessage('A filename needs to be passed in order to download the export');
 
-        $export = new class
+        $export = new class implements Export
         {
             use Exportable;
         };
@@ -35,7 +36,7 @@ final class ExportableTest extends TestCase
         $this->expectException(NoFilePathGivenException::class);
         $this->expectExceptionMessage('A filepath needs to be passed in order to store the export');
 
-        $export = new class
+        $export = new class implements Export
         {
             use Exportable;
         };
@@ -48,7 +49,7 @@ final class ExportableTest extends TestCase
         $this->expectException(NoFilePathGivenException::class);
         $this->expectExceptionMessage('A filepath needs to be passed in order to store the export');
 
-        $export = new class
+        $export = new class implements Export
         {
             use Exportable;
         };
@@ -61,7 +62,7 @@ final class ExportableTest extends TestCase
         $this->expectException(NoFilenameGivenException::class);
         $this->expectExceptionMessage('A filename needs to be passed in order to download the export');
 
-        $export = new class implements Responsable
+        $export = new class implements Export, Responsable
         {
             use Exportable;
         };
@@ -71,7 +72,7 @@ final class ExportableTest extends TestCase
 
     public function test_is_responsable(): void
     {
-        $export = new class implements Responsable
+        $export = new class implements Export, Responsable
         {
             use Exportable;
 
@@ -90,7 +91,7 @@ final class ExportableTest extends TestCase
 
     public function test_can_have_customized_header(): void
     {
-        $export = new class
+        $export = new class implements Export
         {
             use Exportable;
         };
@@ -106,7 +107,7 @@ final class ExportableTest extends TestCase
 
     public function test_can_set_custom_headers_in_export_class(): void
     {
-        $export = new class
+        $export = new class implements Export
         {
             use Exportable;
 
@@ -155,7 +156,7 @@ final class ExportableTest extends TestCase
 
     public function test_can_set_disk_options_in_export_class_when_storing(): void
     {
-        $export = new class
+        $export = new class implements Export
         {
             use Exportable;
 
@@ -176,7 +177,7 @@ final class ExportableTest extends TestCase
 
     public function test_can_set_disk_options_in_export_class_when_queuing(): void
     {
-        $export = new class
+        $export = new class implements Export
         {
             use Exportable;
 
@@ -197,7 +198,7 @@ final class ExportableTest extends TestCase
 
     public function test_can_override_export_class_disk_options_when_calling_store(): void
     {
-        $export = new class
+        $export = new class implements Export
         {
             use Exportable;
 
@@ -216,7 +217,7 @@ final class ExportableTest extends TestCase
 
     public function test_can_override_export_class_disk_options_when_calling_queue(): void
     {
-        $export = new class
+        $export = new class implements Export
         {
             use Exportable;
 

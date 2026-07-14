@@ -11,6 +11,8 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Traits\Macroable;
+use Maatwebsite\Excel\Concerns\Export;
+use Maatwebsite\Excel\Concerns\Import;
 use Maatwebsite\Excel\Concerns\ShouldBatch;
 use Maatwebsite\Excel\Exporter;
 use Maatwebsite\Excel\Importer;
@@ -24,27 +26,27 @@ class ExcelFake implements Exporter, Importer
     use Macroable;
 
     /**
-     * @var array<string, object>
+     * @var array<string, Export>
      */
     protected array $downloads = [];
 
     /**
-     * @var array<string, array<string, object>>
+     * @var array<string, array<string, Export>>
      */
     protected array $stored = [];
 
     /**
-     * @var array<string, array<string, object>>
+     * @var array<string, array<string, Export|Import>>
      */
     protected array $queued = [];
 
     /**
-     * @var array<class-string, object>
+     * @var array<class-string, Export>
      */
     protected array $raws = [];
 
     /**
-     * @var array<string, array<string, object>>
+     * @var array<string, array<string, Import>>
      */
     protected array $imported = [];
 
@@ -57,7 +59,7 @@ class ExcelFake implements Exporter, Importer
      *
      * @param  array<string, string>  $headers
      */
-    public function download(object $export, string $fileName, ?string $writerType = null, array $headers = []): BinaryFileResponse
+    public function download(Export $export, string $fileName, ?string $writerType = null, array $headers = []): BinaryFileResponse
     {
         $this->downloads[$fileName] = $export;
 
@@ -67,7 +69,7 @@ class ExcelFake implements Exporter, Importer
     /**
      * @param  string|null  $diskName  Fallback for usage with named properties
      */
-    public function store(object $export, string $filePath, ?string $disk = null, ?string $writerType = null, mixed $diskOptions = [], ?string $diskName = null): bool|PendingDispatch|PendingBatch
+    public function store(Export $export, string $filePath, ?string $disk = null, ?string $writerType = null, mixed $diskOptions = [], ?string $diskName = null): bool|PendingDispatch|PendingBatch
     {
         if ($export instanceof ShouldQueue) {
             return $this->queue($export, $filePath, $disk ?: $diskName, $writerType);
@@ -78,7 +80,7 @@ class ExcelFake implements Exporter, Importer
         return true;
     }
 
-    public function queue(object $export, string $filePath, ?string $disk = null, ?string $writerType = null, mixed $diskOptions = []): PendingDispatch|PendingBatch
+    public function queue(Export $export, string $filePath, ?string $disk = null, ?string $writerType = null, mixed $diskOptions = []): PendingDispatch|PendingBatch
     {
         Queue::fake();
 
@@ -105,14 +107,14 @@ class ExcelFake implements Exporter, Importer
         return new PendingDispatch($this->job);
     }
 
-    public function raw(object $export, string $writerType): string
+    public function raw(Export $export, string $writerType): string
     {
         $this->raws[$export::class] = $export;
 
         return 'RAW-CONTENTS';
     }
 
-    public function import(object $import, string|UploadedFile $file, ?string $disk = null, ?string $readerType = null): static|PendingDispatch|PendingBatch
+    public function import(Import $import, string|UploadedFile $file, ?string $disk = null, ?string $readerType = null): static|PendingDispatch|PendingBatch
     {
         if ($import instanceof ShouldQueue) {
             return $this->queueImport($import, $file, $disk, $readerType);
@@ -128,7 +130,7 @@ class ExcelFake implements Exporter, Importer
     /**
      * @return array<array-key, array<int, array<array-key, mixed>>>
      */
-    public function toArray(object $import, string|UploadedFile $file, ?string $disk = null, ?string $readerType = null): array
+    public function toArray(Import $import, string|UploadedFile $file, ?string $disk = null, ?string $readerType = null): array
     {
         $filePath = ($file instanceof UploadedFile) ? $file->getFilename() : $file;
 
@@ -140,7 +142,7 @@ class ExcelFake implements Exporter, Importer
     /**
      * @return Collection<array-key, Collection<int, Collection<array-key, mixed>>>
      */
-    public function toCollection(?object $import, string|UploadedFile $file, ?string $disk = null, ?string $readerType = null): Collection
+    public function toCollection(?Import $import, string|UploadedFile $file, ?string $disk = null, ?string $readerType = null): Collection
     {
         $filePath = ($file instanceof UploadedFile) ? $file->getFilename() : $file;
 
@@ -149,7 +151,7 @@ class ExcelFake implements Exporter, Importer
         return new Collection;
     }
 
-    public function queueImport(ShouldQueue $import, string|UploadedFile $file, ?string $disk = null, ?string $readerType = null): PendingDispatch|PendingBatch
+    public function queueImport(ShouldQueue&Import $import, string|UploadedFile $file, ?string $disk = null, ?string $readerType = null): PendingDispatch|PendingBatch
     {
         Queue::fake();
 

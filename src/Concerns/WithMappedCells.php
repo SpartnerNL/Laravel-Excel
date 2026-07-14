@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Maatwebsite\Excel\Concerns;
 
-interface WithMappedCells
+interface WithMappedCells extends Export
 {
     /**
      * @return array<array-key, string|array<string, string>>

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Maatwebsite\Excel\Concerns;
 
-interface WithProperties
+interface WithProperties extends Export
 {
     /**
      * @return array<string, mixed>

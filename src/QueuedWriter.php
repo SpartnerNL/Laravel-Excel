@@ -7,6 +7,7 @@ use Illuminate\Foundation\Bus\PendingDispatch;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Enumerable;
 use Illuminate\Support\Facades\Bus;
+use Maatwebsite\Excel\Concerns\Export;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\FromScout;
@@ -39,7 +40,7 @@ class QueuedWriter
     /**
      * @param  array<string, mixed>|string  $diskOptions
      */
-    public function store(object $export, string $filePath, ?string $disk = null, ?string $writerType = null, array|string $diskOptions = []): PendingDispatch|PendingBatch
+    public function store(Export $export, string $filePath, ?string $disk = null, ?string $writerType = null, array|string $diskOptions = []): PendingDispatch|PendingBatch
     {
         $extension     = pathinfo($filePath, PATHINFO_EXTENSION);
         $temporaryFile = $this->temporaryFileFactory->make($extension);
@@ -71,7 +72,7 @@ class QueuedWriter
     /**
      * @return Collection<int, object>
      */
-    private function buildExportJobs(object $export, TemporaryFile $temporaryFile, string $writerType): Collection
+    private function buildExportJobs(Export $export, TemporaryFile $temporaryFile, string $writerType): Collection
     {
         $sheetExports = [$export];
         if ($export instanceof WithMultipleSheets) {
@@ -207,7 +208,7 @@ class QueuedWriter
         return $jobs;
     }
 
-    private function getChunkSize(object $export): int
+    private function getChunkSize(Export $export): int
     {
         if ($export instanceof WithCustomChunkSize) {
             return $export->chunkSize();

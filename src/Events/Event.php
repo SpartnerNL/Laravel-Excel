@@ -1,21 +1,23 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Maatwebsite\Excel\Events;
+
+use Maatwebsite\Excel\Concerns\Export;
+use Maatwebsite\Excel\Concerns\Import;
 
 /**
  * @internal
  */
 abstract class Event
 {
-    /**
-     * @param  object  $concernable
-     */
     public function __construct(
-        protected $concernable,
+        protected Export|Import|null $concernable,
     ) {
     }
 
-    public function getConcernable(): object
+    public function getConcernable(): Export|Import|null
     {
         return $this->concernable;
     }

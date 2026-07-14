@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Maatwebsite\Excel\Concerns;
 
-interface WithTitle
+interface WithTitle extends Export
 {
     public function title(): string;
 }

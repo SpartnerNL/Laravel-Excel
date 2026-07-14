@@ -6,7 +6,7 @@ namespace Maatwebsite\Excel\Concerns;
 
 use PhpOffice\PhpSpreadsheet\Chart\Chart;
 
-interface WithCharts
+interface WithCharts extends Export
 {
     /**
      * @return Chart|Chart[]

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Maatwebsite\Excel\Concerns;
 
-interface WithUpserts
+interface WithUpserts extends Import
 {
     /**
      * @return string|list<string>

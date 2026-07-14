@@ -7,6 +7,7 @@ namespace Maatwebsite\Excel\Tests;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromCollection;
+use Maatwebsite\Excel\Concerns\Import;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\SkipsUnknownSheets;
 use Maatwebsite\Excel\Concerns\ToArray;
@@ -222,7 +223,7 @@ final class PhpSpreadsheetV5CompatibilityTest extends TestCase
     {
         // Since value binders are not called on import in v5,
         // numeric values like dates come through as raw Excel serial numbers.
-        $import = new class
+        $import = new class implements Import
         {
             use Importable;
         };
@@ -341,16 +342,16 @@ final class PhpSpreadsheetV5CompatibilityTest extends TestCase
             public function sheets(): array
             {
                 return [
-                    'Sheet1' => new class
+                    'Sheet1' => new class implements Import
                     {
                     },
-                    'NonExistent1' => new class
+                    'NonExistent1' => new class implements Import
                     {
                     },
-                    'Sheet2' => new class
+                    'Sheet2' => new class implements Import
                     {
                     },
-                    'NonExistent2' => new class
+                    'NonExistent2' => new class implements Import
                     {
                     },
                 ];

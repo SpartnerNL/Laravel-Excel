@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Maatwebsite\Excel\Concerns;
 
-interface WithUpsertColumns
+interface WithUpsertColumns extends Import
 {
     /**
      * @return list<string>

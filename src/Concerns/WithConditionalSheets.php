@@ -21,7 +21,7 @@ trait WithConditionalSheets
     }
 
     /**
-     * @return array<int|string, object>
+     * @return array<int|string, Export|Import>
      */
     public function sheets(): array
     {
@@ -29,7 +29,7 @@ trait WithConditionalSheets
     }
 
     /**
-     * @return array<int|string, object>
+     * @return array<int|string, Export|Import>
      */
     abstract public function conditionalSheets(): array;
 }

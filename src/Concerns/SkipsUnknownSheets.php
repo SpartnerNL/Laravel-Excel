@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Maatwebsite\Excel\Concerns;
 
-interface SkipsUnknownSheets
+interface SkipsUnknownSheets extends Import
 {
     public function onUnknownSheet(string|int $sheetName): void;
 }

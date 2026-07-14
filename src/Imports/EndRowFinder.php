@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace Maatwebsite\Excel\Imports;
 
+use Maatwebsite\Excel\Concerns\Import;
 use Maatwebsite\Excel\Concerns\WithLimit;
 
 class EndRowFinder
 {
-    public static function find(?object $import, ?int $startRow = null, ?int $highestRow = null): ?int
+    public static function find(?Import $import, ?int $startRow = null, ?int $highestRow = null): ?int
     {
         if (!$import instanceof WithLimit) {
             return null;

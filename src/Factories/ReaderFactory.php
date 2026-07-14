@@ -2,6 +2,7 @@
 
 namespace Maatwebsite\Excel\Factories;
 
+use Maatwebsite\Excel\Concerns\Import;
 use Maatwebsite\Excel\Concerns\MapsCsvSettings;
 use Maatwebsite\Excel\Concerns\WithCustomCsvSettings;
 use Maatwebsite\Excel\Concerns\WithLimit;
@@ -23,7 +24,7 @@ class ReaderFactory
      * @throws Exception
      * @throws NoTypeDetectedException
      */
-    public static function make(?object $import, TemporaryFile $file, ?string $readerType = null): IReader
+    public static function make(?Import $import, TemporaryFile $file, ?string $readerType = null): IReader
     {
         $reader = IOFactory::createReader(
             $readerType ?: self::identify($file)

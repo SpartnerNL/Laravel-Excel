@@ -8,6 +8,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Cache;
+use Maatwebsite\Excel\Concerns\Import;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithCustomValueBinder;
 use Maatwebsite\Excel\Concerns\WithEvents;
@@ -56,7 +57,7 @@ class ReadChunk implements ShouldQueue
         private IReader $reader,
         private TemporaryFile $temporaryFile,
         private string $sheetName,
-        private object $sheetImport,
+        private Import $sheetImport,
         private int $startRow,
         private int $chunkSize,
     ) {

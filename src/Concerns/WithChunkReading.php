@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Maatwebsite\Excel\Concerns;
 
-interface WithChunkReading
+interface WithChunkReading extends Import
 {
     public function chunkSize(): int;
 }

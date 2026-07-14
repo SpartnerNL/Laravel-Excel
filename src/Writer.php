@@ -2,6 +2,7 @@
 
 namespace Maatwebsite\Excel;
 
+use Maatwebsite\Excel\Concerns\Export;
 use Maatwebsite\Excel\Concerns\WithBackgroundColor;
 use Maatwebsite\Excel\Concerns\WithCustomValueBinder;
 use Maatwebsite\Excel\Concerns\WithDefaultStyles;
@@ -29,7 +30,7 @@ class Writer
 
     protected ?Spreadsheet $spreadsheet = null;
 
-    protected object $exportable;
+    protected Export $exportable;
 
     public function __construct(
         protected TemporaryFileFactory $temporaryFileFactory,
@@ -40,7 +41,7 @@ class Writer
     /**
      * @throws Exception
      */
-    public function export(object $export, string $writerType): TemporaryFile
+    public function export(Export $export, string $writerType): TemporaryFile
     {
         $this->open($export);
 
@@ -56,7 +57,7 @@ class Writer
         return $this->write($export, $this->temporaryFileFactory->makeLocal(null, strtolower($writerType)), $writerType);
     }
 
-    public function open(object $export): static
+    public function open(Export $export): static
     {
         $this->exportable = $export;
 
@@ -128,7 +129,7 @@ class Writer
      * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
      * @throws Exception
      */
-    public function write(object $export, TemporaryFile $temporaryFile, string $writerType): TemporaryFile
+    public function write(Export $export, TemporaryFile $temporaryFile, string $writerType): TemporaryFile
     {
         $this->exportable = $export;
 
@@ -200,7 +201,7 @@ class Writer
         return $this->exportable instanceof $concern;
     }
 
-    protected function handleDocumentProperties(object $export): void
+    protected function handleDocumentProperties(Export $export): void
     {
         $properties = config('excel.exports.properties', []);
 
