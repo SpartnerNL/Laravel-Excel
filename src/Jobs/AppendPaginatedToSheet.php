@@ -25,6 +25,7 @@ class AppendPaginatedToSheet implements ShouldQueue
         public int $sheetIndex,
         public int $page,
         public int $perPage,
+        public ?object $export = null,
     ) {
     }
 
@@ -56,7 +57,7 @@ class AppendPaginatedToSheet implements ShouldQueue
 
             $sheet->appendRows($this->chunk(), $this->sheetExport);
 
-            $writer->write($this->sheetExport, $this->temporaryFile, $this->writerType);
+            $writer->write($this->export ?? $this->sheetExport, $this->temporaryFile, $this->writerType);
         });
     }
 

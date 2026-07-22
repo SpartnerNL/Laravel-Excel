@@ -21,6 +21,7 @@ class CloseSheet implements ShouldQueue
         private TemporaryFile $temporaryFile,
         private string $writerType,
         private int $sheetIndex,
+        private ?object $export = null,
     ) {
     }
 
@@ -49,7 +50,7 @@ class CloseSheet implements ShouldQueue
         $sheet->close($this->sheetExport);
 
         $writer->write(
-            $this->sheetExport,
+            $this->export ?? $this->sheetExport,
             $this->temporaryFile,
             $this->writerType
         );

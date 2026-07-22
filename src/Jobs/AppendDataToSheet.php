@@ -23,6 +23,7 @@ class AppendDataToSheet implements ShouldQueue
         public int $sheetIndex,
         /** @var array<array-key, mixed> */
         public array $data,
+        public ?object $export = null,
     ) {
     }
 
@@ -54,7 +55,7 @@ class AppendDataToSheet implements ShouldQueue
 
             $sheet->appendRows($this->data, $this->sheetExport);
 
-            $writer->write($this->sheetExport, $this->temporaryFile, $this->writerType);
+            $writer->write($this->export ?? $this->sheetExport, $this->temporaryFile, $this->writerType);
         });
     }
 }

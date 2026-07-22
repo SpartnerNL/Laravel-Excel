@@ -15,6 +15,7 @@ use Maatwebsite\Excel\Jobs\AppendDataToSheet;
 use Maatwebsite\Excel\Tests\Data\Stubs\AfterQueueExportJob;
 use Maatwebsite\Excel\Tests\Data\Stubs\EloquentCollectionWithMappingExport;
 use Maatwebsite\Excel\Tests\Data\Stubs\QueuedExport;
+use Maatwebsite\Excel\Tests\Data\Stubs\QueuedExportWithCsvSettings;
 use Maatwebsite\Excel\Tests\Data\Stubs\QueuedExportWithFailedEvents;
 use Maatwebsite\Excel\Tests\Data\Stubs\QueuedExportWithFailedHook;
 use Maatwebsite\Excel\Tests\Data\Stubs\QueuedExportWithLocalePreferences;
@@ -182,5 +183,23 @@ final class QueuedExportTest extends TestCase
         $this->assertCount(100, $array);
 
         $this->assertSame('test', Cache::get('test'));
+    }
+
+    public function test_queued_exports_apply_root_level_concerns(): void
+    {
+        // Root-level concerns (here: CSV settings) are applied by the writer at
+        // write() time. In a multi-sheet queued export the per-sheet chunk jobs
+        // must write using the root export, otherwise the root concern is dropped.
+        $export = new QueuedExportWithCsvSettings;
+
+        $path = __DIR__ . '/Data/Disks/Local/queued-export-with-csv-settings.csv';
+
+        $export->queue('queued-export-with-csv-settings.csv', null, Excel::CSV)->chain([
+            new AfterQueueExportJob($path),
+        ]);
+
+        $firstLine = strtok((string) file_get_contents($path), "\n");
+
+        $this->assertStringContainsString(';', (string) $firstLine, 'Root custom CSV delimiter should survive a queued export');
     }
 }
