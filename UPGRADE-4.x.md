@@ -65,6 +65,32 @@ Imports can specify their queue and connection with Laravel's native `#[Queue]` 
 The published configuration file (`config/excel.php`) has no key changes compared to 3.1 — there is no need to
 republish or migrate your configuration.
 
+## Export and Import marker interfaces
+
+Two new marker interfaces have been introduced: `Maatwebsite\Excel\Concerns\Export` and `Maatwebsite\Excel\Concerns\Import`.
+All export-related concerns (e.g. `FromArray`, `FromCollection`, `FromQuery`) now extend `Export`, and all import-related
+concerns (e.g. `ToModel`, `ToArray`, `ToCollection`) now extend `Import`. Because your export and import classes already
+implement those concerns, they automatically satisfy the new interfaces — no changes are required in most cases.
+
+You can now use `Export` and `Import` as type hints wherever you previously used `object` to represent an export or import:
+
+```php
+use Maatwebsite\Excel\Concerns\Export;
+
+public function handle(Export $export): void { ... }
+```
+
+### WithMultipleSheets
+
+The `sheets()` method docblock return type has been narrowed from `array<int|string, object>` to `array<int|string, Export|Import>`.
+Sheets returned from this method should implement at least one export or import concern interface, which is almost certainly
+already the case.
+
+### Event::getConcernable()
+
+`Event::getConcernable()` now returns `Export|Import|null` instead of `object`. If you call this method and rely on the
+`object` return type in a type-strict context, update your code accordingly.
+
 ## Removed requirements
 
 The `ext-json` requirement has been dropped (JSON support is bundled with PHP 8). No action is required.
