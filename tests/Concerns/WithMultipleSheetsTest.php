@@ -316,7 +316,7 @@ final class WithMultipleSheetsTest extends TestCase
             use Importable;
 
             /** @var array<int|string, object> */
-            public array $sheets = [];
+            public array $sheets;
 
             public function __construct()
             {
@@ -370,7 +370,7 @@ final class WithMultipleSheetsTest extends TestCase
             use Importable;
 
             /** @var array<int|string, object> */
-            public array $sheets = [];
+            public array $sheets;
 
             public function __construct()
             {
