@@ -51,7 +51,11 @@ class Writer
         }
 
         foreach (array_values($sheetExports) as $sheetIndex => $sheetExport) {
-            $this->getSheetForExport($sheetIndex)->export($sheetExport);
+            $sheet = $export instanceof WithExportTemplate
+                ? $this->getSheetForExport($sheetIndex)
+                : $this->addNewSheet();
+
+            $sheet->export($sheetExport);
         }
 
         return $this->write($export, $this->temporaryFileFactory->makeLocal(null, strtolower($writerType)), $writerType);

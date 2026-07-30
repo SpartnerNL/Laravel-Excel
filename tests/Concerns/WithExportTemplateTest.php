@@ -124,7 +124,7 @@ final class WithExportTemplateTest extends TestCase
         $this->assertSame('Third export', $spreadsheet->getSheet(2)->getCell('A3')->getValue());
     }
 
-    public function test_can_queue_an_export_into_a_template(): void
+    public function test_can_queue_an_export_into_a_template_across_multiple_chunks(): void
     {
         $export = new QueuedExportWithTemplate;
 
@@ -136,5 +136,7 @@ final class WithExportTemplateTest extends TestCase
         $this->assertSame('Queued users', $sheet->getCell('A1')->getValue());
         $this->assertSame('Patrick', $sheet->getCell('A3')->getValue());
         $this->assertSame('Brouwers', $sheet->getCell('B3')->getValue());
+        $this->assertSame('Taylor', $sheet->getCell('A4')->getValue());
+        $this->assertSame('Otwell', $sheet->getCell('B4')->getValue());
     }
 }

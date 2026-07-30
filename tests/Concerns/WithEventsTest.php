@@ -68,6 +68,22 @@ final class WithEventsTest extends TestCase
         $this->assertSame(4, $eventsTriggered);
     }
 
+    public function test_export_appends_worksheets_after_sheets_created_by_before_export(): void
+    {
+        $export = new ExportWithEvents;
+
+        $export->beforeExport = function (BeforeExport $event): void {
+            $event->writer->getDelegate()->createSheet()->setTitle('Created by event');
+        };
+
+        $export->store('before-export-sheet-order.xlsx');
+
+        $spreadsheet = $this->read(__DIR__ . '/../Data/Disks/Local/before-export-sheet-order.xlsx', 'Xlsx');
+
+        $this->assertSame('Created by event', $spreadsheet->getSheet(0)->getTitle());
+        $this->assertSame('Worksheet', $spreadsheet->getSheet(1)->getTitle());
+    }
+
     public function test_import_events_get_called(): void
     {
         $import = new ImportWithEvents;

@@ -8,12 +8,13 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromCollection;
+use Maatwebsite\Excel\Concerns\WithCustomChunkSize;
 use Maatwebsite\Excel\Concerns\WithCustomStartCell;
 use Maatwebsite\Excel\Concerns\WithExportTemplate;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
 /** @implements FromCollection<int, array{string, string}> */
-class QueuedExportWithTemplate implements FromCollection, ShouldQueue, WithCustomStartCell, WithExportTemplate
+class QueuedExportWithTemplate implements FromCollection, ShouldQueue, WithCustomChunkSize, WithCustomStartCell, WithExportTemplate
 {
     use Exportable;
 
@@ -24,7 +25,13 @@ class QueuedExportWithTemplate implements FromCollection, ShouldQueue, WithCusto
     {
         return new Collection([
             ['Patrick', 'Brouwers'],
+            ['Taylor', 'Otwell'],
         ]);
+    }
+
+    public function chunkSize(): int
+    {
+        return 1;
     }
 
     public function startCell(): string
