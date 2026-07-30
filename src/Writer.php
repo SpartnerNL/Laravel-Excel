@@ -6,6 +6,7 @@ use Maatwebsite\Excel\Concerns\WithBackgroundColor;
 use Maatwebsite\Excel\Concerns\WithCustomValueBinder;
 use Maatwebsite\Excel\Concerns\WithDefaultStyles;
 use Maatwebsite\Excel\Concerns\WithEvents;
+use Maatwebsite\Excel\Concerns\WithExportTemplate;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 use Maatwebsite\Excel\Concerns\WithProperties;
 use Maatwebsite\Excel\Concerns\WithTitle;
@@ -49,8 +50,8 @@ class Writer
             $sheetExports = $export->sheets();
         }
 
-        foreach ($sheetExports as $sheetExport) {
-            $this->addNewSheet()->export($sheetExport);
+        foreach (array_values($sheetExports) as $sheetIndex => $sheetExport) {
+            $this->getSheetForExport($sheetIndex)->export($sheetExport);
         }
 
         return $this->write($export, $this->temporaryFileFactory->makeLocal(null, strtolower($writerType)), $writerType);
@@ -64,9 +65,14 @@ class Writer
             $this->registerListeners($export->registerEvents());
         }
 
-        $this->exportable  = $export;
-        $this->spreadsheet = new Spreadsheet;
-        $this->spreadsheet->disconnectWorksheets();
+        $this->exportable = $export;
+
+        if ($export instanceof WithExportTemplate) {
+            $this->spreadsheet = $export->exportTemplate();
+        } else {
+            $this->spreadsheet = new Spreadsheet;
+            $this->spreadsheet->disconnectWorksheets();
+        }
 
         if ($export instanceof WithCustomValueBinder) {
             Cell::setValueBinder($export);
@@ -171,6 +177,18 @@ class Writer
     public function addNewSheet(?int $sheetIndex = null): Sheet
     {
         return new Sheet($this->spreadsheet->createSheet($sheetIndex));
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function getSheetForExport(int $sheetIndex): Sheet
+    {
+        if ($this->exportable instanceof WithExportTemplate && $sheetIndex < $this->spreadsheet->getSheetCount()) {
+            return $this->getSheetByIndex($sheetIndex);
+        }
+
+        return $this->addNewSheet($sheetIndex);
     }
 
     public function getDelegate(): Spreadsheet
