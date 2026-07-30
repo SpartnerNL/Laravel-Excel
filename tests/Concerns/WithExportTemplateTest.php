@@ -92,7 +92,7 @@ final class WithExportTemplateTest extends TestCase
 
             private function sheetExport(string $value): object
             {
-                return new class($value) implements FromArray, WithCustomStartCell
+                return new readonly class($value) implements FromArray, WithCustomStartCell
                 {
                     public function __construct(
                         private string $value,

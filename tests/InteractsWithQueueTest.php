@@ -13,14 +13,6 @@ use Maatwebsite\Excel\Jobs\ReadChunk;
 
 final class InteractsWithQueueTest extends TestCase
 {
-    /**
-     * Setup the test environment.
-     */
-    protected function setUp(): void
-    {
-        parent::setUp();
-    }
-
     public function test_read_chunk_job_can_interact_with_queue(): void
     {
         $this->assertContains(InteractsWithQueue::class, class_uses(ReadChunk::class));
