@@ -52,4 +52,38 @@ final class WithCustomStartCellTest extends TestCase
             [null, 'A2', 'B2'],
         ], $contents);
     }
+
+    public function test_can_append_multiple_chunks_with_custom_start_cell_without_export_template(): void
+    {
+        $export = new class implements FromCollection, WithCustomStartCell
+        {
+            /**
+             * @return Collection<int, array{int}>
+             */
+            public function collection(): Collection
+            {
+                return new Collection(array_map(
+                    fn (int $row): array => [$row],
+                    range(1, 1001)
+                ));
+            }
+
+            public function startCell(): string
+            {
+                return 'B2';
+            }
+        };
+
+        $this->SUT->store($export, 'custom-start-cell-without-export-template.xlsx');
+
+        $spreadsheet = $this->read(
+            __DIR__ . '/../Data/Disks/Local/custom-start-cell-without-export-template.xlsx',
+            'Xlsx'
+        );
+        $sheet = $spreadsheet->getActiveSheet();
+
+        $this->assertSame(1, $sheet->getCell('B2')->getValue());
+        $this->assertSame(1000, $sheet->getCell('B1001')->getValue());
+        $this->assertSame(1001, $sheet->getCell('B1002')->getValue());
+    }
 }
