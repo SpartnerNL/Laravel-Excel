@@ -72,7 +72,7 @@ class Writer
         $this->exportable = $export;
 
         if ($export instanceof WithExportTemplate) {
-            $this->spreadsheet = $export->exportTemplate();
+            $this->spreadsheet = IOFactory::load($export->exportTemplate());
         } else {
             $this->spreadsheet = new Spreadsheet;
             $this->spreadsheet->disconnectWorksheets();

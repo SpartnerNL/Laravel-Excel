@@ -11,16 +11,33 @@ use Maatwebsite\Excel\Concerns\WithExportTemplate;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 use Maatwebsite\Excel\Tests\Data\Stubs\QueuedExportWithTemplate;
 use Maatwebsite\Excel\Tests\TestCase;
+use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Worksheet\PageSetup;
+use RuntimeException;
 
 final class WithExportTemplateTest extends TestCase
 {
     public function test_can_export_into_a_template(): void
     {
-        $export = new class implements FromArray, WithCustomStartCell, WithExportTemplate
+        $template = new Spreadsheet;
+        $sheet    = $template->getActiveSheet();
+        $sheet->setTitle('Report');
+        $sheet->setCellValue('A1', 'Users');
+        $sheet->setCellValue('C3', '=COUNTA(A3:B3)');
+        $sheet->getStyle('A1')->getFont()->setBold(true);
+        $sheet->getPageSetup()->setOrientation(PageSetup::ORIENTATION_LANDSCAPE);
+
+        $template->createSheet()->setTitle('Notes')->setCellValue('A1', 'Keep me');
+
+        $export = new class($this->saveTemplate($template)) implements FromArray, WithCustomStartCell, WithExportTemplate
         {
             use Exportable;
+
+            public function __construct(
+                private string $templatePath,
+            ) {
+            }
 
             public function array(): array
             {
@@ -34,19 +51,9 @@ final class WithExportTemplateTest extends TestCase
                 return 'A3';
             }
 
-            public function exportTemplate(): Spreadsheet
+            public function exportTemplate(): string
             {
-                $spreadsheet = new Spreadsheet;
-                $sheet       = $spreadsheet->getActiveSheet();
-                $sheet->setTitle('Report');
-                $sheet->setCellValue('A1', 'Users');
-                $sheet->setCellValue('C3', '=COUNTA(A3:B3)');
-                $sheet->getStyle('A1')->getFont()->setBold(true);
-                $sheet->getPageSetup()->setOrientation(PageSetup::ORIENTATION_LANDSCAPE);
-
-                $spreadsheet->createSheet()->setTitle('Notes')->setCellValue('A1', 'Keep me');
-
-                return $spreadsheet;
+                return $this->templatePath;
             }
         };
 
@@ -68,9 +75,18 @@ final class WithExportTemplateTest extends TestCase
 
     public function test_can_export_multiple_sheets_into_a_template(): void
     {
-        $export = new class implements WithExportTemplate, WithMultipleSheets
+        $template = new Spreadsheet;
+        $template->getActiveSheet()->setTitle('First template')->setCellValue('A1', 'First heading');
+        $template->createSheet()->setTitle('Second template')->setCellValue('A1', 'Second heading');
+
+        $export = new class($this->saveTemplate($template)) implements WithExportTemplate, WithMultipleSheets
         {
             use Exportable;
+
+            public function __construct(
+                private string $templatePath,
+            ) {
+            }
 
             public function sheets(): array
             {
@@ -81,13 +97,9 @@ final class WithExportTemplateTest extends TestCase
                 ];
             }
 
-            public function exportTemplate(): Spreadsheet
+            public function exportTemplate(): string
             {
-                $spreadsheet = new Spreadsheet;
-                $spreadsheet->getActiveSheet()->setTitle('First template')->setCellValue('A1', 'First heading');
-                $spreadsheet->createSheet()->setTitle('Second template')->setCellValue('A1', 'Second heading');
-
-                return $spreadsheet;
+                return $this->templatePath;
             }
 
             private function sheetExport(string $value): object
@@ -126,7 +138,10 @@ final class WithExportTemplateTest extends TestCase
 
     public function test_can_queue_an_export_into_a_template_across_multiple_chunks(): void
     {
-        $export = new QueuedExportWithTemplate;
+        $template = new Spreadsheet;
+        $template->getActiveSheet()->setCellValue('A1', 'Queued users');
+
+        $export = new QueuedExportWithTemplate($this->saveTemplate($template));
 
         $export->queue('queued-with-export-template.xlsx');
 
@@ -138,5 +153,17 @@ final class WithExportTemplateTest extends TestCase
         $this->assertSame('Brouwers', $sheet->getCell('B3')->getValue());
         $this->assertSame('Taylor', $sheet->getCell('A4')->getValue());
         $this->assertSame('Otwell', $sheet->getCell('B4')->getValue());
+    }
+
+    private function saveTemplate(Spreadsheet $spreadsheet): string
+    {
+        $templatePath = tempnam(sys_get_temp_dir(), 'laravel-excel-template-');
+        if ($templatePath === false) {
+            throw new RuntimeException('Unable to create the template file.');
+        }
+
+        IOFactory::createWriter($spreadsheet, 'Xlsx')->save($templatePath);
+
+        return $templatePath;
     }
 }

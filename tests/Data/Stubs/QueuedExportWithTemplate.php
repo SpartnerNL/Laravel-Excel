@@ -11,12 +11,16 @@ use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithCustomChunkSize;
 use Maatwebsite\Excel\Concerns\WithCustomStartCell;
 use Maatwebsite\Excel\Concerns\WithExportTemplate;
-use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
 /** @implements FromCollection<int, array{string, string}> */
 class QueuedExportWithTemplate implements FromCollection, ShouldQueue, WithCustomChunkSize, WithCustomStartCell, WithExportTemplate
 {
     use Exportable;
+
+    public function __construct(
+        private readonly string $templatePath,
+    ) {
+    }
 
     /**
      * @return Collection<int, array{string, string}>
@@ -39,11 +43,8 @@ class QueuedExportWithTemplate implements FromCollection, ShouldQueue, WithCusto
         return 'A3';
     }
 
-    public function exportTemplate(): Spreadsheet
+    public function exportTemplate(): string
     {
-        $spreadsheet = new Spreadsheet;
-        $spreadsheet->getActiveSheet()->setCellValue('A1', 'Queued users');
-
-        return $spreadsheet;
+        return $this->templatePath;
     }
 }
