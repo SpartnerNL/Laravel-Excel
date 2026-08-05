@@ -7,6 +7,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
+use Maatwebsite\Excel\Concerns\Export;
 use Maatwebsite\Excel\Concerns\FromView;
 use Maatwebsite\Excel\Files\TemporaryFile;
 use Maatwebsite\Excel\Jobs\Middleware\LocalizeJob;
@@ -22,7 +23,7 @@ class AppendViewToSheet implements ShouldQueue
         public TemporaryFile $temporaryFile,
         public string $writerType,
         public int $sheetIndex,
-        public ?object $export = null,
+        public ?Export $export = null,
     ) {
     }
 

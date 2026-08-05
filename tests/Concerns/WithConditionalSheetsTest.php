@@ -20,7 +20,7 @@ final class WithConditionalSheetsTest extends TestCase
             use Importable, WithConditionalSheets;
 
             /** @var array<string, object> */
-            public $sheets = [];
+            public array $sheets = [];
 
             public function __construct()
             {

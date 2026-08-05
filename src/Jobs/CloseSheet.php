@@ -22,7 +22,7 @@ class CloseSheet implements ShouldQueue
         private TemporaryFile $temporaryFile,
         private string $writerType,
         private int $sheetIndex,
-        private ?object $export = null,
+        private ?Export $export = null,
     ) {
     }
 

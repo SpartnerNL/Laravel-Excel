@@ -7,6 +7,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
+use Maatwebsite\Excel\Concerns\Export;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Events\AfterChunk;
@@ -27,7 +28,7 @@ class AppendQueryToSheet implements ShouldQueue
         public int $sheetIndex,
         public int $page,
         public int $chunkSize,
-        public ?object $export = null,
+        public ?Export $export = null,
     ) {
     }
 

@@ -106,7 +106,7 @@ class QueuedWriter
         TemporaryFile $temporaryFile,
         string $writerType,
         int $sheetIndex,
-        object $export
+        Export $export
     ): Enumerable {
         return $sheetExport
             ->collection()
@@ -133,7 +133,7 @@ class QueuedWriter
         TemporaryFile $temporaryFile,
         string $writerType,
         int $sheetIndex,
-        object $export
+        Export $export
     ): Collection {
         $query = $sheetExport->query();
         $count = $sheetExport instanceof WithCustomQuerySize ? $sheetExport->querySize() : $query->count();
@@ -164,7 +164,7 @@ class QueuedWriter
         TemporaryFile $temporaryFile,
         string $writerType,
         int $sheetIndex,
-        object $export
+        Export $export
     ): Collection {
         $jobs = new Collection;
 
@@ -203,7 +203,7 @@ class QueuedWriter
         TemporaryFile $temporaryFile,
         string $writerType,
         int $sheetIndex,
-        object $export
+        Export $export
     ): Collection {
         $jobs = new Collection;
         $jobs->push(new AppendViewToSheet(
