@@ -524,7 +524,7 @@ class Sheet
         foreach ($this->buildColumnRange('A', $this->worksheet->getHighestDataColumn()) as $col) {
             $dimension = $this->worksheet->getColumnDimension($col);
 
-            // Only auto-size columns that have not have an explicit width.
+            // Only auto-size columns that have not had an explicit width.
             if ($dimension->getWidth() == -1) {
                 $dimension->setAutoSize(true);
             }

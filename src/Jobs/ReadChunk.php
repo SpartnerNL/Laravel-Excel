@@ -95,7 +95,7 @@ class ReadChunk implements ShouldQueue
     }
 
     /**
-     * Determine the time at which the job should timeout.
+     * Determine the time at which the job should time out.
      */
     public function retryUntil(): ?DateTime
     {

@@ -43,7 +43,7 @@ class ModelImporter
         $headerIsGrouped  = HeadingRowExtractor::extractGrouping($headingRow, $import);
         $batchSize        = $import instanceof WithBatchInserts ? $import->batchSize() : 1;
         $endRow           = EndRowFinder::find($import, $startRow, $worksheet->getHighestRow());
-        $progessBar       = $import instanceof WithProgressBar;
+        $progressBar      = $import instanceof WithProgressBar;
         $withMapping      = $import instanceof WithMapping;
         $withCalcFormulas = $import instanceof WithCalculatedFormulas;
         $formatData       = $import instanceof WithFormatData;
@@ -84,7 +84,7 @@ class ModelImporter
                     $batchStartRow += $i;
                     $i = 0;
 
-                    if ($progessBar) {
+                    if ($progressBar) {
                         $import->getConsoleOutput()->progressAdvance($batchSize);
                     }
                 }

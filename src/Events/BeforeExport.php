@@ -21,7 +21,7 @@ class BeforeExport extends Event
         return $this->writer;
     }
 
-    public function getDelegate(): mixed
+    public function getDelegate(): Writer
     {
         return $this->writer;
     }

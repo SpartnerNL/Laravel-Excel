@@ -22,7 +22,7 @@ class BeforeSheet extends Event
         return $this->sheet;
     }
 
-    public function getDelegate(): mixed
+    public function getDelegate(): Sheet
     {
         return $this->sheet;
     }
