@@ -23,7 +23,7 @@ class ModelImporter
     use HasEventBus;
 
     public function __construct(
-        private ModelManager $manager,
+        private readonly ModelManager $manager,
     ) {
     }
 

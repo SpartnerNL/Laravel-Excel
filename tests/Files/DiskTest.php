@@ -13,9 +13,9 @@ use Mockery\MockInterface;
 
 final class DiskTest extends TestCase
 {
-    private Disk $disk;
+    private readonly Disk $disk;
 
-    private Filesystem&MockInterface $filesystem;
+    private readonly Filesystem&MockInterface $filesystem;
 
     protected function setUp(): void
     {

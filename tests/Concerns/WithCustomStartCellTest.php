@@ -12,7 +12,7 @@ use Maatwebsite\Excel\Tests\TestCase;
 
 final class WithCustomStartCellTest extends TestCase
 {
-    protected Excel $SUT;
+    protected readonly Excel $SUT;
 
     protected function setUp(): void
     {

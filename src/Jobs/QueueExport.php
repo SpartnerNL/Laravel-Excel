@@ -21,8 +21,8 @@ class QueueExport implements ShouldQueue
 
     public function __construct(
         public Export $export,
-        private TemporaryFile $temporaryFile,
-        private string $writerType,
+        private readonly TemporaryFile $temporaryFile,
+        private readonly string $writerType,
     ) {
     }
 

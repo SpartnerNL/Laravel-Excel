@@ -13,7 +13,7 @@ class AfterQueueExportJob implements ShouldQueue
     use Queueable;
 
     public function __construct(
-        private string $filePath,
+        private readonly string $filePath,
     ) {
     }
 

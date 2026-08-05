@@ -28,7 +28,7 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 final class ExcelTest extends TestCase
 {
-    protected Excel $SUT;
+    protected readonly Excel $SUT;
 
     protected function setUp(): void
     {

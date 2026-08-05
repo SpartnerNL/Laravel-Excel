@@ -48,7 +48,7 @@ class Excel implements Exporter, Importer
     public function __construct(
         protected Writer $writer,
         protected QueuedWriter $queuedWriter,
-        private Reader $reader,
+        private readonly Reader $reader,
         protected Filesystem $filesystem,
     ) {
     }

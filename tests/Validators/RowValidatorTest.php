@@ -12,7 +12,7 @@ use stdClass;
 
 final class RowValidatorTest extends TestCase
 {
-    protected RowValidator $validator;
+    protected readonly RowValidator $validator;
 
     /**
      * Set up the test.

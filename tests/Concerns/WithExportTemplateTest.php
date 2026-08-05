@@ -38,7 +38,7 @@ final class WithExportTemplateTest extends TestCase
             use Exportable;
 
             public function __construct(
-                private string $templatePath,
+                private readonly string $templatePath,
             ) {
             }
 
@@ -86,7 +86,7 @@ final class WithExportTemplateTest extends TestCase
             use Exportable;
 
             public function __construct(
-                private string $templatePath,
+                private readonly string $templatePath,
             ) {
             }
 
@@ -137,7 +137,7 @@ final class WithExportTemplateTest extends TestCase
             use Exportable;
 
             public function __construct(
-                private string $templatePath,
+                private readonly string $templatePath,
             ) {
             }
 

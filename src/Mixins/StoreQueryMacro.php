@@ -23,8 +23,8 @@ class StoreQueryMacro
                  * @param  Builder<Model>  $query
                  */
                 public function __construct(
-                    private Builder $query,
-                    private bool $withHeadings = false,
+                    private readonly Builder $query,
+                    private readonly bool $withHeadings = false,
                 ) {
                 }
 

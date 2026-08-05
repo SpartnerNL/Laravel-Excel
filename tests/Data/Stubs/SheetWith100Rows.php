@@ -21,7 +21,7 @@ class SheetWith100Rows implements FromCollection, ShouldAutoSize, WithEvents, Wi
     use Exportable, RegistersEventListeners;
 
     public function __construct(
-        private string $title,
+        private readonly string $title,
     ) {
     }
 

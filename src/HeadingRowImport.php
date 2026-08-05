@@ -17,7 +17,7 @@ class HeadingRowImport implements Import, WithLimit, WithMapping, WithStartRow
     use Importable;
 
     public function __construct(
-        private int $headingRow = 1,
+        private readonly int $headingRow = 1,
     ) {
     }
 
