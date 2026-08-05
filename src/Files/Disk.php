@@ -54,10 +54,13 @@ class Disk
                 fclose($tempStream);
             }
         } else {
+            /** @var resource|closed-resource $readStream */
             $success = $this->put($destination, $readStream);
         }
 
-        fclose($readStream);
+        if (is_resource($readStream)) {
+            fclose($readStream);
+        }
 
         return $success;
     }
