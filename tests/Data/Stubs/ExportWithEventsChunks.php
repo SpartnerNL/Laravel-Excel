@@ -24,6 +24,10 @@ class ExportWithEventsChunks implements FromQuery, ShouldQueue, WithCustomChunkS
             AfterChunk::class => function (AfterChunk $event): void {
                 ExportWithEventsChunks::$calledEvent++;
                 Assert::assertInstanceOf(ExportWithEventsChunks::class, $event->getConcernable());
+
+                // The sheet must still be connected to its workbook when AfterChunk is raised,
+                // i.e. it must be raised before the writer disconnects the worksheets.
+                Assert::assertSame('A1', $event->getSheet()->getDelegate()->getCell('A1')->getCoordinate());
             },
         ];
     }
