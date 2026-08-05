@@ -510,7 +510,7 @@ class Sheet
             $startCell = 'A1';
         }
 
-        if ($this->hasRows()) {
+        if ($this->hasRows($startCell)) {
             $startCell = CellHelper::getColumnFromCoordinate($startCell) . ($this->worksheet->getHighestRow() + 1);
         }
 
@@ -690,13 +690,8 @@ class Sheet
         }
     }
 
-    private function hasRows(): bool
+    private function hasRows(string $startCell): bool
     {
-        $startCell = 'A1';
-        if ($this->exportable instanceof WithCustomStartCell) {
-            $startCell = $this->exportable->startCell();
-        }
-
         return $this->worksheet->cellExists($startCell);
     }
 
