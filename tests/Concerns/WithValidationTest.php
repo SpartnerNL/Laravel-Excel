@@ -542,11 +542,11 @@ final class WithValidationTest extends TestCase
         {
             use Importable;
 
-            public function onRow(Row $row): User
+            public function onRow(Row $row): void
             {
                 $values = $row->toArray();
 
-                return new User([
+                new User([
                     'name'     => $values['name'],
                     'email'    => $values['email'],
                     'password' => 'secret',
