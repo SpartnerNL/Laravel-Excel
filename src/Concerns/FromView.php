@@ -6,7 +6,7 @@ namespace Maatwebsite\Excel\Concerns;
 
 use Illuminate\Contracts\View\View;
 
-interface FromView
+interface FromView extends Export
 {
     public function view(): View;
 }

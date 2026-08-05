@@ -6,6 +6,7 @@ namespace Maatwebsite\Excel\Tests\Concerns;
 
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Str;
+use Maatwebsite\Excel\Concerns\Export;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Events\AfterBatch;
 use Maatwebsite\Excel\Events\AfterChunk;
@@ -196,7 +197,7 @@ final class WithEventsTest extends TestCase
 
     public function test_can_have_global_event_listeners(): void
     {
-        $event = new class
+        $event = new class implements Export
         {
             use Exportable;
         };
@@ -238,7 +239,7 @@ final class WithEventsTest extends TestCase
             );
         });
 
-        $exportWithConcern = new class implements CustomConcern
+        $exportWithConcern = new class implements CustomConcern, Export
         {
             use Exportable;
 
@@ -259,7 +260,7 @@ final class WithEventsTest extends TestCase
             ['a', 'b'],
         ], $actual);
 
-        $exportWithoutConcern = new class
+        $exportWithoutConcern = new class implements Export
         {
             use Exportable;
         };
@@ -279,7 +280,7 @@ final class WithEventsTest extends TestCase
             );
         }, AfterSheet::class);
 
-        $exportWithConcern = new class implements CustomSheetConcern
+        $exportWithConcern = new class implements CustomSheetConcern, Export
         {
             use Exportable;
 
@@ -300,7 +301,7 @@ final class WithEventsTest extends TestCase
             ['c', 'd'],
         ], $actual);
 
-        $exportWithoutConcern = new class
+        $exportWithoutConcern = new class implements Export
         {
             use Exportable;
         };

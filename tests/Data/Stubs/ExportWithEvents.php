@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Maatwebsite\Excel\Tests\Data\Stubs;
 
+use Maatwebsite\Excel\Concerns\Export;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Events\AfterSheet;
@@ -11,7 +12,7 @@ use Maatwebsite\Excel\Events\BeforeExport;
 use Maatwebsite\Excel\Events\BeforeSheet;
 use Maatwebsite\Excel\Events\BeforeWriting;
 
-class ExportWithEvents implements WithEvents
+class ExportWithEvents implements Export, WithEvents
 {
     use Exportable;
 

@@ -2,11 +2,12 @@
 
 namespace Maatwebsite\Excel\Tests\Data\Stubs;
 
+use Maatwebsite\Excel\Concerns\Import;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\RegistersEventListeners;
 use Maatwebsite\Excel\Concerns\WithEvents;
 
-class ImportWithRegistersEventListeners implements WithEvents
+class ImportWithRegistersEventListeners implements Import, WithEvents
 {
     use Importable, RegistersEventListeners;
 

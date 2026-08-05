@@ -7,6 +7,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
+use Maatwebsite\Excel\Concerns\Export;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Files\TemporaryFile;
 use Maatwebsite\Excel\Writer;
@@ -17,7 +18,7 @@ class CloseSheet implements ShouldQueue
     use Batchable, Dispatchable, InteractsWithQueue, ProxyFailures, Queueable;
 
     public function __construct(
-        private object $sheetExport,
+        private Export $sheetExport,
         private TemporaryFile $temporaryFile,
         private string $writerType,
         private int $sheetIndex,

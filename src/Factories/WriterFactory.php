@@ -3,6 +3,7 @@
 namespace Maatwebsite\Excel\Factories;
 
 use Maatwebsite\Excel\Cache\CacheManager;
+use Maatwebsite\Excel\Concerns\Export;
 use Maatwebsite\Excel\Concerns\MapsCsvSettings;
 use Maatwebsite\Excel\Concerns\WithCharts;
 use Maatwebsite\Excel\Concerns\WithCustomCsvSettings;
@@ -22,7 +23,7 @@ class WriterFactory
     /**
      * @throws Exception
      */
-    public static function make(string $writerType, Spreadsheet $spreadsheet, object $export, ?string $filePath = null): IWriter
+    public static function make(string $writerType, Spreadsheet $spreadsheet, Export $export, ?string $filePath = null): IWriter
     {
         $writer = IOFactory::createWriter($spreadsheet, $writerType);
 
@@ -70,7 +71,7 @@ class WriterFactory
         return $writer;
     }
 
-    private static function includesCharts(object $export): bool
+    private static function includesCharts(Export $export): bool
     {
         if ($export instanceof WithCharts) {
             return true;

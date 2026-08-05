@@ -7,7 +7,7 @@ namespace Maatwebsite\Excel\Concerns;
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Scout\Builder;
 
-interface FromScout
+interface FromScout extends Export
 {
     /**
      * @return Builder<covariant Model>

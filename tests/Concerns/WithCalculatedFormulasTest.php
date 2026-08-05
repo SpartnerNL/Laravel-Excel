@@ -6,6 +6,7 @@ namespace Maatwebsite\Excel\Tests\Concerns;
 
 use Illuminate\Database\Eloquent\Model;
 use Maatwebsite\Excel\Concerns\HasReferencesToOtherSheets;
+use Maatwebsite\Excel\Concerns\Import;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\SkipsEmptyRows;
 use Maatwebsite\Excel\Concerns\ToArray;
@@ -113,7 +114,7 @@ final class WithCalculatedFormulasTest extends TestCase
 
     public function test_can_import_to_array_with_calculated_formulas_and_multi_sheet_references(): void
     {
-        $import = new class implements HasReferencesToOtherSheets, WithMultipleSheets
+        $import = new class implements HasReferencesToOtherSheets, Import, WithMultipleSheets
         {
             use Importable;
 

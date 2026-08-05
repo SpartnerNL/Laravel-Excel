@@ -8,6 +8,7 @@ use Exception;
 use Illuminate\Database\UniqueConstraintViolationException;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\In;
+use Maatwebsite\Excel\Concerns\Import;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\OnEachRow;
 use Maatwebsite\Excel\Concerns\SkipsErrors;
@@ -112,7 +113,7 @@ final class SkipsOnErrorTest extends TestCase
 
     public function test_can_skip_on_error_when_using_oneachrow_with_validation(): void
     {
-        $import = new class implements OnEachRow, SkipsOnError, WithValidation
+        $import = new class implements Import, OnEachRow, SkipsOnError, WithValidation
         {
             use Importable;
 
@@ -171,7 +172,7 @@ final class SkipsOnErrorTest extends TestCase
 
     public function test_can_skip_errors_and_collect_all_errors_when_using_oneachrow_with_validation(): void
     {
-        $import = new class implements OnEachRow, SkipsOnError, WithValidation
+        $import = new class implements Import, OnEachRow, SkipsOnError, WithValidation
         {
             use Importable, SkipsErrors;
 
@@ -226,7 +227,7 @@ final class SkipsOnErrorTest extends TestCase
 
     public function test_can_skip_on_error_when_exception_thrown_in_onrow(): void
     {
-        $import = new class implements OnEachRow, SkipsOnError
+        $import = new class implements Import, OnEachRow, SkipsOnError
         {
             use Importable;
 
@@ -279,7 +280,7 @@ final class SkipsOnErrorTest extends TestCase
 
     public function test_can_skip_errors_and_collect_all_errors_when_exception_thrown_in_onrow(): void
     {
-        $import = new class implements OnEachRow, SkipsOnError
+        $import = new class implements Import, OnEachRow, SkipsOnError
         {
             use Importable, SkipsErrors;
 

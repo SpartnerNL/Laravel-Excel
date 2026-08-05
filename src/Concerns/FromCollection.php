@@ -10,7 +10,7 @@ use Illuminate\Support\Enumerable;
  * @template TKey of array-key
  * @template TValue
  */
-interface FromCollection
+interface FromCollection extends Export
 {
     /**
      * @return Enumerable<TKey, TValue>

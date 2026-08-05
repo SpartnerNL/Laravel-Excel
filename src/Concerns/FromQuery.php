@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Database\Query\Builder;
 
-interface FromQuery
+interface FromQuery extends Export
 {
     /**
      * Return the builder whose rows should be exported.

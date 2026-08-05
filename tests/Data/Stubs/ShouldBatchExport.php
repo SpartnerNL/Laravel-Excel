@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace Maatwebsite\Excel\Tests\Data\Stubs;
 
+use Maatwebsite\Excel\Concerns\Export;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\ShouldBatch;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 
-class ShouldBatchExport implements ShouldBatch, WithMultipleSheets
+class ShouldBatchExport implements Export, ShouldBatch, WithMultipleSheets
 {
     use Exportable;
 

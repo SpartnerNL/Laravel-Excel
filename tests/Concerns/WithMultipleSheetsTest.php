@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Maatwebsite\Excel\Tests\Concerns;
 
 use Illuminate\Support\Collection;
+use Maatwebsite\Excel\Concerns\Export;
 use Maatwebsite\Excel\Concerns\Exportable;
+use Maatwebsite\Excel\Concerns\Import;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\SkipsUnknownSheets;
 use Maatwebsite\Excel\Concerns\ToArray;
@@ -21,7 +23,7 @@ final class WithMultipleSheetsTest extends TestCase
 {
     public function test_can_export_with_multiple_sheets_using_collections(): void
     {
-        $export = new class implements WithMultipleSheets
+        $export = new class implements Export, WithMultipleSheets
         {
             use Exportable;
 
@@ -51,7 +53,7 @@ final class WithMultipleSheetsTest extends TestCase
         /** @var Collection<int, User> $users */
         $users = User::factory()->count(300)->create();
 
-        $export = new class($users) implements WithMultipleSheets
+        $export = new class($users) implements Export, WithMultipleSheets
         {
             use Exportable;
 
@@ -88,14 +90,14 @@ final class WithMultipleSheetsTest extends TestCase
         $this->expectException(SheetNotFoundException::class);
         $this->expectExceptionMessage('Your requested sheet index: 9999 is out of bounds. The actual number of sheets is 2.');
 
-        $import = new class implements WithMultipleSheets
+        $import = new class implements Import, WithMultipleSheets
         {
             use Importable;
 
             public function sheets(): array
             {
                 return [
-                    9999 => new class
+                    9999 => new class implements Import
                     {
                     },
                 ];
@@ -110,14 +112,14 @@ final class WithMultipleSheetsTest extends TestCase
         $this->expectException(SheetNotFoundException::class);
         $this->expectExceptionMessage('Your requested sheet name [Some Random Sheet Name] is out of bounds.');
 
-        $import = new class implements WithMultipleSheets
+        $import = new class implements Import, WithMultipleSheets
         {
             use Importable;
 
             public function sheets(): array
             {
                 return [
-                    'Some Random Sheet Name' => new class
+                    'Some Random Sheet Name' => new class implements Import
                     {
                     },
                 ];
@@ -129,7 +131,7 @@ final class WithMultipleSheetsTest extends TestCase
 
     public function test_unknown_sheet_name_can_be_ignored(): void
     {
-        $import = new class implements SkipsUnknownSheets, WithMultipleSheets
+        $import = new class implements Import, SkipsUnknownSheets, WithMultipleSheets
         {
             use Importable;
 
@@ -138,7 +140,7 @@ final class WithMultipleSheetsTest extends TestCase
             public function sheets(): array
             {
                 return [
-                    'Some Random Sheet Name' => new class
+                    'Some Random Sheet Name' => new class implements Import
                     {
                     },
                 ];
@@ -157,14 +159,14 @@ final class WithMultipleSheetsTest extends TestCase
 
     public function test_unknown_sheet_indices_can_be_ignored_per_name(): void
     {
-        $import = new class implements WithMultipleSheets
+        $import = new class implements Import, WithMultipleSheets
         {
             use Importable;
 
             public function sheets(): array
             {
                 return [
-                    'Some Random Sheet Name' => new class implements SkipsUnknownSheets
+                    'Some Random Sheet Name' => new class implements Import, SkipsUnknownSheets
                     {
                         public function onUnknownSheet(int|string $sheetName): void
                         {
@@ -180,7 +182,7 @@ final class WithMultipleSheetsTest extends TestCase
 
     public function test_unknown_sheet_indices_can_be_ignored(): void
     {
-        $import = new class implements SkipsUnknownSheets, WithMultipleSheets
+        $import = new class implements Import, SkipsUnknownSheets, WithMultipleSheets
         {
             use Importable;
 
@@ -189,7 +191,7 @@ final class WithMultipleSheetsTest extends TestCase
             public function sheets(): array
             {
                 return [
-                    99999 => new class
+                    99999 => new class implements Import
                     {
                     },
                 ];
@@ -208,14 +210,14 @@ final class WithMultipleSheetsTest extends TestCase
 
     public function test_unknown_sheet_indices_can_be_ignored_per_sheet(): void
     {
-        $import = new class implements WithMultipleSheets
+        $import = new class implements Import, WithMultipleSheets
         {
             use Importable;
 
             public function sheets(): array
             {
                 return [
-                    99999 => new class implements SkipsUnknownSheets
+                    99999 => new class implements Import, SkipsUnknownSheets
                     {
                         public function onUnknownSheet(int|string $sheetName): void
                         {
@@ -231,7 +233,7 @@ final class WithMultipleSheetsTest extends TestCase
 
     public function test_can_import_multiple_sheets(): void
     {
-        $import = new class implements WithMultipleSheets
+        $import = new class implements Import, WithMultipleSheets
         {
             use Importable;
 
@@ -270,7 +272,7 @@ final class WithMultipleSheetsTest extends TestCase
 
     public function test_can_import_multiple_sheets_by_sheet_name(): void
     {
-        $import = new class implements WithMultipleSheets
+        $import = new class implements Import, WithMultipleSheets
         {
             use Importable;
 
@@ -309,7 +311,7 @@ final class WithMultipleSheetsTest extends TestCase
 
     public function test_can_import_multiple_sheets_by_sheet_index_and_name(): void
     {
-        $import = new class implements WithMultipleSheets
+        $import = new class implements Import, WithMultipleSheets
         {
             use Importable;
 
@@ -363,7 +365,7 @@ final class WithMultipleSheetsTest extends TestCase
 
     public function test_can_import_multiple_sheets_by_sheet_name_and_index(): void
     {
-        $import = new class implements WithMultipleSheets
+        $import = new class implements Import, WithMultipleSheets
         {
             use Importable;
 

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Maatwebsite\Excel\Tests\Concerns;
 
 use Illuminate\Support\Collection;
+use Maatwebsite\Excel\Concerns\Import;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\OnEachRow;
 use Maatwebsite\Excel\Concerns\SkipsEmptyRows;
@@ -43,7 +44,7 @@ final class SkipsEmptyRowsTest extends TestCase
 
     public function test_skips_empty_rows_when_importing_on_each_row(): void
     {
-        $import = new class implements OnEachRow, SkipsEmptyRows
+        $import = new class implements Import, OnEachRow, SkipsEmptyRows
         {
             use Importable;
 
@@ -146,7 +147,7 @@ final class SkipsEmptyRowsTest extends TestCase
 
     public function test_custom_skips_rows_when_using_oneachrow(): void
     {
-        $import = new class implements OnEachRow, SkipsEmptyRows
+        $import = new class implements Import, OnEachRow, SkipsEmptyRows
         {
             use Importable;
 

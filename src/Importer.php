@@ -9,6 +9,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\PendingDispatch;
 use Illuminate\Support\Collection;
 use Illuminate\Validation\ValidationException;
+use Maatwebsite\Excel\Concerns\Import;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 interface Importer
@@ -16,17 +17,17 @@ interface Importer
     /**
      * @throws ValidationException
      */
-    public function import(object $import, string|UploadedFile $filePath, ?string $disk = null, ?string $readerType = null): static|PendingDispatch|PendingBatch;
+    public function import(Import $import, string|UploadedFile $filePath, ?string $disk = null, ?string $readerType = null): static|PendingDispatch|PendingBatch;
 
     /**
      * @return array<array-key, array<int, array<array-key, mixed>>>
      */
-    public function toArray(object $import, string|UploadedFile $filePath, ?string $disk = null, ?string $readerType = null): array;
+    public function toArray(Import $import, string|UploadedFile $filePath, ?string $disk = null, ?string $readerType = null): array;
 
     /**
      * @return Collection<array-key, Collection<int, Collection<array-key, mixed>>>
      */
-    public function toCollection(?object $import, string|UploadedFile $filePath, ?string $disk = null, ?string $readerType = null): Collection;
+    public function toCollection(?Import $import, string|UploadedFile $filePath, ?string $disk = null, ?string $readerType = null): Collection;
 
-    public function queueImport(ShouldQueue $import, string|UploadedFile $filePath, ?string $disk = null, ?string $readerType = null): PendingDispatch|PendingBatch;
+    public function queueImport(ShouldQueue&Import $import, string|UploadedFile $filePath, ?string $disk = null, ?string $readerType = null): PendingDispatch|PendingBatch;
 }

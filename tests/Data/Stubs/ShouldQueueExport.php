@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace Maatwebsite\Excel\Tests\Data\Stubs;
 
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Maatwebsite\Excel\Concerns\Export;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 
-class ShouldQueueExport implements ShouldQueue, WithMultipleSheets
+class ShouldQueueExport implements Export, ShouldQueue, WithMultipleSheets
 {
     use Exportable;
 

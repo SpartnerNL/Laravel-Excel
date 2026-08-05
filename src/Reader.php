@@ -9,6 +9,7 @@ use Illuminate\Foundation\Bus\PendingDispatch;
 use Illuminate\Support\Collection;
 use InvalidArgumentException;
 use Maatwebsite\Excel\Concerns\HasReferencesToOtherSheets;
+use Maatwebsite\Excel\Concerns\Import;
 use Maatwebsite\Excel\Concerns\SkipsUnknownSheets;
 use Maatwebsite\Excel\Concerns\WithCalculatedFormulas;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
@@ -41,7 +42,7 @@ class Reader
     protected ?Spreadsheet $spreadsheet = null;
 
     /**
-     * @var ?object[]
+     * @var ?Import[]
      */
     protected ?array $sheetImports = [];
 
@@ -74,14 +75,14 @@ class Reader
     }
 
     /**
-     * @return static|PendingDispatch|PendingBatch|Collection<int, object>|null
+     * @return static|PendingDispatch|PendingBatch|Collection<int, Import>|null
      *
      * @throws FileNotFoundException
      * @throws NoTypeDetectedException
      * @throws SheetNotFoundException
      * @throws Throwable
      */
-    public function read(object $import, string|UploadedFile $filePath, ?string $readerType = null, ?string $disk = null): static|PendingDispatch|PendingBatch|Collection|null
+    public function read(Import $import, string|UploadedFile $filePath, ?string $readerType = null, ?string $disk = null): static|PendingDispatch|PendingBatch|Collection|null
     {
         $this->reader = $this->getReader($import, $filePath, $readerType, $disk);
 
@@ -131,7 +132,7 @@ class Reader
      * @throws NoTypeDetectedException
      * @throws SheetNotFoundException
      */
-    public function toArray(object $import, string|UploadedFile $filePath, ?string $readerType = null, ?string $disk = null): array
+    public function toArray(Import $import, string|UploadedFile $filePath, ?string $readerType = null, ?string $disk = null): array
     {
         $this->reader = $this->getReader($import, $filePath, $readerType, $disk);
 
@@ -171,7 +172,7 @@ class Reader
      * @throws NoTypeDetectedException
      * @throws SheetNotFoundException
      */
-    public function toCollection(?object $import, string|UploadedFile $filePath, ?string $readerType = null, ?string $disk = null): Collection
+    public function toCollection(?Import $import, string|UploadedFile $filePath, ?string $readerType = null, ?string $disk = null): Collection
     {
         $this->reader = $this->getReader($import, $filePath, $readerType, $disk);
         $this->loadSpreadsheet($import);
@@ -216,7 +217,7 @@ class Reader
         return $this;
     }
 
-    public function loadSpreadsheet(?object $import): void
+    public function loadSpreadsheet(?Import $import): void
     {
         $this->sheetImports = $this->buildSheetImports($import);
 
@@ -238,12 +239,12 @@ class Reader
         );
     }
 
-    public function beforeImport(?object $import): void
+    public function beforeImport(?Import $import): void
     {
         $this->raise(new BeforeImport($this, $import));
     }
 
-    public function afterImport(?object $import): void
+    public function afterImport(?Import $import): void
     {
         $this->raise(new AfterImport($this, $import));
 
@@ -256,9 +257,9 @@ class Reader
     }
 
     /**
-     * @return array<array-key, object>
+     * @return array<array-key, Import>
      */
-    public function getWorksheets(object $import): array
+    public function getWorksheets(Import $import): array
     {
         // Csv doesn't have worksheets.
         if (!$this->reader instanceof IReader2) {
@@ -316,7 +317,7 @@ class Reader
      * @throws \PhpOffice\PhpSpreadsheet\Exception
      * @throws SheetNotFoundException
      */
-    protected function getSheet(?object $import, ?object $sheetImport, string|int $index): ?Sheet
+    protected function getSheet(?Import $import, ?Import $sheetImport, string|int $index): ?Sheet
     {
         try {
             return Sheet::make($this->spreadsheet, $index);
@@ -338,9 +339,9 @@ class Reader
     }
 
     /**
-     * @return array<array-key, object>
+     * @return array<array-key, Import>
      */
-    private function buildSheetImports(?object $import): array
+    private function buildSheetImports(?Import $import): array
     {
         $sheetImports = [];
         if ($import instanceof WithMultipleSheets) {
@@ -364,7 +365,7 @@ class Reader
      * @throws Exception
      * @throws InvalidArgumentException
      */
-    private function getReader(?object $import, string|UploadedFile $filePath, ?string $readerType = null, ?string $disk = null): IReader
+    private function getReader(?Import $import, string|UploadedFile $filePath, ?string $readerType = null, ?string $disk = null): IReader
     {
         $shouldQueue = $import instanceof ShouldQueue;
         if ($shouldQueue && !$import instanceof WithChunkReading) {

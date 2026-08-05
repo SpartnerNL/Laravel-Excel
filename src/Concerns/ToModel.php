@@ -6,7 +6,7 @@ namespace Maatwebsite\Excel\Concerns;
 
 use Illuminate\Database\Eloquent\Model;
 
-interface ToModel
+interface ToModel extends Import
 {
     /**
      * @param  array<array-key, mixed>  $row

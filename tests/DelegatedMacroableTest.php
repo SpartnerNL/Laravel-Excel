@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Maatwebsite\Excel\Tests;
 
+use Maatwebsite\Excel\Concerns\Export;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\RegistersEventListeners;
 use Maatwebsite\Excel\Concerns\WithEvents;
@@ -17,7 +18,7 @@ final class DelegatedMacroableTest extends TestCase
 {
     public function test_can_call_methods_from_delegate(): void
     {
-        $export = new class implements WithEvents
+        $export = new class implements Export, WithEvents
         {
             use Exportable, RegistersEventListeners;
 
@@ -38,7 +39,7 @@ final class DelegatedMacroableTest extends TestCase
             $called = true;
         });
 
-        $export = new class implements WithEvents
+        $export = new class implements Export, WithEvents
         {
             use Exportable, RegistersEventListeners;
 
@@ -62,7 +63,7 @@ final class DelegatedMacroableTest extends TestCase
             $called = true;
         });
 
-        $export = new class implements WithEvents
+        $export = new class implements Export, WithEvents
         {
             use Exportable, RegistersEventListeners;
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Maatwebsite\Excel\Tests\Concerns;
 
+use Maatwebsite\Excel\Concerns\Import;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\RemembersRowNumber;
 use Maatwebsite\Excel\Concerns\ToModel;
@@ -15,7 +16,7 @@ final class RemembersRowNumberTest extends TestCase
 {
     public function test_can_set_and_get_row_number(): void
     {
-        $import = new class
+        $import = new class implements Import
         {
             use Importable;
             use RemembersRowNumber;

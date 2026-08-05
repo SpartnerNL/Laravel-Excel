@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Maatwebsite\Excel\Tests\Jobs;
 
 use Illuminate\Queue\Attributes\Queue;
+use Maatwebsite\Excel\Concerns\Import;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Files\LocalTemporaryFile;
 use Maatwebsite\Excel\Jobs\ReadChunk;
@@ -28,7 +29,7 @@ final class ReadChunkTest extends TestCase
 
     public function test_keeps_a_string_queue_property(): void
     {
-        $import = new class implements WithChunkReading
+        $import = new class implements Import, WithChunkReading
         {
             public string $queue = 'plain-queue';
 
@@ -45,7 +46,7 @@ final class ReadChunkTest extends TestCase
 
     public function test_resolves_to_null_without_a_queue(): void
     {
-        $import = new class implements WithChunkReading
+        $import = new class implements Import, WithChunkReading
         {
             public function chunkSize(): int
             {
@@ -58,7 +59,7 @@ final class ReadChunkTest extends TestCase
         $this->assertNull($job->queue);
     }
 
-    private function readChunkFor(WithChunkReading $import): ReadChunk
+    private function readChunkFor(WithChunkReading&Import $import): ReadChunk
     {
         return new ReadChunk(
             $import,

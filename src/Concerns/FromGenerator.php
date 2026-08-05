@@ -6,7 +6,7 @@ namespace Maatwebsite\Excel\Concerns;
 
 use Generator;
 
-interface FromGenerator
+interface FromGenerator extends Export
 {
     public function generator(): Generator;
 }

@@ -6,6 +6,7 @@ namespace Maatwebsite\Excel\Tests\Concerns;
 
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Collection;
+use Maatwebsite\Excel\Concerns\Export;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromView;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
@@ -66,7 +67,7 @@ final class FromViewTest extends TestCase
         /** @var Collection<int, User> $users */
         $users = User::factory()->count(300)->create();
 
-        $export = new class($users) implements WithMultipleSheets
+        $export = new class($users) implements Export, WithMultipleSheets
         {
             use Exportable;
 

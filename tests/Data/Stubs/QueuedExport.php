@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace Maatwebsite\Excel\Tests\Data\Stubs;
 
+use Maatwebsite\Excel\Concerns\Export;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 
-class QueuedExport implements WithMultipleSheets
+class QueuedExport implements Export, WithMultipleSheets
 {
     use Exportable;
 

@@ -1,14 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Maatwebsite\Excel\Events;
 
+use Maatwebsite\Excel\Concerns\Import;
 use Maatwebsite\Excel\Reader;
 
 class BeforeImport extends Event
 {
     public function __construct(
         public Reader $reader,
-        ?object $importable,
+        ?Import $importable,
     ) {
         parent::__construct($importable);
     }
