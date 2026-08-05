@@ -22,6 +22,7 @@ class AppendViewToSheet implements ShouldQueue
         public TemporaryFile $temporaryFile,
         public string $writerType,
         public int $sheetIndex,
+        public ?object $export = null,
     ) {
     }
 
@@ -53,7 +54,7 @@ class AppendViewToSheet implements ShouldQueue
 
             $sheet->fromView($this->sheetExport, $this->sheetIndex);
 
-            $writer->write($this->sheetExport, $this->temporaryFile, $this->writerType);
+            $writer->write($this->export ?? $this->sheetExport, $this->temporaryFile, $this->writerType);
         });
     }
 }

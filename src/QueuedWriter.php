@@ -82,43 +82,45 @@ class QueuedWriter
         $jobs = new Collection;
         foreach ($sheetExports as $sheetIndex => $sheetExport) {
             if ($sheetExport instanceof FromCollection) {
-                $jobs = $jobs->merge($this->exportCollection($sheetExport, $temporaryFile, $writerType, $sheetIndex));
+                $jobs = $jobs->merge($this->exportCollection($sheetExport, $temporaryFile, $writerType, $sheetIndex, $export));
             } elseif ($sheetExport instanceof FromQuery) {
-                $jobs = $jobs->merge($this->exportQuery($sheetExport, $temporaryFile, $writerType, $sheetIndex));
+                $jobs = $jobs->merge($this->exportQuery($sheetExport, $temporaryFile, $writerType, $sheetIndex, $export));
             } elseif ($sheetExport instanceof FromScout) {
-                $jobs = $jobs->merge($this->exportScout($sheetExport, $temporaryFile, $writerType, $sheetIndex));
+                $jobs = $jobs->merge($this->exportScout($sheetExport, $temporaryFile, $writerType, $sheetIndex, $export));
             } elseif ($sheetExport instanceof FromView) {
-                $jobs = $jobs->merge($this->exportView($sheetExport, $temporaryFile, $writerType, $sheetIndex));
+                $jobs = $jobs->merge($this->exportView($sheetExport, $temporaryFile, $writerType, $sheetIndex, $export));
             }
 
-            $jobs->push(new CloseSheet($sheetExport, $temporaryFile, $writerType, $sheetIndex));
+            $jobs->push(new CloseSheet($sheetExport, $temporaryFile, $writerType, $sheetIndex, $export));
         }
 
         return $jobs;
     }
 
     /**
-     * @param  FromCollection<array-key, mixed>  $export
+     * @param  FromCollection<array-key, mixed>  $sheetExport
      * @return Enumerable<int, AppendDataToSheet>
      */
     private function exportCollection(
-        FromCollection $export,
+        FromCollection $sheetExport,
         TemporaryFile $temporaryFile,
         string $writerType,
-        int $sheetIndex
+        int $sheetIndex,
+        object $export
     ): Enumerable {
-        return $export
+        return $sheetExport
             ->collection()
-            ->chunk($this->getChunkSize($export))
-            ->map(function ($rows) use ($writerType, $temporaryFile, $sheetIndex, $export): AppendDataToSheet {
+            ->chunk($this->getChunkSize($sheetExport))
+            ->map(function ($rows) use ($writerType, $temporaryFile, $sheetIndex, $sheetExport, $export): AppendDataToSheet {
                 $rows = iterator_to_array($rows);
 
                 return new AppendDataToSheet(
-                    $export,
+                    $sheetExport,
                     $temporaryFile,
                     $writerType,
                     $sheetIndex,
-                    $rows
+                    $rows,
+                    $export
                 );
             });
     }
@@ -127,25 +129,27 @@ class QueuedWriter
      * @return Collection<int, object>
      */
     private function exportQuery(
-        FromQuery $export,
+        FromQuery $sheetExport,
         TemporaryFile $temporaryFile,
         string $writerType,
-        int $sheetIndex
+        int $sheetIndex,
+        object $export
     ): Collection {
-        $query = $export->query();
-        $count = $export instanceof WithCustomQuerySize ? $export->querySize() : $query->count();
-        $spins = ceil($count / $this->getChunkSize($export));
+        $query = $sheetExport->query();
+        $count = $sheetExport instanceof WithCustomQuerySize ? $sheetExport->querySize() : $query->count();
+        $spins = ceil($count / $this->getChunkSize($sheetExport));
 
         $jobs = new Collection;
 
         for ($page = 1; $page <= $spins; $page++) {
             $jobs->push(new AppendQueryToSheet(
-                $export,
+                $sheetExport,
                 $temporaryFile,
                 $writerType,
                 $sheetIndex,
                 $page,
-                $this->getChunkSize($export)
+                $this->getChunkSize($sheetExport),
+                $export
             ));
         }
 
@@ -156,32 +160,35 @@ class QueuedWriter
      * @return Collection<int, object>
      */
     private function exportScout(
-        FromScout $export,
+        FromScout $sheetExport,
         TemporaryFile $temporaryFile,
         string $writerType,
-        int $sheetIndex
+        int $sheetIndex,
+        object $export
     ): Collection {
         $jobs = new Collection;
 
-        $chunk = $export->scout()->paginate($this->getChunkSize($export));
+        $chunk = $sheetExport->scout()->paginate($this->getChunkSize($sheetExport));
         // Append first page
         $jobs->push(new AppendDataToSheet(
-            $export,
+            $sheetExport,
             $temporaryFile,
             $writerType,
             $sheetIndex,
-            $chunk->items()
+            $chunk->items(),
+            $export
         ));
 
         // Append rest of pages
         for ($page = 2; $page <= $chunk->lastPage(); $page++) {
             $jobs->push(new AppendPaginatedToSheet(
-                $export,
+                $sheetExport,
                 $temporaryFile,
                 $writerType,
                 $sheetIndex,
                 $page,
-                $this->getChunkSize($export)
+                $this->getChunkSize($sheetExport),
+                $export
             ));
         }
 
@@ -192,17 +199,19 @@ class QueuedWriter
      * @return Collection<int, object>
      */
     private function exportView(
-        FromView $export,
+        FromView $sheetExport,
         TemporaryFile $temporaryFile,
         string $writerType,
-        int $sheetIndex
+        int $sheetIndex,
+        object $export
     ): Collection {
         $jobs = new Collection;
         $jobs->push(new AppendViewToSheet(
-            $export,
+            $sheetExport,
             $temporaryFile,
             $writerType,
-            $sheetIndex
+            $sheetIndex,
+            $export
         ));
 
         return $jobs;
