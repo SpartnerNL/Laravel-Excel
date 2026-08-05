@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace Maatwebsite\Excel\Tests\Data\Stubs;
 
+use Maatwebsite\Excel\Concerns\Export;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\WithCustomCsvSettings;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 
-class QueuedExportWithCsvSettings implements WithCustomCsvSettings, WithMultipleSheets
+class QueuedExportWithCsvSettings implements Export, WithCustomCsvSettings, WithMultipleSheets
 {
     use Exportable;
 

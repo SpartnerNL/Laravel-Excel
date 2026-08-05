@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Maatwebsite\Excel\Tests\Concerns;
 
 use Illuminate\Support\Collection;
+use Maatwebsite\Excel\Concerns\Export;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromArray;
 use Maatwebsite\Excel\Concerns\FromCollection;
@@ -131,7 +132,7 @@ final class WithExportTemplateTest extends TestCase
         $template->getActiveSheet()->setTitle('First template')->setCellValue('A1', 'First heading');
         $template->createSheet()->setTitle('Second template')->setCellValue('A1', 'Second heading');
 
-        $export = new class($this->saveTemplate($template)) implements WithExportTemplate, WithMultipleSheets
+        $export = new class($this->saveTemplate($template)) implements Export, WithExportTemplate, WithMultipleSheets
         {
             use Exportable;
 
