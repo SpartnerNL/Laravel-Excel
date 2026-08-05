@@ -12,11 +12,9 @@ class LocalizeJob
 
     /**
      * LocalizeJob constructor.
-     *
-     * @param  object  $localizable
      */
     public function __construct(
-        private $localizable,
+        private readonly object $localizable,
     ) {
     }
 

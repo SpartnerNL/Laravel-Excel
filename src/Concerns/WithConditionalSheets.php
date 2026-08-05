@@ -11,9 +11,8 @@ trait WithConditionalSheets
 
     /**
      * @param  string|array<int, int|string>  $sheets
-     * @return $this
      */
-    public function onlySheets(string|array $sheets)
+    public function onlySheets(string|array $sheets): static
     {
         $this->conditionallySelectedSheets = is_array($sheets) ? $sheets : func_get_args();
 

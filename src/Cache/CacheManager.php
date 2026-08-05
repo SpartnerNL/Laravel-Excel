@@ -13,17 +13,17 @@ class CacheManager extends Manager
     /**
      * @const string
      */
-    public const DRIVER_BATCH = 'batch';
+    public const string DRIVER_BATCH = 'batch';
 
     /**
      * @const string
      */
-    public const DRIVER_MEMORY = 'memory';
+    public const string DRIVER_MEMORY = 'memory';
 
     /**
      * @const string
      */
-    public const DRIVER_ILLUMINATE = 'illuminate';
+    public const string DRIVER_ILLUMINATE = 'illuminate';
 
     /**
      * Get the default driver name.
