@@ -21,7 +21,7 @@ class ImportMacro
                 use Importable;
 
                 public function __construct(
-                    private string $model,
+                    private readonly string $model,
                 ) {
                 }
 

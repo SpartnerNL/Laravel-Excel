@@ -96,7 +96,7 @@ trait Importable
     /**
      * @return $this
      */
-    public function withOutput(OutputStyle $output)
+    public function withOutput(OutputStyle $output): static
     {
         $this->output = $output;
 

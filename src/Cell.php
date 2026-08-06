@@ -15,7 +15,7 @@ class Cell
     use DelegatedMacroable;
 
     final public function __construct(
-        private SpreadsheetCell $cell,
+        private readonly SpreadsheetCell $cell,
     ) {
     }
 

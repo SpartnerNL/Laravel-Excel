@@ -21,34 +21,34 @@ class Excel implements Exporter, Importer
 {
     use Macroable, RegistersCustomConcerns;
 
-    public const XLSX = 'Xlsx';
+    public const string XLSX = 'Xlsx';
 
-    public const CSV = 'Csv';
+    public const string CSV = 'Csv';
 
-    public const TSV = 'Csv';
+    public const string TSV = 'Csv';
 
-    public const ODS = 'Ods';
+    public const string ODS = 'Ods';
 
-    public const XLS = 'Xls';
+    public const string XLS = 'Xls';
 
-    public const SLK = 'Slk';
+    public const string SLK = 'Slk';
 
-    public const XML = 'Xml';
+    public const string XML = 'Xml';
 
-    public const GNUMERIC = 'Gnumeric';
+    public const string GNUMERIC = 'Gnumeric';
 
-    public const HTML = 'Html';
+    public const string HTML = 'Html';
 
-    public const MPDF = 'Mpdf';
+    public const string MPDF = 'Mpdf';
 
-    public const DOMPDF = 'Dompdf';
+    public const string DOMPDF = 'Dompdf';
 
-    public const TCPDF = 'Tcpdf';
+    public const string TCPDF = 'Tcpdf';
 
     public function __construct(
         protected Writer $writer,
         protected QueuedWriter $queuedWriter,
-        private Reader $reader,
+        private readonly Reader $reader,
         protected Filesystem $filesystem,
     ) {
     }

@@ -206,11 +206,11 @@ final class SkipsOnFailureTest extends TestCase
         {
             use Importable, SkipsFailures;
 
-            public function onRow(Row $row): User
+            public function onRow(Row $row): void
             {
                 $row = $row->toArray();
 
-                return User::create([
+                User::create([
                     'name'     => $row[0],
                     'email'    => $row[1],
                     'password' => 'secret',

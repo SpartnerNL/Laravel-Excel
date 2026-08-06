@@ -25,7 +25,7 @@ class StoreCollectionMixin
                 /**
                  * @param  Collection<array-key, mixed>  $collection
                  */
-                public function __construct(Collection $collection, private bool $withHeadings = false)
+                public function __construct(Collection $collection, private readonly bool $withHeadings = false)
                 {
                     $this->collection = $collection->toBase();
                 }

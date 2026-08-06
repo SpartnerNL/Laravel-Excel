@@ -7,6 +7,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
+use Maatwebsite\Excel\Concerns\Export;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\FromScout;
 use Maatwebsite\Excel\Files\TemporaryFile;
@@ -25,7 +26,7 @@ class AppendPaginatedToSheet implements ShouldQueue
         public int $sheetIndex,
         public int $page,
         public int $perPage,
-        public ?object $export = null,
+        public ?Export $export = null,
     ) {
     }
 

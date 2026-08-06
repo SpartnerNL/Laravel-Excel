@@ -38,7 +38,7 @@ final class WithExportTemplateTest extends TestCase
             use Exportable;
 
             public function __construct(
-                private string $templatePath,
+                private readonly string $templatePath,
             ) {
             }
 
@@ -86,7 +86,7 @@ final class WithExportTemplateTest extends TestCase
             use Exportable;
 
             public function __construct(
-                private string $templatePath,
+                private readonly string $templatePath,
             ) {
             }
 
@@ -137,10 +137,13 @@ final class WithExportTemplateTest extends TestCase
             use Exportable;
 
             public function __construct(
-                private string $templatePath,
+                private readonly string $templatePath,
             ) {
             }
 
+            /**
+             * @return Export[]
+             */
             public function sheets(): array
             {
                 return [
@@ -155,7 +158,7 @@ final class WithExportTemplateTest extends TestCase
                 return $this->templatePath;
             }
 
-            private function sheetExport(string $value): object
+            private function sheetExport(string $value): Export
             {
                 return new readonly class($value) implements FromArray, WithCustomStartCell
                 {

@@ -18,10 +18,10 @@ class StoreQueuedExport implements ShouldQueue
      * @param  array<string, mixed>|string  $diskOptions
      */
     public function __construct(
-        private TemporaryFile $temporaryFile,
-        private string $filePath,
-        private ?string $disk = null,
-        private array|string $diskOptions = [],
+        private readonly TemporaryFile $temporaryFile,
+        private readonly string $filePath,
+        private readonly ?string $disk = null,
+        private readonly array|string $diskOptions = [],
     ) {
     }
 

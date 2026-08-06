@@ -23,7 +23,7 @@ class AfterBatch extends Event
         return $this->manager;
     }
 
-    public function getDelegate(): mixed
+    public function getDelegate(): ModelManager
     {
         return $this->manager;
     }

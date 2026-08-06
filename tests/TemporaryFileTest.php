@@ -10,9 +10,9 @@ use RuntimeException;
 
 final class TemporaryFileTest extends TestCase
 {
-    private string $defaultDirectoryPermissions;
+    private readonly string $defaultDirectoryPermissions;
 
-    private string $defaultFilePermissions;
+    private readonly string $defaultFilePermissions;
 
     /**
      * Setup the test environment.

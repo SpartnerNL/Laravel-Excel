@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Rector\Caching\ValueObject\Storage\FileCacheStorage;
 use Rector\Config\RectorConfig;
+use Rector\DeadCode\Rector\ClassMethod\RemoveDuplicatedReturnSelfDocblockRector;
 use Rector\DeadCode\Rector\MethodCall\RemoveNullArgOnNullDefaultParamRector;
 use Rector\PHPUnit\CodeQuality\Rector\MethodCall\AssertEqualsToSameRector;
 use Rector\PHPUnit\Set\PHPUnitSetList;
@@ -42,6 +43,7 @@ return RectorConfig::configure()
         PHPUnitSetList::PHPUNIT_CODE_QUALITY,
     ])
     ->withSkip([
+        RemoveDuplicatedReturnSelfDocblockRector::class,
         // BatchCache::set/setMultiple use func_num_args() to distinguish
         // "no TTL passed" from "explicit null". Removing the explicit null
         // silently changes behavior. Scoped to the one test that depends on

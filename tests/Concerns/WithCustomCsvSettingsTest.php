@@ -15,7 +15,7 @@ use PHPUnit\Framework\Assert;
 
 final class WithCustomCsvSettingsTest extends TestCase
 {
-    protected Excel $SUT;
+    protected readonly Excel $SUT;
 
     protected function setUp(): void
     {

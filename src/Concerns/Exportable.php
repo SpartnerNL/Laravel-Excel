@@ -96,11 +96,10 @@ trait Exportable
      * Create an HTTP response that represents the object.
      *
      * @param  Request  $request
-     * @return BinaryFileResponse
      *
      * @throws NoFilenameGivenException
      */
-    public function toResponse($request)
+    public function toResponse($request): BinaryFileResponse
     {
         return $this->download();
     }

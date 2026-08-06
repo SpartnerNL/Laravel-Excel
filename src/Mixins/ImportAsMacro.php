@@ -25,7 +25,7 @@ class ImportAsMacro
                 private $mapping;
 
                 public function __construct(
-                    private string $model,
+                    private readonly string $model,
                     callable $mapping,
                 ) {
                     $this->mapping = $mapping;

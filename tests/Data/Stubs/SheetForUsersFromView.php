@@ -16,7 +16,7 @@ class SheetForUsersFromView implements FromView
      * @param  Collection<int, User>  $users
      */
     public function __construct(
-        protected Collection $users,
+        protected readonly Collection $users,
     ) {
     }
 

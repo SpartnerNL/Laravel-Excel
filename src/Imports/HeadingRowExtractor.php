@@ -14,7 +14,7 @@ class HeadingRowExtractor
     /**
      * @const int
      */
-    public const DEFAULT_HEADING_ROW = 1;
+    public const int DEFAULT_HEADING_ROW = 1;
 
     public static function headingRow(mixed $importable): int
     {

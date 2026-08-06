@@ -35,7 +35,7 @@ trait RegistersEventListeners
         $listeners = [];
 
         foreach ($listenersClasses as $class => $name) {
-            // Method names are case insensitive in php
+            // Method names are case-insensitive in php
             if (method_exists($this, $name)) {
                 // Allow methods to not be static
                 $listeners[$class] = [$this, $name];

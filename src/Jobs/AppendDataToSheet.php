@@ -24,7 +24,7 @@ class AppendDataToSheet implements ShouldQueue
         public int $sheetIndex,
         /** @var array<array-key, mixed> */
         public array $data,
-        public ?object $export = null,
+        public ?Export $export = null,
     ) {
     }
 

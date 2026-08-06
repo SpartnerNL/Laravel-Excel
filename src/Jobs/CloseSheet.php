@@ -18,11 +18,11 @@ class CloseSheet implements ShouldQueue
     use Batchable, Dispatchable, InteractsWithQueue, ProxyFailures, Queueable;
 
     public function __construct(
-        private Export $sheetExport,
-        private TemporaryFile $temporaryFile,
-        private string $writerType,
-        private int $sheetIndex,
-        private ?object $export = null,
+        private readonly Export $sheetExport,
+        private readonly TemporaryFile $temporaryFile,
+        private readonly string $writerType,
+        private readonly int $sheetIndex,
+        private readonly ?Export $export = null,
     ) {
     }
 

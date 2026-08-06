@@ -61,7 +61,7 @@ final class WithMultipleSheetsTest extends TestCase
              * @param  Collection<int, User>  $users
              */
             public function __construct(
-                protected Collection $users,
+                protected readonly Collection $users,
             ) {
             }
 

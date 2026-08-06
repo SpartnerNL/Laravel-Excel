@@ -282,7 +282,7 @@ final class PhpSpreadsheetV5CompatibilityTest extends TestCase
             public $skippedSheets = [];
 
             /**
-             * @return array<string, object>
+             * @return array<string, Import>
              */
             public function sheets(): array
             {
@@ -334,10 +334,10 @@ final class PhpSpreadsheetV5CompatibilityTest extends TestCase
             use Importable;
 
             /** @var array<int, string|int> */
-            public $skippedSheets = [];
+            public array $skippedSheets = [];
 
             /**
-             * @return array<string, object>
+             * @return array<string, Import>
              */
             public function sheets(): array
             {

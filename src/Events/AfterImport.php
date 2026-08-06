@@ -21,7 +21,7 @@ class AfterImport extends Event
         return $this->reader;
     }
 
-    public function getDelegate(): mixed
+    public function getDelegate(): Reader
     {
         return $this->reader;
     }
