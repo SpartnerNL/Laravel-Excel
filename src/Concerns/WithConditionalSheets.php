@@ -11,6 +11,7 @@ trait WithConditionalSheets
 
     /**
      * @param  string|array<int, int|string>  $sheets
+     * @return $this
      */
     public function onlySheets(string|array $sheets): static
     {
