@@ -33,23 +33,6 @@ class ExcelServiceProvider extends ServiceProvider
 {
     public function boot(): void
     {
-        $registry = $this->app->make(HandlerRegistry::class);
-
-        // Register built-in handlers in ascending priority order (register() prepends,
-        // so the last registered ends up first and wins on first-match).
-        $registry->register(new FromGeneratorHandler);
-        $registry->register(new FromIteratorHandler);
-        $registry->register(new FromArrayHandler);
-        $registry->register(new FromCollectionHandler);
-        $registry->register(new FromScoutHandler);
-        $registry->register(new FromQueryHandler);
-        $registry->register(new FromViewHandler);
-
-        // Config-declared handlers are prepended after built-ins, giving them priority.
-        foreach (config('excel.exports.source_handlers', []) as $handler) {
-            $registry->register($handler);
-        }
-
         if ($this->app->runningInConsole()) {
             $this->publishes([
                 __DIR__ . '/Console/stubs/export.model.stub'       => base_path('stubs/export.model.stub'),
@@ -91,7 +74,23 @@ class ExcelServiceProvider extends ServiceProvider
             'excel'
         );
 
-        $this->app->singleton(HandlerRegistry::class, fn (): HandlerRegistry => new HandlerRegistry);
+        $this->app->singleton(HandlerRegistry::class, function (): HandlerRegistry {
+            $registry = new HandlerRegistry;
+
+            $registry->register(new FromGeneratorHandler);
+            $registry->register(new FromIteratorHandler);
+            $registry->register(new FromArrayHandler);
+            $registry->register(new FromCollectionHandler);
+            $registry->register(new FromScoutHandler);
+            $registry->register(new FromQueryHandler);
+            $registry->register(new FromViewHandler);
+
+            foreach (config('excel.exports.source_handlers', []) as $handler) {
+                $registry->register($handler);
+            }
+
+            return $registry;
+        });
 
         $this->app->bind(CacheManager::class, fn ($app): CacheManager => new CacheManager($app));
 
