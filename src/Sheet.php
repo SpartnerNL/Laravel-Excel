@@ -189,8 +189,6 @@ class Sheet
 
             if ($sheetExport instanceof FromScout) {
                 $this->fromScout($sheetExport, $this->worksheet);
-
-                return;
             }
 
             if ($sheetExport instanceof FromCollection) {
