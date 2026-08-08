@@ -12,6 +12,13 @@ use Maatwebsite\Excel\Console\ExportMakeCommand;
 use Maatwebsite\Excel\Console\ImportMakeCommand;
 use Maatwebsite\Excel\Files\Filesystem;
 use Maatwebsite\Excel\Files\TemporaryFileFactory;
+use Maatwebsite\Excel\Handlers\FromArrayHandler;
+use Maatwebsite\Excel\Handlers\FromCollectionHandler;
+use Maatwebsite\Excel\Handlers\FromGeneratorHandler;
+use Maatwebsite\Excel\Handlers\FromIteratorHandler;
+use Maatwebsite\Excel\Handlers\FromQueryHandler;
+use Maatwebsite\Excel\Handlers\FromScoutHandler;
+use Maatwebsite\Excel\Handlers\FromViewHandler;
 use Maatwebsite\Excel\Mixins\DownloadCollectionMixin;
 use Maatwebsite\Excel\Mixins\DownloadQueryMacro;
 use Maatwebsite\Excel\Mixins\ImportAsMacro;
@@ -26,6 +33,23 @@ class ExcelServiceProvider extends ServiceProvider
 {
     public function boot(): void
     {
+        $registry = $this->app->make(HandlerRegistry::class);
+
+        // Register built-in handlers in ascending priority order (register() prepends,
+        // so the last registered ends up first and wins on first-match).
+        $registry->register(new FromGeneratorHandler);
+        $registry->register(new FromIteratorHandler);
+        $registry->register(new FromArrayHandler);
+        $registry->register(new FromCollectionHandler);
+        $registry->register(new FromScoutHandler);
+        $registry->register(new FromQueryHandler);
+        $registry->register(new FromViewHandler);
+
+        // Config-declared handlers are prepended after built-ins, giving them priority.
+        foreach (config('excel.exports.source_handlers', []) as $handler) {
+            $registry->register($handler);
+        }
+
         if ($this->app->runningInConsole()) {
             $this->publishes([
                 __DIR__ . '/Console/stubs/export.model.stub'       => base_path('stubs/export.model.stub'),
@@ -66,6 +90,8 @@ class ExcelServiceProvider extends ServiceProvider
             $this->getConfigFile(),
             'excel'
         );
+
+        $this->app->singleton(HandlerRegistry::class, fn (): HandlerRegistry => new HandlerRegistry);
 
         $this->app->bind(CacheManager::class, fn ($app): CacheManager => new CacheManager($app));
 

@@ -180,33 +180,8 @@ class Sheet
     {
         $this->open($sheetExport);
 
-        if ($sheetExport instanceof FromView) {
-            $this->fromView($sheetExport);
-        } else {
-            if ($sheetExport instanceof FromQuery) {
-                $this->fromQuery($sheetExport, $this->worksheet);
-            }
-
-            if ($sheetExport instanceof FromScout) {
-                $this->fromScout($sheetExport, $this->worksheet);
-            }
-
-            if ($sheetExport instanceof FromCollection) {
-                $this->fromCollection($sheetExport);
-            }
-
-            if ($sheetExport instanceof FromArray) {
-                $this->fromArray($sheetExport);
-            }
-
-            if ($sheetExport instanceof FromIterator) {
-                $this->fromIterator($sheetExport);
-            }
-
-            if ($sheetExport instanceof FromGenerator) {
-                $this->fromGenerator($sheetExport);
-            }
-        }
+        $handler = app(HandlerRegistry::class)->findSyncHandler($sheetExport);
+        $handler?->handle($this, $sheetExport);
 
         $this->close($sheetExport);
     }

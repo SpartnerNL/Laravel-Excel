@@ -75,6 +75,18 @@ return [
             'manager'        => '',
             'company'        => '',
         ],
+
+        /*
+        |--------------------------------------------------------------------------
+        | Custom source handlers
+        |--------------------------------------------------------------------------
+        |
+        | Register class names that implement SheetSourceHandler or
+        | QueuedSheetSourceHandler. They are resolved from the service container
+        | and take priority over the built-in From* handlers.
+        |
+        */
+        'source_handlers' => [],
     ],
 
     'imports' => [
