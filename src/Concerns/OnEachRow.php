@@ -6,7 +6,7 @@ namespace Maatwebsite\Excel\Concerns;
 
 use Maatwebsite\Excel\Row;
 
-interface OnEachRow
+interface OnEachRow extends Import
 {
     public function onRow(Row $row): void;
 }

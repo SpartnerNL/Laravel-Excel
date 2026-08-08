@@ -69,7 +69,7 @@ republish or migrate your configuration.
 
 Two new marker interfaces have been introduced: `Maatwebsite\Excel\Concerns\Export` and `Maatwebsite\Excel\Concerns\Import`.
 All export-related concerns (e.g. `FromArray`, `FromCollection`, `FromQuery`) now extend `Export`, and all import-related
-concerns (e.g. `ToModel`, `ToArray`, `ToCollection`) now extend `Import`. Because your export and import classes already
+concerns (e.g. `ToModel`, `ToArray`, `ToCollection`, `OnEachRow`) now extend `Import`. Because your export and import classes already
 implement those concerns, they automatically satisfy the new interfaces — no changes are required in most cases.
 
 You can now use `Export` and `Import` as type hints wherever you previously used `object` to represent an export or import:

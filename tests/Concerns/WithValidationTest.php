@@ -10,7 +10,6 @@ use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\In;
-use Maatwebsite\Excel\Concerns\Import;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\OnEachRow;
 use Maatwebsite\Excel\Concerns\SkipsEmptyRows;
@@ -538,7 +537,7 @@ final class WithValidationTest extends TestCase
 
     public function test_can_validate_using_oneachrow(): void
     {
-        $import = new class implements Import, OnEachRow, WithHeadingRow, WithValidation
+        $import = new class implements OnEachRow, WithHeadingRow, WithValidation
         {
             use Importable;
 
@@ -832,7 +831,7 @@ final class WithValidationTest extends TestCase
 
     public function test_can_prepare_using_oneachrow(): void
     {
-        $import = new class implements Import, OnEachRow, WithValidation
+        $import = new class implements OnEachRow, WithValidation
         {
             use Importable;
 
@@ -885,7 +884,7 @@ final class WithValidationTest extends TestCase
 
     public function test_can_prepare_using_skipsemptyrows(): void
     {
-        $import = new class implements Import, OnEachRow, SkipsEmptyRows, WithValidation
+        $import = new class implements OnEachRow, SkipsEmptyRows, WithValidation
         {
             use Importable;
 
