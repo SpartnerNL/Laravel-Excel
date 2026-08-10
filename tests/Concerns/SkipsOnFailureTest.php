@@ -7,7 +7,6 @@ namespace Maatwebsite\Excel\Tests\Concerns;
 use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\In;
-use Maatwebsite\Excel\Concerns\Import;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\OnEachRow;
 use Maatwebsite\Excel\Concerns\SkipsFailures;
@@ -202,7 +201,7 @@ final class SkipsOnFailureTest extends TestCase
 
     public function test_can_validate_using_oneachrow_and_skipsonfailure(): void
     {
-        $import = new class implements Import, OnEachRow, SkipsOnFailure, WithValidation
+        $import = new class implements OnEachRow, SkipsOnFailure, WithValidation
         {
             use Importable, SkipsFailures;
 
