@@ -13,9 +13,11 @@ class HandlerRegistry
     /** @var array<SheetSourceHandler|QueuedSheetSourceHandler|string> */
     private array $handlers = [];
 
-    public function register(SheetSourceHandler|QueuedSheetSourceHandler|string $handler): void
+    public function register(SheetSourceHandler|QueuedSheetSourceHandler|string ...$handlers): void
     {
-        array_unshift($this->handlers, $handler);
+        foreach ($handlers as $handler) {
+            array_unshift($this->handlers, $handler);
+        }
     }
 
     public function findSyncHandler(Export $sheetExport): ?SheetSourceHandler

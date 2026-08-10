@@ -174,11 +174,11 @@ class Excel implements Exporter, Importer
      * (queued), or both. Pass a class name to have it resolved lazily from the
      * service container, or pass an instance directly.
      *
-     * @param  SheetSourceHandler|QueuedSheetSourceHandler|class-string  $handler
+     * @param  SheetSourceHandler|QueuedSheetSourceHandler|class-string  ...$handlers
      */
-    public static function registerSourceHandler(SheetSourceHandler|QueuedSheetSourceHandler|string $handler): void
+    public static function registerSourceHandler(SheetSourceHandler|QueuedSheetSourceHandler|string ...$handlers): void
     {
-        app(HandlerRegistry::class)->register($handler);
+        app(HandlerRegistry::class)->register(...$handlers);
     }
 
     /**

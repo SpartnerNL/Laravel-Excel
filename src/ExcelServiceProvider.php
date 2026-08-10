@@ -74,20 +74,19 @@ class ExcelServiceProvider extends ServiceProvider
             'excel'
         );
 
-        $this->app->singleton(HandlerRegistry::class, function (): HandlerRegistry {
+        $this->app->singleton(function (): HandlerRegistry {
             $registry = new HandlerRegistry;
 
-            $registry->register(new FromGeneratorHandler);
-            $registry->register(new FromIteratorHandler);
-            $registry->register(new FromArrayHandler);
-            $registry->register(new FromCollectionHandler);
-            $registry->register(new FromScoutHandler);
-            $registry->register(new FromQueryHandler);
-            $registry->register(new FromViewHandler);
-
-            foreach (config('excel.exports.source_handlers', []) as $handler) {
-                $registry->register($handler);
-            }
+            $registry->register(
+                FromGeneratorHandler::class,
+                FromIteratorHandler::class,
+                FromArrayHandler::class,
+                FromCollectionHandler::class,
+                FromScoutHandler::class,
+                FromQueryHandler::class,
+                FromViewHandler::class,
+                ...config('excel.exports.source_handlers', []),
+            );
 
             return $registry;
         });
