@@ -65,7 +65,7 @@ class WithColumnFormattingTest extends TestCase
 
         $actual = $this->readAsArray(__DIR__ . '/../Data/Disks/Local/with-column-formatting-store.xlsx', 'Xlsx');
 
-        $legacyPhpSpreadsheet = !InstalledVersions::satisfies(new VersionParser, 'phpoffice/phpspreadsheet', '^1.28');
+        $legacyPhpSpreadsheet = !InstalledVersions::satisfies(new VersionParser, 'phpoffice/phpspreadsheet', '^1.28 || ^2.0');
 
         $expected = [
             ['06/03/2018', null],
