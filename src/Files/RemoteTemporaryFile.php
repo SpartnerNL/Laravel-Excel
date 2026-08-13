@@ -100,10 +100,15 @@ class RemoteTemporaryFile extends TemporaryFile
                 ->makeLocal(Arr::last(explode('/', $this->filename)));
         }
 
-        $copy && $this->disk()->copy(
-            $this,
-            $this->localTemporaryFile->getLocalPath()
-        );
+        if ($copy) {
+            $readStream = $this->readStream();
+
+            if (is_resource($readStream)) {
+                $this->localTemporaryFile->put($readStream);
+
+                fclose($readStream);
+            }
+        }
 
         return $this;
     }
