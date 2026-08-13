@@ -108,7 +108,8 @@ class ExcelServiceProvider extends ServiceProvider
             $app->make(Writer::class),
             $app->make(QueuedWriter::class),
             $app->make(Reader::class),
-            $app->make(Filesystem::class)
+            $app->make(Filesystem::class),
+            $app->make(HandlerRegistry::class),
         ));
 
         $this->app->alias('excel', Excel::class);

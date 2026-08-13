@@ -52,6 +52,7 @@ class Excel implements Exporter, Importer
         protected QueuedWriter $queuedWriter,
         private readonly Reader $reader,
         protected Filesystem $filesystem,
+        private readonly HandlerRegistry $handlerRegistry,
     ) {
     }
 
@@ -176,9 +177,9 @@ class Excel implements Exporter, Importer
      *
      * @param  SheetSourceHandler|QueuedSheetSourceHandler|class-string  ...$handlers
      */
-    public static function registerSourceHandler(SheetSourceHandler|QueuedSheetSourceHandler|string ...$handlers): void
+    public function registerSourceHandler(SheetSourceHandler|QueuedSheetSourceHandler|string ...$handlers): void
     {
-        app(HandlerRegistry::class)->register(...$handlers);
+        $this->handlerRegistry->register(...$handlers);
     }
 
     /**

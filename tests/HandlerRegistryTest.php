@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Queue;
 use Maatwebsite\Excel\Concerns\Export;
 use Maatwebsite\Excel\Contracts\QueuedSheetSourceHandler;
 use Maatwebsite\Excel\Contracts\SheetSourceHandler;
-use Maatwebsite\Excel\Excel;
+use Maatwebsite\Excel\Facades\Excel;
 use Maatwebsite\Excel\Files\TemporaryFile;
 use Maatwebsite\Excel\HandlerRegistry;
 use Maatwebsite\Excel\Jobs\AppendDataToSheet;

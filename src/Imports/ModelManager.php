@@ -84,7 +84,6 @@ class ModelManager
             ->each(function (Collection $models, string $model) use ($import): void {
                 try {
                     /* @var Model $model */
-
                     if ($import instanceof WithUpserts) {
                         $model::query()->upsert(
                             $models->toArray(),
@@ -93,7 +92,10 @@ class ModelManager
                         );
 
                         return;
-                    } elseif ($import instanceof WithSkipDuplicates) {
+                    }
+                    /* @var Model $model */
+
+                    if ($import instanceof WithSkipDuplicates) {
                         $model::query()->insertOrIgnore($models->toArray());
 
                         return;
@@ -121,7 +123,8 @@ class ModelManager
                             );
 
                             return;
-                        } elseif ($import instanceof WithSkipDuplicates) {
+                        }
+                        if ($import instanceof WithSkipDuplicates) {
                             $model::query()->insertOrIgnore([$model->getAttributes()]);
 
                             return;
