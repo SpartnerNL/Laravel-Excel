@@ -4,7 +4,10 @@ namespace Maatwebsite\Excel;
 
 use ArrayAccess;
 use Closure;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
+use Maatwebsite\Excel\Columns\ColumnCollection;
+use PhpOffice\PhpSpreadsheet\Calculation\Exception as CalculationException;
 use PhpOffice\PhpSpreadsheet\Worksheet\Row as SpreadsheetRow;
 
 /**
@@ -49,6 +52,28 @@ class Row implements ArrayAccess
     public function toCollection(mixed $nullValue = null, bool $calculateFormulas = false, bool $formatData = true, ?string $endColumn = null): Collection
     {
         return new Collection($this->toArray($nullValue, $calculateFormulas, $formatData, $endColumn));
+    }
+
+    /**
+     * @return array<array-key, mixed>
+     *
+     * @throws CalculationException
+     */
+    public function toArrayWithColumns(ColumnCollection $columns): array
+    {
+        $cells = [];
+
+        foreach ($this->row->getCellIterator($columns->start() ?: 'A', $columns->end()) as $cell) {
+            foreach (Arr::wrap($columns->get($cell->getColumn())) as $column) {
+                foreach ($column->columns() as $subColumn) {
+                    if ($subColumn->title() !== '') {
+                        $cells[$subColumn->title()] = $subColumn->read($cell);
+                    }
+                }
+            }
+        }
+
+        return $cells;
     }
 
     /**

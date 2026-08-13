@@ -7,6 +7,8 @@ use Generator;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Collection;
 use Illuminate\Support\LazyCollection;
+use Maatwebsite\Excel\Columns\Column;
+use Maatwebsite\Excel\Columns\ColumnCollection;
 use Maatwebsite\Excel\Concerns\Export;
 use Maatwebsite\Excel\Concerns\FromArray;
 use Maatwebsite\Excel\Concerns\FromCollection;
@@ -28,6 +30,7 @@ use Maatwebsite\Excel\Concerns\WithCharts;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithColumnFormatting;
 use Maatwebsite\Excel\Concerns\WithColumnLimit;
+use Maatwebsite\Excel\Concerns\WithColumns;
 use Maatwebsite\Excel\Concerns\WithColumnWidths;
 use Maatwebsite\Excel\Concerns\WithCustomChunkSize;
 use Maatwebsite\Excel\Concerns\WithCustomStartCell;
@@ -78,9 +81,12 @@ class Sheet
 
     protected ?Export $exportable = null;
 
+    protected ColumnCollection $columns;
+
     final public function __construct(
         private Worksheet $worksheet,
     ) {
+        $this->columns              = new ColumnCollection;
         $this->chunkSize            = config('excel.exports.chunk_size', 100);
         $this->temporaryFileFactory = app(TemporaryFileFactory::class);
     }
@@ -129,6 +135,7 @@ class Sheet
     public function open(Export $sheetExport): void
     {
         $this->exportable = $sheetExport;
+        $this->columns    = ColumnCollection::makeFrom($sheetExport);
 
         if ($sheetExport instanceof WithCustomValueBinder) {
             SpreadsheetCell::setValueBinder($sheetExport);
@@ -159,7 +166,13 @@ class Sheet
             throw ConcernConflictException::queryOrCollectionAndView();
         }
 
-        if (!$sheetExport instanceof FromView && $sheetExport instanceof WithHeadings) {
+        if ($sheetExport instanceof WithColumns) {
+            $this->append(
+                [$this->columns->headings()],
+                $sheetExport instanceof WithCustomStartCell ? $sheetExport->startCell() : null,
+                $this->hasStrictNullComparison($sheetExport)
+            );
+        } elseif (!$sheetExport instanceof FromView && $sheetExport instanceof WithHeadings) {
             if ($sheetExport instanceof WithCustomStartCell) {
                 $startCell = $sheetExport->startCell();
             }
@@ -180,8 +193,16 @@ class Sheet
     {
         $this->open($sheetExport);
 
+        if ($sheetExport instanceof WithColumns) {
+            $this->columns->beforeWriting($this->worksheet);
+        }
+
         $handler = app(HandlerRegistry::class)->findSyncHandler($sheetExport);
         $handler?->handle($this, $sheetExport);
+
+        if ($sheetExport instanceof WithColumns) {
+            $this->columns->afterWriting($this->worksheet);
+        }
 
         $this->close($sheetExport);
     }
@@ -301,6 +322,7 @@ class Sheet
         $headingRow      = HeadingRowExtractor::extract($this->worksheet, $import);
         $headerIsGrouped = HeadingRowExtractor::extractGrouping($headingRow, $import);
         $endColumn       = $import instanceof WithColumnLimit ? $import->endColumn() : null;
+        $columns         = !$import instanceof Import ? null : ColumnCollection::makeFrom($import, $headingRow);
 
         $rows = [];
         foreach ($this->worksheet->getRowIterator($startRow, $endRow) as $index => $row) {
@@ -310,7 +332,9 @@ class Sheet
                 continue;
             }
 
-            $row = $row->toArray($nullValue, $calculateFormulas, $formatData, $endColumn);
+            $row = $columns instanceof ColumnCollection && $import instanceof WithColumns
+                ? $row->toArrayWithColumns($columns)
+                : $row->toArray($nullValue, $calculateFormulas, $formatData, $endColumn);
 
             if ($import && method_exists($import, 'isEmptyWhen') && $import->isEmptyWhen($row)) {
                 continue;
@@ -573,6 +597,12 @@ class Sheet
             $rows = $sheetExport->prepareRows($rows);
         }
 
+        if ($sheetExport instanceof WithColumns) {
+            $this->appendRowsWithColumns($rows);
+
+            return;
+        }
+
         $rows = $rows instanceof LazyCollection ? $rows : new Collection($rows);
 
         $rows->flatMap(function ($row) use ($sheetExport): array {
@@ -631,6 +661,24 @@ class Sheet
     {
         $this->worksheet->disconnectCells();
         unset($this->worksheet);
+    }
+
+    /**
+     * @param  iterable<array-key, mixed>  $rows
+     *
+     * @throws Exception
+     */
+    protected function appendRowsWithColumns(iterable $rows): void
+    {
+        $rowNumber = $this->worksheet->getHighestRow();
+
+        foreach ($rows as $row) {
+            $rowNumber++;
+
+            $this->columns->each(function (Column $column) use ($rowNumber, $row): void {
+                $column->write($this->worksheet, $rowNumber, $row);
+            });
+        }
     }
 
     /**

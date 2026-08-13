@@ -8,6 +8,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\PendingDispatch;
 use Illuminate\Support\Collection;
 use InvalidArgumentException;
+use Maatwebsite\Excel\Columns\ColumnCollection;
 use Maatwebsite\Excel\Concerns\HasReferencesToOtherSheets;
 use Maatwebsite\Excel\Concerns\Import;
 use Maatwebsite\Excel\Concerns\SkipsUnknownSheets;
@@ -370,6 +371,10 @@ class Reader
         $shouldQueue = $import instanceof ShouldQueue;
         if ($shouldQueue && !$import instanceof WithChunkReading) {
             throw new InvalidArgumentException('ShouldQueue is only supported in combination with WithChunkReading.');
+        }
+
+        if ($import instanceof Import) {
+            ColumnCollection::makeFrom($import)->beforeReading();
         }
 
         if ($import instanceof WithEvents) {

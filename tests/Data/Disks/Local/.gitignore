@@ -22,6 +22,12 @@
 !import-empty-rows.xlsx
 !csv-with-html-tags.csv
 !import-external-reference.xls
+!empty-worksheet.xlsx
+!columns.xlsx
+!columns_styling.xlsx
+!import-users-with-columns.xlsx
+!import-users-with-columns-heading.xlsx
+!icon.jpg
 !csv-with-comma.csv
 !import-users-with-grouped-headers.xlsx
 !import-users-with-mixed-headings.xlsx
