@@ -13,7 +13,7 @@ class Text extends Column
 
     protected ?string $format = NumberFormat::FORMAT_TEXT;
 
-    protected bool $formatted = true;
+    protected ?bool $formatted = true;
 
     /**
      * Cast to string while exporting.

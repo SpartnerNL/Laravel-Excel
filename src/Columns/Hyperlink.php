@@ -64,6 +64,15 @@ class Hyperlink extends Column
         return $this;
     }
 
+    /**
+     * Hyperlinks are only loaded when the reader is not in read-only mode. Reading
+     * the cell's value needs none of that, so only the url/tooltip modes ask.
+     */
+    public function needsStyleInformation(): bool
+    {
+        return $this->wantsUrl || $this->wantsTooltip;
+    }
+
     protected function configure(): void
     {
         $this->writing(function (Cell $cell): void {

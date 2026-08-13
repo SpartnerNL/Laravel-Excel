@@ -69,6 +69,10 @@ trait Sizeable
             $dimension->setCollapsed(true);
         }
 
-        $dimension->setAutoSize($this->shouldAutoSize());
+        // Only ever opt in. Asserting false would override a sheet-wide
+        // ShouldAutoSize for every column that simply didn't ask.
+        if ($this->autoSize) {
+            $dimension->setAutoSize(true);
+        }
     }
 }

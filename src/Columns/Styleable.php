@@ -16,7 +16,9 @@ trait Styleable
      */
     public function style(array $style): static
     {
-        $this->style = array_merge_recursive($this->style ?: [], $style);
+        // Replacing, not array_merge_recursive: merging turns a repeated scalar
+        // into an array, so calling style() twice would yield ['bold' => [true, true]].
+        $this->style = array_replace_recursive($this->style ?? [], $style);
 
         return $this;
     }

@@ -134,9 +134,10 @@ class ReadChunk implements ShouldQueue
             $this->sheetName
         );
 
+        // Only per-chunk state is set here. The reader carries the rest of its
+        // configuration from ReaderFactory; re-deriving it from config would lose
+        // any per-import decision once the job runs in another process.
         $this->reader->setReadFilter($filter);
-        $this->reader->setReadDataOnly(config('excel.imports.read_only', true));
-        $this->reader->setReadEmptyCells(!config('excel.imports.ignore_empty', false));
 
         $spreadsheet = $this->reader->load(
             $this->temporaryFile->sync()->getLocalPath()

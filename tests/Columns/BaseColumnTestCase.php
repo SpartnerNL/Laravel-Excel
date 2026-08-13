@@ -32,9 +32,10 @@ abstract class BaseColumnTestCase extends TestCase
     protected function write(Column $column, array $values): void
     {
         $column->index(1);
-        $column->beforeWriting($this->sheet);
         $column->write($this->sheet, 1, $values);
-        $column->afterWriting($this->sheet);
+
+        // No heading row in these unit tests, so the data starts on row 1.
+        $column->afterWriting($this->sheet, 1);
     }
 
     protected function givenCellValue(mixed $value, string $dataType, string $numberFormat = NumberFormat::FORMAT_GENERAL): void

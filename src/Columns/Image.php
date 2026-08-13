@@ -31,6 +31,14 @@ class Image extends Column
         return $this;
     }
 
+    /**
+     * Drawings are only loaded when the reader is not in read-only mode.
+     */
+    public function needsStyleInformation(): bool
+    {
+        return true;
+    }
+
     protected function value(Cell $cell): ?ImageContent
     {
         foreach ($cell->getWorksheet()->getDrawingCollection() as $drawing) {

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Maatwebsite\Excel\Columns;
 
 use Closure;
-use Illuminate\Support\Arr;
 use PhpOffice\PhpSpreadsheet\Cell\Cell;
 use PhpOffice\PhpSpreadsheet\Cell\DataType;
 use PhpOffice\PhpSpreadsheet\Exception;
@@ -21,10 +20,9 @@ trait Writeable
     /**
      * @throws Exception
      */
-    public function beforeWriting(Worksheet $worksheet): void
+    public function writeHeading(Worksheet $sheet, int $row): void
     {
-        $this->formatColumn($worksheet);
-        $this->writeStyles($worksheet);
+        $sheet->getCell([$this->index, $row])->setValueExplicit($this->title, DataType::TYPE_STRING);
     }
 
     /**
@@ -42,6 +40,7 @@ trait Writeable
 
         $this->writeValue($sheet, $cell, $value);
         $this->writeCellStyle($cell, $data);
+        $this->writeComment($cell, $data);
 
         return $cell;
     }
@@ -54,10 +53,16 @@ trait Writeable
     }
 
     /**
+     * Formats, styles and dimensions are all applied once the data is written, so
+     * they can be bounded to the rows the column actually occupies. Applying them
+     * up front would style the whole column, including the heading row.
+     *
      * @throws Exception
      */
-    public function afterWriting(Worksheet $worksheet): void
+    public function afterWriting(Worksheet $worksheet, int $firstDataRow = 1): void
     {
+        $this->formatColumn($worksheet, $firstDataRow);
+        $this->writeStyles($worksheet, $firstDataRow);
         $this->writeColumnDimensions($worksheet);
         $this->writeFilters($worksheet);
     }
@@ -86,7 +91,9 @@ trait Writeable
             return ($this->attribute)($data);
         }
 
-        $value = Arr::get($data, $this->attribute);
+        // data_get rather than Arr::get, so plain objects (stdClass rows from a raw
+        // query) resolve as well as arrays, ArrayAccess and Eloquent relations.
+        $value = data_get($data, $this->attribute);
 
         if ($this->nullable && $value === null) {
             return null;

@@ -35,8 +35,12 @@ trait Readable
      */
     protected function value(Cell $cell): mixed
     {
-        if ($this->formatted && $this->format !== null) {
-            $cell->getStyle()->getNumberFormat()->setFormatCode($this->format);
+        if ($this->formatted === true) {
+            // Without a format of its own the column reads the cell as displayed,
+            // which is what WithFormatData asks for.
+            if ($this->format !== null) {
+                $cell->getStyle()->getNumberFormat()->setFormatCode($this->format);
+            }
 
             return $cell->getFormattedValue();
         }

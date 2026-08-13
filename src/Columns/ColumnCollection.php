@@ -4,10 +4,14 @@ declare(strict_types=1);
 
 namespace Maatwebsite\Excel\Columns;
 
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Config;
 use Maatwebsite\Excel\Concerns\WithColumns;
+use Maatwebsite\Excel\Concerns\WithFormatData;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use Maatwebsite\Excel\Concerns\WithMultipleSheets;
+use Maatwebsite\Excel\Concerns\WithStrictNullComparison;
+use Maatwebsite\Excel\Exceptions\ColumnCollisionException;
 use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 use PhpOffice\PhpSpreadsheet\Exception;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
@@ -18,63 +22,126 @@ use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 class ColumnCollection extends Collection
 {
     /**
+     * Columns that were declared but have no place on the sheet, because no
+     * heading matched them. They are read back as null, in declaration order.
+     *
+     * @var array<string, Column>
+     */
+    protected array $unmatched = [];
+
+    /**
      * @param  list<string>|null  $headingRow
      *
      * @throws Exception
+     * @throws ColumnCollisionException
      */
-    public static function makeFrom(object $concernable, ?array $headingRow = null): self
+    public static function makeFrom(object $concernable, ?array $headingRow = null, int $columnOffset = 0): self
     {
         if (!$concernable instanceof WithColumns) {
             return new self([]);
         }
 
-        $headingMap = is_array($headingRow) ? array_flip($headingRow) : [];
-        $headingMap = array_map(fn (int $index): string => Coordinate::stringFromColumnIndex($index + 1), $headingMap);
+        $headingMap = static::headingMap($headingRow);
 
-        $index   = 0;
-        $columns = [];
+        // Sheet-wide concerns act as the default for every column that didn't
+        // decide for itself.
+        $formatData = $concernable instanceof WithFormatData;
+        $nullable   = $concernable instanceof WithStrictNullComparison;
+
+        $index     = 0;
+        $columns   = [];
+        $unmatched = [];
+
         foreach ($concernable->columns() as $key => $column) {
             if (is_array($column)) {
                 $column = Column::multiple(...$column);
             }
 
+            $column = $column->applyDefaults($formatData, $nullable);
+
             $index++;
-            $coordinate = is_int($key) ? $index : $key;
 
             if ($concernable instanceof WithHeadingRow) {
-                if (!isset($headingMap[$key])) {
-                    $column = EmptyCell::make($column->title());
+                $heading = is_int($key) ? $column->headingKey() : $key;
+
+                if (!isset($headingMap[$heading])) {
+                    $unmatched[$column->getKey()] = $column;
+
+                    continue;
                 }
 
-                // Columns without a matching heading are pushed beyond the
-                // last real column so they never collide with one.
-                $coordinate = $headingMap[$key] ?? 99 - $index;
+                $column = $column->column($headingMap[$heading]);
+            } elseif (is_int($key)) {
+                // Positional columns follow the start cell; explicit letters are absolute.
+                $column = $column->index($index + $columnOffset);
+            } else {
+                $column = $column->column($key);
             }
 
-            $column = $column->coordinate($coordinate);
+            if (isset($columns[$column->letter()])) {
+                throw ColumnCollisionException::atLetter($column->letter());
+            }
 
             $columns[$column->letter()] = $column;
         }
 
-        return new self($columns);
+        $collection            = new self($columns);
+        $collection->unmatched = $unmatched;
+
+        return $collection;
+    }
+
+    /**
+     * Whether any column of this concernable requires the sheet to be loaded with
+     * style information.
+     *
+     * Deliberately inspects the raw column definitions rather than a built
+     * collection: the heading row isn't known before the file is read, so
+     * makeFrom() cannot place the columns yet.
+     */
+    public static function requiresStyleInformation(?object $concernable): bool
+    {
+        if ($concernable instanceof WithMultipleSheets) {
+            foreach ($concernable->sheets() as $sheetConcernable) {
+                if (static::requiresStyleInformation($sheetConcernable)) {
+                    return true;
+                }
+            }
+        }
+
+        if (!$concernable instanceof WithColumns) {
+            return false;
+        }
+
+        foreach ($concernable->columns() as $column) {
+            foreach (Arr::wrap($column) as $definition) {
+                if ($definition->needsStyleInformation()) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     /**
      * @throws Exception
      */
-    public function beforeWriting(Worksheet $worksheet): void
+    public function writeHeadings(Worksheet $worksheet, int $row): void
     {
-        $this->each(function (Column $column) use ($worksheet): void {
-            $column->beforeWriting($worksheet);
+        $this->sortByColumn()->each(function (Column $column) use ($worksheet, $row): void {
+            $column->writeHeading($worksheet, $row);
         });
     }
 
     /**
      * @throws Exception
      */
-    public function afterWriting(Worksheet $worksheet): void
+    public function afterWriting(Worksheet $worksheet, int $headingRow = 1): void
     {
-        $this->sortByColumn()->filter(fn (Column $column): bool => $column->hasAutoFilter())->pipe(function (self $columns) use ($worksheet): void {
+        $firstDataRow = $headingRow + 1;
+
+        $this->sortByColumn()->filter(fn (Column $column): bool => $column->hasAutoFilter())->pipe(function (self $columns) use ($worksheet, $headingRow): void {
             if ($columns->isEmpty()) {
                 return;
             }
@@ -83,34 +150,39 @@ class ColumnCollection extends Collection
             $end   = $columns->last();
 
             $worksheet->setAutoFilter(
-                $start->letter() . '1:' . $end->letter() . $worksheet->getHighestRow()
+                $start->letter() . $headingRow . ':' . $end->letter() . $worksheet->getHighestRow()
             );
         });
 
-        $this->each(function (Column $column) use ($worksheet): void {
-            $column->afterWriting($worksheet);
+        $this->each(function (Column $column) use ($worksheet, $firstDataRow): void {
+            $column->afterWriting($worksheet, $firstDataRow);
         });
     }
 
-    public function beforeReading(): void
-    {
-        if ($this->needsStyleInformation()) {
-            Config::set('excel.imports.read_only', false);
-        }
-    }
-
     /**
+     * Headings in declaration order, keyed by column letter.
+     *
      * @return array<string, string>
      */
     public function headings(): array
     {
         $headings = [];
 
-        foreach ($this as $letter => $column) {
+        foreach ($this->sortByColumn() as $letter => $column) {
             $headings[$letter] = $column->title();
         }
 
         return $headings;
+    }
+
+    /**
+     * Keys of the columns that have no place on the sheet.
+     *
+     * @return list<string>
+     */
+    public function unmatchedKeys(): array
+    {
+        return array_keys($this->unmatched);
     }
 
     public function start(): ?string
@@ -128,8 +200,19 @@ class ColumnCollection extends Collection
         return $this->sortBy(fn (Column $column): int => $column->getIndex());
     }
 
-    protected function needsStyleInformation(): bool
+    /**
+     * @param  list<string>|null  $headingRow
+     * @return array<string, string>
+     */
+    protected static function headingMap(?array $headingRow): array
     {
-        return $this->contains(fn (Column $column): bool => $column->needsStyleInformation());
+        $map = [];
+
+        foreach ($headingRow ?? [] as $index => $heading) {
+            // First heading wins, so a duplicate never steals the column.
+            $map[$heading] ??= Coordinate::stringFromColumnIndex($index + 1);
+        }
+
+        return $map;
     }
 }

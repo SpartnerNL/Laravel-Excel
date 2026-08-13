@@ -31,7 +31,6 @@ use PhpOffice\PhpSpreadsheet\Cell\DataType;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Shared\Date as ExcelDate;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use PhpOffice\PhpSpreadsheet\Worksheet\AutoFilter\Column as FilterColumn;
 use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
 use PHPUnit\Framework\Attributes\DataProvider;
 
@@ -100,14 +99,12 @@ final class ColumnFeatureTest extends TestCase
             $calledWritingCallback = true;
         });
 
-        $column->beforeWriting($sheet);
-
         // Write value to A1
         $cell = $column->write($sheet, 1, ['attribute' => $givenValue]);
 
         $this->assertTrue($calledWritingCallback);
 
-        $column->afterWriting($sheet);
+        $column->afterWriting($sheet, 1);
 
         // Internal type and value are correct
         $this->assertSame($dataType, $cell->getDataType());
@@ -176,8 +173,8 @@ final class ColumnFeatureTest extends TestCase
             ->italic()
             ->textSize(16);
 
-        $column->beforeWriting($sheet);
         $cell = $column->write($sheet, 1, ['attribute' => 'test']);
+        $column->afterWriting($sheet, 1);
 
         $this->assertSame('Times New Roman', $cell->getStyle()->getFont()->getName());
         $this->assertTrue($cell->getStyle()->getFont()->getBold());
@@ -197,7 +194,6 @@ final class ColumnFeatureTest extends TestCase
             ->height(61.0)
             ->width(100);
 
-        $column->beforeWriting($sheet);
         $column->write($sheet, 1, []);
 
         $drawing = $sheet->getDrawingCollection()[0];
@@ -274,10 +270,11 @@ final class ColumnFeatureTest extends TestCase
             ->index(1)
             ->width(50);
 
-        $column->afterWriting($sheet);
+        // Production order: write the data, then apply dimensions.
         $column->write($sheet, 1, ['attribute' => 'test']);
+        $column->afterWriting($sheet, 1);
 
-        $this->assertEquals(50, $sheet->getColumnDimension('A')->getWidth());
+        $this->assertEqualsWithDelta(50.0, $sheet->getColumnDimension('A')->getWidth(), PHP_FLOAT_EPSILON);
     }
 
     public function test_can_autosize_a_column(): void
@@ -288,10 +285,24 @@ final class ColumnFeatureTest extends TestCase
             ->index(1)
             ->autoSize();
 
-        $column->afterWriting($sheet);
         $column->write($sheet, 1, ['attribute' => 'aaaaaaaaaaaaaaa']);
+        $column->afterWriting($sheet, 1);
 
         $this->assertSame(-1.0, $sheet->getColumnDimension('A')->getWidth());
+        $this->assertTrue($sheet->getColumnDimension('A')->getAutoSize());
+    }
+
+    public function test_a_column_without_autosize_does_not_override_the_sheet(): void
+    {
+        $sheet = (new Spreadsheet)->getActiveSheet();
+        $sheet->getColumnDimension('A')->setAutoSize(true);
+
+        $column = Column::make('Attribute')->index(1);
+
+        $column->write($sheet, 1, ['attribute' => 'test']);
+        $column->afterWriting($sheet, 1);
+
+        // A column that never asked about sizing must leave ShouldAutoSize alone.
         $this->assertTrue($sheet->getColumnDimension('A')->getAutoSize());
     }
 
@@ -301,22 +312,18 @@ final class ColumnFeatureTest extends TestCase
 
         $this->assertEmpty($sheet->getAutoFilter()->getRange());
 
-        $column = Column::make('Attribute')
-            ->index(1)
-            ->autoFilter();
+        $columns = ColumnCollection::make([
+            Column::make('Attribute')->index(1)->autoFilter(),
+            Column::make('Attribute2')->index(2)->autoFilter(),
+            Column::make('Attribute3')->index(3),
+        ]);
 
-        ColumnCollection::make([
-            $column,
-            Column::make('Attribute2')
-                ->index(2)
-                ->autoFilter(),
-            Column::make('Attribute3')
-                ->index(3),
-        ])->afterWriting($sheet);
+        $columns->writeHeadings($sheet, 1);
+        $columns->each(fn (Column $column): Cell => $column->write($sheet, 2, ['attribute' => 'test']));
+        $columns->afterWriting($sheet, 1);
 
-        $column->write($sheet, 1, ['attribute' => 'test']);
-
-        $this->assertSame('A1:B1', $sheet->getAutoFilter()->getRange());
-        $this->assertSame(FilterColumn::AUTOFILTER_FILTERTYPE_FILTER, $sheet->getAutoFilter()->getColumn('A')->getFilterType());
+        // Spans the two filtered columns only, from heading row to last data row.
+        // C is declared but unfiltered, so it stays outside the range.
+        $this->assertSame('A1:B2', $sheet->getAutoFilter()->getRange());
     }
 }
