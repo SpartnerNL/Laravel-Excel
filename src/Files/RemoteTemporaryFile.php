@@ -64,10 +64,13 @@ class RemoteTemporaryFile extends TemporaryFile
         }
 
         if ($copy) {
-            $this->disk()->copy(
-                $this,
-                $this->localTemporaryFile->getLocalPath()
-            );
+            $readStream = $this->readStream();
+
+            if (is_resource($readStream)) {
+                $this->localTemporaryFile->put($readStream);
+
+                fclose($readStream);
+            }
         }
 
         return $this;

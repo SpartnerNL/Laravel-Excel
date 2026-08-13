@@ -25,6 +25,7 @@ use Maatwebsite\Excel\Tests\Data\Stubs\EmptyExport;
 use Maatwebsite\Excel\Tests\Helpers\FileHelper;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Throwable;
 
 final class ExcelTest extends TestCase
 {
@@ -103,6 +104,93 @@ final class ExcelTest extends TestCase
 
         $this->assertTrue($response);
         $this->assertFileExists($path);
+    }
+
+    public function test_store_resolves_a_relative_path_within_the_disk(): void
+    {
+        $elsewhere = __DIR__ . '/Data/Disks/elsewhere.csv';
+        $root      = config('filesystems.disks.local.root');
+
+        file_put_contents($elsewhere, 'original contents');
+
+        // Paths are resolved against the disk, never against the working directory.
+        $relative = ltrim(str_replace(getcwd(), '', $root), DIRECTORY_SEPARATOR) . '/../elsewhere.csv';
+
+        foreach ([$relative, '../elsewhere.csv'] as $path) {
+            try {
+                $this->SUT->store(new EmptyExport, $path, 'local');
+            } catch (Throwable) {
+                // The disk rejects paths it cannot resolve.
+            }
+
+            $this->assertSame('original contents', file_get_contents($elsewhere), 'Expected [' . $path . '] to resolve within the disk.');
+        }
+
+        @unlink($elsewhere);
+
+        // Clean up what the relative path created inside the disk.
+        FileHelper::recursiveDelete($root . DIRECTORY_SEPARATOR . explode(DIRECTORY_SEPARATOR, $relative)[0]);
+    }
+
+    public function test_store_resolves_an_absolute_path_within_the_disk(): void
+    {
+        $elsewhere = __DIR__ . '/Data/Disks/elsewhere.csv';
+        $root      = config('filesystems.disks.local.root');
+
+        file_put_contents($elsewhere, 'original contents');
+
+        try {
+            $this->SUT->store(new EmptyExport, $elsewhere, 'local');
+        } catch (Throwable) {
+            // The disk rejects paths it cannot resolve.
+        }
+
+        $this->assertSame('original contents', file_get_contents($elsewhere));
+
+        @unlink($elsewhere);
+
+        // Clean up what the absolute path created inside the disk.
+        FileHelper::recursiveDelete(
+            $root . DIRECTORY_SEPARATOR . explode(DIRECTORY_SEPARATOR, ltrim($elsewhere, DIRECTORY_SEPARATOR))[0]
+        );
+    }
+
+    public function test_store_cleans_up_the_temporary_file_when_the_disk_fails(): void
+    {
+        $temporaryPath = FileHelper::absolutePath('temporary-files', 'local');
+        FileHelper::recursiveDelete($temporaryPath);
+
+        config()->set('excel.temporary_files.local_path', $temporaryPath);
+
+        $failed = false;
+
+        try {
+            // The Excel instance is rebuilt so it picks up the temporary path above.
+            $this->app->make(Excel::class)->store(new EmptyExport, 'filename.xlsx', 'non-existing-disk');
+        } catch (Throwable) {
+            $failed = true;
+        }
+
+        $this->assertTrue($failed, 'Storing on a non existing disk should not succeed.');
+        $this->assertSame([], glob($temporaryPath . DIRECTORY_SEPARATOR . '*'), 'The temporary file was not cleaned up.');
+
+        FileHelper::recursiveDelete($temporaryPath);
+    }
+
+    public function test_storing_over_an_existing_file_does_not_leave_leftover_contents(): void
+    {
+        $name = 'filename.csv';
+        $path = FileHelper::absolutePath($name, 'local');
+
+        @unlink($path);
+
+        $this->SUT->store($this->givenCsvExport([['AAAAAAAAAA', 'BBBBBBBBBB']]), $name);
+        $this->SUT->store($this->givenCsvExport([['A', 'B']]), $name);
+
+        $contents = file_get_contents($path);
+
+        $this->assertStringContains('"A","B"', $contents);
+        $this->assertStringNotContainsString('AAAAAAAAAA', (string) $contents, 'Leftovers of the previous export were not truncated.');
     }
 
     public function test_can_get_raw_export_contents(): void
@@ -402,5 +490,30 @@ final class ExcelTest extends TestCase
             null,
             Excel::XLSX
         );
+    }
+
+    /**
+     * @param  array<int, array<int, mixed>>  $rows
+     * @return FromCollection<int, mixed>
+     */
+    private function givenCsvExport(array $rows): FromCollection
+    {
+        return new readonly class($rows) implements FromCollection
+        {
+            /**
+             * @param  array<int, array<int, mixed>>  $rows
+             */
+            public function __construct(private array $rows)
+            {
+            }
+
+            /**
+             * @return Collection<int, mixed>
+             */
+            public function collection(): Collection
+            {
+                return collect($this->rows);
+            }
+        };
     }
 }

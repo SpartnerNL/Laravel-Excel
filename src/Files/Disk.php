@@ -46,17 +46,8 @@ class Disk
             return false;
         }
 
-        if (realpath($destination)) {
-            $tempStream = fopen($destination, 'rb+');
-            $success    = stream_copy_to_stream($readStream, $tempStream) !== false;
-
-            if (is_resource($tempStream)) {
-                fclose($tempStream);
-            }
-        } else {
-            /** @var resource|closed-resource $readStream */
-            $success = $this->put($destination, $readStream);
-        }
+        /** @var resource|closed-resource $readStream */
+        $success = $this->put($destination, $readStream);
 
         if (is_resource($readStream)) {
             fclose($readStream);
