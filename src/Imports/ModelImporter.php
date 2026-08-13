@@ -2,11 +2,13 @@
 
 namespace Maatwebsite\Excel\Imports;
 
+use Maatwebsite\Excel\Columns\ColumnCollection;
 use Maatwebsite\Excel\Concerns\SkipsEmptyRows;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithCalculatedFormulas;
 use Maatwebsite\Excel\Concerns\WithColumnLimit;
+use Maatwebsite\Excel\Concerns\WithColumns;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\WithFormatData;
 use Maatwebsite\Excel\Concerns\WithMapping;
@@ -49,6 +51,7 @@ class ModelImporter
         $formatData       = $import instanceof WithFormatData;
         $withValidation   = $import instanceof WithValidation && method_exists($import, 'prepareForValidation');
         $endColumn        = $import instanceof WithColumnLimit ? $import->endColumn() : null;
+        $columns          = $import instanceof WithColumns ? ColumnCollection::makeFrom($import, $headingRow) : null;
 
         $this->manager->setRemembersRowNumber(method_exists($import, 'rememberRowNumber'));
 
@@ -57,7 +60,7 @@ class ModelImporter
         foreach ($worksheet->getRowIterator($startRow, $endRow) as $spreadSheetRow) {
             $i++;
 
-            $row = new Row($spreadSheetRow, $headingRow, $headerIsGrouped);
+            $row = new Row($spreadSheetRow, $headingRow, $headerIsGrouped, $columns);
             if (!$import instanceof SkipsEmptyRows || !$row->isEmpty($withCalcFormulas)) {
                 $rowArray = $row->toArray(null, $withCalcFormulas, $formatData, $endColumn);
 

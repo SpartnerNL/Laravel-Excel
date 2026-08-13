@@ -8,6 +8,7 @@ use Illuminate\Bus\PendingBatch;
 use Illuminate\Queue\Events\JobProcessing;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Queue;
+use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Excel;
 use Maatwebsite\Excel\Files\RemoteTemporaryFile;
 use Maatwebsite\Excel\Files\TemporaryFile;
@@ -21,12 +22,10 @@ use Maatwebsite\Excel\Tests\Data\Stubs\QueuedExportWithFailedHook;
 use Maatwebsite\Excel\Tests\Data\Stubs\QueuedExportWithLocalePreferences;
 use Maatwebsite\Excel\Tests\Data\Stubs\ShouldBatchExport;
 use Maatwebsite\Excel\Tests\Data\Stubs\ShouldQueueExport;
-use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use Throwable;
 
 final class QueuedExportTest extends TestCase
 {
-    #[DoesNotPerformAssertions]
     public function test_can_queue_an_export(): void
     {
         $export = new QueuedExport;
@@ -34,6 +33,8 @@ final class QueuedExportTest extends TestCase
         $export->queue('queued-export.xlsx')->chain([
             new AfterQueueExportJob(__DIR__ . '/Data/Disks/Local/queued-export.xlsx'),
         ]);
+
+        $this->assertCount(100, $this->readAsArray(__DIR__ . '/Data/Disks/Local/queued-export.xlsx', Excel::XLSX));
     }
 
     public function test_can_batch_an_export(): void
@@ -47,7 +48,6 @@ final class QueuedExportTest extends TestCase
         $this->assertCount(1, $batch->jobs);
     }
 
-    #[DoesNotPerformAssertions]
     public function test_can_queue_an_export_and_store_on_different_disk(): void
     {
         $export = new QueuedExport;
@@ -55,6 +55,8 @@ final class QueuedExportTest extends TestCase
         $export->queue('queued-export.xlsx', 'test')->chain([
             new AfterQueueExportJob(__DIR__ . '/Data/Disks/Test/queued-export.xlsx'),
         ]);
+
+        $this->assertCount(100, $this->readAsArray(__DIR__ . '/Data/Disks/Test/queued-export.xlsx', Excel::XLSX));
     }
 
     public function test_can_queue_export_with_remote_temp_disk(): void
@@ -98,20 +100,34 @@ final class QueuedExportTest extends TestCase
         $this->assertSame(3, $jobs);
     }
 
-    #[DoesNotPerformAssertions]
     public function test_can_queue_export_with_remote_temp_disk_and_prefix(): void
     {
         config()->set('excel.temporary_files.remote_disk', 'test');
         config()->set('excel.temporary_files.remote_prefix', 'tmp/');
+
+        // Start from a clean prefix, temporary files of previous
+        // runs are not cleaned up in between test runs.
+        Storage::disk('test')->deleteDirectory('tmp');
+
+        // Capture the remote temporary files while the export is still running,
+        // they are cleaned up by the time the export has finished.
+        $prefixedFiles = [];
+        Queue::before(function (JobProcessing $event) use (&$prefixedFiles): void {
+            if ($event->job->resolveName() === AppendDataToSheet::class) {
+                $prefixedFiles = Storage::disk('test')->files('tmp');
+            }
+        });
 
         $export = new QueuedExport;
 
         $export->queue('queued-export.xlsx')->chain([
             new AfterQueueExportJob(__DIR__ . '/Data/Disks/Local/queued-export.xlsx'),
         ]);
+
+        $this->assertCount(1, $prefixedFiles);
+        $this->assertCount(100, $this->readAsArray(__DIR__ . '/Data/Disks/Local/queued-export.xlsx', Excel::XLSX));
     }
 
-    #[DoesNotPerformAssertions]
     public function test_can_implicitly_queue_an_export(): void
     {
         $export = new ShouldQueueExport;
@@ -119,6 +135,8 @@ final class QueuedExportTest extends TestCase
         $export->store('queued-export.xlsx', 'test')->chain([
             new AfterQueueExportJob(__DIR__ . '/Data/Disks/Test/queued-export.xlsx'),
         ]);
+
+        $this->assertCount(100, $this->readAsArray(__DIR__ . '/Data/Disks/Test/queued-export.xlsx', Excel::XLSX));
     }
 
     public function test_can_queue_export_with_mapping_on_eloquent_models(): void

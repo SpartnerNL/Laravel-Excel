@@ -15,6 +15,15 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
 class TestCase extends OrchestraTestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        // Number formatting (e.g. currency masks) is LC_NUMERIC aware, which would
+        // make assertions depend on the LANG of the machine running the tests.
+        setlocale(LC_NUMERIC, 'C');
+    }
+
     /**
      * @throws \PhpOffice\PhpSpreadsheet\Reader\Exception
      */

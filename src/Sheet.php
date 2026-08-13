@@ -7,6 +7,8 @@ use Generator;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Collection;
 use Illuminate\Support\LazyCollection;
+use Maatwebsite\Excel\Columns\Column;
+use Maatwebsite\Excel\Columns\ColumnCollection;
 use Maatwebsite\Excel\Concerns\Export;
 use Maatwebsite\Excel\Concerns\FromArray;
 use Maatwebsite\Excel\Concerns\FromCollection;
@@ -28,6 +30,7 @@ use Maatwebsite\Excel\Concerns\WithCharts;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithColumnFormatting;
 use Maatwebsite\Excel\Concerns\WithColumnLimit;
+use Maatwebsite\Excel\Concerns\WithColumns;
 use Maatwebsite\Excel\Concerns\WithColumnWidths;
 use Maatwebsite\Excel\Concerns\WithCustomChunkSize;
 use Maatwebsite\Excel\Concerns\WithCustomStartCell;
@@ -35,6 +38,7 @@ use Maatwebsite\Excel\Concerns\WithCustomValueBinder;
 use Maatwebsite\Excel\Concerns\WithDrawings;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\WithFormatData;
+use Maatwebsite\Excel\Concerns\WithGroupedHeadingRow;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMappedCells;
 use Maatwebsite\Excel\Concerns\WithMapping;
@@ -48,6 +52,7 @@ use Maatwebsite\Excel\Events\BeforeSheet;
 use Maatwebsite\Excel\Exceptions\ConcernConflictException;
 use Maatwebsite\Excel\Exceptions\RowSkippedException;
 use Maatwebsite\Excel\Exceptions\SheetNotFoundException;
+use Maatwebsite\Excel\Exceptions\UnsupportedColumnException;
 use Maatwebsite\Excel\Files\TemporaryFileFactory;
 use Maatwebsite\Excel\Helpers\ArrayHelper;
 use Maatwebsite\Excel\Helpers\CellHelper;
@@ -57,6 +62,7 @@ use Maatwebsite\Excel\Imports\ModelImporter;
 use Maatwebsite\Excel\Validators\RowValidator;
 use Maatwebsite\Excel\Validators\ValidationException;
 use PhpOffice\PhpSpreadsheet\Cell\Cell as SpreadsheetCell;
+use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 use PhpOffice\PhpSpreadsheet\Chart\Chart;
 use PhpOffice\PhpSpreadsheet\Exception;
 use PhpOffice\PhpSpreadsheet\IOFactory;
@@ -77,6 +83,8 @@ class Sheet
     protected TemporaryFileFactory $temporaryFileFactory;
 
     protected ?Export $exportable = null;
+
+    protected ?ColumnCollection $columns = null;
 
     final public function __construct(
         private Worksheet $worksheet,
@@ -159,7 +167,27 @@ class Sheet
             throw ConcernConflictException::queryOrCollectionAndView();
         }
 
-        if (!$sheetExport instanceof FromView && $sheetExport instanceof WithHeadings) {
+        if ($sheetExport instanceof WithColumns) {
+            if ($sheetExport instanceof WithHeadings) {
+                throw ConcernConflictException::columnsAndHeadings();
+            }
+
+            if ($sheetExport instanceof WithMapping) {
+                throw ConcernConflictException::columnsAndMapping();
+            }
+        }
+
+        if ($sheetExport instanceof WithColumns) {
+            $columns = $this->columnsFor($sheetExport);
+
+            if ($columns->contains(fn (Column $column): bool => $column->hasMultiple())) {
+                throw UnsupportedColumnException::multipleOnExport();
+            }
+
+            // Headings go through the columns themselves, so they use the same
+            // addressing as the data and cannot drift out of alignment with it.
+            $columns->writeHeadings($this->worksheet, $this->headingRowFor($sheetExport));
+        } elseif (!$sheetExport instanceof FromView && $sheetExport instanceof WithHeadings) {
             if ($sheetExport instanceof WithCustomStartCell) {
                 $startCell = $sheetExport->startCell();
             }
@@ -191,6 +219,20 @@ class Sheet
      */
     public function import(Import $import, int $startRow = 1): void
     {
+        if ($import instanceof WithColumns) {
+            if ($import instanceof WithMappedCells) {
+                throw ConcernConflictException::columnsAndMappedCells();
+            }
+
+            if ($import instanceof WithColumnLimit) {
+                throw ConcernConflictException::columnsAndColumnLimit();
+            }
+
+            if ($import instanceof WithGroupedHeadingRow) {
+                throw ConcernConflictException::columnsAndGroupedHeadingRow();
+            }
+        }
+
         if ($import instanceof WithEvents) {
             $this->registerListeners($import->registerEvents());
         }
@@ -237,9 +279,10 @@ class Sheet
             $headerIsGrouped     = HeadingRowExtractor::extractGrouping($headingRow, $import);
             $endColumn           = $import instanceof WithColumnLimit ? $import->endColumn() : null;
             $preparationCallback = $this->getPreparationCallback($import);
+            $columns             = $this->columnsForImport($import, $headingRow);
 
             foreach ($this->worksheet->getRowIterator()->resetStart($startRow) as $row) {
-                $sheetRow = new Row($row, $headingRow, $headerIsGrouped);
+                $sheetRow = new Row($row, $headingRow, $headerIsGrouped, $columns);
 
                 if ($import instanceof WithValidation) {
                     $sheetRow->setPreparationCallback($preparationCallback);
@@ -301,10 +344,11 @@ class Sheet
         $headingRow      = HeadingRowExtractor::extract($this->worksheet, $import);
         $headerIsGrouped = HeadingRowExtractor::extractGrouping($headingRow, $import);
         $endColumn       = $import instanceof WithColumnLimit ? $import->endColumn() : null;
+        $columns         = $this->columnsForImport($import, $headingRow);
 
         $rows = [];
         foreach ($this->worksheet->getRowIterator($startRow, $endRow) as $index => $row) {
-            $row = new Row($row, $headingRow, $headerIsGrouped);
+            $row = new Row($row, $headingRow, $headerIsGrouped, $columns);
 
             if ($import instanceof SkipsEmptyRows && $row->isEmpty($calculateFormulas, $endColumn)) {
                 continue;
@@ -349,6 +393,16 @@ class Sheet
      */
     public function close(Export $sheetExport): void
     {
+        // Runs here rather than at the end of export() so the queued path gets it
+        // too: CloseSheet is the only point where every chunk has been written and
+        // getHighestRow() reflects the whole sheet.
+        if ($sheetExport instanceof WithColumns) {
+            $this->columnsFor($sheetExport)->afterWriting(
+                $this->worksheet,
+                $this->headingRowFor($sheetExport)
+            );
+        }
+
         if ($sheetExport instanceof WithCharts) {
             $this->addCharts($sheetExport->charts());
         }
@@ -569,8 +623,18 @@ class Sheet
      */
     public function appendRows(iterable $rows, Export $sheetExport): void
     {
+        // The append jobs build their own Sheet without going through open(), so
+        // hasConcern() would otherwise report false for the whole queued path.
+        $this->exportable ??= $sheetExport;
+
         if (method_exists($sheetExport, 'prepareRows')) {
             $rows = $sheetExport->prepareRows($rows);
+        }
+
+        if ($sheetExport instanceof WithColumns) {
+            $this->appendRowsWithColumns($rows, $this->columnsFor($sheetExport), $sheetExport);
+
+            return;
         }
 
         $rows = $rows instanceof LazyCollection ? $rows : new Collection($rows);
@@ -634,6 +698,30 @@ class Sheet
     }
 
     /**
+     * @param  iterable<array-key, mixed>  $rows
+     *
+     * @throws Exception
+     */
+    protected function appendRowsWithColumns(iterable $rows, ColumnCollection $columns, Export $sheetExport): void
+    {
+        $rowNumber = max($this->worksheet->getHighestRow(), $this->headingRowFor($sheetExport));
+
+        foreach ($rows as $row) {
+            $rowNumber++;
+
+            // The binder is a static that other jobs may have reset, and untyped
+            // columns fall through to setValue(), which consults it.
+            if ($sheetExport instanceof WithCustomValueBinder) {
+                SpreadsheetCell::setValueBinder($sheetExport);
+            }
+
+            $columns->each(function (Column $column) use ($rowNumber, $row): void {
+                $column->write($this->worksheet, $rowNumber, $row);
+            });
+        }
+    }
+
+    /**
      * @param  Collection<int, Collection<array-key, mixed>>|array<int, array<array-key, mixed>>  $rows
      * @return Collection<int, Collection<array-key, mixed>>|array<int, array<array-key, mixed>>
      */
@@ -663,6 +751,59 @@ class Sheet
         for ($i = $lower; $i !== $upper; $i = $increment($i)) {
             yield $i;
         }
+    }
+
+    /**
+     * The columns are always derived from the export currently being written, so a
+     * queued job resolves the same set without depending on open() having run in
+     * the same process.
+     *
+     * @throws Exception
+     */
+    protected function columnsFor(Export $sheetExport): ColumnCollection
+    {
+        return $this->columns ??= ColumnCollection::makeFrom(
+            $sheetExport,
+            null,
+            $this->startColumnFor($sheetExport) - 1
+        );
+    }
+
+    /**
+     * The row the headings occupy; data starts on the row after it.
+     */
+    private function headingRowFor(Export $sheetExport): int
+    {
+        if (!$sheetExport instanceof WithCustomStartCell) {
+            return 1;
+        }
+
+        return (int) Coordinate::coordinateFromString($sheetExport->startCell())[1];
+    }
+
+    /**
+     * Positionally declared columns are offset by the start cell; columns given an
+     * explicit letter are absolute.
+     */
+    private function startColumnFor(Export $sheetExport): int
+    {
+        if (!$sheetExport instanceof WithCustomStartCell) {
+            return 1;
+        }
+
+        return Coordinate::columnIndexFromString(
+            Coordinate::coordinateFromString($sheetExport->startCell())[0]
+        );
+    }
+
+    /**
+     * @param  list<string>  $headingRow
+     */
+    private function columnsForImport(?Import $import, array $headingRow): ?ColumnCollection
+    {
+        return $import instanceof WithColumns
+            ? ColumnCollection::makeFrom($import, $headingRow)
+            : null;
     }
 
     private function hasRows(string $startCell): bool

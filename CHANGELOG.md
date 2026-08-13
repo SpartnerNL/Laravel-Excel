@@ -10,6 +10,7 @@ See [UPGRADE-4.x.md](UPGRADE-4.x.md) for the full upgrade guide.
 
 ### Added
 
+- `WithColumns` concern, describing a sheet as a list of typed column objects rather than raw arrays. Ships `Text`, `Number`, `Decimal`, `Percentage`, `Price`, `Date`, `DateTime`, `Boolean`, `Formula`, `RichText`, `Hyperlink`, `Image` and `EmptyCell`, each handling its own data type, number format, styling, sizing, filtering and comments on write, and its own casting on read
 - `FromScout` export concern, replacing Scout builder support in `FromQuery` (#4390)
 - `ShouldBatch` marker interface to dispatch queued exports and chunked queued imports as job batches (#4341)
 - Support for Laravel's `#[Queue]` and `#[Connection]` attributes on imports (#4382)

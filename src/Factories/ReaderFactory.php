@@ -2,6 +2,7 @@
 
 namespace Maatwebsite\Excel\Factories;
 
+use Maatwebsite\Excel\Columns\ColumnCollection;
 use Maatwebsite\Excel\Concerns\Import;
 use Maatwebsite\Excel\Concerns\MapsCsvSettings;
 use Maatwebsite\Excel\Concerns\WithCustomCsvSettings;
@@ -30,7 +31,14 @@ class ReaderFactory
             $readerType ?: self::identify($file)
         );
 
-        $reader->setReadDataOnly(config('excel.imports.read_only', true));
+        // Columns such as RichText, Image and Hyperlink read information that
+        // PhpSpreadsheet only loads outside of read-only mode, so an import that
+        // declares one opts itself out of the global setting.
+        $reader->setReadDataOnly(
+            config('excel.imports.read_only', true)
+            && !ColumnCollection::requiresStyleInformation($import)
+        );
+
         $reader->setReadEmptyCells(!config('excel.imports.ignore_empty', false));
 
         if ($reader instanceof Csv) {

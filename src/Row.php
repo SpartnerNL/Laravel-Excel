@@ -4,7 +4,10 @@ namespace Maatwebsite\Excel;
 
 use ArrayAccess;
 use Closure;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
+use Maatwebsite\Excel\Columns\ColumnCollection;
+use PhpOffice\PhpSpreadsheet\Calculation\Exception as CalculationException;
 use PhpOffice\PhpSpreadsheet\Worksheet\Row as SpreadsheetRow;
 
 /**
@@ -27,14 +30,19 @@ class Row implements ArrayAccess
 
     protected ?string $rowCacheEndColumn = null;
 
+    protected mixed $rowCacheNullValue = null;
+
     /**
      * @param  list<string>  $headingRow
      * @param  array<int, bool>  $headerIsGrouped
+     * @param  ColumnCollection|null  $columns  When given, the row is read through the
+     *                                          column definitions instead of the heading row.
      */
     public function __construct(
         protected SpreadsheetRow $row,
         protected array $headingRow = [],
         protected array $headerIsGrouped = [],
+        protected ?ColumnCollection $columns = null,
     ) {
     }
 
@@ -53,10 +61,45 @@ class Row implements ArrayAccess
 
     /**
      * @return array<array-key, mixed>
+     *
+     * @throws CalculationException
+     */
+    public function toArrayWithColumns(ColumnCollection $columns): array
+    {
+        // Columns without a matching heading still appear, as null, so the shape
+        // of the result doesn't depend on what the file happened to contain.
+        $cells = array_fill_keys($columns->unmatchedKeys(), null);
+
+        foreach ($this->row->getCellIterator($columns->start() ?: 'A', $columns->end()) as $cell) {
+            foreach (Arr::wrap($columns->get($cell->getColumn())) as $column) {
+                foreach ($column->columns() as $subColumn) {
+                    if ($subColumn->isReadable()) {
+                        $cells[$subColumn->getKey()] = $subColumn->read($cell);
+                    }
+                }
+            }
+        }
+
+        return $cells;
+    }
+
+    /**
+     * @return array<array-key, mixed>
      */
     public function toArray(mixed $nullValue = null, bool $calculateFormulas = false, bool $formatData = true, ?string $endColumn = null): array
     {
-        if (is_array($this->rowCache) && ($this->rowCacheFormatData === $formatData) && ($this->rowCacheEndColumn === $endColumn)) {
+        // Columns define their own range and read behaviour, so none of the
+        // arguments apply and the result can be cached unconditionally.
+        if ($this->columns instanceof ColumnCollection) {
+            return $this->rowCache ??= $this->prepare(
+                $this->toArrayWithColumns($this->columns)
+            );
+        }
+
+        if (is_array($this->rowCache)
+            && ($this->rowCacheNullValue === $nullValue)
+            && ($this->rowCacheFormatData === $formatData)
+            && ($this->rowCacheEndColumn === $endColumn)) {
             return $this->rowCache;
         }
 
@@ -79,11 +122,10 @@ class Row implements ArrayAccess
             $i++;
         }
 
-        if ($this->preparationCallback instanceof Closure) {
-            $cells = ($this->preparationCallback)($cells, $this->row->getRowIndex());
-        }
+        $cells = $this->prepare($cells);
 
         $this->rowCache           = $cells;
+        $this->rowCacheNullValue  = $nullValue;
         $this->rowCacheFormatData = $formatData;
         $this->rowCacheEndColumn  = $endColumn;
 
@@ -126,5 +168,18 @@ class Row implements ArrayAccess
     public function setPreparationCallback(?Closure $preparationCallback = null): void
     {
         $this->preparationCallback = $preparationCallback;
+    }
+
+    /**
+     * @param  array<array-key, mixed>  $cells
+     * @return array<array-key, mixed>
+     */
+    protected function prepare(array $cells): array
+    {
+        if (!$this->preparationCallback instanceof Closure) {
+            return $cells;
+        }
+
+        return ($this->preparationCallback)($cells, $this->row->getRowIndex());
     }
 }
