@@ -9,6 +9,8 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Traits\Macroable;
 use Maatwebsite\Excel\Concerns\Export;
 use Maatwebsite\Excel\Concerns\Import;
+use Maatwebsite\Excel\Contracts\QueuedSheetSourceHandler;
+use Maatwebsite\Excel\Contracts\SheetSourceHandler;
 use Maatwebsite\Excel\Files\Filesystem;
 use Maatwebsite\Excel\Files\TemporaryFile;
 use Maatwebsite\Excel\Helpers\FileTypeDetector;
@@ -50,6 +52,7 @@ class Excel implements Exporter, Importer
         protected QueuedWriter $queuedWriter,
         private readonly Reader $reader,
         protected Filesystem $filesystem,
+        private readonly HandlerRegistry $handlerRegistry,
     ) {
     }
 
@@ -163,6 +166,20 @@ class Excel implements Exporter, Importer
         assert($response instanceof PendingDispatch || $response instanceof PendingBatch);
 
         return $response;
+    }
+
+    /**
+     * Register a custom export source handler.
+     *
+     * The handler may implement SheetSourceHandler (sync), QueuedSheetSourceHandler
+     * (queued), or both. Pass a class name to have it resolved lazily from the
+     * service container, or pass an instance directly.
+     *
+     * @param  SheetSourceHandler|QueuedSheetSourceHandler|class-string  ...$handlers
+     */
+    public function registerSourceHandler(SheetSourceHandler|QueuedSheetSourceHandler|string ...$handlers): void
+    {
+        $this->handlerRegistry->register(...$handlers);
     }
 
     /**

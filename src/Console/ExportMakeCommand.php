@@ -38,9 +38,11 @@ class ExportMakeCommand extends GeneratorCommand
     {
         if ($this->option('model') && $this->option('query')) {
             return $this->resolveStubPath('/stubs/export.query-model.stub');
-        } elseif ($this->option('model')) {
+        }
+        if ($this->option('model')) {
             return $this->resolveStubPath('/stubs/export.model.stub');
-        } elseif ($this->option('query')) {
+        }
+        if ($this->option('query')) {
             return $this->resolveStubPath('/stubs/export.query.stub');
         }
 

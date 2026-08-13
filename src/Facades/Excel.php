@@ -8,6 +8,8 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Facade;
 use Maatwebsite\Excel\Concerns\Export;
 use Maatwebsite\Excel\Concerns\Import;
+use Maatwebsite\Excel\Contracts\QueuedSheetSourceHandler;
+use Maatwebsite\Excel\Contracts\SheetSourceHandler;
 use Maatwebsite\Excel\Excel as BaseExcel;
 use Maatwebsite\Excel\Fakes\ExcelFake;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
@@ -21,6 +23,7 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
  * @method static array<array-key, array<int, array<array-key, mixed>>> toArray(Import $import, string|UploadedFile $filePath, string $disk = null, string $readerType = null)
  * @method static Collection<array-key, Collection<int, Collection<array-key, mixed>>> toCollection(?Import $import, string|UploadedFile $filePath, string $disk = null, string $readerType = null)
  * @method static PendingDispatch queueImport(Import $import, string|UploadedFile $filePath, string $disk = null, string $readerType = null)
+ * @method static void registerSourceHandler(SheetSourceHandler|QueuedSheetSourceHandler|string ...$handlers)
  * @method static void matchByRegex()
  * @method static void doNotMatchByRegex()
  * @method static void assertDownloaded(string $fileName, callable $callback = null)

@@ -14,6 +14,8 @@ use Illuminate\Support\Traits\Macroable;
 use Maatwebsite\Excel\Concerns\Export;
 use Maatwebsite\Excel\Concerns\Import;
 use Maatwebsite\Excel\Concerns\ShouldBatch;
+use Maatwebsite\Excel\Contracts\QueuedSheetSourceHandler;
+use Maatwebsite\Excel\Contracts\SheetSourceHandler;
 use Maatwebsite\Excel\Exporter;
 use Maatwebsite\Excel\Importer;
 use PHPUnit\Framework\Assert;
@@ -178,6 +180,11 @@ class ExcelFake implements Exporter, Importer
         }
 
         return new PendingDispatch($this->job);
+    }
+
+    public function registerSourceHandler(SheetSourceHandler|QueuedSheetSourceHandler|string ...$handlers): void
+    {
+        //
     }
 
     /**

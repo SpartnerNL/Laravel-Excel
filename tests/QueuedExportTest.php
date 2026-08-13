@@ -21,10 +21,12 @@ use Maatwebsite\Excel\Tests\Data\Stubs\QueuedExportWithFailedHook;
 use Maatwebsite\Excel\Tests\Data\Stubs\QueuedExportWithLocalePreferences;
 use Maatwebsite\Excel\Tests\Data\Stubs\ShouldBatchExport;
 use Maatwebsite\Excel\Tests\Data\Stubs\ShouldQueueExport;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use Throwable;
 
 final class QueuedExportTest extends TestCase
 {
+    #[DoesNotPerformAssertions]
     public function test_can_queue_an_export(): void
     {
         $export = new QueuedExport;
@@ -45,6 +47,7 @@ final class QueuedExportTest extends TestCase
         $this->assertCount(1, $batch->jobs);
     }
 
+    #[DoesNotPerformAssertions]
     public function test_can_queue_an_export_and_store_on_different_disk(): void
     {
         $export = new QueuedExport;
@@ -95,6 +98,7 @@ final class QueuedExportTest extends TestCase
         $this->assertSame(3, $jobs);
     }
 
+    #[DoesNotPerformAssertions]
     public function test_can_queue_export_with_remote_temp_disk_and_prefix(): void
     {
         config()->set('excel.temporary_files.remote_disk', 'test');
@@ -107,6 +111,7 @@ final class QueuedExportTest extends TestCase
         ]);
     }
 
+    #[DoesNotPerformAssertions]
     public function test_can_implicitly_queue_an_export(): void
     {
         $export = new ShouldQueueExport;

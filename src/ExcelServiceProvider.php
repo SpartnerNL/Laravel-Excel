@@ -12,6 +12,13 @@ use Maatwebsite\Excel\Console\ExportMakeCommand;
 use Maatwebsite\Excel\Console\ImportMakeCommand;
 use Maatwebsite\Excel\Files\Filesystem;
 use Maatwebsite\Excel\Files\TemporaryFileFactory;
+use Maatwebsite\Excel\Handlers\FromArrayHandler;
+use Maatwebsite\Excel\Handlers\FromCollectionHandler;
+use Maatwebsite\Excel\Handlers\FromGeneratorHandler;
+use Maatwebsite\Excel\Handlers\FromIteratorHandler;
+use Maatwebsite\Excel\Handlers\FromQueryHandler;
+use Maatwebsite\Excel\Handlers\FromScoutHandler;
+use Maatwebsite\Excel\Handlers\FromViewHandler;
 use Maatwebsite\Excel\Mixins\DownloadCollectionMixin;
 use Maatwebsite\Excel\Mixins\DownloadQueryMacro;
 use Maatwebsite\Excel\Mixins\ImportAsMacro;
@@ -67,6 +74,23 @@ class ExcelServiceProvider extends ServiceProvider
             'excel'
         );
 
+        $this->app->singleton(function (): HandlerRegistry {
+            $registry = new HandlerRegistry;
+
+            $registry->register(
+                FromGeneratorHandler::class,
+                FromIteratorHandler::class,
+                FromArrayHandler::class,
+                FromCollectionHandler::class,
+                FromScoutHandler::class,
+                FromQueryHandler::class,
+                FromViewHandler::class,
+                ...config('excel.exports.source_handlers', []),
+            );
+
+            return $registry;
+        });
+
         $this->app->bind(CacheManager::class, fn ($app): CacheManager => new CacheManager($app));
 
         $this->app->singleton(TransactionManager::class, fn ($app): TransactionManager => new TransactionManager($app));
@@ -84,7 +108,8 @@ class ExcelServiceProvider extends ServiceProvider
             $app->make(Writer::class),
             $app->make(QueuedWriter::class),
             $app->make(Reader::class),
-            $app->make(Filesystem::class)
+            $app->make(Filesystem::class),
+            $app->make(HandlerRegistry::class),
         ));
 
         $this->app->alias('excel', Excel::class);
