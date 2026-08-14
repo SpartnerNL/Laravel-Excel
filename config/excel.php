@@ -18,7 +18,7 @@ return [
         | Here you can specify how big the chunk should be.
         |
         */
-        'chunk_size' => 1000,
+        'chunk_size' => env('EXCEL_CHUNK_SIZE', 1000),
 
         /*
         |--------------------------------------------------------------------------
@@ -239,7 +239,7 @@ return [
     |
     */
     'value_binder' => [
-        'default' => DefaultValueBinder::class,
+        'default' => env('EXCEL_DEFAULT_BINDER', DefaultValueBinder::class),
     ],
 
     'cache' => [
@@ -259,7 +259,7 @@ return [
         | Drivers: memory|illuminate|batch
         |
         */
-        'driver' => 'memory',
+        'driver' => env('EXCEL_CACHE_DRIVER', 'memory'),
 
         /*
         |--------------------------------------------------------------------------
@@ -272,7 +272,7 @@ return [
         |
         */
         'batch' => [
-            'memory_limit' => 60000,
+            'memory_limit' => env('EXCEL_CACHE_BATCH_MEMORY', 60000),
         ],
 
         /*
@@ -288,7 +288,7 @@ return [
         |
         */
         'illuminate' => [
-            'store' => null,
+            'store' => env('EXCEL_CACHE_STORAGE'),
         ],
 
         /*
