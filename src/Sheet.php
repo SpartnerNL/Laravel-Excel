@@ -38,13 +38,18 @@ use Maatwebsite\Excel\Concerns\WithCustomValueBinder;
 use Maatwebsite\Excel\Concerns\WithDrawings;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\WithFormatData;
+use Maatwebsite\Excel\Concerns\WithFreezePane;
 use Maatwebsite\Excel\Concerns\WithGroupedHeadingRow;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMappedCells;
 use Maatwebsite\Excel\Concerns\WithMapping;
+use Maatwebsite\Excel\Concerns\WithPageBreaks;
+use Maatwebsite\Excel\Concerns\WithPrintArea;
 use Maatwebsite\Excel\Concerns\WithProgressBar;
+use Maatwebsite\Excel\Concerns\WithSheetProtection;
 use Maatwebsite\Excel\Concerns\WithStrictNullComparison;
 use Maatwebsite\Excel\Concerns\WithStyles;
+use Maatwebsite\Excel\Concerns\WithTabColor;
 use Maatwebsite\Excel\Concerns\WithTitle;
 use Maatwebsite\Excel\Concerns\WithValidation;
 use Maatwebsite\Excel\Events\AfterSheet;
@@ -421,6 +426,33 @@ class Sheet
 
         if ($sheetExport instanceof ShouldAutoSize) {
             $this->autoSize();
+        }
+
+        if ($sheetExport instanceof WithFreezePane) {
+            $this->worksheet->freezePane($sheetExport->freezePane());
+        }
+
+        if ($sheetExport instanceof WithTabColor) {
+            $this->worksheet->getTabColor()->setRGB($sheetExport->tabColor());
+        }
+
+        if ($sheetExport instanceof WithSheetProtection) {
+            $protection = $this->worksheet->getProtection();
+            $protection->setSheet(true);
+            $password = $sheetExport->sheetProtection();
+            if ($password !== null) {
+                $protection->setPassword($password);
+            }
+        }
+
+        if ($sheetExport instanceof WithPageBreaks) {
+            foreach ($sheetExport->pageBreaks() as $row) {
+                $this->worksheet->setBreak('A' . $row, Worksheet::BREAK_ROW);
+            }
+        }
+
+        if ($sheetExport instanceof WithPrintArea) {
+            $this->worksheet->getPageSetup()->setPrintArea($sheetExport->printArea());
         }
 
         if ($sheetExport instanceof WithColumnWidths) {
