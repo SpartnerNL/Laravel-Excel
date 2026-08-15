@@ -239,7 +239,7 @@ return [
     |
     */
     'value_binder' => [
-        'default' => env('EXCEL_DEFAULT_BINDER', DefaultValueBinder::class),
+        'default' => DefaultValueBinder::class,
     ],
 
     'cache' => [
