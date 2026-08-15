@@ -85,6 +85,7 @@ public function handle(Export $export): void { ... }
 The `sheets()` method docblock return type has been narrowed from `array<int|string, object>` to `array<int|string, Export|Import>`.
 Sheets returned from this method should implement at least one export or import concern interface, which is almost certainly
 already the case.
+It is also necessary for your import or export class to implement `Export` or `Import` accordingly if you use this concern.
 
 ### Event::getConcernable()
 
