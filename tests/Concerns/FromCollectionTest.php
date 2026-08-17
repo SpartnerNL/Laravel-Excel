@@ -10,6 +10,7 @@ use Maatwebsite\Excel\Tests\Data\Stubs\EloquentLazyCollectionExport;
 use Maatwebsite\Excel\Tests\Data\Stubs\EloquentLazyCollectionQueuedExport;
 use Maatwebsite\Excel\Tests\Data\Stubs\QueuedExport;
 use Maatwebsite\Excel\Tests\Data\Stubs\SheetWith100Rows;
+use Maatwebsite\Excel\Tests\Data\Stubs\UntypedCollectionExport;
 use Maatwebsite\Excel\Tests\TestCase;
 
 final class FromCollectionTest extends TestCase
@@ -91,5 +92,16 @@ final class FromCollectionTest extends TestCase
             )->toArray(),
             $contents
         );
+    }
+
+    public function test_can_export_from_collection_without_generic_annotations(): void
+    {
+        $export = new UntypedCollectionExport;
+
+        $this->assertTrue($export->store('from-untyped-collection-store.xlsx'));
+
+        $contents = $this->readAsArray(__DIR__ . '/../Data/Disks/Local/from-untyped-collection-store.xlsx', 'Xlsx');
+
+        $this->assertSame([['B1', 'A1'], ['B2', 'A2']], $contents);
     }
 }

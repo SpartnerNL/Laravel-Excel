@@ -527,9 +527,6 @@ class Sheet
         }
     }
 
-    /**
-     * @param  FromCollection<array-key, mixed>  $sheetExport
-     */
     public function fromCollection(FromCollection $sheetExport): void
     {
         $this->appendRows($sheetExport->collection()->all(), $sheetExport);
