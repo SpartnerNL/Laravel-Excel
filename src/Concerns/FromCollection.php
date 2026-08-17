@@ -7,8 +7,8 @@ namespace Maatwebsite\Excel\Concerns;
 use Illuminate\Support\Enumerable;
 
 /**
- * @template TKey of array-key
- * @template TValue
+ * @template TKey of array-key = array-key
+ * @template TValue = mixed
  */
 interface FromCollection extends Export
 {
