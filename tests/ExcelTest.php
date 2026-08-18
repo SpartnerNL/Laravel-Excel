@@ -155,6 +155,73 @@ final class ExcelTest extends TestCase
         );
     }
 
+    public function test_import_resolves_a_relative_path_on_the_disk_before_the_working_directory(): void
+    {
+        $name   = 'shadowed.csv';
+        $onDisk = FileHelper::absolutePath($name, 'local');
+        $inCwd  = getcwd() . DIRECTORY_SEPARATOR . $name;
+
+        file_put_contents($onDisk, "from-the-disk\n");
+        file_put_contents($inCwd, "from-the-working-directory\n");
+
+        // The working directory may never shadow a file that lives on the disk.
+        $this->assertSame([[['from-the-disk']]], $this->SUT->toArray($this->givenCsvImport(), $name, null, Excel::CSV));
+
+        @unlink($onDisk);
+        @unlink($inCwd);
+    }
+
+    public function test_import_reads_a_relative_path_from_the_working_directory_when_the_disk_does_not_have_it(): void
+    {
+        $name  = 'only-in-cwd.csv';
+        $inCwd = getcwd() . DIRECTORY_SEPARATOR . $name;
+
+        file_put_contents($inCwd, "from-the-working-directory\n");
+
+        $this->assertSame(
+            [[['from-the-working-directory']]],
+            $this->SUT->toArray($this->givenCsvImport(), $name, null, Excel::CSV)
+        );
+
+        @unlink($inCwd);
+    }
+
+    public function test_import_reads_an_absolute_local_path_when_no_disk_is_given(): void
+    {
+        $elsewhere = __DIR__ . '/Data/Disks/absolute-import.csv';
+
+        file_put_contents($elsewhere, "from-an-absolute-path\n");
+
+        $this->assertSame(
+            [[['from-an-absolute-path']]],
+            $this->SUT->toArray($this->givenCsvImport(), $elsewhere, null, Excel::CSV)
+        );
+
+        @unlink($elsewhere);
+    }
+
+    public function test_import_resolves_paths_within_the_disk_when_a_disk_is_given(): void
+    {
+        $elsewhere = __DIR__ . '/Data/Disks/outside-the-disk.csv';
+
+        file_put_contents($elsewhere, "outside-the-disk\n");
+
+        // Paths are resolved against the disk, never against the working directory.
+        foreach ([$elsewhere, '../outside-the-disk.csv'] as $path) {
+            $imported = null;
+
+            try {
+                $imported = $this->SUT->toArray($this->givenCsvImport(), $path, 'local', Excel::CSV);
+            } catch (Throwable) {
+                // The disk rejects paths it cannot resolve.
+            }
+
+            $this->assertNotSame([[['outside-the-disk']]], $imported, 'Expected [' . $path . '] to resolve within the disk.');
+        }
+
+        @unlink($elsewhere);
+    }
+
     public function test_store_cleans_up_the_temporary_file_when_the_disk_fails(): void
     {
         $temporaryPath = FileHelper::absolutePath('temporary-files', 'local');
@@ -490,6 +557,19 @@ final class ExcelTest extends TestCase
             null,
             Excel::XLSX
         );
+    }
+
+    private function givenCsvImport(): ToArray
+    {
+        return new class implements ToArray
+        {
+            /**
+             * @param  array<array-key, mixed>  $array
+             */
+            public function array(array $array): void
+            {
+            }
+        };
     }
 
     /**

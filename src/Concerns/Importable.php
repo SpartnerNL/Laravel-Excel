@@ -26,6 +26,8 @@ trait Importable
     protected string|UploadedFile|null $filePath = null;
 
     /**
+     * When no disk is given, a string $filePath is read from the local filesystem, not from a disk.
+     *
      * @throws ValidationException
      * @throws NoFilePathGivenException
      */
@@ -42,6 +44,8 @@ trait Importable
     }
 
     /**
+     * When no disk is given, a string $filePath is read from the local filesystem, not from a disk.
+     *
      * @return array<array-key, array<int, array<array-key, mixed>>>
      *
      * @throws NoFilePathGivenException
@@ -59,6 +63,8 @@ trait Importable
     }
 
     /**
+     * When no disk is given, a string $filePath is read from the local filesystem, not from a disk.
+     *
      * @return Collection<array-key, Collection<int, Collection<array-key, mixed>>>
      *
      * @throws NoFilePathGivenException
@@ -76,6 +82,8 @@ trait Importable
     }
 
     /**
+     * When no disk is given, a string $filePath is read from the local filesystem, not from a disk.
+     *
      * @throws NoFilePathGivenException
      * @throws InvalidArgumentException
      */
