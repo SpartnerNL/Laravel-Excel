@@ -13,12 +13,17 @@ class LimitFilter implements IReadFilter
     public function __construct(
         private readonly int $startRow,
         int $limit,
+        private readonly ?int $headingRow = null,
     ) {
-        $this->endRow = $this->startRow + $limit;
+        // Subtract 1 row from the start row, so a limit of 1 row
+        // will have the same start and end row.
+        $this->endRow = ($this->startRow - 1) + $limit;
     }
 
     public function readCell(string $columnAddress, int $row, string $worksheetName = ''): bool
     {
-        return $row >= $this->startRow && $row <= $this->endRow;
+        //  Only read the heading row, and the rows within the limited range.
+        return $row === $this->headingRow
+            || ($row >= $this->startRow && $row <= $this->endRow);
     }
 }

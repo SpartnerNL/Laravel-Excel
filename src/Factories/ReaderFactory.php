@@ -6,12 +6,13 @@ use Maatwebsite\Excel\Columns\ColumnCollection;
 use Maatwebsite\Excel\Concerns\Import;
 use Maatwebsite\Excel\Concerns\MapsCsvSettings;
 use Maatwebsite\Excel\Concerns\WithCustomCsvSettings;
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithLimit;
 use Maatwebsite\Excel\Concerns\WithReadFilter;
-use Maatwebsite\Excel\Concerns\WithStartRow;
 use Maatwebsite\Excel\Exceptions\NoTypeDetectedException;
 use Maatwebsite\Excel\Files\TemporaryFile;
 use Maatwebsite\Excel\Filters\LimitFilter;
+use Maatwebsite\Excel\Imports\HeadingRowExtractor;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Reader\Csv;
 use PhpOffice\PhpSpreadsheet\Reader\Exception;
@@ -60,8 +61,9 @@ class ReaderFactory
             $reader->setReadFilter($import->readFilter());
         } elseif ($import instanceof WithLimit) {
             $reader->setReadFilter(new LimitFilter(
-                $import instanceof WithStartRow ? $import->startRow() : 1,
-                $import->limit()
+                HeadingRowExtractor::determineStartRow($import),
+                $import->limit(),
+                $import instanceof WithHeadingRow ? HeadingRowExtractor::headingRow($import) : null
             ));
         }
 
