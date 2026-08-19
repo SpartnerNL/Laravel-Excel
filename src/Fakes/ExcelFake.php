@@ -3,6 +3,7 @@
 namespace Maatwebsite\Excel\Fakes;
 
 use Exception;
+use Illuminate\Bus\Batchable;
 use Illuminate\Bus\PendingBatch;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -91,7 +92,7 @@ class ExcelFake implements Exporter, Importer
 
         $this->job = new class
         {
-            use Queueable;
+            use Batchable, Queueable;
 
             public function handle(): void
             {
@@ -164,7 +165,7 @@ class ExcelFake implements Exporter, Importer
 
         $this->job = new class
         {
-            use Queueable;
+            use Batchable, Queueable;
 
             public function handle(): void
             {

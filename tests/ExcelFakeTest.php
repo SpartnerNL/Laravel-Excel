@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace Maatwebsite\Excel\Tests;
 
+use Illuminate\Bus\PendingBatch;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\PendingDispatch;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\FromCollection;
+use Maatwebsite\Excel\Concerns\ShouldBatch;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Excel;
 use Maatwebsite\Excel\Facades\Excel as ExcelFacade;
@@ -226,6 +228,31 @@ final class ExcelFakeTest extends TestCase
         ExcelFacade::assertQueued('/\w{6}-\w{8}\.csv/');
     }
 
+    public function test_can_assert_against_a_fake_batched_export(): void
+    {
+        ExcelFacade::fake();
+
+        $response = ExcelFacade::queue($this->givenBatchedExport(), 'batched-filename.csv', 's3');
+
+        $this->assertInstanceOf(PendingBatch::class, $response);
+
+        ExcelFacade::assertQueued('batched-filename.csv', 's3');
+        ExcelFacade::assertQueued('batched-filename.csv', 's3', fn (FromCollection $export) => $export->collection()->contains('foo'));
+    }
+
+    public function test_can_assert_against_a_fake_batched_import(): void
+    {
+        ExcelFacade::fake();
+
+        $response = ExcelFacade::queueImport($this->givenBatchedImport(), 'batched-filename.csv', 's3');
+
+        $this->assertInstanceOf(PendingBatch::class, $response);
+
+        ExcelFacade::assertImported('batched-filename.csv', 's3');
+        ExcelFacade::assertQueued('batched-filename.csv', 's3');
+        ExcelFacade::assertQueued('batched-filename.csv', 's3', fn (ToModel $import): bool => $import->model([]) instanceof User);
+    }
+
     /**
      * @return FromCollection<int, string>
      */
@@ -274,6 +301,34 @@ final class ExcelFakeTest extends TestCase
     private function givenQueuedImport(): object
     {
         return new class implements ShouldQueue, ToModel
+        {
+            public function model(array $row): User
+            {
+                return new User([]);
+            }
+        };
+    }
+
+    /**
+     * @return FromCollection<int, string>
+     */
+    private function givenBatchedExport(): FromCollection
+    {
+        return new class implements FromCollection, ShouldBatch, ShouldQueue
+        {
+            /**
+             * @return Collection<int, string>
+             */
+            public function collection(): Collection
+            {
+                return collect(['foo', 'bar']);
+            }
+        };
+    }
+
+    private function givenBatchedImport(): object
+    {
+        return new class implements ShouldBatch, ShouldQueue, ToModel
         {
             public function model(array $row): User
             {
