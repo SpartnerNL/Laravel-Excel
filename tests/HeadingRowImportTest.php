@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Maatwebsite\Excel\Tests;
 
+use InvalidArgumentException;
 use Maatwebsite\Excel\HeadingRowImport;
 use Maatwebsite\Excel\Imports\HeadingRowFormatter;
 
@@ -141,5 +142,28 @@ final class HeadingRowImportTest extends TestCase
                 ['custom2-name', 'custom2-email'],
             ],
         ], $headings);
+    }
+
+    public function test_formatter_none_returns_headings_unchanged(): void
+    {
+        HeadingRowFormatter::default(HeadingRowFormatter::FORMATTER_NONE);
+
+        $import = new HeadingRowImport;
+
+        $headings = $import->toArray('import-users-with-headings.xlsx');
+
+        $this->assertSame([
+            [
+                ['name', 'email'],
+            ],
+        ], $headings);
+    }
+
+    public function test_default_throws_for_unknown_formatter_name(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Formatter "nonexistent" does not exist');
+
+        HeadingRowFormatter::default('nonexistent');
     }
 }

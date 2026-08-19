@@ -6,6 +6,7 @@ namespace Maatwebsite\Excel\Tests\Concerns;
 
 use DateTime;
 use Exception;
+use Illuminate\Console\OutputStyle;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\Import;
@@ -17,7 +18,9 @@ use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\WithFormatData;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use Maatwebsite\Excel\Concerns\WithLimit;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
+use Maatwebsite\Excel\Concerns\WithProgressBar;
 use Maatwebsite\Excel\Events\AfterImport;
 use Maatwebsite\Excel\Events\BeforeImport;
 use Maatwebsite\Excel\Events\ImportFailed;
@@ -25,6 +28,7 @@ use Maatwebsite\Excel\Reader;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\Group;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
 use Maatwebsite\Excel\Tests\TestCase;
+use Mockery;
 use PhpOffice\PhpSpreadsheet\Shared\Date;
 use PHPUnit\Framework\Assert;
 use Throwable;
@@ -455,5 +459,70 @@ final class WithChunkReadingTest extends TestCase
         };
 
         $import->import('import-batches-with-date.xlsx');
+    }
+
+    public function test_reports_progress_when_importing_in_chunks(): void
+    {
+        $import = new class implements ToModel, WithChunkReading, WithProgressBar
+        {
+            use Importable;
+
+            public function model(array $row): User
+            {
+                return new User([
+                    'name'     => $row[0],
+                    'email'    => $row[1],
+                    'password' => 'secret',
+                ]);
+            }
+
+            public function chunkSize(): int
+            {
+                return 1;
+            }
+        };
+
+        $output = Mockery::mock(OutputStyle::class);
+        $output->shouldReceive('progressStart')->once()->with(2)->andReturnSelf();
+        $output->shouldReceive('progressAdvance')->twice()->andReturnSelf();
+        $output->shouldReceive('progressFinish')->once()->andReturnSelf();
+
+        $import->withOutput($output);
+        $import->import('import-users.xlsx');
+
+        $this->assertSame(2, User::count());
+    }
+
+    public function test_can_limit_rows_when_importing_in_chunks(): void
+    {
+        $import = new class implements ToArray, WithChunkReading, WithLimit
+        {
+            use Importable;
+
+            public int $called = 0;
+
+            public function array(array $array): void
+            {
+                $this->called++;
+
+                Assert::assertSame([
+                    ['Patrick Brouwers', 'patrick@maatwebsite.nl'],
+                ], $array);
+            }
+
+            public function chunkSize(): int
+            {
+                return 1;
+            }
+
+            public function limit(): int
+            {
+                return 1;
+            }
+        };
+
+        $import->import('import-users.xlsx');
+
+        $this->assertSame(1, $import->called, 'Row count was not limited during chunked reading.');
     }
 }

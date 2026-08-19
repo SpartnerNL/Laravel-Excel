@@ -13,6 +13,7 @@ use Maatwebsite\Excel\Columns\Text;
 use Maatwebsite\Excel\ImageContent;
 use Maatwebsite\Excel\Tests\TestCase;
 use PhpOffice\PhpSpreadsheet\Cell\Cell;
+use PhpOffice\PhpSpreadsheet\Cell\DataType;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Worksheet\AutoFilter\Column as FilterColumn;
 use PhpOffice\PhpSpreadsheet\Worksheet\MemoryDrawing;
@@ -235,6 +236,33 @@ final class ColumnApiTest extends TestCase
         $column = Column::make('Rate')->index(1)->formatted();
 
         $this->assertSame('50.00%', $column->read($sheet->getCell('A1')));
+    }
+
+    public function test_type_forces_an_explicit_data_type_when_writing(): void
+    {
+        $sheet = $this->givenSheet();
+
+        $column = Column::make('Attribute')->index(1)->type(DataType::TYPE_STRING);
+        $cell   = $column->write($sheet, 1, ['attribute' => 10]);
+
+        $this->assertSame(DataType::TYPE_STRING, $cell->getDataType());
+        $this->assertSame('10', $cell->getValue());
+    }
+
+    public function test_format_sets_the_column_number_format(): void
+    {
+        $sheet = $this->givenSheet();
+
+        $column = Column::make('Attribute')->index(1)->format('0.00%');
+        $column->write($sheet, 1, ['attribute' => 0.5]);
+        $column->afterWriting($sheet, 1);
+
+        $this->assertSame('0.00%', $sheet->getCell('A1')->getStyle()->getNumberFormat()->getFormatCode());
+    }
+
+    public function test_title_returns_the_column_title(): void
+    {
+        $this->assertSame('Full Name', Column::make('Full Name')->title());
     }
 
     public function test_text_columns_expose_their_key(): void

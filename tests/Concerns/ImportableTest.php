@@ -9,6 +9,7 @@ use Maatwebsite\Excel\Concerns\Import;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\ToArray;
 use Maatwebsite\Excel\Excel;
+use Maatwebsite\Excel\Exceptions\NoFilePathGivenException;
 use Maatwebsite\Excel\Importer;
 use Maatwebsite\Excel\Tests\TestCase;
 use PHPUnit\Framework\Assert;
@@ -132,6 +133,43 @@ final class ImportableTest extends TestCase
         };
 
         $import->import('doesnotexistanywhere.xlsx');
+    }
+
+    public function test_needs_to_have_a_file_path_when_importing(): void
+    {
+        $this->expectException(NoFilePathGivenException::class);
+        $this->expectExceptionMessage('A filepath or UploadedFile needs to be passed to start the import.');
+
+        $import = new class implements Import
+        {
+            use Importable;
+        };
+
+        $import->import();
+    }
+
+    public function test_needs_to_have_a_file_path_when_converting_to_array(): void
+    {
+        $this->expectException(NoFilePathGivenException::class);
+
+        $import = new class implements Import
+        {
+            use Importable;
+        };
+
+        $import->toArray();
+    }
+
+    public function test_needs_to_have_a_file_path_when_converting_to_collection(): void
+    {
+        $this->expectException(NoFilePathGivenException::class);
+
+        $import = new class implements Import
+        {
+            use Importable;
+        };
+
+        $import->toCollection();
     }
 
     public function test_default_output_style_is_set(): void
