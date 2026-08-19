@@ -58,6 +58,26 @@ final class ExcelTest extends TestCase
         $this->assertSame('attachment; filename=filename.xlsx', str_replace('"', '', $response->headers->get('Content-Disposition')));
     }
 
+    public function test_download_discards_stray_output_buffer_content(): void
+    {
+        $export = new EmptyExport;
+
+        $startingLevel = ob_get_level();
+        ob_start();
+        echo 'stray output that should not prepend the download';
+
+        $response = $this->SUT->download($export, 'filename.xlsx');
+
+        $this->assertInstanceOf(BinaryFileResponse::class, $response);
+        $this->assertSame('attachment; filename=filename.xlsx', str_replace('"', '', $response->headers->get('Content-Disposition')));
+
+        // download() replaces the buffer above with a fresh, empty one; close it
+        // so the output-buffering level matches what it was before this test ran.
+        while (ob_get_level() > $startingLevel) {
+            ob_end_clean();
+        }
+    }
+
     public function test_can_store_an_export_object_on_default_disk(): void
     {
         $export = new EmptyExport;

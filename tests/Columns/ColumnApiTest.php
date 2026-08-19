@@ -218,7 +218,7 @@ final class ColumnApiTest extends TestCase
         $drawing->setRenderingFunction(MemoryDrawing::RENDERING_PNG);
         $drawing->setMimeType(MemoryDrawing::MIMETYPE_PNG);
 
-        $content = ImageContent::fromMemory($drawing);
+        $content = ImageContent::from($drawing);
 
         $this->assertSame('png', $content->extension());
         $this->assertStringEndsWith('.png', $content->filename());
