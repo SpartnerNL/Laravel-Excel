@@ -228,6 +228,68 @@ final class ExcelFakeTest extends TestCase
         ExcelFacade::assertQueued('/\w{6}-\w{8}\.csv/');
     }
 
+    public function test_can_assert_against_a_fake_implicitly_batched_export(): void
+    {
+        ExcelFacade::fake();
+
+        $response = ExcelFacade::store($this->givenBatchedExport(), 'batched-filename.csv', 's3');
+
+        $this->assertInstanceOf(PendingBatch::class, $response);
+
+        ExcelFacade::assertStored('batched-filename.csv', 's3');
+        ExcelFacade::assertQueued('batched-filename.csv', 's3');
+    }
+
+    public function test_can_assert_against_a_fake_implicitly_batched_import(): void
+    {
+        ExcelFacade::fake();
+
+        $response = ExcelFacade::import($this->givenBatchedImport(), 'batched-filename.csv', 's3');
+
+        $this->assertInstanceOf(PendingBatch::class, $response);
+
+        ExcelFacade::assertImported('batched-filename.csv', 's3');
+        ExcelFacade::assertQueued('batched-filename.csv', 's3');
+    }
+
+    public function test_can_assert_to_array_fake(): void
+    {
+        ExcelFacade::fake();
+
+        $result = ExcelFacade::toArray($this->givenImport(), 'stored-filename.csv', 's3');
+
+        $this->assertSame([], $result);
+
+        ExcelFacade::assertImported('stored-filename.csv', 's3');
+        ExcelFacade::assertImported('stored-filename.csv', 's3', fn (ToModel $import): bool => $import->model([]) instanceof User);
+    }
+
+    public function test_can_assert_to_collection_fake(): void
+    {
+        ExcelFacade::fake();
+
+        $result = ExcelFacade::toCollection($this->givenImport(), 'stored-filename.csv', 's3');
+
+        $this->assertInstanceOf(Collection::class, $result);
+        $this->assertTrue($result->isEmpty());
+
+        ExcelFacade::assertImported('stored-filename.csv', 's3');
+        ExcelFacade::assertImported('stored-filename.csv', 's3', fn (ToModel $import): bool => $import->model([]) instanceof User);
+    }
+
+    public function test_do_not_match_by_regex_reverts_to_exact_matching(): void
+    {
+        ExcelFacade::fake();
+
+        ExcelFacade::store($this->givenExport(), 'stored-filename.csv', 's3');
+
+        ExcelFacade::matchByRegex();
+        ExcelFacade::assertStored('/\w{6}-\w{8}\.csv/', 's3');
+
+        ExcelFacade::doNotMatchByRegex();
+        ExcelFacade::assertStored('stored-filename.csv', 's3');
+    }
+
     public function test_can_assert_against_a_fake_batched_export(): void
     {
         ExcelFacade::fake();
