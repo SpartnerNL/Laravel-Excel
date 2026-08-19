@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Maatwebsite\Excel\Tests\Concerns;
 
+use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\ToArray;
+use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithMappedCells;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
@@ -83,6 +85,32 @@ final class WithMappedCellsTest extends TestCase
                         'email' => 'typingbeaver@mailbox.org',
                     ],
                 ], $array);
+            }
+        };
+
+        $import->import('mapped-import.xlsx');
+    }
+
+    public function test_can_import_with_references_to_cells_to_collection(): void
+    {
+        $import = new class implements ToCollection, WithMappedCells
+        {
+            use Importable;
+
+            public function mapping(): array
+            {
+                return [
+                    'name'  => 'B1',
+                    'email' => 'B2',
+                ];
+            }
+
+            public function collection(Collection $collection): void
+            {
+                Assert::assertSame([
+                    'name'  => 'Patrick Brouwers',
+                    'email' => 'patrick@maatwebsite.nl',
+                ], $collection->toArray());
             }
         };
 

@@ -217,6 +217,86 @@ final class BatchCacheTest extends TestCase
         $this->assertCount(2, $dispatchedCollection);
     }
 
+    public function test_delete_removes_value_held_in_memory(): void
+    {
+        $cache = $this->givenCache(['A1' => 'A1-value']);
+
+        $this->assertTrue($cache->delete('A1'));
+        $this->assertNull($cache->get('A1'));
+    }
+
+    public function test_delete_removes_value_from_persisted_cache_when_not_in_memory(): void
+    {
+        $cache = $this->givenCache([], ['A1' => 'A1-value']);
+
+        $this->assertTrue($cache->delete('A1'));
+        $this->assertNull($cache->get('A1'));
+    }
+
+    public function test_clear_empties_both_memory_and_persisted_cache(): void
+    {
+        $cache = $this->givenCache(['A1' => 'A1-value'], ['A2' => 'A2-value']);
+
+        $this->assertTrue($cache->clear());
+        $this->assertNull($cache->get('A1'));
+        $this->assertNull($cache->get('A2'));
+    }
+
+    public function test_has_returns_true_when_value_is_in_memory(): void
+    {
+        $cache = $this->givenCache(['A1' => 'A1-value']);
+
+        $this->assertTrue($cache->has('A1'));
+    }
+
+    public function test_has_returns_true_when_value_is_in_persisted_cache(): void
+    {
+        $cache = $this->givenCache([], ['A1' => 'A1-value']);
+
+        $this->assertTrue($cache->has('A1'));
+    }
+
+    public function test_has_returns_false_when_value_is_absent(): void
+    {
+        $cache = $this->givenCache();
+
+        $this->assertFalse($cache->has('A1'));
+    }
+
+    public function test_set_multiple_returns_true_without_persisting_when_memory_limit_not_reached(): void
+    {
+        $cache = $this->givenCache([], [], 10);
+
+        $this->assertTrue($cache->setMultiple(['A1' => 'A1-value'], 10000));
+        $this->assertNull($this->cache->get('A1'));
+        $this->assertSame('A1-value', $cache->get('A1'));
+    }
+
+    public function test_set_multiple_uses_default_ttl_when_ttl_argument_is_omitted(): void
+    {
+        config()->set('excel.cache.default_ttl', 1);
+
+        $cache = $this->givenCache([], [], 1);
+        $this->cache->setEventDispatcher(Event::fake());
+        $cache->setMultiple(['A2' => 'A2-value']);
+
+        $dispatchedCollection = Event::dispatched(
+            KeyWritten::class,
+            fn (KeyWritten $event): bool => $event->seconds === 1
+        );
+
+        $this->assertCount(1, $dispatchedCollection);
+    }
+
+    public function test_batch_cache_survives_serialization_roundtrip(): void
+    {
+        $cache = $this->givenCache(['A1' => 'A1-value']);
+
+        $unserialized = unserialize(serialize($cache));
+
+        $this->assertSame('A1-value', $unserialized->get('A1'));
+    }
+
     /**
      * @return array<string, array{int|Closure|null, int|Closure|null}>
      *
