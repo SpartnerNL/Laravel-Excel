@@ -17,22 +17,10 @@ use PhpOffice\PhpSpreadsheet\Chart\Legend;
 use PhpOffice\PhpSpreadsheet\Chart\PlotArea;
 use PhpOffice\PhpSpreadsheet\Chart\Title;
 use PhpOffice\PhpSpreadsheet\IOFactory;
-use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
 final class WithChartsTest extends TestCase
 {
-    private function readWithCharts(string $filePath): Worksheet
-    {
-        $reader = IOFactory::createReader('Xlsx');
-        $reader->setIncludeCharts(true);
-
-        /** @var Spreadsheet $spreadsheet */
-        $spreadsheet = $reader->load($filePath);
-
-        return $spreadsheet->getActiveSheet();
-    }
-
     public function test_can_export_with_a_single_chart(): void
     {
         $export = new class implements Export, FromArray, WithCharts, WithTitle
@@ -130,5 +118,15 @@ final class WithChartsTest extends TestCase
         $this->assertCount(2, $sheet->getChartCollection());
         $this->assertSame('chart1', $sheet->getChartByIndex('0')->getName());
         $this->assertSame('chart2', $sheet->getChartByIndex('1')->getName());
+    }
+
+    private function readWithCharts(string $filePath): Worksheet
+    {
+        $reader = IOFactory::createReader('Xlsx');
+        $reader->setIncludeCharts(true);
+
+        $spreadsheet = $reader->load($filePath);
+
+        return $spreadsheet->getActiveSheet();
     }
 }
