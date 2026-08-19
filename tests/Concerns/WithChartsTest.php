@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Maatwebsite\Excel\Tests\Concerns;
 
-use Maatwebsite\Excel\Concerns\Export;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromArray;
 use Maatwebsite\Excel\Concerns\WithCharts;
@@ -23,7 +22,7 @@ final class WithChartsTest extends TestCase
 {
     public function test_can_export_with_a_single_chart(): void
     {
-        $export = new class implements Export, FromArray, WithCharts, WithTitle
+        $export = new class implements FromArray, WithCharts, WithTitle
         {
             use Exportable;
 
@@ -69,7 +68,7 @@ final class WithChartsTest extends TestCase
 
     public function test_can_export_with_multiple_charts(): void
     {
-        $export = new class implements Export, FromArray, WithCharts, WithTitle
+        $export = new class implements FromArray, WithCharts, WithTitle
         {
             use Exportable;
 

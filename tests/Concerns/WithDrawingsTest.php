@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Maatwebsite\Excel\Tests\Concerns;
 
-use Maatwebsite\Excel\Concerns\Export;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromArray;
 use Maatwebsite\Excel\Concerns\WithDrawings;
@@ -15,7 +14,7 @@ final class WithDrawingsTest extends TestCase
 {
     public function test_can_export_with_a_single_drawing(): void
     {
-        $export = new class implements Export, FromArray, WithDrawings
+        $export = new class implements FromArray, WithDrawings
         {
             use Exportable;
 
@@ -47,7 +46,7 @@ final class WithDrawingsTest extends TestCase
 
     public function test_can_export_with_multiple_drawings(): void
     {
-        $export = new class implements Export, FromArray, WithDrawings
+        $export = new class implements FromArray, WithDrawings
         {
             use Exportable;
 
