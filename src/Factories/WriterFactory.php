@@ -9,6 +9,7 @@ use Maatwebsite\Excel\Concerns\WithCharts;
 use Maatwebsite\Excel\Concerns\WithCustomCsvSettings;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 use Maatwebsite\Excel\Concerns\WithPreCalculateFormulas;
+use Maatwebsite\Excel\Helpers\ConcernTree;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Csv;
@@ -73,15 +74,9 @@ class WriterFactory
 
     private static function includesCharts(Export $export): bool
     {
-        if ($export instanceof WithCharts) {
-            return true;
-        }
-
-        if ($export instanceof WithMultipleSheets) {
-            foreach ($export->sheets() as $sheet) {
-                if ($sheet instanceof WithCharts) {
-                    return true;
-                }
+        foreach (ConcernTree::flatten($export) as $node) {
+            if ($node instanceof WithCharts) {
+                return true;
             }
         }
 
