@@ -90,6 +90,36 @@ final class BatchCacheTest extends TestCase
         $this->assertSame('A6-value', $cache->get('A6'));
     }
 
+    public function test_will_get_multiple_when_keys_is_a_generator(): void
+    {
+        $inMemory = [
+            'A1' => 'A1-value',
+            'A2' => 'A2-value',
+            'A3' => 'A3-value',
+        ];
+        $persisted = [
+            'A4' => 'A4-value',
+            'A5' => 'A5-value',
+            'A6' => 'A6-value',
+        ];
+
+        $cache = $this->givenCache($inMemory, $persisted);
+
+        $keys = (function () {
+            yield 'A1';
+            yield 'A2';
+            yield 'A3';
+            yield 'A4';
+            yield 'A5';
+            yield 'A6';
+        })();
+
+        $this->assertSame(
+            array_merge($inMemory, $persisted),
+            $cache->getMultiple($keys)
+        );
+    }
+
     public function test_it_persists_to_cache_when_memory_limit_reached_on_setting_a_value(): void
     {
         $memoryLimit = 3;
