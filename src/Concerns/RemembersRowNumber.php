@@ -4,7 +4,7 @@ namespace Maatwebsite\Excel\Concerns;
 
 trait RemembersRowNumber
 {
-    protected int $rowNumber;
+    protected ?int $rowNumber = null;
 
     public function rememberRowNumber(int $rowNumber): void
     {

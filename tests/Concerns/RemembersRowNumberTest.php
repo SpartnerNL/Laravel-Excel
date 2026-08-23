@@ -14,6 +14,17 @@ use Maatwebsite\Excel\Tests\TestCase;
 
 final class RemembersRowNumberTest extends TestCase
 {
+    public function test_get_row_number_returns_null_before_it_is_remembered(): void
+    {
+        $import = new class implements Import
+        {
+            use Importable;
+            use RemembersRowNumber;
+        };
+
+        $this->assertNull($import->getRowNumber());
+    }
+
     public function test_can_set_and_get_row_number(): void
     {
         $import = new class implements Import

@@ -4,7 +4,7 @@ namespace Maatwebsite\Excel\Concerns;
 
 trait RemembersChunkOffset
 {
-    protected ?int $chunkOffset;
+    protected ?int $chunkOffset = null;
 
     public function setChunkOffset(int $chunkOffset): void
     {

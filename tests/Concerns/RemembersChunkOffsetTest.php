@@ -13,6 +13,17 @@ use Maatwebsite\Excel\Tests\TestCase;
 
 final class RemembersChunkOffsetTest extends TestCase
 {
+    public function test_get_chunk_offset_returns_null_before_it_is_set(): void
+    {
+        $import = new class implements Import
+        {
+            use Importable;
+            use RemembersChunkOffset;
+        };
+
+        $this->assertNull($import->getChunkOffset());
+    }
+
     public function test_can_set_and_get_chunk_offset(): void
     {
         $import = new class implements Import
