@@ -18,6 +18,7 @@ use Maatwebsite\Excel\Cache\BatchCacheDeprecated;
 use Maatwebsite\Excel\Cache\CacheManager;
 use Maatwebsite\Excel\Cache\MemoryInterface;
 use Maatwebsite\Excel\Tests\TestCase;
+use Mockery;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Psr\SimpleCache\CacheInterface;
 use Psr\SimpleCache\InvalidArgumentException;
@@ -88,6 +89,58 @@ final class BatchCacheTest extends TestCase
 
         $this->assertSame('A3-value', $cache->get('A3'));
         $this->assertSame('A6-value', $cache->get('A6'));
+    }
+
+    public function test_will_get_multiple_when_keys_is_a_generator(): void
+    {
+        $inMemory = [
+            'A1' => 'A1-value',
+            'A2' => 'A2-value',
+            'A3' => 'A3-value',
+        ];
+        $persisted = [
+            'A4' => 'A4-value',
+            'A5' => 'A5-value',
+            'A6' => 'A6-value',
+        ];
+
+        $cache = $this->givenCache($inMemory, $persisted);
+
+        $keys = (function () {
+            yield 'A1';
+            yield 'A2';
+            yield 'A3';
+            yield 'A4';
+            yield 'A5';
+            yield 'A6';
+        })();
+
+        $this->assertSame(
+            array_merge($inMemory, $persisted),
+            $cache->getMultiple($keys)
+        );
+    }
+
+    public function test_will_get_multiple_when_memory_reports_items_via_a_non_array_iterable(): void
+    {
+        $memory = Mockery::mock(MemoryInterface::class);
+        $memory->shouldReceive('getMultiple')
+            ->once()
+            ->with(['A1', 'A2', 'A3'], null)
+            ->andReturnUsing(function () {
+                yield 'A1' => 'A1-value';
+                yield 'A2' => 'A2-value';
+                yield 'A3' => null;
+            });
+
+        $store = new ArrayStore;
+        $store->putMany(['A3' => 'A3-value'], 10000);
+        $cache = $this->makeBatchCache(new Repository($store), $memory);
+
+        $this->assertSame(
+            ['A1' => 'A1-value', 'A2' => 'A2-value', 'A3' => 'A3-value'],
+            $cache->getMultiple(['A1', 'A2', 'A3'])
+        );
     }
 
     public function test_it_persists_to_cache_when_memory_limit_reached_on_setting_a_value(): void
@@ -312,9 +365,6 @@ final class BatchCacheTest extends TestCase
     }
 
     /**
-     * Construct a BatchCache with a in memory store
-     * and an array cache, pretending to be a persistence store.
-     *
      * @param  array<string, mixed>  $memory
      * @param  array<string, mixed>  $persisted
      *
@@ -333,17 +383,22 @@ final class BatchCacheTest extends TestCase
 
         $this->cache = new Repository($store);
 
+        return $this->makeBatchCache($this->cache, $this->memory);
+    }
+
+    private function makeBatchCache(CacheInterface $cache, MemoryInterface $memory): CacheInterface
+    {
         if (!InstalledVersions::satisfies(new VersionParser, 'psr/simple-cache', '^3.0')) {
             return new BatchCacheDeprecated(
-                $this->cache,
-                $this->memory,
+                $cache,
+                $memory,
                 config('excel.cache.default_ttl')
             );
         }
 
         return new BatchCache(
-            $this->cache,
-            $this->memory,
+            $cache,
+            $memory,
             config('excel.cache.default_ttl')
         );
     }

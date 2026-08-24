@@ -2,7 +2,7 @@
 
 namespace Maatwebsite\Excel\Cache;
 
-use PhpOffice\PhpSpreadsheet\Cell\Cell;
+use Maatwebsite\Excel\Cache\Concerns\MemoryCacheBehavior;
 
 /**
  * Used when psr/simple-cache is ^1.0 or ^2.0.
@@ -12,24 +12,14 @@ use PhpOffice\PhpSpreadsheet\Cell\Cell;
  */
 class MemoryCacheDeprecated implements MemoryInterface
 {
-    /**
-     * @var array<string, mixed>
-     */
-    protected array $cache = [];
-
-    public function __construct(
-        protected ?int $memoryLimit = null,
-    ) {
-    }
+    use MemoryCacheBehavior;
 
     /**
      * {@inheritdoc}
      */
     public function clear()
     {
-        $this->cache = [];
-
-        return true;
+        return $this->doClear();
     }
 
     /**
@@ -37,9 +27,7 @@ class MemoryCacheDeprecated implements MemoryInterface
      */
     public function delete($key)
     {
-        unset($this->cache[$key]);
-
-        return true;
+        return $this->doDelete($key);
     }
 
     /**
@@ -49,11 +37,7 @@ class MemoryCacheDeprecated implements MemoryInterface
      */
     public function deleteMultiple($keys)
     {
-        foreach ($keys as $key) {
-            $this->delete($key);
-        }
-
-        return true;
+        return $this->doDeleteMultiple($keys);
     }
 
     /**
@@ -61,11 +45,7 @@ class MemoryCacheDeprecated implements MemoryInterface
      */
     public function get($key, $default = null)
     {
-        if ($this->has($key)) {
-            return $this->cache[$key];
-        }
-
-        return $default;
+        return $this->doGet($key, $default);
     }
 
     /**
@@ -76,12 +56,7 @@ class MemoryCacheDeprecated implements MemoryInterface
      */
     public function getMultiple($keys, $default = null)
     {
-        $results = [];
-        foreach ($keys as $key) {
-            $results[$key] = $this->get($key, $default);
-        }
-
-        return $results;
+        return $this->doGetMultiple($keys, $default);
     }
 
     /**
@@ -89,7 +64,7 @@ class MemoryCacheDeprecated implements MemoryInterface
      */
     public function has($key)
     {
-        return isset($this->cache[$key]);
+        return $this->doHas($key);
     }
 
     /**
@@ -99,9 +74,7 @@ class MemoryCacheDeprecated implements MemoryInterface
      */
     public function set($key, $value, $ttl = null)
     {
-        $this->cache[$key] = $value;
-
-        return true;
+        return $this->doSet($key, $value, $ttl);
     }
 
     /**
@@ -110,35 +83,6 @@ class MemoryCacheDeprecated implements MemoryInterface
      */
     public function setMultiple($values, $ttl = null)
     {
-        foreach ($values as $key => $value) {
-            $this->set($key, $value);
-        }
-
-        return true;
-    }
-
-    public function reachedMemoryLimit(): bool
-    {
-        // When no limit is given, we'll never reach any limit.
-        if ($this->memoryLimit === null) {
-            return false;
-        }
-
-        return count($this->cache) >= $this->memoryLimit;
-    }
-
-    public function flush(): array
-    {
-        $memory = $this->cache;
-
-        foreach ($memory as $cell) {
-            if ($cell instanceof Cell) {
-                $cell->detach();
-            }
-        }
-
-        $this->clear();
-
-        return $memory;
+        return $this->doSetMultiple($values, $ttl);
     }
 }
