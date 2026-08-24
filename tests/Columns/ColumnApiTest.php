@@ -10,6 +10,9 @@ use Maatwebsite\Excel\Columns\ColumnCollection;
 use Maatwebsite\Excel\Columns\Hyperlink;
 use Maatwebsite\Excel\Columns\Percentage;
 use Maatwebsite\Excel\Columns\Text;
+use Maatwebsite\Excel\Concerns\Import;
+use Maatwebsite\Excel\Concerns\WithColumns;
+use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 use Maatwebsite\Excel\ImageContent;
 use Maatwebsite\Excel\Tests\TestCase;
 use PhpOffice\PhpSpreadsheet\Cell\Cell;
@@ -273,6 +276,58 @@ final class ColumnApiTest extends TestCase
 
         // Renaming the key must not change which heading the column matches.
         $this->assertSame('full_name', Text::make('Full Name', 'full_name')->key('user_name')->headingKey());
+    }
+
+    public function test_requires_style_information_returns_false_for_self_referencing_import_without_style_columns(): void
+    {
+        $import = new class implements Import, WithMultipleSheets
+        {
+            /**
+             * @return \AnonymousClass42d46886f73874414c32315e647542c6[]
+             */
+            public function sheets(): array
+            {
+                return [$this];
+            }
+        };
+
+        $this->assertFalse(ColumnCollection::requiresStyleInformation($import));
+    }
+
+    public function test_requires_style_information_returns_false_for_new_self_cycle_without_style_columns(): void
+    {
+        $import = new class implements Import, WithMultipleSheets
+        {
+            /** @return array<int, static> */
+            public function sheets(): array
+            {
+                return [new self];
+            }
+        };
+
+        $this->assertFalse(ColumnCollection::requiresStyleInformation($import));
+    }
+
+    public function test_requires_style_information_returns_true_for_self_referencing_import_with_style_column(): void
+    {
+        $import = new class implements Import, WithColumns, WithMultipleSheets
+        {
+            /** @return array<int, static> */
+            public function sheets(): array
+            {
+                return [$this];
+            }
+
+            /**
+             * @return Hyperlink[]
+             */
+            public function columns(): array
+            {
+                return [Hyperlink::make('URL', 'url')->url()];
+            }
+        };
+
+        $this->assertTrue(ColumnCollection::requiresStyleInformation($import));
     }
 
     private function givenSheet(): Worksheet

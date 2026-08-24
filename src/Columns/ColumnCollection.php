@@ -9,9 +9,9 @@ use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\WithColumns;
 use Maatwebsite\Excel\Concerns\WithFormatData;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
-use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 use Maatwebsite\Excel\Concerns\WithStrictNullComparison;
 use Maatwebsite\Excel\Exceptions\ColumnCollisionException;
+use Maatwebsite\Excel\Helpers\ConcernTree;
 use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 use PhpOffice\PhpSpreadsheet\Exception;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
@@ -101,22 +101,16 @@ class ColumnCollection extends Collection
      */
     public static function requiresStyleInformation(?object $concernable): bool
     {
-        if ($concernable instanceof WithMultipleSheets) {
-            foreach ($concernable->sheets() as $sheetConcernable) {
-                if (static::requiresStyleInformation($sheetConcernable)) {
-                    return true;
-                }
+        foreach (ConcernTree::flatten($concernable) as $node) {
+            if (!$node instanceof WithColumns) {
+                continue;
             }
-        }
 
-        if (!$concernable instanceof WithColumns) {
-            return false;
-        }
-
-        foreach ($concernable->columns() as $column) {
-            foreach (Arr::wrap($column) as $definition) {
-                if ($definition->needsStyleInformation()) {
-                    return true;
+            foreach ($node->columns() as $column) {
+                foreach (Arr::wrap($column) as $definition) {
+                    if ($definition->needsStyleInformation()) {
+                        return true;
+                    }
                 }
             }
         }
