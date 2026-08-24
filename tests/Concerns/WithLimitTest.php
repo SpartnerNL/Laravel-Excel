@@ -144,6 +144,71 @@ final class WithLimitTest extends TestCase
         $import->import('import-users-with-headings.xlsx');
     }
 
+    public function test_can_import_with_limit_and_a_heading_row_below_the_first_row(): void
+    {
+        $import = new class implements ToArray, WithHeadingRow, WithLimit
+        {
+            use Importable;
+
+            public function array(array $array): void
+            {
+                Assert::assertSame([
+                    [
+                        'name'  => 'Patrick Brouwers',
+                        'email' => 'patrick@maatwebsite.nl',
+                    ],
+                ], $array);
+            }
+
+            public function headingRow(): int
+            {
+                return 4;
+            }
+
+            public function limit(): int
+            {
+                return 1;
+            }
+        };
+
+        $import->import('import-users-with-different-heading-row.xlsx');
+    }
+
+    public function test_can_import_with_limit_and_a_start_row_below_the_heading_row(): void
+    {
+        $import = new class implements ToArray, WithHeadingRow, WithLimit, WithStartRow
+        {
+            use Importable;
+
+            public function array(array $array): void
+            {
+                Assert::assertSame([
+                    [
+                        'name'  => 'Taylor Otwell',
+                        'email' => 'taylor@laravel.com',
+                    ],
+                ], $array);
+            }
+
+            public function headingRow(): int
+            {
+                return 4;
+            }
+
+            public function startRow(): int
+            {
+                return 6;
+            }
+
+            public function limit(): int
+            {
+                return 1;
+            }
+        };
+
+        $import->import('import-users-with-different-heading-row.xlsx');
+    }
+
     public function test_can_set_limit_bigger_than_row_size(): void
     {
         $import = new class implements ToArray, WithLimit
