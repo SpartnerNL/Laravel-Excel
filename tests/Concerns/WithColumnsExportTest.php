@@ -27,7 +27,7 @@ final class WithColumnsExportTest extends TestCase
         parent::setUp();
 
         $this->loadLaravelMigrations(['--database' => 'testing']);
-        $this->loadMigrationsFrom(dirname(__DIR__) . '/Data/Stubs/Database/Migrations');
+        $this->loadMigrationsFrom(__DIR__ . '/../Data/Stubs/Database/Migrations');
     }
 
     public function test_can_export_from_query_with_columns(): void

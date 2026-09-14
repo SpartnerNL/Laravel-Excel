@@ -24,7 +24,7 @@ final class ToModelTest extends TestCase
         parent::setUp();
 
         $this->loadLaravelMigrations(['--database' => 'testing']);
-        $this->loadMigrationsFrom(dirname(__DIR__) . '/Data/Stubs/Database/Migrations');
+        $this->loadMigrationsFrom(__DIR__ . '/../Data/Stubs/Database/Migrations');
     }
 
     public function test_can_import_each_row_to_model(): void

@@ -27,7 +27,7 @@ final class ConcernTreeTest extends TestCase
         $result = ConcernTree::flatten($leaf);
 
         $this->assertCount(1, $result);
-        $this->assertTrue($result->contains($leaf));
+        $this->assertTrue($result->offsetExists($leaf));
     }
 
     public function test_flatten_normal_tree_returns_all_unique_nodes(): void
@@ -56,9 +56,9 @@ final class ConcernTreeTest extends TestCase
         $result = ConcernTree::flatten($root);
 
         $this->assertCount(3, $result);
-        $this->assertTrue($result->contains($root));
-        $this->assertTrue($result->contains($child1));
-        $this->assertTrue($result->contains($child2));
+        $this->assertTrue($result->offsetExists($root));
+        $this->assertTrue($result->offsetExists($child1));
+        $this->assertTrue($result->offsetExists($child2));
     }
 
     public function test_flatten_identity_cycle_does_not_loop(): void
@@ -75,7 +75,7 @@ final class ConcernTreeTest extends TestCase
         $result = ConcernTree::flatten($root);
 
         $this->assertCount(1, $result);
-        $this->assertTrue($result->contains($root));
+        $this->assertTrue($result->offsetExists($root));
     }
 
     public function test_flatten_new_self_cycle_does_not_loop(): void
@@ -93,7 +93,7 @@ final class ConcernTreeTest extends TestCase
 
         // Root is collected; the new instance is stopped by the class-ancestry guard.
         $this->assertCount(1, $result);
-        $this->assertTrue($result->contains($root));
+        $this->assertTrue($result->offsetExists($root));
     }
 
     public function test_flatten_indirect_identity_cycle_does_not_loop(): void
@@ -126,8 +126,8 @@ final class ConcernTreeTest extends TestCase
         $result = ConcernTree::flatten($root);
 
         $this->assertCount(2, $result);
-        $this->assertTrue($result->contains($root));
-        $this->assertTrue($result->contains($b));
+        $this->assertTrue($result->offsetExists($root));
+        $this->assertTrue($result->offsetExists($b));
     }
 
     public function test_flatten_indirect_class_cycle_does_not_loop(): void
@@ -170,8 +170,8 @@ final class ConcernTreeTest extends TestCase
         $result = ConcernTree::flatten($root);
 
         $this->assertCount(3, $result);
-        $this->assertTrue($result->contains($sheet1));
-        $this->assertTrue($result->contains($sheet2));
+        $this->assertTrue($result->offsetExists($sheet1));
+        $this->assertTrue($result->offsetExists($sheet2));
     }
 }
 

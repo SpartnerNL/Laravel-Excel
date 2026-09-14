@@ -19,7 +19,7 @@ final class FromScoutTest extends TestCase
         parent::setUp();
 
         $this->loadLaravelMigrations(['--database' => 'testing']);
-        $this->loadMigrationsFrom(dirname(__DIR__) . '/Data/Stubs/Database/Migrations');
+        $this->loadMigrationsFrom(__DIR__ . '/../Data/Stubs/Database/Migrations');
 
         User::factory()->has(Group::factory(['name' => 'Group 1']))->count(100)->create();
         User::factory()->has(Group::factory(['name' => 'Group 2']))->count(5)->create();

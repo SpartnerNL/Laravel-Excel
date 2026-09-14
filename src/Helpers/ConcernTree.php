@@ -42,7 +42,7 @@ final class ConcernTree
      */
     private static function collect(Export|Import|null $node, SplObjectStorage $visited, array $ancestorClasses): void
     {
-        if ($node === null || $visited->contains($node)) {
+        if ($node === null || $visited->offsetExists($node)) {
             return;
         }
 
@@ -53,14 +53,14 @@ final class ConcernTree
                 return; // class-level cycle — skip entirely, do not attach
             }
 
-            $visited->attach($node);
+            $visited->offsetSet($node);
             $ancestorClasses[$class] = true;
 
             foreach ($node->sheets() as $sheet) {
                 self::collect($sheet, $visited, $ancestorClasses);
             }
         } else {
-            $visited->attach($node);
+            $visited->offsetSet($node);
         }
     }
 }
