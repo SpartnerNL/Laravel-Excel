@@ -270,6 +270,57 @@ final class BatchCacheTest extends TestCase
         $this->assertCount(2, $dispatchedCollection);
     }
 
+    public function test_explicit_null_ttl_uses_default_ttl_when_enabled(): void
+    {
+        config()->set('excel.cache.default_ttl', 1);
+        config()->set('excel.cache.use_default_ttl_for_null', true);
+
+        $cache = $this->givenCache(['A1' => 'A1-value'], [], 1);
+        $this->cache->setEventDispatcher(Event::fake());
+        $cache->set('A2', 'A2-value', null);
+
+        $dispatchedCollection = Event::dispatched(
+            KeyWritten::class,
+            fn (KeyWritten $event): bool => $event->seconds === 1
+        );
+
+        $this->assertCount(2, $dispatchedCollection);
+    }
+
+    public function test_explicit_null_ttl_in_set_multiple_uses_default_ttl_when_enabled(): void
+    {
+        config()->set('excel.cache.default_ttl', 1);
+        config()->set('excel.cache.use_default_ttl_for_null', true);
+
+        $cache = $this->givenCache([], [], 1);
+        $this->cache->setEventDispatcher(Event::fake());
+        $cache->setMultiple(['A2' => 'A2-value'], null);
+
+        $dispatchedCollection = Event::dispatched(
+            KeyWritten::class,
+            fn (KeyWritten $event): bool => $event->seconds === 1
+        );
+
+        $this->assertCount(1, $dispatchedCollection);
+    }
+
+    public function test_explicit_ttl_still_wins_when_null_ttl_uses_default(): void
+    {
+        config()->set('excel.cache.default_ttl', 1);
+        config()->set('excel.cache.use_default_ttl_for_null', true);
+
+        $cache = $this->givenCache(['A1' => 'A1-value'], [], 1);
+        $this->cache->setEventDispatcher(Event::fake());
+        $cache->set('A2', 'A2-value', 60);
+
+        $dispatchedCollection = Event::dispatched(
+            KeyWritten::class,
+            fn (KeyWritten $event): bool => $event->seconds === 60
+        );
+
+        $this->assertCount(2, $dispatchedCollection);
+    }
+
     public function test_delete_removes_value_held_in_memory(): void
     {
         $cache = $this->givenCache(['A1' => 'A1-value']);
@@ -392,14 +443,16 @@ final class BatchCacheTest extends TestCase
             return new BatchCacheDeprecated(
                 $cache,
                 $memory,
-                config('excel.cache.default_ttl')
+                config('excel.cache.default_ttl'),
+                (bool) config('excel.cache.use_default_ttl_for_null', false)
             );
         }
 
         return new BatchCache(
             $cache,
             $memory,
-            config('excel.cache.default_ttl')
+            config('excel.cache.default_ttl'),
+            (bool) config('excel.cache.use_default_ttl_for_null', false)
         );
     }
 }

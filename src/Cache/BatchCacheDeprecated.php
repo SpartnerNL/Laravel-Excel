@@ -18,9 +18,11 @@ class BatchCacheDeprecated implements CacheInterface
     public function __construct(
         protected CacheInterface $cache,
         protected MemoryInterface $memory,
-        int|\DateInterval|\DateTimeInterface|callable|null $defaultTTL = null
+        int|\DateInterval|\DateTimeInterface|callable|null $defaultTTL = null,
+        bool $useDefaultTtlForNull = false
     ) {
-        $this->defaultTTL = $defaultTTL;
+        $this->defaultTTL           = $defaultTTL;
+        $this->useDefaultTtlForNull = $useDefaultTtlForNull;
     }
 
     /**
