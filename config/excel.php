@@ -304,6 +304,19 @@ return [
         |
          */
         'default_ttl' => 10800,
+
+        /*
+        |--------------------------------------------------------------------------
+        | Default TTL for a null TTL
+        |--------------------------------------------------------------------------
+        |
+        | When a cache write explicitly passes a null TTL, the item is kept
+        | forever. Enable this to write it with the default_ttl instead, e.g.
+        | when the cell cache is decorated and the decorator always forwards
+        | the TTL argument.
+        |
+         */
+        'use_default_ttl_for_null' => false,
     ],
 
     /*

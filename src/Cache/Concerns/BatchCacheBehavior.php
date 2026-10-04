@@ -16,6 +16,8 @@ trait BatchCacheBehavior
      */
     protected $defaultTTL;
 
+    protected bool $useDefaultTtlForNull = false;
+
     /**
      * @return array<int, string>
      */
@@ -50,9 +52,7 @@ trait BatchCacheBehavior
      */
     protected function doSet(string $key, $value, $ttl, bool $ttlProvided): bool
     {
-        if (!$ttlProvided) {
-            $ttl = value($this->defaultTTL);
-        }
+        $ttl = $this->resolveTtl($ttl, $ttlProvided);
 
         $this->memory->set($key, $value, $ttl);
 
@@ -61,6 +61,19 @@ trait BatchCacheBehavior
         }
 
         return true;
+    }
+
+    /**
+     * @param  null|int|DateInterval  $ttl
+     * @return null|int|DateInterval|DateTimeInterface
+     */
+    protected function resolveTtl($ttl, bool $ttlProvided)
+    {
+        if (!$ttlProvided || ($ttl === null && $this->useDefaultTtlForNull)) {
+            return value($this->defaultTTL);
+        }
+
+        return $ttl;
     }
 
     protected function doDelete(string $key): bool
@@ -120,9 +133,7 @@ trait BatchCacheBehavior
      */
     protected function doSetMultiple(iterable $values, $ttl, bool $ttlProvided): bool
     {
-        if (!$ttlProvided) {
-            $ttl = value($this->defaultTTL);
-        }
+        $ttl = $this->resolveTtl($ttl, $ttlProvided);
 
         $this->memory->setMultiple($values, $ttl);
 

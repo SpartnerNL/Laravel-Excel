@@ -15,9 +15,11 @@ class BatchCache implements CacheInterface
     public function __construct(
         protected CacheInterface $cache,
         protected MemoryInterface $memory,
-        null|int|DateInterval|callable $defaultTTL = null
+        null|int|DateInterval|callable $defaultTTL = null,
+        bool $useDefaultTtlForNull = false
     ) {
-        $this->defaultTTL = $defaultTTL;
+        $this->defaultTTL           = $defaultTTL;
+        $this->useDefaultTtlForNull = $useDefaultTtlForNull;
     }
 
     /**
