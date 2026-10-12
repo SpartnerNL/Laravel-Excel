@@ -4,12 +4,15 @@ declare(strict_types=1);
 
 namespace Maatwebsite\Excel\Tests\Helpers;
 
+use Iterator;
 use Maatwebsite\Excel\Helpers\RichTextReader;
 use Maatwebsite\Excel\Tests\TestCase;
+use PhpOffice\PhpSpreadsheet\Cell\Cell;
 use PhpOffice\PhpSpreadsheet\RichText\RichText;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Style\Font;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 final class RichTextReaderTest extends TestCase
 {
@@ -152,5 +155,64 @@ final class RichTextReaderTest extends TestCase
 
         $this->assertStringContainsString('plain ', $result);
         $this->assertStringContainsString('font-weight:bold', $result);
+    }
+
+    public function test_font_name_cannot_break_out_of_the_style_attribute(): void
+    {
+        $html = RichTextReader::toHtml($this->richTextCell('Arial" onmouseover="alert(document.domain)" x="'));
+
+        $openingTag = substr($html, 0, (int) strpos($html, '>') + 1);
+
+        $this->assertSame(2, substr_count($openingTag, '"'), $openingTag);
+        $this->assertStringNotContainsString('onmouseover=', $html);
+    }
+
+    public function test_font_name_cannot_break_out_of_the_font_family_value(): void
+    {
+        $html = RichTextReader::toHtml($this->richTextCell("Arial'; background-image:url(https://example.com/x)"));
+
+        $this->assertStringNotContainsString('background-image:', $html);
+        $this->assertStringNotContainsString('url(', $html);
+    }
+
+    public function test_font_name_cannot_close_the_tag(): void
+    {
+        $html = RichTextReader::toHtml($this->richTextCell('Arial"><script>alert(1)</script>'));
+
+        $this->assertStringNotContainsString('<script>', $html);
+    }
+
+    public function test_regular_font_names_are_kept(): void
+    {
+        $this->assertStringContainsString("font-family:'Times New Roman'", RichTextReader::toHtml($this->richTextCell('Times New Roman')));
+        $this->assertStringContainsString("font-family:'ＭＳ Ｐゴシック'", RichTextReader::toHtml($this->richTextCell('ＭＳ Ｐゴシック')));
+    }
+
+    #[DataProvider('plainValues')]
+    public function test_plain_cell_values_are_escaped(mixed $value, string $expected): void
+    {
+        $this->sheet->getCell('A1')->setValue($value);
+
+        $this->assertSame($expected, RichTextReader::toHtml($this->sheet->getCell('A1')));
+    }
+
+    /**
+     * @return Iterator<int<0, max>, array{mixed, string}>
+     */
+    public static function plainValues(): Iterator
+    {
+        yield ['<img src=x onerror="alert(1)">', '&lt;img src=x onerror=&quot;alert(1)&quot;&gt;'];
+        yield ['normal text', 'normal text'];
+        yield [10, '10'];
+        yield [null, ''];
+    }
+
+    private function richTextCell(string $fontName): Cell
+    {
+        $richText = new RichText;
+        $richText->createTextRun('imported cell text')->getFont()?->setName($fontName);
+        $this->sheet->getCell('A1')->setValue($richText);
+
+        return $this->sheet->getCell('A1');
     }
 }

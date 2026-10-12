@@ -16,7 +16,7 @@ class RichTextReader
         $value = $cell->getValue();
 
         if (!$value instanceof RichText) {
-            return (string) $value;
+            return htmlspecialchars((string) $value);
         }
 
         $cellData = '';
@@ -28,7 +28,7 @@ class RichTextReader
                 continue;
             }
 
-            $cellData .= '<span style="' . static::toCss($element->getFont()) . '">';
+            $cellData .= '<span style="' . htmlspecialchars(static::toCss($element->getFont()), ENT_COMPAT | ENT_SUBSTITUTE) . '">';
 
             $cellEnd = '';
             if ($element->getFont()?->getSuperscript()) {
@@ -73,9 +73,13 @@ class RichTextReader
             $css['font-style'] = 'italic';
         }
 
-        $css['color']       = '#' . $font->getColor()->getRGB();
-        $css['font-family'] = '\'' . $font->getName() . '\'';
-        $css['font-size']   = $font->getSize() . 'pt';
+        $css['color'] = '#' . $font->getColor()->getRGB();
+
+        if (($fontName = static::sanitizeFontName($font->getName())) !== '') {
+            $css['font-family'] = '\'' . $fontName . '\'';
+        }
+
+        $css['font-size'] = (float) $font->getSize() . 'pt';
 
         $pairs = [];
         foreach ($css as $property => $value) {
@@ -83,5 +87,16 @@ class RichTextReader
         }
 
         return implode('; ', $pairs);
+    }
+
+    /**
+     * Font names come straight from the spreadsheet, so only keep characters a
+     * font name legitimately needs. Escaping alone is not enough: the browser
+     * decodes the attribute before parsing the css, so a quote could still
+     * close the font-family string and inject other declarations.
+     */
+    protected static function sanitizeFontName(?string $name): string
+    {
+        return trim(preg_replace('/[^\p{L}\p{N} _.,+\-]/u', '', (string) $name) ?? '');
     }
 }
