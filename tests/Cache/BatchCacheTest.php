@@ -224,12 +224,12 @@ final class BatchCacheTest extends TestCase
         config()->set('excel.cache.default_ttl', $defaultTTL);
 
         $cache = $this->givenCache(['A1' => 'A1-value'], [], 1);
-        $this->cache->setEventDispatcher(Event::fake());
+        $this->cache->setEventDispatcher($events = Event::fake());
         $cache->set('A2', 'A2-value');
 
         $expectedTTL = value($receivedAs);
 
-        $dispatchedCollection = Event::dispatched(
+        $dispatchedCollection = $events->dispatched(
             KeyWritten::class,
             fn (KeyWritten $event): bool => $event->seconds === $expectedTTL
         );
@@ -243,10 +243,10 @@ final class BatchCacheTest extends TestCase
         config()->set('excel.cache.default_ttl', new DateInterval('PT1M'));
 
         $cache = $this->givenCache(['A1' => 'A1-value'], [], 1);
-        $this->cache->setEventDispatcher(Event::fake());
+        $this->cache->setEventDispatcher($events = Event::fake());
         $cache->set('A2', 'A2-value');
 
-        $dispatchedCollection = Event::dispatched(
+        $dispatchedCollection = $events->dispatched(
             KeyWritten::class,
             fn (KeyWritten $event): bool => $event->seconds >= 59 && $event->seconds <= 60
         );
@@ -259,10 +259,10 @@ final class BatchCacheTest extends TestCase
         config()->set('excel.cache.default_ttl', 1);
 
         $cache = $this->givenCache(['A1' => 'A1-value'], [], 1);
-        $this->cache->setEventDispatcher(Event::fake());
+        $this->cache->setEventDispatcher($events = Event::fake());
         $cache->set('A2', 'A2-value', null);
 
-        $dispatchedCollection = Event::dispatched(
+        $dispatchedCollection = $events->dispatched(
             KeyWritten::class,
             fn (KeyWritten $event): bool => $event->seconds === null
         );
@@ -330,10 +330,10 @@ final class BatchCacheTest extends TestCase
         config()->set('excel.cache.default_ttl', 1);
 
         $cache = $this->givenCache([], [], 1);
-        $this->cache->setEventDispatcher(Event::fake());
+        $this->cache->setEventDispatcher($events = Event::fake());
         $cache->setMultiple(['A2' => 'A2-value']);
 
-        $dispatchedCollection = Event::dispatched(
+        $dispatchedCollection = $events->dispatched(
             KeyWritten::class,
             fn (KeyWritten $event): bool => $event->seconds === 1
         );
