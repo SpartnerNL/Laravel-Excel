@@ -21,6 +21,7 @@ use Maatwebsite\Excel\Jobs\ReadChunk;
 use Maatwebsite\Excel\SettingsProvider;
 use Maatwebsite\Excel\Tests\Data\Stubs\AfterQueueImportJob;
 use Maatwebsite\Excel\Tests\Data\Stubs\QueuedImport;
+use Maatwebsite\Excel\Tests\Data\Stubs\QueuedImportWithBackoff;
 use Maatwebsite\Excel\Tests\Data\Stubs\QueuedImportWithFailure;
 use Maatwebsite\Excel\Tests\Data\Stubs\QueuedImportWithMiddleware;
 use Maatwebsite\Excel\Tests\Data\Stubs\QueuedImportWithRetryUntil;
@@ -252,5 +253,20 @@ final class QueuedImportTest extends TestCase
         }
 
         $this->assertSame(3, $maxExceptionsCount);
+    }
+
+    public function test_can_define_backoff_array_on_queued_import(): void
+    {
+        $backoff = null;
+
+        Queue::before(function (JobProcessing $event) use (&$backoff): void {
+            if ($event->job->resolveName() === ReadChunk::class) {
+                $backoff = $event->job->payload()['backoff'];
+            }
+        });
+
+        (new QueuedImportWithBackoff)->queue('import-batches.xlsx');
+
+        $this->assertSame('1,5,10', $backoff);
     }
 }
