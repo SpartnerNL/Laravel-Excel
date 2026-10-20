@@ -91,6 +91,13 @@ class Sheet
 
     protected ?ColumnCollection $columns = null;
 
+    /**
+     * Worksheet row number of each row returned by the last toArray() call.
+     *
+     * @var array<int, int>
+     */
+    private array $rowNumbers = [];
+
     final public function __construct(
         private Worksheet $worksheet,
     ) {
@@ -341,6 +348,8 @@ class Sheet
      */
     public function toArray(?Import $import, ?int $startRow = null, mixed $nullValue = null, bool $calculateFormulas = false, bool $formatData = false): array
     {
+        $this->rowNumbers = [];
+
         if ($startRow > $this->worksheet->getHighestRow()) {
             return [];
         }
@@ -373,7 +382,8 @@ class Sheet
                 $row = $import->prepareForValidation($row, $index);
             }
 
-            $rows[] = $row;
+            $rows[]             = $row;
+            $this->rowNumbers[] = $index;
 
             if ($import instanceof WithProgressBar) {
                 $import->getConsoleOutput()->progressAdvance();
@@ -756,13 +766,16 @@ class Sheet
      */
     protected function validated(WithValidation $import, int $startRow, Collection|array $rows): Collection|array
     {
-        $toValidate = (new Collection($rows))->mapWithKeys(fn ($row, $index): array => [($startRow + $index) => $row]);
+        // Skipped empty rows leave gaps, so key each row by its worksheet row number.
+        $toValidate = (new Collection($rows))->mapWithKeys(fn ($row, $index): array => [($this->rowNumbers[$index] ?? $startRow + $index) => $row]);
 
         try {
             app(RowValidator::class)->validate($toValidate->toArray(), $import);
         } catch (RowSkippedException $e) {
+            $positions = array_flip($this->rowNumbers);
+
             foreach ($e->skippedRows() as $row) {
-                unset($rows[$row - $startRow]);
+                unset($rows[$positions[$row] ?? $row - $startRow]);
             }
         }
 

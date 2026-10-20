@@ -17,6 +17,7 @@ use Maatwebsite\Excel\Concerns\ToArray;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
+use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithGroupedHeadingRow;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithValidation;
@@ -633,6 +634,107 @@ final class WithValidationTest extends TestCase
         } catch (ValidationException $e) {
             $this->validateFailure($e, 3, 'email', [
                 'The selected email is invalid.',
+            ]);
+        }
+    }
+
+    public function test_reports_worksheet_row_number_using_collection_with_skipped_empty_rows(): void
+    {
+        $import = new class implements SkipsEmptyRows, ToCollection, WithValidation
+        {
+            use Importable;
+
+            public function collection(Collection $collection): void
+            {
+                //
+            }
+
+            /**
+             * @return In[]
+             */
+            public function rules(): array
+            {
+                return [
+                    '0' => Rule::in(['Test1', 'Test3']),
+                ];
+            }
+        };
+
+        try {
+            $import->import('import-empty-rows.xlsx');
+            self::fail();
+        } catch (ValidationException $e) {
+            $this->validateFailure($e, 5, '0', [
+                'The selected 0 is invalid.',
+            ]);
+        }
+    }
+
+    public function test_reports_worksheet_row_number_using_array_with_skipped_empty_rows(): void
+    {
+        $import = new class implements SkipsEmptyRows, ToArray, WithValidation
+        {
+            use Importable;
+
+            public function array(array $array): void
+            {
+                //
+            }
+
+            /**
+             * @return In[]
+             */
+            public function rules(): array
+            {
+                return [
+                    '0' => Rule::in(['Test1', 'Test3']),
+                ];
+            }
+        };
+
+        try {
+            $import->import('import-empty-rows.xlsx');
+            self::fail();
+        } catch (ValidationException $e) {
+            $this->validateFailure($e, 5, '0', [
+                'The selected 0 is invalid.',
+            ]);
+        }
+    }
+
+    public function test_reports_worksheet_row_number_with_skipped_empty_rows_when_importing_in_chunks(): void
+    {
+        $import = new class implements SkipsEmptyRows, ToCollection, WithChunkReading, WithValidation
+        {
+            use Importable;
+
+            public function collection(Collection $collection): void
+            {
+                //
+            }
+
+            public function chunkSize(): int
+            {
+                return 3;
+            }
+
+            /**
+             * @return In[]
+             */
+            public function rules(): array
+            {
+                return [
+                    '0' => Rule::in(['Test1', 'Test3']),
+                ];
+            }
+        };
+
+        try {
+            $import->import('import-empty-rows.xlsx');
+            self::fail();
+        } catch (ValidationException $e) {
+            $this->validateFailure($e, 5, '0', [
+                'The selected 0 is invalid.',
             ]);
         }
     }
