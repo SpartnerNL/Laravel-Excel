@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\Import;
 use Maatwebsite\Excel\Concerns\Importable;
+use Maatwebsite\Excel\Concerns\SkipsUnknownSheets;
 use Maatwebsite\Excel\Concerns\ToArray;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
@@ -24,6 +25,7 @@ use Maatwebsite\Excel\Concerns\WithProgressBar;
 use Maatwebsite\Excel\Events\AfterImport;
 use Maatwebsite\Excel\Events\BeforeImport;
 use Maatwebsite\Excel\Events\ImportFailed;
+use Maatwebsite\Excel\Exceptions\SheetNotFoundException;
 use Maatwebsite\Excel\Reader;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\Group;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
@@ -524,5 +526,158 @@ final class WithChunkReadingTest extends TestCase
         $import->import('import-users.xlsx');
 
         $this->assertSame(1, $import->called, 'Row count was not limited during chunked reading.');
+    }
+
+    public function test_unknown_sheet_name_can_be_ignored_when_importing_in_chunks(): void
+    {
+        $sheetImport = new class implements ToArray
+        {
+            /**
+             * @var array<int, array<int, mixed>>
+             */
+            public array $rows = [];
+
+            public function array(array $array): void
+            {
+                $this->rows = [...$this->rows, ...$array];
+            }
+        };
+
+        $import = new class($sheetImport) implements Import, SkipsUnknownSheets, WithChunkReading, WithMultipleSheets
+        {
+            use Importable;
+
+            public string|int|null $unknown = null;
+
+            public function __construct(private readonly Import $sheetImport)
+            {
+            }
+
+            public function sheets(): array
+            {
+                return [
+                    'Sheet1'                 => $this->sheetImport,
+                    'Some Random Sheet Name' => new class implements Import
+                    {
+                    },
+                ];
+            }
+
+            public function chunkSize(): int
+            {
+                return 1;
+            }
+
+            public function onUnknownSheet(int|string $sheetName): void
+            {
+                $this->unknown = $sheetName;
+            }
+        };
+
+        $import->import('import-multiple-sheets.xlsx');
+
+        $this->assertSame('Some Random Sheet Name', $import->unknown);
+        $this->assertSame([['1.A1', '1.B1'], ['1.A2', '1.B2']], $sheetImport->rows);
+    }
+
+    public function test_unknown_sheet_index_can_be_ignored_per_sheet_when_importing_in_chunks(): void
+    {
+        $sheetImport = new class implements Import, SkipsUnknownSheets
+        {
+            public string|int|null $unknown = null;
+
+            public function onUnknownSheet(int|string $sheetName): void
+            {
+                $this->unknown = $sheetName;
+            }
+        };
+
+        $import = new class($sheetImport) implements Import, WithChunkReading, WithMultipleSheets
+        {
+            use Importable;
+
+            public function __construct(private readonly Import $sheetImport)
+            {
+            }
+
+            /**
+             * @return Import[]
+             */
+            public function sheets(): array
+            {
+                return [
+                    99999 => $this->sheetImport,
+                ];
+            }
+
+            public function chunkSize(): int
+            {
+                return 1;
+            }
+        };
+
+        $import->import('import-multiple-sheets.xlsx');
+
+        $this->assertSame(99999, $sheetImport->unknown);
+    }
+
+    public function test_unknown_sheet_name_will_throw_sheet_not_found_exception_when_importing_in_chunks(): void
+    {
+        $this->expectException(SheetNotFoundException::class);
+        $this->expectExceptionMessage('Your requested sheet name [Some Random Sheet Name] is out of bounds.');
+
+        $import = new class implements Import, WithChunkReading, WithMultipleSheets
+        {
+            use Importable;
+
+            /**
+             * @return Import[]
+             */
+            public function sheets(): array
+            {
+                return [
+                    'Some Random Sheet Name' => new class implements Import
+                    {
+                    },
+                ];
+            }
+
+            public function chunkSize(): int
+            {
+                return 1;
+            }
+        };
+
+        $import->import('import-multiple-sheets.xlsx');
+    }
+
+    public function test_unknown_sheet_index_will_throw_sheet_not_found_exception_when_importing_in_chunks(): void
+    {
+        $this->expectException(SheetNotFoundException::class);
+        $this->expectExceptionMessage('Your requested sheet index: 9999 is out of bounds. The actual number of sheets is 2.');
+
+        $import = new class implements Import, WithChunkReading, WithMultipleSheets
+        {
+            use Importable;
+
+            /**
+             * @return Import[]
+             */
+            public function sheets(): array
+            {
+                return [
+                    9999 => new class implements Import
+                    {
+                    },
+                ];
+            }
+
+            public function chunkSize(): int
+            {
+                return 1;
+            }
+        };
+
+        $import->import('import-multiple-sheets.xlsx');
     }
 }
