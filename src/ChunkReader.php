@@ -14,10 +14,12 @@ use Illuminate\Support\Facades\Bus;
 use Maatwebsite\Excel\Concerns\Import;
 use Maatwebsite\Excel\Concerns\ShouldBatch;
 use Maatwebsite\Excel\Concerns\ShouldQueueWithoutChain;
+use Maatwebsite\Excel\Concerns\SkipsUnknownSheets;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\WithLimit;
 use Maatwebsite\Excel\Concerns\WithProgressBar;
+use Maatwebsite\Excel\Exceptions\SheetNotFoundException;
 use Maatwebsite\Excel\Files\TemporaryFile;
 use Maatwebsite\Excel\Helpers\QueueResolver;
 use Maatwebsite\Excel\Imports\HeadingRowExtractor;
@@ -35,6 +37,8 @@ class ChunkReader
 
     /**
      * @return PendingDispatch|PendingBatch|Collection<int, object>|null
+     *
+     * @throws SheetNotFoundException
      */
     public function read(WithChunkReading&Import $import, Reader $reader, TemporaryFile $temporaryFile): PendingDispatch|PendingBatch|Collection|null
     {
@@ -54,6 +58,24 @@ class ChunkReader
 
         $jobs = new Collection;
         foreach ($worksheets as $name => $sheetImport) {
+            if (!array_key_exists($name, $totalRows)) {
+                if ($import instanceof SkipsUnknownSheets) {
+                    $import->onUnknownSheet($name);
+
+                    continue;
+                }
+
+                if ($sheetImport instanceof SkipsUnknownSheets) {
+                    $sheetImport->onUnknownSheet($name);
+
+                    continue;
+                }
+
+                throw is_numeric($name)
+                    ? SheetNotFoundException::byIndex((int) $name, count($totalRows))
+                    : SheetNotFoundException::byName($name);
+            }
+
             $startRow = HeadingRowExtractor::determineStartRow($sheetImport);
 
             if ($sheetImport instanceof WithLimit) {
