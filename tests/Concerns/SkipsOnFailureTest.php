@@ -9,8 +9,10 @@ use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\In;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\OnEachRow;
+use Maatwebsite\Excel\Concerns\SkipsEmptyRows;
 use Maatwebsite\Excel\Concerns\SkipsFailures;
 use Maatwebsite\Excel\Concerns\SkipsOnFailure;
+use Maatwebsite\Excel\Concerns\ToArray;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
@@ -283,5 +285,75 @@ final class SkipsOnFailureTest extends TestCase
         $this->assertDatabaseMissing('users', [
             'email' => 'taylor@laravel.com',
         ]);
+    }
+
+    public function test_skips_the_failed_row_using_tocollection_with_skipped_empty_rows(): void
+    {
+        $import = new class implements SkipsEmptyRows, SkipsOnFailure, ToCollection, WithValidation
+        {
+            use Importable, SkipsFailures;
+
+            /**
+             * @var Collection<int, Collection<array-key, mixed>>
+             */
+            public Collection $rows;
+
+            public function collection(Collection $collection): void
+            {
+                $this->rows = $collection;
+            }
+
+            /**
+             * @return In[]
+             */
+            public function rules(): array
+            {
+                return [
+                    '0' => Rule::in(['Test1', 'Test5']),
+                ];
+            }
+        };
+
+        $import->import('import-empty-rows.xlsx');
+
+        $this->assertCount(1, $import->failures());
+        $this->assertSame(3, $import->failures()->first()->row());
+        $this->assertSame(['Test3', 'Test4'], $import->failures()->first()->values());
+        $this->assertSame([0 => ['Test1', 'Test2'], 2 => ['Test5', 'Test6']], $import->rows->toArray());
+    }
+
+    public function test_skips_the_failed_row_using_toarray_with_skipped_empty_rows(): void
+    {
+        $import = new class implements SkipsEmptyRows, SkipsOnFailure, ToArray, WithValidation
+        {
+            use Importable, SkipsFailures;
+
+            /**
+             * @var array<int, array<array-key, mixed>>
+             */
+            public array $rows = [];
+
+            public function array(array $array): void
+            {
+                $this->rows = $array;
+            }
+
+            /**
+             * @return In[]
+             */
+            public function rules(): array
+            {
+                return [
+                    '0' => Rule::in(['Test1', 'Test5']),
+                ];
+            }
+        };
+
+        $import->import('import-empty-rows.xlsx');
+
+        $this->assertCount(1, $import->failures());
+        $this->assertSame(3, $import->failures()->first()->row());
+        $this->assertSame(['Test3', 'Test4'], $import->failures()->first()->values());
+        $this->assertSame([0 => ['Test1', 'Test2'], 2 => ['Test5', 'Test6']], $import->rows);
     }
 }
