@@ -38,7 +38,10 @@ class ReadChunk implements ShouldQueue
 
     public ?int $maxExceptions;
 
-    public ?int $backoff;
+    /**
+     * @var array<int, int>|int|null
+     */
+    public array|int|null $backoff;
 
     /**
      * @var ?string
