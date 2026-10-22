@@ -20,9 +20,9 @@ class Date extends Column
 
     protected function toExcelValue(mixed $value): int|float
     {
-        // If the value is an integer, the user
-        // most likely formatted the date themselves.
-        if (is_int($value)) {
+        // If the value is a number, the user most likely
+        // converted the date to an Excel serial themselves.
+        if (is_int($value) || is_float($value)) {
             return $value;
         }
 

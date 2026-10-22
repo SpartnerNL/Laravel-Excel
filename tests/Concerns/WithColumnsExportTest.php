@@ -4,18 +4,23 @@ declare(strict_types=1);
 
 namespace Maatwebsite\Excel\Tests\Concerns;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Columns\Column;
+use Maatwebsite\Excel\Columns\Date;
+use Maatwebsite\Excel\Columns\DateTime;
 use Maatwebsite\Excel\Columns\Image;
 use Maatwebsite\Excel\Columns\Number;
 use Maatwebsite\Excel\Columns\Text;
+use Maatwebsite\Excel\Columns\Time;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromArray;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\WithColumns;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
 use Maatwebsite\Excel\Tests\TestCase;
+use PhpOffice\PhpSpreadsheet\Shared\Date as ExcelDate;
 
 final class WithColumnsExportTest extends TestCase
 {
@@ -125,5 +130,45 @@ final class WithColumnsExportTest extends TestCase
             [1, null, null],
             [2, null, null],
         ], $spreadsheet->getActiveSheet()->toArray());
+    }
+
+    public function test_can_export_excel_date_serials_with_columns(): void
+    {
+        $export = new class implements FromArray, WithColumns
+        {
+            use Exportable;
+
+            public function array(): array
+            {
+                return [
+                    [
+                        'birthday'    => ExcelDate::dateTimeToExcel(Carbon::parse('1990-05-17')),
+                        'signed_up'   => ExcelDate::dateTimeToExcel(Carbon::parse('2024-01-01 12:00')),
+                        'shift_start' => 0.75,
+                    ],
+                ];
+            }
+
+            /**
+             * @return Column[]
+             */
+            public function columns(): array
+            {
+                return [
+                    Date::make('Birthday'),
+                    DateTime::make('Signed Up'),
+                    Time::make('Shift Start'),
+                ];
+            }
+        };
+
+        $this->assertTrue($export->store('with-columns-date-serials.xlsx'));
+
+        $spreadsheet = $this->read(__DIR__ . '/../Data/Disks/Local/with-columns-date-serials.xlsx', 'Xlsx');
+
+        $this->assertEquals([
+            ['Birthday', 'Signed Up', 'Shift Start'],
+            ['17/05/1990', '1/1/24 12:00', '18:00:00'],
+        ], $spreadsheet->getActiveSheet()->toArray(null, false, true));
     }
 }

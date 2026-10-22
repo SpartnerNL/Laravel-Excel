@@ -140,6 +140,9 @@ final class ColumnFeatureTest extends TestCase
         yield [Date::make('Attribute'), Carbon::parse('2020-01-02'), DataType::TYPE_NUMERIC, ExcelDate::stringToExcel('2020-01-02')];
         yield [DateTime::make('Attribute'), '2020-01-02', DataType::TYPE_NUMERIC, ExcelDate::stringToExcel('2020-01-02')];
         yield [DateTime::make('Attribute'), $time, DataType::TYPE_NUMERIC, ExcelDate::dateTimeToExcel($time)];
+        yield [Date::make('Attribute'), 43832, DataType::TYPE_NUMERIC, 43832];
+        yield [Date::make('Attribute'), ExcelDate::dateTimeToExcel(Carbon::parse('2020-01-02')), DataType::TYPE_NUMERIC, 43832];
+        yield [DateTime::make('Attribute'), ExcelDate::dateTimeToExcel($time), DataType::TYPE_NUMERIC, ExcelDate::dateTimeToExcel($time)];
         yield [EmptyCell::make('Attribute'), null, DataType::TYPE_NULL, null];
         yield [EmptyCell::make('Attribute'), '', DataType::TYPE_NULL, null];
         yield [EmptyCell::make('Attribute'), ' ', DataType::TYPE_NULL, null];
