@@ -6,6 +6,7 @@ namespace Maatwebsite\Excel\Tests\Concerns;
 
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\Importable;
+use Maatwebsite\Excel\Concerns\SkipsEmptyRows;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\Group;
@@ -132,6 +133,81 @@ final class WithBatchInsertsTest extends TestCase
         $this->assertSame(2, Group::count());
 
         DB::connection()->disableQueryLog();
+    }
+
+    public function test_skipped_empty_rows_do_not_count_towards_the_batch_size(): void
+    {
+        DB::connection()->enableQueryLog();
+
+        $import = new class implements SkipsEmptyRows, ToModel, WithBatchInserts
+        {
+            use Importable;
+
+            public function model(array $row): Group
+            {
+                return new Group([
+                    'name' => $row[0],
+                ]);
+            }
+
+            public function batchSize(): int
+            {
+                return 2;
+            }
+        };
+
+        // Rows 1, 3 and 5 have data, the rows in between are empty.
+        $import->import('import-empty-rows.xlsx');
+
+        // One binding (name) per inserted row.
+        $this->assertSame([2, 1], array_map(
+            fn (array $query): int => count($query['bindings']),
+            DB::getQueryLog()
+        ));
+        DB::connection()->disableQueryLog();
+
+        $this->assertSame(['Test1', 'Test3', 'Test5'], Group::query()->orderBy('id')->pluck('name')->all());
+    }
+
+    public function test_rows_skipped_by_is_empty_when_do_not_count_towards_the_batch_size(): void
+    {
+        DB::connection()->enableQueryLog();
+
+        $import = new class implements SkipsEmptyRows, ToModel, WithBatchInserts
+        {
+            use Importable;
+
+            public function model(array $row): Group
+            {
+                return new Group([
+                    'name' => $row[0],
+                ]);
+            }
+
+            public function batchSize(): int
+            {
+                return 2;
+            }
+
+            /**
+             * @param  array<array-key, mixed>  $row
+             */
+            public function isEmptyWhen(array $row): bool
+            {
+                return $row[0] === 'Empty';
+            }
+        };
+
+        // Row 4 of 10 is skipped.
+        $import->import('skip-empty-rows-with-is-empty-when.xlsx');
+
+        $this->assertSame([2, 2, 2, 2, 1], array_map(
+            fn (array $query): int => count($query['bindings']),
+            DB::getQueryLog()
+        ));
+        DB::connection()->disableQueryLog();
+
+        $this->assertSame(9, Group::count());
     }
 
     public function test_has_timestamps_when_imported_in_batches(): void
