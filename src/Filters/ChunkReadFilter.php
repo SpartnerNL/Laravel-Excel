@@ -15,6 +15,7 @@ class ChunkReadFilter implements IReadFilter
         private readonly int $startRow,
         int $chunkSize,
         private readonly string $worksheetName,
+        private readonly ?IReadFilter $readFilter = null,
     ) {
         $this->endRow = $this->startRow + $chunkSize;
     }
@@ -23,6 +24,7 @@ class ChunkReadFilter implements IReadFilter
     {
         //  Only read the heading row, and the rows that are configured in $this->_startRow and $this->_endRow
         return ($worksheetName === $this->worksheetName || $worksheetName === '')
-            && ($row === $this->headingRow || ($row >= $this->startRow && $row < $this->endRow));
+            && ($row === $this->headingRow || ($row >= $this->startRow && $row < $this->endRow))
+            && (!$this->readFilter instanceof IReadFilter || $this->readFilter->readCell($columnAddress, $row, $worksheetName));
     }
 }
