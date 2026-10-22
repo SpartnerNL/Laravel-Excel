@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace Maatwebsite\Excel\Tests;
 
+use Carbon\CarbonImmutable;
+use Closure;
+use DateTimeImmutable;
+use DateTimeInterface;
 use Illuminate\Bus\PendingBatch;
 use Illuminate\Foundation\Bus\PendingDispatch;
 use Illuminate\Queue\Events\JobExceptionOccurred;
@@ -12,6 +16,7 @@ use Illuminate\Queue\Events\JobProcessing;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Queue;
 use InvalidArgumentException;
+use Iterator;
 use Maatwebsite\Excel\Concerns\Import;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Files\RemoteTemporaryFile;
@@ -22,10 +27,13 @@ use Maatwebsite\Excel\SettingsProvider;
 use Maatwebsite\Excel\Tests\Data\Stubs\AfterQueueImportJob;
 use Maatwebsite\Excel\Tests\Data\Stubs\QueuedImport;
 use Maatwebsite\Excel\Tests\Data\Stubs\QueuedImportWithBackoff;
+use Maatwebsite\Excel\Tests\Data\Stubs\QueuedImportWithDateBackoff;
 use Maatwebsite\Excel\Tests\Data\Stubs\QueuedImportWithFailure;
 use Maatwebsite\Excel\Tests\Data\Stubs\QueuedImportWithMiddleware;
 use Maatwebsite\Excel\Tests\Data\Stubs\QueuedImportWithRetryUntil;
+use Maatwebsite\Excel\Tests\Data\Stubs\QueuedImportWithRetryUntilValue;
 use Maatwebsite\Excel\Tests\Data\Stubs\ShouldBatchImport;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Throwable;
 
 final class QueuedImportTest extends TestCase
@@ -268,5 +276,56 @@ final class QueuedImportTest extends TestCase
         (new QueuedImportWithBackoff)->queue('import-batches.xlsx');
 
         $this->assertSame('1,5,10', $backoff);
+    }
+
+    public function test_can_define_backoff_as_a_date_on_queued_import(): void
+    {
+        $this->freezeSecond();
+
+        $backoff = null;
+
+        Queue::before(function (JobProcessing $event) use (&$backoff): void {
+            if ($event->job->resolveName() === ReadChunk::class) {
+                $backoff = $event->job->payload()['backoff'];
+            }
+        });
+
+        (new QueuedImportWithDateBackoff)->queue('import-batches.xlsx');
+
+        $this->assertSame('30', $backoff);
+    }
+
+    /**
+     * @return Iterator<string, array{Closure(int): (DateTimeInterface|int)}>
+     */
+    public static function retryUntilTypes(): Iterator
+    {
+        yield 'CarbonImmutable' => [fn (int $timestamp): DateTimeInterface => CarbonImmutable::createFromTimestamp($timestamp)];
+        yield 'DateTimeImmutable' => [fn (int $timestamp): DateTimeInterface => new DateTimeImmutable('@' . $timestamp)];
+        yield 'timestamp' => [fn (int $timestamp): int => $timestamp];
+    }
+
+    /**
+     * @param  Closure(int): (DateTimeInterface|int)  $retryUntil
+     */
+    #[DataProvider('retryUntilTypes')]
+    public function test_can_define_retry_until_as_an_immutable_date_or_a_timestamp_on_queued_import(Closure $retryUntil): void
+    {
+        $this->freezeSecond();
+
+        $expected = now()->addMinutes(10)->getTimestamp();
+        $until    = $retryUntil($expected);
+
+        $payloadRetryUntil = null;
+
+        Queue::before(function (JobProcessing $event) use (&$payloadRetryUntil): void {
+            if ($event->job->resolveName() === ReadChunk::class) {
+                $payloadRetryUntil = $event->job->payload()['retryUntil'];
+            }
+        });
+
+        (new QueuedImportWithRetryUntilValue($until))->queue('import-batches.xlsx');
+
+        $this->assertSame($expected, $payloadRetryUntil);
     }
 }

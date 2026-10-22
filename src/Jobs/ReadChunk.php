@@ -2,7 +2,7 @@
 
 namespace Maatwebsite\Excel\Jobs;
 
-use DateTime;
+use DateTimeInterface;
 use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -40,9 +40,9 @@ class ReadChunk implements ShouldQueue
     public ?int $maxExceptions;
 
     /**
-     * @var array<int, int>|int|null
+     * @var array<int, int|DateTimeInterface>|int|DateTimeInterface|null
      */
-    public array|int|null $backoff;
+    public array|int|DateTimeInterface|null $backoff;
 
     /**
      * @var ?string
@@ -101,7 +101,7 @@ class ReadChunk implements ShouldQueue
     /**
      * Determine the time at which the job should time out.
      */
-    public function retryUntil(): ?DateTime
+    public function retryUntil(): DateTimeInterface|int|null
     {
         return (method_exists($this->import, 'retryUntil')) ? $this->import->retryUntil() : null;
     }
