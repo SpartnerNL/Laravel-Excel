@@ -5,14 +5,18 @@ declare(strict_types=1);
 namespace Maatwebsite\Excel\Tests;
 
 use Illuminate\Bus\PendingBatch;
+use Illuminate\Queue\Events\JobFailed;
+use Illuminate\Queue\Events\JobProcessed;
 use Illuminate\Queue\Events\JobProcessing;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Excel;
+use Maatwebsite\Excel\Files\Filesystem;
 use Maatwebsite\Excel\Files\RemoteTemporaryFile;
 use Maatwebsite\Excel\Files\TemporaryFile;
 use Maatwebsite\Excel\Jobs\AppendDataToSheet;
+use Maatwebsite\Excel\Jobs\StoreQueuedExport;
 use Maatwebsite\Excel\Tests\Data\Stubs\AfterQueueExportJob;
 use Maatwebsite\Excel\Tests\Data\Stubs\EloquentCollectionWithMappingExport;
 use Maatwebsite\Excel\Tests\Data\Stubs\QueuedExport;
@@ -22,6 +26,7 @@ use Maatwebsite\Excel\Tests\Data\Stubs\QueuedExportWithFailedHook;
 use Maatwebsite\Excel\Tests\Data\Stubs\QueuedExportWithLocalePreferences;
 use Maatwebsite\Excel\Tests\Data\Stubs\ShouldBatchExport;
 use Maatwebsite\Excel\Tests\Data\Stubs\ShouldQueueExport;
+use RuntimeException;
 use Throwable;
 
 final class QueuedExportTest extends TestCase
@@ -57,6 +62,72 @@ final class QueuedExportTest extends TestCase
         ]);
 
         $this->assertCount(100, $this->readAsArray(__DIR__ . '/Data/Disks/Test/queued-export.xlsx', Excel::XLSX));
+    }
+
+    public function test_fails_and_keeps_the_temporary_file_when_the_export_cannot_be_stored(): void
+    {
+        // The local disk does not throw on write errors, so writing
+        // over this directory makes the write return false.
+        $path = __DIR__ . '/Data/Disks/Local/unwritable-export.xlsx';
+        mkdir($path);
+
+        $failedJob     = null;
+        $temporaryFile = null;
+        Queue::failing(function (JobFailed $event) use (&$failedJob, &$temporaryFile): void {
+            if ($event->job->resolveName() === StoreQueuedExport::class) {
+                $failedJob     = unserialize($event->job->payload()['data']['command']);
+                $temporaryFile = $this->inspectJobProperty($event->job, 'temporaryFile');
+            }
+        });
+
+        try {
+            $exception = null;
+
+            try {
+                (new QueuedExport)->queue('unwritable-export.xlsx');
+            } catch (RuntimeException $e) {
+                $exception = $e;
+            } finally {
+                rmdir($path);
+            }
+
+            $this->assertInstanceOf(RuntimeException::class, $exception);
+            $this->assertSame('Unable to store the export at [unwritable-export.xlsx].', $exception->getMessage());
+            $this->assertInstanceOf(StoreQueuedExport::class, $failedJob);
+            $this->assertInstanceOf(TemporaryFile::class, $temporaryFile);
+            $this->assertFileExists($temporaryFile->getLocalPath());
+
+            // Retrying the job once the disk accepts the file stores the export.
+            $failedJob->handle(app(Filesystem::class));
+
+            $this->assertCount(100, $this->readAsArray($path, Excel::XLSX));
+            $this->assertFileDoesNotExist($temporaryFile->getLocalPath());
+        } finally {
+            @unlink($path);
+            $temporaryFile?->delete();
+        }
+    }
+
+    public function test_retrying_a_stored_export_without_its_temporary_file_does_not_fail(): void
+    {
+        config()->set('excel.temporary_files.remote_disk', 'test');
+
+        $storeJob = null;
+        Queue::after(function (JobProcessed $event) use (&$storeJob): void {
+            if ($event->job->resolveName() === StoreQueuedExport::class) {
+                $storeJob = unserialize($event->job->payload()['data']['command']);
+            }
+        });
+
+        (new QueuedExport)->queue('redelivered-export.xlsx');
+
+        $this->assertInstanceOf(StoreQueuedExport::class, $storeJob);
+
+        // A redelivered job runs again after the stored export
+        // already deleted its temporary file.
+        $storeJob->handle(app(Filesystem::class));
+
+        $this->assertCount(100, $this->readAsArray(__DIR__ . '/Data/Disks/Local/redelivered-export.xlsx', Excel::XLSX));
     }
 
     public function test_can_queue_export_with_remote_temp_disk(): void
