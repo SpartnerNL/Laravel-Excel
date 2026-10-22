@@ -12,6 +12,7 @@ use Maatwebsite\Excel\Concerns\Import;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithCustomValueBinder;
 use Maatwebsite\Excel\Concerns\WithEvents;
+use Maatwebsite\Excel\Concerns\WithReadFilter;
 use Maatwebsite\Excel\Events\AfterChunk;
 use Maatwebsite\Excel\Events\ImportFailed;
 use Maatwebsite\Excel\Exceptions\SheetNotFoundException;
@@ -134,7 +135,8 @@ class ReadChunk implements ShouldQueue
             $headingRow,
             $this->startRow,
             $this->chunkSize,
-            $this->sheetName
+            $this->sheetName,
+            $this->import instanceof WithReadFilter ? $this->import->readFilter() : null
         );
 
         // Only per-chunk state is set here. The reader carries the rest of its
