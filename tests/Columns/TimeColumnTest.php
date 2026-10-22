@@ -33,6 +33,7 @@ final class TimeColumnTest extends BaseColumnTestCase
     {
         yield [Carbon::createFromTime(9, 30, 0), ExcelDate::dateTimeToExcel(Carbon::createFromTime(9, 30, 0))];
         yield [Carbon::createFromTime(17, 0, 0), ExcelDate::dateTimeToExcel(Carbon::createFromTime(17, 0, 0))];
+        yield [0.75, 0.75];
     }
 
     #[DataProvider('importValues')]
