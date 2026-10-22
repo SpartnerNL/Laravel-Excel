@@ -56,9 +56,12 @@ class ModelImporter
         $this->manager->setRemembersRowNumber(method_exists($import, 'rememberRowNumber'));
 
         $i             = 0;
+        $batchRows     = 0;
+        $progressRows  = 0;
         $batchStartRow = $startRow;
         foreach ($worksheet->getRowIterator($startRow, $endRow) as $spreadSheetRow) {
             $i++;
+            $progressRows++;
 
             $row = new Row($spreadSheetRow, $headingRow, $headerIsGrouped, $columns);
             if (!$import instanceof SkipsEmptyRows || !$row->isEmpty($withCalcFormulas)) {
@@ -80,12 +83,19 @@ class ModelImporter
                     $row->getIndex(),
                     $rowArray
                 );
+                $batchRows++;
 
-                // Flush each batch.
-                if (($i % $batchSize) === 0) {
+                // Flush each batch. Skipped rows do not count towards the batch size.
+                if (($batchRows % $batchSize) === 0) {
                     $this->flush($import, $batchSize, $batchStartRow);
                     $batchStartRow += $i;
-                    $i = 0;
+                    $i         = 0;
+                    $batchRows = 0;
+                }
+
+                // Progress counts the rows read, including skipped rows, in steps of the batch size.
+                if (($progressRows % $batchSize) === 0) {
+                    $progressRows = 0;
 
                     if ($progressBar) {
                         $import->getConsoleOutput()->progressAdvance($batchSize);
