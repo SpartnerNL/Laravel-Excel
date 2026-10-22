@@ -293,7 +293,10 @@ class Sheet
             $preparationCallback = $this->getPreparationCallback($import);
             $columns             = $this->columnsForImport($import, $headingRow);
 
-            foreach ($this->worksheet->getRowIterator()->resetStart($startRow) as $row) {
+            // The limit counts from the import's start row, also when a chunk starts further down.
+            $endRow = EndRowFinder::find($import, HeadingRowExtractor::determineStartRow($import), $this->worksheet->getHighestRow());
+
+            foreach ($this->worksheet->getRowIterator($startRow, $endRow) as $row) {
                 $sheetRow = new Row($row, $headingRow, $headerIsGrouped, $columns);
 
                 if ($import instanceof WithValidation) {
@@ -354,7 +357,7 @@ class Sheet
             return [];
         }
 
-        $endRow          = EndRowFinder::find($import, $startRow, $this->worksheet->getHighestRow());
+        $endRow          = EndRowFinder::find($import, HeadingRowExtractor::determineStartRow($import), $this->worksheet->getHighestRow());
         $headingRow      = HeadingRowExtractor::extract($this->worksheet, $import);
         $headerIsGrouped = HeadingRowExtractor::extractGrouping($headingRow, $import);
         $endColumn       = $import instanceof WithColumnLimit ? $import->endColumn() : null;
