@@ -228,4 +228,38 @@ final class WithLimitTest extends TestCase
 
         $import->import('import-users.xlsx');
     }
+
+    public function test_does_not_import_rows_past_the_last_row_when_the_limit_starts_below_the_first_row(): void
+    {
+        $import = new class implements ToArray, WithLimit, WithStartRow
+        {
+            use Importable;
+
+            /**
+             * @var array<int, array<array-key, mixed>>
+             */
+            public array $rows = [];
+
+            public function array(array $array): void
+            {
+                $this->rows = $array;
+            }
+
+            public function limit(): int
+            {
+                return 2;
+            }
+
+            public function startRow(): int
+            {
+                return 2;
+            }
+        };
+
+        $import->import('import-users.xlsx');
+
+        $this->assertSame([
+            ['Taylor Otwell', 'taylor@laravel.com'],
+        ], $import->rows);
+    }
 }

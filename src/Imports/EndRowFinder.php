@@ -15,18 +15,19 @@ class EndRowFinder
             return null;
         }
 
-        $limit = $import->limit();
-
-        if ($limit > $highestRow) {
-            return null;
-        }
-
         // When no start row given,
         // use the first row as start row.
         $startRow ??= 1;
 
         // Subtract 1 row from the start row, so a limit
         // of 1 row, will have the same start and end row.
-        return ($startRow - 1) + $limit;
+        $endRow = ($startRow - 1) + $import->limit();
+
+        // A limit reaching past the highest row reads up to the highest row.
+        if ($endRow > $highestRow) {
+            return null;
+        }
+
+        return $endRow;
     }
 }

@@ -9,8 +9,10 @@ use Exception;
 use Illuminate\Console\OutputStyle;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use Iterator;
 use Maatwebsite\Excel\Concerns\Import;
 use Maatwebsite\Excel\Concerns\Importable;
+use Maatwebsite\Excel\Concerns\OnEachRow;
 use Maatwebsite\Excel\Concerns\SkipsUnknownSheets;
 use Maatwebsite\Excel\Concerns\ToArray;
 use Maatwebsite\Excel\Concerns\ToModel;
@@ -22,17 +24,20 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithLimit;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 use Maatwebsite\Excel\Concerns\WithProgressBar;
+use Maatwebsite\Excel\Concerns\WithStartRow;
 use Maatwebsite\Excel\Events\AfterImport;
 use Maatwebsite\Excel\Events\BeforeImport;
 use Maatwebsite\Excel\Events\ImportFailed;
 use Maatwebsite\Excel\Exceptions\SheetNotFoundException;
 use Maatwebsite\Excel\Reader;
+use Maatwebsite\Excel\Row;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\Group;
 use Maatwebsite\Excel\Tests\Data\Stubs\Database\User;
 use Maatwebsite\Excel\Tests\TestCase;
 use Mockery;
 use PhpOffice\PhpSpreadsheet\Shared\Date;
 use PHPUnit\Framework\Assert;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Throwable;
 
 final class WithChunkReadingTest extends TestCase
@@ -526,6 +531,165 @@ final class WithChunkReadingTest extends TestCase
         $import->import('import-users.xlsx');
 
         $this->assertSame(1, $import->called, 'Row count was not limited during chunked reading.');
+    }
+
+    #[DataProvider('limitsAndChunkSizes')]
+    public function test_imports_the_limited_rows_when_importing_in_chunks(int $limit, int $chunkSize, int $expectedRows): void
+    {
+        $import = new class($limit, $chunkSize) implements ToArray, WithChunkReading, WithHeadingRow, WithLimit
+        {
+            use Importable;
+
+            /**
+             * @var list<mixed>
+             */
+            public array $names = [];
+
+            public function __construct(
+                private readonly int $limit,
+                private readonly int $chunkSize,
+            ) {
+            }
+
+            public function array(array $array): void
+            {
+                foreach ($array as $row) {
+                    $this->names[] = $row['name'];
+                }
+            }
+
+            public function chunkSize(): int
+            {
+                return $this->chunkSize;
+            }
+
+            public function limit(): int
+            {
+                return $this->limit;
+            }
+        };
+
+        $import->import('import-batches-with-heading-row.xlsx');
+
+        $this->assertSame(range(1, $expectedRows), $import->names);
+    }
+
+    /**
+     * @return Iterator<string, array{int, int, int}>
+     */
+    public static function limitsAndChunkSizes(): Iterator
+    {
+        yield 'limit shorter than a chunk' => [30, 50, 30];
+        yield 'limit equal to a chunk' => [50, 50, 50];
+        yield 'limit spanning chunks' => [120, 50, 120];
+        yield 'limit ending on a chunk boundary' => [100, 50, 100];
+        yield 'limit ending on the last row' => [5000, 2000, 5000];
+        yield 'limit reaching past the last row' => [6000, 2000, 5000];
+    }
+
+    public function test_imports_the_limited_rows_to_model_in_batches_when_importing_in_chunks(): void
+    {
+        $import = new class implements ToModel, WithBatchInserts, WithChunkReading, WithHeadingRow, WithLimit
+        {
+            use Importable;
+
+            public function model(array $row): Group
+            {
+                return new Group([
+                    'name' => $row['name'],
+                ]);
+            }
+
+            public function chunkSize(): int
+            {
+                return 50;
+            }
+
+            public function batchSize(): int
+            {
+                return 20;
+            }
+
+            public function limit(): int
+            {
+                return 120;
+            }
+        };
+
+        $import->import('import-batches-with-heading-row.xlsx');
+
+        $this->assertSame(range(1, 120), Group::query()->orderBy('id')->pluck('name')->map(fn ($name): int => (int) $name)->all());
+    }
+
+    public function test_imports_the_limited_rows_from_the_start_row_when_importing_in_chunks(): void
+    {
+        $import = new class implements ToArray, WithChunkReading, WithLimit, WithStartRow
+        {
+            use Importable;
+
+            /**
+             * @var list<mixed>
+             */
+            public array $values = [];
+
+            public function array(array $array): void
+            {
+                foreach ($array as $row) {
+                    $this->values[] = $row[0];
+                }
+            }
+
+            public function chunkSize(): int
+            {
+                return 500;
+            }
+
+            public function limit(): int
+            {
+                return 50;
+            }
+
+            public function startRow(): int
+            {
+                return 100;
+            }
+        };
+
+        $import->import('import-batches.xlsx');
+
+        $this->assertSame(range(100, 149), $import->values);
+    }
+
+    public function test_imports_the_limited_rows_on_each_row_when_importing_in_chunks(): void
+    {
+        $import = new class implements OnEachRow, WithChunkReading, WithHeadingRow, WithLimit
+        {
+            use Importable;
+
+            /**
+             * @var list<int>
+             */
+            public array $rowNumbers = [];
+
+            public function onRow(Row $row): void
+            {
+                $this->rowNumbers[] = $row->getIndex();
+            }
+
+            public function chunkSize(): int
+            {
+                return 500;
+            }
+
+            public function limit(): int
+            {
+                return 50;
+            }
+        };
+
+        $import->import('import-batches-with-heading-row.xlsx');
+
+        $this->assertSame(range(2, 51), $import->rowNumbers);
     }
 
     public function test_unknown_sheet_name_can_be_ignored_when_importing_in_chunks(): void

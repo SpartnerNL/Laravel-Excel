@@ -17,11 +17,11 @@ use Maatwebsite\Excel\Concerns\ShouldQueueWithoutChain;
 use Maatwebsite\Excel\Concerns\SkipsUnknownSheets;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithEvents;
-use Maatwebsite\Excel\Concerns\WithLimit;
 use Maatwebsite\Excel\Concerns\WithProgressBar;
 use Maatwebsite\Excel\Exceptions\SheetNotFoundException;
 use Maatwebsite\Excel\Files\TemporaryFile;
 use Maatwebsite\Excel\Helpers\QueueResolver;
+use Maatwebsite\Excel\Imports\EndRowFinder;
 use Maatwebsite\Excel\Imports\HeadingRowExtractor;
 use Maatwebsite\Excel\Jobs\AfterImportJob;
 use Maatwebsite\Excel\Jobs\QueueImport;
@@ -77,16 +77,9 @@ class ChunkReader
             }
 
             $startRow = HeadingRowExtractor::determineStartRow($sheetImport);
+            $endRow   = EndRowFinder::find($sheetImport, $startRow, $totalRows[$name]);
 
-            if ($sheetImport instanceof WithLimit) {
-                $limit = $sheetImport->limit();
-
-                if ($limit <= $totalRows[$name]) {
-                    $totalRows[$name] = $sheetImport->limit();
-                }
-            }
-
-            for ($currentRow = $startRow; $currentRow <= $totalRows[$name]; $currentRow += $chunkSize) {
+            for ($currentRow = $startRow; $currentRow <= ($endRow ?? $totalRows[$name]); $currentRow += $chunkSize) {
                 $jobs->push(new ReadChunk(
                     $import,
                     $reader->getPhpSpreadsheetReader(),
