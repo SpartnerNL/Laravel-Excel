@@ -125,7 +125,7 @@ class ModelManager
                             return;
                         }
                         if ($import instanceof WithSkipDuplicates) {
-                            $model::query()->insertOrIgnore([$model->getAttributes()]);
+                            $model::query()->insertOrIgnore([$this->prepare($model)->getAttributes()]);
 
                             return;
                         }
