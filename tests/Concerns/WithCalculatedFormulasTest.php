@@ -8,12 +8,15 @@ use Illuminate\Database\Eloquent\Model;
 use Maatwebsite\Excel\Concerns\HasReferencesToOtherSheets;
 use Maatwebsite\Excel\Concerns\Import;
 use Maatwebsite\Excel\Concerns\Importable;
+use Maatwebsite\Excel\Concerns\OnEachRow;
 use Maatwebsite\Excel\Concerns\SkipsEmptyRows;
 use Maatwebsite\Excel\Concerns\ToArray;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithCalculatedFormulas;
+use Maatwebsite\Excel\Concerns\WithFormatData;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 use Maatwebsite\Excel\Concerns\WithStartRow;
+use Maatwebsite\Excel\Row;
 use Maatwebsite\Excel\Tests\TestCase;
 use PHPUnit\Framework\Assert;
 
@@ -197,5 +200,73 @@ final class WithCalculatedFormulasTest extends TestCase
         $import->import('import-formulas.xlsx');
 
         $this->assertTrue($import->called);
+    }
+
+    public function test_can_calculate_formulas_on_each_row_when_the_import_formats_data(): void
+    {
+        $import = new class implements OnEachRow, WithFormatData
+        {
+            use Importable;
+
+            /**
+             * @var list<mixed>
+             */
+            public array $values = [];
+
+            public function onRow(Row $row): void
+            {
+                $this->values[] = $row->toArray(null, true)[0];
+            }
+        };
+
+        $import->import('import-formulas.xlsx');
+
+        $this->assertSame(['2'], $import->values);
+    }
+
+    public function test_can_read_formulas_on_each_row_when_the_import_calculates_formulas(): void
+    {
+        $import = new class implements OnEachRow, WithCalculatedFormulas
+        {
+            use Importable;
+
+            /**
+             * @var list<mixed>
+             */
+            public array $values = [];
+
+            public function onRow(Row $row): void
+            {
+                $this->values[] = $row->toArray(null, false, false)[0];
+                $this->values[] = $row->toArray(null, true, false)[0];
+            }
+        };
+
+        $import->import('import-formulas.xlsx');
+
+        $this->assertSame(['=1+1', 2], $import->values);
+    }
+
+    public function test_reads_each_formula_mode_on_each_row_when_the_import_calculates_formulas_and_formats_data(): void
+    {
+        $import = new class implements OnEachRow, WithCalculatedFormulas, WithFormatData
+        {
+            use Importable;
+
+            /**
+             * @var list<mixed>
+             */
+            public array $values = [];
+
+            public function onRow(Row $row): void
+            {
+                $this->values[] = $row->toArray(null, false)[0];
+                $this->values[] = $row->toArray(null, true)[0];
+            }
+        };
+
+        $import->import('import-formulas.xlsx');
+
+        $this->assertSame(['=1+1', '2'], $import->values);
     }
 }

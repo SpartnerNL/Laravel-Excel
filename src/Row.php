@@ -26,6 +26,8 @@ class Row implements ArrayAccess
      */
     protected ?array $rowCache = null;
 
+    protected ?bool $rowCacheCalculateFormulas = null;
+
     protected ?bool $rowCacheFormatData = null;
 
     protected ?string $rowCacheEndColumn = null;
@@ -98,6 +100,7 @@ class Row implements ArrayAccess
 
         if (is_array($this->rowCache)
             && ($this->rowCacheNullValue === $nullValue)
+            && ($this->rowCacheCalculateFormulas === $calculateFormulas)
             && ($this->rowCacheFormatData === $formatData)
             && ($this->rowCacheEndColumn === $endColumn)) {
             return $this->rowCache;
@@ -124,10 +127,11 @@ class Row implements ArrayAccess
 
         $cells = $this->prepare($cells);
 
-        $this->rowCache           = $cells;
-        $this->rowCacheNullValue  = $nullValue;
-        $this->rowCacheFormatData = $formatData;
-        $this->rowCacheEndColumn  = $endColumn;
+        $this->rowCache                  = $cells;
+        $this->rowCacheNullValue         = $nullValue;
+        $this->rowCacheCalculateFormulas = $calculateFormulas;
+        $this->rowCacheFormatData        = $formatData;
+        $this->rowCacheEndColumn         = $endColumn;
 
         return $cells;
     }
