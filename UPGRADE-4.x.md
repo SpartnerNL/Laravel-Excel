@@ -42,6 +42,50 @@ Because return types are now enforced natively, some signatures are stricter tha
 - `Importable::import()` returns `Importer|PendingDispatch|PendingBatch` and `Importable::queue()` returns `PendingDispatch|PendingBatch`
   (it no longer advertises returning the importable instance itself).
 
+## Typed `Exportable` and `Importable` properties
+
+The `Exportable` trait now declares its properties itself, with native types:
+
+```php
+protected ?string $fileName = null;
+protected ?string $writerType = null;
+protected ?array $headers = [];
+protected ?string $filePath = null;
+protected ?string $disk = null;
+protected mixed $diskOptions = [];
+```
+
+`Importable` does the same for `$disk` (`?string`), `$readerType` (`?string`) and `$filePath` (`string|UploadedFile|null`).
+
+PHP only accepts a redeclaration of a trait property when visibility, type and default value are identical.
+Classes that declared these properties themselves (as the 3.1 docs showed) fail with
+`... define the same property ($fileName) in the composition of ... However, the definition differs`:
+
+```php
+class UsersExport implements FromCollection
+{
+    use Exportable;
+
+    private $fileName = 'users.xlsx'; // Fatal error
+}
+```
+
+Remove the redeclaration and assign the value in the constructor instead:
+
+```php
+class UsersExport implements FromCollection
+{
+    use Exportable;
+
+    public function __construct()
+    {
+        $this->fileName = 'users.xlsx';
+    }
+}
+```
+
+A redeclaration that is exactly the same as the trait's (`protected ?string $fileName = null;`) is still accepted, but a different default value is not.
+
 ## FromScout
 
 To keep laravel/scout an optional dependency, `FromQuery` no longer supports returning a Scout `Builder` instance.
