@@ -20,16 +20,16 @@ Use `search-docs` when it is available for Laravel framework integration details
 - `config/excel.php`
 - `tests/Concerns/`
 - `tests/ExcelFakeTest.php`
-- `../../examples/exports-imports.md`
-- `../../references/package.md`
+- `examples/exports-imports.md`
+- `references/package.md`
 
-If the user asks for complete coverage, "all features", package docs, package skills, or a missing-feature audit, read `../../references/package.md` first and use it as the checklist.
+If the user asks for complete coverage, "all features", package docs, package skills, or a missing-feature audit, read `references/package.md` first and use it as the checklist.
 
 ## Working Rules
 
 - Keep controllers thin. Put spreadsheet behavior in dedicated export/import classes.
 - Use package concerns to declare behavior instead of custom imperative spreadsheet code.
-- Before claiming feature completeness, compare the output against `../../references/package.md`.
+- Before claiming feature completeness, compare the output against `references/package.md`.
 - Use `Exportable` on export classes when the export should call `download()`, `store()`, `queue()`, or `raw()` directly.
 - Use `Importable` on import classes when the import should call `import()`, `queue()`, `toArray()`, or `toCollection()` directly.
 - Prefer `FromQuery` for large exports so the package can chunk records efficiently.
@@ -44,7 +44,7 @@ If the user asks for complete coverage, "all features", package docs, package sk
 
 ## Feature Coverage Checklist
 
-Use `../../references/package.md` for the complete matrix. It covers:
+Use `references/package.md` for the complete matrix. It covers:
 
 - Facade APIs, object traits, contracts, file type constants, and extension detection.
 - Export sources, export formatting, events, styles, formulas, charts, drawings, properties, multiple sheets, conditional sheets, and CSV settings.
