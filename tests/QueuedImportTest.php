@@ -14,6 +14,7 @@ use Illuminate\Queue\Events\JobExceptionOccurred;
 use Illuminate\Queue\Events\JobProcessed;
 use Illuminate\Queue\Events\JobProcessing;
 use Illuminate\Support\Facades\Bus;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Queue;
 use InvalidArgumentException;
 use Iterator;
@@ -121,7 +122,7 @@ final class QueuedImportTest extends TestCase
                 );
 
                 $this->assertTrue(
-                    unlink($tempFile->getLocalPath())
+                    File::delete($tempFile->getLocalPath())
                 );
             }
         });

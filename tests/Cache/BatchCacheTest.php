@@ -13,6 +13,7 @@ use Illuminate\Cache\Events\KeyWritten;
 use Illuminate\Cache\Repository;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Support\Facades\Event;
+use Iterator;
 use Maatwebsite\Excel\Cache\BatchCache;
 use Maatwebsite\Excel\Cache\BatchCacheDeprecated;
 use Maatwebsite\Excel\Cache\CacheManager;
@@ -351,17 +352,15 @@ final class BatchCacheTest extends TestCase
     }
 
     /**
-     * @return array<string, array{int|Closure|null, int|Closure|null}>
+     * @return Iterator<string, array{Closure|int|null, Closure|int|null}>
      *
      * @throws RandomException
      */
-    public static function defaultTTLDataProvider(): array
+    public static function defaultTTLDataProvider(): Iterator
     {
-        return [
-            'null (forever)' => [null, null],
-            'int value'      => [$value = random_int(1, 100), $value],
-            'callable'       => [$closure = (fn (): int => 199), $closure],
-        ];
+        yield 'null (forever)' => [null, null];
+        yield 'int value' => [$value = random_int(1, 100), $value];
+        yield 'callable' => [$closure = (fn (): int => 199), $closure];
     }
 
     /**

@@ -7,6 +7,7 @@ namespace Maatwebsite\Excel\Tests;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\File;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\FromView;
@@ -84,7 +85,7 @@ final class ExcelTest extends TestCase
         $name   = 'filename.xlsx';
         $path   = FileHelper::absolutePath($name, 'local');
 
-        @unlink($path);
+        File::delete($path);
 
         $this->assertFileMissing($path);
 
@@ -100,7 +101,7 @@ final class ExcelTest extends TestCase
         $name   = 'filename.xlsx';
         $path   = FileHelper::absolutePath($name, 'test');
 
-        @unlink($path);
+        File::delete($path);
 
         $this->assertFileMissing($path);
 
@@ -116,7 +117,7 @@ final class ExcelTest extends TestCase
         $name   = 'filename.csv';
         $path   = FileHelper::absolutePath($name, 'local');
 
-        @unlink($path);
+        File::delete($path);
 
         $this->assertFileMissing($path);
 
@@ -146,7 +147,7 @@ final class ExcelTest extends TestCase
             $this->assertSame('original contents', file_get_contents($elsewhere), 'Expected [' . $path . '] to resolve within the disk.');
         }
 
-        @unlink($elsewhere);
+        File::delete($elsewhere);
 
         // Clean up what the relative path created inside the disk.
         FileHelper::recursiveDelete($root . DIRECTORY_SEPARATOR . explode(DIRECTORY_SEPARATOR, $relative)[0]);
@@ -167,7 +168,7 @@ final class ExcelTest extends TestCase
 
         $this->assertSame('original contents', file_get_contents($elsewhere));
 
-        @unlink($elsewhere);
+        File::delete($elsewhere);
 
         // Clean up what the absolute path created inside the disk.
         FileHelper::recursiveDelete(
@@ -187,8 +188,8 @@ final class ExcelTest extends TestCase
         // The working directory may never shadow a file that lives on the disk.
         $this->assertSame([[['from-the-disk']]], $this->SUT->toArray($this->givenCsvImport(), $name, null, Excel::CSV));
 
-        @unlink($onDisk);
-        @unlink($inCwd);
+        File::delete($onDisk);
+        File::delete($inCwd);
     }
 
     public function test_import_reads_a_relative_path_from_the_working_directory_when_the_disk_does_not_have_it(): void
@@ -203,7 +204,7 @@ final class ExcelTest extends TestCase
             $this->SUT->toArray($this->givenCsvImport(), $name, null, Excel::CSV)
         );
 
-        @unlink($inCwd);
+        File::delete($inCwd);
     }
 
     public function test_import_reads_an_absolute_local_path_when_no_disk_is_given(): void
@@ -217,7 +218,7 @@ final class ExcelTest extends TestCase
             $this->SUT->toArray($this->givenCsvImport(), $elsewhere, null, Excel::CSV)
         );
 
-        @unlink($elsewhere);
+        File::delete($elsewhere);
     }
 
     public function test_import_resolves_paths_within_the_disk_when_a_disk_is_given(): void
@@ -239,7 +240,7 @@ final class ExcelTest extends TestCase
             $this->assertNotSame([[['outside-the-disk']]], $imported, 'Expected [' . $path . '] to resolve within the disk.');
         }
 
-        @unlink($elsewhere);
+        File::delete($elsewhere);
     }
 
     public function test_store_cleans_up_the_temporary_file_when_the_disk_fails(): void
@@ -269,7 +270,7 @@ final class ExcelTest extends TestCase
         $name = 'filename.csv';
         $path = FileHelper::absolutePath($name, 'local');
 
-        @unlink($path);
+        File::delete($path);
 
         $this->SUT->store($this->givenCsvExport([['AAAAAAAAAA', 'BBBBBBBBBB']]), $name);
         $this->SUT->store($this->givenCsvExport([['A', 'B']]), $name);
@@ -295,7 +296,7 @@ final class ExcelTest extends TestCase
         $name   = 'filename.tsv';
         $path   = FileHelper::absolutePath($name, 'local');
 
-        @unlink($path);
+        File::delete($path);
 
         $this->assertFileMissing($path);
 
