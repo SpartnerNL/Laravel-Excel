@@ -6,6 +6,7 @@ namespace Maatwebsite\Excel\Tests\Columns;
 
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Iterator;
 use Maatwebsite\Excel\Columns\Boolean;
@@ -119,7 +120,7 @@ final class ColumnFeatureTest extends TestCase
         $this->assertSame($dataType, $cell->getDataType());
         $this->assertEquals($expectedValue, $cell->getValue());
 
-        unlink($file);
+        File::delete($file);
     }
 
     /**
@@ -233,7 +234,7 @@ final class ColumnFeatureTest extends TestCase
         $this->assertEquals('Admin', $spreadsheet->getActiveSheet()->getCell('B1')->getValue());
         $this->assertEquals('Patrick - Admin', $spreadsheet->getActiveSheet()->getCell('C1')->getValue());
 
-        unlink($file);
+        File::delete($file);
     }
 
     public function test_can_write_hyperlink(): void
@@ -262,7 +263,7 @@ final class ColumnFeatureTest extends TestCase
         $this->assertSame('https://maatwebsite.com', $a1->getHyperlink()->getUrl());
         $this->assertSame('Open link', $a1->getHyperlink()->getTooltip());
 
-        unlink($file);
+        File::delete($file);
     }
 
     public function test_can_size_a_column(): void

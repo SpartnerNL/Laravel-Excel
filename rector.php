@@ -7,9 +7,11 @@ use Rector\Config\RectorConfig;
 use Rector\DeadCode\Rector\MethodCall\RemoveNullArgOnNullDefaultParamRector;
 use Rector\PHPUnit\CodeQuality\Rector\MethodCall\AssertEqualsToSameRector;
 use Rector\PHPUnit\Set\PHPUnitSetList;
+use Rector\Renaming\Rector\MethodCall\RenameMethodRector;
 use Rector\TypeDeclarationDocblocks\Rector\ClassMethod\AddReturnDocblockForCommonObjectDenominatorRector;
 use RectorLaravel\Rector\ArrayDimFetch\EnvVariableToEnvHelperRector;
 use RectorLaravel\Rector\FuncCall\AppToResolveRector;
+use RectorLaravel\Rector\FuncCall\UnlinkFuncCallToFileFacadeDeleteRector;
 use RectorLaravel\Rector\StaticCall\CarbonToDateFacadeRector;
 use RectorLaravel\Set\LaravelLevelSetList;
 use RectorLaravel\Set\LaravelSetList;
@@ -87,5 +89,16 @@ return RectorConfig::configure()
             __DIR__ . '/tests/Concerns/WithTitleTest.php',
             __DIR__ . '/tests/Concerns/WithValidationTest.php',
             __DIR__ . '/tests/PhpSpreadsheetV5CompatibilityTest.php',
+        ],
+
+        // `expectExceptionMessageIsOrContains` does not exist on every
+        // supported PHPUnit version (composer allows ^12.5), so keep
+        // `expectExceptionMessage`.
+        RenameMethodRector::class,
+
+        // The package must not depend on the Laravel File facade in src, and
+        // the second unlink() deliberately surfaces failures.
+        UnlinkFuncCallToFileFacadeDeleteRector::class => [
+            __DIR__ . '/src/Files/LocalTemporaryFile.php',
         ],
     ]);

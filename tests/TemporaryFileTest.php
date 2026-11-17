@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Maatwebsite\Excel\Tests;
 
+use Illuminate\Support\Facades\File;
 use Maatwebsite\Excel\Files\TemporaryFileFactory;
 use Maatwebsite\Excel\Tests\Helpers\FileHelper;
 use RuntimeException;
@@ -29,7 +30,7 @@ final class TemporaryFileTest extends TestCase
         touch($filePath);
         $this->defaultFilePermissions = substr(sprintf('%o', fileperms($filePath)), -4);
 
-        @unlink($filePath);
+        File::delete($filePath);
         @rmdir($path);
     }
 
@@ -101,7 +102,7 @@ final class TemporaryFileTest extends TestCase
         } catch (RuntimeException $e) {
             $this->assertSame(sprintf('Directory "%s" was not created', $path), $e->getMessage());
         } finally {
-            @unlink($path);
+            File::delete($path);
         }
     }
 }

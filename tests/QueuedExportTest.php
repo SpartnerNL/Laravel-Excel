@@ -9,6 +9,7 @@ use Illuminate\Queue\Events\JobFailed;
 use Illuminate\Queue\Events\JobProcessed;
 use Illuminate\Queue\Events\JobProcessing;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Excel;
@@ -103,7 +104,7 @@ final class QueuedExportTest extends TestCase
             $this->assertCount(100, $this->readAsArray($path, Excel::XLSX));
             $this->assertFileDoesNotExist($temporaryFile->getLocalPath());
         } finally {
-            @unlink($path);
+            File::delete($path);
             $temporaryFile?->delete();
         }
     }

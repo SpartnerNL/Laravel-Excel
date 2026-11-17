@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Maatwebsite\Excel\Tests\Helpers;
 
+use Illuminate\Support\Facades\File;
+
 class FileHelper
 {
     public static function absolutePath(string $fileName, string $diskName): string
@@ -14,7 +16,7 @@ class FileHelper
     public static function recursiveDelete(string $fileName): bool
     {
         if (is_file($fileName)) {
-            return @unlink($fileName);
+            return File::delete($fileName);
         }
 
         if (is_dir($fileName)) {
